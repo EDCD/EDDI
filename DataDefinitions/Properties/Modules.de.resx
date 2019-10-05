@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
-    <value>Optimierter Plasmabeschleuniger</value>
+    <value>Fortschrittlicher Plasmabeschleuniger</value>
     <comment>Module AdvancedPlasmaAccelerator</comment>
   </data>
   <data name="ATMulticannon" xml:space="preserve">
@@ -506,7 +506,7 @@
     <comment>Weapon mount type Turreted</comment>
   </data>
   <data name="AdvancedDiscoveryScanner" xml:space="preserve">
-    <value>Fortgeschrittener Aufklärungsscanner</value>
+    <value>Fortschrittlicher Aufklärungsscanner</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
   <data name="PlasmaRepeater" xml:space="preserve">
@@ -582,8 +582,11 @@
     <comment>Module AdvancedDockingComputer</comment>
   </data>
   <data name="AdvancedMultiCannon" xml:space="preserve">
-    <value>Erweitertes Mehrzweckgeschütz</value>
+    <value>Fortschrittliches Mehrzweckgeschütz</value>
     <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
   </data>
-  
+  <data name="AdvancedMissileRack" xml:space="preserve">
+    <value>Fortschrittliches Raketengestell</value>
+    <comment>Module Advanced Missile Rack</comment>
+  </data>
 </root>
