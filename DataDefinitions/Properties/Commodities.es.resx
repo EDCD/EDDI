@@ -1670,5 +1670,8 @@
     <value>Materia Biológica Zargoide</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
-  
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Fertilizantes Rockforth</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
 </root>
