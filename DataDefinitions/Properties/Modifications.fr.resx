@@ -465,20 +465,30 @@
   <data name="MulticannonLightWeight" xml:space="preserve">
     <value>Multi-canon léger</value>
   </data>
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>Accélérateur plasma léger</value>
+  </data>
+  
+  
+  <data name="TorpedoLightWeight" xml:space="preserve">
+    <value>Torpille légère</value>
+  </data>
+  
+  
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>Canon à longue portée</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>Multi-canon à longue portée</value>
+  </data>
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CannonOvercharged" xml:space="preserve">
+    <value>Canon surchargé</value>
+  </data>
   
   
   
