@@ -254,7 +254,10 @@
     <value>Kontrollpunkt</value>
     <comment>Checkpoint</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Konvoiboje</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
     <value>Piratenaktivität</value>
     <comment>Pirate Activity</comment>
