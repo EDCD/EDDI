@@ -7,7 +7,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -15,8 +14,6 @@ namespace EddiDataDefinitions
     /// <summary>A ship</summary>
     public class Ship : INotifyPropertyChanged
     {
-        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
-
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
 
@@ -126,22 +123,14 @@ namespace EddiDataDefinitions
             get { return PhoneticName; }
             set
             {
-                if (value == null || value == "")
+                if (string.IsNullOrEmpty(value))
                 {
                     PhoneticName = null;
                 }
                 else
                 {
-                    if (!IPA_REGEX.Match(value).Success)
-                    {
-                        // Invalid - drop silently
-                        Logging.Debug("Invalid IPA " + value + "; discarding");
-                        PhoneticName = null;
-                    }
-                    else
-                    {
-                        PhoneticName = value;
-                    }
+                    NotifyPropertyChanged("phoneticname");
+                    PhoneticName = value;
                 }
             }
         }
