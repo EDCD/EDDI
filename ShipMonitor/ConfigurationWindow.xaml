@@ -38,6 +38,11 @@
             </ComboBox>
         </Grid >
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <EventSetter Event="PreviewKeyDown" Handler="previewKeyDownHandler"/>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
