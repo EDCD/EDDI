@@ -79,5 +79,9 @@ namespace EddiVoiceAttackResponder
         {
             return new ConfigurationWindow();
         }
+
+        public void OnClosingConfigurationTabItem()
+        {
+        }
     }
 }
