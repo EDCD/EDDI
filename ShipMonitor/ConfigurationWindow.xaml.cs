@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -37,6 +38,7 @@ namespace EddiShipMonitor
 
             Logging.Debug("Export target from configuration: " + exportTarget);
             exportComboBox.Text = exportTarget ?? "Coriolis";
+            DataObject.AddPastingHandler(shipData, pastingDataEventHandler);
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
@@ -140,6 +142,54 @@ namespace EddiShipMonitor
             if (e.RemovedItems.Count > 0)
             {
                 shipMonitor()?.Save();
+            }
+        }
+
+        private void previewKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (sender is DataGridCell dataGridCell)
+            {
+                if (dataGridCell.Column is DataGridTextColumn textColumn)
+                {
+                    if (textColumn.Header.ToString() == Properties.ShipMonitor.header_spoken_name)
+                    {
+                        if (e.Key == Key.Space)
+                        {
+                            if (e.Source is TextBox textBox)
+                            {
+                                int selectionPosition = textBox.SelectionStart;
+                                textBox.Text += "ˈ";
+                                textBox.SelectionStart = selectionPosition + 1;
+                                e.Handled = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void pastingDataEventHandler(object sender, DataObjectPastingEventArgs e)
+        {
+            if (sender is DataGrid dataGrid)
+            {
+                if (dataGrid.CurrentCell is DataGridCellInfo dataGridCell)
+                {
+                    if (dataGridCell.Column is DataGridTextColumn textColumn)
+                    {
+                        if (textColumn.Header.ToString() == Properties.ShipMonitor.header_spoken_name)
+                        {
+                            // Retrieve the paste text
+                            var isText = e.SourceDataObject.GetDataPresent(DataFormats.UnicodeText, true);
+                            if (!isText) return;
+                            var text = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
+
+                            // Replace the data object
+                            DataObject d = new DataObject();
+                            d.SetData(DataFormats.Text, text.Replace(" ", "ˈ"));
+                            e.DataObject = d;
+                        }
+                    }
+                }
             }
         }
     }
