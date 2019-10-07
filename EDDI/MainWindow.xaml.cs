@@ -1062,11 +1062,18 @@ namespace Eddi
                 CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
                 VaWindowStateChange = null;
 
-                // Remove monitor-specific configuration items
+                // Remove monitor-specific configuration items and bindings
                 foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
                 {
                     Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
                     monitor.OnClosingConfigurationTabItem();
+                }
+
+                // Remove responder-specific configuration items and bindings
+                foreach (EDDIResponder responder in EDDI.Instance.responders)
+                {
+                    Logging.Debug("Cleaning up tab elements for " + responder.ResponderName());
+                    responder.OnClosingConfigurationTabItem();
                 }
 
                 if (!fromVA)

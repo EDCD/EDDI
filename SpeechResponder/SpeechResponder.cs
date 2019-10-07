@@ -333,6 +333,10 @@ namespace EddiSpeechResponder
             return new ConfigurationWindow();
         }
 
+        public void OnClosingConfigurationTabItem()
+        {
+        }
+
         private static readonly object logLock = new object();
         private static void log(string speech)
         {
