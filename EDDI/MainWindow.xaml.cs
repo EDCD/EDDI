@@ -176,7 +176,7 @@ namespace Eddi
             if (fromVA)
             {
                 // Allow the EDDI VA plugin to change window state
-                VaWindowStateChange = new vaWindowStateChangeDelegate(OnVaWindowStateChange);
+                VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.EddiResources.change_affect_va;
             }
             else
@@ -238,8 +238,10 @@ namespace Eddi
 
             LoadAndSortTabs(eddiConfiguration);
 
-            RestoreWindowState();
-            EDDI.Instance.MainWindow = this;
+            if (!fromVA)
+            {
+                RestoreWindowState();
+            }
             EDDI.Instance.Start();
         }
 
@@ -1029,7 +1031,7 @@ namespace Eddi
 
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
         // been given and the EDDI configuration window is already open. If the window
-        // is minimize, restore it, otherwise the plugin will ignore the command.
+        // is minimized, restore it, otherwise the plugin will ignore the command.
         public delegate void vaWindowStateChangeDelegate(WindowState state, bool minimizeCheck);
         public vaWindowStateChangeDelegate VaWindowStateChange;
         public void OnVaWindowStateChange(WindowState state, bool minimizeCheck)
@@ -1050,36 +1052,39 @@ namespace Eddi
 
             if (!e.Cancel)
             {
-                // Save window position here as the RestoreBounds rect gets set
-                // to empty somewhere between here and OnClosed.
-                SaveWindowState();
-
-                // Unregister applicable event handlers
-                CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
-                VaWindowStateChange = null;
-
-                // Remove monitor-specific configuration items and bindings
-                foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+                System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
                 {
-                    Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
-                    monitor.OnClosingConfigurationTabItem();
-                }
+                    // Save window position here as the RestoreBounds rect gets set
+                    // to empty somewhere between here and OnClosed.
+                    SaveWindowState();
 
-                // Remove responder-specific configuration items and bindings
-                foreach (EDDIResponder responder in EDDI.Instance.responders)
-                {
-                    Logging.Debug("Cleaning up tab elements for " + responder.ResponderName());
-                    responder.OnClosingConfigurationTabItem();
-                }
+                    // Unregister applicable event handlers
+                    CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
+                    VaWindowStateChange = null;
 
-                if (!fromVA)
-                {
-                    // When in OnClosed(), if the EDDI window was closed while minimized
-                    // (under debugger), monitorThread.Join() would block waiting for a
-                    // thread(s) to terminate. Strange, because it does not block when the
-                    // window is closed in the normal or maximized state.
-                    EDDI.Instance.Stop();
-                }
+                    // Remove monitor-specific configuration items and bindings
+                    foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+                    {
+                        Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
+                        monitor.OnClosingConfigurationTabItem();
+                    }
+
+                    // Remove responder-specific configuration items and bindings
+                    foreach (EDDIResponder responder in EDDI.Instance.responders)
+                    {
+                        Logging.Debug("Cleaning up tab elements for " + responder.ResponderName());
+                        responder.OnClosingConfigurationTabItem();
+                    }
+
+                    if (!fromVA)
+                    {
+                        // When in OnClosed(), if the EDDI window was closed while minimized
+                        // (under debugger), monitorThread.Join() would block waiting for a
+                        // thread(s) to terminate. Strange, because it does not block when the
+                        // window is closed in the normal or maximized state.
+                        EDDI.Instance.Stop();
+                    }
+                });
             }
         }
 
@@ -1092,8 +1097,6 @@ namespace Eddi
                 SpeechService.Instance.ShutUp();
                 System.Windows.Application.Current.Shutdown();
             }
-
-            EDDI.Instance.MainWindow = null;
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
