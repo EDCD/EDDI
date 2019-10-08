@@ -13,8 +13,12 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
+        public static bool FromVA => vaProxy != null;
+
+        public static dynamic vaProxy;
+
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             // Start the application
             Logging.incrementLogs(); // Increment to a new log file.
@@ -25,20 +29,57 @@ namespace Eddi
             Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
 #pragma warning restore IDE0067 // Dispose objects before losing scope
 
-            if (firstOwner)
+            if (!firstOwner)
             {
-                App app = new App();
-                MainWindow mainWindow = new MainWindow();
-                app.Run(mainWindow);
-                eddiMutex.ReleaseMutex();
+                if (!FromVA)
+                {
+                    string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
+                    string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
+                    MessageBox.Show(localisedMultipleInstanceAlertText,
+                                    localisedMultipleInstanceAlertTitle,
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
+
+                    MessageBoxResult result =
+                        MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
+                                        "the open EDDI application and click OK to continue. " +
+                                        "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
+                                        "EDDI Instance Exists",
+                                        MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+                    // Any response will require the mutex to be reset
+                    eddiMutex.Close();
+
+                    if (MessageBoxResult.Cancel == result)
+                    {
+                        throw new Exception("EDDI initialization cancelled by user.");
+                    }
+
+                    StartEDDI();
+                }
             }
             else
             {
-                string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
-                string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
-                MessageBox.Show(localisedMultipleInstanceAlertText,
-                                localisedMultipleInstanceAlertTitle,
-                                MessageBoxButton.OK, MessageBoxImage.Information);
+                StartEDDI();
+            }
+
+            eddiMutex.ReleaseMutex();
+        }
+
+        private static void StartEDDI()
+        {
+            App app = new App();
+            if (FromVA)
+            {
+                Current.MainWindow = new MainWindow(FromVA);
+                app.Run();
+            }
+            else
+            {
+                app.Run(new MainWindow(FromVA));
             }
         }
 
@@ -47,8 +88,7 @@ namespace Eddi
             // Configure Rollbar error reporting
 
             // Generate or retrieve an id unique to this configuration for bug tracking
-            if (Eddi.Properties.Settings.Default.uniqueID == null ||
-                Eddi.Properties.Settings.Default.uniqueID == "")
+            if (string.IsNullOrEmpty(Eddi.Properties.Settings.Default.uniqueID))
             {
                 Eddi.Properties.Settings.Default.uniqueID = Guid.NewGuid().ToString();
             }
