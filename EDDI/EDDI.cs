@@ -30,9 +30,6 @@ namespace Eddi
     {
         private static EDDI instance;
 
-        // True if we have been started by VoiceAttack
-        public static bool FromVA = App.FromVA;
-
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
 
@@ -286,7 +283,7 @@ namespace Eddi
                     if (minVersion > Constants.EDDI_VERSION)
                     {
                         // There is a mandatory update available
-                        if (!FromVA)
+                        if (!App.FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
@@ -301,7 +298,7 @@ namespace Eddi
                     if (latestVersion > Constants.EDDI_VERSION)
                     {
                         // There is an update available
-                        if (!FromVA)
+                        if (!App.FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);

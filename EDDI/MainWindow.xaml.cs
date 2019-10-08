@@ -52,8 +52,6 @@ namespace Eddi
             }
         }
 
-        public MainWindow() : this(false) { }
-
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -70,7 +68,7 @@ namespace Eddi
                     Properties.Settings.Default.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    Properties.Settings.Default.Minimized = fromVA ? false : true;
+                    Properties.Settings.Default.Minimized = !App.FromVA;
 
                     break;
                 default:
@@ -159,21 +157,18 @@ namespace Eddi
 
         private static readonly object logLock = new object();
 
-        public MainWindow(bool fromVA = false)
+        public MainWindow()
         {
             InitializeComponent();
 
-            this.fromVA = fromVA;
-
             // Start the EDDI instance
-            EDDI.FromVA = fromVA;
             EDDI.Instance.Start();
 
             // Configure the EDDI tab
             setStatusInfo();
 
             // Need to set up the correct information in the hero text depending on from where we were started
-            if (fromVA)
+            if (App.FromVA)
             {
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange += OnVaWindowStateChange;
@@ -889,7 +884,7 @@ namespace Eddi
             {
                 statusText.Text = String.Format(Properties.EddiResources.update_message, EDDI.Instance.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
-                upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+                upgradeButton.Visibility = App.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
             else
             {
@@ -918,8 +913,8 @@ namespace Eddi
                 case CompanionAppService.State.LoggedOut:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
                     companionAppButton.Content = Properties.EddiResources.login;
-                    companionAppButton.IsEnabled = !fromVA;
-                    companionAppText.Text = !fromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
+                    companionAppButton.IsEnabled = !App.FromVA;
+                    companionAppText.Text = !App.FromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
@@ -954,7 +949,7 @@ namespace Eddi
                 // Logout from the companion app and start again
                 CompanionAppService.Instance.Logout();
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, 0);
-                if (fromVA)
+                if (App.FromVA)
                 {
                     SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, 0);
                 }
@@ -1090,6 +1085,7 @@ namespace Eddi
             base.OnClosed(e);
             SpeechService.Instance.ShutUp();
             System.Windows.Application.Current.Shutdown();
+            App.eddiMutex.ReleaseMutex();
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
@@ -1104,7 +1100,7 @@ namespace Eddi
         {
             // Write out useful information to the log before proceeding
             Logging.Info("EDDI version: " + Constants.EDDI_VERSION);
-            if (fromVA)
+            if (App.FromVA)
             {
                 Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
             }
