@@ -1080,14 +1080,7 @@ namespace Eddi
                         responder.OnClosingConfigurationTabItem();
                     }
 
-                    if (!fromVA)
-                    {
-                        // When in OnClosed(), if the EDDI window was closed while minimized
-                        // (under debugger), monitorThread.Join() would block waiting for a
-                        // thread(s) to terminate. Strange, because it does not block when the
-                        // window is closed in the normal or maximized state.
-                        EDDI.Instance.Stop();
-                    }
+                    EDDI.Instance.Stop();
                 });
             }
         }
@@ -1095,12 +1088,8 @@ namespace Eddi
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
-            if (!fromVA)
-            {
-                SpeechService.Instance.ShutUp();
-                System.Windows.Application.Current.Shutdown();
-            }
+            SpeechService.Instance.ShutUp();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
