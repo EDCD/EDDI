@@ -57,7 +57,7 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            if (EDDI.FromVA)
+            if (App.FromVA)
             {
                 return true;
             }

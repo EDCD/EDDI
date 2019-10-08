@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -56,18 +55,29 @@ namespace EddiVoiceAttackResponder
         {
             // Initialize and launch an EDDI instance without opening the main window
             // VoiceAttack commands will be used to manipulate the window state.
-            Thread vaStartThread = new Thread(() =>
+            App.vaProxy = vaProxy;
+            App.Main();
+
+            try
             {
-                App.vaProxy = vaProxy;
-                App.Main();
-                try
+                int timeout = 0;
+                while (Application.Current == null)
                 {
-                    Logging.Info("Initialising EDDI VoiceAttack plugin");
+                    if (timeout < 200)
+                    {
+                        Thread.Sleep(50);
+                    }
+                    else
+                    {
+                        throw new TimeoutException("EDDI VoiceAttack plugin initialisation has timed out");
+                    }
+                }
 
+                Logging.Info("Initialising EDDI VoiceAttack plugin");
 
-                        // Set up our event responders
-                        VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
-                        {
+                // Set up our event responders
+                VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
+                {
                     try
                     {
                         eventQueue.Enqueue(theEvent);
@@ -87,112 +97,109 @@ namespace EddiVoiceAttackResponder
                     catch (Exception ex)
                     {
                         Dictionary<string, object> data = new Dictionary<string, object>
-                        {
+                {
                             { "event", JsonConvert.SerializeObject(theEvent) },
                             { "exception", ex.Message },
                             { "stacktrace", ex.StackTrace }
-                        };
+                };
                         Logging.Error("VoiceAttack failed to handle event.", data);
                     }
                 };
 
-                        // Add notifiers for changes in variables we want to react to 
-                        // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
-                        EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                    SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+                // Add notifiers for changes in variables we want to react to 
+                // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
+                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
 
-                    CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
-                    cargoMonitor.InventoryUpdatedEvent += (s, e) =>
-                        {
-                    lock (vaProxyLock)
+                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                     {
-                        setCargo(cargoMonitor, ref vaProxy);
-                    }
-                };
-
-                    ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-                    if (shipMonitor != null)
-                    {
-                        shipMonitor.ShipyardUpdatedEvent += (s, e) =>
-                            {
                         lock (vaProxyLock)
                         {
-                            setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
-                            Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
+                            setCargo(cargoMonitor, ref vaProxy);
                         }
                     };
-                    }
 
-                    StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
-                    if (statusMonitor != null)
-                    {
-                        statusMonitor.StatusUpdatedEvent += (s, e) =>
-                            {
-                        lock (vaProxyLock)
-                        {
-                            setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
-                        }
-                    };
-                    }
-
-                        // Display instance information if available
-                        if (EDDI.Instance.UpgradeRequired)
-                    {
-                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
-                        string msg = Properties.VoiceAttack.run_eddi_standalone;
-                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
-                    }
-                    else if (EDDI.Instance.UpgradeAvailable)
-                    {
-                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
-                        string msg = Properties.VoiceAttack.run_eddi_standalone;
-                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
-                    }
-
-                    if (EDDI.Instance.Motd != null)
-                    {
-                        vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
-                        string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
-                    }
-
-                        // Set the initial values from the main EDDI objects
-                        setStandardValues(ref vaProxy);
-
-                    vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                    setStatus(ref vaProxy, "Operational");
-
-                        // Fire an event once the VA plugin is initialized
-                        Event @event = new VAInitializedEvent(DateTime.UtcNow);
-
-                    if (initEventEnabled(@event.type))
-                    {
-                        EDDI.Instance.enqueueEvent(@event);
-                    }
-
-                        // Set a variable indicating the version of VoiceAttack in use
-                        System.Version v = vaProxy.VAVersion;
-                    EDDI.Instance.vaVersion = v.ToString();
-
-                        // Set a variable indicating whether EDDI is speaking
-                        try
-                    {
-                        setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Error("Failed to set initial speaking status", ex);
-                    }
-                    Logging.Info("EDDI VoiceAttack plugin initialization complete");
-                }
-                catch (Exception e)
+                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                if (shipMonitor != null)
                 {
-                    Logging.Error("Failed to initialize VoiceAttack plugin", e);
-                    vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
+                    shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                        {
+                            lock (vaProxyLock)
+                            {
+                                setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
+                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
+                            }
+                        };
                 }
-            });
-            vaStartThread.SetApartmentState(ApartmentState.STA);
-            vaStartThread.Start();
+
+                StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
+                if (statusMonitor != null)
+                {
+                    statusMonitor.StatusUpdatedEvent += (s, e) =>
+                        {
+                            lock (vaProxyLock)
+                            {
+                                setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
+                            }
+                        };
+                }
+
+                // Display instance information if available
+                if (EDDI.Instance.UpgradeRequired)
+                {
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
+                    string msg = Properties.VoiceAttack.run_eddi_standalone;
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
+                }
+                else if (EDDI.Instance.UpgradeAvailable)
+                {
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
+                    string msg = Properties.VoiceAttack.run_eddi_standalone;
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
+                }
+
+                if (EDDI.Instance.Motd != null)
+                {
+                    vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
+                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
+                }
+
+                // Set the initial values from the main EDDI objects
+                setStandardValues(ref vaProxy);
+
+                vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                setStatus(ref vaProxy, "Operational");
+
+                // Fire an event once the VA plugin is initialized
+                Event @event = new VAInitializedEvent(DateTime.UtcNow);
+
+                if (initEventEnabled(@event.type))
+                {
+                    EDDI.Instance.enqueueEvent(@event);
+                }
+
+                // Set a variable indicating the version of VoiceAttack in use
+                System.Version v = vaProxy.VAVersion;
+                EDDI.Instance.vaVersion = v.ToString();
+
+                // Set a variable indicating whether EDDI is speaking
+                try
+                {
+                    setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to set initial speaking status", ex);
+                }
+                Logging.Info("EDDI VoiceAttack plugin initialization complete");
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Failed to initialize VoiceAttack plugin", e);
+                vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
+            }
         }
 
         private static void dequeueEvent(ref dynamic vaProxy)
@@ -296,6 +303,7 @@ namespace EddiVoiceAttackResponder
 
             SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
+            App.eddiMutex.ReleaseMutex();
         }
 
         public static void VA_StopCommand()
@@ -335,7 +343,7 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "initialize eddi":
-                        if (App.FromVA && EDDI.running)
+                        if (App.FromVA && Application.Current != null)
                         {
                             vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                         }
@@ -351,7 +359,7 @@ namespace EddiVoiceAttackResponder
                     case "configurationclose":
                         // Ignore any attempt to access the EDDI UI if VA
                         // doesn't own the EDDI instance.
-                        if (App.FromVA && EDDI.running)
+                        if (App.FromVA && Application.Current != null)
                         {
                             InvokeConfiguration(ref vaProxy);
                         }

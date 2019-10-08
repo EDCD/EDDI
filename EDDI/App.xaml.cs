@@ -13,6 +13,9 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
+        public static Mutex eddiMutex;
+
+        // True if we have been started by VoiceAttack and the vaProxy object has been set
         public static bool FromVA => vaProxy != null;
 
         public static dynamic vaProxy;
@@ -26,7 +29,7 @@ namespace Eddi
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
 #pragma warning disable IDE0067 // Dispose objects before losing scope
-            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
 #pragma warning restore IDE0067 // Dispose objects before losing scope
 
             if (!firstOwner)
@@ -55,32 +58,39 @@ namespace Eddi
 
                     if (MessageBoxResult.Cancel == result)
                     {
-                        throw new Exception("EDDI initialization cancelled by user.");
+                        vaProxy.WriteToLog("EDDI initialization cancelled by user.", "red");
                     }
-
-                    StartEDDI();
+                    else
+                    {
+                        StartEDDI();
+                    }
                 }
             }
             else
             {
                 StartEDDI();
             }
-
-            eddiMutex.ReleaseMutex();
         }
 
         private static void StartEDDI()
         {
-            App app = new App();
-            if (FromVA)
+            // Throw initialization to another thread so that we can complete VoiceAttack initialization without blocking
+            Thread appThread = new Thread(() =>
             {
-                Current.MainWindow = new MainWindow(FromVA);
-                app.Run();
-            }
-            else
-            {
-                app.Run(new MainWindow(FromVA));
-            }
+                App app = new App();
+                if (FromVA)
+                {
+                    Current.MainWindow = new MainWindow();
+                    app.Run();
+
+                }
+                else
+                {
+                    app.Run(new MainWindow());
+                }
+            });
+            appThread.SetApartmentState(ApartmentState.STA);
+            appThread.Start();
         }
 
         public static void StartRollbar()
