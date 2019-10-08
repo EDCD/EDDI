@@ -229,7 +229,10 @@
     <value>Fenómeno Estelar Notable</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Actividad pirata</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
   
   
   <data name="SAA_SignalType_Human" xml:space="preserve">
