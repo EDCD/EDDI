@@ -2885,11 +2885,6 @@ namespace EddiJournalMonitor
                                             string name = JsonParsing.getString(missionProperties, "Name");
                                             decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
                                             DateTime expiry = DateTime.Now.AddSeconds((double)expires);
-                                            if (i == 0 && expires == 0)
-                                            {
-                                                // If mission is 'Active' and 'expires' = 0, add 24 hours to expiry
-                                                expiry = DateTime.Now.AddSeconds((double)expires).AddDays(1);
-                                            }
 
                                             Mission newMission = new Mission(missionId, name, expiry, missionStatus);
                                             if (newMission == null)
@@ -2899,6 +2894,11 @@ namespace EddiJournalMonitor
                                             }
                                             else
                                             {
+                                                if (i == 0 && expires == 0)
+                                                {
+                                                    // If mission is 'Active' and 'expires' = 0, set status to 'Complete'
+                                                    newMission.statusDef = MissionStatus.FromEDName("Complete");
+                                                }
                                                 missions.Add(newMission);
                                             }
                                         }

@@ -363,7 +363,9 @@ namespace EddiMissionMonitor
                                     switch (type)
                                     {
                                         case "assassinate":
+                                        case "assassinatewing":
                                         case "disable":
+                                        case "disablewing":
                                         case "hack":
                                         case "longdistanceexpedition":
                                         case "passengervip":
@@ -381,11 +383,11 @@ namespace EddiMissionMonitor
                                 }
                             }
                             break;
-                        case "Failed":
+                        default:
                             {
-                                if (missionEntry.statusDef.edname != "Failed")
+                                if (missionEntry.statusDef != mission.statusDef)
                                 {
-                                    missionEntry.statusDef = MissionStatus.FromEDName("Failed");
+                                    missionEntry.statusDef = mission.statusDef;
                                     update = true;
                                 }
                             }
