@@ -34,7 +34,7 @@ namespace Eddi
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
-        public static bool running { get; private set; } = true;
+        internal static bool running = true;
 
         private static bool allowMarketUpdate = false;
         private static bool allowOutfittingUpdate = false;
