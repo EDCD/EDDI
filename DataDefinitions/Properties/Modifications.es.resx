@@ -439,8 +439,12 @@
   <data name="SensorExpanded" xml:space="preserve">
     <value>Radio ampliado de escaneo de sonda</value>
   </data>
-  
-  
+  <data name="FragCannonDoubleShot" xml:space="preserve">
+    <value>Cañón de Fragmentación de Doble Disparo</value>
+  </data>
+  <data name="BeamLaserEfficient" xml:space="preserve">
+    <value>Laser de Rayo eficiente</value>
+  </data>
   
   
   
