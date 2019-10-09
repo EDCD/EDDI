@@ -2873,9 +2873,8 @@ namespace EddiJournalMonitor
 
                                     for (int i = 0; i < 3; i++)
                                     {
-                                        MissionStatus missionStatus = MissionStatus.FromStatus(i);
-                                        string status = missionStatus.invariantName;
-                                        data.TryGetValue(status, out object val);
+                                        MissionStatus status = MissionStatus.FromStatus(i);
+                                        data.TryGetValue(status.invariantName, out object val);
                                         List<object> missionLog = (List<object>)val;
 
                                         foreach (object mission in missionLog)
@@ -2885,12 +2884,9 @@ namespace EddiJournalMonitor
                                             string name = JsonParsing.getString(missionProperties, "Name");
                                             decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
                                             DateTime expiry = DateTime.Now.AddSeconds((double)expires);
-                                            if (i == 0 && expires == 0)
-                                            {
-                                                // If mission is 'Active' and 'expires' = 0, add 24 hours to expiry
-                                                expiry = DateTime.Now.AddSeconds((double)expires).AddDays(1);
-                                            }
 
+                                            // If mission is 'Active' and expires = 0, then set status to 'Complete'
+                                            MissionStatus missionStatus = (i == 0 && expires == 0) ? MissionStatus.FromStatus(1) : status;
                                             Mission newMission = new Mission(missionId, name, expiry, missionStatus);
                                             if (newMission == null)
                                             {

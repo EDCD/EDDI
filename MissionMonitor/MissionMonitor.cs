@@ -34,6 +34,16 @@ namespace EddiMissionMonitor
         public string missionsRouteList;
         public decimal missionsRouteDistance;
 
+        private List<string> noExpiryAfterComplete = new List<string> {
+            "assassinate",
+            "assassinatewing",
+            "disable",
+            "disablewing",
+            "massacre",
+            "massacrethargoid",
+            "massacrewing"
+        };
+
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
 
@@ -121,12 +131,22 @@ namespace EddiMissionMonitor
                 {
                     missionsList = missions.ToList();
                 }
+
                 if (missionsList != null)
                 {
                     foreach (Mission mission in missionsList)
                     {
                         if (mission.expiry != null && mission.statusEDName != "Failed")
                         {
+                            // Check for mission types which have no expiry after requiremensts completed
+                            string type = mission.typeEDName.ToLowerInvariant();
+                            if (mission.statusEDName == "Complete" && noExpiryAfterComplete.Contains(type))
+                            {
+                                mission.timeremaining = String.Empty;
+                                continue;
+                            }
+
+                            // Build the 'time remaining' notification
                             TimeSpan span = (DateTime)mission.expiry - DateTime.UtcNow;
                             if (span.Days > 6)
                             {
@@ -140,6 +160,7 @@ namespace EddiMissionMonitor
                             }
                             mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
 
+                            // Generate 'Expired' and 'Warning' events when conditions met
                             if (mission.expiry < DateTime.UtcNow)
                             {
                                 EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name));
@@ -338,10 +359,13 @@ namespace EddiMissionMonitor
 
                                 if (missionEntry.statusEDName == "Active" && missionEntry.destinationsystem == missionEntry.originsystem)
                                 {
-                                    switch (missionEntry.typeEDName)
+                                    string type = missionEntry.typeEDName.ToLowerInvariant();
+                                    switch (type)
                                     {
                                         case "assassinate":
+                                        case "assassinatewing":
                                         case "disable":
+                                        case "disablewing":
                                         case "hack":
                                         case "longdistanceexpedition":
                                         case "passengervip":
@@ -359,11 +383,11 @@ namespace EddiMissionMonitor
                                 }
                             }
                             break;
-                        case "Failed":
+                        default:
                             {
-                                if (missionEntry.statusDef.edname != "Failed")
+                                if (missionEntry.statusDef != mission.statusDef)
                                 {
-                                    missionEntry.statusDef = MissionStatus.FromEDName("Failed");
+                                    missionEntry.statusDef = mission.statusDef;
                                     update = true;
                                 }
                             }
