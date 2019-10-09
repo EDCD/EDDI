@@ -20,14 +20,56 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
+        // Schema reference: https://github.com/EDSM-NET/EDDN/tree/master/schemas
+
+        // We support sending these events to EDDN. These events contain full location data. 
+        private static readonly string[] fullLocationEvents =
+        {
+            "FSDJump",
+            "Location"
+        };
+
+        // We support sending these events to EDDN. These events contain partial location data... location data will need to be enriched. 
+        private static readonly string[] partialLocationEvents =
+        {
+            "Docked",
+            "SAASignalsFound",
+            "Scan"
+        };
+
+        // These events must be ignored to prevent enriching events with incorrect location data
+        private static readonly string[] ignoredEvents =
+        {
+            "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
+            "StartJump"  // Scan events can register after StartJump and before we actually leave the originating system
+        };
+
+        // We will strip these personal keys (plus any localized properties) before sending data to EDDN
+        private static readonly string[] personalKeys = 
+        {
+            "ActiveFine",
+            "CockpitBreach",
+            "BoostUsed",
+            "FuelLevel",
+            "FuelUsed",
+            "JumpDist",
+            "Wanted",
+            "Latitude",
+            "Longitude",
+            "MyReputation",
+            "SquadronFaction",
+            "HappiestSystem",
+            "HomeSystem"
+        };
+
         // We keep track of the starsystem information locally
-        public string systemName { get; private set; } = null;
-        public long? systemAddress { get; private set; } = null;
-        public decimal? systemX { get; private set; } = null;
-        public decimal? systemY { get; private set; } = null;
-        public decimal? systemZ { get; private set; } = null;
-        public string stationName { get; private set; } = null;
-        public long? marketId { get; private set; } = null;
+        public string systemName { get; private set; }
+        public long? systemAddress { get; private set; }
+        public decimal? systemX { get; private set; }
+        public decimal? systemY { get; private set; }
+        public decimal? systemZ { get; private set; }
+        public string stationName { get; private set; }
+        public long? marketId { get; private set; }
 
         public bool invalidState { get; private set; }
 
@@ -53,7 +95,7 @@ namespace EDDNResponder
             return EddiEddnResponder.Properties.EddnResources.desc;
         }
 
-        public EDDNResponder() : this(EddiDataProviderService.StarSystemSqLiteRepository.Instance)
+        public EDDNResponder() : this(StarSystemSqLiteRepository.Instance)
         { }
 
         public EDDNResponder(StarSystemRepository starSystemRepository)
@@ -73,6 +115,12 @@ namespace EDDNResponder
             if (EDDI.Instance.inCrew)
             {
                 // We don't do anything whilst in multicrew
+                return;
+            }
+
+            if (theEvent.fromLoad)
+            {
+                // Don't do anything with data acquired during log loading
                 return;
             }
 
@@ -106,16 +154,12 @@ namespace EDDNResponder
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
 
-            if (edType == "FSDTarget" || edType == "StartJump")
+            // Ignore any events that we've blacklisted for contaminating our location data
+            if (ignoredEvents.Contains(edType)) { return; }
+
+            // We always start location data fresh when handling events containing complete location data
+            if (fullLocationEvents.Contains(edType))
             {
-                // FSDTarget events describing the system we are targetting rather than the system we are in.
-                // Scan events can register after StartJump and before we actually leave the originating system.
-                // These must be ignored.
-                return;
-            }
-            else if (edType == "Location" || edType == "FSDJump")
-            {
-                // We always start fresh from Location and FSDJump events
                 invalidState = false;
                 ClearLocation();
             }
@@ -123,15 +167,15 @@ namespace EDDNResponder
             // Except as noted above, always attempt to obtain available location data from the active event 
             GetLocationData(data);
 
-            // Confirm the data in memory is as accurate as possible
-            if (edType == "Docked" || edType == "Scan")
+            // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
+            if (partialLocationEvents.Contains(edType))
             {
                 CheckLocationData(data);
             }
 
             if (LocationIsSet())
             {
-                if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
+                if (fullLocationEvents.Contains(edType) || partialLocationEvents.Contains(edType))
                 {
                     data = StripPersonalData(data);
                     data = EnrichLocationData(edType, data);
@@ -230,39 +274,40 @@ namespace EDDNResponder
 
         private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
         {
-            // Need to strip a number of entries
-            data.Remove("ActiveFine");
-            data.Remove("CockpitBreach");
-            data.Remove("BoostUsed");
-            data.Remove("FuelLevel");
-            data.Remove("FuelUsed");
-            data.Remove("JumpDist");
-            data.Remove("Wanted");
-            data.Remove("Latitude");
-            data.Remove("Longitude");
+            // Need to strip a number of personal entries
+            foreach (var personalKey in personalKeys) { data.Remove(personalKey); }
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
 
-            data.TryGetValue("Factions", out object factionsVal);
-            if (factionsVal != null)
+            // Need to remove personal data from any Dictionary or List type child objects
+            IDictionary<string, object> fixedData = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> item in data)
             {
-                var strippedFactions = new List<object>();
-                var factions = (List<object>)factionsVal;
-                foreach (object factionVal in factions)
+                if (item.Value is Dictionary<string, object> dict)
                 {
-                    IDictionary<string, object> faction = (IDictionary<string, object>)factionVal;
-                    faction.Remove("MyReputation");
-                    faction.Remove("SquadronFaction");
-                    faction.Remove("HappiestSystem");
-                    faction.Remove("HomeSystem");
-                    faction = faction.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
-                    strippedFactions.Add(faction);
+                    fixedData.Add(item.Key, StripPersonalData(dict));
+                    continue;
                 }
-                data["Factions"] = strippedFactions;
+                if (item.Value is List<object> list)
+                {
+                    List<object> newList = new List<object>();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i] is Dictionary<string, object> listDict)
+                        {
+                            newList.Add(StripPersonalData(listDict));
+                            continue;
+                        }
+                        newList.Add(list[i]);
+                    }
+                    fixedData.Add(item.Key, newList);
+                    continue;
+                }
+                fixedData.Add(item);
             }
 
-            return data;
+            return fixedData;
         }
 
         private IDictionary<string, object> EnrichLocationData(string edType, IDictionary<string, object> data)
@@ -376,7 +421,7 @@ namespace EDDNResponder
                 }
                 EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
                 eddnCommodities.Add(eddnCommodity);
-            };
+            }
             return eddnCommodities;
         }
 
@@ -387,9 +432,9 @@ namespace EDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (Module module in theEvent.outfitting)
                 {
-                    if ((!module.IsPowerPlay())
+                    if (!module.IsPowerPlay()
                         && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
-                        && (!(module.EDName == "Int_PlanetApproachSuite")))
+                        && module.EDName != "Int_PlanetApproachSuite")
                     {
                         eddnModules.Add(module.EDName);
                     }
@@ -425,7 +470,7 @@ namespace EDDNResponder
                         eddnShips.Add(ship.EDName);
                     }
                 }
-                eddnShips = eddnShips?.Distinct()?.ToList();
+                eddnShips = eddnShips.Distinct().ToList();
 
                 // Only send the message if we have ships
                 if (eddnShips.Count > 0)
