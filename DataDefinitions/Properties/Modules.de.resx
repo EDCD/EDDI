@@ -550,7 +550,7 @@
     <comment>Module GuardianShieldReinforcement</comment>
   </data>
   <data name="ShipIntegrity" xml:space="preserve">
-    <value>Schiffsintegrität</value>
+    <value>Schiffszustand</value>
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
   <data name="PulseWave" xml:space="preserve">
