@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -241,12 +241,84 @@
     <value>Sinal Geológico de Superfície</value>
     <comment>Geological Surface Signal</comment>
   </data>
-  <data name="ListeningPost_index1" xml:space="preserve">
-    <value>Posto de Escuta</value>
-    <comment>ListeningPost_index1</comment>
-  </data>
   <data name="SAA_SignalType_Human" xml:space="preserve">
     <value>Sinal Humano de Superfície</value>
     <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Sinal Thargoid de Superfície</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Barnacle Thargoid</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Ponto de verificação</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Sinalizador de Comboio</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Atividade Pirata</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Atividade Pirata</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Sinal Guardian de Superfície</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Ruínas Antigas</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Estrutura Guardian</value>
+    <comment>Guardian Structure</comment>
   </data>
 </root>

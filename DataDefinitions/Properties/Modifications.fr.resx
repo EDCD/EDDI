@@ -201,7 +201,9 @@
   <data name="SensorLongRange" xml:space="preserve">
     <value>Scanner longue portée</value>
   </data>
-  
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Scanner à angle large</value>
+  </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Survolteur de bouclier Anti-Explosion</value>
   </data>
@@ -274,14 +276,19 @@
   <data name="WakeScannerLightWeight" xml:space="preserve">
     <value>Scanner de sillage léger</value>
   </data>
-  
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Scanner à longue portée
+</value>
+  </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
     <value>Scanner de sillage renforcé</value>
   </data>
   <data name="WakeScannerShielded" xml:space="preserve">
     <value>Scanner de sillage blindé</value>
   </data>
-  
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Scanner à angle large</value>
+  </data>
   <data name="AFMShielded" xml:space="preserve">
     <value>MTA renforcé</value>
   </data>
@@ -354,7 +361,9 @@
   <data name="KillWarrantScannerLightWeight" xml:space="preserve">
     <value>Scanner d'avis de recherches léger</value>
   </data>
-  
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Scanner à longue portée</value>
+  </data>
   <data name="KillWarrantScannerReinforced" xml:space="preserve">
     <value>Scanner d'avis de recherches renforcé</value>
   </data>
@@ -394,7 +403,9 @@
   <data name="CargoScannerFastScan" xml:space="preserve">
     <value>Scanner de soute rapide</value>
   </data>
-  
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Scanner à longue portée</value>
+  </data>
   
   <data name="ECMLightWeight" xml:space="preserve">
     <value>CME léger</value>
@@ -441,25 +452,43 @@
   
   
   
+  <data name="CannonLightWeight" xml:space="preserve">
+    <value>Canon léger</value>
+  </data>
+  
+  <data name="MineLightWeight" xml:space="preserve">
+    <value>Mine légère</value>
+  </data>
+  <data name="MissileLightWeight" xml:space="preserve">
+    <value>Missile léger</value>
+  </data>
+  <data name="MulticannonLightWeight" xml:space="preserve">
+    <value>Multi-canon léger</value>
+  </data>
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>Accélérateur plasma léger</value>
+  </data>
+  
+  
+  <data name="TorpedoLightWeight" xml:space="preserve">
+    <value>Torpille légère</value>
+  </data>
+  
+  
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>Canon à longue portée</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>Multi-canon à longue portée</value>
+  </data>
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CannonOvercharged" xml:space="preserve">
+    <value>Canon surchargé</value>
+  </data>
   
   
   

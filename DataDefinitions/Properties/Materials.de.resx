@@ -594,7 +594,7 @@
     <comment>Material unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
-    <value>Unbekannte organische Struktur</value>
+    <value>Unbekannte organische Schaltung</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">

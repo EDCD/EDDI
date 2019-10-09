@@ -223,9 +223,75 @@
     <value>Phénomène Stellaire Remarquable</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Activité Pirate</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
   
   
   
   
   
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Point de Contrôle</value>
+    <comment>Checkpoint</comment>
+  </data>
+  
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Activité Pirate</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Activité Pirate</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Ruines Antiques</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Structure Gardienne</value>
+    <comment>Guardian Structure</comment>
+  </data>
 </root>

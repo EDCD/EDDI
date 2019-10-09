@@ -1648,4 +1648,8 @@
     <value>Thargoid biólógiai anyag</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Rockforth műtrágya</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
 </root>

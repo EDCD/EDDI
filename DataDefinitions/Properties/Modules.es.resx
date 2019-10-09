@@ -585,4 +585,8 @@
     <value>Multi-cañón avanzado</value>
     <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
   </data>
+  <data name="AdvancedMissileRack" xml:space="preserve">
+    <value>Misiles Avanzados</value>
+    <comment>Module Advanced Missile Rack</comment>
+  </data>
 </root>
