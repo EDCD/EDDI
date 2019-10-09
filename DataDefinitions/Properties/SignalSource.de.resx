@@ -249,13 +249,16 @@
     <value>Thargoiden Oberflächensignal</value>
     <comment>Thargoid Surface Signal</comment>
   </data>
-  
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Thargoiden-Raumpocke</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
   <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
     <value>Kontrollpunkt</value>
     <comment>Checkpoint</comment>
   </data>
   <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
-    <value>Konvoiboje</value>
+    <value>Konvoisignal</value>
     <comment>Convoy Beacon	</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
