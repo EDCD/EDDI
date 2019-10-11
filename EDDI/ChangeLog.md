@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Ensure exploration results are preserved when refreshing a 'stale' star system and the data is not yet available on the server.
     * Star system name now available as `systemname` in `Body scanned` and `Star scanned` events.
     * `totalbodies` now referenceable (within `StarSystem` object) after a discovery scan (honk).
+	* Added support for new faction state `Blight` (written as "Drought" in the journals).
   * Cargo Monitor
     * Fixed #1465 whereby (for example) when a limpet launch frees cargo space which the refinery immediately uses, the Cargo monitor got out of sync.
   * Events
