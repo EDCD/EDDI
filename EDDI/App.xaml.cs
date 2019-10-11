@@ -13,21 +13,53 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
-        public static Mutex eddiMutex;
+        public static Mutex eddiMutex { get; private set; }
 
         // True if we have been started by VoiceAttack and the vaProxy object has been set
         public static bool FromVA => vaProxy != null;
-
         public static dynamic vaProxy;
 
         [STAThread]
         public static void Main()
         {
+            if (!FromVA && AlreadyRunning()) { return; }
+
+            App app = new App();
+            app.Exit += OnExit;
+
             // Start the application
             Logging.incrementLogs(); // Increment to a new log file.
             StartRollbar(); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
+            if (FromVA)
+            {
+                // Start with the MainWindow hidden
+                app.MainWindow = new MainWindow();
+                app.Run();
+            }
+            else
+            {
+                // Start by displaying the MainWindow
+                app.Run(new MainWindow());
+            }
+        }
+
+        private static void OnExit(object sender, ExitEventArgs e)
+        {
+            EDDI.Instance.Stop();
+
+            if (!FromVA)
+            {
+                eddiMutex.ReleaseMutex();
+            }
+        }
+
+        // We need to set and release our mutex from the same thread.
+        // For VoiceAttack, this will be handled from the VoiceAttack plugin.
+        // For standalone, this will be handled here.
+        public static bool AlreadyRunning()
+        {
 #pragma warning disable IDE0067 // Dispose objects before losing scope
             eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
 #pragma warning restore IDE0067 // Dispose objects before losing scope
@@ -41,6 +73,7 @@ namespace Eddi
                     MessageBox.Show(localisedMultipleInstanceAlertText,
                                     localisedMultipleInstanceAlertTitle,
                                     MessageBoxButton.OK, MessageBoxImage.Information);
+                    return true;
                 }
                 else
                 {
@@ -59,38 +92,11 @@ namespace Eddi
                     if (MessageBoxResult.Cancel == result)
                     {
                         vaProxy.WriteToLog("EDDI initialization cancelled by user.", "red");
-                    }
-                    else
-                    {
-                        StartEDDI();
+                        return true;
                     }
                 }
             }
-            else
-            {
-                StartEDDI();
-            }
-        }
-
-        private static void StartEDDI()
-        {
-            // Throw initialization to another thread so that we can complete VoiceAttack initialization without blocking
-            Thread appThread = new Thread(() =>
-            {
-                App app = new App();
-                if (FromVA)
-                {
-                    Current.MainWindow = new MainWindow();
-                    app.Run();
-
-                }
-                else
-                {
-                    app.Run(new MainWindow());
-                }
-            });
-            appThread.SetApartmentState(ApartmentState.STA);
-            appThread.Start();
+            return false;
         }
 
         public static void StartRollbar()
