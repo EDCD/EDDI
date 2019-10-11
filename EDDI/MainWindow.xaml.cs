@@ -860,8 +860,8 @@ namespace Eddi
         private void companionApiStatusChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
         {
             // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.
-            EDDI.Instance.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
-
+            System.Windows.Application.Current?.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
+            
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
