@@ -55,7 +55,11 @@ namespace EddiVoiceAttackResponder
             // Initialize and launch an EDDI instance without opening the main window
             // VoiceAttack commands will be used to manipulate the window state.
             App.vaProxy = vaProxy;
-            App.Main();
+            if (App.AlreadyRunning()) { return; }
+
+            Thread appThread = new Thread(App.Main);
+            appThread.SetApartmentState(ApartmentState.STA);
+            appThread.Start();
 
             try
             {
@@ -65,6 +69,7 @@ namespace EddiVoiceAttackResponder
                     if (timeout < 200)
                     {
                         Thread.Sleep(50);
+                        timeout++;
                     }
                     else
                     {
@@ -299,9 +304,7 @@ namespace EddiVoiceAttackResponder
             }
 
             updaterThread?.Abort();
-
-            SpeechService.Instance.ShutUp();
-            EDDI.Instance.Stop();
+            Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
             App.eddiMutex.ReleaseMutex();
         }
 
