@@ -181,4 +181,8 @@
     <value>Piratenangriff</value>
     <comment>Faction state PirateAttack</comment>
   </data>
+  <data name="Drought" xml:space="preserve">
+    <value>Seuche</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+  </data>
 </root>
