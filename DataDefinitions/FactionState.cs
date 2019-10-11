@@ -36,6 +36,7 @@
             var Investment = new FactionState("Investment");        // Economic state
             var PirateAttack = new FactionState("PirateAttack");    // Other state (pirates)
             var Incursion = new FactionState("Incursion");          // Other state (Thargoids)
+            var Drought = new FactionState("Drought");              // Other state, shown as "Blight" in the UI
         }
 
         public static readonly FactionState None;
