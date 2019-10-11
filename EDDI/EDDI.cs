@@ -440,9 +440,9 @@ namespace Eddi
                 }
             }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
-
+            SpeechService.Instance.ShutUp();
             started = false;
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
         }
 
         /// <summary>
@@ -499,6 +499,11 @@ namespace Eddi
                 lock (responderLock)
                 {
                     responder.Stop();
+
+                    // Remove responder-specific configuration items and bindings
+                    Logging.Debug("Cleaning up tab elements for " + responder.ResponderName());
+                    responder.OnClosingConfigurationTabItem();
+
                     ConcurrentBag<EDDIResponder> newResponders = new ConcurrentBag<EDDIResponder>();
                     while (activeResponders.TryTake(out EDDIResponder item))
                     {
@@ -532,6 +537,11 @@ namespace Eddi
                 lock (monitorLock)
                 {
                     monitor.Stop();
+
+                    // Remove monitor-specific configuration items and bindings
+                    Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
+                    monitor.OnClosingConfigurationTabItem();
+
                     ConcurrentBag<EDDIMonitor> newMonitors = new ConcurrentBag<EDDIMonitor>();
                     while (activeMonitors.TryTake(out EDDIMonitor item))
                     {

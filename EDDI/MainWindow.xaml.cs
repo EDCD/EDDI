@@ -27,8 +27,6 @@ namespace Eddi
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool fromVA;
-
         struct LanguageDef : IComparable<LanguageDef>
         {
             public CultureInfo ci;
@@ -161,6 +159,9 @@ namespace Eddi
         {
             InitializeComponent();
 
+            // Set up an event for the application exit
+            System.Windows.Application.Current.Exit += OnExit;
+
             // Start the EDDI instance
             EDDI.Instance.Start();
 
@@ -236,7 +237,7 @@ namespace Eddi
 
             LoadAndSortTabs(eddiConfiguration);
 
-            if (!fromVA)
+            if (!App.FromVA)
             {
                 RestoreWindowState();
             }
@@ -1049,43 +1050,25 @@ namespace Eddi
         {
             base.OnClosing(e);
 
-            if (!e.Cancel)
+            // Save window position here as the RestoreBounds rect gets set
+            // to empty somewhere between here and OnClosed.
+            System.Windows.Application.Current?.Dispatcher?.Invoke(SaveWindowState);
+
+            if (App.FromVA)
             {
-                System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
-                {
-                    // Save window position here as the RestoreBounds rect gets set
-                    // to empty somewhere between here and OnClosed.
-                    SaveWindowState();
-
-                    // Unregister applicable event handlers
-                    CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
-                    VaWindowStateChange = null;
-
-                    // Remove monitor-specific configuration items and bindings
-                    foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
-                    {
-                        Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
-                        monitor.OnClosingConfigurationTabItem();
-                    }
-
-                    // Remove responder-specific configuration items and bindings
-                    foreach (EDDIResponder responder in EDDI.Instance.responders)
-                    {
-                        Logging.Debug("Cleaning up tab elements for " + responder.ResponderName());
-                        responder.OnClosingConfigurationTabItem();
-                    }
-
-                    EDDI.Instance.Stop();
-                });
+                e.Cancel = true;
+                Hide();
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void OnExit(object sender, ExitEventArgs e)
         {
-            base.OnClosed(e);
-            SpeechService.Instance.ShutUp();
-            System.Windows.Application.Current.Shutdown();
-            App.eddiMutex.ReleaseMutex();
+            System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                // Unregister applicable event handlers
+                CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
+                VaWindowStateChange = null;
+            });
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
