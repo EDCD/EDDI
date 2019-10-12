@@ -185,7 +185,7 @@
     <value>Ayuda</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Contestador vocal</value>
+    <value>Asistente Vocal</value>
   </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Restablecer a predeterminado</value>
@@ -228,6 +228,6 @@
     <value>Reiniciar</value>
   </data>
   <data name="reset_script_message" xml:space="preserve">
-    <value>¿Seguro que quiere eliminar el script "{0}"?</value>
+    <value>¿Seguro que quiere reiniciar el script "{0}"?</value>
   </data>
 </root>
