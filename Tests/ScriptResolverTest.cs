@@ -138,11 +138,11 @@ namespace UnitTests
 
             Assert.IsTrue(upgradedScript.Default);
 
-            Assert.AreEqual(upgradedScript.Description, newDefaultScript.Description);
-            Assert.AreEqual(upgradedScript.Responder, newDefaultScript.Responder);
-            Assert.AreEqual(upgradedScript.Value, newDefaultScript.Value);
-            Assert.AreEqual(upgradedScript.defaultValue, newDefaultScript.defaultValue);
-            Assert.AreEqual(script.Priority, newDefaultScript.Priority);
+            Assert.AreEqual(newDefaultScript.Description, upgradedScript.Description);
+            Assert.AreEqual(newDefaultScript.Responder, upgradedScript.Responder);
+            Assert.AreEqual(newDefaultScript.Value, upgradedScript.Value);
+            Assert.AreEqual(newDefaultScript.defaultValue, upgradedScript.defaultValue);
+            Assert.AreEqual(newDefaultScript.Priority, upgradedScript.Priority);
         }
 
         [TestMethod]
@@ -164,11 +164,11 @@ namespace UnitTests
 
             Assert.IsFalse(upgradedScript.Default);
 
-            Assert.AreNotEqual(upgradedScript.Description, newDefaultScript.Description);
-            Assert.AreEqual(upgradedScript.Responder, newDefaultScript.Responder);
-            Assert.AreNotEqual(upgradedScript.Value, newDefaultScript.Value);
-            Assert.AreEqual(upgradedScript.defaultValue, newDefaultScript.defaultValue);
-            Assert.AreNotEqual(script.Priority, newDefaultScript.Priority);
+            Assert.AreNotEqual(newDefaultScript.Description, upgradedScript.Description);
+            Assert.AreEqual(newDefaultScript.Responder, upgradedScript.Responder);
+            Assert.AreNotEqual(newDefaultScript.Value, upgradedScript.Value);
+            Assert.AreEqual(newDefaultScript.defaultValue, upgradedScript.defaultValue);
+            Assert.AreNotEqual(newDefaultScript.Priority, upgradedScript.Priority);
         }
     }
 }
