@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StationService {
@@ -124,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Facilitator.
+        ///   Looks up a localized string similar to Interstellar Factors Contact.
         /// </summary>
         public static string Facilitator {
             get {
@@ -147,15 +147,6 @@ namespace EddiDataDefinitions.Properties {
         public static string Initiatives {
             get {
                 return ResourceManager.GetString("Initiatives", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interstellar Factors Contact.
-        /// </summary>
-        public static string InterstellarFactorsContact {
-            get {
-                return ResourceManager.GetString("InterstellarFactorsContact", resourceCulture);
             }
         }
         
@@ -273,6 +264,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Shipyard {
             get {
                 return ResourceManager.GetString("Shipyard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shop.
+        /// </summary>
+        public static string Shop {
+            get {
+                return ResourceManager.GetString("Shop", resourceCulture);
             }
         }
         
