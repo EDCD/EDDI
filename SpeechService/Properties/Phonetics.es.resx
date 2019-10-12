@@ -409,42 +409,126 @@
     <value>ˈhaɪdriː</value>
     <comment>Optional phonetic pronunciation for Hydrae</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="i" xml:space="preserve">
+    <value>aɪ</value>
+    <comment>Optional phonetic pronunciation for i</comment>
+  </data>
+  <data name="ibootis_bootis" xml:space="preserve">
+    <value>bəʊˈəʊtɪs</value>
+    <comment>Optional phonetic pronunciation for ibootis_bootis</comment>
+  </data>
+  <data name="ibootis_i" xml:space="preserve">
+    <value>aɪ</value>
+    <comment>Optional phonetic pronunciation for ibootis_i</comment>
+  </data>
+  <data name="isleta" xml:space="preserve">
+    <value>aɪlˈetə</value>
+    <comment>Optional phonetic pronunciation for isleta</comment>
+  </data>
+  <data name="kaia" xml:space="preserve">
+    <value>ˈkaɪə</value>
+    <comment>Optional phonetic pronunciation for kaia</comment>
+  </data>
+  <data name="kaiabajaja_bajaja" xml:space="preserve">
+    <value>ˈbɑːhɑːhɑː</value>
+    <comment>Optional phonetic pronunciation for kaiabajaja_bajaja</comment>
+  </data>
+  <data name="kaiabajaja_kaia" xml:space="preserve">
+    <value>ˈkaɪə</value>
+    <comment>Optional phonetic pronunciation for kaiabajaja_kaia</comment>
+  </data>
+  <data name="kigana" xml:space="preserve">
+    <value>kiːˈɡɑːnə</value>
+    <comment>Optional phonetic pronunciation for kigana</comment>
+  </data>
+  <data name="kini" xml:space="preserve">
+    <value>ˈkiːniː</value>
+    <comment>Optional phonetic pronunciation for kini</comment>
+  </data>
+  <data name="koji" xml:space="preserve">
+    <value>ˈkəʊdʒiː</value>
+    <comment>Optional phonetic pronunciation for koji</comment>
+  </data>
+  <data name="kremainn" xml:space="preserve">
+    <value>krəˈmeɪn</value>
+    <comment>Optional phonetic pronunciation for kremainn</comment>
+  </data>
+  <data name="laksak" xml:space="preserve">
+    <value>ˈlæks.æk</value>
+    <comment>Optional phonetic pronunciation for laksak</comment>
+  </data>
+  <data name="lave" xml:space="preserve">
+    <value>leɪv</value>
+    <comment>Optional phonetic pronunciation for lave</comment>
+  </data>
+  <data name="lavigny" xml:space="preserve">
+    <value>ləˈviːniː</value>
+    <comment>Optional phonetic pronunciation for lavigny</comment>
+  </data>
+  <data name="leesti" xml:space="preserve">
+    <value>ˈliːstiː</value>
+    <comment>Optional phonetic pronunciation for leesti</comment>
+  </data>
+  <data name="leucos" xml:space="preserve">
+    <value>ˈluːkɒs</value>
+    <comment>Optional phonetic pronunciation for leucos</comment>
+  </data>
   <data name="li" xml:space="preserve">
     <value>li:</value>
     <comment>Optional phonetic pronunciation for li</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Lupus" xml:space="preserve">
+    <value>ˈluːpəs</value>
+    <comment>Optional phonetic pronunciation for Lupus</comment>
+  </data>
+  <data name="luytens" xml:space="preserve">
+    <value>ˈlaʊ.təns</value>
+    <comment>Optional phonetic pronunciation for luytens</comment>
+  </data>
+  <data name="Lyncis" xml:space="preserve">
+    <value>ˈlɪnsɪs</value>
+    <comment>Optional phonetic pronunciation for Lyncis</comment>
+  </data>
+  <data name="mahon" xml:space="preserve">
+    <value>ˈmɑːn</value>
+    <comment>Optional phonetic pronunciation for mahon</comment>
+  </data>
+  <data name="maia" xml:space="preserve">
+    <value>ˈmaɪ.ə</value>
+    <comment>Optional phonetic pronunciation for maia</comment>
+  </data>
   <data name="mata" xml:space="preserve">
     <value>ˈmaɪə</value>
     <comment>Optional phonetic pronunciation for mata</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="merope" xml:space="preserve">
+    <value>ˈmɛrəpiː</value>
+    <comment>Optional phonetic pronunciation for merope</comment>
+  </data>
+  <data name="mu" xml:space="preserve">
+    <value>mjuː</value>
+    <comment>Optional phonetic pronunciation for mu</comment>
+  </data>
+  <data name="mukoji_koji" xml:space="preserve">
+    <value>ˈkəʊdʒiː</value>
+    <comment>Optional phonetic pronunciation for mukoji_koji</comment>
+  </data>
+  <data name="mukoji_mu" xml:space="preserve">
+    <value>mjuː</value>
+    <comment>Optional phonetic pronunciation for mukoji_mu</comment>
+  </data>
+  <data name="nuenets" xml:space="preserve">
+    <value>ˈnjuːənɛts</value>
+    <comment>Optional phonetic pronunciation for nuenets</comment>
+  </data>
+  <data name="okinura" xml:space="preserve">
+    <value>ɒkɪˈnjʊrə</value>
+    <comment>Optional phonetic pronunciation for okinura</comment>
+  </data>
+  <data name="Omega" xml:space="preserve">
+    <value>ˈəʊmɪɡə</value>
+    <comment>Optional phonetic pronunciation for Omega</comment>
+  </data>
   <data name="Ophiuchi" xml:space="preserve">
     <value>ɒˈfjuːkaɪ</value>
     <comment>Optional phonetic pronunciation for Ophiuchi</comment>
