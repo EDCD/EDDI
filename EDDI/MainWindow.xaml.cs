@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Principal;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -945,6 +946,10 @@ namespace Eddi
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut)
             {
+                if (IsAdministrator())
+                {
+                    SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_admin_mode, 0);
+                }
                 CompanionAppService.Instance.Login();
             }
             else
@@ -957,6 +962,13 @@ namespace Eddi
                     SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, 0);
                 }
             }
+        }
+
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         // Handle Text-to-speech tab
