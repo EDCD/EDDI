@@ -229,6 +229,10 @@ EDDI makes a large number of values available to augment your existing scripts. 
 
   * Like "Current System Variables", except prefixed with `Squadron system` rather than `System`
 
+### Destination System Variables
+
+  * Like "Current System Variables", except prefixed with `Destination system` rather than `System`
+
 ## Current Station Variables
 
   * {DEC:Ship bulkheads station cost}: the purchase cost of the bulkheads at the station (not set if not for sale at the station)
@@ -291,8 +295,9 @@ EDDI makes a large number of values available to augment your existing scripts. 
 
 ## Miscellaneous Variables
 
-  * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
+  * {TXT:Environment}: the environment the ship is in ("Docked", "Landed", "Normal space", "Supercruise" or "Witch space") 
   * {TXT:Vehicle}: the vehicle the commander is currently controlling ("Ship", "SRV" or "Fighter")
+  * {BOOL:cAPI active}: true if the cAPI is currently active 
   * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
   * {BOOL:EDDI speaking}: true if EDDI is currently speaking
 
