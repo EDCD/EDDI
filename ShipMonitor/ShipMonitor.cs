@@ -72,8 +72,25 @@ namespace EddiShipMonitor
         {
             shipyard = new ObservableCollection<Ship>();
             storedmodules = new List<StoredModule>();
+
+            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
+
             readShips();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+        }
+
+        private void Shipyard_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock); });
+            }
         }
 
         public bool NeedsStart()
@@ -98,41 +115,17 @@ namespace EddiShipMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            EnableConfigBinding();
             return new ConfigurationWindow();
         }
 
-        public void OnClosingConfigurationTabItem()
+        public void EnableConfigBinding(MainWindow configWindow)
         {
-            DisableConfigBinding();
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock); });
         }
 
-        public void EnableConfigBinding()
+        public void DisableConfigBinding(MainWindow configWindow)
         {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock); });
-            }
-        }
-
-        public void DisableConfigBinding()
-        {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.DisableCollectionSynchronization(shipyard);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(shipyard); });
-            }
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(shipyard); });
         }
 
         public void Save()

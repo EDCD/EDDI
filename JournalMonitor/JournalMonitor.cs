@@ -4192,10 +4192,6 @@ namespace EddiJournalMonitor
             return null;
         }
 
-        public void OnClosingConfigurationTabItem()
-        {
-        }
-
         private static string GetSavedGamesDir()
         {
             int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);

@@ -101,11 +101,11 @@ namespace EddiVoiceAttackResponder
                     catch (Exception ex)
                     {
                         Dictionary<string, object> data = new Dictionary<string, object>
-                {
+                        {
                             { "event", JsonConvert.SerializeObject(theEvent) },
                             { "exception", ex.Message },
                             { "stacktrace", ex.StackTrace }
-                };
+                        };
                         Logging.Error("VoiceAttack failed to handle event.", data);
                     }
                 };
@@ -117,36 +117,36 @@ namespace EddiVoiceAttackResponder
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
+                {
+                    lock (vaProxyLock)
                     {
-                        lock (vaProxyLock)
-                        {
-                            setCargo(cargoMonitor, ref vaProxy);
-                        }
-                    };
+                        setCargo(cargoMonitor, ref vaProxy);
+                    }
+                };
 
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
                 if (shipMonitor != null)
                 {
                     shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                    {
+                        lock (vaProxyLock)
                         {
-                            lock (vaProxyLock)
-                            {
-                                setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
-                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
-                            }
-                        };
+                            setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
+                            Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
+                        }
+                    };
                 }
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
                 if (statusMonitor != null)
                 {
                     statusMonitor.StatusUpdatedEvent += (s, e) =>
+                    {
+                        lock (vaProxyLock)
                         {
-                            lock (vaProxyLock)
-                            {
-                                setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
-                            }
-                        };
+                            setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
+                        }
+                    };
                 }
 
                 // Display instance information if available
@@ -431,8 +431,6 @@ namespace EddiVoiceAttackResponder
                 Logging.Warn("Failed to obtain Inara details on commander " + commanderName, ex);
             }
         }
-
-
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {

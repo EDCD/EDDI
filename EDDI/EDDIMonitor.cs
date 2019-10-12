@@ -75,14 +75,6 @@ namespace Eddi
         /// </summary>
         IDictionary<string, object> GetVariables();
 
-        /// <summary>
-        /// Called to set up bindings and create the monitor window tab
-        /// </summary>
         UserControl ConfigurationTabItem();
-
-        /// <summary>
-        /// Called to clean up bindings after closing the monitor window tab
-        /// </summary>
-        void OnClosingConfigurationTabItem();
     }
 }

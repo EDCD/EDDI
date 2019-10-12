@@ -75,6 +75,7 @@ namespace EddiMissionMonitor
         public MissionMonitor()
         {
             missions = new ObservableCollection<Mission>();
+            BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
         }
 
@@ -84,6 +85,19 @@ namespace EddiMissionMonitor
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
+        private void Missions_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(missions, missionsLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(missions, missionsLock); });
+            }
+        }
         public bool NeedsStart()
         {
             return true;
@@ -176,47 +190,17 @@ namespace EddiMissionMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            EnableConfigBinding();
             return new ConfigurationWindow();
         }
 
-        public void OnClosingConfigurationTabItem()
+        public void EnableConfigBinding(MainWindow configWindow)
         {
-            DisableConfigBinding();
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(missions, missionsLock); });
         }
 
-        public void EnableConfigBinding()
+        public void DisableConfigBinding(MainWindow configWindow)
         {
-            BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
-        }
-
-        private void Missions_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(missions, missionsLock);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(missions, missionsLock); });
-            }
-        }
-
-        public void DisableConfigBinding()
-        {
-            BindingOperations.CollectionRegistering -= Missions_CollectionRegistering;
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.DisableCollectionSynchronization(missions);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(missions); });
-            }
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(missions); });
         }
 
         public void HandleProfile(JObject profile)

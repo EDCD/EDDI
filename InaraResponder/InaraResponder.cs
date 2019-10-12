@@ -102,10 +102,6 @@ namespace EddiInaraResponder
             return new ConfigurationWindow();
         }
 
-        public void OnClosingConfigurationTabItem()
-        {
-        }
-
         public void Handle(Event theEvent)
         {
             if (theEvent is null)

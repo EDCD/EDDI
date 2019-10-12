@@ -51,14 +51,6 @@ namespace Eddi
         /// </summary>
         void Handle(Event theEvent);
 
-        /// <summary>
-        /// Called to set up bindings and create the responder window tab
-        /// </summary>
         UserControl ConfigurationTabItem();
-
-        /// <summary>
-        /// Called to clean up bindings after closing the responder window tab
-        /// </summary>
-        void OnClosingConfigurationTabItem();
     }
 }

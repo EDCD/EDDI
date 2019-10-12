@@ -67,6 +67,7 @@ namespace EddiCargoMonitor
         public CargoMonitor()
         {
             inventory = new ObservableCollection<Cargo>();
+            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
             initializeCargoMonitor();
         }
 
@@ -76,6 +77,19 @@ namespace EddiCargoMonitor
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
+        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+            }
+        }
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events
@@ -99,41 +113,17 @@ namespace EddiCargoMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            EnableConfigBinding();
             return new ConfigurationWindow();
         }
 
-        public void OnClosingConfigurationTabItem()
+        public void EnableConfigBinding(MainWindow configWindow)
         {
-            DisableConfigBinding();
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
         }
 
-        public void EnableConfigBinding()
+        public void DisableConfigBinding(MainWindow configWindow)
         {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
-            }
-        }
-
-        public void DisableConfigBinding()
-        {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.DisableCollectionSynchronization(inventory);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
-            }
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
         }
 
         public void HandleProfile(JObject profile)

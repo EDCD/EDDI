@@ -244,9 +244,5 @@ namespace EddiEdsmResponder
         {
             return new ConfigurationWindow();
         }
-
-        public void OnClosingConfigurationTabItem()
-        {
-        }
     }
 }

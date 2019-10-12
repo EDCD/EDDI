@@ -96,10 +96,6 @@ namespace EddiEddpMonitor
             return new ConfigurationWindow();
         }
 
-        public void OnClosingConfigurationTabItem()
-        {
-        }
-
         private void monitor()
         {
             while (running)

@@ -576,10 +576,6 @@ namespace EDDNResponder
             return null;
         }
 
-        public void OnClosingConfigurationTabItem()
-        {
-        }
-
         private bool ConfirmAddressAndCoordinates(string systemName)
         {
             if (systemName != null)

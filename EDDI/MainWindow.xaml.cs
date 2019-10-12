@@ -159,9 +159,6 @@ namespace Eddi
         {
             InitializeComponent();
 
-            // Set up an event for the application exit
-            System.Windows.Application.Current.Exit += OnExit;
-
             // Start the EDDI instance
             EDDI.Instance.Start();
 
@@ -1059,16 +1056,6 @@ namespace Eddi
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        private void OnExit(object sender, ExitEventArgs e)
-        {
-            System.Windows.Application.Current?.Dispatcher?.Invoke(() =>
-            {
-                // Unregister applicable event handlers
-                CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
-                VaWindowStateChange = null;
-            });
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)

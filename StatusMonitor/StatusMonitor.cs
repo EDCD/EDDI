@@ -169,10 +169,6 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public void OnClosingConfigurationTabItem()
-        {
-        }
-
         public Status ParseStatusEntry(string line)
         {
             Status status = new Status();
