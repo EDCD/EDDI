@@ -321,4 +321,8 @@
     <value>Guardian Gebäude</value>
     <comment>Guardian Structure</comment>
   </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Trümmerfeld</value>
+    <comment>Debris field</comment>
+  </data>
 </root>

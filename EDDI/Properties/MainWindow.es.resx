@@ -133,7 +133,7 @@
     <value>El segundo grupo obtiene la información de los eventos. Estas son las pestañas llamadas 'Monitor'. Obtienen eventos de diferentes fuentes y necesitan una configuración mínima, que debe hacerse antes para que funcione.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>El tercer grupo corresponde a los eventos. Estas son las pestañas de 'Contestador'. Cada una tiene un distinto grado de configuración, pero funcionarán desde el primer momento.</value>
+    <value>El tercer grupo corresponde a los eventos. Estas son las pestañas de 'Asistente'. Cada una tiene un distinto grado de configuración, pero funcionarán desde el primer momento.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Puede leer más sobre las funciones de EDDI en el </value>
@@ -215,7 +215,7 @@
     <value>Desactivar el lenguaje fonético:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(Desactivará las funciones que utilicen tags SSML, como se indica en la ayuda del 'Contestador vocal')</value>
+    <value>(Desactivará las funciones que utilicen tags SSML, como se indica en la ayuda del 'Asistente Vocal')</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDI puede usar OACI, por ejemplo, usando 'alfa' en lugar de 'A', cuando dice nombres de estrellas y cuerpos. Esto puede facilitar la comprensión de los nombres del sistema, pero lleva más tiempo pronunciarlo. Si desea escuchar las pronunciaciones de la OACI, marque esta opción. Tenga en cuenta que no funcionará si ha deshabilitado la opción anterior de habla fonética.</value>
@@ -245,7 +245,7 @@
     <value>Sistema hogar:</value>
   </data>
   <data name="tab_commander_par1" xml:space="preserve">
-    <value>Puede especificar el nombre de un sistema y una estación en particular del mismo,  que considere como su hogar. Si lo hace, su información estará disponible para los Contestadores de EDDI.</value>
+    <value>Puede especificar el nombre de un sistema y una estación en particular del mismo, que considere como su hogar. Si lo hace, su información estará disponible para los Asistentes de EDDI.</value>
   </data>
   <data name="tab_commander_squadron_name" xml:space="preserve">
     <value>Nombre del escuadrón:</value>

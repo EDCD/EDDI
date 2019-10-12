@@ -142,7 +142,7 @@
     <value>repetidores de plasma fijos y punto de defensa</value>
   </data>
   <data name="FederationTwo" xml:space="preserve">
-    <value>multi-cañónes fijos y señuelos</value>
+    <value>multicañónes fijos y señuelos</value>
   </data>
   <data name="FederationZero" xml:space="preserve">
     <value>láseres de pulso asistidos y señuelos</value>
@@ -157,7 +157,7 @@
     <value>cañones de foco gauss</value>
   </data>
   <data name="IndependentAT" xml:space="preserve">
-    <value>multi-cañones fijos anti-xenon</value>
+    <value>multicañones fijos anti-xenon</value>
   </data>
   <data name="IndependentFour" xml:space="preserve">
     <value>láseres de rayo asistidos y eyector de térmico</value>
