@@ -42,6 +42,7 @@
             var CapShip = new SignalSource("FIXED_EVENT_CAPSHIP");
             var Checkpoint = new SignalSource("FIXED_EVENT_CHECKPOINT");
             var ConvoyBeacon = new SignalSource("FIXED_EVENT_CONVOY");
+            var DebrisField = new SignalSource("FIXED_EVENT_DEBRIS");
             var PirateAttackT5 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T5");
             var PirateAttackT6 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T6");
             var PirateAttackT7 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T7");
@@ -61,9 +62,9 @@
             var GuardianStructureS1 = new SignalSource("Ancient_Small_001");
             var GuardianStructureS2 = new SignalSource("Ancient_Small_002");
             var GuardianStructureS3 = new SignalSource("Ancient_Small_003");
-            var GuardianStructureS4 = new SignalSource("Ancient_Small_004"); // Speculative
+            var GuardianStructureS4 = new SignalSource("Ancient_Small_004");
             var GuardianStructureS5 = new SignalSource("Ancient_Small_005");
-            var GuardianStructureM1 = new SignalSource("Ancient_Medium_001"); // Speculative
+            var GuardianStructureM1 = new SignalSource("Ancient_Medium_001");
             var GuardianStructureM2 = new SignalSource("Ancient_Medium_002");
             var GuardianStructureM3 = new SignalSource("Ancient_Medium_003");
             var ThargoidBarnacle = new SignalSource("Settlement_Unflattened_Unknown");

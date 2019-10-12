@@ -196,6 +196,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debris Field.
+        /// </summary>
+        public static string FIXED_EVENT_DEBRIS {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_DEBRIS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pirate Activity.
         /// </summary>
         public static string FIXED_EVENT_HIGHTHREATSCENARIO_T5 {

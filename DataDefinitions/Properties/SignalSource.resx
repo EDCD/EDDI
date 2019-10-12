@@ -321,4 +321,8 @@
     <value>Guardian Structure</value>
     <comment>Guardian Structure</comment>
   </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Debris Field</value>
+    <comment>Debris field</comment>
+  </data>
 </root>
