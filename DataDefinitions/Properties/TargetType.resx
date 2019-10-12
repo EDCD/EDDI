@@ -147,4 +147,7 @@
   <data name="Trader" xml:space="preserve">
     <value>Trader</value>
   </data>
+  <data name="VenerableGeneral" xml:space="preserve">
+    <value>Venerable General</value>
+  </data>
 </root>
