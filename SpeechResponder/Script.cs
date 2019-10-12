@@ -14,7 +14,7 @@ namespace EddiSpeechResponder
         [JsonProperty("enabled")]
         private bool enabled;
         [JsonProperty("priority")]
-        public int priority = 3;
+        private int priority = 3;
         [JsonProperty("responder")]
         private bool responder;
         [JsonProperty("script")]

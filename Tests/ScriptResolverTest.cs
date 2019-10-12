@@ -118,5 +118,57 @@ namespace UnitTests
         {
             Assert.AreEqual(new Regex("[^a-zA-Z0-9]").Replace("a-b. c", "").ToUpperInvariant().Substring(0, 3), "ABC");
         }
+
+        [TestMethod]
+        public void TestUpgradeScript_FromDefault()
+        {
+            Script script = new Script("testScript", "Test script", false, "Test script", 3, "Test script");
+            Script newDefaultScript = new Script("testScript", "Updated Test script Description", true, "Updated Test script", 3, "Updated Test script");
+
+            Assert.IsTrue(script.Default);
+            Assert.AreEqual(script.Name, newDefaultScript.Name);
+
+            Assert.AreNotEqual(script.Description, newDefaultScript.Description);
+            Assert.AreNotEqual(script.Responder, newDefaultScript.Responder);
+            Assert.AreNotEqual(script.Value, newDefaultScript.Value);
+            Assert.AreNotEqual(script.defaultValue, newDefaultScript.defaultValue);
+            Assert.AreEqual(script.Priority, newDefaultScript.Priority);
+
+            Script upgradedScript = Personality.UpgradeScript(script, newDefaultScript);
+
+            Assert.IsTrue(upgradedScript.Default);
+
+            Assert.AreEqual(upgradedScript.Description, newDefaultScript.Description);
+            Assert.AreEqual(upgradedScript.Responder, newDefaultScript.Responder);
+            Assert.AreEqual(upgradedScript.Value, newDefaultScript.Value);
+            Assert.AreEqual(upgradedScript.defaultValue, newDefaultScript.defaultValue);
+            Assert.AreEqual(script.Priority, newDefaultScript.Priority);
+        }
+
+        [TestMethod]
+        public void TestUpgradeScript_FromCustomized()
+        {
+            Script script = new Script("testScript", "Test script", false, "Test script customized", 4, "Test script");
+            Script newDefaultScript = new Script("testScript", "Updated Test script Description", false, "Updated Test script", 3, "Updated Test script");
+
+            Assert.IsFalse(script.Default);
+            Assert.AreEqual(script.Name, newDefaultScript.Name);
+
+            Assert.AreNotEqual(script.Description, newDefaultScript.Description);
+            Assert.AreEqual(script.Responder, newDefaultScript.Responder);
+            Assert.AreNotEqual(script.Value, newDefaultScript.Value);
+            Assert.AreNotEqual(script.defaultValue, newDefaultScript.defaultValue);
+            Assert.AreNotEqual(script.Priority, newDefaultScript.Priority);
+
+            Script upgradedScript = Personality.UpgradeScript(script, newDefaultScript);
+
+            Assert.IsFalse(upgradedScript.Default);
+
+            Assert.AreNotEqual(upgradedScript.Description, newDefaultScript.Description);
+            Assert.AreEqual(upgradedScript.Responder, newDefaultScript.Responder);
+            Assert.AreNotEqual(upgradedScript.Value, newDefaultScript.Value);
+            Assert.AreEqual(upgradedScript.defaultValue, newDefaultScript.defaultValue);
+            Assert.AreNotEqual(script.Priority, newDefaultScript.Priority);
+        }
     }
 }
