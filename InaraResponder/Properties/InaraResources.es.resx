@@ -118,10 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="api_key_label" xml:space="preserve">
-    <value>Clave de la API:</value>
+    <value>Clave API:</value>
   </data>
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Envíe los detalles de sus viajes a Inara (http://inara.cz). Inara es una herramienta de terceros que proporciona información sobre los miembros de la Federación de Pilotos y genera un perfil detallando de su estado y logros que puede compartir. </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Asistente de Inara</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Para conectarse a Inara es necesario haberse registrado antes. Una vez que lo haya hecho, puede obtener su clave de API clicando en 'SETTINGS' en el menú superior de la web, y a continuación, clicando en 'INARA API' en el menú de la izquierda.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Una vez que haya introducido su clave API, EDDI comenzará a transmitir las sesiones de juego a Inara.</value>
+  </data>
 </root>
