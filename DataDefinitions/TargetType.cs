@@ -22,6 +22,7 @@
             var Terrorist = new TargetType("Terrorist");
             var Trader = new TargetType("Trader");
             var VenerableGeneral = new TargetType("VenerableGeneral");
+            var DeserterASS = new TargetType("DeserterASS");
         }
 
         // dummy used to ensure that the static constructor has run
