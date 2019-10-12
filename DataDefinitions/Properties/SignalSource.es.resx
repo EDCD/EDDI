@@ -230,15 +230,15 @@
     <comment>Notable Stellar Phenomena</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
-    <value>Actividad pirata</value>
+    <value>Actividad Pirata</value>
     <comment>Pirate Activity Detected [Threat 5]</comment>
   </data>
   <data name="SAA_SignalType_Biological" xml:space="preserve">
-    <value>Señal biológica de superficie</value>
+    <value>Señal Biológica de Superficie</value>
     <comment>Biological Surface Signal</comment>
   </data>
   <data name="SAA_SignalType_Geological" xml:space="preserve">
-    <value>Señal geológica de superficie</value>
+    <value>Señal Geológica de Superficie</value>
     <comment>Geological Surface Signal</comment>
   </data>
   <data name="SAA_SignalType_Human" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Human Surface Signal</comment>
   </data>
   <data name="SAA_SignalType_Thargoid" xml:space="preserve">
-    <value>Señal de superficie Thargoide</value>
+    <value>Señal de Superficie Thargoide</value>
     <comment>Thargoid Surface Signal</comment>
   </data>
   <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
@@ -254,23 +254,23 @@
     <comment>Thargoid Barnacle</comment>
   </data>
   <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
-    <value>Punto de control</value>
+    <value>Punto de Control</value>
     <comment>Checkpoint</comment>
   </data>
   <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
-    <value>Baliza de convoy</value>
+    <value>Baliza de Convoy</value>
     <comment>Convoy Beacon	</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
-    <value>Actividad pirata</value>
+    <value>Actividad Pirata</value>
     <comment>Pirate Activity</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
-    <value>Actividad pirata</value>
+    <value>Actividad Pirata</value>
     <comment>Pirate Activity</comment>
   </data>
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
-    <value>Señal de superficie Guardian</value>
+    <value>Señal de Superficie Guardian</value>
     <comment>Guardian Surface Signal</comment>
   </data>
   <data name="Ancient_Tiny_003" xml:space="preserve">
