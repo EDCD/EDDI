@@ -233,4 +233,8 @@
     <value>Interstellar Factors Contact</value>
     <comment>Station Service: InterstellarFactorsContact</comment>
   </data>
+  <data name="Shop" xml:space="preserve">
+    <value>Shop</value>
+    <comment>Station Service: Shop</comment>
+  </data>
 </root>

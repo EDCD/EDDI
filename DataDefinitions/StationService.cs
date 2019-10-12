@@ -41,6 +41,7 @@ namespace EddiDataDefinitions
             var TechBroker = new StationService("TechBroker");
             var MaterialTrader = new StationService("MaterialTrader");
             var StationMenu = new StationService("StationMenu");
+            var Shop = new StationService("Shop");
         }
 
         public static readonly StationService None;
