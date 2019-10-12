@@ -157,7 +157,7 @@
     <value>Monitor de la nave</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Permite ver sus naves y darles roles individuales. Esta información está disponible para contestadores automáticos y se usa en scripts para adaptar acciones.</value>
+    <value>Permite ver sus naves y darles roles individuales. Esta información está disponible para asistentes automáticos y se usa en scripts para adaptar acciones.</value>
   </data>
   <data name="p2" xml:space="preserve">
     <value>Tenga en cuenta que si su inventario es incorrecto, deberá iniciar o reiniciar Elite para que se actualice.</value>
