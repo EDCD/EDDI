@@ -249,7 +249,9 @@ namespace EddiCrimeMonitor
                     target.Power = @event.Power ?? Power.None;
 
                     // Prioritize power allegiance (when present) over faction
-                    target.Allegiance = @event.Power?.Allegiance ?? faction?.Allegiance;
+                    target.Allegiance = @event.Power != Power.None 
+                        ? @event.Power?.Allegiance 
+                        : faction?.Allegiance;
 
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
