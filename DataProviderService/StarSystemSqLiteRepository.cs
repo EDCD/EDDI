@@ -214,6 +214,9 @@ namespace EddiDataProviderService
                     // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
                     string data = kv.Value?.Replace(@"""No volcanism""", "null");
 
+                    // Old versions of the data could have a string "InterstellarFactorsContact" for the facilitator station service.  If so we update it
+                    data = kv.Value?.Replace(@"""InterstellarFactorsContact""", @"""Facilitator""");
+
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
