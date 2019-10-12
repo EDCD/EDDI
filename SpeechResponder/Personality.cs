@@ -318,6 +318,12 @@ namespace EddiSpeechResponder
             {
                 if (defaultScript != null)
                 {
+                    if (script.Default)
+                    {
+                        // This is a default script so take the latest value
+                        script.Value = defaultScript.Value;
+                    }
+
                     // Set the default value of our script
                     script.defaultValue = defaultScript.Value;
 
