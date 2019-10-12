@@ -445,7 +445,9 @@
   <data name="BeamLaserEfficient" xml:space="preserve">
     <value>Laser de Rayo eficiente</value>
   </data>
-  
+  <data name="BurstLaserEfficient" xml:space="preserve">
+    <value>Láser de Ráfagas Eficiente</value>
+  </data>
   
   
   
