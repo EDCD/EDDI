@@ -202,7 +202,7 @@
     <value>Sensores de largo alcance</value>
   </data>
   <data name="SensorWideAngle" xml:space="preserve">
-    <value>Escáner de ángulo amplio</value>
+    <value>Escáner de Ángulo Amplio</value>
   </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Potenciador de escudos resistencia explosiva</value>
@@ -277,7 +277,7 @@
     <value>Escáner de estelas de salto ligero</value>
   </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
-    <value>Escáner de largo alcance
+    <value>Escáner de Largo Alcance
 </value>
   </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
@@ -287,7 +287,7 @@
     <value>Escáner de estelas de salto blindado</value>
   </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
-    <value>Escáner de ángulo amplio</value>
+    <value>Escáner de Ángulo Amplio</value>
   </data>
   <data name="AFMShielded" xml:space="preserve">
     <value>Unidad de automantenimiento blindada</value>
@@ -362,7 +362,7 @@
     <value>Escáner de registro criminal ligero</value>
   </data>
   <data name="KillWarrantScannerLongRange" xml:space="preserve">
-    <value>Escáner de largo alcance</value>
+    <value>Escáner de Largo Alcance</value>
   </data>
   <data name="KillWarrantScannerReinforced" xml:space="preserve">
     <value>Escáner de registro criminal reforzado</value>
@@ -404,10 +404,10 @@
     <value>Escáner de manifiesto rápido</value>
   </data>
   <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>Escáner de largo alcance</value>
+    <value>Escáner de Largo Alcance</value>
   </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
-    <value>Escáner de ángulo amplio</value>
+    <value>Escáner de Ángulo Amplio</value>
   </data>
   <data name="ECMLightWeight" xml:space="preserve">
     <value>Contramedidas electronicas Ligero</value>
@@ -419,7 +419,7 @@
     <value>Escáner Detector de Recompensas</value>
   </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
-    <value>Escáner de largo alcance</value>
+    <value>Escáner de Ángulo Amplio</value>
   </data>
   <data name="PAOvercharged" xml:space="preserve">
     <value>Acelerador de Plasma sobrecargado</value>
@@ -440,16 +440,16 @@
     <value>Radio ampliado de escaneo de sonda</value>
   </data>
   <data name="FragCannonDoubleShot" xml:space="preserve">
-    <value>Cañón de Fragmentación de Doble Disparo</value>
+    <value>Cañón de Fragmentación de Disparo Doble</value>
   </data>
   <data name="BeamLaserEfficient" xml:space="preserve">
-    <value>Laser de Rayo eficiente</value>
+    <value>Láser de Rayo eficiente</value>
   </data>
   <data name="BurstLaserEfficient" xml:space="preserve">
     <value>Láser de Ráfagas Eficiente</value>
   </data>
   <data name="CannonEfficient" xml:space="preserve">
-    <value>Cañon Eficiente</value>
+    <value>Cañón Eficiente</value>
   </data>
   <data name="FragCannonEfficient" xml:space="preserve">
     <value>Cañón de Fragmentación Eficiente</value>
@@ -527,7 +527,7 @@
     <value>Láser de Rayo de Largo Alcance</value>
   </data>
   <data name="BurstLaserLongRange" xml:space="preserve">
-    <value>Láser de Ráfaga de Largo Alcance</value>
+    <value>Láser de Ráfagas de Largo Alcance</value>
   </data>
   <data name="CannonLongRange" xml:space="preserve">
     <value>Cañón de Largo Alcance</value>
