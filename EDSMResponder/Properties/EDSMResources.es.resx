@@ -148,7 +148,7 @@
     <value>Obteniendo log␣ </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Contestador EDSM</value>
+    <value>Asistente EDSM</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Para conectarse a EDSM, debe haber registrado una cuenta con ellos. Una vez que haya hecho esto, puede obtener su clave de API haciendo clic en su retrato en la esquina superior derecha de la pantalla y seleccionando 'Mi API'</value>
