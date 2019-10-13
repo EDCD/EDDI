@@ -191,7 +191,7 @@
   </data>
   <data name="Facilitator" xml:space="preserve">
     <value>Interstellar Factors Contact</value>
-    <comment>Station Service: Facilitator</comment>
+    <comment>Station Service: Facilitator (means "Interstellar Factors Contact)</comment>
   </data>
   <data name="Research" xml:space="preserve">
     <value>Research</value>

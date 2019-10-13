@@ -190,7 +190,7 @@
     <comment>Station Service: MissionsGenerated</comment>
   </data>
   <data name="Facilitator" xml:space="preserve">
-    <value></value>
+    <value>Contato de Agentes Interestelares</value>
     <comment>Station Service: Facilitator</comment>
   </data>
   <data name="Research" xml:space="preserve">
