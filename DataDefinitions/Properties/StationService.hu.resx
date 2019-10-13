@@ -189,10 +189,7 @@
     <value>Küldetések által generált</value>
     <comment>Station Service: MissionsGenerated</comment>
   </data>
-  <data name="Facilitator" xml:space="preserve">
-    <value></value>
-    <comment>Station Service: Facilitator</comment>
-  </data>
+  
   <data name="Research" xml:space="preserve">
     <value>Kutatás</value>
     <comment>Station Service: Research</comment>
@@ -205,6 +202,7 @@
     <value>Állomásvezérlő</value>
     <comment>Station Service: StationOperations</comment>
   </data>
+  
   <data name="Powerplay" xml:space="preserve">
     <value>Erőjáték</value>
     <comment>Station Service: Powerplay</comment>
@@ -225,4 +223,5 @@
     <value>Állomásmenü</value>
     <comment>Station Service: Station Menu</comment>
   </data>
+  
 </root>
