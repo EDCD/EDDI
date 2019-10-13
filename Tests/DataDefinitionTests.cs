@@ -291,5 +291,17 @@ namespace UnitTests
             Assert.AreEqual(1, v1.subslot, "testing v1 subslot from JSON");
             Assert.AreEqual(0, v0.subslot, "testing v0 subslot after setting v1 subslot");
         }
+
+        [TestMethod]
+        public void StationServiceISFTest()
+        {
+            StationService journal = StationService.FromEDName("Facilitator");
+            StationService edsm = StationService.FromName("Interstellar Factors Contact");
+
+            Assert.AreEqual("Facilitator", edsm.edname);
+            Assert.AreEqual("Interstellar Factors Contact", journal.invariantName);
+            Assert.AreEqual(journal.edname, edsm.edname);
+            Assert.AreEqual(journal.invariantName, edsm.invariantName);
+        }
     }
 }
