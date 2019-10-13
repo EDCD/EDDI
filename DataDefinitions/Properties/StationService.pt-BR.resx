@@ -189,7 +189,10 @@
     <value>Missões Geradas</value>
     <comment>Station Service: MissionsGenerated</comment>
   </data>
-  
+  <data name="Facilitator" xml:space="preserve">
+    <value>Contato de Agentes Interestelares</value>
+    <comment>Station Service: Facilitator (means "Interstellar Factors Contact)</comment>
+  </data>
   <data name="Research" xml:space="preserve">
     <value>Pesquisa</value>
     <comment>Station Service: Research</comment>
