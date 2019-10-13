@@ -191,7 +191,7 @@
   </data>
   <data name="Facilitator" xml:space="preserve">
     <value>Contatti verso Agenzie Interstellari</value>
-    <comment>Station Service: Facilitator</comment>
+    <comment>Station Service: Facilitator (means "Interstellar Factors Contact)</comment>
   </data>
   <data name="Research" xml:space="preserve">
     <value>Ricerca</value>
@@ -228,5 +228,9 @@
   <data name="StationMenu" xml:space="preserve">
     <value>Menu di Stazione</value>
     <comment>Station Service: Station Menu</comment>
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value>Negozio</value>
+    <comment>Station Service: Shop</comment>
   </data>
 </root>

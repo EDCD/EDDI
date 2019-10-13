@@ -259,4 +259,5 @@ Veuillez fermer l'autre instance et réessayer.</value>
     <value>La connexion à l'API Frontier n'est pas activé</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
+  
 </root>

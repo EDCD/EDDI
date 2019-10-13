@@ -259,4 +259,5 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Conexão com a API da Frontier não está ativada</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
+  
 </root>
