@@ -65,8 +65,8 @@ namespace EddiSpeechResponder
             set { script = value; OnPropertyChanged("Value"); }
         }
 
-        [JsonIgnore]
-        public string defaultValue;
+        [JsonProperty("defaultValue")]
+        public string defaultValue { get; set; }
 
         [JsonIgnore]
         public bool HasValue
