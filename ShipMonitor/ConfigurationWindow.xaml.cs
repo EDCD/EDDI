@@ -27,18 +27,27 @@ namespace EddiShipMonitor
             InitializeComponent();
             shipData.ItemsSource = shipMonitor().shipyard;
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string exporttarget = eddiConfiguration.exporttarget;
-            Logging.Debug("Export target from configuration: " + exporttarget);
-            exportComboBox.Text = exporttarget ?? "Coriolis";
+            string exportTarget = eddiConfiguration.exporttarget;
+
+            // handle migration
+            if (exportTarget == "EDShipyard")
+            {
+                exportTarget = "EDSY";
+                eddiConfiguration.exporttarget = exportTarget;
+                eddiConfiguration.ToFile();
+            }
+
+            Logging.Debug("Export target from configuration: " + exportTarget);
+            exportComboBox.Text = exportTarget ?? "Coriolis";
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
         {
-            string exporttarget = (string)((ComboBox)e.Source).SelectedValue;
-            Logging.Debug("Export target: " + exporttarget);
+            string exportTarget = (string)((ComboBox)e.Source).SelectedValue;
+            Logging.Debug("Export target: " + exportTarget);
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiConfiguration.exporttarget = string.IsNullOrWhiteSpace(exporttarget) ? null : exporttarget.Trim();
+            eddiConfiguration.exporttarget = string.IsNullOrWhiteSpace(exportTarget) ? null : exportTarget.Trim();
             eddiConfiguration.ToFile();
         }
 
@@ -66,19 +75,22 @@ namespace EddiShipMonitor
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
 
             string uri;
-            if (eddiConfiguration.exporttarget == "EDShipyard")
+            switch (eddiConfiguration.exporttarget)
             {
-                // Support EDShipyard.
-                uri = ship.EDShipyardUri();
-            }
-            else
-            {
-                // Coriolis is the default export target 
-                uri = ship.CoriolisUri();
+                case "EDShipyard":
+                case "EDSY":
+                    uri = ship.EDShipyardUri();
+                    break;
+
+                case "Coriolis":
+                    uri = ship.CoriolisUri();
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Export target {eddiConfiguration.exporttarget} not recognized.");
             }
 
             Logging.Debug("Export target is " + eddiConfiguration.exporttarget + ", URI is " + uri);
-
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try
@@ -134,9 +146,9 @@ namespace EddiShipMonitor
         }
     }
 
-    public class ValidIPARule : ValidationRule
+    public class ValidIpaRule : ValidationRule
     {
-        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
+        private static readonly Regex ipaRegex = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
@@ -145,7 +157,7 @@ namespace EddiShipMonitor
                 return ValidationResult.ValidResult;
             }
             string val = value.ToString();
-            if (IPA_REGEX.Match(val).Success)
+            if (ipaRegex.Match(val).Success)
             {
                 return ValidationResult.ValidResult;
             }

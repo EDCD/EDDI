@@ -35,7 +35,7 @@
             <TextBlock TextWrapping="Wrap" Text="{x:Static resx:ShipMonitor.p5}" Margin="5, 0, 0, 0" VerticalAlignment="Top"/>
             <ComboBox x:Name="exportComboBox" Grid.Column="1" Margin="5, 0, 0, 0" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ComboBoxItem>Coriolis</ComboBoxItem>
-                <ComboBoxItem>EDShipyard</ComboBoxItem>
+                <ComboBoxItem>EDSY</ComboBoxItem>
             </ComboBox>
         </Grid >
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
@@ -79,7 +79,7 @@
                     <DataGridTextColumn.Binding>
                         <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                             <Binding.ValidationRules>
-                                <local:ValidIPARule/>
+                                <local:ValidIpaRule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </DataGridTextColumn.Binding>
