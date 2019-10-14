@@ -218,7 +218,10 @@
     <value>Phénomène Stellaire Remarquable</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Vaisseau Capital</value>
+    <comment>Capital Ship</comment>
+  </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Phénomène Stellaire Remarquable</value>
     <comment>Notable Stellar Phenomena</comment>
@@ -227,16 +230,34 @@
     <value>Activité Pirate</value>
     <comment>Pirate Activity Detected [Threat 5]</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Signal de surface biologique</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Signal de surface géologique</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Signal de surface humain</value>
+    <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Signal de surface Thargoïd</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Bernacle Thargoïd</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
   <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
     <value>Point de Contrôle</value>
     <comment>Checkpoint</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Balise de convoi</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
     <value>Activité Pirate</value>
     <comment>Pirate Activity</comment>
@@ -245,9 +266,12 @@
     <value>Activité Pirate</value>
     <comment>Pirate Activity</comment>
   </data>
-  
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Signal de surface Guardian</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
   <data name="Ancient_Tiny_003" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient" xml:space="preserve">
@@ -255,44 +279,47 @@
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
   <data name="Ancient_Small_005" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Small_001" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Tiny_001" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Small_002" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Small_003" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Tiny_002" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Medium_003" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Small_004" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Medium_001" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
   <data name="Ancient_Medium_002" xml:space="preserve">
-    <value>Structure Gardienne</value>
+    <value>Structure Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
-  
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Champ de débris</value>
+    <comment>Debris field</comment>
+  </data>
 </root>
