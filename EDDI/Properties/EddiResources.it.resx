@@ -259,6 +259,6 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="frontier_api_admin_mode" xml:space="preserve">
-    <value>EDDI sta lavorando in modalità Amministratore. Tale modalità potrebbe bloccare i messaggi dal tuo browser verso EDDI e così far fallire il login.</value>
+    <value>EDDI sta lavorando in modalità Amministratore. Tale modalità potrebbe bloccare i messaggi dal tuo browser verso EDDI facendo quindi fallire il login.</value>
   </data>
 </root>
