@@ -120,10 +120,16 @@
   <data name="api_key_label" xml:space="preserve">
     <value>Clé API :</value>
   </data>
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Envoyez les détails de vos voyages à Inara (https://inara.cz). Inara est un outil tiers fournissant des informations sur les membres de la Fédération de Pilotes et générant un profil pouvant être partagé, détaillant votre statut et vos réalisations. </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Répondeur Inara</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Pour vous connecter à Inara, vous devez avoir un compte sur le site. Ceci fait, vous pouvez obtenir votre clé API en cliquant sur l'onglet "PARAMÈTRES" dans l'en-tête du site Web, puis en cliquant sur "API INARA" dans le panneau de gauche.</value>
+  </data>
   <data name="p2" xml:space="preserve">
-    <value>Lorsque vous aurez saisi votre clé API, EDDI commencera à transmettre vos données de jeu à Inara.</value>
+    <value>Une fois que vous avez entré votre clé API, EDDI commencera à transmettre les données de la session de jeu à Inara.</value>
   </data>
 </root>
