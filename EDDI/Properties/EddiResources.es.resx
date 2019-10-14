@@ -259,5 +259,7 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
     <value>La conexión a la API no funciona</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDI se está ejecutando en modo administrador. El modo Administrador puede bloquear la transmisión de mensajes de su navegador a EDDI y provocar un error en el inicio de sesión.</value>
+  </data>
 </root>
