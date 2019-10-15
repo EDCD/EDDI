@@ -83,7 +83,7 @@ namespace EddiMaterialMonitor
             int distance = materialMonitor().maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
             Thread findServiceThread = new Thread(() =>
             {
-                string nextSystem = Navigation.Instance.GetServiceRoute(service, distance);
+                string nextSystem = NavigationService.Instance.GetServiceRoute(service, distance);
                 Dispatcher?.Invoke(() =>
                 {
                     button.Foreground = Brushes.Black;
@@ -143,12 +143,12 @@ namespace EddiMaterialMonitor
 
         private void cancelDestination(object sender, RoutedEventArgs e)
         {
-            Navigation.Instance.CancelDestination();
+            NavigationService.Instance.CancelDestination();
         }
 
         private void setDestination(object sender, RoutedEventArgs e)
         {
-            string system = Navigation.Instance.SetDestination();
+            string system = NavigationService.Instance.SetDestination();
 
             // If 'destination system' found, send to clipboard
             if (system != null)

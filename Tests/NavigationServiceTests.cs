@@ -22,7 +22,7 @@ namespace IntegrationTests
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
 
             // Set a route to a known star system and verify detination details
-            Navigation.Instance.SetDestination("Merope");
+            NavigationService.Instance.SetDestination("Merope");
             StarSystem destinationSystem = (StarSystem)eddiInstance.GetFieldOrProperty("DestinationStarSystem");
             decimal destinationDistanceLY = (decimal)eddiInstance.GetFieldOrProperty("DestinationDistanceLy");
             Assert.IsNotNull(destinationSystem);
@@ -34,7 +34,7 @@ namespace IntegrationTests
 
             // Set a route to an unknown star system and verify detination details
             // Result should be a null system at zero distance to clear, clearing the route.
-            Navigation.Instance.SetDestination("No Such System");
+            NavigationService.Instance.SetDestination("No Such System");
             StarSystem destinationSystem2 = (StarSystem)eddiInstance.GetFieldOrProperty("DestinationStarSystem");
             decimal destinationDistanceLY2 = (decimal)eddiInstance.GetFieldOrProperty("DestinationDistanceLy");
             Assert.IsNull(destinationSystem2);
@@ -45,12 +45,12 @@ namespace IntegrationTests
         public void TestGetService()
         {
             PrivateObject eddiInstance = new PrivateObject(Eddi.EDDI.Instance);
-            PrivateObject navInstance = new PrivateObject(Navigation.Instance);
+            PrivateObject navInstance = new PrivateObject(NavigationService.Instance);
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
             eddiInstance.SetFieldOrProperty("CurrentShip", new Ship() { size = LandingPadSize.Medium });
 
             // Interstellar Factors Contact
-            Navigation.Instance.GetServiceRoute("facilitator", 10000);
+            NavigationService.Instance.GetServiceRoute("facilitator", 10000);
             string system = (string)navInstance.GetFieldOrProperty("searchSystem");
             string station = (string)navInstance.GetFieldOrProperty("searchStation");
             decimal distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
@@ -59,7 +59,7 @@ namespace IntegrationTests
             Assert.AreEqual(7.17M, distance);
 
             // Manufactured Materials Trader
-            Navigation.Instance.GetServiceRoute("manufactured", 10000);
+            NavigationService.Instance.GetServiceRoute("manufactured", 10000);
             system = (string)navInstance.GetFieldOrProperty("searchSystem");
             station = (string)navInstance.GetFieldOrProperty("searchStation");
             distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
@@ -68,7 +68,7 @@ namespace IntegrationTests
             Assert.AreEqual(8.59M, distance);
 
             // Guardian Technology Broker
-            Navigation.Instance.GetServiceRoute("guardian", 10000);
+            NavigationService.Instance.GetServiceRoute("guardian", 10000);
             system = (string)navInstance.GetFieldOrProperty("searchSystem");
             station = (string)navInstance.GetFieldOrProperty("searchStation");
             distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");

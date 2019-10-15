@@ -12,7 +12,7 @@ using Utilities;
 
 namespace EddiNavigationService
 {
-    public class Navigation
+    public class NavigationService
     {
         private CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
         private MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
@@ -67,10 +67,10 @@ namespace EddiNavigationService
             }
         };
 
-        private static Navigation instance;
+        private static NavigationService instance;
         private static readonly object instanceLock = new object();
 
-        public static Navigation Instance
+        public static NavigationService Instance
         {
             get
             {
@@ -81,7 +81,7 @@ namespace EddiNavigationService
                         if (instance == null)
                         {
                             Logging.Debug("No Navigation instance: creating one");
-                            instance = new Navigation();
+                            instance = new NavigationService();
                         }
                     }
                 }

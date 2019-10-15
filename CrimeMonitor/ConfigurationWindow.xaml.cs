@@ -95,7 +95,7 @@ namespace EddiCrimeMonitor
             {
                 int distance = crimeMonitor().maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
                 bool isChecked = crimeMonitor().prioritizeOrbitalStations;
-                string IFSystem = Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                string IFSystem = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
                 Dispatcher?.Invoke(() =>
                 {
                     updateButton.Foreground = Brushes.Black;
