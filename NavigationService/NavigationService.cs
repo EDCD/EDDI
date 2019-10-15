@@ -12,7 +12,7 @@ using Utilities;
 
 namespace EddiNavigationService
 {
-    public class Navigation
+    public class NavigationService
     {
         private CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
         private MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
@@ -23,18 +23,54 @@ namespace EddiNavigationService
 
         private static Dictionary<string, dynamic> ServiceFilter = new Dictionary<string, dynamic>()
         {
-            { "encoded", new {econ = new List<string>() {"High Tech", "Military"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
-            { "facilitator", new {econ = new List<string>(), population = 0, security = new List<string>() {"Low"}, service = "Interstellar Factors Contact", cubeLy = 25} },
-            { "manufactured", new {econ = new List<string>() {"Industrial"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
-            { "raw", new {econ = new List<string>() {"Extraction", "Refinery"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
-            { "guardian", new {econ = new List<string>() {"High Tech"}, population = 10000000, security = new List<string>()  {"High"}, service = "Technology Broker", cubeLy = 80} },
-            { "human", new {econ = new List<string>() {"Industrial"}, population = 10000000, security = new List<string>() {"High"}, service = "Technology Broker", cubeLy = 80} }
+            { "encoded", new {
+                econ = new List<string>() {"High Tech", "Military"},
+                population = 1000000,
+                security = new List<string>() {"Medium", "High"},
+                service = StationService.FromName("Material Trader"),
+                cubeLy = 40}
+            },
+            { "facilitator", new {
+                econ = new List<string>(),
+                population = 0,
+                security = new List<string>() {"Low"},
+                service = StationService.FromName("Interstellar Factors Contact"),
+                cubeLy = 25}
+            },
+            { "manufactured", new {
+                econ = new List<string>() {"Industrial"},
+                population = 1000000,
+                security = new List<string>() {"Medium", "High"},
+                service = StationService.FromName("Material Trader"),
+                cubeLy = 40}
+            },
+            { "raw", new {
+                econ = new List<string>() {"Extraction", "Refinery"},
+                population = 1000000,
+                security = new List<string>() {"Medium", "High"},
+                service = StationService.FromName("Material Trader"),
+                cubeLy = 40}
+            },
+            { "guardian", new {
+                econ = new List<string>() {"High Tech"},
+                population = 10000000,
+                security = new List<string>()  {"High"},
+                service = StationService.FromName("Technology Broker"),
+                cubeLy = 80}
+            },
+            { "human", new {
+                econ = new List<string>() {"Industrial"},
+                population = 10000000,
+                security = new List<string>() {"High"},
+                service = StationService.FromName("Technology Broker"),
+                cubeLy = 80}
+            }
         };
 
-        private static Navigation instance;
+        private static NavigationService instance;
         private static readonly object instanceLock = new object();
 
-        public static Navigation Instance
+        public static NavigationService Instance
         {
             get
             {
@@ -45,7 +81,7 @@ namespace EddiNavigationService
                         if (instance == null)
                         {
                             Logging.Debug("No Navigation instance: creating one");
-                            instance = new Navigation();
+                            instance = new NavigationService();
                         }
                     }
                 }
@@ -392,7 +428,7 @@ namespace EddiNavigationService
                         .Where(s => s.stationservices.Count > 0).ToList();
                     ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
                     if (serviceType == "facilitator") { ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
-                    ServiceStations = ServiceStations.Where(s => s.stationservices.Contains(filter.service)).ToList();
+                    ServiceStations = ServiceStations.Where(s => s.stationServices.Contains(filter.service)).ToList();
 
                     // Build list to find the station nearest to the main star
                     SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
@@ -440,7 +476,7 @@ namespace EddiNavigationService
                     {
                         // Filter systems using search parameters
                         cubeSystems = cubeSystems.Where(s => s.population >= filter.population).ToList();
-                        cubeSystems = cubeSystems.Where(s => filter.security.Contains(s.security)).ToList();
+                        cubeSystems = cubeSystems.Where(s => filter.security.Contains(s.securityLevel.invariantName)).ToList();
                         if (serviceType != "facilitator")
                         {
                             cubeSystems = cubeSystems
@@ -464,7 +500,7 @@ namespace EddiNavigationService
                                      .Where(s => s.stationservices.Count > 0).ToList();
                                 stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
                                 if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
-                                int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
+                                int stationCount = stations.Where(s => s.stationServices.Contains(filter.service)).Count();
 
                                 // Build list to find the 'service' system nearest to the current system, meeting station requirements
                                 if (stationCount > 0)

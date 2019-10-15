@@ -673,82 +673,82 @@ namespace EddiSpeechResponder
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelDestination();
+                            NavigationService.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
                         {
-                            result = Navigation.Instance.GetServiceRoute("encoded", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("encoded", materialMonitorDistance);
                         }
                         break;
                     case "expiring":
                         {
-                            result = Navigation.Instance.GetExpiringRoute();
+                            result = NavigationService.Instance.GetExpiringRoute();
                         }
                         break;
                     case "facilitator":
                         {
                             int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
                             bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                            result = Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                            result = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
                         }
                         break;
                     case "farthest":
                         {
-                            result = Navigation.Instance.GetFarthestRoute();
+                            result = NavigationService.Instance.GetFarthestRoute();
                         }
                         break;
                     case "guardian":
                         {
-                            result = Navigation.Instance.GetServiceRoute("guardian", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("guardian", materialMonitorDistance);
                         }
                         break;
                     case "human":
                         {
-                            result = Navigation.Instance.GetServiceRoute("human", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("human", materialMonitorDistance);
                         }
                         break;
                     case "manufactured":
                         {
-                            result = Navigation.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
                         }
                         break;
                     case "most":
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.GetMostRoute(values[1].AsString);
+                                result = NavigationService.Instance.GetMostRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.GetMostRoute();
+                                result = NavigationService.Instance.GetMostRoute();
                             }
                         }
                         break;
                     case "nearest":
                         {
-                            result = Navigation.Instance.GetNearestRoute();
+                            result = NavigationService.Instance.GetNearestRoute();
                         }
                         break;
                     case "next":
                         {
-                            result = Navigation.Instance.GetNextInRoute();
+                            result = NavigationService.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
                         {
-                            result = Navigation.Instance.GetServiceRoute("raw", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("raw", materialMonitorDistance);
                         }
                         break;
                     case "route":
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.GetMissionsRoute(values[1].AsString);
+                                result = NavigationService.Instance.GetMissionsRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.GetMissionsRoute();
+                                result = NavigationService.Instance.GetMissionsRoute();
                             }
                         }
                         break;
@@ -756,12 +756,12 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.GetScoopRoute(values[1].AsNumber);
+                                result = NavigationService.Instance.GetScoopRoute(values[1].AsNumber);
                             }
                             else
                             {
                                 ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
-                                result = Navigation.Instance.GetScoopRoute(detail.distance);
+                                result = NavigationService.Instance.GetScoopRoute(detail.distance);
                             }
                         }
                         break;
@@ -769,15 +769,15 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 3)
                             {
-                                result = Navigation.Instance.SetDestination(values[1].AsString, values[2].AsString);
+                                result = NavigationService.Instance.SetDestination(values[1].AsString, values[2].AsString);
                             }
                             else if (values.Count == 2)
                             {
-                                result = Navigation.Instance.SetDestination(values[1].AsString);
+                                result = NavigationService.Instance.SetDestination(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.SetDestination();
+                                result = NavigationService.Instance.SetDestination();
                             }
                         }
                         break;
@@ -785,11 +785,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.GetSourceRoute(values[1].AsString);
+                                result = NavigationService.Instance.GetSourceRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.GetSourceRoute();
+                                result = NavigationService.Instance.GetSourceRoute();
                             }
                         }
                         break;
@@ -797,11 +797,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.UpdateRoute(values[1].AsString);
+                                result = NavigationService.Instance.UpdateRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.UpdateRoute();
+                                result = NavigationService.Instance.UpdateRoute();
                             }
                         }
                         break;

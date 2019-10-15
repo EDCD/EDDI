@@ -1039,106 +1039,106 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelDestination();
+                            NavigationService.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
                         {
-                            Navigation.Instance.GetServiceRoute("encoded", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("encoded", materialDistance);
                         }
                         break;
                     case "expiring":
                         {
-                            Navigation.Instance.GetExpiringRoute();
+                            NavigationService.Instance.GetExpiringRoute();
                         }
                         break;
                     case "facilitator":
                         {
                             int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
                             bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                            Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                            NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
                         }
                         break;
                     case "farthest":
                         {
-                            Navigation.Instance.GetFarthestRoute();
+                            NavigationService.Instance.GetFarthestRoute();
                         }
                         break;
                     case "guardian":
                         {
-                            Navigation.Instance.GetServiceRoute("guardian", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("guardian", materialDistance);
                         }
                         break;
                     case "human":
                         {
-                            Navigation.Instance.GetServiceRoute("human", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("human", materialDistance);
                         }
                         break;
                     case "manufactured":
                         {
-                            Navigation.Instance.GetServiceRoute("manufactured", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("manufactured", materialDistance);
                         }
                         break;
                     case "most":
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.GetMostRoute();
+                                NavigationService.Instance.GetMostRoute();
                             }
                             else
                             {
-                                Navigation.Instance.GetMostRoute(system);
+                                NavigationService.Instance.GetMostRoute(system);
                             }
                         }
                         break;
                     case "nearest":
                         {
-                            Navigation.Instance.GetNearestRoute();
+                            NavigationService.Instance.GetNearestRoute();
                         }
                         break;
                     case "next":
                         {
-                            Navigation.Instance.GetNextInRoute();
+                            NavigationService.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
                         {
-                            Navigation.Instance.GetServiceRoute("raw", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("raw", materialDistance);
                         }
                         break;
                     case "route":
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.GetMissionsRoute();
+                                NavigationService.Instance.GetMissionsRoute();
                             }
                             else
                             {
-                                Navigation.Instance.GetMissionsRoute(system);
+                                NavigationService.Instance.GetMissionsRoute(system);
                             }
                         }
                         break;
                     case "scoop":
                         {
                             ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
-                            Navigation.Instance.GetScoopRoute(detail.distance);
+                            NavigationService.Instance.GetScoopRoute(detail.distance);
                         }
                         break;
                     case "set":
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.SetDestination();
+                                NavigationService.Instance.SetDestination();
                             }
                             else
                             {
                                 if (string.IsNullOrEmpty(station))
                                 {
-                                    Navigation.Instance.SetDestination(system);
+                                    NavigationService.Instance.SetDestination(system);
                                 }
                                 else
                                 {
-                                    Navigation.Instance.SetDestination(system, station);
+                                    NavigationService.Instance.SetDestination(system, station);
                                 }
                             }
                         }
@@ -1147,11 +1147,11 @@ namespace EddiVoiceAttackResponder
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.GetSourceRoute();
+                                NavigationService.Instance.GetSourceRoute();
                             }
                             else
                             {
-                                Navigation.Instance.GetSourceRoute(system);
+                                NavigationService.Instance.GetSourceRoute(system);
                             }
                         }
                         break;
@@ -1159,11 +1159,11 @@ namespace EddiVoiceAttackResponder
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.UpdateRoute();
+                                NavigationService.Instance.UpdateRoute();
                             }
                             else
                             {
-                                Navigation.Instance.UpdateRoute(system);
+                                NavigationService.Instance.UpdateRoute(system);
                             }
                         }
                         break;
