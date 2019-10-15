@@ -35,11 +35,6 @@ namespace EddiInaraResponder
             return Properties.InaraResources.name;
         }
 
-        public string ResponderVersion()
-        {
-            return "1.0.0";
-        }
-
         public string ResponderDescription()
         {
             return Properties.InaraResources.desc;
@@ -47,8 +42,8 @@ namespace EddiInaraResponder
 
         public InaraResponder()
         {
-            Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
-        }
+        Logging.Info($"Initialized {ResponderName()}");
+    }
 
         public bool Start()
         {

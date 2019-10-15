@@ -29,11 +29,6 @@ namespace EddiVoiceAttackResponder
             return Properties.VoiceAttack.name;
         }
 
-        public string ResponderVersion()
-        {
-            return "1.0.0";
-        }
-
         public string ResponderDescription()
         {
             return Properties.VoiceAttack.desc;

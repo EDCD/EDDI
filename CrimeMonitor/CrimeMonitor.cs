@@ -50,11 +50,6 @@ namespace EddiCrimeMonitor
             return Properties.CrimeMonitor.crime_monitor_name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return Properties.CrimeMonitor.crime_monitor_desc;
@@ -76,7 +71,7 @@ namespace EddiCrimeMonitor
         public void initializeCrimeMonitor(CrimeMonitorConfiguration configuration = null)
         {
             readRecord(configuration);
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         private void Record_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -109,8 +104,7 @@ namespace EddiCrimeMonitor
         public void Reload()
         {
             readRecord();
-            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
-
+            Logging.Info($"Reloaded {MonitorName()}");
         }
 
         public UserControl ConfigurationTabItem()

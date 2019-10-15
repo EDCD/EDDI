@@ -35,7 +35,7 @@ namespace EddiStatusMonitor
 
         public StatusMonitor()
         {
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         public string MonitorName()
@@ -46,11 +46,6 @@ namespace EddiStatusMonitor
         public string LocalizedMonitorName()
         {
             return "Status monitor";
-        }
-
-        public string MonitorVersion()
-        {
-            return "1.0.0";
         }
 
         public string MonitorDescription()

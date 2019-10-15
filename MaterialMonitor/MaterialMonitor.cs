@@ -44,11 +44,6 @@ namespace EddiMaterialMonitor
             return EddiMaterialMonitor.Properties.MaterialMonitor.name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return EddiMaterialMonitor.Properties.MaterialMonitor.name;
@@ -63,7 +58,7 @@ namespace EddiMaterialMonitor
         {
             BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
             readMaterials();
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -97,7 +92,7 @@ namespace EddiMaterialMonitor
         public void Reload()
         {
             readMaterials();
-            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Reloaded {MonitorName()}");
         }
 
         public UserControl ConfigurationTabItem()

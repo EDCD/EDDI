@@ -4155,11 +4155,6 @@ namespace EddiJournalMonitor
             return Properties.JournalMonitor.name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return Properties.JournalMonitor.desc;

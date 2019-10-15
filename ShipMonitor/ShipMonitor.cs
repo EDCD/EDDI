@@ -53,11 +53,6 @@ namespace EddiShipMonitor
             return Properties.ShipMonitor.name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return Properties.ShipMonitor.desc;
@@ -76,7 +71,7 @@ namespace EddiShipMonitor
             BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
 
             readShips();
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         private void Shipyard_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -110,7 +105,7 @@ namespace EddiShipMonitor
         public void Reload()
         {
             readShips();
-            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Reloaded {MonitorName()}");
         }
 
         public UserControl ConfigurationTabItem()

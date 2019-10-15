@@ -85,11 +85,6 @@ namespace EDDNResponder
             return EddiEddnResponder.Properties.EddnResources.name;
         }
 
-        public string ResponderVersion()
-        {
-            return "1.0.0";
-        }
-
         public string ResponderDescription()
         {
             return EddiEddnResponder.Properties.EddnResources.desc;
@@ -101,7 +96,7 @@ namespace EDDNResponder
         public EDDNResponder(StarSystemRepository starSystemRepository)
         {
             this.starSystemRepository = starSystemRepository;
-            Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+            Logging.Info($"Initialized {ResponderName()}");
         }
 
         public void Handle(Event theEvent)

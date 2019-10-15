@@ -49,11 +49,6 @@ namespace EddiCargoMonitor
             return Properties.CargoMonitor.cargo_monitor_name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return Properties.CargoMonitor.cargo_monitor_desc;
@@ -74,7 +69,7 @@ namespace EddiCargoMonitor
         public void initializeCargoMonitor(CargoMonitorConfiguration configuration = null)
         {
             readInventory(configuration);
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -107,8 +102,7 @@ namespace EddiCargoMonitor
         public void Reload()
         {
             readInventory();
-            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
-
+            Logging.Info($"Reloaded {MonitorName()}");
         }
 
         public UserControl ConfigurationTabItem()

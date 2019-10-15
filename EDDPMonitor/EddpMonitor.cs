@@ -37,14 +37,6 @@ namespace EddiEddpMonitor
         }
 
         /// <summary>
-        /// The version of the monitor; shows up in EDDI's logs
-        /// </summary>
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
-        /// <summary>
         /// The description of the monitor; shows up in EDDI's configuration window
         /// </summary>
         public string MonitorDescription()

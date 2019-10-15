@@ -25,11 +25,6 @@ namespace EddiEdsmResponder
             return Properties.EDSMResources.name;
         }
 
-        public string ResponderVersion()
-        {
-            return "1.0.0";
-        }
-
         public string ResponderDescription()
         {
             return Properties.EDSMResources.desc;
@@ -37,7 +32,7 @@ namespace EddiEdsmResponder
 
         public EDSMResponder()
         {
-            Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+            Logging.Info($"Initialized {ResponderName()}");
         }
 
         public bool Start()

@@ -57,11 +57,6 @@ namespace EddiMissionMonitor
             return Properties.MissionMonitor.mission_monitor_name;
         }
 
-        public string MonitorVersion()
-        {
-            return "1.0.0";
-        }
-
         public string MonitorDescription()
         {
             return Properties.MissionMonitor.mission_monitor_desc;
@@ -82,7 +77,7 @@ namespace EddiMissionMonitor
         public void initializeMissionMonitor(MissionMonitorConfiguration configuration = null)
         {
             readMissions(configuration);
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         private void Missions_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -116,7 +111,7 @@ namespace EddiMissionMonitor
         public void Reload()
         {
             readMissions();
-            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
+            Logging.Info($"Reloaded {MonitorName()}");
 
         }
 

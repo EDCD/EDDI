@@ -21,11 +21,6 @@ namespace Eddi
         string LocalizedResponderName();
 
         /// <summary>
-        /// The version of the responder
-        /// </summary>
-        string ResponderVersion();
-
-        /// <summary>
         /// A brief description of the responder
         /// </summary>
         string ResponderDescription();
