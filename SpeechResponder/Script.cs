@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace EddiSpeechResponder
 {
@@ -104,6 +106,25 @@ namespace EddiSpeechResponder
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        [JsonExtensionData]
+        private IDictionary<string, JToken> additionalJsonData;
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            // Convert from legacy personalities which did not store the default value.
+            if (additionalJsonData != null)
+            {
+                additionalJsonData.TryGetValue("default", out JToken defaultVal);
+                bool defaultScript = (bool?)defaultVal ?? false;
+                if (defaultScript)
+                {
+                    defaultValue = Value;
+                }
+                additionalJsonData = null;
+            }
         }
     }
 }
