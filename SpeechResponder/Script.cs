@@ -118,12 +118,15 @@ namespace EddiSpeechResponder
             if (additionalJsonData != null)
             {
                 additionalJsonData.TryGetValue("default", out JToken defaultVal);
-                bool defaultScript = (bool?)defaultVal ?? false;
-                if (defaultScript)
+                if (defaultVal != null)
                 {
-                    defaultValue = Value;
+                    bool defaultScript = (bool?)defaultVal ?? false;
+                    if (defaultScript)
+                    {
+                        defaultValue = Value;
+                    }
+                    additionalJsonData = null;
                 }
-                additionalJsonData = null;
             }
         }
     }
