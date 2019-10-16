@@ -3149,16 +3149,17 @@ namespace EddiJournalMonitor
                                             if (module.mount != null)
                                             {
                                                 // This is a weapon so provide a bit more information
-                                                string mount;
+                                                string mount = "";
                                                 switch (module.mount)
                                                 {
+                                                // FIXME this breaks localisation
                                                     case Module.ModuleMount.Fixed:
                                                         mount = "fixed";
                                                         break;
                                                     case Module.ModuleMount.Gimballed:
                                                         mount = "gimballed";
                                                         break;
-                                                    default:
+                                                    case Module.ModuleMount.Turreted:
                                                         mount = "turreted";
                                                         break;
                                                 }
