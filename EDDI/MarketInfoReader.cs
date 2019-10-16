@@ -3,13 +3,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
+using System.Globalization;
 
 namespace Eddi
 {
     public class MarketInfoReader
     {
         public string timestamp { get; set; }
-        public DateTime timeStamp => DateTime.Parse(timestamp);
+        public DateTime timeStamp => DateTime.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }
