@@ -1457,12 +1457,12 @@ namespace Eddi
 
                     if (quotes != null && info.Items.Count == quotes.Count)
                     {
-                        if (CurrentStation?.marketId == theEvent.marketId)
+                        if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                         {
                             // Update the current station commodities
                             allowMarketUpdate = false;
                             CurrentStation.commodities = quotes;
-                            CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                            CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -1502,12 +1502,12 @@ namespace Eddi
 
                     if (modules != null && info.Items.Count == modules.Count)
                     {
-                        if (CurrentStation?.marketId == theEvent.marketId)
+                        if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                         {
                             // Update the current station outfitting
                             allowOutfittingUpdate = false;
                             CurrentStation.outfitting = modules;
-                            CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                            CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -1547,12 +1547,12 @@ namespace Eddi
 
                     if (ships != null && info.PriceList.Count == ships.Count)
                     {
-                        if (CurrentStation?.marketId == theEvent.marketId)
+                        if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                         {
                             // Update the current station shipyard
                             allowShipyardUpdate = false;
                             CurrentStation.shipyard = ships;
-                            CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                            CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -1766,7 +1766,7 @@ namespace Eddi
 
             // Update to most recent information
             CurrentStarSystem.visitLog.Add(theEvent.timestamp);
-            CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
             setSystemDistanceFromHome(CurrentStarSystem);
@@ -2210,7 +2210,7 @@ namespace Eddi
                     // Save a timestamp when the API refreshes, so that we can compare whether events are more or less recent
                     ApiTimeStamp = DateTime.UtcNow;
 
-                    long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    long profileTime = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
@@ -2543,7 +2543,7 @@ namespace Eddi
                             if (profile.docked && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
                                 ApiTimeStamp = DateTime.UtcNow;
-                                long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                long profileTime = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                                 Logging.Debug("Fetching station profile");
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);

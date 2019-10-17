@@ -519,7 +519,7 @@ namespace EddiSpeechResponder
                 {
                     return null;
                 }
-                long? now = (long?)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))).TotalSeconds;
+                long? now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                 return now - date;
             }, 1);
