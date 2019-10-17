@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace Utilities
 {
@@ -16,6 +18,12 @@ namespace Utilities
             return getDateTime(key, val);
         }
 
+        public static DateTime getDateTime(string key, JObject data)
+        {
+            data.TryGetValue(key, out JToken val);
+            return getDateTime(key, val);
+        }
+
         public static DateTime getDateTime(string key, object val)
         {
             // DateTime.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
@@ -28,8 +36,22 @@ namespace Utilities
             {
                 return dtime.ToUniversalTime();
             }
+            if (val is JToken jToken)
+            {
+                return getDateTime(key, jToken.ToString());
+            }
             if (val is string str)
             {
+                if (DateTime.TryParseExact(str, "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var result))
+                {
+                    // Journal format ("2019-09-24T02:40:34Z")
+                    return result.ToUniversalTime();
+                }
+                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out result))
+                {
+                    // EDSM format ("2018-03-28 22:12:20")
+                    return result.ToUniversalTime();
+                }
                 return DateTime.Parse(str).ToUniversalTime();
             }
             throw new ArgumentException("Unparseable value for " + key);
