@@ -10,6 +10,31 @@ namespace Utilities
         /// Provide helper functions for parsing json files
         /// </summary>
 
+        public static DateTime getDateTime(string key, IDictionary<string, object> data)
+        {
+            data.TryGetValue(key, out object val);
+            return getDateTime(key, val);
+        }
+
+        public static DateTime getDateTime(string key, object val)
+        {
+            // DateTime.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
+            // and (DateTime.Parse(timestamp).ToUniversalTime() are equivalent and both return a TimeStamp in UTC.
+            if (val == null)
+            {
+                throw new ArgumentNullException("Expected value for " + key + " not present");
+            }
+            if (val is DateTime dtime)
+            {
+                return dtime.ToUniversalTime();
+            }
+            if (val is string str)
+            {
+                return DateTime.Parse(str).ToUniversalTime();
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
         public static decimal getDecimal(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
