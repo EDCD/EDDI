@@ -257,5 +257,7 @@
     <value>Frontier API 接続が有効になっていません。</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDIが管理者モードで動作しています。管理者モードでは、ブラウザーからの通信がブロックされ、ログインに失敗する場合があります。</value>
+  </data>
 </root>
