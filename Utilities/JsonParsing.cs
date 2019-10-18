@@ -34,6 +34,10 @@ namespace Utilities
             }
             if (val is DateTime dtime)
             {
+                if (dtime.Kind is DateTimeKind.Utc)
+                {
+                    return dtime;
+                }
                 return dtime.ToUniversalTime();
             }
             if (val is JToken jToken)
@@ -42,17 +46,17 @@ namespace Utilities
             }
             if (val is string str)
             {
-                if (DateTime.TryParseExact(str, "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var result))
+                if (DateTime.TryParseExact(str, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var result))
                 {
                     // Journal format ("2019-09-24T02:40:34Z")
-                    return result.ToUniversalTime();
+                    return result;
                 }
-                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out result))
+                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out result))
                 {
                     // EDSM format ("2018-03-28 22:12:20")
-                    return result.ToUniversalTime();
+                    return result;
                 }
-                return DateTime.Parse(str).ToUniversalTime();
+                return DateTime.Parse(str, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
