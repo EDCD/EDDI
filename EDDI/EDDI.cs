@@ -1471,7 +1471,7 @@ namespace Eddi
 
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1516,7 +1516,7 @@ namespace Eddi
 
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1561,7 +1561,7 @@ namespace Eddi
 
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
                         enqueueEvent(@event);
                     }
                     return true;
