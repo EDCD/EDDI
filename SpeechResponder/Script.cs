@@ -45,7 +45,7 @@ namespace EddiSpeechResponder
             set { responder = value; OnPropertyChanged("Responder"); }
         }
 
-        [JsonIgnore]
+        [JsonProperty("default")]
         public bool Default => Value == defaultValue;
 
         [JsonIgnore]
