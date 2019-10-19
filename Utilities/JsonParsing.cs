@@ -51,7 +51,7 @@ namespace Utilities
                     // Journal format ("2019-09-24T02:40:34Z")
                     return result;
                 }
-                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out result))
+                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
                 {
                     // EDSM format ("2018-03-28 22:12:20")
                     return result;
