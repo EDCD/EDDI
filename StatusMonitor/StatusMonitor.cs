@@ -175,20 +175,14 @@ namespace EddiStatusMonitor
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                     // Every status event has a timestamp field
-                    if (data.ContainsKey("timestamp"))
+                    status.timestamp = DateTime.UtcNow;
+                    try
                     {
-                        if (data["timestamp"] is DateTime)
-                        {
-                            status.timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
-                        }
-                        else
-                        {
-                            status.timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
-                        }
+                        status.timestamp = JsonParsing.getDateTime("timestamp", data);
                     }
-                    else
+                    catch
                     {
-                        Logging.Warn("Status event without timestamp; using current time");
+                        Logging.Warn("Status without timestamp; using current time");
                     }
 
                     status.flags = (Status.Flags)(JsonParsing.getOptionalLong(data, "Flags") ?? 0);

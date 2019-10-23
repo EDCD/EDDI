@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace Utilities
 {
@@ -9,6 +11,55 @@ namespace Utilities
         /// <summary>
         /// Provide helper functions for parsing json files
         /// </summary>
+
+        public static DateTime getDateTime(string key, IDictionary<string, object> data)
+        {
+            data.TryGetValue(key, out object val);
+            return getDateTime(key, val);
+        }
+
+        public static DateTime getDateTime(string key, JObject data)
+        {
+            data.TryGetValue(key, out JToken val);
+            return getDateTime(key, val);
+        }
+
+        public static DateTime getDateTime(string key, object val)
+        {
+            // DateTime.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
+            // and (DateTime.Parse(timestamp).ToUniversalTime() are equivalent and both return a TimeStamp in UTC.
+            if (val == null)
+            {
+                throw new ArgumentNullException("Expected value for " + key + " not present");
+            }
+            if (val is DateTime dtime)
+            {
+                if (dtime.Kind is DateTimeKind.Utc)
+                {
+                    return dtime;
+                }
+                return dtime.ToUniversalTime();
+            }
+            if (val is JToken jToken)
+            {
+                return getDateTime(key, jToken.ToString());
+            }
+            if (val is string str)
+            {
+                if (DateTime.TryParseExact(str, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var result))
+                {
+                    // Journal format ("2019-09-24T02:40:34Z")
+                    return result;
+                }
+                if (DateTime.TryParseExact(str, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result))
+                {
+                    // EDSM format ("2018-03-28 22:12:20")
+                    return result;
+                }
+                return DateTime.Parse(str, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
 
         public static decimal getDecimal(IDictionary<string, object> data, string key)
         {

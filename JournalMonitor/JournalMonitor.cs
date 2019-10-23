@@ -78,18 +78,11 @@ namespace EddiJournalMonitor
 
                     // Every event has a timestamp field
                     DateTime timestamp = DateTime.UtcNow;
-                    if (data.ContainsKey("timestamp"))
+                    try
                     {
-                        if (data["timestamp"] is DateTime)
-                        {
-                            timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
-                        }
-                        else
-                        {
-                            timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
-                        }
+                        timestamp = JsonParsing.getDateTime("timestamp", data);
                     }
-                    else
+                    catch
                     {
                         Logging.Warn("Event without timestamp; using current time");
                     }

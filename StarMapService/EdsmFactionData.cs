@@ -67,6 +67,7 @@ namespace EddiStarMapService
 
         private static Faction ParseStarMapFaction(JObject faction, string systemName)
         {
+            if (faction is null) { return null; }
             Faction Faction = new Faction
             {
                 name = (string)faction["name"],
@@ -74,7 +75,7 @@ namespace EddiStarMapService
                 Allegiance = Superpower.FromName((string)faction["allegiance"]) ?? Superpower.None,
                 Government = Government.FromName((string)faction["government"]) ?? Government.None,
                 isplayer = (bool?)faction["isPlayer"],
-                updatedAt = (DateTime)Dates.fromTimestamp((long?)faction["lastUpdate"])
+                updatedAt = Dates.fromTimestamp((long?)faction["lastUpdate"]) ?? DateTime.MinValue
             };
 
             Faction.presences.Add(new FactionPresence()

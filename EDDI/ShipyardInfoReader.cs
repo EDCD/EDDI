@@ -8,8 +8,7 @@ namespace Eddi
 {
     public class ShipyardInfoReader
     {
-        public string timestamp { get; set; }
-        public DateTime timeStamp => DateTime.Parse(timestamp);
+        public DateTime timestamp { get; set; }
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }

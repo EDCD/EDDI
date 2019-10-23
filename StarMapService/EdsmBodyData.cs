@@ -136,8 +136,8 @@ namespace EddiStarMapService
 
                 Body Body = new Body(bodyname, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absolutemagnitude, ageMegaYears, temperatureKelvin, luminosityclass, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, true, false, systemName, null);
                 Body.EDSMID = EDSMID;
-                DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
-                Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
+                DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
+                Body.updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt);
 
                 return Body;
             }
@@ -232,11 +232,11 @@ namespace EddiStarMapService
                 }
                 ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
-                DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
+                DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
                 Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, null)
                 {
                     EDSMID = EDSMID,
-                    updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds
+                    updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)
                 };
 
                 return Body;
