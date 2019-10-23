@@ -28,8 +28,6 @@ namespace Eddi
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool fromVA;
-
         struct LanguageDef : IComparable<LanguageDef>
         {
             public CultureInfo ci;
@@ -53,8 +51,6 @@ namespace Eddi
             }
         }
 
-        public MainWindow() : this(false) { }
-
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -71,7 +67,7 @@ namespace Eddi
                     Properties.Settings.Default.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    Properties.Settings.Default.Minimized = fromVA ? false : true;
+                    Properties.Settings.Default.Minimized = !App.FromVA;
 
                     break;
                 default:
@@ -160,24 +156,21 @@ namespace Eddi
 
         private static readonly object logLock = new object();
 
-        public MainWindow(bool fromVA = false)
+        public MainWindow()
         {
             InitializeComponent();
 
-            this.fromVA = fromVA;
-
             // Start the EDDI instance
-            EDDI.FromVA = fromVA;
             EDDI.Instance.Start();
 
             // Configure the EDDI tab
             setStatusInfo();
 
             // Need to set up the correct information in the hero text depending on from where we were started
-            if (fromVA)
+            if (App.FromVA)
             {
                 // Allow the EDDI VA plugin to change window state
-                VaWindowStateChange = new vaWindowStateChangeDelegate(OnVaWindowStateChange);
+                VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.EddiResources.change_affect_va;
                 chooseLanguageText.Text = Properties.MainWindow.choose_lang_label_va;
             }
@@ -242,8 +235,10 @@ namespace Eddi
 
             LoadAndSortTabs(eddiConfiguration);
 
-            RestoreWindowState();
-            EDDI.Instance.MainWindow = this;
+            if (!App.FromVA)
+            {
+                RestoreWindowState();
+            }
             EDDI.Instance.Start();
         }
 
@@ -863,8 +858,8 @@ namespace Eddi
         private void companionApiStatusChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
         {
             // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.
-            EDDI.Instance.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
-
+            System.Windows.Application.Current?.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
+            
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
@@ -888,7 +883,7 @@ namespace Eddi
             {
                 statusText.Text = String.Format(Properties.EddiResources.update_message, EDDI.Instance.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
-                upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+                upgradeButton.Visibility = App.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
             else
             {
@@ -917,8 +912,8 @@ namespace Eddi
                 case CompanionAppService.State.LoggedOut:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
                     companionAppButton.Content = Properties.EddiResources.login;
-                    companionAppButton.IsEnabled = !fromVA;
-                    companionAppText.Text = !fromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
+                    companionAppButton.IsEnabled = !App.FromVA;
+                    companionAppText.Text = !App.FromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
@@ -957,7 +952,7 @@ namespace Eddi
                 // Logout from the companion app and start again
                 CompanionAppService.Instance.Logout();
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, 0);
-                if (fromVA)
+                if (App.FromVA)
                 {
                     SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, 0);
                 }
@@ -1045,7 +1040,7 @@ namespace Eddi
 
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
         // been given and the EDDI configuration window is already open. If the window
-        // is minimize, restore it, otherwise the plugin will ignore the command.
+        // is minimized, restore it, otherwise the plugin will ignore the command.
         public delegate void vaWindowStateChangeDelegate(WindowState state, bool minimizeCheck);
         public vaWindowStateChangeDelegate VaWindowStateChange;
         public void OnVaWindowStateChange(WindowState state, bool minimizeCheck)
@@ -1064,31 +1059,14 @@ namespace Eddi
         {
             base.OnClosing(e);
 
-            if (!e.Cancel)
+            // Save window position here as the RestoreBounds rect gets set
+            // to empty somewhere between here and OnClosed.
+            System.Windows.Application.Current?.Dispatcher?.Invoke(SaveWindowState);
+
+            if (App.FromVA)
             {
-                // Save window position here as the RestoreBounds rect gets set
-                // to empty somewhere between here and OnClosed.
-                SaveWindowState();
-
-                if (!fromVA)
-                {
-                    // When in OnClosed(), if the EDDI window was closed while minimized
-                    // (under debugger), monitorThread.Join() would block waiting for a
-                    // thread(s) to terminate. Strange, because it does not block when the
-                    // window is closed in the normal or maximized state.
-                    EDDI.Instance.Stop();
-                }
-            }
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-
-            if (!fromVA)
-            {
-                SpeechService.Instance.ShutUp();
-                System.Windows.Application.Current.Shutdown();
+                e.Cancel = true;
+                Hide();
             }
         }
 
@@ -1104,7 +1082,7 @@ namespace Eddi
         {
             // Write out useful information to the log before proceeding
             Logging.Info("EDDI version: " + Constants.EDDI_VERSION);
-            if (fromVA)
+            if (App.FromVA)
             {
                 Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
             }

@@ -17,6 +17,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Utilities;
 
 namespace Eddi
@@ -28,9 +29,6 @@ namespace Eddi
     public class EDDI
     {
         private static EDDI instance;
-
-        // True if we have been started by VoiceAttack
-        public static bool FromVA = false;
 
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
@@ -130,9 +128,6 @@ namespace Eddi
         // Current vehicle of player
         public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
-
-        // Our main window, made accessible via the applicable EDDI Instance
-        public MainWindow MainWindow { get; internal set; }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
@@ -288,7 +283,7 @@ namespace Eddi
                     if (minVersion > Constants.EDDI_VERSION)
                     {
                         // There is a mandatory update available
-                        if (!FromVA)
+                        if (!App.FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
@@ -303,7 +298,7 @@ namespace Eddi
                     if (latestVersion > Constants.EDDI_VERSION)
                     {
                         // There is an update available
-                        if (!FromVA)
+                        if (!App.FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
@@ -445,9 +440,9 @@ namespace Eddi
                 }
             }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
-
+            SpeechService.Instance.ShutUp();
             started = false;
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
         }
 
         /// <summary>
@@ -1943,11 +1938,14 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
-                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-            }));
+                if (Application.Current?.MainWindow != null)
+                {
+                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
+                }
+            });
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -1973,12 +1971,15 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        Application.Current?.Dispatcher?.Invoke(() =>
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                            Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
-                        }));
+                            if (Application.Current?.MainWindow != null)
+                            {
+                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+                                ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
+                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
+                            }
+                        });
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1994,10 +1995,13 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        Application.Current?.Dispatcher?.Invoke(() =>
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                        }));
+                            if (Application.Current?.MainWindow != null)
+                            {
+                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+                            }
+                        });
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2015,12 +2019,15 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        Application.Current?.Dispatcher?.Invoke(() =>
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = string.Empty;
-                            Instance.MainWindow.eddiSquadronIDText.Text = string.Empty;
-                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
-                        }));
+                            if (Application.Current?.MainWindow != null)
+                            {
+                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = string.Empty;
+                                ((MainWindow)Application.Current.MainWindow).eddiSquadronIDText.Text = string.Empty;
+                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
+                            }
+                        });
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2045,11 +2052,14 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            Application.Current?.Dispatcher?.Invoke(() =>
             {
-                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-            }));
+                if (Application.Current?.MainWindow != null)
+                {
+                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
+                }
+            });
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -2772,10 +2782,13 @@ namespace Eddi
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                    Application.Current?.Dispatcher?.Invoke(() =>
                     {
-                        Instance.MainWindow.squadronFactionDropDown.SelectedItem = faction.name;
-                    }));
+                        if (Application.Current?.MainWindow != null)
+                        {
+                            ((MainWindow)Application.Current.MainWindow).squadronFactionDropDown.SelectedItem = faction.name;
+                        }
+                    });
 
                     Cmdr.squadronfaction = faction.name;
                 }
@@ -2789,11 +2802,15 @@ namespace Eddi
                     {
                         configuration.SquadronSystem = system;
 
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        var configurationCopy = configuration;
+                        Application.Current?.Dispatcher?.Invoke(() =>
                         {
-                            Instance.MainWindow.squadronSystemDropDown.Text = system;
-                            Instance.MainWindow.ConfigureSquadronFactionOptions(configuration);
-                        }));
+                            if (Application.Current?.MainWindow != null)
+                            {
+                                ((MainWindow)Application.Current.MainWindow).squadronSystemDropDown.Text = system;
+                                ((MainWindow)Application.Current.MainWindow).ConfigureSquadronFactionOptions(configurationCopy);
+                            }
+                        });
 
                         configuration = updateSquadronSystem(configuration);
                     }
@@ -2821,11 +2838,14 @@ namespace Eddi
                         {
                             configuration.SquadronPower = power;
 
-                            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                            Application.Current?.Dispatcher?.Invoke(() =>
                             {
-                                Instance.MainWindow.squadronPowerDropDown.SelectedItem = power.localizedName;
-                                Instance.MainWindow.ConfigureSquadronPowerOptions(configuration);
-                            }));
+                                if (Application.Current?.MainWindow != null)
+                                {
+                                    ((MainWindow)Application.Current.MainWindow).squadronPowerDropDown.SelectedItem = power.localizedName;
+                                    ((MainWindow)Application.Current.MainWindow).ConfigureSquadronPowerOptions(configuration);
+                                }
+                            });
                         }
                     }
                 }

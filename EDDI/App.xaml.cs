@@ -13,33 +13,90 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
+        public static Mutex eddiMutex { get; private set; }
+
+        // True if we have been started by VoiceAttack and the vaProxy object has been set
+        public static bool FromVA => vaProxy != null;
+        public static dynamic vaProxy;
+
         [STAThread]
-        static void Main()
+        public static void Main()
         {
+            if (!FromVA && AlreadyRunning()) { return; }
+
+            App app = new App();
+            app.Exit += OnExit;
+
             // Start the application
             Logging.incrementLogs(); // Increment to a new log file.
             StartRollbar(); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
-#pragma warning disable IDE0067 // Dispose objects before losing scope
-            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
-#pragma warning restore IDE0067 // Dispose objects before losing scope
-
-            if (firstOwner)
+            if (FromVA)
             {
-                App app = new App();
-                MainWindow mainWindow = new MainWindow();
-                app.Run(mainWindow);
-                eddiMutex.ReleaseMutex();
+                // Start with the MainWindow hidden
+                app.MainWindow = new MainWindow();
+                app.Run();
             }
             else
             {
-                string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
-                string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
-                MessageBox.Show(localisedMultipleInstanceAlertText,
-                                localisedMultipleInstanceAlertTitle,
-                                MessageBoxButton.OK, MessageBoxImage.Information);
+                // Start by displaying the MainWindow
+                app.Run(new MainWindow());
             }
+        }
+
+        private static void OnExit(object sender, ExitEventArgs e)
+        {
+            EDDI.Instance.Stop();
+
+            if (!FromVA)
+            {
+                eddiMutex.ReleaseMutex();
+            }
+        }
+
+        // We need to set and release our mutex from the same thread.
+        // For VoiceAttack, this will be handled from the VoiceAttack plugin.
+        // For standalone, this will be handled here.
+        public static bool AlreadyRunning()
+        {
+#pragma warning disable IDE0067 // Dispose objects before losing scope
+            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+#pragma warning restore IDE0067 // Dispose objects before losing scope
+
+            if (!firstOwner)
+            {
+                if (!FromVA)
+                {
+                    string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
+                    string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
+                    MessageBox.Show(localisedMultipleInstanceAlertText,
+                                    localisedMultipleInstanceAlertTitle,
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                    return true;
+                }
+                else
+                {
+                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
+
+                    MessageBoxResult result =
+                        MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
+                                        "the open EDDI application and click OK to continue. " +
+                                        "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
+                                        "EDDI Instance Exists",
+                                        MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+                    // Any response will require the mutex to be reset
+                    eddiMutex.Close();
+
+                    if (MessageBoxResult.Cancel == result)
+                    {
+                        vaProxy.WriteToLog("EDDI initialization cancelled by user.", "red");
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public static void StartRollbar()
@@ -47,8 +104,7 @@ namespace Eddi
             // Configure Rollbar error reporting
 
             // Generate or retrieve an id unique to this configuration for bug tracking
-            if (Eddi.Properties.Settings.Default.uniqueID == null ||
-                Eddi.Properties.Settings.Default.uniqueID == "")
+            if (string.IsNullOrEmpty(Eddi.Properties.Settings.Default.uniqueID))
             {
                 Eddi.Properties.Settings.Default.uniqueID = Guid.NewGuid().ToString();
             }

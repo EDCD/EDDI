@@ -225,7 +225,7 @@ namespace EddiSpeechResponder
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,
-                ["va_active"] = EDDI.FromVA,
+                ["va_active"] = App.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle
             };
 

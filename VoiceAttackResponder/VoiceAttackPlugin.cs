@@ -5,7 +5,6 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiMaterialMonitor;
-using EddiMissionMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder;
@@ -16,7 +15,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -54,18 +52,34 @@ namespace EddiVoiceAttackResponder
 
         public static void VA_Init1(dynamic vaProxy)
         {
-            Logging.Info("Initialising EDDI VoiceAttack plugin");
-            EDDI.FromVA = true;
+            // Initialize and launch an EDDI instance without opening the main window
+            // VoiceAttack commands will be used to manipulate the window state.
+            App.vaProxy = vaProxy;
+            if (App.AlreadyRunning()) { return; }
+
+            Thread appThread = new Thread(App.Main);
+            appThread.SetApartmentState(ApartmentState.STA);
+            appThread.Start();
 
             try
             {
-                GetEddiInstance(ref vaProxy);
-                Logging.incrementLogs();
-                App.StartRollbar();
-                App.ApplyAnyOverrideCulture();
-                EDDI.Instance.Start();
+                int timeout = 0;
+                while (Application.Current == null)
+                {
+                    if (timeout < 200)
+                    {
+                        Thread.Sleep(50);
+                        timeout++;
+                    }
+                    else
+                    {
+                        throw new TimeoutException("EDDI VoiceAttack plugin initialisation has timed out");
+                    }
+                }
 
-                // Set up our event responder
+                Logging.Info("Initialising EDDI VoiceAttack plugin");
+
+                // Set up our event responders
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
                 {
                     try
@@ -111,23 +125,29 @@ namespace EddiVoiceAttackResponder
                 };
 
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-                shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                if (shipMonitor != null)
                 {
-                    lock (vaProxyLock)
+                    shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                     {
-                        setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
-                        Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
-                    }
-                };
+                        lock (vaProxyLock)
+                        {
+                            setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
+                            Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
+                        }
+                    };
+                }
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
-                statusMonitor.StatusUpdatedEvent += (s, e) =>
+                if (statusMonitor != null)
                 {
-                    lock (vaProxyLock)
+                    statusMonitor.StatusUpdatedEvent += (s, e) =>
                     {
-                        setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
-                    }
-                };
+                        lock (vaProxyLock)
+                        {
+                            setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
+                        }
+                    };
+                }
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
@@ -264,57 +284,18 @@ namespace EddiVoiceAttackResponder
                 personality.Scripts.TryGetValue(name, out script);
             }
 
-            return script == null ? false : script.Enabled;
-        }
-
-        private static Mutex eddiMutex = null;
-        private static bool eddiInstance = false;
-        private static void GetEddiInstance(ref dynamic vaProxy)
-        {
-            if (eddiInstance)
-            {
-                return;
-            }
-
-            bool firstOwner = false;
-
-            while (!firstOwner)
-            {
-                eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
-
-                if (!firstOwner)
-                {
-                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
-
-                    MessageBoxResult result =
-                    MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
-                                    "the open EDDI application and click OK to continue. " +
-                                    "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
-                                    "EDDI Instance Exists",
-                                    MessageBoxButton.OKCancel, MessageBoxImage.Information);
-
-                    // Any response will require the mutex to be reset
-                    eddiMutex.Close();
-
-                    if (MessageBoxResult.Cancel == result)
-                    {
-                        throw new Exception("EDDI initialization cancelled by user.");
-                    }
-                }
-            }
-
-            eddiInstance = true;
+            return script?.Enabled ?? false;
         }
 
         public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
-            if (configWindow != null)
+            if (Application.Current?.Dispatcher != null)
             {
                 try
                 {
-                    configWindow.Dispatcher.BeginInvoke((Action)configWindow.Close);
+                    Application.Current.Dispatcher.Invoke(() => Application.Current.MainWindow?.Close());
                 }
                 catch (Exception ex)
                 {
@@ -322,17 +303,9 @@ namespace EddiVoiceAttackResponder
                 }
             }
 
-            if (updaterThread != null)
-            {
-                updaterThread.Abort();
-            }
-
-            SpeechService.Instance.ShutUp();
-
-            if (eddiInstance)
-            {
-                EDDI.Instance.Stop();
-            }
+            updaterThread?.Abort();
+            Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
+            App.eddiMutex.ReleaseMutex();
         }
 
         public static void VA_StopCommand()
@@ -372,7 +345,7 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "initialize eddi":
-                        if (eddiInstance)
+                        if (App.FromVA && Application.Current != null)
                         {
                             vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                         }
@@ -388,7 +361,7 @@ namespace EddiVoiceAttackResponder
                     case "configurationclose":
                         // Ignore any attempt to access the EDDI UI if VA
                         // doesn't own the EDDI instance.
-                        if (eddiInstance)
+                        if (App.FromVA && Application.Current != null)
                         {
                             InvokeConfiguration(ref vaProxy);
                         }
@@ -459,12 +432,13 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static MainWindow configWindow = null;
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             string config = (string)vaProxy.Context;
 
-            if (configWindow == null && config != "configuration")
+            if (Application.Current?.Dispatcher != null 
+                && (bool)Application.Current?.Dispatcher?.Invoke(() => Application.Current.MainWindow == null) 
+                && config != "configuration")
             {
                 vaProxy.WriteToLog("The EDDI configuration window is not open.", "orange");
                 return;
@@ -473,42 +447,29 @@ namespace EddiVoiceAttackResponder
             switch (config)
             {
                 case "configuration":
-                    // Ensure there's only one instance of the configuration UI
-                    if (configWindow == null)
+                    if (Application.Current?.Dispatcher != null)
                     {
-                        Thread configThread = new Thread(() =>
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
                             try
                             {
-                                configWindow = new MainWindow(true);
-                                configWindow.Closing += new CancelEventHandler(eddiClosing);
-                                configWindow.ShowDialog();
-
-                                // Bind Cargo monitor inventory, Material Monitor inventory, & Ship monitor shipyard collections to the EDDI config Window
-                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).EnableConfigBinding(configWindow);
-                                ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).EnableConfigBinding(configWindow);
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).EnableConfigBinding(configWindow);
-                                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).EnableConfigBinding(configWindow);
-
-                                configWindow = null;
-                            }
-                            catch (ThreadAbortException)
-                            {
-                                Logging.Debug("Thread aborted");
+                                if (Application.Current?.MainWindow?.Visibility == Visibility.Collapsed
+                                    || Application.Current?.MainWindow?.Visibility == Visibility.Hidden)
+                                {
+                                    Application.Current.MainWindow?.Show();
+                                }
+                                else
+                                {
+                                        // Tell the configuration UI to restore its window if minimized
+                                        setWindowState(ref App.vaProxy, WindowState.Minimized, true, false);
+                                    App.vaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
+                                }
                             }
                             catch (Exception ex)
                             {
                                 Logging.Warn("Show configuration window failed", ex);
                             }
                         });
-                        configThread.SetApartmentState(ApartmentState.STA);
-                        configThread.Start();
-                    }
-                    else
-                    {
-                        // Tell the configuration UI to restore its window if minimized
-                        setWindowState(ref vaProxy, WindowState.Minimized, true, false);
-                        vaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
                     }
                     break;
                 case "configurationminimize":
@@ -521,22 +482,7 @@ namespace EddiVoiceAttackResponder
                     setWindowState(ref vaProxy, WindowState.Normal);
                     break;
                 case "configurationclose":
-                    // Unbind the Cargo Monitor inventory, Material Monitor inventory, & Ship Monitor shipyard collections from the EDDI config window
-                    ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).DisableConfigBinding(configWindow);
-                    ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).DisableConfigBinding(configWindow);
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).DisableConfigBinding(configWindow);
-                    ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).DisableConfigBinding(configWindow);
-
-                    configWindow.Dispatcher.Invoke(configWindow.Close);
-
-                    if (eddiCloseCancelled)
-                    {
-                        vaProxy.WriteToLog("The EDDI window cannot be closed at this time.", "orange");
-                    }
-                    else
-                    {
-                        configWindow = null;
-                    }
+                    Application.Current?.Dispatcher?.Invoke(() => Application.Current?.MainWindow?.Hide());
                     break;
                 default:
                     vaProxy.WriteToLog("Plugin context \"" + (string)vaProxy.Context + "\" not recognized.", "orange");
@@ -555,22 +501,12 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                configWindow.Dispatcher.Invoke(configWindow.VaWindowStateChange, new object[] { newState, minimizeCheck });
+                Application.Current?.Dispatcher?.Invoke(() =>
+                {
+                    MainWindow mainwindow = (MainWindow)Application.Current?.MainWindow;
+                    mainwindow?.Dispatcher?.Invoke(mainwindow.VaWindowStateChange, newState, minimizeCheck);
+                });
             }
-        }
-
-        // Hook the closing event to see if the main window is blocked waiting
-        // for a modal dialog to close, and if it is, warn and cancel the close.
-        private static bool eddiCloseCancelled = false;
-        private static void eddiClosing(Object sender, CancelEventArgs e)
-        {
-            if (EDDI.Instance.SpeechResponderModalWait)
-            {
-                System.Media.SystemSounds.Beep.Play();
-                e.Cancel = true;
-            }
-
-            eddiCloseCancelled = e.Cancel;
         }
 
         /// <summary>Force-update EDDI's information</summary>
@@ -692,7 +628,7 @@ namespace EddiVoiceAttackResponder
             bool? useClipboard = vaProxy.GetBoolean("EDDI use clipboard");
             if (useClipboard != null && useClipboard == true)
             {
-                Thread thread = new Thread(() => System.Windows.Clipboard.SetText(uri));
+                Thread thread = new Thread(() => Clipboard.SetText(uri));
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
                 thread.Join();
@@ -718,11 +654,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                int? priority = vaProxy.GetInt("Priority");
-                if (priority == null)
-                {
-                    priority = 3;
-                }
+                int? priority = vaProxy.GetInt("Priority") ?? 3;
 
                 string voice = vaProxy.GetText("Voice");
 
@@ -747,11 +679,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                int? priority = vaProxy.GetInt("Priority");
-                if (priority == null)
-                {
-                    priority = 3;
-                }
+                int? priority = vaProxy.GetInt("Priority") ?? 3;
 
                 string voice = vaProxy.GetText("Voice");
 
@@ -843,10 +771,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
-                if (speechResponder != null)
-                {
-                    speechResponder.SetPersonality(personality);
-                }
+                speechResponder?.SetPersonality(personality);
             }
             catch (Exception e)
             {
@@ -913,11 +838,11 @@ namespace EddiVoiceAttackResponder
             Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             if (ship != null)
             {
-                if (ship != null && ship.phoneticname != null)
+                if (ship.phoneticname != null)
                 {
                     script = script.Replace("$=", ship.phoneticname);
                 }
-                else if (ship != null && ship.name != null)
+                else if (ship.name != null)
                 {
                     script = script.Replace("$=", ship.name);
                 }
