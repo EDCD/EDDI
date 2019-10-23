@@ -2,6 +2,14 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.0-b2
+  * Core
+    * Fixed incorrect conversion to the local time zone when parsing timestamps from the journal and cAPI.
+  * Ship Monitor
+    * Fixed alignment of ship status (clean vs hot) to conform with the column header. 
+  * VoiceAttack Responder
+    * Fixed memory leaks when opening and closing EDDI's main window under VoiceAttack 
+
 ### 3.5.0-b1
   * Core
     * Added new `Inara Responder`.
