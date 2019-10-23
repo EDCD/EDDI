@@ -275,5 +275,7 @@
     <value>このEDDIのビルドでは、Frontier APIが有効になっていません。</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>EDDIの言語（VoiceAttackの再起動が必要です）</value>
+  </data>
 </root>

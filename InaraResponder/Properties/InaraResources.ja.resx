@@ -117,9 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>API キー:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>移動の詳細をInara（https://inara.cz）に送信します。 Inaraは、Pilots Federationメンバーに関する情報を提供し、自分のステータスと実績のプロファイルを生成するサードパーティツールです。 </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Inara Responder</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Inaraに接続するには、アカウントを登録する必要があります。 これが完了したら、ウェブサイトヘッダーの'SETTINGS'ショートカットをクリックし、左パネルの’INARA API'をクリックして、APIキーを取得できます。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>APIキーを入力すると、EDDIはゲームセッションデータのInaraへの送信を開始します。</value>
+  </data>
 </root>

@@ -229,5 +229,8 @@
     <value>Menu de la station</value>
     <comment>Station Service: Station Menu</comment>
   </data>
-  
+  <data name="Shop" xml:space="preserve">
+    <value>Boutique</value>
+    <comment>Station Service: Shop</comment>
+  </data>
 </root>

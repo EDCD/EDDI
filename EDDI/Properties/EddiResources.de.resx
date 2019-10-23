@@ -259,5 +259,7 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
     <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDI wird im Administratormodus ausgeführt. Der Administratormodus blockiert möglicherweise die Nachrichtenübertragung von Ihrem Browser zu EDDI und führt dazu, dass die Anmeldung fehlschlägt.</value>
+  </data>
 </root>

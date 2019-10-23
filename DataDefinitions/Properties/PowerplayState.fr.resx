@@ -116,5 +116,7 @@
   <data name="Prepared" xml:space="preserve">
     <value>Préparé</value>
   </data>
-  
+  <data name="Turmoil" xml:space="preserve">
+    <value>Trouble</value>
+  </data>
 </root>
