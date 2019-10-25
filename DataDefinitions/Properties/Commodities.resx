@@ -1673,4 +1673,8 @@
     <value>Rockforth Fertiliser</value>
     <comment>Commodity RockforthFertiliser</comment>
   </data>
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Agronomic Treatment</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
 </root>

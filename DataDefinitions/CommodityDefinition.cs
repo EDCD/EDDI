@@ -372,6 +372,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128924331, null, "Alexandrite", Minerals, 0, false),
                 new CommodityDefinition(128924332, null, "Opal", Minerals, 0, false),
                 new CommodityDefinition(128924333, null, "RockforthFertiliser", Chemicals, 0, false),
+                new CommodityDefinition(128924334, null, "agronomictreatment", Chemicals, 3464, false),
                 // PowerPlay
                 new CommodityDefinition(128671289, null, "AislingMediaMaterials", Powerplay, 0, false),
                 new CommodityDefinition(128671290, null, "AislingMediaResources", Powerplay, 0, false),
@@ -411,7 +412,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128732548, null, "UndergroundSupport", Powerplay, 0, false),
                 new CommodityDefinition(128732549, null, "GromCounterIntelligence", Powerplay, 0, false),
                 new CommodityDefinition(128732550, null, "GromWarTrophies", Powerplay, 0, false),
-                
+
                 // Items for which we do not have Elite IDs
             };
         }
