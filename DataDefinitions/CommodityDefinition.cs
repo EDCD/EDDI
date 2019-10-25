@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -7,6 +8,8 @@ namespace EddiDataDefinitions
 
     public class CommodityDefinition : ResourceBasedLocalizedEDName<CommodityDefinition>
     {
+        [SuppressMessage("ReSharper", "StringLiteralTypo")]
+        [SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
         static CommodityDefinition()
         {
             resourceManager = Properties.Commodities.ResourceManager;
@@ -15,7 +18,7 @@ namespace EddiDataDefinitions
             CommoditiesByEliteID = new Dictionary<long, CommodityDefinition>();
 
             // 2xxxxxxxx & 3xxxxxxxx series Frontier IDs are placeholders, to use until an actual Frontier ID is identified
-            // Check https://eddb.io/archive/v5/commodities.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
+            // Check https://eddb.io/archive/v6/commodities.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
             var _ = new List<CommodityDefinition>
             {
                 new CommodityDefinition(0, 0, "Unknown", Unknown, 0, false),
@@ -261,6 +264,8 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667719, 243, "VidavantianLace", ConsumerItems, 12615, true),
                 new CommodityDefinition(128668017, 244, "JaquesQuinentianStill", ConsumerItems, 2108, true),
                 new CommodityDefinition(128668018, 245, "SoontillRelics", ConsumerItems, 19885, true),
+                new CommodityDefinition(128671119, 352, "Advert1", ConsumerItems, 21542, true), // Ultra-Compact Processor Prototypes
+                new CommodityDefinition(128727921, 354, "AnimalEffigies", Narcotics, 8399, true), // Crom Silver Fesh
                 new CommodityDefinition(128668547, 246, "UnknownArtifact", Salvage, 290190, false),
                 new CommodityDefinition(128668549, 247, "Hafnium178", Metals, 69098, false),
                 new CommodityDefinition(128668552, 248, "MilitaryIntelligence", Salvage, 55527, false),
@@ -280,7 +285,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128672135, 262, "Hostage", Salvage, 2427, false),
                 new CommodityDefinition(128672315, 263, "GeologicalSamples", Salvage, 446, false),
                 new CommodityDefinition(128672316, 264, "MasterChefs", Slaves, 20590, true),
-                new CommodityDefinition(128672431, null, "PersonalGifts", ConsumerItems, 0, false),
+                new CommodityDefinition(128672431, 353, "PersonalGifts", ConsumerItems, 0, false),
                 new CommodityDefinition(128672432, 265, "CrystallineSpheres", ConsumerItems, 12216, true),
                 new CommodityDefinition(128672775, 266, "Taaffeite", Minerals, 20696, false),
                 new CommodityDefinition(128672776, 267, "Jadeite", Minerals, 13474, false),
@@ -347,31 +352,32 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128732187, 325, "AncientUrn", Salvage, 0, false),
                 new CommodityDefinition(128732188, 326, "AncientTotem", Salvage, 0, false),
                 new CommodityDefinition(128888499, 326, "AncientKey", Salvage, 0, false),
-                new CommodityDefinition(128793127, null, "ThargoidHeart", Salvage, 0, false),
-                new CommodityDefinition(128793128, null, "ThargoidTissueSampleType1", Salvage, 14081, false),
-                new CommodityDefinition(128793129, null, "ThargoidTissueSampleType2", Salvage, 0, false),
-                new CommodityDefinition(128793130, null, "ThargoidTissueSampleType3", Salvage, 0, false),
-                new CommodityDefinition(128902652, null, "ThargoidTissueSampleType4", Salvage, 0, false),
+                new CommodityDefinition(128793127, 336, "ThargoidHeart", Salvage, 0, false),
+                new CommodityDefinition(128793128, 337, "ThargoidTissueSampleType1", Salvage, 14081, false),
+                new CommodityDefinition(128793129, 338, "ThargoidTissueSampleType2", Salvage, 0, false),
+                new CommodityDefinition(128793130, 339, "ThargoidTissueSampleType3", Salvage, 0, false),
+                new CommodityDefinition(128902652, 340, "ThargoidTissueSampleType4", Salvage, 0, false),
                 new CommodityDefinition(128672137, 327, "SmallExplorationDataCash", Salvage, 0, false),
                 new CommodityDefinition(128672136, 328, "LargeExplorationDataCash", Salvage, 0, false),
                 new CommodityDefinition(128672811, 329, "DamagedEscapePod", Salvage, 11912, false),
                 new CommodityDefinition(128672161, 330, "EarthRelics", Salvage, 0, false),
                 new CommodityDefinition(128824468, 331, "ThargoidScoutTissueSample", Salvage, 15215, false),
-                new CommodityDefinition(128732551, null, "ShansCharisOrchid", ConsumerItems, 0, true),
-                new CommodityDefinition(128748428, null, "BuckyballBeerMats", ConsumerItems, 0, false),
-                new CommodityDefinition(128793113, null, "HarmaSilverSeaRum", Narcotics, 0, false),
-                new CommodityDefinition(128793114, null, "PlatinumAloy", Metals, 0, false),
-                new CommodityDefinition(128913661, null, "Nanomedicines", Medicines, 0, false),
-                new CommodityDefinition(128922524, null, "Duradrives", ConsumerItems, 0, false),
-                new CommodityDefinition(128924325, null, "Rhodplumsite", Minerals, 0, false),
-                new CommodityDefinition(128924326, null, "Serendibite", Minerals, 0, false),
-                new CommodityDefinition(128924327, null, "Monazite", Minerals, 0, false),
-                new CommodityDefinition(128924328, null, "Musgravite", Minerals, 0, false),
-                new CommodityDefinition(128924329, null, "Benitoite", Minerals, 0, false),
-                new CommodityDefinition(128924330, null, "Grandidierite", Minerals, 0, false),
-                new CommodityDefinition(128924331, null, "Alexandrite", Minerals, 0, false),
-                new CommodityDefinition(128924332, null, "Opal", Minerals, 0, false),
-                new CommodityDefinition(128924333, null, "RockforthFertiliser", Chemicals, 0, false),
+                new CommodityDefinition(128732551, 355, "ShansCharisOrchid", ConsumerItems, 9043, true),
+                new CommodityDefinition(128748428, 356, "BuckyballBeerMats", ConsumerItems, 7957, true),
+                new CommodityDefinition(128793113, 357, "HarmaSilverSeaRum", Narcotics, 9762, true),
+                new CommodityDefinition(128793114, 358, "PlatinumAloy", Metals, 18333, true),
+                new CommodityDefinition(128913661, 341, "Nanomedicines", Medicines, 0, false),
+                new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, false),
+                new CommodityDefinition(128924325, 343, "Rhodplumsite", Minerals, 0, false),
+                new CommodityDefinition(128924326, 344, "Serendibite", Minerals, 0, false),
+                new CommodityDefinition(128924327, 345, "Monazite", Minerals, 0, false),
+                new CommodityDefinition(128924328, 346, "Musgravite", Minerals, 0, false),
+                new CommodityDefinition(128924329, 347, "Benitoite", Minerals, 0, false),
+                new CommodityDefinition(128924330, 348, "Grandidierite", Minerals, 0, false),
+                new CommodityDefinition(128924331, 349, "Alexandrite", Minerals, 0, false),
+                new CommodityDefinition(128924332, 350, "Opal", Minerals, 0, false),
+                new CommodityDefinition(128667669, 351, "BakedGreebles", Foods, 8211, true),
+                new CommodityDefinition(128924333, 359, "RockforthFertiliser", Chemicals, 0, false),
                 new CommodityDefinition(128924334, null, "agronomictreatment", Chemicals, 3464, false),
                 // PowerPlay
                 new CommodityDefinition(128671289, null, "AislingMediaMaterials", Powerplay, 0, false),
@@ -416,7 +422,7 @@ namespace EddiDataDefinitions
                 // Items for which we do not have Elite IDs
             };
         }
-        private static Dictionary<long, CommodityDefinition> CommoditiesByEliteID;
+        private static readonly Dictionary<long, CommodityDefinition> CommoditiesByEliteID;
 
         public readonly long EliteID;
         public readonly long? EDDBID;

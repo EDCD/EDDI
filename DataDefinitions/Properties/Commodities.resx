@@ -1677,4 +1677,16 @@
     <value>Agronomic Treatment</value>
     <comment>Commodity agronomictreatment</comment>
   </data>
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>Baked Greebles</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>Ultra-Compact Processor Prototypes</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Crom Silver Fesh</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
 </root>
