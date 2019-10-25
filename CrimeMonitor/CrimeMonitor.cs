@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiStarMapService;
 using Utilities;
 
 namespace EddiCrimeMonitor
@@ -34,6 +35,7 @@ namespace EddiCrimeMonitor
         public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
+        private readonly DataProviderService dataProviderService;
 
         public List<Target> shipTargets = new List<Target>();
 
@@ -62,6 +64,8 @@ namespace EddiCrimeMonitor
 
         public CrimeMonitor()
         {
+            IEdsmService edsmService = new StarMapService();
+            dataProviderService = new DataProviderService(edsmService);
             criminalrecord = new ObservableCollection<FactionRecord>();
             homeSystems = new Dictionary<string, string>();
             BindingOperations.CollectionRegistering += Record_CollectionRegistering;
@@ -239,7 +243,7 @@ namespace EddiCrimeMonitor
                 if (@event.scanstage >= 3 && target.LegalStatus == null)
                 {
                     target.faction = @event.faction;
-                    Faction faction = DataProviderService.GetFactionByName(@event.faction);
+                    Faction faction = dataProviderService.GetFactionByName(@event.faction);
                     target.Power = @event.Power ?? Power.None;
 
                     // Prioritize power allegiance (when present) over faction
@@ -269,7 +273,7 @@ namespace EddiCrimeMonitor
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
-            Faction faction = DataProviderService.GetFactionByName(@event.victimfaction);
+            Faction faction = dataProviderService.GetFactionByName(@event.victimfaction);
 
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
             {
@@ -381,7 +385,7 @@ namespace EddiCrimeMonitor
             double bonus = (!test && currentSystem?.Power == Power.FromEDName("ALavignyDuval")) ? 1.2 : 1.0;
 
             // Get the victim faction data
-            Faction faction = DataProviderService.GetFactionByName(@event.faction);
+            Faction faction = dataProviderService.GetFactionByName(@event.faction);
 
             foreach (Reward reward in @event.rewards.ToList())
             {
@@ -703,7 +707,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private void _handleDiedEvent(DiedEvent @event)
+        private void _handleDiedEvent(DiedEvent _)
         {
             List<FactionReport> reports = new List<FactionReport>();
 
@@ -943,7 +947,7 @@ namespace EddiCrimeMonitor
             if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction from Elite BGS and set faction record values
-            Faction faction = DataProviderService.GetFactionByName(record.faction);
+            Faction faction = dataProviderService.GetFactionByName(record.faction);
             if (faction.EDDBID == null)
             {
                 record.faction = Properties.CrimeMonitor.blank_faction;

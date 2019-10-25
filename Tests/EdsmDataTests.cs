@@ -2,20 +2,60 @@
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using Tests.Properties;
 
 namespace UnitTests
 {
     // Tests for the EDSM Service
+    internal class FakeEdsmRestClient : IEdsmRestClient
+    {
+        public Dictionary<string, string> CannedContent = new Dictionary<string, string>();
+        public Dictionary<string, object> CannedData = new Dictionary<string, object>();
+
+        public Uri BuildUri(IRestRequest request)
+        {
+            return new Uri("fakeEDSM://" + request.Resource);
+        }
+
+        public IRestResponse<T> Execute<T>(IRestRequest request) where T : new()
+        {
+            // this will throw if given a resource not in the canned dictionaries: that's OK
+            string content = CannedContent[request.Resource];
+            T data = (T) CannedData[request.Resource];
+            IRestResponse<T> restResponse = new RestResponse<T>
+            {
+                Content = content,
+                Data = data,
+                ResponseStatus = ResponseStatus.Completed,
+                StatusCode = HttpStatusCode.OK,
+            };
+            return restResponse;
+        }
+
+        public void Expect(string resourse, string content, object data)
+        {
+            CannedContent[resourse] = content;
+            CannedData[resourse] = data;
+        }
+    }
 
     [TestClass]
     public class EdsmDataTests : TestBase
     {
+        FakeEdsmRestClient fakeEdsmRestClient;
+        StarMapService fakeEdsmService;
+
         [TestInitialize]
         public void start()
         {
+            fakeEdsmRestClient = new FakeEdsmRestClient();
+            fakeEdsmService = new StarMapService(fakeEdsmRestClient);
             MakeSafe();
         }
 
@@ -24,8 +64,7 @@ namespace UnitTests
         {
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmBodies);
 
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            List<Body> bodies = (List<Body>)starMapService.InvokeStatic("ParseStarMapBodies", new object[] { response });
+            List<Body> bodies = fakeEdsmService.ParseStarMapBodies(response);
 
             Assert.IsNotNull(bodies);
 
@@ -256,8 +295,7 @@ namespace UnitTests
             // Test stations data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmStations);
 
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            List<Station> stations = (List<Station>)starMapService.InvokeStatic("ParseStarMapStations", new object[] { response });
+            List<Station> stations = fakeEdsmService.ParseStarMapStations(response);
 
             Assert.IsNotNull(stations);
 
@@ -320,11 +358,8 @@ namespace UnitTests
         {
             // Test factions data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmFactions);
-
             string systemName = (string)response["name"];
-
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            List<Faction> factions = (List<Faction>)starMapService.InvokeStatic("ParseStarMapFactions", new object[] { response, systemName });
+            List<Faction> factions = fakeEdsmService.ParseStarMapFactions(response, systemName);
 
             Assert.IsNotNull(factions);
 
@@ -368,8 +403,7 @@ namespace UnitTests
             // Test system
             Dictionary<string, object> response = DeserializeJsonResource<Dictionary<string, object>>(Tests.Properties.Resources.edsmSystem);
 
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            StarSystem system = (StarSystem)starMapService.InvokeStatic("ParseStarMapSystem", new object[] { JObject.FromObject(response), "Shinrarta Dezhra" });
+            StarSystem system = fakeEdsmService.ParseStarMapSystem(JObject.FromObject(response));
 
             // Test Shinrarta Dezhra
             Assert.AreEqual("Shinrarta Dezhra", system.systemname);
@@ -393,49 +427,78 @@ namespace UnitTests
         [TestMethod]
         public void TestSystems()
         {
+            // Setup
+            string resource = "api-v1/systems";
+            string json = Encoding.UTF8.GetString(Resources.CapitalSystems);
+            List<JObject> data = new List<JObject> {new JObject(), new JObject(), new JObject()};
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            // Act
             string[] systemNames = new string[] { "Sol", "Achenar", "Alioth" };
-            List<StarSystem> starSystems = StarMapService.GetStarMapSystems(systemNames, true, false);
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystems(systemNames, true, false);
+
+            // Assert
             Assert.AreEqual(3, starSystems.Count);
         }
 
         [TestMethod]
         public void TestSystemsSphere()
         {
+            string resource = "api-v1/sphere-systems";
+            string json = Encoding.UTF8.GetString(Resources.sphereAroundSol);
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
             string systemName = "Sol";
-            List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(systemName, 0, 10, false, false, false, false);
+
+            List<Dictionary<string, object>> sphereSystems = fakeEdsmService.GetStarMapSystemsSphere(systemName, 0, 10, false, false, false, false);
             Assert.AreEqual(12, sphereSystems.Count);
         }
 
         [TestMethod]
         public void TestSystemsCube()
         {
+            // Setup
+            string resource = "api-v1/cube-systems";
+            string json = Encoding.UTF8.GetString(Resources.cubeSystemsAroundSol);
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
             string systemName = "Sol";
-            List<StarSystem> starSystems = StarMapService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
+
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
             Assert.AreEqual(9, starSystems.Count);
         }
 
         [TestMethod]
         public void TestSystemsCubeUnknown()
         {
+            // Setup
+            string resource = "api-v1/cube-systems";
+            string json = "[]";
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            // Act
             string systemName = "No such system";
-            try
-            {
-                List<StarSystem> starSystems = StarMapService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
-                Assert.IsNull(starSystems);
-            }
-            catch (System.Exception)
-            {
-                Assert.Fail();
-            }
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
+
+            // Assert
+            Assert.IsTrue(starSystems == null || starSystems.Count == 0);
         }
 
         [TestMethod]
         public void TestUnknown()
         {
-            // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;
-            PrivateType MockStarMapService = new PrivateType(typeof(StarMapService));
-            StarSystem system = (StarSystem)MockStarMapService.InvokeStatic("GetStarMapSystem", new object[] { "No such system", false, false });
+            // Setup
+            string resource = "api-v1/systems";
+            string json = "[]";
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
 
+            // Act
+            StarSystem system = fakeEdsmService.GetStarMapSystem("No such system", false, false);
+
+            // Assert
+            // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;
             Assert.IsNull(system);
         }
 
@@ -445,8 +508,7 @@ namespace UnitTests
             // Test pilot traffic data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmTraffic);
 
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            Traffic traffic = (Traffic)starMapService.InvokeStatic("ParseStarMapTraffic", new object[] { response });
+            Traffic traffic = fakeEdsmService.ParseStarMapTraffic(response);
 
             Assert.IsNotNull(traffic);
             Assert.AreEqual(9631, traffic.total);
@@ -460,8 +522,7 @@ namespace UnitTests
             // Test pilot mortality data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmDeaths);
 
-            PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            Traffic deaths = (Traffic)starMapService.InvokeStatic("ParseStarMapDeaths", new object[] { response });
+            Traffic deaths = fakeEdsmService.ParseStarMapDeaths(response);
 
             Assert.IsNotNull(deaths);
             Assert.AreEqual(1068, deaths.total);

@@ -1,0 +1,116 @@
+{
+	"id": 27,
+	"id64": 10477373803,
+	"name": "Sol",
+	"url": "https://www.edsm.net/en/system/id/27/name/Sol",
+	"controllingFaction": {
+		"id": 1,
+		"name": "Mother Gaia",
+		"allegiance": "Federation",
+		"government": "Democracy"
+	},
+	"factions": [
+		{
+			"id": 1,
+			"name": "Mother Gaia",
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"influence": 0.382382,
+			"state": "Pirate attack",
+			"activeStates": [
+				{
+					"state": "Pirate attack"
+				}
+			],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 223,
+			"name": "Sol Workers' Party",
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"influence": 0.203407,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 963,
+			"name": "Federal Congress",
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"influence": 0.157315,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 6768,
+			"name": "Sol Nationalists",
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"influence": 0.094188,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 33141,
+			"name": "Sol Constitution Party",
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"influence": 0.086172,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 79985,
+			"name": "Aegis Core",
+			"allegiance": "Independent",
+			"government": "Cooperative",
+			"influence": 0.074074,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "Happy",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		},
+		{
+			"id": 81923,
+			"name": "Pilots' Federation Local Branch",
+			"allegiance": "Pilots Federation",
+			"government": "Democracy",
+			"influence": 0,
+			"state": "None",
+			"activeStates": [],
+			"recoveringStates": [],
+			"pendingStates": [],
+			"happiness": "None",
+			"isPlayer": false,
+			"lastUpdate": 1572028792
+		}
+	]
+}

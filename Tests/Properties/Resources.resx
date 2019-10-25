@@ -124,6 +124,12 @@
   <data name="bgsFaction" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bgsFaction.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="CapitalSystems" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>CapitalSystems.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cubeSystemsAroundSol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>cubeSystemsAroundSol.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="edsmBodies" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>edsmBodies.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -150,6 +156,21 @@
   </data>
   <data name="shipMonitor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shipMonitor.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Sol.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SolBodies" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SolBodies.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SolFactions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SolFactions.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SolStations" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SolStations.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sphereAroundSol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sphereAroundSol.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="sqlStarSystem1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlStarSystem1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

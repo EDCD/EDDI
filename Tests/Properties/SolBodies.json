@@ -1,0 +1,2172 @@
+{
+	"id": 27,
+	"id64": 10477373803,
+	"name": "Sol",
+	"url": "https://www.edsm.net/en/system/bodies/id/27/name/Sol",
+	"bodyCount": 40,
+	"bodies": [
+		{
+			"id": 3794,
+			"id64": 10477373803,
+			"bodyId": 0,
+			"name": "Sol",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Star",
+			"subType": "G (White-Yellow) Star",
+			"parents": null,
+			"distanceToArrival": 0,
+			"isMainStar": true,
+			"isScoopable": true,
+			"age": 4792,
+			"spectralClass": "G2",
+			"luminosity": "V",
+			"absoluteMagnitude": 4.829987,
+			"solarMasses": 1,
+			"solarRadius": 0.9999999539899354,
+			"surfaceTemperature": 5778,
+			"orbitalPeriod": null,
+			"semiMajorAxis": null,
+			"orbitalEccentricity": null,
+			"orbitalInclination": null,
+			"argOfPeriapsis": null,
+			"rotationalPeriod": 2.583274558738426,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.219615,
+			"belts": [
+				{
+					"name": "Asteroid Belt",
+					"type": "Rocky",
+					"mass": 4060500000000,
+					"innerRadius": 308170000,
+					"outerRadius": 489190000
+				}
+			],
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 11236,
+			"id64": 36028807496337771,
+			"bodyId": 1,
+			"name": "Mercury",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Metal-rich body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 224,
+			"isLandable": true,
+			"gravity": 0.37588835103398995,
+			"earthMasses": 0.055,
+			"radius": 2439.7,
+			"surfaceTemperature": 401,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Metal": 60,
+				"Rock": 40,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 87.96910300925926,
+			"semiMajorAxis": 0.3870983729984333,
+			"orbitalEccentricity": 0.2056,
+			"orbitalInclination": 7,
+			"argOfPeriapsis": 29.124001,
+			"rotationalPeriod": 58.646001157407408,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.036826,
+			"materials": {
+				"Iron": 23.51,
+				"Nickel": 17.78,
+				"Sulphur": 12.86,
+				"Carbon": 10.81,
+				"Chromium": 10.57,
+				"Manganese": 9.71,
+				"Phosphorus": 6.92,
+				"Germanium": 3.81,
+				"Tin": 1.56,
+				"Ruthenium": 1.45,
+				"Mercury": 1.03
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 10217,
+			"id64": 72057604515301739,
+			"bodyId": 2,
+			"name": "Venus",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "High metal content world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 359,
+			"isLandable": false,
+			"gravity": 0.9052270113450551,
+			"earthMasses": 0.815,
+			"radius": 6051.8,
+			"surfaceTemperature": 735,
+			"surfacePressure": 93.18950900567481,
+			"volcanismType": "Minor Rocky Magma",
+			"atmosphereType": "Hot thick Carbon dioxide",
+			"atmosphereComposition": {
+				"Carbon dioxide": 96.5,
+				"Nitrogen": 3.5
+			},
+			"solidComposition": {
+				"Rock": 70,
+				"Metal": 30,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 224.70099537037039,
+			"semiMajorAxis": 0.7233256732710969,
+			"orbitalEccentricity": 0.0067,
+			"orbitalInclination": 3.395,
+			"argOfPeriapsis": 55.186001,
+			"rotationalPeriod": 243.01849537037038,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 3.094469,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 7497,
+			"id64": 108086401534265707,
+			"bodyId": 3,
+			"name": "Earth",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Earth-like world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 504,
+			"isLandable": false,
+			"gravity": 0.9999686429450564,
+			"earthMasses": 1,
+			"radius": 6378.1,
+			"surfaceTemperature": 288,
+			"surfacePressure": 0.9990787688132248,
+			"volcanismType": "Rocky Magma",
+			"atmosphereType": "Suitable for water-based life",
+			"atmosphereComposition": {
+				"Nitrogen": 77.89,
+				"Oxygen": 20.89,
+				"Argon": 0.93
+			},
+			"solidComposition": {
+				"Rock": 70,
+				"Metal": 30,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 365.25636574074079,
+			"semiMajorAxis": 1.0000007214273806,
+			"orbitalEccentricity": 0.0167,
+			"orbitalInclination": 0,
+			"argOfPeriapsis": 114.207832,
+			"rotationalPeriod": 0.9972697844328704,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.401426,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 14780,
+			"id64": 144115198553229675,
+			"bodyId": 4,
+			"name": "Moon",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 3
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 505,
+			"isLandable": false,
+			"gravity": 0.16567075215550865,
+			"earthMasses": 0.012304,
+			"radius": 1738.14,
+			"surfaceTemperature": 250,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 27.32158275462963,
+			"semiMajorAxis": 0.0025695482308759896,
+			"orbitalEccentricity": 0.0549,
+			"orbitalInclination": -23.434999,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 27.32158275462963,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.11671,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 1828,
+			"id64": 180143995572193643,
+			"bodyId": 5,
+			"name": "Mars",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Earth-like world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 794,
+			"isLandable": false,
+			"gravity": 0.3773690618814674,
+			"earthMasses": 0.107,
+			"radius": 3396.2,
+			"surfaceTemperature": 260,
+			"surfacePressure": 2.303390698248211,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "Suitable for water-based life",
+			"atmosphereComposition": {
+				"Nitrogen": 91.17,
+				"Oxygen": 8.68,
+				"Water": 0.1
+			},
+			"solidComposition": {
+				"Rock": 70,
+				"Metal": 30,
+				"Ice": 0
+			},
+			"terraformingState": "Terraformed",
+			"orbitalPeriod": 686.9710185185185,
+			"semiMajorAxis": 1.5236785990430544,
+			"orbitalEccentricity": 0.0934,
+			"orbitalInclination": 1.85,
+			"argOfPeriapsis": 286.536987,
+			"rotationalPeriod": 1.02595703125,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.439648,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 48,
+			"id64": 252201589610121579,
+			"bodyId": 7,
+			"name": "Jupiter",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Class I gas giant",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 2525,
+			"isLandable": false,
+			"gravity": 2.5293417504360069,
+			"earthMasses": 317.799622,
+			"radius": 71492,
+			"surfaceTemperature": 147,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": {
+				"Hydrogen": 73.7,
+				"Helium": 26.3
+			},
+			"solidComposition": null,
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 4332.58962962963,
+			"semiMajorAxis": 5.204265930076503,
+			"orbitalEccentricity": 0.048775,
+			"orbitalInclination": 1.305,
+			"argOfPeriapsis": 275.06601,
+			"rotationalPeriod": 0.41354166666666666,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.054629,
+			"rings": [
+				{
+					"name": "Jupiter Halo Ring",
+					"type": "Rocky",
+					"mass": 10000,
+					"innerRadius": 92000,
+					"outerRadius": 182000
+				}
+			],
+			"reserveLevel": "Common",
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 13971,
+			"id64": 324259183648049515,
+			"bodyId": 9,
+			"name": "Io",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 7
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 2526,
+			"isLandable": false,
+			"gravity": 0.1839489502155097,
+			"earthMasses": 0.015,
+			"radius": 1821.3,
+			"surfaceTemperature": 120,
+			"surfacePressure": 0,
+			"volcanismType": "Major Rocky Magma",
+			"atmosphereType": "Sulphur dioxide",
+			"atmosphereComposition": {
+				"Sulphur dioxide": 90,
+				"Silicates": 5,
+				"Oxygen": 3
+			},
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 1.7691377314814816,
+			"semiMajorAxis": 0.002818889961647028,
+			"orbitalEccentricity": 0.0041,
+			"orbitalInclination": 0.05,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 1.7691377314814816,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 6371,
+			"id64": 360287980667013483,
+			"bodyId": 10,
+			"name": "Europa",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 7
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 2523,
+			"isLandable": true,
+			"gravity": 0.13358709447585793,
+			"earthMasses": 0.008,
+			"radius": 1560.8,
+			"surfaceTemperature": 104,
+			"surfacePressure": 0,
+			"volcanismType": "Major Water Magma",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 3.5511809172453705,
+			"semiMajorAxis": 0.0044846888586095368,
+			"orbitalEccentricity": 0.009,
+			"orbitalInclination": 0.47,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 3.5511812789351855,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 22.56,
+				"Carbon": 18.97,
+				"Iron": 16.95,
+				"Nickel": 12.82,
+				"Phosphorus": 12.14,
+				"Chromium": 7.62,
+				"Vanadium": 4.16,
+				"Arsenic": 1.6,
+				"Cadmium": 1.32,
+				"Molybdenum": 1.11,
+				"Antimony": 0.76
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 11998,
+			"id64": 396316777685977451,
+			"bodyId": 11,
+			"name": "Ganymede",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 7
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 2529,
+			"isLandable": true,
+			"gravity": 0.145479329590787,
+			"earthMasses": 0.024814,
+			"radius": 2634.1,
+			"surfaceTemperature": 116,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 7.154552951388889,
+			"semiMajorAxis": 0.007155180772235417,
+			"orbitalEccentricity": 0.0013,
+			"orbitalInclination": 0.2,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 7.154552951388889,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0.00576,
+			"materials": {
+				"Iron": 21.54,
+				"Sulphur": 17.73,
+				"Nickel": 16.29,
+				"Carbon": 14.91,
+				"Phosphorus": 9.54,
+				"Manganese": 8.89,
+				"Germanium": 5.25,
+				"Zirconium": 2.5,
+				"Molybdenum": 1.41,
+				"Tungsten": 1.18,
+				"Technetium": 0.77
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 12912,
+			"id64": 432345574704941419,
+			"bodyId": 12,
+			"name": "Callisto",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 7
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 2522,
+			"isLandable": true,
+			"gravity": 0.12618081199428389,
+			"earthMasses": 0.018016,
+			"radius": 2410,
+			"surfaceTemperature": 114,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 16.68901765046296,
+			"semiMajorAxis": 0.012585069822120135,
+			"orbitalEccentricity": 0.0074,
+			"orbitalInclination": 0.192,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 16.68901765046296,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Iron": 20.46,
+				"Sulphur": 16.84,
+				"Nickel": 15.48,
+				"Carbon": 14.16,
+				"Chromium": 9.2,
+				"Phosphorus": 9.07,
+				"Manganese": 8.45,
+				"Zirconium": 2.38,
+				"Niobium": 1.4,
+				"Molybdenum": 1.34,
+				"Yttrium": 1.22
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 5240,
+			"id64": 468374371723905387,
+			"bodyId": 13,
+			"name": "Saturn",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Class I gas giant",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5032,
+			"isLandable": false,
+			"gravity": 1.1120262414010168,
+			"earthMasses": 95.159035,
+			"radius": 59000,
+			"surfaceTemperature": 87,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": {
+				"Hydrogen": 73.7,
+				"Helium": 26.3
+			},
+			"solidComposition": null,
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 10759.22,
+			"semiMajorAxis": 9.582015635788057,
+			"orbitalEccentricity": 0.055723,
+			"orbitalInclination": 2.48524,
+			"argOfPeriapsis": 336.013855,
+			"rotationalPeriod": 0.4404166666666667,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.466527,
+			"rings": [
+				{
+					"name": "D Ring",
+					"type": "Icy",
+					"mass": 58071,
+					"innerRadius": 74500,
+					"outerRadius": 140180
+				}
+			],
+			"reserveLevel": "Common",
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 6847,
+			"id64": 540431965761833323,
+			"bodyId": 15,
+			"name": "Enceladus",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5032,
+			"isLandable": true,
+			"gravity": 0.011521150334020883,
+			"earthMasses": 0.000018,
+			"radius": 252.1,
+			"surfaceTemperature": 73,
+			"surfacePressure": 0,
+			"volcanismType": "Major Water Geysers",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 1.3702180085416667,
+			"semiMajorAxis": 0.0015905838157093502,
+			"orbitalEccentricity": 0.0047,
+			"orbitalInclination": 0.019,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 1.3702180085416667,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 21.33,
+				"Carbon": 17.94,
+				"Iron": 16.03,
+				"Nickel": 12.12,
+				"Phosphorus": 11.48,
+				"Chromium": 7.21,
+				"Manganese": 6.62,
+				"Zinc": 4.36,
+				"Tin": 1.04,
+				"Ruthenium": 0.99,
+				"Tungsten": 0.88
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 7393,
+			"id64": 576460762780797291,
+			"bodyId": 16,
+			"name": "Tethys",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5032,
+			"isLandable": true,
+			"gravity": 0.014854349968576637,
+			"earthMasses": 0.000103,
+			"radius": 531.1,
+			"surfaceTemperature": 73,
+			"surfacePressure": 0,
+			"volcanismType": "Major Water Geysers",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 1.8878020109953704,
+			"semiMajorAxis": 0.0019694059990387287,
+			"orbitalEccentricity": 0.0001,
+			"orbitalInclination": 1.12,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 1.8878020109953704,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 24.11,
+				"Carbon": 20.27,
+				"Iron": 18.12,
+				"Nickel": 13.7,
+				"Phosphorus": 12.98,
+				"Selenium": 3.77,
+				"Zirconium": 2.1,
+				"Arsenic": 1.71,
+				"Niobium": 1.24,
+				"Tellurium": 0.99,
+				"Tungsten": 0.99
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 4955,
+			"id64": 612489559799761259,
+			"bodyId": 17,
+			"name": "Dione",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5031,
+			"isLandable": true,
+			"gravity": 0.023619750346765286,
+			"earthMasses": 0.000183,
+			"radius": 561.4,
+			"surfaceTemperature": 73,
+			"surfacePressure": null,
+			"volcanismType": "Water Geysers",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 2.7369151475694446,
+			"semiMajorAxis": 0.0025227360137820467,
+			"orbitalEccentricity": 0.0022,
+			"orbitalInclination": 0.019,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 998.9740740740741,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 22,
+				"Carbon": 18.5,
+				"Iron": 16.53,
+				"Nickel": 12.5,
+				"Phosphorus": 11.84,
+				"Chromium": 7.43,
+				"Manganese": 6.83,
+				"Zirconium": 1.92,
+				"Niobium": 1.13,
+				"Mercury": 0.72,
+				"Technetium": 0.59
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 10450,
+			"id64": 648518356818725227,
+			"bodyId": 18,
+			"name": "Rhea",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5031,
+			"isLandable": true,
+			"gravity": 0.02691516375208343,
+			"earthMasses": 0.000386,
+			"radius": 763.8,
+			"surfaceTemperature": 73,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 4.518211805555556,
+			"semiMajorAxis": 0.003523498707124312,
+			"orbitalEccentricity": 0.001258,
+			"orbitalInclination": 0.345,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 4.518211805555556,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 22.08,
+				"Carbon": 18.56,
+				"Iron": 16.59,
+				"Nickel": 12.55,
+				"Phosphorus": 11.89,
+				"Manganese": 6.85,
+				"Zinc": 4.51,
+				"Vanadium": 4.07,
+				"Molybdenum": 1.08,
+				"Tellurium": 0.91,
+				"Tungsten": 0.91
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 5154,
+			"id64": 684547153837689195,
+			"bodyId": 19,
+			"name": "Titan",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5029,
+			"isLandable": false,
+			"gravity": 0.13792421732077757,
+			"earthMasses": 0.022499,
+			"radius": 2576,
+			"surfaceTemperature": 94,
+			"surfacePressure": 1.0027463453047126,
+			"volcanismType": "Minor Water Magma",
+			"atmosphereType": "Thick Methane-rich",
+			"atmosphereComposition": {
+				"Nitrogen": 98.4,
+				"Methane": 1.6
+			},
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 15.94499855324074,
+			"semiMajorAxis": 0.008167695290598812,
+			"orbitalEccentricity": 0.0288,
+			"orbitalInclination": 0.34854,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 5819.924814814814,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 1621,
+			"id64": 720575950856653163,
+			"bodyId": 20,
+			"name": "Iapetus",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 13
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 5029,
+			"isLandable": true,
+			"gravity": 0.02277153844392925,
+			"earthMasses": 0.000302,
+			"radius": 734.5,
+			"surfaceTemperature": 81,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 79.32150462962963,
+			"semiMajorAxis": 0.02380260788030053,
+			"orbitalEccentricity": 0.028613,
+			"orbitalInclination": 15.47,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 79.32150462962963,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"materials": {
+				"Iron": 20.03,
+				"Sulphur": 16.49,
+				"Nickel": 15.15,
+				"Carbon": 13.86,
+				"Chromium": 9.01,
+				"Phosphorus": 8.87,
+				"Manganese": 8.27,
+				"Germanium": 4.88,
+				"Niobium": 1.37,
+				"Yttrium": 1.2,
+				"Mercury": 0.87
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 11649,
+			"id64": 792633544894581099,
+			"bodyId": 22,
+			"name": "Uranus",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Class I gas giant",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 9198,
+			"isLandable": false,
+			"gravity": 0.9053919113722684,
+			"earthMasses": 14.539695,
+			"radius": 25559,
+			"surfaceTemperature": 56,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": {
+				"Hydrogen": 73.7,
+				"Helium": 26.3
+			},
+			"solidComposition": null,
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 30687.149629629628,
+			"semiMajorAxis": 19.229408742861204,
+			"orbitalEccentricity": 0.04722,
+			"orbitalInclination": 0.772556,
+			"argOfPeriapsis": 96.998856,
+			"rotationalPeriod": 0.7183300329166666,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 1.706408,
+			"rings": [
+				{
+					"name": "ZetaCC Ring",
+					"type": "Icy",
+					"mass": 171570,
+					"innerRadius": 30890,
+					"outerRadius": 103000
+				}
+			],
+			"reserveLevel": "Common",
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 5094,
+			"id64": 864691138932509035,
+			"bodyId": 24,
+			"name": "Ariel",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 22
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 9198,
+			"isLandable": true,
+			"gravity": 0.027554198826164109,
+			"earthMasses": 0.000227,
+			"radius": 578.9,
+			"surfaceTemperature": 57,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 2.52,
+			"semiMajorAxis": 0.0012768896181889307,
+			"orbitalEccentricity": 0.0012,
+			"orbitalInclination": 0.26,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 2.52,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Iron": 20.55,
+				"Sulphur": 16.92,
+				"Nickel": 15.55,
+				"Carbon": 14.22,
+				"Chromium": 9.24,
+				"Phosphorus": 9.11,
+				"Manganese": 8.49,
+				"Zirconium": 2.39,
+				"Molybdenum": 1.34,
+				"Tellurium": 1.3,
+				"Mercury": 0.9
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8425,
+			"id64": 900719935951473003,
+			"bodyId": 25,
+			"name": "Umbriel",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 22
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 9198,
+			"isLandable": true,
+			"gravity": 0.02332163067402972,
+			"earthMasses": 0.000196,
+			"radius": 584.7,
+			"surfaceTemperature": 50,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 4.143999927662037,
+			"semiMajorAxis": 0.0017780998536632246,
+			"orbitalEccentricity": 0.0039,
+			"orbitalInclination": 0.128,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 4.144000289351852,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 22.06,
+				"Carbon": 18.55,
+				"Iron": 16.57,
+				"Nickel": 12.54,
+				"Phosphorus": 11.87,
+				"Chromium": 7.45,
+				"Zinc": 4.5,
+				"Germanium": 3.5,
+				"Cadmium": 1.29,
+				"Tin": 1.08,
+				"Technetium": 0.59
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 910,
+			"id64": 936748732970436971,
+			"bodyId": 26,
+			"name": "Titania",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 22
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 9194,
+			"isLandable": true,
+			"gravity": 0.03867793502359556,
+			"earthMasses": 0.000591,
+			"radius": 788.4,
+			"surfaceTemperature": 50,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 8.706234085648149,
+			"semiMajorAxis": 0.0029138778377010684,
+			"orbitalEccentricity": 0.0011,
+			"orbitalInclination": 0.34,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 8.706234085648149,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Sulphur": 23.42,
+				"Carbon": 19.69,
+				"Iron": 17.6,
+				"Nickel": 13.31,
+				"Phosphorus": 12.61,
+				"Zinc": 4.78,
+				"Selenium": 3.67,
+				"Arsenic": 1.66,
+				"Molybdenum": 1.15,
+				"Tin": 1.15,
+				"Tellurium": 0.96
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 158,
+			"id64": 972777529989400939,
+			"bodyId": 27,
+			"name": "Oberon",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Planet": 22
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 9194,
+			"isLandable": true,
+			"gravity": 0.03543518161455724,
+			"earthMasses": 0.000505,
+			"radius": 761.4,
+			"surfaceTemperature": 57,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 13.463233506944445,
+			"semiMajorAxis": 0.0039005898497725076,
+			"orbitalEccentricity": 0.0014,
+			"orbitalInclination": 0.058,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 13.463233506944445,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Iron": 20.45,
+				"Sulphur": 16.84,
+				"Nickel": 15.47,
+				"Carbon": 14.16,
+				"Chromium": 9.2,
+				"Phosphorus": 9.06,
+				"Zinc": 5.56,
+				"Germanium": 4.98,
+				"Cadmium": 1.59,
+				"Niobium": 1.4,
+				"Tellurium": 1.29
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 9994,
+			"id64": 1008806327008364907,
+			"bodyId": 28,
+			"name": "Neptune",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Class I gas giant",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 14884,
+			"isLandable": false,
+			"gravity": 1.1375812407013926,
+			"earthMasses": 17.149639,
+			"radius": 24764,
+			"surfaceTemperature": 45,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": {
+				"Hydrogen": 73.7,
+				"Helium": 26.3
+			},
+			"solidComposition": null,
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 60190.03259259259,
+			"semiMajorAxis": 29.809943509790878,
+			"orbitalEccentricity": 0.008678,
+			"orbitalInclination": 1.767975,
+			"argOfPeriapsis": 273.219421,
+			"rotationalPeriod": 0.6713000036226852,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.494277,
+			"rings": [
+				{
+					"name": "Galle Ring",
+					"type": "Icy",
+					"mass": 29009,
+					"innerRadius": 40900,
+					"outerRadius": 57200
+				}
+			],
+			"reserveLevel": "Common",
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 9188,
+			"id64": 1080863921046292843,
+			"bodyId": 30,
+			"name": "Triton",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 28
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 14885,
+			"isLandable": true,
+			"gravity": 0.07972804851489296,
+			"earthMasses": 0.00359,
+			"radius": 1353.4,
+			"surfaceTemperature": 40,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": -5.876854021990741,
+			"semiMajorAxis": 0.0023714170685719528,
+			"orbitalEccentricity": 0.000016,
+			"orbitalInclination": -23.115,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": -5.876854021990741,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": null,
+			"materials": {
+				"Sulphur": 22.58,
+				"Carbon": 18.98,
+				"Iron": 16.97,
+				"Nickel": 12.83,
+				"Phosphorus": 12.15,
+				"Chromium": 7.63,
+				"Vanadium": 4.17,
+				"Arsenic": 1.6,
+				"Molybdenum": 1.11,
+				"Ruthenium": 1.05,
+				"Tungsten": 0.93
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 2394,
+			"id64": 1152921515084220779,
+			"bodyId": 32,
+			"name": "Pluto",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Null": 31
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 21234,
+			"isLandable": false,
+			"gravity": 0.06670630868303133,
+			"earthMasses": 0.00218,
+			"radius": 1153,
+			"surfaceTemperature": 55,
+			"surfacePressure": 0.0040684993042190979,
+			"volcanismType": "Minor Methane Magma",
+			"atmosphereType": "Thin Methane",
+			"atmosphereComposition": {
+				"Methane": 50,
+				"Nitrogen": 50
+			},
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 6.393943865740741,
+			"semiMajorAxis": 0.000013596588911876806,
+			"orbitalEccentricity": 0,
+			"orbitalInclination": 0.001,
+			"argOfPeriapsis": 0,
+			"rotationalPeriod": 6.387000144675926,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 2.086209,
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 7065,
+			"id64": 1188950312103184747,
+			"bodyId": 33,
+			"name": "Charon",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky body",
+			"parents": [
+				{
+					"Null": 31
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 21234,
+			"isLandable": true,
+			"gravity": 0.02825758236303145,
+			"earthMasses": 0.000253,
+			"radius": 603.5,
+			"surfaceTemperature": 39,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 80,
+				"Metal": 20,
+				"Ice": 0
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 6.393943865740741,
+			"semiMajorAxis": 0.0001172274439331308,
+			"orbitalEccentricity": 0,
+			"orbitalInclination": 0.001,
+			"argOfPeriapsis": 180,
+			"rotationalPeriod": 6.387000144675926,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0,
+			"materials": {
+				"Iron": 21.16,
+				"Sulphur": 17.42,
+				"Nickel": 16.01,
+				"Carbon": 14.65,
+				"Chromium": 9.52,
+				"Phosphorus": 9.38,
+				"Zinc": 5.75,
+				"Zirconium": 2.46,
+				"Cadmium": 1.64,
+				"Antimony": 1.09,
+				"Mercury": 0.92
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 3200642,
+			"id64": 1224979109122148715,
+			"bodyId": 34,
+			"name": "90482 Orcus",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 15635,
+			"isLandable": true,
+			"gravity": 0.005176236801765751,
+			"earthMasses": 0.000107,
+			"radius": 917,
+			"surfaceTemperature": 35,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 90509.0488888889,
+			"semiMajorAxis": 39.46902900146693,
+			"orbitalEccentricity": 0.21799,
+			"orbitalInclination": 44.044498,
+			"argOfPeriapsis": 305.57251,
+			"rotationalPeriod": 0.5495000090393518,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.513248,
+			"materials": {
+				"Sulphur": 20.06,
+				"Iron": 18.02,
+				"Carbon": 16.87,
+				"Nickel": 13.63,
+				"Phosphorus": 10.8,
+				"Chromium": 8.1,
+				"Manganese": 7.44,
+				"Zirconium": 2.09,
+				"Cadmium": 1.4,
+				"Antimony": 0.8,
+				"Mercury": 0.79
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136010,
+			"id64": 1261007906141112683,
+			"bodyId": 35,
+			"name": "Vanth",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Planet": 34
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 15635,
+			"isLandable": true,
+			"gravity": 0.003738082703213611,
+			"earthMasses": 0.000007,
+			"radius": 276,
+			"surfaceTemperature": 35,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 9.54,
+			"semiMajorAxis": 0.00006036181502949694,
+			"orbitalEccentricity": 0.007,
+			"orbitalInclination": 21,
+			"argOfPeriapsis": 327.889099,
+			"rotationalPeriod": 9.540862991898149,
+			"rotationalPeriodTidallyLocked": true,
+			"axialTilt": 0.26523,
+			"materials": {
+				"Sulphur": 21.41,
+				"Iron": 19.23,
+				"Carbon": 18.01,
+				"Nickel": 14.55,
+				"Phosphorus": 11.53,
+				"Zinc": 5.23,
+				"Germanium": 4.06,
+				"Zirconium": 2.23,
+				"Niobium": 1.31,
+				"Tin": 1.25,
+				"Ruthenium": 1.19
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136013,
+			"id64": 1297036703160076651,
+			"bodyId": 36,
+			"name": "(307261) 2002 MS4",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 19277,
+			"isLandable": true,
+			"gravity": 0.013056696486296876,
+			"earthMasses": 0.00028,
+			"radius": 934,
+			"surfaceTemperature": 34,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 98349.2562962963,
+			"semiMajorAxis": 41.71702990828732,
+			"orbitalEccentricity": 0.144,
+			"orbitalInclination": 17.677,
+			"argOfPeriapsis": 164.461502,
+			"rotationalPeriod": 0.6826786747685185,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.507365,
+			"materials": {
+				"Sulphur": 21.5,
+				"Carbon": 18.08,
+				"Iron": 16.16,
+				"Nickel": 12.22,
+				"Phosphorus": 11.57,
+				"Chromium": 7.27,
+				"Manganese": 6.67,
+				"Germanium": 3.41,
+				"Niobium": 1.1,
+				"Tin": 1.05,
+				"Yttrium": 0.97
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 3204253,
+			"id64": 1333065500179040619,
+			"bodyId": 37,
+			"name": "Salacia",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 18674,
+			"isLandable": true,
+			"gravity": 0.15617492993434943,
+			"earthMasses": 0.0028,
+			"radius": 854,
+			"surfaceTemperature": 34,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 98856.59851851851,
+			"semiMajorAxis": 41.860030093810689,
+			"orbitalEccentricity": 0.109,
+			"orbitalInclination": 23.936001,
+			"argOfPeriapsis": 35.987053,
+			"rotationalPeriod": 0.8884184208680556,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.437534,
+			"materials": {
+				"Sulphur": 20.85,
+				"Iron": 18.72,
+				"Carbon": 17.53,
+				"Nickel": 14.16,
+				"Phosphorus": 11.22,
+				"Chromium": 8.42,
+				"Selenium": 3.26,
+				"Zirconium": 2.17,
+				"Niobium": 1.28,
+				"Molybdenum": 1.22,
+				"Ruthenium": 1.16
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 3198149,
+			"id64": 1369094297198004587,
+			"bodyId": 38,
+			"name": "Actaea",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Planet": 37
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 18674,
+			"isLandable": true,
+			"gravity": 0.001329244975982747,
+			"earthMasses": 0.000003,
+			"radius": 303,
+			"surfaceTemperature": 34,
+			"surfacePressure": 0,
+			"volcanismType": "Major Water Geysers",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 5.489999638310185,
+			"semiMajorAxis": 0.00003756068835543927,
+			"orbitalEccentricity": 0.0084,
+			"orbitalInclination": 11.821146,
+			"argOfPeriapsis": 96.948204,
+			"rotationalPeriod": 0.9169088179976852,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.520236,
+			"materials": {
+				"Sulphur": 19.56,
+				"Iron": 17.56,
+				"Carbon": 16.44,
+				"Nickel": 13.28,
+				"Phosphorus": 10.53,
+				"Chromium": 7.9,
+				"Manganese": 7.25,
+				"Vanadium": 4.31,
+				"Molybdenum": 1.15,
+				"Yttrium": 1.05,
+				"Tungsten": 0.96
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136006,
+			"id64": 1405123094216968555,
+			"bodyId": 39,
+			"name": "Haumea",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 25423,
+			"isLandable": true,
+			"gravity": 0.06984407762747137,
+			"earthMasses": 0.00066,
+			"radius": 620,
+			"surfaceTemperature": 33,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 103703.79851851853,
+			"semiMajorAxis": 43.21802893917794,
+			"orbitalEccentricity": 0.19126,
+			"orbitalInclination": 28.190001,
+			"argOfPeriapsis": 101.789284,
+			"rotationalPeriod": 0.16300000225694445,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.328372,
+			"materials": {
+				"Sulphur": 21.38,
+				"Carbon": 17.97,
+				"Iron": 16.06,
+				"Nickel": 12.15,
+				"Phosphorus": 11.51,
+				"Chromium": 7.22,
+				"Manganese": 6.63,
+				"Zinc": 4.37,
+				"Cadmium": 1.25,
+				"Tungsten": 0.88,
+				"Technetium": 0.57
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136016,
+			"id64": 1441151891235932523,
+			"bodyId": 40,
+			"name": "Hi'iaka",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Planet": 39
+				},
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 25423,
+			"isLandable": true,
+			"gravity": 0.00476705671875,
+			"earthMasses": 0.000003,
+			"radius": 160,
+			"surfaceTemperature": 33,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 49.12,
+			"semiMajorAxis": 0.0003334271521820531,
+			"orbitalEccentricity": 0.0513,
+			"orbitalInclination": 126.356003,
+			"argOfPeriapsis": 288.263245,
+			"rotationalPeriod": 1.4488774956597222,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.324726,
+			"materials": {
+				"Sulphur": 21.58,
+				"Carbon": 18.15,
+				"Iron": 16.22,
+				"Nickel": 12.27,
+				"Phosphorus": 11.62,
+				"Chromium": 7.29,
+				"Manganese": 6.7,
+				"Vanadium": 3.98,
+				"Tungsten": 0.89,
+				"Mercury": 0.71,
+				"Technetium": 0.58
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136008,
+			"id64": 1477180688254896491,
+			"bodyId": 41,
+			"name": "Quaoar",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Rocky Ice world",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 21016,
+			"isLandable": true,
+			"gravity": 0.008252325021066759,
+			"earthMasses": 0.000234,
+			"radius": 1074,
+			"surfaceTemperature": 33,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Rock": 40.4,
+				"Ice": 40,
+				"Metal": 19.6
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 104262.24592592592,
+			"semiMajorAxis": 43.37303254688638,
+			"orbitalEccentricity": 0.034,
+			"orbitalInclination": 7.987,
+			"argOfPeriapsis": 179.364548,
+			"rotationalPeriod": 0.9490581597222222,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.234474,
+			"materials": {
+				"Sulphur": 20.69,
+				"Iron": 18.58,
+				"Carbon": 17.4,
+				"Nickel": 14.05,
+				"Phosphorus": 11.14,
+				"Manganese": 7.67,
+				"Zinc": 5.05,
+				"Arsenic": 1.75,
+				"Cadmium": 1.44,
+				"Molybdenum": 1.21,
+				"Tellurium": 1.02
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136007,
+			"id64": 1513209485273860459,
+			"bodyId": 42,
+			"name": "Makemake",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 25669,
+			"isLandable": true,
+			"gravity": 0.058564543251992767,
+			"earthMasses": 0.000736,
+			"radius": 715,
+			"surfaceTemperature": 32,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 112817.84888888888,
+			"semiMajorAxis": 45.71503163952453,
+			"orbitalEccentricity": 0.15586,
+			"orbitalInclination": 29.006849,
+			"argOfPeriapsis": 235.525894,
+			"rotationalPeriod": 0.3237916621412037,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.33764,
+			"materials": {
+				"Sulphur": 22.03,
+				"Carbon": 18.52,
+				"Iron": 16.55,
+				"Nickel": 12.52,
+				"Phosphorus": 11.86,
+				"Manganese": 6.84,
+				"Zinc": 4.5,
+				"Vanadium": 4.07,
+				"Niobium": 1.13,
+				"Tin": 1.08,
+				"Tellurium": 0.9
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136012,
+			"id64": 1549238282292824427,
+			"bodyId": 43,
+			"name": "(225088) 2007 OR10",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 22854,
+			"isLandable": true,
+			"gravity": 0.010800362878417968,
+			"earthMasses": 0.000435,
+			"radius": 1280,
+			"surfaceTemperature": 27,
+			"surfacePressure": 0,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": "Not terraformable",
+			"orbitalPeriod": 199841.13777777778,
+			"semiMajorAxis": 66.92504709870848,
+			"orbitalEccentricity": 0.5066,
+			"orbitalInclination": 30.943001,
+			"argOfPeriapsis": 269.235504,
+			"rotationalPeriod": 1.2408295355902779,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.453617,
+			"materials": {
+				"Sulphur": 22.72,
+				"Carbon": 19.11,
+				"Iron": 17.08,
+				"Nickel": 12.92,
+				"Phosphorus": 12.23,
+				"Chromium": 7.68,
+				"Germanium": 3.6,
+				"Arsenic": 1.61,
+				"Cadmium": 1.33,
+				"Molybdenum": 1.12,
+				"Technetium": 0.61
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136011,
+			"id64": 1585267079311788395,
+			"bodyId": 44,
+			"name": "Eris",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 39922,
+			"isLandable": true,
+			"gravity": 0.08421076869276172,
+			"earthMasses": 0.0028,
+			"radius": 1163,
+			"surfaceTemperature": 26,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 203684.5748148148,
+			"semiMajorAxis": 67.78104355272753,
+			"orbitalEccentricity": 0.44,
+			"orbitalInclination": 44.044498,
+			"argOfPeriapsis": 227.820267,
+			"rotationalPeriod": 1.0791666666666667,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": 0.471323,
+			"materials": {
+				"Sulphur": 23.69,
+				"Carbon": 19.92,
+				"Iron": 17.8,
+				"Nickel": 13.46,
+				"Phosphorus": 12.75,
+				"Germanium": 3.76,
+				"Selenium": 3.71,
+				"Arsenic": 1.68,
+				"Tin": 1.16,
+				"Ruthenium": 1.1,
+				"Tungsten": 0.98
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136015,
+			"id64": 1621295876330752363,
+			"bodyId": 45,
+			"name": "Sedna",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 290279,
+			"isLandable": true,
+			"gravity": 0.017873603737279359,
+			"earthMasses": 0.000435,
+			"radius": 995,
+			"surfaceTemperature": 20,
+			"surfacePressure": null,
+			"volcanismType": "No volcanism",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 4161000.1066666666,
+			"semiMajorAxis": 506.2003718453728,
+			"orbitalEccentricity": 0.854,
+			"orbitalInclination": 11.82872,
+			"argOfPeriapsis": 311.290009,
+			"rotationalPeriod": 1.0974783890393519,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.143725,
+			"materials": {
+				"Sulphur": 22.59,
+				"Carbon": 19,
+				"Iron": 16.98,
+				"Nickel": 12.84,
+				"Phosphorus": 12.16,
+				"Manganese": 7.01,
+				"Vanadium": 4.17,
+				"Zirconium": 1.97,
+				"Niobium": 1.16,
+				"Tin": 1.1,
+				"Yttrium": 1.01
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		},
+		{
+			"id": 8136018,
+			"id64": 1657324673349716331,
+			"bodyId": 46,
+			"name": "Persephone",
+			"discovery": {
+				"commander": "Redfoxxx",
+				"date": "2017-09-26 17:50:12"
+			},
+			"type": "Planet",
+			"subType": "Icy body",
+			"parents": [
+				{
+					"Star": 0
+				}
+			],
+			"distanceToArrival": 484555,
+			"isLandable": true,
+			"gravity": 1.954317076274715,
+			"earthMasses": 9.9997,
+			"radius": 14427.148,
+			"surfaceTemperature": 20,
+			"surfacePressure": null,
+			"volcanismType": "Water Geysers",
+			"atmosphereType": "No atmosphere",
+			"atmosphereComposition": null,
+			"solidComposition": {
+				"Ice": 60,
+				"Rock": 26.93,
+				"Metal": 13.06
+			},
+			"terraformingState": null,
+			"orbitalPeriod": 5474999.940740741,
+			"semiMajorAxis": 700.0004979898688,
+			"orbitalEccentricity": 0.6,
+			"orbitalInclination": 30,
+			"argOfPeriapsis": 121.143654,
+			"rotationalPeriod": 1.5977880859375,
+			"rotationalPeriodTidallyLocked": false,
+			"axialTilt": -0.367077,
+			"materials": {
+				"Sulphur": 22.34,
+				"Carbon": 18.78,
+				"Iron": 16.79,
+				"Nickel": 12.7,
+				"Phosphorus": 12.03,
+				"Manganese": 6.93,
+				"Germanium": 3.54,
+				"Selenium": 3.5,
+				"Cadmium": 1.3,
+				"Tin": 1.09,
+				"Yttrium": 1
+			},
+			"updateTime": "2019-10-25 15:33:42"
+		}
+	]
+}

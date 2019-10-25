@@ -14,6 +14,8 @@ namespace EddiEdsmResponder
     {
         private Thread updateThread;
         private List<string> ignoredEvents = new List<string>();
+        private readonly IEdsmService edsmService;
+        private readonly DataProviderService dataProviderService;
 
         public string ResponderName()
         {
@@ -30,8 +32,13 @@ namespace EddiEdsmResponder
             return Properties.EDSMResources.desc;
         }
 
-        public EDSMResponder()
+        public EDSMResponder() : this(new StarMapService())
+        {}
+
+        public EDSMResponder(IEdsmService edsmService)
         {
+            this.edsmService = edsmService;
+            dataProviderService = new DataProviderService(edsmService);
             Logging.Info($"Initialized {ResponderName()}");
         }
 
@@ -39,7 +46,7 @@ namespace EddiEdsmResponder
         {
             Reload();
 
-            return StarMapService.Instance != null;
+            return edsmService != null;
         }
 
         public void Stop()
@@ -53,13 +60,13 @@ namespace EddiEdsmResponder
             // Set up the star map service
             if (ignoredEvents == null)
             {
-                ignoredEvents = StarMapService.Instance?.getIgnoredEvents();
+                ignoredEvents = edsmService?.getIgnoredEvents();
             }
 
-            if (StarMapService.Instance != null && updateThread == null)
+            if (edsmService != null && updateThread == null)
             {
                 // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                updateThread = new Thread(() => DataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
+                updateThread = new Thread(() => dataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
                 {
                     IsBackground = true,
                     Name = "EDSM updater"
@@ -88,7 +95,7 @@ namespace EddiEdsmResponder
                 return;
             }
 
-            if (StarMapService.Instance != null)
+            if (edsmService != null)
             {
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
@@ -103,7 +110,7 @@ namespace EddiEdsmResponder
                 }
                 if (eventData != null && !EDDI.Instance.gameIsBeta)
                 {
-                    StarMapService.Instance.sendEvent(eventData);
+                    edsmService.sendEvent(eventData);
                 }
             }
         }

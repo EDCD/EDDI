@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EddiStarMapService;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -105,10 +106,15 @@ namespace EddiDataProviderService
         private const string WHERE_EDSMID = @"WHERE edsmid = @edsmid; PRAGMA optimize;";
         private const string WHERE_NAME = @"WHERE name = @name; PRAGMA optimize;";
 
+        private readonly IEdsmService edsmService;
+        private readonly DataProviderService dataProviderService;
         private static StarSystemSqLiteRepository instance;
 
-        private StarSystemSqLiteRepository()
-        { }
+        private StarSystemSqLiteRepository(IEdsmService edsmService)
+        {
+            this.edsmService = edsmService;
+            dataProviderService = new DataProviderService(edsmService);
+        }
 
         private static readonly object instanceLock = new object();
         public static StarSystemSqLiteRepository Instance
@@ -122,7 +128,7 @@ namespace EddiDataProviderService
                         if (instance == null)
                         {
                             Logging.Debug("No StarSystemSqLiteRepository instance: creating one");
-                            instance = new StarSystemSqLiteRepository();
+                            instance = new StarSystemSqLiteRepository(new StarMapService());
                             CreateOrUpdateDatabase();
                         }
                     }
@@ -164,7 +170,7 @@ namespace EddiDataProviderService
         {
             if (!names.Any()) { return null; }
 
-            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
+            List<StarSystem> systems = GetStarSystems(names, refreshIfOutdated);
 
             // If a system isn't found after we've read our local database, we need to fetch it.
             List<string> fetchSystems = new List<string>();
@@ -176,7 +182,7 @@ namespace EddiDataProviderService
                 }
             }
 
-            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
+            List<StarSystem> fetchedSystems = dataProviderService.GetSystemsData(fetchSystems.ToArray());
             if (fetchedSystems?.Count > 0)
             {
                 Instance.SaveStarSystems(fetchedSystems);
@@ -188,7 +194,7 @@ namespace EddiDataProviderService
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
-            if (name == string.Empty) { return null; }
+            if (String.IsNullOrEmpty(name)) { return null; }
             return GetStarSystems(new[] { name }, refreshIfOutdated).FirstOrDefault();
         }
 
@@ -265,7 +271,7 @@ namespace EddiDataProviderService
 
             if (systemsToUpdate.Count > 0)
             {
-                List<StarSystem> updatedSystems = DataProviderService.GetSystemsData(systemsToUpdate.Select(s => s.Key).ToArray());
+                List<StarSystem> updatedSystems = dataProviderService.GetSystemsData(systemsToUpdate.Select(s => s.Key).ToArray());
 
                 // If the newly fetched star system is an empty object except (for the object name), reject it
                 // Return old results when new results have been rejected
@@ -284,7 +290,7 @@ namespace EddiDataProviderService
                 }
 
                 // Synchronize EDSM visits and comments
-                updatedSystems = DataProviderService.syncFromStarMapService(updatedSystems);
+                updatedSystems = dataProviderService.syncFromStarMapService(updatedSystems);
                 
                 // Update properties that aren't synced from the server and that we want to preserve
                 foreach (StarSystem updatedSystem in updatedSystems)
@@ -473,7 +479,7 @@ namespace EddiDataProviderService
         }
 
 
-        private static StarSystem DeserializeStarSystem(string systemName, string data, ref bool needToUpdate)
+        private StarSystem DeserializeStarSystem(string systemName, string data, ref bool needToUpdate)
         {
             if (systemName == string.Empty || data == string.Empty) { return null; }
 
@@ -492,8 +498,8 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem reading data for star system '" + systemName + "' from database, re-obtaining from source.");
                 try
                 {
-                    result = DataProviderService.GetSystemData(systemName);
-                    result = DataProviderService.syncFromStarMapService(new List<StarSystem> { result })?.FirstOrDefault(); // Synchronize EDSM visits and comments
+                    result = dataProviderService.GetSystemData(systemName);
+                    result = dataProviderService.syncFromStarMapService(new List<StarSystem> { result })?.FirstOrDefault(); // Synchronize EDSM visits and comments
                     needToUpdate = true;
                 }
                 catch (Exception ex)
@@ -826,7 +832,7 @@ namespace EddiDataProviderService
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        public static void RecoverStarSystemDB()
+        public void RecoverStarSystemDB()
         {
             using (var con = SimpleDbConnection())
             {
@@ -842,7 +848,7 @@ namespace EddiDataProviderService
                 }
             }
             CreateOrUpdateDatabase();
-            Task.Run(() => DataProviderService.syncFromStarMapService());
+            Task.Run(() => dataProviderService.syncFromStarMapService());
         }
 
         private static void handleSqlLiteException(SQLiteConnection con, SQLiteException ex)

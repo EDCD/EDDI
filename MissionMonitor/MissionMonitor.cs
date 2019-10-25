@@ -1,6 +1,7 @@
 using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiStarMapService;
 using EddiEvents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,7 +35,7 @@ namespace EddiMissionMonitor
         public string missionsRouteList;
         public decimal missionsRouteDistance;
 
-        private List<string> noExpiryAfterComplete = new List<string> {
+        private readonly List<string> noExpiryAfterComplete = new List<string> {
             "assassinate",
             "assassinatewing",
             "disable",
@@ -43,6 +44,9 @@ namespace EddiMissionMonitor
             "massacrethargoid",
             "massacrewing"
         };
+
+        private readonly IEdsmService edsmService;
+        private readonly DataProviderService dataProviderService;
 
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
@@ -67,8 +71,13 @@ namespace EddiMissionMonitor
             return true;
         }
 
-        public MissionMonitor()
+        public MissionMonitor() : this(null)
+        { }
+
+        public MissionMonitor(IEdsmService edsmService)
         {
+            this.edsmService = edsmService ?? new StarMapService();
+            dataProviderService = new DataProviderService(edsmService);
             missions = new ObservableCollection<Mission>();
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
@@ -1083,7 +1092,7 @@ namespace EddiMissionMonitor
                 {
                     systems.Add(homeSystem);
                 }
-                List<StarSystem> starsystems = DataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false);
+                List<StarSystem> starsystems = dataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false);
                 decimal[][] distMatrix = new decimal[systems.Count][];
                 for (int i = 0; i < systems.Count; i++)
                 {
@@ -1312,7 +1321,7 @@ namespace EddiMissionMonitor
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
 
                 // Get all the route coordinates from EDSM in one request
-                List<StarSystem> starsystems = DataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
+                List<StarSystem> starsystems = dataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
 
                 // Get distance to the next system
                 StarSystem dest = starsystems.Find(s => s.systemname == route[0]);

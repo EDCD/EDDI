@@ -11,17 +11,17 @@ namespace EddiStarMapService
     public partial class StarMapService
     {
         /// <summary> Exactly one system name is required. </summary>
-        public static StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
+        public StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
             if (system == null) { return null; }
-            return GetStarMapSystems(new string[] { system }, showCoordinates, showSystemInformation).FirstOrDefault();
+            return GetStarMapSystems(new string[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
         }
 
         /// <summary> At least one system name is required. </summary>
-        public static List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true, bool showSystemInformation = true)
+        public List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true, bool showSystemInformation = true)
         {
             if (systems == null) { return null; }
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-v1/systems", Method.POST);
             foreach (string system in systems)
             {
@@ -31,7 +31,7 @@ namespace EddiStarMapService
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
             request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
-            var clientResponse = client.Execute<List<JObject>>(request);
+            var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -42,7 +42,7 @@ namespace EddiStarMapService
                     {
                         if (response != null)
                         {
-                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                            starSystems.Add(ParseStarMapSystem(response));
                         }
                     }
                     return starSystems;
@@ -56,10 +56,10 @@ namespace EddiStarMapService
         }
 
         /// <summary> Partial of system name is required. </summary>
-        public static List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
+        public List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
             if (system == null) { return null; }
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-v1/systems", Method.POST);
 
             // Wildcard '%' is needed for partial system name's next character
@@ -68,7 +68,7 @@ namespace EddiStarMapService
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
             request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
-            var clientResponse = client.Execute<List<JObject>>(request);
+            var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -79,7 +79,7 @@ namespace EddiStarMapService
                     {
                         if (response != null)
                         {
-                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                            starSystems.Add(ParseStarMapSystem(response));
                         }
                     }
                     return starSystems;
@@ -93,10 +93,10 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
-        public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
+        public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-v1/sphere-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("minRadius", minRadiusLy);
@@ -106,7 +106,7 @@ namespace EddiStarMapService
             request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
-            var clientResponse = client.Execute<List<JObject>>(request);
+            var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -118,7 +118,7 @@ namespace EddiStarMapService
                         Dictionary<string, object> distantSystem = new Dictionary<string, object>()
                         {
                             { "distance", (decimal)response["distance"] },
-                            { "system", ParseStarMapSystem(response, (string)response["name"]) }
+                            { "system", ParseStarMapSystem(response) }
                         };
                         distantSystems.Add(distantSystem);
                     }
@@ -133,10 +133,10 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a cube, with a maximum cube size of 200 light years. </summary>
-        public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
+        public List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("size", cubeLy);
@@ -145,7 +145,7 @@ namespace EddiStarMapService
             request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
-            var clientResponse = client.Execute<List<JObject>>(request);
+            var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -156,7 +156,7 @@ namespace EddiStarMapService
                     {
                         if (response != null)
                         {
-                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                            starSystems.Add(ParseStarMapSystem(response));
                         }
                     }
                     return starSystems;
@@ -165,7 +165,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        private static StarSystem ParseStarMapSystem(JObject response, string system)
+        public StarSystem ParseStarMapSystem(JObject response)
         {
             StarSystem starSystem = new StarSystem
             {

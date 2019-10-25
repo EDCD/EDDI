@@ -1,0 +1,26 @@
+[
+	{
+		"name": "Sol",
+		"id": 27,
+		"id64": 10477373803,
+		"coords": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"coordsLocked": true,
+		"requirePermit": true,
+		"permitName": "Sol",
+		"information": {
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"faction": "Mother Gaia",
+			"factionState": "Pirate attack",
+			"population": 22780871769,
+			"security": "High",
+			"economy": "Refinery",
+			"secondEconomy": "Service",
+			"reserve": "Common"
+		}
+	}
+]

@@ -1,7 +1,12 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using System.Collections.Generic;
+using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using System.Text;
+using Newtonsoft.Json.Linq;
 using Tests.Properties;
 
 namespace UnitTests
@@ -9,40 +14,64 @@ namespace UnitTests
     [TestClass]
     public class DataProviderTests : TestBase
     {
+        FakeEdsmRestClient fakeEdsmRestClient;
+        StarMapService fakeEdsmService;
+        private DataProviderService dataProviderService;
+
         [TestInitialize]
         public void start()
         {
+            fakeEdsmRestClient = new FakeEdsmRestClient();
+            fakeEdsmService = new StarMapService(fakeEdsmRestClient);
+            dataProviderService = new DataProviderService(fakeEdsmService);
             MakeSafe();
         }
 
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6");
+            // Setup
+            string resource = "api-v1/systems";
+            string json = "{}";
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            StarSystem starSystem = dataProviderService.GetSystemData("Lagoon Sector GW-V b2-6");
             Assert.IsNotNull(starSystem.population);
         }
 
         [TestMethod]
         public void TestDataProviderMalformedSystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil");
+            // Setup
+            string resource = "api-v1/systems";
+            string json = "{}";
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            StarSystem starSystem = dataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil");
             Assert.IsNotNull(starSystem);
         }
 
         [TestMethod]
         public void TestDataProviderUnknown()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Not appearing in this galaxy");
+            // Setup
+            string resource = "api-v1/systems";
+            string json = "{}";
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            StarSystem starSystem = dataProviderService.GetSystemData("Not appearing in this galaxy");
             Assert.IsNotNull(starSystem);
         }
 
         [TestMethod]
         public void TestLegacySystem1()
         {
-            /// Test legacy data that may be stored in user's local sql databases. 
-            /// Legacy data includes all data stored in user's sql databases prior to version 3.0.1-b2
-            /// Note that data structures were reorganized at this time to support internationalization.
-
+            // Test legacy data that may be stored in user's local sql databases.
+            // Legacy data includes all data stored in user's sql databases prior to version 3.0.1-b2
+            // Note that data structures were reorganized at this time to support internationalization.
             StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1);
 
             Assert.IsNotNull(system);
@@ -90,7 +119,7 @@ namespace UnitTests
         [TestMethod]
         public void TestLegacyData()
         {
-            /// Test legacy data from api.eddp.co 
+            // Test legacy data from api.eddp.co
             StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1);
 
             Assert.AreEqual("Nijland Terminal", system.stations[0].name);
@@ -106,8 +135,21 @@ namespace UnitTests
         [TestMethod]
         public void TestStarSystemData()
         {
+            // Setup
+            string solJson = Encoding.UTF8.GetString(Resources.Sol);
+            fakeEdsmRestClient.Expect("api-v1/systems", solJson, new List<JObject>());
+
+            string solBodiesJson = Encoding.UTF8.GetString(Resources.SolBodies);
+            fakeEdsmRestClient.Expect("api-system-v1/bodies", solBodiesJson, new Dictionary<string, object>());
+
+            string solFactionsJson = Encoding.UTF8.GetString(Resources.SolFactions);
+            fakeEdsmRestClient.Expect("api-system-v1/factions", solFactionsJson, new JObject());
+
+            string solStationsJson = Encoding.UTF8.GetString(Resources.SolStations);
+            fakeEdsmRestClient.Expect("api-system-v1/stations", solStationsJson, new JObject());
+
             // Test system & body data in a complete star system
-            StarSystem starSystem = DataProviderService.GetSystemData("Sol");
+            StarSystem starSystem = dataProviderService.GetSystemData("Sol");
 
             Assert.AreEqual("Sol", starSystem.systemname);
             Assert.AreEqual(17072, starSystem.EDDBID);
@@ -130,14 +172,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow;
-            StarSystem starSystem = DataProviderService.GetSystemData("Sol");
-            Assert.IsTrue((System.DateTime.UtcNow - startTime).Milliseconds < 1000);
-        }
-
-        [TestMethod]
         public void TestNullLegacy()
         {
             StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system" });
@@ -149,21 +183,21 @@ namespace UnitTests
         public void TestBgsFactionsFromName()
         {
             // Test a known faction
-            Faction faction1 = DataProviderService.GetFactionByName("The Dark Wheel");
+            Faction faction1 = dataProviderService.GetFactionByName("The Dark Wheel");
             Assert.IsNotNull(faction1);
             Assert.AreEqual("The Dark Wheel", faction1.name);
             Assert.AreEqual("Democracy", faction1.Government.invariantName);
             Assert.AreEqual("Independent", faction1.Allegiance.invariantName);
             Assert.AreEqual(41917, faction1.EDDBID);
-            Assert.AreNotEqual(System.DateTime.MinValue, faction1.updatedAt);
+            Assert.AreNotEqual(DateTime.MinValue, faction1.updatedAt);
 
             // Even if the faction does not exist, we should return a basic object
-            Faction faction2 = DataProviderService.GetFactionByName("No such faction");
+            Faction faction2 = dataProviderService.GetFactionByName("No such faction");
             Assert.IsNotNull(faction2);
             Assert.AreEqual("No such faction", faction2.name);
             Assert.AreEqual(Government.None, faction2.Government);
             Assert.AreEqual(Superpower.None, faction2.Allegiance);
-            Assert.AreEqual(System.DateTime.MinValue, faction2.updatedAt);
+            Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
         }
     }
 }

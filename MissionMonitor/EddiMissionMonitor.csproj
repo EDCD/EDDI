@@ -137,6 +137,10 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
+      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
+      <Name>EddiStarMapService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>

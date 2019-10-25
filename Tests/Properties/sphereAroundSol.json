@@ -1,0 +1,76 @@
+[
+  {
+    "distance": 5.95,
+    "bodyCount": 16,
+    "name": "Barnard's Star",
+    "requirePermit": false
+  },
+  {
+    "distance": 9.69,
+    "bodyCount": 9,
+    "name": "Ross 154",
+    "requirePermit": false
+  },
+  {
+    "distance": 8.58,
+    "bodyCount": 2,
+    "name": "UV Ceti",
+    "requirePermit": false
+  },
+  {
+    "distance": 0,
+    "bodyCount": 40,
+    "name": "Sol",
+    "requirePermit": true,
+    "permitName": "Sol"
+  },
+  {
+    "distance": 8.29,
+    "bodyCount": 3,
+    "name": "Lalande 21185",
+    "requirePermit": false
+  },
+  {
+    "distance": 9.86,
+    "bodyCount": 2,
+    "name": "Yin Sector CL-Y d127",
+    "requirePermit": false
+  },
+  {
+    "distance": 9.88,
+    "bodyCount": 12,
+    "name": "Duamta",
+    "requirePermit": false
+  },
+  {
+    "distance": 4.38,
+    "bodyCount": 9,
+    "name": "Alpha Centauri",
+    "requirePermit": false
+  },
+  {
+    "distance": 7.78,
+    "bodyCount": 3,
+    "name": "Wolf 359",
+    "requirePermit": false
+  },
+  {
+    "distance": 8.59,
+    "bodyCount": 4,
+    "name": "Sirius",
+    "requirePermit": true,
+    "permitName": "Sirius"
+  },
+  {
+    "distance": 6.57,
+    "bodyCount": 15,
+    "name": "Luhman 16",
+    "requirePermit": false
+  },
+  {
+    "distance": 7.17,
+    "bodyCount": 16,
+    "name": "WISE 0855-0714",
+    "requirePermit": false
+  }
+]
