@@ -38,10 +38,10 @@ namespace UnitTests
             return restResponse;
         }
 
-        public void Expect(string resourse, string content, object data)
+        public void Expect(string resource, string content, object data)
         {
-            CannedContent[resourse] = content;
-            CannedData[resourse] = data;
+            CannedContent[resource] = content;
+            CannedData[resource] = data;
         }
     }
 
