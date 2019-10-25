@@ -2332,7 +2332,7 @@ namespace EddiJournalMonitor
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
                                     string frontierID = JsonParsing.getString(data, "FID");
-                                    bool horizons = JsonParsing.getBool(data, "Horizons");
+                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
 
                                     data.TryGetValue("ShipID", out object val);
                                     int? shipId = (int?)(long?)val;
