@@ -1673,7 +1673,10 @@
     <value>Rockforth Dünger</value>
     <comment>Commodity RockforthFertiliser</comment>
   </data>
-  
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Landwirtschaftliche Behandlung</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
   <data name="BakedGreebles" xml:space="preserve">
     <value>Gebackene Greebles</value>
     <comment>Commodity BakedGreebles</comment>
