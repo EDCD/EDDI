@@ -63,15 +63,21 @@ namespace EddiEdsmResponder
                 ignoredEvents = edsmService?.getIgnoredEvents();
             }
 
-            if (edsmService != null && updateThread == null)
+            if (edsmService != null)
             {
-                // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                updateThread = new Thread(() => dataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
+                // Renew our credentials for the EDSM API
+                edsmService.Reload();
+
+                if (updateThread == null)
                 {
-                    IsBackground = true,
-                    Name = "EDSM updater"
-                };
-                updateThread.Start();
+                    // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
+                    updateThread = new Thread(() => dataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
+                    {
+                        IsBackground = true,
+                        Name = "EDSM updater"
+                    };
+                    updateThread.Start();
+                }
             }
         }
 

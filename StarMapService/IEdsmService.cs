@@ -6,6 +6,7 @@ namespace EddiStarMapService
 {
     public interface IEdsmService
     {
+        void Reload();
         void sendEvent(string eventData);
         void sendStarMapComment(string systemName, string comment);
         Dictionary<string, string> getStarMapComments();

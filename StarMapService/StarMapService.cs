@@ -49,7 +49,17 @@ namespace EddiStarMapService
         {
             this.restClient = restClient ?? new EdsmRestClient(baseUrl);
 
-            // Set up the star map service
+            // Set up EDSM API credentials
+            SetEdsmCredentials();
+        }
+
+        public void Reload()
+        {
+            SetEdsmCredentials();
+        }
+
+        private void SetEdsmCredentials()
+        {
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
             {
@@ -62,17 +72,24 @@ namespace EddiStarMapService
                 }
                 else
                 {
-                    Logging.Warn("No StarMapService instance: Commander name not set.");
+                    Logging.Warn("EDSM Responder not configured: Commander name not set.");
                 }
             }
             else
             {
-                Logging.Warn("No StarMapService instance: API key not set.");
+                Logging.Warn("EDSM Responder not configured: API key not set.");
             }
+        }
+
+        private bool EdsmCredentialsSet()
+        {
+            return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
         }
 
         public void sendEvent(string eventData)
         {
+            if (!EdsmCredentialsSet()) { return; }
+
             // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
@@ -119,6 +136,7 @@ namespace EddiStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
+            if (!EdsmCredentialsSet()) { return; }
 
             var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
@@ -163,6 +181,8 @@ namespace EddiStarMapService
 
         public Dictionary<string, string> getStarMapComments()
         {
+            if (!EdsmCredentialsSet()) { return new Dictionary<string, string>(); }
+
             var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -186,6 +206,8 @@ namespace EddiStarMapService
 
         public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string[] systemNames = null)
         {
+            if (!EdsmCredentialsSet()) { return new List<StarMapResponseLogEntry>(); }
+
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
