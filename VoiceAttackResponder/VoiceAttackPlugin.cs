@@ -238,7 +238,7 @@ namespace EddiVoiceAttackResponder
                     // We start off setting the keys which are official and known  
                     setEventValues(vaProxy, @event, setKeys);
                     // Now we carry out a generic walk through the event object to create whatever we find  
-                    setEventExtendedValues(ref vaProxy, "EDDI " + @event.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(@event)), setKeys);
+                    setEventExtendedValues(vaProxy, "EDDI " + @event.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(@event)), setKeys);
 
                     // Update all standard values  
                     setStandardValues(ref vaProxy);

@@ -89,7 +89,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Walk a JSON object and write out all of the possible fields
         /// </summary>
-        public static void setEventExtendedValues(ref dynamic vaProxy, string prefix, dynamic json, List<string> setKeys)
+        public static void setEventExtendedValues(dynamic vaProxy, string prefix, dynamic json, List<string> setKeys)
         {
             foreach (JProperty child in json)
             {
@@ -209,7 +209,7 @@ namespace EddiVoiceAttackResponder
                         }
                         else if (arrayChild.Type == JTokenType.Object)
                         {
-                            setEventExtendedValues(ref vaProxy, childName, arrayChild, new List<string>());
+                            setEventExtendedValues(vaProxy, childName, arrayChild, new List<string>());
                         }
                         i++;
                     }
@@ -218,7 +218,7 @@ namespace EddiVoiceAttackResponder
                 else if (child.Value.Type == JTokenType.Object)
                 {
                     Logging.Debug("Found object");
-                    setEventExtendedValues(ref vaProxy, name, child.Value, new List<string>());
+                    setEventExtendedValues(vaProxy, name, child.Value, new List<string>());
                 }
                 else if (child.Value.Type == JTokenType.Null)
                 {
@@ -792,6 +792,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " comment", system?.comment);
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
                 vaProxy.SetBoolean(prefix + " scoopable", system?.scoopable);
+                vaProxy.SetInt(prefix + " total bodies", system?.totalbodies);
 
                 if (system != null)
                 {
