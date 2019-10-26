@@ -175,7 +175,7 @@ namespace UnitTests
 
             Assert.AreEqual(7, ev.totalbodies);
             Assert.AreEqual(3, ev.nonbodies);
-            Assert.AreEqual(43.9M, ev.progress);
+            Assert.AreEqual(44, ev.progress);
 
             List<string> setKeys = new List<string>();
             EddiVoiceAttackResponder.VoiceAttackVariables.setEventValues(vaProxy, ev, setKeys);
@@ -183,7 +183,7 @@ namespace UnitTests
 
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
             Assert.AreEqual(3, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan nonbodies").Value);
-            Assert.AreEqual(43.9M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
+            Assert.AreEqual(44, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
         }
     }
 }
