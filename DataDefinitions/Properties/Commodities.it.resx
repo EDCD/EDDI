@@ -1677,7 +1677,13 @@
     <value>Trattamento Agronomico</value>
     <comment>Commodity agronomictreatment</comment>
   </data>
-  
-  
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>Greebles al forno</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>Processore sperimentale ultra-compatto</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
   
 </root>
