@@ -1685,5 +1685,8 @@
     <value>Processore sperimentale ultra-compatto</value>
     <comment>Commodity Ultra-Compact Processor Prototypes</comment>
   </data>
-  
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Fesh argentato di Crom</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
 </root>
