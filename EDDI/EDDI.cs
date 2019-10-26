@@ -1010,12 +1010,15 @@ namespace Eddi
         {
             // There is a bug in the player journal output (as of player journal v.25) that can cause the `SystemScanComplete` event to fire multiple times 
             // in rapid succession when performing a system scan of a star system with only stars and no other bodies.
-            if (CurrentStarSystem != null && (bool)CurrentStarSystem?.systemScanCompleted)
+            if (CurrentStarSystem != null)
             {
-                // We will suppress repetitions of the event within the same star system.
-                return false;
+                if ((bool)CurrentStarSystem?.systemScanCompleted)
+                {
+                    // We will suppress repetitions of the event within the same star system.
+                    return false;
+                }
+                CurrentStarSystem.systemScanCompleted = true;
             }
-            CurrentStarSystem.systemScanCompleted = true;
             return true;
         }
 
@@ -1031,7 +1034,6 @@ namespace Eddi
 
         private bool eventSettlementApproached(SettlementApproachedEvent @event)
         {
-            bool passEvent = true;
             Station station = CurrentStarSystem?.stations?.Find(s => s.name == @event.name);
             if (station == null && @event.systemAddress == CurrentStarSystem?.systemAddress)
             {
@@ -1042,9 +1044,9 @@ namespace Eddi
                     marketId = @event.marketId,
                     systemname = CurrentStarSystem.systemname
                 };
-                CurrentStarSystem.stations.Add(station);
+                CurrentStarSystem?.stations?.Add(station);
             }
-            return passEvent;
+            return true;
         }
 
         private bool eventFriends(FriendsEvent @event)
