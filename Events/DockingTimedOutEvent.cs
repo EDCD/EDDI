@@ -25,7 +25,7 @@ namespace EddiEvents
         [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
-        public string stationtype => stationDefinition.localizedName;
+        public string stationtype => stationDefinition?.localizedName;
 
         public DockingTimedOutEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {
