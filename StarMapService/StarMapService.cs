@@ -53,12 +53,7 @@ namespace EddiStarMapService
             SetEdsmCredentials();
         }
 
-        public void Reload()
-        {
-            SetEdsmCredentials();
-        }
-
-        private void SetEdsmCredentials()
+        public void SetEdsmCredentials()
         {
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))

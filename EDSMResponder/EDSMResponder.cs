@@ -66,7 +66,7 @@ namespace EddiEdsmResponder
             if (edsmService != null)
             {
                 // Renew our credentials for the EDSM API
-                edsmService.Reload();
+                edsmService.SetEdsmCredentials();
 
                 if (updateThread == null)
                 {
