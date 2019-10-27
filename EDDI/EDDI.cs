@@ -186,6 +186,7 @@ namespace Eddi
                 }
 
                 // Tasks we can start asynchronously and don't need to wait for
+                Cmdr.name = configuration.CommanderName;
                 Cmdr.gender = configuration.Gender;
                 Task.Run(() => updateDestinationSystemStation(configuration));
                 Task.Run(() =>
@@ -734,6 +735,10 @@ namespace Eddi
                     {
                         passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)@event);
                     }
+                    else if (@event is CommanderLoadingEvent)
+                    {
+                        passEvent = eventCommanderLoading((CommanderLoadingEvent)@event);
+                    }
                     else if (@event is CommanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinued((CommanderContinuedEvent)@event);
@@ -902,7 +907,7 @@ namespace Eddi
                 }
             }
         }
-
+        
         private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
         {
             Cmdr.Power = @event.Power;
@@ -1832,16 +1837,22 @@ namespace Eddi
             return true;
         }
 
+        private bool eventCommanderLoading(CommanderLoadingEvent theEvent) 
+        {
+            // Set our commander name and ID
+            Cmdr.name = theEvent.name;
+            Cmdr.EDID = theEvent.frontierID;
+            return true;
+        }
+
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
             inCQC = false;
 
-            // Set our commander name
-            if (Cmdr.name == null)
-            {
-                Cmdr.name = theEvent.commander;
-            }
+            // Set our commander name and ID
+            Cmdr.name = theEvent.commander;
+            Cmdr.EDID = theEvent.frontierID;
 
             // Set game version
             inHorizons = theEvent.horizons;

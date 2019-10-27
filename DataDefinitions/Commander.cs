@@ -16,6 +16,9 @@ namespace EddiDataDefinitions
         /// <summary>The commander's name</summary>
         public string name { get; set; }
 
+        /// <summary>The commander's Frontier ID</summary>
+        public string EDID { get; set; }
+
         /// <summary>The commander's combat rating</summary>
         public CombatRating combatrating { get; set; }
 
