@@ -94,21 +94,22 @@ namespace EddiEdsmResponder
             edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
 
             var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
-            await Task.Factory.StartNew(() => obtainEdsmLogs(progress),
-                                            TaskCreationOptions.LongRunning);
+            IEdsmService edsmService = new StarMapService();
+            await Task.Factory.StartNew(() => obtainEdsmLogs(edsmService, progress), TaskCreationOptions.LongRunning);
 
             starMapConfiguration.lastSync = DateTime.UtcNow;
             starMapConfiguration.ToFile();
         }
 
-        public static void obtainEdsmLogs(IProgress<string> progress)
+        public static void obtainEdsmLogs(IEdsmService edsmService, IProgress<string> progress)
         {
-            if (StarMapService.Instance != null)
+            if (edsmService != null)
             {
                 try
                 {
-                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog();
-                    Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+                    DataProviderService dataProviderService = new DataProviderService(edsmService);
+                    List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog();
+                    Dictionary<string, string> comments = edsmService.getStarMapComments();
                     int total = flightLogs.Count;
                     int i = 0;
 
@@ -116,7 +117,7 @@ namespace EddiEdsmResponder
                     {
                         int batchSize = Math.Min(total, StarMapService.syncBatchSize);
                         List<StarMapResponseLogEntry> flightLogBatch = flightLogs.Skip(i).Take(batchSize).ToList();
-                        DataProviderService.syncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
+                        dataProviderService.syncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
                         i += batchSize;
                         progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
                     }

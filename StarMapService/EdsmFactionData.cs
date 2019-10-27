@@ -11,15 +11,15 @@ namespace EddiStarMapService
 {
     public partial class StarMapService
     {
-        public static List<Faction> GetStarMapFactions(string systemName, long? edsmId = null)
+        public List<Faction> GetStarMapFactions(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
 
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-system-v1/factions", Method.POST);
             request.AddParameter("systemName", systemName);
             request.AddParameter("systemId", edsmId);
-            var clientResponse = client.Execute<JObject>(request);
+            var clientResponse = restClient.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -35,7 +35,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        private static List<Faction> ParseStarMapFactions(JObject response, string systemName)
+        public List<Faction> ParseStarMapFactions(JObject response, string systemName)
         {
             List<Faction> Factions = new List<Faction>();
             if (response != null)
@@ -53,10 +53,12 @@ namespace EddiStarMapService
                         }
                         catch (Exception ex)
                         {
-                            Dictionary<string, object> data = new Dictionary<string, object>();
-                            data.Add("faction", JsonConvert.SerializeObject(faction));
-                            data.Add("exception", ex.Message);
-                            data.Add("stacktrace", ex.StackTrace);
+                            Dictionary<string, object> data = new Dictionary<string, object>
+                            {
+                                {"faction", JsonConvert.SerializeObject(faction)},
+                                {"exception", ex.Message},
+                                {"stacktrace", ex.StackTrace}
+                            };
                             Logging.Error("Error parsing EDSM faction result.", data);
                         }
                     }
@@ -65,7 +67,7 @@ namespace EddiStarMapService
             return Factions;
         }
 
-        private static Faction ParseStarMapFaction(JObject faction, string systemName)
+        private Faction ParseStarMapFaction(JObject faction, string systemName)
         {
             if (faction is null) { return null; }
             Faction Faction = new Faction

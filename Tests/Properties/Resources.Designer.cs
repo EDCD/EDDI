@@ -83,6 +83,26 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] CapitalSystems {
+            get {
+                object obj = ResourceManager.GetObject("CapitalSystems", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] cubeSystemsAroundSol {
+            get {
+                object obj = ResourceManager.GetObject("cubeSystemsAroundSol", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] edsmBodies {
             get {
                 object obj = ResourceManager.GetObject("edsmBodies", resourceCulture);
@@ -166,6 +186,56 @@ namespace Tests.Properties {
         public static byte[] shipMonitor {
             get {
                 object obj = ResourceManager.GetObject("shipMonitor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Sol {
+            get {
+                object obj = ResourceManager.GetObject("Sol", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SolBodies {
+            get {
+                object obj = ResourceManager.GetObject("SolBodies", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SolFactions {
+            get {
+                object obj = ResourceManager.GetObject("SolFactions", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SolStations {
+            get {
+                object obj = ResourceManager.GetObject("SolStations", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] sphereAroundSol {
+            get {
+                object obj = ResourceManager.GetObject("sphereAroundSol", resourceCulture);
                 return ((byte[])(obj));
             }
         }

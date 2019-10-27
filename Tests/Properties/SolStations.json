@@ -1,0 +1,616 @@
+{
+	"id": 27,
+	"id64": 10477373803,
+	"name": "Sol",
+	"url": "https://www.edsm.net/en/system/stations/id/27/name/Sol",
+	"stations": [
+		{
+			"id": 375,
+			"marketId": 128016384,
+			"type": "Orbis Starport",
+			"name": "Daedalus",
+			"distanceToArrival": 220.256683,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Refinery",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-25 17:51:13",
+				"market": "2019-10-25 20:52:57",
+				"shipyard": "2019-10-25 20:02:13",
+				"outfitting": "2019-10-25 18:52:32"
+			}
+		},
+		{
+			"id": 2747,
+			"marketId": 3534390016,
+			"type": "Planetary Port",
+			"name": "Ehrlich City",
+			"body": {
+				"id": 11236,
+				"name": "Mercury",
+				"latitude": 32.6576,
+				"longitude": -145.49
+			},
+			"distanceToArrival": 224,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Industrial",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-24 11:54:46",
+				"shipyard": "2019-10-24 11:54:46",
+				"outfitting": "2019-10-24 11:54:46"
+			}
+		},
+		{
+			"id": 3250,
+			"marketId": 3534389760,
+			"type": "Planetary Outpost",
+			"name": "Walz Depot",
+			"body": {
+				"id": 11236,
+				"name": "Mercury",
+				"latitude": -50.5409,
+				"longitude": -41.7654
+			},
+			"distanceToArrival": 224,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Industrial",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-24 11:17:29",
+				"shipyard": "2019-10-24 11:17:15",
+				"outfitting": "2019-10-24 11:17:15"
+			}
+		},
+		{
+			"id": 10461,
+			"marketId": 3534391808,
+			"type": "Planetary Outpost",
+			"name": "Furukawa Enterprise",
+			"body": {
+				"id": 11236,
+				"name": "Mercury",
+				"latitude": -7.70397,
+				"longitude": -73.2029
+			},
+			"distanceToArrival": 224,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Industrial",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-21 20:55:16",
+				"shipyard": "2019-10-22 15:58:24",
+				"outfitting": "2019-10-22 15:59:09"
+			}
+		},
+		{
+			"id": 6898,
+			"marketId": 3228719104,
+			"type": "Outpost",
+			"name": "Burnell Station",
+			"distanceToArrival": 359.11853,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Refinery",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": false,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-24 23:33:32",
+				"shipyard": null,
+				"outfitting": "2019-10-24 23:33:32"
+			}
+		},
+		{
+			"id": 560,
+			"marketId": 128016640,
+			"type": "Ocellus Starport",
+			"name": "Galileo",
+			"distanceToArrival": 505.295135,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Refinery",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:45:10",
+				"market": "2019-10-25 20:09:17",
+				"shipyard": "2019-10-25 18:45:16",
+				"outfitting": "2019-10-25 20:14:50"
+			}
+		},
+		{
+			"id": 1213,
+			"marketId": 128017408,
+			"type": "Orbis Starport",
+			"name": "Li Qing Jao",
+			"distanceToArrival": 505.542236,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Service",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 963,
+				"name": "Federal Congress"
+			},
+			"updateTime": {
+				"information": "2019-10-24 17:45:14",
+				"market": "2019-10-25 18:46:34",
+				"shipyard": "2019-10-25 07:24:13",
+				"outfitting": "2019-10-25 18:47:26"
+			}
+		},
+		{
+			"id": 887,
+			"marketId": 128017152,
+			"type": "Orbis Starport",
+			"name": "M.Gorbachev",
+			"distanceToArrival": 505.635986,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Service",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:21:02",
+				"market": "2019-10-25 20:39:58",
+				"shipyard": "2019-10-25 18:51:15",
+				"outfitting": "2019-10-25 20:40:32"
+			}
+		},
+		{
+			"id": 341,
+			"marketId": 128016896,
+			"type": "Orbis Starport",
+			"name": "Abraham Lincoln",
+			"distanceToArrival": 505.703217,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Service",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-25 15:12:48",
+				"market": "2019-10-25 15:12:54",
+				"shipyard": "2019-10-25 15:12:54",
+				"outfitting": "2019-10-25 15:12:54"
+			}
+		},
+		{
+			"id": 1822,
+			"marketId": 128017664,
+			"type": "Orbis Starport",
+			"name": "Mars High",
+			"distanceToArrival": 791.406982,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Service",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-25 06:22:58",
+				"shipyard": "2019-10-25 17:48:18",
+				"outfitting": "2019-10-25 06:22:58"
+			}
+		},
+		{
+			"id": 10772,
+			"marketId": 3534390272,
+			"type": "Planetary Outpost",
+			"name": "Haberlandt Survey",
+			"body": {
+				"id": 6371,
+				"name": "Europa",
+				"latitude": 49.8832,
+				"longitude": -11.3209
+			},
+			"distanceToArrival": 2523,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Military",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": false,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-24 18:28:04",
+				"shipyard": null,
+				"outfitting": "2019-10-24 03:56:12"
+			}
+		},
+		{
+			"id": 1,
+			"marketId": 128017920,
+			"type": "Ocellus Starport",
+			"name": "Columbus",
+			"distanceToArrival": 2525.587891,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Refinery",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-25 13:11:55",
+				"market": "2019-10-25 13:13:02",
+				"shipyard": "2019-10-25 12:03:52",
+				"outfitting": "2019-10-25 13:13:53"
+			}
+		},
+		{
+			"id": 10819,
+			"marketId": 3534391296,
+			"type": "Planetary Outpost",
+			"name": "Schottky Reformatory",
+			"body": {
+				"id": 12912,
+				"name": "Callisto",
+				"latitude": 33.6978,
+				"longitude": 10.3664
+			},
+			"distanceToArrival": 2522,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Colony",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 6768,
+				"name": "Sol Nationalists"
+			},
+			"updateTime": {
+				"information": "2019-10-22 01:00:43",
+				"market": "2019-10-12 17:02:18",
+				"shipyard": "2019-10-12 17:02:18",
+				"outfitting": "2019-10-22 01:01:19"
+			}
+		},
+		{
+			"id": 8023,
+			"marketId": 3534390784,
+			"type": "Planetary Outpost",
+			"name": "Durrance Camp",
+			"body": {
+				"id": 11998,
+				"name": "Ganymede",
+				"latitude": 73.641,
+				"longitude": -154.807
+			},
+			"distanceToArrival": 2529,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Colony",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 223,
+				"name": "Sol Workers' Party"
+			},
+			"updateTime": {
+				"information": "2019-10-25 18:01:08",
+				"market": "2019-10-23 03:33:22",
+				"shipyard": "2019-10-19 00:06:35",
+				"outfitting": "2019-10-23 03:25:03"
+			}
+		},
+		{
+			"id": 1132,
+			"marketId": 128018176,
+			"type": "Orbis Starport",
+			"name": "Titan City",
+			"distanceToArrival": 5027.22998,
+			"allegiance": "Federation",
+			"government": "Democracy",
+			"economy": "Refinery",
+			"secondEconomy": null,
+			"haveMarket": true,
+			"haveShipyard": true,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Black Market",
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Universal Cartographics",
+				"Missions",
+				"Crew Lounge",
+				"Tuning",
+				"Search and Rescue"
+			],
+			"controllingFaction": {
+				"id": 1,
+				"name": "Mother Gaia"
+			},
+			"updateTime": {
+				"information": "2019-10-24 21:34:19",
+				"market": "2019-10-24 21:34:26",
+				"shipyard": "2019-10-24 21:34:26",
+				"outfitting": "2019-10-24 21:34:26"
+			}
+		},
+		{
+			"id": 266,
+			"marketId": 128677511,
+			"type": "Planetary Outpost",
+			"name": "Dekker's Yard",
+			"body": {
+				"id": 1621,
+				"name": "Iapetus",
+				"latitude": -1.39185,
+				"longitude": -69.2546
+			},
+			"distanceToArrival": 5029,
+			"allegiance": "Federation",
+			"government": "Workshop (Engineer)",
+			"economy": "Colony",
+			"secondEconomy": null,
+			"haveMarket": false,
+			"haveShipyard": false,
+			"haveOutfitting": true,
+			"otherServices": [
+				"Restock",
+				"Refuel",
+				"Repair",
+				"Contacts",
+				"Tuning"
+			],
+			"controllingFaction": {
+				"id": null,
+				"name": "Colonel Bris Dekker"
+			},
+			"updateTime": {
+				"information": "2019-10-25 17:08:52",
+				"market": null,
+				"shipyard": null,
+				"outfitting": "2019-10-25 17:15:40"
+			}
+		}
+	]
+}

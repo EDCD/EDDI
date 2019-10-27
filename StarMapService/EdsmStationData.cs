@@ -11,14 +11,14 @@ namespace EddiStarMapService
 {
     public partial class StarMapService
     {
-        public static List<Station> GetStarMapStations(string system, long? edsmId = null)
+        public List<Station> GetStarMapStations(string system, long? edsmId = null)
         {
             if (system == null) { return null; }
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-system-v1/stations", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);
-            var clientResponse = client.Execute<JObject>(request);
+            var clientResponse = restClient.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -34,7 +34,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        private static List<Station> ParseStarMapStations(JObject response)
+        public List<Station> ParseStarMapStations(JObject response)
         {
             List<Station> Stations = new List<Station>();
             if (response != null)
@@ -53,10 +53,12 @@ namespace EddiStarMapService
                         }
                         catch (Exception ex)
                         {
-                            Dictionary<string, object> data = new Dictionary<string, object>();
-                            data.Add("station", JsonConvert.SerializeObject(station));
-                            data.Add("exception", ex.Message);
-                            data.Add("stacktrace", ex.StackTrace);
+                            Dictionary<string, object> data = new Dictionary<string, object>
+                            {
+                                {"station", JsonConvert.SerializeObject(station)},
+                                {"exception", ex.Message},
+                                {"stacktrace", ex.StackTrace}
+                            };
                             Logging.Error("Error parsing EDSM station result.", data);
                         }
 
@@ -68,7 +70,7 @@ namespace EddiStarMapService
             return Stations;
         }
 
-        private static Station ParseStarMapStation(JObject station, string system)
+        private Station ParseStarMapStation(JObject station, string system)
         {
             Station Station = new Station
             {

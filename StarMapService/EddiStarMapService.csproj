@@ -79,6 +79,7 @@
     <Compile Include="EdsmStationData.cs" />
     <Compile Include="EdsmSystemData.cs" />
     <Compile Include="EDSMException.cs" />
+    <Compile Include="IEdsmService.cs" />
     <Compile Include="StarMapConfiguration.cs" />
     <Compile Include="StarMapService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

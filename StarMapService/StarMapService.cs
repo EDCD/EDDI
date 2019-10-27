@@ -10,8 +10,14 @@ using Utilities;
 
 namespace EddiStarMapService
 {
+    public interface IEdsmRestClient
+    {
+        Uri BuildUri(IRestRequest request);
+        IRestResponse<T> Execute<T>(IRestRequest request) where T : new();
+    }
+
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
-    public partial class StarMapService
+    public partial class StarMapService : IEdsmService
     {
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 50;
@@ -20,62 +26,54 @@ namespace EddiStarMapService
 
         private string commanderName { get; set; }
         private string apiKey { get; set; }
-        private static string baseUrl = "https://www.edsm.net/";
+        private readonly IEdsmRestClient restClient;
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
-        public StarMapService(string apikey, string commandername, string baseURL = "https://www.edsm.net/")
+        private const string baseUrl = "https://www.edsm.net/";
+
+        private class EdsmRestClient : IEdsmRestClient
         {
-            apiKey = apikey?.Trim();
-            commanderName = commandername?.Trim();
-            baseUrl = baseURL;
+            private readonly RestClient restClient;
+
+            public EdsmRestClient(string baseUrl)
+            {
+                restClient = new RestClient(baseUrl);
+            }
+
+            public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
+            IRestResponse<T> IEdsmRestClient.Execute<T>(IRestRequest request) => restClient.Execute<T>(request);
         }
 
-        private static readonly object instanceLock = new object();
-        private static StarMapService instance;
-        public static StarMapService Instance
+        public StarMapService(IEdsmRestClient restClient = null)
         {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No StarMapService instance: creating one");
+            this.restClient = restClient ?? new EdsmRestClient(baseUrl);
 
-                            // Set up the star map service
-                            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                            if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
-                            {
-                                // Commander name might come from EDSM credentials or from the game and companion app
-                                string commanderName = starMapCredentials?.commanderName ?? commanderFrontierApiName;
-                                if (!string.IsNullOrEmpty(commanderName))
-                                {
-                                    instance = new StarMapService(starMapCredentials.apiKey, commanderName);
-                                    Logging.Info("Configuring EDDI access to EDSM profile data");
-                                }
-                                else
-                                {
-                                    Logging.Warn("No StarMapService instance: Commander name not set.");
-                                }
-                            }
-                            else
-                            {
-                                Logging.Warn("No StarMapService instance: API key not set.");
-                            }
-                        }
-                    }
+            // Set up the star map service
+            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
+            {
+                // Commander name might come from EDSM credentials or from the game and companion app
+                string cmdrName = starMapCredentials?.commanderName ?? commanderFrontierApiName;
+                if (!string.IsNullOrEmpty(cmdrName))
+                {
+                    apiKey = starMapCredentials.apiKey?.Trim();
+                    commanderName = cmdrName?.Trim();
                 }
-                return instance;
+                else
+                {
+                    Logging.Warn("No StarMapService instance: Commander name not set.");
+                }
+            }
+            else
+            {
+                Logging.Warn("No StarMapService instance: API key not set.");
             }
         }
 
         public void sendEvent(string eventData)
         {
             // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
-            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
@@ -87,8 +85,8 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
-                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    Logging.Debug("Sending event to EDSM: " + restClient.BuildUri(request).AbsoluteUri);
+                    var clientResponse = restClient.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
@@ -121,7 +119,7 @@ namespace EddiStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -132,7 +130,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    var clientResponse = restClient.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
@@ -157,67 +155,18 @@ namespace EddiStarMapService
 
         public List<string> getIgnoredEvents()
         {
-            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
-            var clientResponse = client.Execute<List<string>>(request);
+            var clientResponse = restClient.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
             return response ?? null;
         }
 
-        public string getStarMapComment(string systemName)
-        {
-            var client = new RestClient(baseUrl);
-            var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
-            commentRequest.AddParameter("apiKey", apiKey);
-            commentRequest.AddParameter("commanderName", commanderName);
-            commentRequest.AddParameter("systemName", systemName);
-            var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
-            StarMapLogResponse commentResponse = commentClientResponse.Data;
-            return commentResponse?.comment;
-        }
-
-        public StarMapInfo getStarMapInfo(string systemName)
-        {
-            var client = new RestClient(baseUrl);
-
-            // First fetch the data itself
-            var logRequest = new RestRequest("api-logs-v1/get-logs", Method.POST);
-            logRequest.AddParameter("apiKey", apiKey);
-            logRequest.AddParameter("commanderName", commanderName);
-            logRequest.AddParameter("systemName", systemName);
-            var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
-            StarMapLogResponse logResponse = logClientResponse.Data;
-            if (logResponse?.msgnum != 100)
-            {
-                Logging.Warn("EDSM responded with " + logResponse.msg ?? logClientResponse.ErrorMessage);
-            }
-
-            // Also grab any comment that might be present
-            var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
-            commentRequest.AddParameter("apiKey", apiKey);
-            commentRequest.AddParameter("commanderName", commanderName);
-            commentRequest.AddParameter("systemName", systemName);
-            var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
-            StarMapLogResponse commentResponse = commentClientResponse.Data;
-            if (commentResponse?.msgnum != 100)
-            {
-                Logging.Warn("EDSM responded with " + commentResponse.msg ?? commentClientResponse.ErrorMessage);
-            }
-
-            int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
-            DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();
-            string comment = commentResponse?.comment;
-
-            return new StarMapInfo(visits, lastUpdate, comment);
-        }
-
         public Dictionary<string, string> getStarMapComments()
         {
-            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
-            var starMapCommentResponse = client.Execute<StarMapCommentResponse>(request);
+            var starMapCommentResponse = restClient.Execute<StarMapCommentResponse>(request);
             StarMapCommentResponse response = starMapCommentResponse.Data;
 
             Dictionary<string, string> vals = new Dictionary<string, string>();
@@ -237,7 +186,6 @@ namespace EddiStarMapService
 
         public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string[] systemNames = null)
         {
-            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -261,7 +209,7 @@ namespace EddiStarMapService
                     request.AddParameter("fullSync", 1);
                 }
             }
-            var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
+            var starMapLogResponse = restClient.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
 
             if (response != null)
@@ -355,7 +303,7 @@ namespace EddiStarMapService
     // Custom serializer for REST requests
     public class NewtonsoftJsonSerializer : ISerializer
     {
-        private Newtonsoft.Json.JsonSerializer serializer;
+        private readonly Newtonsoft.Json.JsonSerializer serializer;
 
         public NewtonsoftJsonSerializer(Newtonsoft.Json.JsonSerializer serializer)
         {

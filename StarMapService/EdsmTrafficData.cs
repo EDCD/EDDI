@@ -7,7 +7,7 @@ namespace EddiStarMapService
 {
     public partial class StarMapService
     {
-        public static Traffic GetStarMapHostility(string systemName, long? edsmId = null)
+        public Traffic GetStarMapHostility(string systemName, long? edsmId = null)
         {
             Traffic traffic = GetStarMapTraffic(systemName, edsmId);
             Traffic deaths = GetStarMapDeaths(systemName, edsmId);
@@ -20,15 +20,15 @@ namespace EddiStarMapService
             return hostility;
         }
 
-        public static Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
+        public Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
 
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-system-v1/traffic", Method.POST);
             request.AddParameter("systemName", systemName);
             request.AddParameter("systemId", edsmId);
-            var clientResponse = client.Execute<Dictionary<string, object>>(request);
+            var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -40,21 +40,21 @@ namespace EddiStarMapService
             return null;
         }
 
-        private static Traffic ParseStarMapTraffic(JObject response)
+        public Traffic ParseStarMapTraffic(JObject response)
         {
             Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>();
             return traffic;
         }
 
-        public static Traffic GetStarMapDeaths(string systemName, long? edsmId = null)
+        public Traffic GetStarMapDeaths(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
 
-            var client = new RestClient(baseUrl);
+
             var request = new RestRequest("api-system-v1/deaths", Method.POST);
             request.AddParameter("systemName", systemName);
             request.AddParameter("systemId", edsmId);
-            var clientResponse = client.Execute<Dictionary<string, object>>(request);
+            var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
                 var token = JToken.Parse(clientResponse.Content);
@@ -66,7 +66,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        private static Traffic ParseStarMapDeaths(JObject response)
+        public Traffic ParseStarMapDeaths(JObject response)
         {
             Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>();
             return deaths;

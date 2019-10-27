@@ -67,8 +67,14 @@ namespace EddiNavigationService
             }
         };
 
+        private IEdsmService edsmService;
         private static NavigationService instance;
         private static readonly object instanceLock = new object();
+
+        public NavigationService(IEdsmService edsmService)
+        {
+            this.edsmService = edsmService;
+        }
 
         public static NavigationService Instance
         {
@@ -81,7 +87,7 @@ namespace EddiNavigationService
                         if (instance == null)
                         {
                             Logging.Debug("No Navigation instance: creating one");
-                            instance = new NavigationService();
+                            instance = new NavigationService(new StarMapService());
                         }
                     }
                 }
@@ -377,7 +383,7 @@ namespace EddiNavigationService
                 {
                     int startRadius = i * searchIncrement;
                     endRadius = (i + 1) * searchIncrement;
-                    List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
+                    List<Dictionary<string, object>> sphereSystems = edsmService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
                     sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem).scoopable).ToList();
                     searchCount = sphereSystems.Count;
                     if (searchCount > 0)
@@ -471,7 +477,7 @@ namespace EddiNavigationService
 
                 while (ServiceSystem == null && maxTries > 0)
                 {
-                    List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
+                    List<StarSystem> cubeSystems = edsmService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
                     if (cubeSystems?.Any() ?? false)
                     {
                         // Filter systems using search parameters

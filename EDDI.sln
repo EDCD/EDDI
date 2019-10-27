@@ -98,6 +98,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiStatusMonitor", "StatusMonitor\EddiStatusMonitor.csproj", "{FEC7BA2B-23C3-4F4F-96EF-BF1F1909EB03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiMissionMonitor", "MissionMonitor\EddiMissionMonitor.csproj", "{6D01F475-75B8-4FCA-9B1D-9ECF5993A32D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6614E6AD-65AE-49FC-850B-9DF79D1CC998} = {6614E6AD-65AE-49FC-850B-9DF79D1CC998}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiBgsService", "BgsService\EddiBgsService.csproj", "{962F6D23-D9D8-44BF-8A65-516889190944}"
 EndProject
@@ -228,9 +231,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal

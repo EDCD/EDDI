@@ -1,0 +1,35 @@
+[
+	{
+		"name": "Achenar",
+		"id": 12523,
+		"id64": 164098653,
+		"coords": {
+			"x": 67.5,
+			"y": -119.46875,
+			"z": 24.84375
+		},
+		"coordsLocked": true
+	},
+	{
+		"name": "Alioth",
+		"id": 8218,
+		"id64": 1109989017963,
+		"coords": {
+			"x": -33.65625,
+			"y": 72.46875,
+			"z": -20.65625
+		},
+		"coordsLocked": true
+	},
+	{
+		"name": "Sol",
+		"id": 27,
+		"id64": 10477373803,
+		"coords": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"coordsLocked": true
+	}
+]

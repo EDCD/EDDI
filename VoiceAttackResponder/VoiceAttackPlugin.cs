@@ -287,6 +287,9 @@ namespace EddiVoiceAttackResponder
             return script?.Enabled ?? false;
         }
 
+
+        // ReSharper disable once UnusedMember.Global
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "VA API")]
         public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
@@ -916,12 +919,14 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
-                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
-                    here.comment = comment == "" ? null : comment;
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
+                    string currentSystemName = EDDI.Instance.CurrentStarSystem.systemname;
+                    StarSystem currentSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(currentSystemName);
+                    currentSystem.comment = comment == "" ? null : comment;
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(currentSystem);
 
                     // Store in EDSM
-                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.systemname, comment);
+                    IEdsmService edsmService = new StarMapService();
+                    edsmService?.sendStarMapComment(currentSystemName, comment);
                 }
             }
             catch (Exception e)
