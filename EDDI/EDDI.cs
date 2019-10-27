@@ -1572,30 +1572,25 @@ namespace Eddi
 
         private void updateCurrentSystem(string name)
         {
-            if (name == null)
+            if (name == null || CurrentStarSystem?.systemname == name) { return; }
+
+            // We have changed system so update the old one as to when we left
+            StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
+
+            LastStarSystem = CurrentStarSystem;
+            if (NextStarSystem?.systemname == name)
             {
-                return;
+                CurrentStarSystem = NextStarSystem;
+                NextStarSystem = null;
             }
-            if (CurrentStarSystem == null || CurrentStarSystem.systemname != name)
+            else
             {
-                if (CurrentStarSystem != null && CurrentStarSystem.systemname != name)
-                {
-                    // We have changed system so update the old one as to when we left
-                    StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
-                }
-                LastStarSystem = CurrentStarSystem;
-                if (NextStarSystem?.systemname == name)
-                {
-                    CurrentStarSystem = NextStarSystem;
-                    NextStarSystem = null;
-                }
-                else
-                {
-                    CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
-                }
-                setSystemDistanceFromHome(CurrentStarSystem);
-                setSystemDistanceFromDestination(CurrentStarSystem);
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
             }
+
+            setSystemDistanceFromHome(CurrentStarSystem);
+            setSystemDistanceFromDestination(CurrentStarSystem);
+            setCommanderTitle();
         }
 
         private void updateCurrentStellarBody(string bodyName, string systemName, long? systemAddress = null)
@@ -1768,10 +1763,6 @@ namespace Eddi
             CurrentStarSystem.visitLog.Add(theEvent.timestamp);
             CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-            setSystemDistanceFromHome(CurrentStarSystem);
-            setSystemDistanceFromDestination(CurrentStarSystem);
-            setCommanderTitle();
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
@@ -2231,7 +2222,6 @@ namespace Eddi
                     // Save a timestamp when the API refreshes, so that we can compare whether events are more or less recent
                     ApiTimeStamp = DateTime.UtcNow;
 
-                    long profileTime = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
@@ -2249,7 +2239,7 @@ namespace Eddi
                             CurrentStarSystem = profile?.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
                             setSystemDistanceFromDestination(CurrentStarSystem);
-
+                            setCommanderTitle();
 
                             if (profile.docked && profile.CurrentStarSystem?.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
                             {
@@ -2258,7 +2248,7 @@ namespace Eddi
                                 {
                                     // Only set the current station if it is not present, otherwise we leave it to events
                                     Logging.Debug("Set current station to " + CurrentStation.name);
-                                    CurrentStation.updatedat = profileTime;
+                                    CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                                     updatedCurrentStarSystem = true;
                                 }
                             }
@@ -2275,9 +2265,7 @@ namespace Eddi
                             };
                             updateThread.Start();
                         }
-
-                        setCommanderTitle();
-
+                        
                         if (updatedCurrentStarSystem)
                         {
                             Logging.Debug("Star system information updated from remote server; updating local copy");
