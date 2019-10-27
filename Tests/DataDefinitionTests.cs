@@ -1,3 +1,4 @@
+using System;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -302,6 +303,104 @@ namespace UnitTests
             Assert.AreEqual("Interstellar Factors Contact", journal.invariantName);
             Assert.AreEqual(journal.edname, edsm.edname);
             Assert.AreEqual(journal.invariantName, edsm.invariantName);
+        }
+
+        [TestMethod]
+        public void FrontierApiCmdrTest()
+        {
+            Commander commander = new Commander()
+            {
+                name = "Marty McFly",
+                title = "Serf",
+                combatrating = CombatRating.FromRank(3),
+                traderating = TradeRating.FromRank(3),
+                explorationrating = ExplorationRating.FromRank(2),
+                cqcrating = CQCRating.FromRank(2),
+                empirerating = EmpireRating.FromRank(2),
+                federationrating = FederationRating.FromRank(1),
+                crimerating = 0,
+                servicerating = 0,
+                powerrating = 2,
+                credits = 0,
+                debt = 0
+            };
+            FrontierApiCommander frontierApiCommander = new FrontierApiCommander()
+            {
+                name = "Marty McFly",
+                combatrating = CombatRating.FromRank(3),
+                traderating = TradeRating.FromRank(2),
+                explorationrating = ExplorationRating.FromRank(2),
+                cqcrating = CQCRating.FromRank(2),
+                empirerating = EmpireRating.FromRank(4),
+                federationrating = FederationRating.FromRank(2),
+                crimerating = 2,
+                servicerating = 2,
+                powerrating = 3,
+                credits = 246486105,
+                debt = 24684
+            };
+            FrontierApiCommander frontierApiCommander2 = new FrontierApiCommander()
+            {
+                name = "Doc Brown",
+                combatrating = CombatRating.FromRank(0),
+                traderating = TradeRating.FromRank(6),
+                explorationrating = ExplorationRating.FromRank(7),
+                cqcrating = CQCRating.FromRank(0),
+                empirerating = EmpireRating.FromRank(1),
+                federationrating = FederationRating.FromRank(2),
+                crimerating = 1,
+                servicerating = 1,
+                powerrating = 7,
+                credits = 189687,
+                debt = 0
+            };
+
+            DateTime apiDateTime = DateTime.UtcNow;
+            DateTime journalDateTime = DateTime.UtcNow.AddHours(1);
+
+            Commander test1 = Commander.FromFrontierApiCmdr(commander, frontierApiCommander, apiDateTime, journalDateTime, out bool cmdr1Matches);
+            
+            Assert.IsTrue(cmdr1Matches);
+            Assert.AreEqual("Marty McFly", test1.name);
+            Assert.AreEqual("Serf", test1.title);
+            Assert.AreEqual(246486105, test1.credits);
+            Assert.AreEqual(24684, test1.debt);
+            Assert.AreEqual(2, test1.crimerating);
+            Assert.AreEqual(3, test1.combatrating.rank);
+            Assert.AreEqual(3, test1.traderating.rank);
+            Assert.AreEqual(2, test1.explorationrating.rank);
+            Assert.AreEqual(2, test1.cqcrating.rank);
+            Assert.AreEqual(4, test1.empirerating.rank);
+            Assert.AreEqual(2, test1.federationrating.rank);
+            Assert.AreEqual(2, test1.crimerating);
+            Assert.AreEqual(2, test1.servicerating);
+            // Since the journal timestamp is greater than the api timestamp, power rating is based off of the journal timestamp
+            Assert.AreEqual(2, test1.powerrating);
+
+            // Make the api timestamp fresher than the journal timestamp and re-check the power rating
+            apiDateTime = DateTime.UtcNow.AddHours(2);
+            Commander test2 = Commander.FromFrontierApiCmdr(commander, frontierApiCommander, apiDateTime, journalDateTime, out bool cmdr2Matches);
+            Assert.IsTrue(cmdr2Matches);
+            Assert.AreEqual(3, test2.powerrating);
+
+            // Test Frontier API commander details that do not match our base commander name
+            // The base commander properties should remain unchanged
+            Commander test3 = Commander.FromFrontierApiCmdr(commander, frontierApiCommander2, apiDateTime, journalDateTime, out bool cmdr3Matches);
+            Assert.IsFalse(cmdr3Matches);
+            Assert.AreEqual("Marty McFly", test3.name);
+            Assert.AreEqual("Serf", test3.title);
+            Assert.AreEqual(0, test3.credits);
+            Assert.AreEqual(0, test3.debt);
+            Assert.AreEqual(0, test3.crimerating);
+            Assert.AreEqual(3, test3.combatrating.rank);
+            Assert.AreEqual(3, test3.traderating.rank);
+            Assert.AreEqual(2, test3.explorationrating.rank);
+            Assert.AreEqual(2, test3.cqcrating.rank);
+            Assert.AreEqual(2, test3.empirerating.rank);
+            Assert.AreEqual(1, test3.federationrating.rank);
+            Assert.AreEqual(0, test3.crimerating);
+            Assert.AreEqual(0, test3.servicerating);
+            Assert.AreEqual(2, test3.powerrating);
         }
     }
 }
