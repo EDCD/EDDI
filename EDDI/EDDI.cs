@@ -2224,22 +2224,11 @@ namespace Eddi
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
-                        // Use the profile as primary information for our commander and shipyard
-                        Cmdr = profile.Cmdr;
+                        // Update our commander object
+                        Cmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, ApiTimeStamp, JournalTimeStamp, out bool cmdrMatches);
 
-                        // Reinstate information not obtained from the Companion API (gender settings)
-                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                        if (configuration != null)
-                        {
-                            Cmdr.gender = configuration.Gender;
-                            Cmdr.powermerits = configuration.powerMerits;
-                            Cmdr.squadronname = configuration.SquadronName;
-                            Cmdr.squadronid = configuration.SquadronID;
-                            Cmdr.squadronrank = configuration.SquadronRank;
-                            Cmdr.squadronallegiance = configuration.SquadronAllegiance;
-                            Cmdr.squadronpower = configuration.SquadronPower;
-                            Cmdr.squadronfaction = configuration.SquadronFaction;
-                        }
+                        // Stop if the commander returned from the profile does not match our expected commander name
+                        if (!cmdrMatches) { return false; }
 
                         bool updatedCurrentStarSystem = false;
 

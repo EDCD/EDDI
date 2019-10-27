@@ -12,7 +12,7 @@ namespace EddiCompanionAppService
         public JObject json { get; set; }
 
         /// <summary>The commander</summary>
-        public Commander Cmdr { get; set; }
+        public FrontierApiCommander Cmdr { get; set; }
 
         /// <summary>The current starsystem</summary>
         public StarSystem CurrentStarSystem { get; set; }

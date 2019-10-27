@@ -89,6 +89,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Probability.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataGridNumericColumn.cs" />
