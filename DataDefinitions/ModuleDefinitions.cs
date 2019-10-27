@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
             {
 
                 // Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, int ShipID)
-                // Check https://eddb.io/archive/v5/modules.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
+                // Check https://eddb.io/archive/v6/modules.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
 
                 new Module(128049250, "SideWinder_Armour_Grade1", 738, "LightweightAlloy", 1, "I", 0, 128049249),
                 new Module(128049251, "SideWinder_Armour_Grade2", 739, "ReinforcedAlloy", 1, "I", 25600, 128049249),
