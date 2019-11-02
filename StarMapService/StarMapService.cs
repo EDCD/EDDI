@@ -49,12 +49,17 @@ namespace EddiStarMapService
         {
             this.restClient = restClient ?? new EdsmRestClient(baseUrl);
 
-            // Set up the star map service
+            // Set up EDSM API credentials
+            SetEdsmCredentials();
+        }
+
+        public void SetEdsmCredentials()
+        {
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
             {
                 // Commander name might come from EDSM credentials or from the game and companion app
-                string cmdrName = starMapCredentials?.commanderName ?? commanderFrontierApiName;
+                string cmdrName = starMapCredentials.commanderName ?? commanderFrontierApiName;
                 if (!string.IsNullOrEmpty(cmdrName))
                 {
                     apiKey = starMapCredentials.apiKey?.Trim();
@@ -62,17 +67,24 @@ namespace EddiStarMapService
                 }
                 else
                 {
-                    Logging.Warn("No StarMapService instance: Commander name not set.");
+                    Logging.Warn("EDSM Responder not configured: Commander name not set.");
                 }
             }
             else
             {
-                Logging.Warn("No StarMapService instance: API key not set.");
+                Logging.Warn("EDSM Responder not configured: API key not set.");
             }
+        }
+
+        private bool EdsmCredentialsSet()
+        {
+            return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
         }
 
         public void sendEvent(string eventData)
         {
+            if (!EdsmCredentialsSet()) { return; }
+
             // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
@@ -119,6 +131,7 @@ namespace EddiStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
+            if (!EdsmCredentialsSet()) { return; }
 
             var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
@@ -134,7 +147,7 @@ namespace EddiStarMapService
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response.msg ?? clientResponse.ErrorMessage);
+                        Logging.Warn("EDSM responded with " + response?.msg ?? clientResponse.ErrorMessage);
                     }
                 }
                 catch (ThreadAbortException)
@@ -158,11 +171,13 @@ namespace EddiStarMapService
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
             var clientResponse = restClient.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
-            return response ?? null;
+            return response;
         }
 
         public Dictionary<string, string> getStarMapComments()
         {
+            if (!EdsmCredentialsSet()) { return new Dictionary<string, string>(); }
+
             var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -174,7 +189,7 @@ namespace EddiStarMapService
             {
                 foreach (StarMapResponseCommentEntry entry in response.comments)
                 {
-                    if (entry.comment != null && entry.comment != "")
+                    if (!string.IsNullOrEmpty(entry.comment))
                     {
                         Logging.Debug("Comment found for " + entry.system);
                         vals[entry.system] = entry.comment;
@@ -186,14 +201,16 @@ namespace EddiStarMapService
 
         public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string[] systemNames = null)
         {
+            if (!EdsmCredentialsSet()) { return new List<StarMapResponseLogEntry>(); }
+
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("showId", 1); // Obtain EDSM IDs
             if (systemNames?.Count() == 1)
             {
-                /// When a single system name is provided, the api responds with 
-                /// the complete flight logs for that star system
+                // When a single system name is provided, the api responds with 
+                // the complete flight logs for that star system
                 request.AddParameter("systemName", systemNames[0]);
             }
             else
@@ -204,8 +221,8 @@ namespace EddiStarMapService
                 }
                 else
                 {
-                    /// Though not documented in the api, Anthor from EDSM has confirmed that this 
-                    /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
+                    // Though not documented in the api, Anthor from EDSM has confirmed that this 
+                    // unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
                     request.AddParameter("fullSync", 1);
                 }
             }
@@ -215,30 +232,22 @@ namespace EddiStarMapService
             if (response != null)
             {
                 Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
+
                 if (response.msgnum != 100)
                 {
                     // An error occurred
                     throw new EDSMException(response.msg);
                 }
-            }
-            else
-            {
-                Logging.Debug("No response received.");
-                throw new EDSMException();
-            }
+                if (response.logs == null) { return null; }
 
-            if (response?.logs != null)
-            {
-                if (systemNames?.Count() > 0)
+                if (systemNames?.Length > 0)
                 {
                     response.logs.RemoveAll(s => !systemNames.Contains(s.system));
                 }
                 return response.logs;
             }
-            else
-            {
-                return null;
-            }
+            Logging.Debug("No response received.");
+            throw new EDSMException();
         }
     }
 
@@ -334,7 +343,7 @@ namespace EddiStarMapService
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
-        public T Deserialize<T>(RestSharp.IRestResponse response)
+        public T Deserialize<T>(IRestResponse response)
         {
             var content = response.Content;
 

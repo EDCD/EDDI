@@ -8,6 +8,7 @@ namespace EddiStarMapService
     {
         void sendEvent(string eventData);
         void sendStarMapComment(string systemName, string comment);
+        void SetEdsmCredentials();
         Dictionary<string, string> getStarMapComments();
         List<Body> GetStarMapBodies(string system, long? edsmId = null);
         List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string[] systemNames = null);
