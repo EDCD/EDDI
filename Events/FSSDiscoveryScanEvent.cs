@@ -20,7 +20,7 @@ namespace EddiEvents
             VARIABLES.Add("nonbodies", "The number of non-body signals");
         }
 
-        public decimal progress { get; private set; }
+        public int progress { get; private set; }
         public int totalbodies { get; private set; }
         public int nonbodies { get; private set; }
 
@@ -29,7 +29,7 @@ namespace EddiEvents
 
         public DiscoveryScanEvent(DateTime timestamp, decimal progress, int totalbodies, int nonbodies) : base(timestamp, NAME)
         {
-            this.progress = Math.Floor(progress * 100); // multiplied by 100 to convert to percentage
+            this.progress = (int)Math.Round(progress * 100); // multiplied by 100 to convert to percentage
             this.totalbodies = totalbodies;
             this.nonbodies = nonbodies;
         }
