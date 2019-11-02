@@ -165,6 +165,9 @@ namespace Eddi
         [JsonProperty("OverrideCulture")]
         public string OverrideCulture { get; set; }
 
+        [JsonProperty("CommanderName")]
+        public string CommanderName { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

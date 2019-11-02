@@ -123,7 +123,7 @@ namespace EddiJournalMonitor
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out object val);
-                                    List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
+                                    List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
                                     List<StationService> stationServices = new List<StationService>();
                                     foreach (string service in stationservices)
                                     {
@@ -132,7 +132,7 @@ namespace EddiJournalMonitor
 
                                     // Get station economies and their shares
                                     data.TryGetValue("StationEconomies", out object val2);
-                                    List<object> economies = val2 as List<object>;
+                                    List<object> economies = val2 as List<object> ?? new List<object>();
                                     List<EconomyShare> Economies = new List<EconomyShare>();
                                     foreach (Dictionary<string, object> economyshare in economies)
                                     {
@@ -3280,7 +3280,7 @@ namespace EddiJournalMonitor
                                     List<CargoInfo> inventory = new List<CargoInfo>();
 
                                     string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
-                                    int cargocarried = JsonParsing.getInt(data, "Count");
+                                    int cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
                                     data.TryGetValue("Inventory", out object val);
                                     if (val != null)
                                     {

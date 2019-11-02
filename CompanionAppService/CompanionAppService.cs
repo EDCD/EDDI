@@ -615,7 +615,7 @@ namespace EddiCompanionAppService
 
             if (json["commander"] != null)
             {
-                Commander Commander = new Commander
+                FrontierApiCommander Commander = new FrontierApiCommander
                 {
                     name = (string)json["commander"]["name"],
 
