@@ -1673,4 +1673,20 @@
     <value>Fertilizador Rockforth</value>
     <comment>Commodity RockforthFertiliser</comment>
   </data>
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Tratamento Agronômico</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>Cozido de Greebles</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>Protótipos de Processadores Ultra-Compactos</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Fôlego Prata de Crom</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
 </root>

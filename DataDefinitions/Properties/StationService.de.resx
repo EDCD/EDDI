@@ -230,7 +230,7 @@
     <comment>Station Service: Station Menu</comment>
   </data>
   <data name="Shop" xml:space="preserve">
-    <value>Einkaufen</value>
+    <value>Store</value>
     <comment>Station Service: Shop</comment>
   </data>
 </root>
