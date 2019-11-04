@@ -26,7 +26,7 @@ namespace Utilities
         public static readonly string VEHICLE_SRV = "SRV";
         public static readonly string VEHICLE_FIGHTER = "Fighter";
 
-        //Option defualts
+        //Option defaults
         public const int maxStationDistanceDefault = 10000;
         public const int missionWarningDefault = 60;
 
