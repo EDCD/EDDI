@@ -2,6 +2,16 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.0-rc1
+  * Core
+    * Updated commodity definitions, including adding Agronomic Treatments.
+  * EDSM Responder
+    * Fixed EDSM star map credentials not being reloaded when the EDSM responder is reloaded.
+  * Frontier API
+    * Fixed an issue whereby loading commander data from the Frontier API could clear other types of commander data.
+  * VoiceAttack Responder
+    * Added a VoiceAttack system variable for total bodies.
+
 ### 3.5.0-b2
   * Core
     * Fixed incorrect conversion to the local time zone when parsing timestamps from the journal and cAPI.
