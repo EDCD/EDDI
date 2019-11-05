@@ -27,6 +27,33 @@ namespace EddiBgsService
             public const string government = "government";
         }
 
+        // Faction data from EliteBGS (allows search by faction name - EDSM can only search by system name). 
+        // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
+        public Faction GetFactionByName(string factionName, string systemName = null)
+        {
+            if (string.IsNullOrEmpty(factionName)) { return null; }
+
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(FactionParameters.factionName, factionName)
+            };
+            List<Faction> factions = BgsService.GetFactions(factionEndpoint, queryList);
+
+            // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
+            if (systemName != null && factions.Count > 1)
+            {
+                foreach (Faction faction in factions)
+                {
+                    faction.presences = faction.presences.Where(f => f.systemName == systemName)?.ToList();
+                }
+            }
+
+            return factions?.FirstOrDefault() ?? new Faction()
+            {
+                name = factionName
+            };
+        }
+
         public static Faction GetFaction(string endpoint, List<KeyValuePair<string, object>> queryList)
         {
             return GetFactions(endpoint, queryList).FirstOrDefault();

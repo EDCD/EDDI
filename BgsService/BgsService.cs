@@ -8,11 +8,37 @@ using Utilities;
 
 namespace EddiBgsService
 {
-    public partial class BgsService
+    public interface IBgsRestClient
+    {
+        Uri BuildUri(IRestRequest request);
+        IRestResponse<T> Execute<T>(IRestRequest request) where T : new();
+    }
+
+    public partial class BgsService : IBgsService
     {
         // This API is high latency - reserve for targeted queries and data not available from any other source.
         private const string baseUrl = "https://elitebgs.app/api/ebgs/";
+
+        private readonly IBgsRestClient restClient;
         private static RestClient client = new RestClient(baseUrl);
+
+        private class BgsRestClient : IBgsRestClient
+        {
+            private readonly RestClient restClient;
+
+            public BgsRestClient(string baseUrl)
+            {
+                restClient = new RestClient(baseUrl);
+            }
+
+            public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
+            IRestResponse<T> IBgsRestClient.Execute<T>(IRestRequest request) => restClient.Execute<T>(request);
+        }
+
+        public BgsService(IBgsRestClient restClient = null)
+        {
+            this.restClient = restClient ?? new BgsRestClient(baseUrl);
+        }
 
         /// <summary> Specify the endpoint (e.g. EddiBgsService.Endpoint.factions) and a list of queries as KeyValuePairs </summary>
         public static List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EddiBgsService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json.Linq;
 using Tests.Properties;
 
 namespace UnitTests
@@ -183,7 +184,7 @@ namespace UnitTests
         public void TestBgsFactionsFromName()
         {
             // Test a known faction
-            Faction faction1 = dataProviderService.GetFactionByName("The Dark Wheel");
+            Faction faction1 = BgsService.GetFactionByName("The Dark Wheel");
             Assert.IsNotNull(faction1);
             Assert.AreEqual("The Dark Wheel", faction1.name);
             Assert.AreEqual("Democracy", faction1.Government.invariantName);
@@ -192,7 +193,7 @@ namespace UnitTests
             Assert.AreNotEqual(DateTime.MinValue, faction1.updatedAt);
 
             // Even if the faction does not exist, we should return a basic object
-            Faction faction2 = dataProviderService.GetFactionByName("No such faction");
+            Faction faction2 = BgsService.GetFactionByName("No such faction");
             Assert.IsNotNull(faction2);
             Assert.AreEqual("No such faction", faction2.name);
             Assert.AreEqual(Government.None, faction2.Government);
