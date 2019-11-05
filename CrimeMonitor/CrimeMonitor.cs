@@ -41,8 +41,7 @@ namespace EddiCrimeMonitor
 
         private static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
-        private readonly DataProviderService dataProviderService;
-        private IBgsService bgsService;
+        private readonly IBgsService bgsService;
 
         public string MonitorName()
         {

@@ -16,11 +16,10 @@ namespace EddiBgsService
 
     public partial class BgsService : IBgsService
     {
+        private readonly IBgsRestClient restClient;
+
         // This API is high latency - reserve for targeted queries and data not available from any other source.
         private const string baseUrl = "https://elitebgs.app/api/ebgs/";
-
-        private readonly IBgsRestClient restClient;
-        private static RestClient client = new RestClient(baseUrl);
 
         private class BgsRestClient : IBgsRestClient
         {
@@ -41,7 +40,7 @@ namespace EddiBgsService
         }
 
         /// <summary> Specify the endpoint (e.g. EddiBgsService.Endpoint.factions) and a list of queries as KeyValuePairs </summary>
-        public static List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
+        public List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
         {
             if (queries == null) { return null; }
 
@@ -77,13 +76,13 @@ namespace EddiBgsService
             return null;
         }
 
-        private static PageResponse PageRequest(RestRequest request, int page)
+        private PageResponse PageRequest(RestRequest request, int page)
         {
             request.AddOrUpdateParameter("page", page);
 
             DateTime startTime = DateTime.UtcNow;
 
-            RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)client.Execute<RestRequest>(request);
+            RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
             if (clientResponse.IsSuccessful)
             {
                 string json = clientResponse.Content;

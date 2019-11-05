@@ -179,26 +179,5 @@ namespace UnitTests
             Assert.IsNotNull(starSystem);
             Assert.AreEqual("No such system", starSystem.systemname);
         }
-
-        [TestMethod]
-        public void TestBgsFactionsFromName()
-        {
-            // Test a known faction
-            Faction faction1 = BgsService.GetFactionByName("The Dark Wheel");
-            Assert.IsNotNull(faction1);
-            Assert.AreEqual("The Dark Wheel", faction1.name);
-            Assert.AreEqual("Democracy", faction1.Government.invariantName);
-            Assert.AreEqual("Independent", faction1.Allegiance.invariantName);
-            Assert.AreEqual(41917, faction1.EDDBID);
-            Assert.AreNotEqual(DateTime.MinValue, faction1.updatedAt);
-
-            // Even if the faction does not exist, we should return a basic object
-            Faction faction2 = BgsService.GetFactionByName("No such faction");
-            Assert.IsNotNull(faction2);
-            Assert.AreEqual("No such faction", faction2.name);
-            Assert.AreEqual(Government.None, faction2.Government);
-            Assert.AreEqual(Superpower.None, faction2.Allegiance);
-            Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
-        }
     }
 }
