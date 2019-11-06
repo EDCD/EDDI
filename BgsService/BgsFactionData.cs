@@ -48,7 +48,7 @@ namespace EddiBgsService
                 }
             }
 
-            return factions?.FirstOrDefault() ?? new Faction()
+            return factions?.FirstOrDefault(f => f.name == factionName) ?? new Faction()
             {
                 name = factionName
             };

@@ -109,8 +109,8 @@ namespace UnitTests
         {
             // Setup
             string resource = "v4/factions?";
-            string json = Encoding.UTF8.GetString(Resources.bgsFaction);
-            List<JObject> data = new List<JObject>();
+            string json = Encoding.UTF8.GetString(Resources.bgsFactionResponse);
+            RestRequest data = new RestRequest();
             fakeBgsRestClient.Expect(resource, json, data);
 
             // Act
