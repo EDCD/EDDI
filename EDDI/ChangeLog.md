@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.0
+  * Promote 3.5.0-rc1 to final
+
 ### 3.5.0-rc1
   * Core
     * Updated commodity definitions, including adding Agronomic Treatments.
