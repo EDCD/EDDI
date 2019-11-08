@@ -149,17 +149,17 @@ namespace EddiDataDefinitions
 
             // Update our commander object with information obtainable from the journal
             // Since the parameters below only increase, we will take any that are higher in rank than we had before
-            Cmdr.combatrating = frontierApiCommander.combatrating.rank > Cmdr.combatrating.rank
+            Cmdr.combatrating = frontierApiCommander.combatrating?.rank > Cmdr.combatrating?.rank
                 ? frontierApiCommander.combatrating : Cmdr.combatrating;
-            Cmdr.traderating = frontierApiCommander.traderating.rank > Cmdr.traderating.rank
+            Cmdr.traderating = frontierApiCommander.traderating?.rank > Cmdr.traderating?.rank
                 ? frontierApiCommander.traderating : Cmdr.traderating;
-            Cmdr.explorationrating = frontierApiCommander.explorationrating.rank > Cmdr.explorationrating.rank
+            Cmdr.explorationrating = frontierApiCommander.explorationrating?.rank > Cmdr.explorationrating?.rank
                 ? frontierApiCommander.explorationrating : Cmdr.explorationrating;
-            Cmdr.cqcrating = frontierApiCommander.cqcrating.rank > Cmdr.cqcrating.rank
+            Cmdr.cqcrating = frontierApiCommander.cqcrating?.rank > Cmdr.cqcrating?.rank
                 ? frontierApiCommander.cqcrating : Cmdr.cqcrating;
-            Cmdr.empirerating = frontierApiCommander.empirerating.rank > Cmdr.empirerating.rank
+            Cmdr.empirerating = frontierApiCommander.empirerating?.rank > Cmdr.empirerating?.rank
                 ? frontierApiCommander.empirerating : Cmdr.empirerating;
-            Cmdr.federationrating = frontierApiCommander.federationrating.rank > Cmdr.federationrating.rank
+            Cmdr.federationrating = frontierApiCommander.federationrating?.rank > Cmdr.federationrating?.rank
                 ? frontierApiCommander.federationrating : Cmdr.federationrating;
             // Power rating is also updated from the journal but may decrease so we check the timestamp
             if (apiTimeStamp > journalTimeStamp)
