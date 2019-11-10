@@ -98,10 +98,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\InaraResources.de.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.es.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.fr.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.hu.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.it.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.ja.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.pt-BR.resx" />
     <EmbeddedResource Include="Properties\InaraResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InaraResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\InaraResources.ru.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">

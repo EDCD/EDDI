@@ -442,6 +442,7 @@
     <EmbeddedResource Include="Properties\DataScans.ru.resx" />
     <EmbeddedResource Include="Properties\Economies.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Economies.ru.resx" />
+    <EmbeddedResource Include="Properties\EmpireRatingsFemale.es.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.ru.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.pt-BR.resx" />
@@ -456,15 +457,29 @@
     <EmbeddedResource Include="Properties\GameModes.ru.resx" />
     <EmbeddedResource Include="Properties\Governments.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Governments.ru.resx" />
+    <EmbeddedResource Include="Properties\Happiness.de.resx" />
+    <EmbeddedResource Include="Properties\Happiness.es.resx" />
+    <EmbeddedResource Include="Properties\Happiness.fr.resx" />
+    <EmbeddedResource Include="Properties\Happiness.hu.resx" />
+    <EmbeddedResource Include="Properties\Happiness.it.resx" />
+    <EmbeddedResource Include="Properties\Happiness.ja.resx" />
     <EmbeddedResource Include="Properties\Happiness.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Happiness.resx" />
     <EmbeddedResource Include="Properties\Happiness.ru.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.de.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.es.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.fr.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.hu.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.it.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.ja.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.pt-BR.resx" />
     <EmbeddedResource Include="Properties\LoadoutDescription.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\LoadoutDescription.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
@@ -554,6 +569,20 @@
     <EmbeddedResource Include="Properties\PassengerType.ru.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.pt-BR.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ru.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.de.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.es.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.fr.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.hu.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.it.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.ja.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.ru.resx" />
+    <EmbeddedResource Include="Properties\Powers.de.resx" />
+    <EmbeddedResource Include="Properties\Powers.es.resx" />
+    <EmbeddedResource Include="Properties\Powers.fr.resx" />
+    <EmbeddedResource Include="Properties\Powers.hu.resx" />
+    <EmbeddedResource Include="Properties\Powers.it.resx" />
+    <EmbeddedResource Include="Properties\Powers.ja.resx" />
     <EmbeddedResource Include="Properties\Powers.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Powers.ru.resx" />
     <EmbeddedResource Include="Properties\Rarities.pt-BR.resx" />
@@ -570,6 +599,12 @@
     <EmbeddedResource Include="Properties\SecurityLevels.ru.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ru.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.de.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.es.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.fr.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.hu.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.it.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.ja.resx" />
     <EmbeddedResource Include="Properties\SignalSource.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SignalSource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -783,6 +818,12 @@
     <EmbeddedResource Include="Properties\SecurityLevels.ja.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ja.resx" />
     <EmbeddedResource Include="Properties\SignalSource.ru.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.de.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.es.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.fr.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.hu.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.it.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.ja.resx" />
     <EmbeddedResource Include="Properties\SquadronRanks.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SquadronRanks.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -908,10 +949,18 @@
       <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.de.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.es.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.fr.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.hu.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.it.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.ja.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Vehicle.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Vehicle.ru.resx" />
     <EmbeddedResource Include="Properties\Volcanism.de.resx" />
     <EmbeddedResource Include="Properties\Volcanism.es.resx" />
     <EmbeddedResource Include="Properties\Volcanism.fr.resx" />
@@ -925,6 +974,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Volcanism.ru.resx" />
     <EmbeddedResource Include="Properties\Vouchers.de.resx" />
+    <EmbeddedResource Include="Properties\Vouchers.es.resx" />
+    <EmbeddedResource Include="Properties\Vouchers.fr.resx" />
     <EmbeddedResource Include="Properties\Vouchers.hu.resx" />
     <EmbeddedResource Include="Properties\Vouchers.it.resx" />
     <EmbeddedResource Include="Properties\Vouchers.ja.resx" />

@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.1-b1
+  * Added back some translation resources that had been overlooked.
+
 ### 3.5.0
   * Promote 3.5.0-rc1 to final
 
