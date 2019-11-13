@@ -247,7 +247,7 @@ namespace EddiStarMapService
                 return response.logs;
             }
             Logging.Debug("No response received.");
-            throw new EDSMException();
+            throw new EDSMException("No response received."); // not for localization
         }
     }
 
