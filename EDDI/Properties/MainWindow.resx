@@ -281,4 +281,7 @@
   <data name="tab_commander_phonetic_name" xml:space="preserve">
     <value>Name (spoken)</value>
   </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Test Name</value>
+  </data>
 </root>

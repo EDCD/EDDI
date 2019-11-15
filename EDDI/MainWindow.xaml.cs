@@ -567,6 +567,11 @@ namespace Eddi
             }
         }
 
+        private void eddiCmdrPhoneticNameTestButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SpeechService.Instance.Say(null, EDDI.Instance.Cmdr.SpokenName(), 0);
+        }
+
         private void squadronNameChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
