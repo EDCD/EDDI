@@ -305,6 +305,7 @@
     <EmbeddedResource Include="Properties\sqlStarSystem3.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem4.json" />
     <EmbeddedResource Include="Properties\vehicle.json" />
+    <None Include="Properties\bgsFactionResponse.json" />
     <None Include="Properties\CapitalSystems.json" />
     <None Include="Properties\cubeSystemsAroundSol.json" />
     <None Include="Properties\Sol.json" />

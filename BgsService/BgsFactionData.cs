@@ -27,12 +27,39 @@ namespace EddiBgsService
             public const string government = "government";
         }
 
-        public static Faction GetFaction(string endpoint, List<KeyValuePair<string, object>> queryList)
+        // Faction data from EliteBGS (allows search by faction name - EDSM can only search by system name). 
+        // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
+        public Faction GetFactionByName(string factionName, string systemName = null)
+        {
+            if (string.IsNullOrEmpty(factionName)) { return null; }
+
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(FactionParameters.factionName, factionName)
+            };
+            List<Faction> factions = GetFactions(factionEndpoint, queryList);
+
+            // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
+            if (systemName != null && factions.Count > 1)
+            {
+                foreach (Faction faction in factions)
+                {
+                    faction.presences = faction.presences.Where(f => f.systemName == systemName)?.ToList();
+                }
+            }
+
+            return factions?.FirstOrDefault(f => f.name == factionName) ?? new Faction()
+            {
+                name = factionName
+            };
+        }
+
+        public Faction GetFaction(string endpoint, List<KeyValuePair<string, object>> queryList)
         {
             return GetFactions(endpoint, queryList).FirstOrDefault();
         }
 
-        public static List<Faction> GetFactions(string endpoint, List<KeyValuePair<string, object>> queryList)
+        public List<Faction> GetFactions(string endpoint, List<KeyValuePair<string, object>> queryList)
         {
             if (queryList.Count > 0)
             {
@@ -47,7 +74,7 @@ namespace EddiBgsService
             return null;
         }
 
-        private static List<Faction> ParseFactionsAsync(List<object> responses)
+        private List<Faction> ParseFactionsAsync(List<object> responses)
         {
             List<Task<Faction>> factionTasks = new List<Task<Faction>>();
             foreach (object response in responses)
@@ -66,7 +93,7 @@ namespace EddiBgsService
             return factions;
         }
 
-        private static Faction ParseFaction(object response)
+        public Faction ParseFaction(object response)
         {
             try
             {

@@ -112,6 +112,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
+      <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
+      <Name>EddiBgsService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>

@@ -5,6 +5,7 @@ using Cottle.Settings;
 using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
+using EddiBgsService;
 using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
@@ -29,12 +30,15 @@ namespace EddiSpeechResponder
         private readonly Random random;
         private readonly CustomSetting setting;
         private readonly DataProviderService dataProviderService;
+        private readonly BgsService bgsService;
 
         public static object Instance { get; set; }
 
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
+
             dataProviderService = new DataProviderService();
+            bgsService = new BgsService();
             random = new Random();
             this.scripts = scripts;
             setting = new CustomSetting
@@ -849,11 +853,11 @@ namespace EddiSpeechResponder
                 }
                 else if (values.Count == 1)
                 {
-                    result = dataProviderService.GetFactionByName(values[0].AsString);
+                    result = bgsService.GetFactionByName(values[0].AsString);
                 }
                 else
                 {
-                    result = dataProviderService.GetFactionByName(values[0].AsString, values[1].AsString);
+                    result = bgsService.GetFactionByName(values[0].AsString, values[1].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);

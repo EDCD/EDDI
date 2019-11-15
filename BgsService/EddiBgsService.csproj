@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="BgsFactionData.cs" />
     <Compile Include="BgsService.cs" />
+    <Compile Include="IBgsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
