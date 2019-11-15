@@ -241,6 +241,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name (spoken).
+        /// </summary>
+        public static string tab_commander_phonetic_name {
+            get {
+                return ResourceManager.GetString("tab_commander_phonetic_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Squadron allegiance:.
         /// </summary>
         public static string tab_commander_squadron_allegiance {
