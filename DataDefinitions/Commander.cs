@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
 
-        /// <summary>The commander's name as spoken</summary>
+        /// <summary>The commander's phonetic name as spoken</summary>
         public string phoneticname { get; set; }
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
@@ -168,6 +168,20 @@ namespace EddiDataDefinitions
             }
 
             return Cmdr;
+        }
+
+        public string SpokenName()
+        {
+            string spokenName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(phoneticname))
+            {
+                spokenName = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
+            }
+            else if (!string.IsNullOrWhiteSpace(name))
+            {
+                spokenName = name;
+            }
+            return spokenName;
         }
     }
 }
