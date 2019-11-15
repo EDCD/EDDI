@@ -34,6 +34,8 @@ namespace EddiDataProviderService
             if (systemNames == null || systemNames.Length == 0) { return null; }
 
             List<StarSystem> starSystems = edsmService.GetStarMapSystems(systemNames, showCoordinates, showSystemInformation);
+            if (starSystems == null) { return null; }
+
             List<StarSystem> fullStarSystems = new List<StarSystem>();
             foreach (string systemName in systemNames)
             {

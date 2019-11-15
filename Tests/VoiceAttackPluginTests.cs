@@ -183,7 +183,7 @@ namespace UnitTests
 
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
             Assert.AreEqual(3, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan nonbodies").Value);
-            Assert.AreEqual(44, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
+            Assert.AreEqual(44M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
         }
     }
 }

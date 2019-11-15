@@ -19,24 +19,24 @@ namespace EddiCompanionAppService
     public class CompanionAppService : IDisposable
     {
         // Implementation instructions from Frontier: http://hosting.zaonce.net/docs/oauth2/instructions.html
-        private static string LIVE_SERVER = "https://companion.orerve.net";
-        private static string BETA_SERVER = "https://pts-companion.orerve.net";
-        private static string AUTH_SERVER = "https://auth.frontierstore.net";
-        private static string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
-        private static string AUTH_URL = "/auth";
-        private static string DECODE_URL = "/decode";
-        private static string TOKEN_URL = "/token";
-        private static string AUDIENCE = "audience=steam,frontier";
-        private static string SCOPE = "scope=capi";
-        private static string PROFILE_URL = "/profile";
-        private static string MARKET_URL = "/market";
-        private static string SHIPYARD_URL = "/shipyard";
+        private static readonly string LIVE_SERVER = "https://companion.orerve.net";
+        private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
+        private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
+        private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
+        private static readonly string AUTH_URL = "/auth";
+        private static readonly string DECODE_URL = "/decode";
+        private static readonly string TOKEN_URL = "/token";
+        private static readonly string AUDIENCE = "audience=steam,frontier";
+        private static readonly string SCOPE = "scope=capi";
+        private static readonly string PROFILE_URL = "/profile";
+        private static readonly string MARKET_URL = "/market";
+        private static readonly string SHIPYARD_URL = "/shipyard";
 
         // We cache the profile to avoid spamming the service
         private Profile cachedProfile;
         private DateTime cachedProfileExpires;
 
-        private CustomURLResponder URLResponder;
+        private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
 
@@ -70,7 +70,7 @@ namespace EddiCompanionAppService
         public bool active => CurrentState == State.Authorized;
 
         private static CompanionAppService instance;
-        private string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
+        private readonly string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
 
         private static readonly object instanceLock = new object();
         public static CompanionAppService Instance
