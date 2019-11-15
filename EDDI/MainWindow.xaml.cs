@@ -235,10 +235,7 @@ namespace Eddi
 
             LoadAndSortTabs(eddiConfiguration);
 
-            if (!App.FromVA)
-            {
                 RestoreWindowState();
-            }
             EDDI.Instance.Start();
         }
 
@@ -439,11 +436,9 @@ namespace Eddi
         // Hook the window Loaded event to set minimize/maximize state at startup 
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
-            var senderWindow = sender as Window;
-
-            if (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized)
+            if (sender is Window senderWindow && (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized))
             {
-                if (Properties.Settings.Default.Minimized)
+                if (Properties.Settings.Default.Minimized && !App.FromVA)
                 {
                     senderWindow.WindowState = WindowState.Minimized;
                 }
