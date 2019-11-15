@@ -313,6 +313,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test Name.
+        /// </summary>
+        public static string tab_commander_test_phonetic_name {
+            get {
+                return ResourceManager.GetString("tab_commander_test_phonetic_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to click the Login button and authorize EDDI for this data on Frontier&apos;s server..
         /// </summary>
         public static string tab_frontier_desc {
