@@ -278,4 +278,7 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>Select EDDI's language (requires relaunching VoiceAttack):</value>
   </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Name (spoken)</value>
+  </data>
 </root>

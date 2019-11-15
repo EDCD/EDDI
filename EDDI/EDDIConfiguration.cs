@@ -168,6 +168,9 @@ namespace Eddi
         [JsonProperty("CommanderName")]
         public string CommanderName { get; set; }
 
+        [JsonProperty("PhoneticName")]
+        public string PhoneticName { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

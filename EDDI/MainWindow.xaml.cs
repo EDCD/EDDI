@@ -202,6 +202,7 @@ namespace Eddi
             {
                 eddiGenderNeither.IsChecked = true;
             }
+            eddiCommanderPhoneticNameText.Text = eddiConfiguration.PhoneticName ?? string.Empty;
             eddiSquadronNameText.Text = eddiConfiguration.SquadronName ?? string.Empty;
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
@@ -550,6 +551,17 @@ namespace Eddi
             EDDI.Instance.Cmdr.gender = "Neither";
         }
 
+        private void commanderPhoneticNameChanged(object sender, TextChangedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (eddiConfiguration.PhoneticName != eddiCommanderPhoneticNameText.Text)
+            {
+                eddiConfiguration.PhoneticName = string.IsNullOrWhiteSpace(eddiCommanderPhoneticNameText.Text) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
+                eddiConfiguration.ToFile();
+                EDDI.Instance.Cmdr.phoneticname = eddiConfiguration.PhoneticName;
+            }
+        }
+
         private void squadronNameChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -567,6 +579,18 @@ namespace Eddi
                 eddiConfiguration.ToFile();
 
                 EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
+            }
+        }
+
+        private void eddiCommanderPhoneticNameText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            if (eddiCommanderPhoneticNameText.Text == string.Empty)
+            {
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.PhoneticName = null;
+                eddiConfiguration.ToFile();
+                EDDI.Instance.Cmdr.phoneticname = string.Empty;
             }
         }
 
