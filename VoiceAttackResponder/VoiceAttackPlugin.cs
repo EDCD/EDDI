@@ -856,17 +856,13 @@ namespace EddiVoiceAttackResponder
             }
 
             string cmdrScript;
-            if (EDDI.Instance.Cmdr == null || EDDI.Instance.Cmdr.name == null || EDDI.Instance.Cmdr.name.Trim().Length == 0)
+            if (string.IsNullOrEmpty(EDDI.Instance.Cmdr?.name))
             {
                 cmdrScript = "EDDI.Instance.Cmdr";
             }
-            else if (EDDI.Instance.Cmdr.phoneticName == null || EDDI.Instance.Cmdr.phoneticName.Trim().Length == 0)
-            {
-                cmdrScript = "EDDI.Instance.Cmdr " + EDDI.Instance.Cmdr.name;
-            }
             else
             {
-                cmdrScript = "EDDI.Instance.Cmdr <phoneme alphabet=\"ipa\" ph=\"" + EDDI.Instance.Cmdr.phoneticName + "\">" + EDDI.Instance.Cmdr.name + "</phoneme>";
+                cmdrScript = "EDDI.Instance.Cmdr " + EDDI.Instance.Cmdr.phoneticname;
             }
             script = script.Replace("$-", cmdrScript);
 

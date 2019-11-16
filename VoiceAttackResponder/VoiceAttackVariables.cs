@@ -559,7 +559,7 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetText(prefix + " model", ship?.model);
                     vaProxy.SetText(prefix + " model (spoken)", ship?.SpokenModel());
 
-                    if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
+                    if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() != null && EDDI.Instance.Cmdr?.name != null)
                     {
                         vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
                         vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));

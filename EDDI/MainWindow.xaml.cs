@@ -907,7 +907,7 @@ namespace Eddi
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
-                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), 0);
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.phoneticname), 0);
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, 0);
             }
             else if (oldState == CompanionAppService.State.LoggedOut &&
