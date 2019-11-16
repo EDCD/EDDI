@@ -80,6 +80,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PowerplayState.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Ship.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Ship.resx</DependentUpon>
+    </Compile>
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
@@ -597,6 +602,10 @@
     <EmbeddedResource Include="Properties\RingCompositions.ru.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.ru.resx" />
+    <EmbeddedResource Include="Properties\Ship.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Ship.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ShipRoles.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ru.resx" />
     <EmbeddedResource Include="Properties\SignalSource.de.resx" />
