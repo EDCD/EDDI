@@ -159,6 +159,7 @@ namespace Eddi
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = EDDI.Instance;
 
             // Start the EDDI instance
             EDDI.Instance.Start();
@@ -558,12 +559,20 @@ namespace Eddi
 
         private void commanderPhoneticNameChanged(object sender, TextChangedEventArgs e)
         {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.PhoneticName != eddiCommanderPhoneticNameText.Text)
+            // Replace any spaces, maintaining the original caret position
+            int caretIndex = eddiCommanderPhoneticNameText.CaretIndex;
+            eddiCommanderPhoneticNameText.Text = eddiCommanderPhoneticNameText.Text.Replace(" ", "ˈ");
+            eddiCommanderPhoneticNameText.CaretIndex = caretIndex;
+
+            // Update our config file
+            if (eddiCommanderPhoneticNameText.IsLoaded)
             {
-                eddiConfiguration.PhoneticName = string.IsNullOrWhiteSpace(eddiCommanderPhoneticNameText.Text) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
-                eddiConfiguration.ToFile();
-                EDDI.Instance.Cmdr.phoneticname = eddiConfiguration.PhoneticName;
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                if (eddiConfiguration.PhoneticName != eddiCommanderPhoneticNameText.Text)
+                {
+                    eddiConfiguration.PhoneticName = string.IsNullOrWhiteSpace(eddiCommanderPhoneticNameText.Text) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
+                    eddiConfiguration.ToFile();
+                }
             }
         }
 

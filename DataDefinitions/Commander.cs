@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -57,9 +58,26 @@ namespace EddiDataDefinitions
     {
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
-
+        
+        [JsonIgnore]
+        private string _phoneticname;
         /// <summary>The commander's phonetic name as spoken</summary>
-        public string phoneticname { get; set; }
+        public string phoneticname
+        {
+            get { return _phoneticname; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _phoneticname = null;
+                }
+                else
+                {
+                    NotifyPropertyChanged("phoneticname");
+                    _phoneticname = value;
+                }
+            }
+        }
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
         public string title { get; set; }
