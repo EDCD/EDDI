@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,70 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="desc" xml:space="preserve">
-    <value>Track information on your ships.</value>
-  </data>
-  <data name="export_it_button" xml:space="preserve">
-    <value>Export it</value>
-  </data>
-  <data name="header_location" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="header_model" xml:space="preserve">
-    <value>Model</value>
-  </data>
-  <data name="header_name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="header_role" xml:space="preserve">
-    <value>Role</value>
-  </data>
-  <data name="header_ship_ID" xml:space="preserve">
-    <value>Ship ID</value>
-  </data>
   <data name="header_spoken_name" xml:space="preserve">
-    <value>Name (spoken)</value>
-  </data>
-  <data name="header_value" xml:space="preserve">
-    <value>Value</value>
+    <value>Nom (phonétique)</value>
   </data>
   <data name="hear_it_button" xml:space="preserve">
-    <value>Hear it</value>
+    <value>Écouter</value>
   </data>
   <data name="link_ipa" xml:space="preserve">
-    <value>International Phonetic Alphabet</value>
+    <value>l'Alphabet Phonétique International</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Ship Monitor</value>
+  <data name="ipa_resource1" xml:space="preserve">
+    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>This allows you to see your ships and give them individual roles. The information is made available to responders and is used in scripts to tailor actions.</value>
+  <data name="ipa_resource2" xml:space="preserve">
+    <value>https://tophonetics.com/fr/</value>
   </data>
-  <data name="p2" xml:space="preserve">
-    <value>If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using the</value>
+  <data name="ipa_resource3" xml:space="preserve">
+    <value>https://easypronunciation.com/fr/french-phonetic-transcription-converter</value>
   </data>
-  <data name="p3" xml:space="preserve">
-    <value>. For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).</value>
+  <data name="ipa_page_p1" xml:space="preserve">
+    <value>Le</value>
   </data>
-  <data name="p4" xml:space="preserve">
-    <value>Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable. Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship and wait a few moments before full information for them will be available.</value>
+  <data name="ipa_resource1_title" xml:space="preserve">
+    <value>Tableau IPA avec sons</value>
   </data>
-  <data name="ship_ready" xml:space="preserve">
-    <value>{0} stands ready.</value>
+  <data name="ipa_resource2_title" xml:space="preserve">
+    <value>Traducteur Anglais à IPA - ToPhonetics.com</value>
   </data>
-  <data name="header_hot" xml:space="preserve">
-    <value>Status</value>
-    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  <data name="ipa_resource3_title" xml:space="preserve">
+    <value>Traducteur Français à IPA - EasyPronunciation.com</value>
   </data>
-  <data name="ship_clean" xml:space="preserve">
-    <value>Clean</value>
-    <comment>Ship is Clean</comment>
+  <data name="ipa_page_comments" xml:space="preserve">
+    <value>Les dictionnaires en ligne peuvent inclure les prononciations IPA appropriées pour les mots courants. Les ressources ci-dessous peuvent être utilisées pour générer des prononciations personnalisées pour des mots moins communs.</value>
   </data>
-  <data name="ship_hot" xml:space="preserve">
-    <value>Hot</value>
-    <comment>Ship is Hot</comment>
+  <data name="ipa_page_p2" xml:space="preserve">
+    <value>est un système alphabétique de notation phonétique basé principalement sur l'alphabet latin. Il a été conçu par l’Association phonétique internationale à la fin du XIXe siècle en tant que représentation normalisée des sons de la langue parlée.</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDI can send an export of your ship's data to Coriolis or EDShipyard (3rd Party tools). Select the tool you prefer.</value>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://fr.wikipedia.org/wiki/International_Phonetic_Alphabet</value>
   </data>
 </root>
