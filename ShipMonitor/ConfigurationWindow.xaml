@@ -83,7 +83,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                     <DataGridTextColumn.EditingElementStyle>
-                        <Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <EventSetter Event="TextChanged" Handler="PhoneticName_TextChanged" />
                             <Style.Triggers>
                                 <Trigger Property="Validation.HasError" Value="true">
                                     <Setter Property="ToolTipService.ToolTip"

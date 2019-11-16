@@ -146,16 +146,16 @@ namespace EddiShipMonitor
         }
 
         // Fixup IPA text by replacing spaces
-        private void ShipData_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void PhoneticName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.Column is DataGridTextColumn textColumn)
+            if (sender is TextBox textBox)
             {
-                if (textColumn.Header.ToString() == Properties.ShipMonitor.header_spoken_name)
+                if (textBox.IsLoaded)
                 {
-                    if (e.EditingElement is TextBox textBox)
-                    {
-                        textBox.Text = textBox.Text.Replace(" ", "ˈ");
-                    }
+                    // Replace any spaces, maintaining the original caret position
+                    int caretIndex = textBox.CaretIndex;
+                    textBox.Text = textBox.Text.Replace(" ", "ˈ");
+                    textBox.CaretIndex = caretIndex;
                 }
             }
         }
