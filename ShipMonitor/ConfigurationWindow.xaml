@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+             xmlns:local="clr-namespace:EddiShipMonitor"
              xmlns:resx="clr-namespace:EddiShipMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
