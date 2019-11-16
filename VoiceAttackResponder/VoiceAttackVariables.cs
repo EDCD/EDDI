@@ -566,7 +566,7 @@ namespace EddiVoiceAttackResponder
                     }
 
                     vaProxy.SetText(prefix + " name", ship?.name);
-                    vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
+                    vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticName);
                     vaProxy.SetText(prefix + " ident", ship?.ident);
                     vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
                     vaProxy.SetText(prefix + " role", ship?.Role?.localizedName);

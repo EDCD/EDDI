@@ -30,7 +30,7 @@ Commander information is available under the `cmdr` object.
 Any values might be missing, depending on EDDI's configuration.
 
     - `name` the commander's name
-    - `phoneticname` the pronunciation of the commander's name 
+    - `phoneticname` the commander's name, using any phonetic pronunciation that has been set and is supported by the current voice 
     - `combatrating` the current combat rating of the commander (this is a Rating object)
     - `traderating` the current trade rating of the commander (this is a Rating object)
     - `explorationrating` the exploration combat rating of the commander (this is a Rating object)
@@ -310,6 +310,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `rebuy` The rebuy value of the ship, in credits
     - `cargocapacity` the total tonnage cargo capacity
     - `name` the name of the ship
+    - `phoneticname` the name of the ship, using any phonetic pronunciation that has been set and is supported by the current voice 
     - `ident` the identifier of the ship
     - `role` the role of the ship 
     - `health` the current health of the hull, from 0 to 100
