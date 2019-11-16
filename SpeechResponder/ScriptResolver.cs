@@ -468,6 +468,8 @@ namespace EddiSpeechResponder
             //
             // Commander-specific functions
             //
+            store["CommanderName"] = new NativeFunction((values) => EDDI.Instance.Cmdr.SpokenName(), 0, 0);
+
             store["ShipName"] = new NativeFunction((values) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
