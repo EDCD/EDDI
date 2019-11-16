@@ -615,7 +615,7 @@ namespace Eddi
                 EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
                 eddiConfiguration.PhoneticName = null;
                 eddiConfiguration.ToFile();
-                EDDI.Instance.Cmdr.phoneticname = string.Empty;
+                EDDI.Instance.Cmdr.phoneticName = string.Empty;
             }
         }
 

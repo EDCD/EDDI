@@ -171,7 +171,7 @@ namespace Eddi
                         Task.Run(() => // Set up squadron details
                         {
                             updateSquadronSystem(configuration);
-                            Cmdr.phoneticname = configuration.PhoneticName;
+                            Cmdr.phoneticName = configuration.PhoneticName;
                             Cmdr.squadronname = configuration.SquadronName;
                             Cmdr.squadronid = configuration.SquadronID;
                             Cmdr.squadronrank = configuration.SquadronRank;
