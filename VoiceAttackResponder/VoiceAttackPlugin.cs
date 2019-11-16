@@ -860,13 +860,13 @@ namespace EddiVoiceAttackResponder
             {
                 cmdrScript = "EDDI.Instance.Cmdr";
             }
-            else if (EDDI.Instance.Cmdr.phoneticname == null || EDDI.Instance.Cmdr.phoneticname.Trim().Length == 0)
+            else if (EDDI.Instance.Cmdr.phoneticName == null || EDDI.Instance.Cmdr.phoneticName.Trim().Length == 0)
             {
                 cmdrScript = "EDDI.Instance.Cmdr " + EDDI.Instance.Cmdr.name;
             }
             else
             {
-                cmdrScript = "EDDI.Instance.Cmdr <phoneme alphabet=\"ipa\" ph=\"" + EDDI.Instance.Cmdr.phoneticname + "\">" + EDDI.Instance.Cmdr.name + "</phoneme>";
+                cmdrScript = "EDDI.Instance.Cmdr <phoneme alphabet=\"ipa\" ph=\"" + EDDI.Instance.Cmdr.phoneticName + "\">" + EDDI.Instance.Cmdr.name + "</phoneme>";
             }
             script = script.Replace("$-", cmdrScript);
 

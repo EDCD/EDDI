@@ -60,24 +60,27 @@ namespace EddiDataDefinitions
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
         
         [JsonIgnore]
-        private string _phoneticname;
-        /// <summary>The commander's phonetic name as spoken</summary>
-        public string phoneticname
+        private string _phoneticName;
+        /// <summary>The commander's phonetic name</summary>
+        public string phoneticName
         {
-            get { return _phoneticname; }
+            get { return _phoneticName; }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    _phoneticname = null;
+                    _phoneticName = null;
                 }
                 else
                 {
-                    NotifyPropertyChanged("phoneticname");
-                    _phoneticname = value;
+                    NotifyPropertyChanged("phoneticName");
+                    _phoneticName = value;
                 }
             }
         }
+
+        /// <summary>The commander's spoken name (rendered using ssml and IPA)</summary>
+        public string phoneticname => SpokenName();
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
         public string title { get; set; }
@@ -191,9 +194,9 @@ namespace EddiDataDefinitions
         public string SpokenName()
         {
             string spokenName = string.Empty;
-            if (!string.IsNullOrWhiteSpace(phoneticname))
+            if (!string.IsNullOrWhiteSpace(phoneticName))
             {
-                spokenName = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
+                spokenName = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
             }
             else if (!string.IsNullOrWhiteSpace(name))
             {
