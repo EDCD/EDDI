@@ -38,7 +38,6 @@ namespace EddiShipMonitor
 
             Logging.Debug("Export target from configuration: " + exportTarget);
             exportComboBox.Text = exportTarget ?? "Coriolis";
-            shipData.CellEditEnding += ShipData_CellEditEnding;
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
