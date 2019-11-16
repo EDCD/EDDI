@@ -576,6 +576,12 @@ namespace Eddi
             SpeechService.Instance.Say(null, EDDI.Instance.Cmdr.SpokenName(), 0);
         }
 
+        private void ipaClicked(object sender, RoutedEventArgs e)
+        {
+            IpaResourcesWindow IpaResources = new IpaResourcesWindow();
+            IpaResources.Show();
+        }
+
         private void squadronNameChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
