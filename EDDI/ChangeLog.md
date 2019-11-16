@@ -4,9 +4,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.1-b1
   * Core
-    * Added back some translation resources that had been overlooked.
+    * Ensured that all translation resources are now correctly incorporated.
   * EDSM responder
-    * Fail gracefully when the EDSM server is temporarily unavailable.
+    * Added defensive code to fail gracefully should the EDSM server have a hiccup and not respond.
+  * Speech Responder
+    * Don't repeat the `System state report` when returning to a system that we've visited recently.
+	* Fixed a typo in the `Engineer Progressed` script that could cause the Engineer's name to be omitted.
+  * VoiceAttack Responder
+	* Fixed a regression in 3.5.0: EDDI not remembering window position or tab position when running as a VoiceAttack plugin.
 
 ### 3.5.0
   * Promote 3.5.0-rc1 to final
