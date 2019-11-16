@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.5.1-b1
+### 3.5.1-rc1
   * Core
     * Ensured that all translation resources are now correctly incorporated.
   * EDSM responder
