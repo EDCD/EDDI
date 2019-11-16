@@ -171,7 +171,6 @@ namespace Eddi
                         Task.Run(() => // Set up squadron details
                         {
                             updateSquadronSystem(configuration);
-                            Cmdr.phoneticName = configuration.PhoneticName;
                             Cmdr.squadronname = configuration.SquadronName;
                             Cmdr.squadronid = configuration.SquadronID;
                             Cmdr.squadronrank = configuration.SquadronRank;
@@ -188,6 +187,7 @@ namespace Eddi
 
                 // Tasks we can start asynchronously and don't need to wait for
                 Cmdr.name = configuration.CommanderName;
+                Cmdr.phoneticName = configuration.PhoneticName;
                 Cmdr.gender = configuration.Gender;
                 Task.Run(() => updateDestinationSystemStation(configuration));
                 Task.Run(() =>
