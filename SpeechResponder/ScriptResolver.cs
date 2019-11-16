@@ -475,8 +475,7 @@ namespace EddiSpeechResponder
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
                 string model = (values.Count == 2 ? values[1].AsString : null);
                 Ship ship = findShip(localId, model);
-                string result = (ship == null ? "your ship" : ship.SpokenName());
-                return result;
+                return ship.SpokenName();
             }, 0, 2);
 
             store["ShipCallsign"] = new NativeFunction((values) =>

@@ -116,24 +116,27 @@ namespace EddiDataDefinitions
         }
 
         [JsonIgnore]
-        private string PhoneticName;
+        private string _phoneticName;
         /// <summary>the phonetic name of this ship</summary>
-        public string phoneticname
+        public string phoneticName
         {
-            get { return PhoneticName; }
+            get { return _phoneticName; }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    PhoneticName = null;
+                    _phoneticName = null;
                 }
                 else
                 {
-                    NotifyPropertyChanged("phoneticname");
-                    PhoneticName = value;
+                    NotifyPropertyChanged("phoneticName");
+                    _phoneticName = value;
                 }
             }
         }
+
+        /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
+        public string phoneticname => SpokenName();
 
         // The type of mission
         public string roleEDName

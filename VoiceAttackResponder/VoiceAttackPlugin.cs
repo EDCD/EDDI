@@ -841,18 +841,7 @@ namespace EddiVoiceAttackResponder
             Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             if (ship != null)
             {
-                if (ship.phoneticname != null)
-                {
-                    script = script.Replace("$=", ship.phoneticname);
-                }
-                else if (ship.name != null)
-                {
-                    script = script.Replace("$=", ship.name);
-                }
-                else
-                {
-                    script = script.Replace("$=", "your ship");
-                }
+                script = script.Replace("$=", ship.phoneticname);
             }
 
             string cmdrScript;
