@@ -143,7 +143,7 @@
                         <Label x:Name ="eddiCommanderPhoneticNameLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_phonetic_name}" />
                         <TextBox x:Name ="eddiCommanderPhoneticNameText" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" TextChanged="commanderPhoneticNameChanged" Margin="0,5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="3" Height="20" LostFocus="eddiCommanderPhoneticNameText_LostFocus">
                             <TextBox.Text>
-                                <Binding Path="Cmdr.phoneticName" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
+                                <Binding Path="Cmdr.phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                                     <Binding.ValidationRules>
                                         <utility:ValidIPARule ValidatesOnTargetUpdated="True" />
                                     </Binding.ValidationRules>
