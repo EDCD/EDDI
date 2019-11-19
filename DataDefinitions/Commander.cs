@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -57,9 +58,29 @@ namespace EddiDataDefinitions
     {
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
+        
+        [JsonIgnore]
+        private string _phoneticName;
+        /// <summary>The commander's phonetic name</summary>
+        public string phoneticName
+        {
+            get { return _phoneticName; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    _phoneticName = null;
+                }
+                else
+                {
+                    NotifyPropertyChanged("phoneticName");
+                    _phoneticName = value;
+                }
+            }
+        }
 
-        /// <summary>The commander's name as spoken</summary>
-        public string phoneticname { get; set; }
+        /// <summary>The commander's spoken name (rendered using ssml and IPA)</summary>
+        public string phoneticname => SpokenName();
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
         public string title { get; set; }
@@ -168,6 +189,20 @@ namespace EddiDataDefinitions
             }
 
             return Cmdr;
+        }
+
+        public string SpokenName()
+        {
+            string spokenName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(phoneticName))
+            {
+                spokenName = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
+            }
+            else if (!string.IsNullOrWhiteSpace(name))
+            {
+                spokenName = name;
+            }
+            return spokenName;
         }
     }
 }

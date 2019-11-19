@@ -841,32 +841,17 @@ namespace EddiVoiceAttackResponder
             Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             if (ship != null)
             {
-                if (ship.phoneticname != null)
-                {
-                    script = script.Replace("$=", ship.phoneticname);
-                }
-                else if (ship.name != null)
-                {
-                    script = script.Replace("$=", ship.name);
-                }
-                else
-                {
-                    script = script.Replace("$=", "your ship");
-                }
+                script = script.Replace("$=", ship.phoneticname);
             }
 
             string cmdrScript;
-            if (EDDI.Instance.Cmdr == null || EDDI.Instance.Cmdr.name == null || EDDI.Instance.Cmdr.name.Trim().Length == 0)
+            if (string.IsNullOrEmpty(EDDI.Instance.Cmdr?.name))
             {
                 cmdrScript = "EDDI.Instance.Cmdr";
             }
-            else if (EDDI.Instance.Cmdr.phoneticname == null || EDDI.Instance.Cmdr.phoneticname.Trim().Length == 0)
-            {
-                cmdrScript = "EDDI.Instance.Cmdr " + EDDI.Instance.Cmdr.name;
-            }
             else
             {
-                cmdrScript = "EDDI.Instance.Cmdr <phoneme alphabet=\"ipa\" ph=\"" + EDDI.Instance.Cmdr.phoneticname + "\">" + EDDI.Instance.Cmdr.name + "</phoneme>";
+                cmdrScript = "EDDI.Instance.Cmdr " + EDDI.Instance.Cmdr.phoneticname;
             }
             script = script.Replace("$-", cmdrScript);
 

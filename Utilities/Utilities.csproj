@@ -80,6 +80,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -89,6 +90,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPA.cs" />
+    <Compile Include="IpaResources.xaml.cs">
+      <DependentUpon>IpaResources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Probability.cs" />
     <Compile Include="Constants.cs" />
@@ -103,6 +108,11 @@
     <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstanceInfo.cs" />
+    <Compile Include="Properties\IPA.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IPA.resx</DependentUpon>
+    </Compile>
     <Compile Include="Redaction.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="ServerInfo.cs" />
@@ -112,6 +122,26 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="IpaResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\IPA.de.resx" />
+    <EmbeddedResource Include="Properties\IPA.es.resx" />
+    <EmbeddedResource Include="Properties\IPA.fr.resx" />
+    <EmbeddedResource Include="Properties\IPA.hu.resx" />
+    <EmbeddedResource Include="Properties\IPA.it.resx" />
+    <EmbeddedResource Include="Properties\IPA.ja.resx" />
+    <EmbeddedResource Include="Properties\IPA.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\IPA.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>IPA.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\IPA.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitInfo.2.0.10\build\GitInfo.targets" Condition="Exists('..\packages\GitInfo.2.0.10\build\GitInfo.targets')" />

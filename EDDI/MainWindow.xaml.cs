@@ -159,6 +159,7 @@ namespace Eddi
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = EDDI.Instance;
 
             // Start the EDDI instance
             EDDI.Instance.Start();
@@ -202,6 +203,7 @@ namespace Eddi
             {
                 eddiGenderNeither.IsChecked = true;
             }
+            eddiCommanderPhoneticNameText.Text = eddiConfiguration.PhoneticName ?? string.Empty;
             eddiSquadronNameText.Text = eddiConfiguration.SquadronName ?? string.Empty;
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
@@ -550,6 +552,36 @@ namespace Eddi
             EDDI.Instance.Cmdr.gender = "Neither";
         }
 
+        private void commanderPhoneticNameChanged(object sender, TextChangedEventArgs e)
+        {
+            // Replace any spaces, maintaining the original caret position
+            int caretIndex = eddiCommanderPhoneticNameText.CaretIndex;
+            eddiCommanderPhoneticNameText.Text = eddiCommanderPhoneticNameText.Text.Replace(" ", "ˈ");
+            eddiCommanderPhoneticNameText.CaretIndex = Math.Max(caretIndex, eddiCommanderPhoneticNameText.Text.Length);
+
+            // Update our config file
+            if (eddiCommanderPhoneticNameText.IsLoaded)
+            {
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                if (eddiConfiguration.PhoneticName != eddiCommanderPhoneticNameText.Text)
+                {
+                    eddiConfiguration.PhoneticName = string.IsNullOrWhiteSpace(eddiCommanderPhoneticNameText.Text) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
+                    eddiConfiguration.ToFile();
+                }
+            }
+        }
+
+        private void eddiCmdrPhoneticNameTestButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SpeechService.Instance.Say(null, EDDI.Instance.Cmdr.SpokenName(), 0);
+        }
+
+        private void ipaClicked(object sender, RoutedEventArgs e)
+        {
+            IpaResourcesWindow IpaResources = new IpaResourcesWindow();
+            IpaResources.Show();
+        }
+
         private void squadronNameChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -567,6 +599,18 @@ namespace Eddi
                 eddiConfiguration.ToFile();
 
                 EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
+            }
+        }
+
+        private void eddiCommanderPhoneticNameText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            if (eddiCommanderPhoneticNameText.Text == string.Empty)
+            {
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.PhoneticName = null;
+                eddiConfiguration.ToFile();
+                EDDI.Instance.Cmdr.phoneticName = string.Empty;
             }
         }
 
@@ -858,7 +902,7 @@ namespace Eddi
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
-                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), 0);
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.phoneticname), 0);
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, 0);
             }
             else if (oldState == CompanionAppService.State.LoggedOut &&

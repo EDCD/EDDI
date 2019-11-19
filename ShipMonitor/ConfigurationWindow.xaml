@@ -79,10 +79,21 @@
                     <DataGridTextColumn.Binding>
                         <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                             <Binding.ValidationRules>
-                                <local:ValidIpaRule/>
+                                <utility:ValidIPARule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </DataGridTextColumn.Binding>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="{x:Type TextBox}">
+                            <EventSetter Event="TextChanged" Handler="PhoneticName_TextChanged" />
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="true">
+                                    <Setter Property="ToolTipService.ToolTip"
+                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

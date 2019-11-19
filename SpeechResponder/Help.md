@@ -73,6 +73,12 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {CombatRatingDetails("Expert").rank} times.
 
+### CommanderName()
+
+This function will provide the name of your commander.
+
+If you have set up a phonetic name for your commander it will return that, otherwise if your commander name has been set it will return that. The phonetic name uses SSML tags.
+
 ### CommodityMarketDetails()
 
 This function will provide full information for a commodity, including information that is specific to a market, given the commodity name.

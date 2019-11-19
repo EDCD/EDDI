@@ -7,7 +7,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -15,8 +14,6 @@ namespace EddiDataDefinitions
     /// <summary>A ship</summary>
     public class Ship : INotifyPropertyChanged
     {
-        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
-
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
 
@@ -119,32 +116,27 @@ namespace EddiDataDefinitions
         }
 
         [JsonIgnore]
-        private string PhoneticName;
+        private string _phoneticName;
         /// <summary>the phonetic name of this ship</summary>
-        public string phoneticname
+        public string phoneticName
         {
-            get { return PhoneticName; }
+            get { return _phoneticName; }
             set
             {
-                if (value == null || value == "")
+                if (string.IsNullOrEmpty(value))
                 {
-                    PhoneticName = null;
+                    _phoneticName = null;
                 }
                 else
                 {
-                    if (!IPA_REGEX.Match(value).Success)
-                    {
-                        // Invalid - drop silently
-                        Logging.Debug("Invalid IPA " + value + "; discarding");
-                        PhoneticName = null;
-                    }
-                    else
-                    {
-                        PhoneticName = value;
-                    }
+                    NotifyPropertyChanged("phoneticName");
+                    _phoneticName = value;
                 }
             }
         }
+
+        /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
+        public string phoneticname => SpokenName();
 
         // The type of mission
         public string roleEDName
@@ -351,11 +343,11 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string model = (defaultname ?? SpokenModel()) ?? "ship";
-            string result = ("your " + model);
-            if (!string.IsNullOrWhiteSpace(phoneticname))
+            string model = (defaultname ?? SpokenModel()) ?? Properties.Ship._ship;
+            string result = Properties.Ship.your + " " + model;
+            if (!string.IsNullOrWhiteSpace(phoneticName))
             {
-                result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
+                result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
             }
             else if (!string.IsNullOrWhiteSpace(name))
             {

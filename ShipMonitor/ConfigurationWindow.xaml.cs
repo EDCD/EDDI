@@ -3,11 +3,10 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -62,9 +61,7 @@ namespace EddiShipMonitor
             Ship ship = (Ship)((Button)e.Source).DataContext;
             ship.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            string nameToSpeak = String.IsNullOrEmpty(ship.phoneticname)
-                ? ship.name
-                : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
+            string nameToSpeak = ship.phoneticname;
             string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
             SpeechService.Instance.Say(ship, message, 0);
         }
@@ -144,26 +141,19 @@ namespace EddiShipMonitor
                 shipMonitor()?.Save();
             }
         }
-    }
 
-    public class ValidIpaRule : ValidationRule
-    {
-        private static readonly Regex ipaRegex = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
-
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        // Fixup IPA text by replacing spaces
+        private void PhoneticName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (value == null)
+            if (sender is TextBox textBox)
             {
-                return ValidationResult.ValidResult;
-            }
-            string val = value.ToString();
-            if (ipaRegex.Match(val).Success)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, "Invalid IPA");
+                if (textBox.IsLoaded)
+                {
+                    // Replace any spaces, maintaining the original caret position
+                    int caretIndex = textBox.CaretIndex;
+                    textBox.Text = textBox.Text.Replace(" ", "ˈ");
+                    textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
+                }
             }
         }
     }

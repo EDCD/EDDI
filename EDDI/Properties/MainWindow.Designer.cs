@@ -97,6 +97,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to International Phonetic Alphabet.
+        /// </summary>
+        public static string link_ipa {
+            get {
+                return ResourceManager.GetString("link_ipa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Station.
         /// </summary>
         public static string no_station {
@@ -232,11 +241,38 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If the name of your commander is hard for EDDI to pronounce then you can add a spoken version of the your commander&apos;s name using the.
+        /// </summary>
+        public static string tab_commander_Ipa1 {
+            get {
+                return ResourceManager.GetString("tab_commander_Ipa1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to . For example, if your commander was called &apos;Salomé&apos; then your spoken name would be &apos;səˈloʊmi&apos;..
+        /// </summary>
+        public static string tab_commander_Ipa2 {
+            get {
+                return ResourceManager.GetString("tab_commander_Ipa2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI&apos;s responders..
         /// </summary>
         public static string tab_commander_par1 {
             get {
                 return ResourceManager.GetString("tab_commander_par1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name (spoken).
+        /// </summary>
+        public static string tab_commander_phonetic_name {
+            get {
+                return ResourceManager.GetString("tab_commander_phonetic_name", resourceCulture);
             }
         }
         
@@ -300,6 +336,15 @@ namespace Eddi.Properties {
         public static string tab_commander_squadron_system {
             get {
                 return ResourceManager.GetString("tab_commander_squadron_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hear it.
+        /// </summary>
+        public static string tab_commander_test_phonetic_name {
+            get {
+                return ResourceManager.GetString("tab_commander_test_phonetic_name", resourceCulture);
             }
         }
         

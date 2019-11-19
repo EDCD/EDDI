@@ -278,4 +278,19 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>Select EDDI's language (requires relaunching VoiceAttack):</value>
   </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Name (spoken)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Hear it</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>International Phonetic Alphabet</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>If the name of your commander is hard for EDDI to pronounce then you can add a spoken version of the your commander's name using the</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. For example, if your commander was called 'Salomé' then your spoken name would be 'səˈloʊmi'.</value>
+  </data>
 </root>
