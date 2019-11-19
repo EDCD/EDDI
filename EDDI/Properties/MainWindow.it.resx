@@ -278,9 +278,19 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>Seleziona la lingua di EDDI (richiede il riavvio di VoiceAttack):</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Nome (pronuncia)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Ascolta</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Alfabeto Fonetico Internazionale</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Qualora il nome del tuo comandante sia di difficile pronuncia per EDDI puoi aggiungere una versione "corretta" di tale nome usando l'</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Per esempio, se il tuo comandante si chiamasse 'Salomé' allora il suo nome dovrebbe essere pronunciato come 'səˈloʊmi'.</value>
+  </data>
 </root>
