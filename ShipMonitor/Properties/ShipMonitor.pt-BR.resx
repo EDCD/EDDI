@@ -147,9 +147,6 @@
   <data name="hear_it_button" xml:space="preserve">
     <value>Ouvir</value>
   </data>
-  <data name="ipa_page" xml:space="preserve">
-    <value>https://pt.wikipedia.org/wiki/Alfabeto_fon%C3%A9tico_internacional</value>
-  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonético Internacional</value>
   </data>
@@ -170,33 +167,6 @@
   </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} está pronta.</value>
-  </data>
-  <data name="ipa_resource1" xml:space="preserve">
-    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
-  </data>
-  <data name="ipa_resource2" xml:space="preserve">
-    <value>https://tophonetics.com/</value>
-  </data>
-  <data name="ipa_resource3" xml:space="preserve">
-    <value>https://easypronunciation.com/en/english-phonetic-transcription-converter</value>
-  </data>
-  <data name="ipa_page_p1" xml:space="preserve">
-    <value>A</value>
-  </data>
-  <data name="ipa_resource1_title" xml:space="preserve">
-    <value>Gráfico AFI com sons</value>
-  </data>
-  <data name="ipa_resource2_title" xml:space="preserve">
-    <value>Tradutor de Português para AFI - https://goo.gl/Ha3LPD</value>
-  </data>
-  <data name="ipa_resource3_title" xml:space="preserve">
-    <value>Tradutor de Português para AFI - https://goo.gl/Ha3LPD</value>
-  </data>
-  <data name="ipa_page_comments" xml:space="preserve">
-    <value>Os dicionários on-line podem incluir as pronúncias apropriadas do AFI para palavras comuns. Os recursos abaixo podem ser usados para gerar pronúncias personalizadas para palavras menos comuns.</value>
-  </data>
-  <data name="ipa_page_p2" xml:space="preserve">
-    <value>é um sistema alfabético de notação fonética baseado principalmente no alfabeto latino. Foi inventado pela Associação Internacional de Fonética no final do século 19 como uma representação padronizada dos sons da linguagem falada.</value>
   </data>
   <data name="header_hot" xml:space="preserve">
     <value>Status</value>
