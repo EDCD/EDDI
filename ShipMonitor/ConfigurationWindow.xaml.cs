@@ -152,7 +152,7 @@ namespace EddiShipMonitor
                     // Replace any spaces, maintaining the original caret position
                     int caretIndex = textBox.CaretIndex;
                     textBox.Text = textBox.Text.Replace(" ", "ˈ");
-                    textBox.CaretIndex = caretIndex;
+                    textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
                 }
             }
         }

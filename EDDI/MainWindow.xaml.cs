@@ -557,7 +557,7 @@ namespace Eddi
             // Replace any spaces, maintaining the original caret position
             int caretIndex = eddiCommanderPhoneticNameText.CaretIndex;
             eddiCommanderPhoneticNameText.Text = eddiCommanderPhoneticNameText.Text.Replace(" ", "ˈ");
-            eddiCommanderPhoneticNameText.CaretIndex = caretIndex;
+            eddiCommanderPhoneticNameText.CaretIndex = Math.Max(caretIndex, eddiCommanderPhoneticNameText.Text.Length);
 
             // Update our config file
             if (eddiCommanderPhoneticNameText.IsLoaded)

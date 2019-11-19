@@ -75,7 +75,7 @@ Common usage of this is to provide further information about your rating, for ex
 
 ### CommanderName()
 
-This function will provide the name of your ship.
+This function will provide the name of your commander.
 
 If you have set up a phonetic name for your commander it will return that, otherwise if your commander name has been set it will return that. The phonetic name uses SSML tags.
 
