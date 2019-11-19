@@ -280,7 +280,13 @@
   </data>
   
   
-  
-  
-  
+  <data name="link_ipa" xml:space="preserve">
+    <value>Alfabeto Fonético Internacional</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Si el nombre de su comandante es difícil de pronunciar para EDDI, puede agregar una versión hablada del nombre de su comandante usando el comando</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Por ejemplo, si su comandante se llamara "Salomé", su nombre sería "səˈloʊmi".</value>
+  </data>
 </root>
