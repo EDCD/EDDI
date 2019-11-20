@@ -339,6 +339,19 @@ namespace EddiStatusMonitor
                 EDDI.Instance.Vehicle = thisStatus.vehicle;
 
                 // Trigger events for changed status, as applicable
+                if (thisStatus.shields_up != lastStatus.shields_up && thisStatus.vehicle == lastStatus.vehicle)
+                {
+                    // React to changes in shield state.
+                    // We check the vehicle to make sure that events aren't generated when we switch vehicles, start the game, or stop the game.
+                    if (thisStatus.shields_up)
+                    {
+                        EDDI.Instance.enqueueEvent(new ShieldsUpEvent(thisStatus.timestamp));
+                    }
+                    else
+                    {
+                        EDDI.Instance.enqueueEvent(new ShieldsDownEvent(thisStatus.timestamp));
+                    }
+                }
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
                     EDDI.Instance.enqueueEvent(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));
