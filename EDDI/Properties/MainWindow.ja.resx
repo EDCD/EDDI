@@ -278,9 +278,19 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>EDDIの言語（VoiceAttackの再起動が必要です）</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>名称（読み）</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>読み上げ</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>国際音声記号（International Phonetic Alphabet, IPA）</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>EDDIが、コマンダー名を間違って発音する場合、</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>を使って、名前の読みを設定できます。例えば、'Salomé' という名前の読みのIPA表記は'səˈloʊmi'です。</value>
+  </data>
 </root>
