@@ -278,9 +278,19 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>Wähle die Sprache von EDDI aus (erfordert einen Neustart von VoiceAttack):</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Name (gesprochen)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Hören</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Internationales Phonetisches Alphabet</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Wenn der Name Ihres Schiffes für EDDI schwer auszusprechen ist, können Sie eine gesprochene Version des Schiffes hinzufügen über </value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Zum Beispiel, wenn Dein Commander 'Salomé' heißt, dann sollte der gesprochene Name so aussehen: 'səˈloʊmi'.</value>
+  </data>
 </root>
