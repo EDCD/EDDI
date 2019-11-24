@@ -77,7 +77,7 @@
                 </DataGridComboBoxColumn>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_spoken_name}" Width="*">
                     <DataGridTextColumn.Binding>
-                        <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
+                        <Binding Path="phoneticName" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                             <Binding.ValidationRules>
                                 <utility:ValidIPARule/>
                             </Binding.ValidationRules>
