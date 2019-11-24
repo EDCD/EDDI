@@ -343,8 +343,7 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string model = (defaultname ?? SpokenModel()) ?? Properties.Ship._ship;
-            string result = Properties.Ship.your + " " + model;
+            string result;
             if (!string.IsNullOrWhiteSpace(phoneticName))
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
@@ -352,6 +351,11 @@ namespace EddiDataDefinitions
             else if (!string.IsNullOrWhiteSpace(name))
             {
                 result = name;
+            }
+            else
+            {
+                string model = (defaultname ?? SpokenModel()) ?? Properties.Ship._ship;
+                result = Properties.Ship.your + " " + model;
             }
             return result;
         }
