@@ -1906,18 +1906,8 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "ShieldState":
-                                {
-                                    bool shieldsUp = JsonParsing.getBool(data, "ShieldsUp");
-                                    if (shieldsUp == true)
-                                    {
-                                        events.Add(new ShieldsUpEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        events.Add(new ShieldsDownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
+                                // As of September 2019, this event no longer appears to be written to the Player Journal.
+                                // We still generate an event via the Status Monitor.
                                 break;
                             case "ShipTargeted":
                                 {
