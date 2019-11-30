@@ -2,7 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.5.1-b1
+### 3.5.2-b1
+  * Core
+    * Fix shield state events not triggering (#1605).
 
 ### 3.5.1
   * Core
