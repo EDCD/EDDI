@@ -92,6 +92,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SpeechResponder.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Tooltips.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tooltips.resx</DependentUpon>
+    </Compile>
     <Compile Include="ShowDiffWindow.xaml.cs">
       <DependentUpon>ShowDiffWindow.xaml</DependentUpon>
     </Compile>
@@ -194,6 +199,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Cottle.xshd" />
+    <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.ja.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.it.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.hu.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.fr.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.es.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.de.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="eddi.de.json" />
     <None Include="eddi.es.json" />
     <None Include="eddi.fr.json" />
