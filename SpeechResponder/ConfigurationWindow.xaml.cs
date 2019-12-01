@@ -6,6 +6,7 @@ using EddiShipMonitor;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -116,7 +117,7 @@ namespace EddiSpeechResponder
         private void viewScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(Personality.Scripts, script.Name);
+            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script);
             viewScriptWindow.Show();
         }
 
