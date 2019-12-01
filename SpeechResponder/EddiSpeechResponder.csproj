@@ -84,6 +84,7 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CottleHighlightingDefinition.cs" />
     <Compile Include="MarkdownWindow.xaml.cs">
       <DependentUpon>MarkdownWindow.xaml</DependentUpon>
     </Compile>

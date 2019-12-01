@@ -34,6 +34,8 @@ namespace EddiSpeechResponder
         protected static List<Event> eventQueue = new List<Event>();
         private static readonly object queueLock = new object();
 
+        private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -64,8 +66,8 @@ namespace EddiSpeechResponder
             scriptResolver = new ScriptResolver(personality?.Scripts);
             subtitles = configuration?.Subtitles ?? false;
             subtitlesOnly = configuration?.SubtitlesOnly ?? false;
-        Logging.Info($"Initialized {ResponderName()}");
-    }
+            Logging.Info($"Initialized {ResponderName()}");
+        }
 
         /// <summary>
         /// Change the personality for the speech responder
