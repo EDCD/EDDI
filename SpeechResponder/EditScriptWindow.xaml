@@ -24,64 +24,64 @@
                 <Button Command="Cut">
                     <Image Source="Images/Cut.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Cut (Ctrl+X)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.cut}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="Copy">
                     <Image Source="Images/Copy.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Copy (Ctrl+C)"/>
+                    <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="Paste">
                     <Image Source="Images/Paste.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Paste (Ctrl+V)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.paste}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="Delete">
                     <Image Source="Images/Delete.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Delete (Del)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
                     <Image Source="Images/Delete line.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Delete Line (Ctrl+D)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
                     </Button.ToolTip>
                 </Button>
                 <Separator/>
                 <Button Command="Undo">
                     <Image Source="Images/Undo.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Undo (Ctrl+Z)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.undo}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="Redo">
                     <Image Source="Images/Redo.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Redo (Ctrl+Y)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.redo}"/>
                     </Button.ToolTip>
                 </Button>
                 <Separator/>
                 <Button Command="Find">
                     <Image Source="Images/Find.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="Find (Ctrl+F)"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.find}"/>
                     </Button.ToolTip>
                 </Button>
                 <Separator/>
                 <CheckBox IsChecked="{Binding ElementName=scriptView,Path=ShowLineNumbers}">
                     <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
                     <CheckBox.ToolTip>
-                        <ToolTip Content="Show Line Numbers"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.show_line_numbers}"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
                 <CheckBox IsChecked="{Binding ElementName=scriptView,Path=WordWrap}">
                     <Image Source="Images/WordWrap.png" Height="16"/>
                     <CheckBox.ToolTip>
-                        <ToolTip Content="Word Wrap"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.word_wrap}"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
             </ToolBar>
