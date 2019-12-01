@@ -11,6 +11,80 @@
         ResizeMode="CanResizeWithGrip"
         Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+        <ToolBar DockPanel.Dock="Top">
+                <ToolBar.Resources>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                                <Setter Property="Opacity" Value="0.30" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToolBar.Resources>
+                <Button Command="Cut">
+                    <Image Source="Images/Cut.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Cut (Ctrl+X)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="Copy">
+                    <Image Source="Images/Copy.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Copy (Ctrl+C)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="Paste">
+                    <Image Source="Images/Paste.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Paste (Ctrl+V)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="Delete">
+                    <Image Source="Images/Delete.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Delete (Del)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
+                    <Image Source="Images/Delete line.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Delete Line (Ctrl+D)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Separator/>
+                <Button Command="Undo">
+                    <Image Source="Images/Undo.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Undo (Ctrl+Z)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="Redo">
+                    <Image Source="Images/Redo.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Redo (Ctrl+Y)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Separator/>
+                <Button Command="Find">
+                    <Image Source="Images/Find.png" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip Content="Find (Ctrl+F)"/>
+                    </Button.ToolTip>
+                </Button>
+                <Separator/>
+                <CheckBox IsChecked="{Binding ElementName=scriptView,Path=ShowLineNumbers}">
+                    <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
+                    <CheckBox.ToolTip>
+                        <ToolTip Content="Show Line Numbers"/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding ElementName=scriptView,Path=WordWrap}">
+                    <Image Source="Images/WordWrap.png" Height="16"/>
+                    <CheckBox.ToolTip>
+                        <ToolTip Content="Word Wrap"/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+            </ToolBar>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -26,7 +100,6 @@
             <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"></TextBlock>
             <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
             <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
             <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
                                    Name="scriptView"
                                    FontFamily="Consolas"
