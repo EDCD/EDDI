@@ -81,7 +81,6 @@ namespace GeneratorTests
         [TestMethod, TestCategory("DocGen")]
         public void TestGenerateWikiEventsList()
         {
-
             List<string> output = new List<string>
             {
 
@@ -100,6 +99,24 @@ namespace GeneratorTests
             }
             Directory.CreateDirectory(@"Wiki\");
             File.WriteAllLines(@"Wiki\Events.md", output);
+        }
+
+        [TestMethod, TestCategory("DocGen")]
+        // Generates the list of keywords used by the Cottle grammar "Cottle.xshd".
+        public void TestGenerateEventVariables()
+        {
+            SortedSet<string> eventVars = new SortedSet<string>();
+            foreach (IDictionary<string, string> variableList in Events.VARIABLES.Values)
+            {
+                foreach (string variableName in variableList.Keys)
+                {
+                    eventVars.Add(variableName);
+                }
+            }
+
+            string output = "      <Word>" + string.Join("</Word>\r\n      <Word>", eventVars) + " </Word>\r\n";
+            Directory.CreateDirectory(@"Cottle\");
+            File.WriteAllText(@"Cottle\Custom keywords.txt", output);
         }
     }
 }
