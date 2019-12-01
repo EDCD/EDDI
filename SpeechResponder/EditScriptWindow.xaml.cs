@@ -90,6 +90,8 @@ namespace EddiSpeechResponder
                 showDiffButton.IsEnabled = false;
                 resetToDefaultButton.IsEnabled = false;
             }
+
+            scriptView.Text = scriptValue;
         }
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
