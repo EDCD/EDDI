@@ -56,6 +56,8 @@ namespace EddiSpeechResponder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        // TODO: loads from disc are wrong
+
         public EditScriptWindow(Dictionary<string, Script> scripts, string name)
         {
             InitializeComponent();
@@ -96,30 +98,27 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script.Name == scriptName && script.Description == scriptDescription && script.Value == scriptValue && script.Responder == responder)
+            // Update the script
+            string newScriptText = scriptView.Text;
+            if (script != null)
             {
-                // We're accepting an unchanged script
-                DialogResult = false;
-                this.Close();
+                Script newScript = new Script(scriptName, scriptDescription, script?.Responder ?? false, newScriptText, script.Priority, script.defaultValue);
+                script = newScript;
             }
-            else
+
+            Script defaultScript = null;
+            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
             {
-                // Update the script
-                script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, script.defaultValue);
-                Script defaultScript = null;
-                if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
-                {
-                    script = Personality.UpgradeScript(script, defaultScript);
-                }
-
-                // Might be updating an existing script so remove it from the list before adding
-                scripts.Remove(originalName);
-
-                scripts.Add(script.Name, script);
-
-                DialogResult = true;
-                this.Close();
+                script = Personality.UpgradeScript(script, defaultScript);
             }
+
+            // Might be updating an existing script so remove it from the list before adding
+            scripts.Remove(originalName);
+
+            scripts.Add(script.Name, script);
+
+            DialogResult = true;
+            this.Close();
         }
 
         private void cancelButtonClick(object sender, RoutedEventArgs e)
