@@ -143,6 +143,7 @@ namespace EddiSpeechResponder
         {
             // Resetting the script resets it to its value in the default personality
             ScriptValue = ScriptDefaultValue;
+            scriptView.Text = ScriptValue;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)
