@@ -156,8 +156,8 @@ namespace EddiSpeechResponder
             newScripts.Remove(ScriptName);
             newScripts.Add(ScriptName, testScript);
 
-            SpeechResponder responder = new SpeechResponder();
-            responder.Start();
+            SpeechResponder speechResponder = new SpeechResponder();
+            speechResponder.Start();
 
             // See if we have a sample
             List<Event> sampleEvents;
@@ -189,7 +189,7 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(script.Name));
+                speechResponder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(script.Name));
             }
         }
 
