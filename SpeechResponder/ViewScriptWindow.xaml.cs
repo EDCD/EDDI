@@ -6,9 +6,6 @@ namespace EddiSpeechResponder
 {
     public partial class ViewScriptWindow : Window
     {
-        private readonly Dictionary<string, Script> scripts;
-        private readonly Script script;
-
         public string ScriptName { get; set; }
         public string ScriptDescription { get; set; }
         public string ScriptValue { get; set; }

@@ -15,9 +15,9 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class EditScriptWindow : Window, INotifyPropertyChanged
     {
-        private Dictionary<string, Script> scripts;
+        private readonly Dictionary<string, Script> scripts;
         private Script script;
-        private string originalName;
+        private readonly string originalName;
 
         private string scriptName;
         public string ScriptName
