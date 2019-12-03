@@ -150,7 +150,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Inserted",
+                        type = DiffItem.DiffType.Inserted,
                         data = bLines[i]
                     });
                 }
@@ -162,7 +162,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Deleted",
+                        type = DiffItem.DiffType.Deleted,
                         data = aLines[i]
                     });
                 }
@@ -176,7 +176,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Unmodified",
+                        type = DiffItem.DiffType.Unmodified,
                         data = aLines[i]
                     });
                 }
@@ -193,7 +193,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Unmodified",
+                        type = DiffItem.DiffType.Unmodified,
                         data = bLines[line]
                     });
                     line++;
@@ -205,7 +205,7 @@ namespace Utilities
                     {
                         diffItems.Add(new DiffItem()
                         {
-                            type = "Deleted",
+                            type = DiffItem.DiffType.Deleted,
                             data = aLines[item.StartA + m]
                         });
                     }
@@ -217,7 +217,7 @@ namespace Utilities
                     {
                         diffItems.Add(new DiffItem()
                         {
-                            type = "Inserted",
+                            type = DiffItem.DiffType.Inserted,
                             data = bLines[line]
                         });
                         line++;
@@ -229,7 +229,7 @@ namespace Utilities
             {
                 diffItems.Add(new DiffItem()
                 {
-                    type = "Unmodified",
+                    type = DiffItem.DiffType.Unmodified,
                     data = bLines[line]
                 });
                 line++;
@@ -658,7 +658,11 @@ namespace Utilities
 
     public struct DiffItem
     {
-        public string type;
+        public enum DiffType
+        {
+            Unmodified, Deleted, Inserted
+        }
+        public DiffType type;
         public string data;
     }
 

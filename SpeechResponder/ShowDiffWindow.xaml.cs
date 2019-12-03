@@ -19,11 +19,11 @@ namespace EddiSpeechResponder
                 {
                     Text = diffItem.data + Environment.NewLine
                 };
-                if (diffItem.type == "Deleted")
+                if (diffItem.type == DiffItem.DiffType.Deleted)
                 {
                     tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightCoral);
                 }
-                else if (diffItem.type == "Inserted")
+                else if (diffItem.type == DiffItem.DiffType.Inserted)
                 {
                     tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGreen);
                 }
