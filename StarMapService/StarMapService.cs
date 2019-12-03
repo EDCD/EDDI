@@ -38,7 +38,10 @@ namespace EddiStarMapService
 
             public EdsmRestClient(string baseUrl)
             {
-                restClient = new RestClient(baseUrl);
+                restClient = new RestClient(baseUrl)
+                {
+                    Timeout = 10000, // milliseconds
+                };
             }
 
             public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);

@@ -163,7 +163,7 @@ namespace EddiDataProviderService
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
+            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated)?.FirstOrDefault();
         }
 
         public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
@@ -171,6 +171,7 @@ namespace EddiDataProviderService
             if (!names.Any()) { return null; }
 
             List<StarSystem> systems = GetStarSystems(names, refreshIfOutdated);
+            if (systems == null) { return null; }
 
             // If a system isn't found after we've read our local database, we need to fetch it.
             List<string> fetchSystems = new List<string>();
@@ -272,6 +273,7 @@ namespace EddiDataProviderService
             if (systemsToUpdate.Count > 0)
             {
                 List<StarSystem> updatedSystems = dataProviderService.GetSystemsData(systemsToUpdate.Select(s => s.Key).ToArray());
+                if (updatedSystems == null) { return null; }
 
                 // If the newly fetched star system is an empty object except (for the object name), reject it
                 // Return old results when new results have been rejected
