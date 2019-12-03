@@ -13,11 +13,8 @@ namespace EddiSpeechResponder
         {
             InitializeComponent();
             List<DiffItem> diffItems = Diff.DiffTexts(oldScript, newScript);
-            for (int i = 0; i < diffItems.Count; i++)
+            foreach (DiffItem diffItem in diffItems)
             {
-                DiffItem diffItem = diffItems[i];
-
-                BrushConverter bc = new BrushConverter();
                 TextRange tr = new TextRange(scriptText.Document.ContentEnd, scriptText.Document.ContentEnd)
                 {
                     Text = diffItem.data + Environment.NewLine
