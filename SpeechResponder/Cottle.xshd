@@ -132,6 +132,7 @@
   <RuleSet name="Literals">
     <!-- Digits -->
     <Rule color="Literals">
+      \b
       (?:  \d+(\.\d+)?   # number with optional floating point
       |    \.\d+         # or just starting with floating point
       )
