@@ -411,8 +411,7 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string ship = (defaultname ?? phoneticmodel) ?? Properties.Ship._ship;
-            string result = Properties.Ship.your + " " + ship;
+            string result;
             if (!string.IsNullOrWhiteSpace(phoneticName))
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
@@ -420,6 +419,11 @@ namespace EddiDataDefinitions
             else if (!string.IsNullOrWhiteSpace(name))
             {
                 result = name;
+            }
+            else
+            {
+                string ship = (defaultname ?? phoneticmodel) ?? Properties.Ship._ship;
+                result = Properties.Ship.your + " " + ship;
             }
             return result;
         }
