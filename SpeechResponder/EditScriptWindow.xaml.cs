@@ -2,6 +2,7 @@
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using ICSharpCode.AvalonEdit.Search;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -62,6 +63,7 @@ namespace EddiSpeechResponder
         {
             InitializeComponent();
             DataContext = this;
+            SearchPanel.Install(scriptView);
 
             this.scripts = scripts;
             this.originalName = name;
