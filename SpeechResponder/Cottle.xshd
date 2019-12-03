@@ -6,7 +6,7 @@
   <http://avalonedit.net/documentation/> 
   <https://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor?msg=4879049#xx4879049xx> 
   -->
-  
+
   <Color name="Body text" foreground="DarkSlateGray" exampleText="This is body text"/>
   <Color name="Comment" foreground="Green" fontStyle="italic" exampleText="{_ This is a comment. }"/>
   <Color name="Code" foreground="Purple" exampleText="{ variableName }"/>
@@ -14,7 +14,7 @@
   <Color name="EscapeDelimiter" foreground="Orchid" exampleText="{ \} }"/>
   <Color name="Keyword" foreground="MediumVioletRed" exampleText="{ set ultimate answer to 42 }"/>
   <Color name="Quote mark" foreground="Blue" exampleText="{ '' }"/>
-  <Color name="Operator" foreground="DarkRed" exampleText="{ a + b }"/>
+  <Color name="Operator" foreground="MediumVioletRed" fontWeight="bold" exampleText="{ a + b }"/>
   <Color name="Literals" foreground="Blue" exampleText="{ 42.0 }"/>
   <Color name="Built-in functions" foreground="MediumOrchid" fontWeight="bold" exampleText="{ abs(-42) }"/>
   <Color name="Custom functions" foreground="DodgerBlue" exampleText="{ Humanise(text) }"/>
