@@ -30,7 +30,7 @@
                 <Button Command="Copy">
                     <Image Source="Images/Copy.png" Height="16"/>
                     <Button.ToolTip>
-                    <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
                     </Button.ToolTip>
                 </Button>
                 <Button Command="Paste">
@@ -48,7 +48,7 @@
                 <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
                     <Image Source="Images/Delete line.png" Height="16"/>
                     <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
+                        <ToolTip Content="{x:Static resx:Tooltips.delete_line}"/>
                     </Button.ToolTip>
                 </Button>
                 <Separator/>
