@@ -57,8 +57,6 @@ namespace EddiSpeechResponder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        // TODO: loads from disc are wrong
-
         public EditScriptWindow(Dictionary<string, Script> scripts, string name)
         {
             InitializeComponent();
@@ -151,6 +149,7 @@ namespace EddiSpeechResponder
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
             // Splice the new script in to the existing scripts
+            ScriptValue = scriptView.Text;
             Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
             Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
             newScripts.Remove(ScriptName);
@@ -195,6 +194,7 @@ namespace EddiSpeechResponder
 
         private void showDiffButtonClick(object sender, RoutedEventArgs e)
         {
+            ScriptValue = scriptView.Text;
             if (!string.IsNullOrWhiteSpace(ScriptDefaultValue))
             {
                 new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();
