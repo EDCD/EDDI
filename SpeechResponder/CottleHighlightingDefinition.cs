@@ -25,7 +25,7 @@ namespace EddiSpeechResponder
             }
 
             // Tweak a HighlightingColor at runtime to prove that we can
-            SetBackgroundColor("Comment", Colors.White);
+            //SetBackgroundColor("Comment", Colors.White);
 
             // Register our definition against the file extension
             HighlightingManager.Instance.RegisterHighlighting("Cottle", new string[] { ".cottle" }, cottleHighlightingDef);
