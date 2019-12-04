@@ -11,7 +11,7 @@
         ResizeMode="CanResizeWithGrip"
         Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <ToolBar DockPanel.Dock="Top">
+        <ToolBar DockPanel.Dock="Top" Background="#FFE5E5E5">
                 <ToolBar.Resources>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>
@@ -72,13 +72,13 @@
                     </Button.ToolTip>
                 </Button>
                 <Separator/>
-                <CheckBox IsChecked="{Binding ElementName=scriptView,Path=ShowLineNumbers}">
+                <CheckBox IsChecked="{Binding ElementName=scriptView, Path=ShowLineNumbers}">
                     <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
                     <CheckBox.ToolTip>
                         <ToolTip Content="{x:Static resx:Tooltips.show_line_numbers}"/>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <CheckBox IsChecked="{Binding ElementName=scriptView,Path=WordWrap}">
+                <CheckBox IsChecked="{Binding ElementName=scriptView, Path=WordWrap}">
                     <Image Source="Images/WordWrap.png" Height="16"/>
                     <CheckBox.ToolTip>
                         <ToolTip Content="{x:Static resx:Tooltips.word_wrap}"/>
