@@ -12,10 +12,12 @@
              Background="#FFE5E5E5" >
     <avalonEdit:TextEditor Margin="10" 
                            Name="scriptView"
+                           Foreground="DarkSlateGray"
+                           Background="WhiteSmoke"
                            FontFamily="Consolas"
                            IsReadOnly="True"
                            WordWrap="True"
                            ShowLineNumbers="True"
-                           SyntaxHighlighting="Cottle">
-    </avalonEdit:TextEditor>
+                           SyntaxHighlighting="Cottle"
+                           />
 </Window>

@@ -103,6 +103,8 @@
             <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
             <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
                                    Name="scriptView"
+                                   Foreground="DarkSlateGray"
+                                   Background="White"
                                    FontFamily="Consolas"
                                    IsReadOnly="False"
                                    WordWrap="True"
