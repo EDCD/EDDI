@@ -124,21 +124,21 @@ namespace EddiSpeechResponder
 
                 return result;
             }
-            catch (Exception e)
+            catch (Cottle.Exceptions.ParseException e)
             {
                 // Report the failing the script name, if it is available
                 string scriptName;
                 if (scriptObject != null)
                 {
-                    scriptName = "the: " + scriptObject.Name;
+                    scriptName = "the script \"" + scriptObject.Name + "\"";
                 }
                 else
                 {
-                    scriptName = "this ";
+                    scriptName = "this script";
                 }
 
-                Logging.Warn(@"Failed to resolve " + scriptName + @" script. " + e.ToString());
-                return @"There is a problem with " + scriptName + @" script. " + errorTranslation(e.Message);
+                Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
+                return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
             }
         }
 
