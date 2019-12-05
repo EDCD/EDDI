@@ -17,7 +17,7 @@
                            FontFamily="Consolas"
                            IsReadOnly="True"
                            WordWrap="True"
-                           ShowLineNumbers="True"
+                           ShowLineNumbers="False"
                            SyntaxHighlighting="Cottle"
                            />
 </Window>

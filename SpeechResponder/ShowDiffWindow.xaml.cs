@@ -114,6 +114,8 @@ namespace EddiSpeechResponder
                 textBuilder.AppendLine(diffItem.data);
             }
 
+            string newline = Environment.NewLine;
+            textBuilder.Remove(textBuilder.Length - newline.Length, newline.Length);
             scriptView.Text = textBuilder.ToString();
         }
     }
