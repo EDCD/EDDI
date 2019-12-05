@@ -22,10 +22,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription}"/>
             <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
                 Name="scriptView"
                 Foreground="DarkSlateGray"
