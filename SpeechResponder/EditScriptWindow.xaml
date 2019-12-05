@@ -11,80 +11,82 @@
         ResizeMode="CanResizeWithGrip"
         Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <ToolBar DockPanel.Dock="Top" Background="#FFE5E5E5">
+        <ToolBarTray DockPanel.Dock="Top" Background="#FFE5E5E5" IsLocked="True">
+            <ToolBar Background="#FFE5E5E5">
                 <ToolBar.Resources>
-                    <Style TargetType="{x:Type Image}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
-                                <Setter Property="Opacity" Value="0.30" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ToolBar.Resources>
-                <Button Command="Cut">
-                    <Image Source="Images/Cut.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.cut}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="Copy">
-                    <Image Source="Images/Copy.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="Paste">
-                    <Image Source="Images/Paste.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.paste}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="Delete">
-                    <Image Source="Images/Delete.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
-                    <Image Source="Images/Delete line.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.delete_line}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Separator/>
-                <Button Command="Undo">
-                    <Image Source="Images/Undo.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.undo}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Command="Redo">
-                    <Image Source="Images/Redo.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.redo}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Separator/>
-                <Button Command="Find">
-                    <Image Source="Images/Find.png" Height="16"/>
-                    <Button.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.find}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Separator/>
-                <CheckBox IsChecked="{Binding ElementName=scriptView, Path=ShowLineNumbers}">
-                    <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
-                    <CheckBox.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.show_line_numbers}"/>
-                    </CheckBox.ToolTip>
-                </CheckBox>
-                <CheckBox IsChecked="{Binding ElementName=scriptView, Path=WordWrap}">
-                    <Image Source="Images/WordWrap.png" Height="16"/>
-                    <CheckBox.ToolTip>
-                        <ToolTip Content="{x:Static resx:Tooltips.word_wrap}"/>
-                    </CheckBox.ToolTip>
-                </CheckBox>
-            </ToolBar>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Opacity" Value="0.30" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToolBar.Resources>
+                    <Button Command="Cut">
+                        <Image Source="Images/Cut.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.cut}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Copy">
+                        <Image Source="Images/Copy.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Paste">
+                        <Image Source="Images/Paste.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.paste}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Delete">
+                        <Image Source="Images/Delete.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
+                        <Image Source="Images/Delete line.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.delete_line}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <Button Command="Undo">
+                        <Image Source="Images/Undo.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.undo}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Redo">
+                        <Image Source="Images/Redo.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.redo}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <Button Command="Find">
+                        <Image Source="Images/Find.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.find}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <CheckBox IsChecked="{Binding ElementName=scriptView, Path=ShowLineNumbers}">
+                        <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
+                        <CheckBox.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.show_line_numbers}"/>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ElementName=scriptView, Path=WordWrap}">
+                        <Image Source="Images/WordWrap.png" Height="16"/>
+                        <CheckBox.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.word_wrap}"/>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                </ToolBar>
+            </ToolBarTray>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
