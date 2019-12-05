@@ -369,7 +369,16 @@ namespace EddiSpeechService
                         Logging.Debug("Best guess culture is " + culture);
                         speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                         Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
-                        synth.SpeakSsml(speech);
+                        if (voice != null && voice.StartsWith("CereVoice "))
+                        {
+                            // Cereproc voices do not respect `SpeakSsml` (particularly for IPA), but they do handle SSML via the `Speak` method.
+                            Logging.Debug("Working around CereVoice SSML support");
+                            synth.Speak(speech);
+                        }
+                        else
+                        {
+                            synth.SpeakSsml(speech);
+                        }
                     }
                     else
                     {
