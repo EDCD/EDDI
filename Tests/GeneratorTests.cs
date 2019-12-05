@@ -102,7 +102,8 @@ namespace GeneratorTests
         }
 
         [TestMethod, TestCategory("DocGen")]
-        // Generates the list of keywords used by the Cottle grammar "Cottle.xshd".
+        // Generates the list of keywords used by the Cottle grammar "SpeechResponder\Cottle.xshd".
+        // Paste the output into the "Custom properties" section of that file.
         public void TestGenerateEventVariables()
         {
             SortedSet<string> eventVars = new SortedSet<string>();
