@@ -34,7 +34,9 @@ namespace EddiSpeechResponder
         protected static List<Event> eventQueue = new List<Event>();
         private static readonly object queueLock = new object();
 
+#pragma warning disable IDE0052 // Remove unread private members: instantiating this registers the Cottle Highlighting Definition
         private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
+#pragma warning restore IDE0052 // Remove unread private members
 
         public string ResponderName()
         {

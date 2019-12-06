@@ -31,7 +31,9 @@ namespace EddiSpeechResponder
             HighlightingManager.Instance.RegisterHighlighting("Cottle", new string[] { ".cottle" }, cottleHighlightingDef);
         }
 
+#pragma warning disable IDE0051 // Remove unused private members -- this will be used later
         private void SetBackgroundColor(string colorName, Color newColor)
+#pragma warning restore IDE0051 // Remove unused private members
         {
             HighlightingColor color = cottleHighlightingDef.GetNamedColor(colorName);
             color.Background = new SimpleHighlightingBrush(newColor);
