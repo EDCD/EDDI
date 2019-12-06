@@ -467,7 +467,7 @@ namespace EddiDataDefinitions
 
         public static CommodityDefinition FromNameOrEDName(string name)
         {
-            if (name == null)
+            if (string.IsNullOrEmpty(name))
             {
                 return null;
             }
