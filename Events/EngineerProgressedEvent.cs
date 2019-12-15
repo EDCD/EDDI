@@ -17,7 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("engineer", "The name of the engineer with whom you have progressed");
             VARIABLES.Add("rank", "The rank of your relationship with the engineer");
             VARIABLES.Add("stage", "The current stage of your relations with the engineer (Invited/Known/Unlocked/Barred)");
-            VARIABLES.Add("rankprogress", "The percentage towards your next rank with the engineer");
+            // VARIABLES.Add("rankprogress", "The percentage towards your next rank with the engineer"); // "rankprogress" is omitted as it has never been written to the player journal.
             VARIABLES.Add("progresstype", "The type of progress that is applicable (Rank/Stage)");
         }
 
