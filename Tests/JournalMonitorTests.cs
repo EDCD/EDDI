@@ -1172,5 +1172,34 @@ namespace UnitTests
 	        Assert.AreEqual(-95.072144M, @event.longitude);
 	        Assert.AreEqual("Guardian Structure", @event.nearestDestination.invariantName);
         }
+
+        [TestMethod]
+        public void TestEngineerProgress()
+        {
+            string startupLine = "{ \"timestamp\":\"2018-05-04T13:58:22Z\", \"event\":\"EngineerProgress\", \"Engineers\":[ { \"Engineer\":\"Zacariah Nemo\", \"EngineerID\":300050, \"Progress\":\"Invited\" }, { \"Engineer\":\"Marco Qwent\", \"EngineerID\":300200, \"Progress\":\"Unlocked\", \"RankProgress\":37, \"Rank\":4 }, { \"Engineer\":\"Hera Tani\", \"EngineerID\":300090, \"Progress\":\"Unlocked\", \"RankProgress\":0, \"Rank\":3 }, { \"Engineer\":\"Tod 'The Blaster' McQuinn\", \"EngineerID\":300260, \"Progress\":\"Unlocked\", \"RankProgress\":97, \"Rank\":3 }, { \"Engineer\":\"Selene Jean\", \"EngineerID\":300210, \"Progress\":\"Known\" }, { \"Engineer\":\"Lei Cheung\", \"EngineerID\":300120, \"Progress\":\"Known\" }, { \"Engineer\":\"Juri Ishmaak\", \"EngineerID\":300250, \"Progress\":\"Known\" }, { \"Engineer\":\"Felicity Farseer\", \"EngineerID\":300100, \"Progress\":\"Unlocked\", \"RankProgress\":0, \"Rank\":5 }, { \"Engineer\":\"Professor Palin\", \"EngineerID\":300220, \"Progress\":\"Invited\" }, { \"Engineer\":\"Elvira Martuuk\", \"EngineerID\":300160, \"Progress\":\"Unlocked\", \"RankProgress\":0, \"Rank\":5 }, { \"Engineer\":\"Lori Jameson\", \"EngineerID\":300230, \"Progress\":\"Known\" }, { \"Engineer\":\"The Dweller\", \"EngineerID\":300180, \"Progress\":\"Unlocked\", \"RankProgress\":0, \"Rank\":5 }, { \"Engineer\":\"Liz Ryder\", \"EngineerID\":300080, \"Progress\":\"Unlocked\", \"RankProgress\":93, \"Rank\":3 }, { \"Engineer\":\"Ram Tah\", \"EngineerID\":300110, \"Progress\":\"Unlocked\", \"RankProgress\":31, \"Rank\":3 } ] }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(startupLine);
+            EngineerProgressedEvent startupEvent = (EngineerProgressedEvent)events[0];
+            Assert.IsNull(startupEvent.Engineer);
+            Assert.AreEqual("Invited", Engineer.FromName("Zacariah Nemo")?.stage);
+            Assert.IsNull(Engineer.FromName("Zacariah Nemo")?.rank);
+
+            // When an engineer is unlocked, there should be an event for the change in stage and a second event for the change in rank...
+            string updateLine = "{ \"timestamp\":\"2018-01-16T09:34:36Z\", \"event\":\"EngineerProgress\", \"Engineer\":\"Zacariah Nemo\", \"EngineerID\":300050, \"Progress\":\"Unlocked\", \"Rank\":1, \"RankProgress\":0 }";
+            events = JournalMonitor.ParseJournalEntry(updateLine);
+            Assert.AreEqual(2, events.Count);
+            EngineerProgressedEvent stageEvent = (EngineerProgressedEvent)events[0];
+            Assert.AreEqual("Zacariah Nemo", stageEvent.Engineer?.name);
+            Assert.AreEqual(300050, stageEvent.Engineer?.id);
+            Assert.AreEqual("Unlocked", stageEvent.Engineer?.stage);
+            EngineerProgressedEvent rankEvent = (EngineerProgressedEvent)events[1];
+            Assert.AreEqual(1, rankEvent.Engineer?.rank);
+
+            // We expect one event for the change in rank...
+            string updateLine2 = "{ \"timestamp\":\"2018-01-16T09:34:36Z\", \"event\":\"EngineerProgress\", \"Engineer\":\"Zacariah Nemo\", \"EngineerID\":300050, \"Progress\":\"Unlocked\", \"Rank\":2, \"RankProgress\":0 }";
+            events = JournalMonitor.ParseJournalEntry(updateLine2);
+            Assert.AreEqual(1, events.Count);
+            EngineerProgressedEvent rankEvent2 = (EngineerProgressedEvent)events[0];
+            Assert.AreEqual(2, rankEvent2.Engineer?.rank);
+        }
     }
 }

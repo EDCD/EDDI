@@ -2246,7 +2246,6 @@ namespace EddiJournalMonitor
                                     string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().model;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
-                                    
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
