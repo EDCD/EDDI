@@ -97,8 +97,8 @@ namespace EddiDataDefinitions
             }
             else
             {
-                int? index = ENGINEERS.FindIndex(eng => eng.id == engineer.id);
-                if (index != null) { ENGINEERS.RemoveAt((int)index); }
+                Engineer oldEngineer = ENGINEERS.FirstOrDefault(eng => eng.id == engineer.id);
+                if (oldEngineer != null) { ENGINEERS.Remove(oldEngineer); }
                 ENGINEERS.Add(engineer);
             }
         }
