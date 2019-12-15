@@ -1121,7 +1121,7 @@ namespace EddiJournalMonitor
                                                     if (starSystem != null)
                                                     {
                                                         StarSystem systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(starSystem, true);
-                                                        ship.station = systemData?.stations?.FirstOrDefault(s => s.marketId == ship.marketid).name;
+                                                        ship.station = systemData?.stations?.FirstOrDefault(s => s.marketId == ship.marketid)?.name;
                                                     }
                                                     else
                                                     {
