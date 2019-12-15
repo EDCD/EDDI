@@ -2247,7 +2247,7 @@ namespace EddiJournalMonitor
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
-                                    // Our rank with this engineer may have changed. Fire an `EngineerProgress` event if appropriate.
+                                    // Our progress with this engineer may have changed. Fire off any appropriate `EngineerProgress` events.
                                     Engineer Engineer = Engineer.FromNameOrId(engineer, engineerId);
                                     if (Engineer is null)
                                     {
