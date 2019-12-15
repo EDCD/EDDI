@@ -2305,13 +2305,13 @@ namespace EddiJournalMonitor
                                         // This is a progress entry.
                                         Engineer engineer = parseEngineer(data);
                                         Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
+                                        if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
+                                        {
+                                            events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
+                                        }
                                         if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
                                         {
                                             events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
-                                        {
-                                            events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
                                         }
                                         Engineer.AddOrUpdate(engineer);
                                     }
