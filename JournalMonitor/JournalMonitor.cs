@@ -2249,17 +2249,16 @@ namespace EddiJournalMonitor
 
                                     // Our rank with this engineer may have changed. Fire an `EngineerProgress` event if appropriate.
                                     Engineer Engineer = Engineer.FromNameOrId(engineer, engineerId);
-                                    if (Engineer != null && level > Engineer.rank)
+                                    if (Engineer is null)
+                                    {
+                                        Engineer = new Engineer(engineer, engineerId, "Unlocked", null, null);
+                                        Engineer.AddOrUpdate(Engineer);
+                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    if (level > Engineer.rank)
                                     {
                                         Engineer.rank = level;
                                         Engineer.AddOrUpdate(Engineer);
-                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else if (Engineer is null)
-                                    {
-                                        Engineer = new Engineer(engineer, engineerId, "Unlocked", null, level);
-                                        Engineer.AddOrUpdate(Engineer);
-                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
                                         events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
                                     }
 
