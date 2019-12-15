@@ -2247,6 +2247,15 @@ namespace EddiJournalMonitor
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
+                                    // Our rank with this engineer may have changed. Fire an `EngineerProgress` event if appropriate.
+                                    Engineer Engineer = Engineer.FromNameOrId(engineer, engineerId);
+                                    if (Engineer != null && level > Engineer.rank)
+                                    {
+                                        Engineer.rank = level;
+                                        Engineer.AddOrUpdate(Engineer);
+                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
+                                    }
+
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
