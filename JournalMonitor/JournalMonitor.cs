@@ -2255,6 +2255,13 @@ namespace EddiJournalMonitor
                                         Engineer.AddOrUpdate(Engineer);
                                         events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
                                     }
+                                    else if (Engineer is null)
+                                    {
+                                        Engineer = new Engineer(engineer, engineerId, "Unlocked", null, level);
+                                        Engineer.AddOrUpdate(Engineer);
+                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
+                                    }
 
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
