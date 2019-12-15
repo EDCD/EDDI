@@ -2246,22 +2246,7 @@ namespace EddiJournalMonitor
                                     string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().model;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
-
-                                    // Our progress with this engineer may have changed. Fire off any appropriate `EngineerProgress` events.
-                                    Engineer Engineer = Engineer.FromNameOrId(engineer, engineerId);
-                                    if (Engineer is null)
-                                    {
-                                        Engineer = new Engineer(engineer, engineerId, "Unlocked", null, null);
-                                        Engineer.AddOrUpdate(Engineer);
-                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Stage") { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    if (level > Engineer.rank)
-                                    {
-                                        Engineer.rank = level;
-                                        Engineer.AddOrUpdate(Engineer);
-                                        events.Add(new EngineerProgressedEvent(timestamp, Engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
-                                    }
-
+                                    
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
