@@ -391,7 +391,7 @@ This function will produce a destination/route for valid mission destinations, d
   * `update` Update to the next mission route destination, once all 
 missions in current system are completed.
 
-Upon success of the query, a 'Missions route' event is triggered, providing a following event data:
+Upon success of the query, a 'Route details' event is triggered, providing a following event data:
 
   * `routetype` Type of route query (see above).
   * `destination` Destination system.
