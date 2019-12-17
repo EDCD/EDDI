@@ -3,19 +3,19 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.5.2-b1
-  * Core
-    * Fix shield state events not triggering ([#1605](https://github.com/EDCD/EDDI/issues/1605)).
   * Speech responder
-    * Added syntax coloring (and there was much rejoicing). Customising the styles will come later.
+    * Added syntax coloring (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
 	* Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
 	* Enabled Cottle code within the `Transmit()` function.
-	* Only ships with the "Explorer" role will recommend bodies to map/scan after honking in inhabited space.
+	* Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
 	* Fixed "Sagittarius A *" pronunciation in Cereproc voices.
-	* Fixed pronunciation of ship names with Mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
+	* Fixed pronunciation of ship names with mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
 	* Fixed pronunciation of "Krait Phantom".
 	* Applied workaround for Cereproc voices not supporting IPA properly.
-	* Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [1629](https://github.com/EDCD/EDDI/issues/1629).
+	* Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [#1629](https://github.com/EDCD/EDDI/issues/1629).
 	* Applied `Humanise()` to the credits reported by the `Bond awarded` script
+  * Core
+    * Fixed shield state events not triggering ([#1605](https://github.com/EDCD/EDDI/issues/1605)).
 
 ### 3.5.1
   * Core
