@@ -11,6 +11,7 @@
   <Color name="Comment" foreground="Green" fontStyle="italic" exampleText="{_ This is a comment. }"/>
   <Color name="Code" foreground="Purple" exampleText="{ variableName }"/>
   <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/>
+  <Color name="UnexpectedDelimiter" foreground="Purple" background="Yellow" exampleText="{{}"/>
   <Color name="EscapeDelimiter" foreground="Orchid" exampleText="{ \} }"/>
   <Color name="Keyword" foreground="MediumVioletRed" exampleText="{ set ultimate answer to 42 }"/>
   <Color name="Quote mark" foreground="Blue" exampleText="{ '' }"/>
@@ -30,7 +31,7 @@
     <Import ruleSet="Escape sequences"/>
 
     <!-- comments -->
-    <Span color="Comment" multiline="true" begin="{_" end="}" ruleSet="Comment"/>
+    <Span color="Comment" multiline="true" begin="{\s*_" end="}" ruleSet="Comment"/>
 
     <!-- code -->
     <Span color="Code" multiline="true" ruleSet="Code">
@@ -44,16 +45,6 @@
     <Import ruleSet="Escape sequences"/>
   </RuleSet>
 
-  <!-- The Predicate statement rule set is used in statements such as `if` and `elif`.
-  It says that we start with code (the predicate) until the first unescaped colon, and everything after that is recursive body text. -->
-  <RuleSet name="Predicate statement">
-    <Import ruleSet="Code"/>
-    <Span ruleSet="Body text" color="Body text" multiline="true">
-      <Begin color="Delimiter">:</Begin>
-      <End color="Delimiter">(?=[|}])</End>
-    </Span>
-  </RuleSet>
-
   <!-- The Code rule set. It can contain code, literals, comments and keywords. Certain keywords can recurse us back to a body text span. -->
   <RuleSet name="Code">
     <Import ruleSet="Escape sequences"/>
@@ -65,35 +56,53 @@
     <Import ruleSet="Custom properties"/>
 
     <!-- comments -->
-    <Span color="Comment" multiline="true" begin="{_" end="}" ruleSet="Comment"/>
+    <Span color="Comment" multiline="true" begin="{\s*_" end="}" ruleSet="Comment"/>
 
-    <!-- delimiters -->
-    <Rule color="Delimiter">
+    <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
+    <Rule color="UnexpectedDelimiter">
       [{|:}]
     </Rule>
 
     <!-- String literals are treated as body text -->
-    <Span color="Body text" ruleSet="Body text">
+    <Span color="Body text" ruleSet="Body text" multiline="true">
       <Begin color="Quote mark">"</Begin>
       <End color="Quote mark">"</End>
     </Span>
 
     <!-- Same for single-quoted strings -->
-    <Span color="Body text" ruleSet="Body text">
+    <Span color="Body text" ruleSet="Body text" multiline="true">
       <Begin color="Quote mark">'</Begin>
       <End color="Quote mark">'</End>
+    </Span>
+
+    <!-- set (both value and function assignment) -->
+    <Span ruleSet="Set statement" multiline="true">
+      <Begin color="Keyword">\b(?:set)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+
+    <!-- declare (both value and function declaration) -->
+    <Span ruleSet="Declare statement" multiline="true">
+      <Begin color="Keyword">\b(?:declare)\b</Begin>
+      <End color="Delimiter">(?=})</End>
     </Span>
 
     <!-- if -->
     <Span ruleSet="Predicate statement" multiline="true">
       <Begin color="Keyword">\b(?:if)\b</Begin>
-      <End color="Delimiter">(?=[|}])</End>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
     </Span>
 
     <!-- elif -->
     <Span ruleSet="Predicate statement" multiline="true">
       <Begin color="Keyword">\b(?:elif)\b</Begin>
-      <End color="Delimiter">(?=[|}])</End>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
     </Span>
 
     <!-- else -->
@@ -105,7 +114,10 @@
     <!-- for -->
     <Span ruleSet="Predicate statement" multiline="true">
       <Begin color="Keyword">\b(?:for)\b</Begin>
-      <End color="Delimiter">(?=[|}])</End>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
     </Span>
 
     <!-- empty -->
@@ -129,18 +141,61 @@
     </Span>
   </RuleSet>
 
+  <!-- The Set statement rule set is used for both function assignment, which takes body text, and value assignment, which takes an expression -->
+  <RuleSet name="Set statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Keyword">to\s*:</Begin>
+      <End>(?=})</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Declare statement rule set is used for both function declaration, which takes body text, and variable declaration, which takes an expression -->
+  <RuleSet name="Declare statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Keyword">as\s*:</Begin>
+      <End>(?=})</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Predicate statement rule set is used in statements such as `if` and `elif`.
+  It says that we start with code (the predicate) until the first unescaped colon, and everything after that is recursive body text. -->
+  <RuleSet name="Predicate statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Delimiter">:</Begin>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
+    </Span>
+  </RuleSet>
+
+  <!-- Rule set for the colons in map literals not to be flagged as unexpected -->
+  <RuleSet name="Map Literals">
+    <Import ruleSet="Code"/>
+    <Span color="Delimiter" begin=":" end=""/>
+  </RuleSet>
+
   <RuleSet name="Literals">
     <!-- Digits -->
     <Rule color="Literals">
-      \b
+      \b 
       (?:  \d+(\.\d+)?   # number with optional floating point
       |    \.\d+         # or just starting with floating point
       )
     </Rule>
 
+    <!-- Maps -->
+    <Span ruleSet="Map Literals" multiline="true">
+      <Begin color="Operator">\[</Begin>
+      <End color="Operator">]</End>
+    </Span>
+
     <!-- String literals are treated as body text -->
 
-    <!-- Other literals-->
+    <!-- Other literals -->
     <Keywords color="Literals">
       <Word>true</Word>
       <Word>false</Word>
