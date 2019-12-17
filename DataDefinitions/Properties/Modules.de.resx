@@ -222,7 +222,7 @@
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
-    <value>Elektr. Gegenmaßnahmen</value>
+    <value>Elektronische Gegenmaßnahme</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
