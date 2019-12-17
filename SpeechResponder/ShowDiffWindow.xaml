@@ -3,17 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d"
              Title="{x:Static resx:SpeechResponder.compare_script_title}" 
              ResizeMode="CanResizeWithGrip"
              Height="600" Width="800"
              Background="#FFE5E5E5" >
-    <RichTextBox x:Name="scriptText" Background="Transparent" BorderThickness="0" Margin="5" IsReadOnly="True" FontFamily="Consolas">
-        <RichTextBox.Resources>
-            <Style TargetType="{x:Type Paragraph}">
-                <Setter Property="Margin" Value="0"/>
-            </Style>
-        </RichTextBox.Resources>
-    </RichTextBox>
+    <avalonEdit:TextEditor Margin="10" 
+                           Name="scriptView"
+                           Foreground="DarkSlateGray"
+                           Background="WhiteSmoke"
+                           FontFamily="Consolas"
+                           IsReadOnly="True"
+                           WordWrap="True"
+                           ShowLineNumbers="False"
+                           SyntaxHighlighting="Cottle"
+                           />
 </Window>

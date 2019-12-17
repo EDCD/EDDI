@@ -19,7 +19,7 @@ namespace Utilities
             public int deletedA;
             /// <summary>Number of changes in Data B.</summary>
             public int insertedB;
-        } // Item
+        }
 
         /// <summary>
         /// Shortest Middle Snake Return Data
@@ -150,7 +150,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Inserted",
+                        type = DiffItem.DiffType.Inserted,
                         data = bLines[i]
                     });
                 }
@@ -162,7 +162,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Deleted",
+                        type = DiffItem.DiffType.Deleted,
                         data = aLines[i]
                     });
                 }
@@ -176,7 +176,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Unmodified",
+                        type = DiffItem.DiffType.Unmodified,
                         data = aLines[i]
                     });
                 }
@@ -193,7 +193,7 @@ namespace Utilities
                 {
                     diffItems.Add(new DiffItem()
                     {
-                        type = "Unmodified",
+                        type = DiffItem.DiffType.Unmodified,
                         data = bLines[line]
                     });
                     line++;
@@ -205,7 +205,7 @@ namespace Utilities
                     {
                         diffItems.Add(new DiffItem()
                         {
-                            type = "Deleted",
+                            type = DiffItem.DiffType.Deleted,
                             data = aLines[item.StartA + m]
                         });
                     }
@@ -217,7 +217,7 @@ namespace Utilities
                     {
                         diffItems.Add(new DiffItem()
                         {
-                            type = "Inserted",
+                            type = DiffItem.DiffType.Inserted,
                             data = bLines[line]
                         });
                         line++;
@@ -229,7 +229,7 @@ namespace Utilities
             {
                 diffItems.Add(new DiffItem()
                 {
-                    type = "Unmodified",
+                    type = DiffItem.DiffType.Unmodified,
                     data = bLines[line]
                 });
                 line++;
@@ -246,7 +246,7 @@ namespace Utilities
         public Item[] DiffText(string TextA, string TextB)
         {
             return (DiffText(TextA, TextB, false, false, false));
-        } // DiffText
+        }
 
 
         /// <summary>
@@ -273,12 +273,10 @@ namespace Utilities
             // The B-Version of the data (modified data) to be compared.
             DiffData DataB = new DiffData(DiffCodes(TextB, h, trimSpace, ignoreSpace, ignoreCase));
 
-            h = null; // free up hashtable memory (maybe)
-
             int MAX = DataA.Length + DataB.Length + 1;
-            /// vector for the (0,0) to (x,y) search
+            // vector for the (0,0) to (x,y) search
             int[] DownVector = new int[2 * MAX + 2];
-            /// vector for the (u,v) to (N,M) search
+            // vector for the (u,v) to (N,M) search
             int[] UpVector = new int[2 * MAX + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
@@ -286,7 +284,7 @@ namespace Utilities
             Optimize(DataA);
             Optimize(DataB);
             return CreateDiffs(DataA, DataB);
-        } // DiffText
+        }
 
 
         /// <summary>
@@ -304,10 +302,15 @@ namespace Utilities
             while (StartPos < Data.Length)
             {
                 while ((StartPos < Data.Length) && (Data.modified[StartPos] == false))
+                {
                     StartPos++;
+                }
+
                 EndPos = StartPos;
                 while ((EndPos < Data.Length) && (Data.modified[EndPos] == true))
+                {
                     EndPos++;
+                }
 
                 if ((EndPos < Data.Length) && (Data.data[StartPos] == Data.data[EndPos]))
                 {
@@ -317,9 +320,9 @@ namespace Utilities
                 else
                 {
                     StartPos = EndPos;
-                } // if
-            } // while
-        } // Optimize
+                }
+            }
+        }
 
 
         /// <summary>
@@ -337,14 +340,14 @@ namespace Utilities
             DiffData DataB = new DiffData(ArrayB);
 
             int MAX = DataA.Length + DataB.Length + 1;
-            /// vector for the (0,0) to (x,y) search
+            // vector for the (0,0) to (x,y) search
             int[] DownVector = new int[2 * MAX + 2];
-            /// vector for the (u,v) to (N,M) search
+            // vector for the (u,v) to (N,M) search
             int[] UpVector = new int[2 * MAX + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
             return CreateDiffs(DataA, DataB);
-        } // Diff
+        }
 
 
         /// <summary>
@@ -374,7 +377,9 @@ namespace Utilities
             {
                 s = Lines[i];
                 if (trimSpace)
+                {
                     s = s.Trim();
+                }
 
                 if (ignoreSpace)
                 {
@@ -382,7 +387,9 @@ namespace Utilities
                 }
 
                 if (ignoreCase)
+                {
                     s = s.ToLower();
+                }
 
                 aCode = h[s];
                 if (aCode == null)
@@ -394,10 +401,10 @@ namespace Utilities
                 else
                 {
                     Codes[i] = (int)aCode;
-                } // if
-            } // for
+                }
+            }
             return (Codes);
-        } // DiffCodes
+        }
 
 
         /// <summary>
@@ -415,7 +422,6 @@ namespace Utilities
         private static SMSRD SMS(DiffData DataA, int LowerA, int UpperA, DiffData DataB, int LowerB, int UpperB,
           int[] DownVector, int[] UpVector)
         {
-
             SMSRD ret;
             int MAX = DataA.Length + DataB.Length + 1;
 
@@ -440,7 +446,6 @@ namespace Utilities
 
             for (int D = 0; D <= MaxD; D++)
             {
-
                 // Extend the forward path.
                 for (int k = DownK - D; k <= DownK + D; k += 2)
                 {
@@ -456,7 +461,9 @@ namespace Utilities
                     {
                         x = DownVector[DownOffset + k - 1] + 1; // a step to the right
                         if ((k < DownK + D) && (DownVector[DownOffset + k + 1] >= x))
+                        {
                             x = DownVector[DownOffset + k + 1]; // down
+                        }
                     }
                     y = x - k;
 
@@ -477,10 +484,10 @@ namespace Utilities
                             // ret.u = UpVector[UpOffset + k];      // 2002.09.20: no need for 2 points 
                             // ret.v = UpVector[UpOffset + k] - k;
                             return (ret);
-                        } // if
-                    } // if
+                        }
+                    }
 
-                } // for k
+                }
 
                 // Extend the reverse path.
                 for (int k = UpK - D; k <= UpK + D; k += 2)
@@ -497,8 +504,10 @@ namespace Utilities
                     {
                         x = UpVector[UpOffset + k + 1] - 1; // left
                         if ((k > UpK - D) && (UpVector[UpOffset + k - 1] < x))
+                        {
                             x = UpVector[UpOffset + k - 1]; // up
-                    } // if
+                        }
+                    }
                     y = x - k;
 
                     while ((x > LowerA) && (y > LowerB) && (DataA.data[x - 1] == DataB.data[y - 1]))
@@ -517,15 +526,12 @@ namespace Utilities
                             // ret.u = UpVector[UpOffset + k];     // 2002.09.20: no need for 2 points 
                             // ret.v = UpVector[UpOffset + k] - k;
                             return (ret);
-                        } // if
-                    } // if
-
-                } // for k
-
-            } // for D
-
+                        }
+                    }
+                }
+            }
             throw new ApplicationException("the algorithm should never come here.");
-        } // SMS
+        }
 
 
         /// <summary>
@@ -562,15 +568,17 @@ namespace Utilities
             {
                 // mark as inserted lines.
                 while (LowerB < UpperB)
+                {
                     DataB.modified[LowerB++] = true;
-
+                }
             }
             else if (LowerB == UpperB)
             {
                 // mark as deleted lines.
                 while (LowerA < UpperA)
+                {
                     DataA.modified[LowerA++] = true;
-
+                }
             }
             else
             {
@@ -582,7 +590,7 @@ namespace Utilities
                 LCS(DataA, LowerA, smsrd.x, DataB, LowerB, smsrd.y, DownVector, UpVector);
                 LCS(DataA, smsrd.x, UpperA, DataB, smsrd.y, UpperB, DownVector, UpVector);  // 2002.09.20: no need for 2 points 
             }
-        } // LCS()
+        }
 
 
         /// <summary>Scan the tables of which lines are inserted and deleted,
@@ -608,7 +616,6 @@ namespace Utilities
                     // equal lines
                     LineA++;
                     LineB++;
-
                 }
                 else
                 {
@@ -617,25 +624,29 @@ namespace Utilities
                     StartB = LineB;
 
                     while (LineA < DataA.Length && (LineB >= DataB.Length || DataA.modified[LineA]))
-                        // while (LineA < DataA.Length && DataA.modified[LineA])
+                    {
                         LineA++;
+                    }
 
                     while (LineB < DataB.Length && (LineA >= DataA.Length || DataB.modified[LineB]))
-                        // while (LineB < DataB.Length && DataB.modified[LineB])
+                    {
                         LineB++;
+                    }
 
                     if ((StartA < LineA) || (StartB < LineB))
                     {
                         // store a new difference-item
-                        aItem = new Item();
-                        aItem.StartA = StartA;
-                        aItem.StartB = StartB;
-                        aItem.deletedA = LineA - StartA;
-                        aItem.insertedB = LineB - StartB;
+                        aItem = new Item
+                        {
+                            StartA = StartA,
+                            StartB = StartB,
+                            deletedA = LineA - StartA,
+                            insertedB = LineB - StartB
+                        };
                         a.Add(aItem);
-                    } // if
-                } // if
-            } // while
+                    }
+                }
+            }
 
             result = new Item[a.Count];
             a.CopyTo(result);
@@ -647,7 +658,11 @@ namespace Utilities
 
     public struct DiffItem
     {
-        public string type;
+        public enum DiffType
+        {
+            Unmodified, Deleted, Inserted
+        }
+        public DiffType type;
         public string data;
     }
 

@@ -2,6 +2,7 @@
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using ICSharpCode.AvalonEdit.Search;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -14,9 +15,9 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class EditScriptWindow : Window, INotifyPropertyChanged
     {
-        private Dictionary<string, Script> scripts;
+        private readonly Dictionary<string, Script> scripts;
         private Script script;
-        private string originalName;
+        private readonly string originalName;
 
         private string scriptName;
         public string ScriptName
@@ -60,6 +61,7 @@ namespace EddiSpeechResponder
         {
             InitializeComponent();
             DataContext = this;
+            SearchPanel.Install(scriptView);
 
             this.scripts = scripts;
             this.originalName = name;
@@ -90,34 +92,33 @@ namespace EddiSpeechResponder
                 showDiffButton.IsEnabled = false;
                 resetToDefaultButton.IsEnabled = false;
             }
+
+            scriptView.Text = scriptValue;
         }
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script.Name == scriptName && script.Description == scriptDescription && script.Value == scriptValue && script.Responder == responder)
+            // Update the script
+            string newScriptText = scriptView.Text;
+            if (script != null)
             {
-                // We're accepting an unchanged script
-                DialogResult = false;
-                this.Close();
+                Script newScript = new Script(scriptName, scriptDescription, script?.Responder ?? false, newScriptText, script.Priority, script.defaultValue);
+                script = newScript;
             }
-            else
+
+            Script defaultScript = null;
+            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
             {
-                // Update the script
-                script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, script.defaultValue);
-                Script defaultScript = null;
-                if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
-                {
-                    script = Personality.UpgradeScript(script, defaultScript);
-                }
-
-                // Might be updating an existing script so remove it from the list before adding
-                scripts.Remove(originalName);
-
-                scripts.Add(script.Name, script);
-
-                DialogResult = true;
-                this.Close();
+                script = Personality.UpgradeScript(script, defaultScript);
             }
+
+            // Might be updating an existing script so remove it from the list before adding
+            scripts.Remove(originalName);
+
+            scripts.Add(script.Name, script);
+
+            DialogResult = true;
+            this.Close();
         }
 
         private void cancelButtonClick(object sender, RoutedEventArgs e)
@@ -142,18 +143,20 @@ namespace EddiSpeechResponder
         {
             // Resetting the script resets it to its value in the default personality
             ScriptValue = ScriptDefaultValue;
+            scriptView.Text = ScriptValue;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
             // Splice the new script in to the existing scripts
+            ScriptValue = scriptView.Text;
             Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
             Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
             newScripts.Remove(ScriptName);
             newScripts.Add(ScriptName, testScript);
 
-            SpeechResponder responder = new SpeechResponder();
-            responder.Start();
+            SpeechResponder speechResponder = new SpeechResponder();
+            speechResponder.Start();
 
             // See if we have a sample
             List<Event> sampleEvents;
@@ -185,12 +188,13 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(script.Name));
+                speechResponder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(script.Name));
             }
         }
 
         private void showDiffButtonClick(object sender, RoutedEventArgs e)
         {
+            ScriptValue = scriptView.Text;
             if (!string.IsNullOrWhiteSpace(ScriptDefaultValue))
             {
                 new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();

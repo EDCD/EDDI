@@ -55,6 +55,9 @@
     <Reference Include="Cottle, Version=1.4.0.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cottle.1.4.0.4\lib\net40\Cottle.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.6.0.0\lib\net45\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -81,6 +84,7 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CottleHighlightingDefinition.cs" />
     <Compile Include="MarkdownWindow.xaml.cs">
       <DependentUpon>MarkdownWindow.xaml</DependentUpon>
     </Compile>
@@ -88,6 +92,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SpeechResponder.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Tooltips.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tooltips.resx</DependentUpon>
     </Compile>
     <Compile Include="ShowDiffWindow.xaml.cs">
       <DependentUpon>ShowDiffWindow.xaml</DependentUpon>
@@ -190,6 +199,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Cottle.xshd" />
+    <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.ja.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.it.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.hu.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.fr.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.es.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.de.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="eddi.de.json" />
     <None Include="eddi.es.json" />
     <None Include="eddi.fr.json" />
@@ -257,6 +279,18 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Copy.png" />
+    <Resource Include="Images\Cut.png" />
+    <Resource Include="Images\Delete line.png" />
+    <Resource Include="Images\Delete.png" />
+    <Resource Include="Images\Find.png" />
+    <Resource Include="Images\Paste.png" />
+    <Resource Include="Images\Redo.png" />
+    <Resource Include="Images\Undo.png" />
+    <Resource Include="Images\WordWrap.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

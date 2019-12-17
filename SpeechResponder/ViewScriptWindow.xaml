@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:local="clr-namespace:EddiSpeechResponder"
         xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
@@ -21,13 +22,22 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription}"/>
-            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Consolas" VerticalAlignment="Stretch" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Path=ScriptValue, Mode=TwoWay}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription}"/>
+            <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
+                Name="scriptView"
+                Foreground="DarkSlateGray"
+                Background="WhiteSmoke"
+                FontFamily="Consolas"
+                IsReadOnly="True"
+                WordWrap="True"
+                ShowLineNumbers="True"
+                SyntaxHighlighting="Cottle"
+                />
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="1" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
-                <Button x:Name="okButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="okButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="okButton" IsCancel="True" IsDefault="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="okButtonClick" Margin="0,0,5,0"/>
             </UniformGrid>
         </Grid>
     </DockPanel>

@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EddiSpeechResponder"
         xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
@@ -10,6 +11,82 @@
         ResizeMode="CanResizeWithGrip"
         Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+        <ToolBarTray DockPanel.Dock="Top" Background="#FFE5E5E5" IsLocked="True">
+            <ToolBar Background="#FFE5E5E5">
+                <ToolBar.Resources>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Opacity" Value="0.30" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToolBar.Resources>
+                    <Button Command="Cut">
+                        <Image Source="Images/Cut.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.cut}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Copy">
+                        <Image Source="Images/Copy.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.copy}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Paste">
+                        <Image Source="Images/Paste.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.paste}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Delete">
+                        <Image Source="Images/Delete.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.delete}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="avalonEdit:AvalonEditCommands.DeleteLine">
+                        <Image Source="Images/Delete line.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.delete_line}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <Button Command="Undo">
+                        <Image Source="Images/Undo.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.undo}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Command="Redo">
+                        <Image Source="Images/Redo.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.redo}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <Button Command="Find">
+                        <Image Source="Images/Find.png" Height="16"/>
+                        <Button.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.find}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Separator/>
+                    <CheckBox IsChecked="{Binding ElementName=scriptView, Path=ShowLineNumbers}">
+                        <TextBlock Width="16" TextAlignment="Center">#</TextBlock>
+                        <CheckBox.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.show_line_numbers}"/>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ElementName=scriptView, Path=WordWrap}">
+                        <Image Source="Images/WordWrap.png" Height="16"/>
+                        <CheckBox.ToolTip>
+                            <ToolTip Content="{x:Static resx:Tooltips.word_wrap}"/>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                </ToolBar>
+            </ToolBarTray>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -22,21 +99,30 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
-            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" FontFamily="Consolas" VerticalAlignment="Stretch" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Path=ScriptValue, Mode=TwoWay}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
+            <TextBox Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
+            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"/>
+            <TextBox Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
+            <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
+                                   Name="scriptView"
+                                   Foreground="DarkSlateGray"
+                                   Background="White"
+                                   FontFamily="Consolas"
+                                   IsReadOnly="False"
+                                   WordWrap="True"
+                                   ShowLineNumbers="True"
+                                   SyntaxHighlighting="Cottle"
+                                   />
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="testButton" FontSize="18" Content="{x:Static resx:SpeechResponder.test_script_button}" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>
                 <Button x:Name="resetToDefaultButton" FontSize="18" Content="{x:Static resx:SpeechResponder.reset_script_button}" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
                 <Button x:Name="showDiffButton" FontSize="18" Content="{x:Static resx:SpeechResponder.compare_script_button}" VerticalAlignment="Top" Click="showDiffButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="4" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
-                <Button x:Name="acceptButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="acceptButton" IsDefault="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
                 <Button x:Name="helpButton" FontSize="18" Content="{x:Static resx:SpeechResponder.help_button}" VerticalAlignment="Top" Click="helpButtonClick" Margin="5,0,5,0"/>
                 <Button x:Name="variablesButton" FontSize="18" Content="{x:Static resx:SpeechResponder.script_variables_button}" VerticalAlignment="Top" Click="variablesButtonClick" Margin="5,0,5,0"/>
-                <Button x:Name="cancelButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5,0,0,0"/>
+                <Button x:Name="cancelButton" IsCancel="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
         </Grid>
     </DockPanel>

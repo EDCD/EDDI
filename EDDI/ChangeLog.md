@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.5.2-b1
   * Core
     * Fix shield state events not triggering (#1605).
+  * Speech responder
+    * Added syntax coloring (and there was much rejoicing). Customising the styles will come later.
 
 ### 3.5.1
   * Core

@@ -1,0 +1,807 @@
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="Cottle" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <!-- A definition for the Cottle text template engine documented at <https://r3c.github.io/cottle/> and available at <https://www.nuget.org/packages/Cottle/> -->
+
+  <!-- AvalonEdit documentation: 
+  <http://avalonedit.net/documentation/> 
+  <https://www.codeproject.com/Articles/42490/Using-AvalonEdit-WPF-Text-Editor?msg=4879049#xx4879049xx> 
+  -->
+
+  <Color name="Body text" foreground="DarkSlateGray" exampleText="This is body text"/>
+  <Color name="Comment" foreground="Green" fontStyle="italic" exampleText="{_ This is a comment. }"/>
+  <Color name="Code" foreground="Purple" exampleText="{ variableName }"/>
+  <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/>
+  <Color name="UnexpectedDelimiter" foreground="Purple" background="Yellow" exampleText="{{}"/>
+  <Color name="EscapeDelimiter" foreground="Orchid" exampleText="{ \} }"/>
+  <Color name="Keyword" foreground="MediumVioletRed" exampleText="{ set ultimate answer to 42 }"/>
+  <Color name="Quote mark" foreground="Blue" exampleText="{ '' }"/>
+  <Color name="Operator" foreground="MediumVioletRed" fontWeight="bold" exampleText="{ a + b }"/>
+  <Color name="Literals" foreground="Blue" exampleText="{ 42.0 }"/>
+  <Color name="Built-in functions" foreground="MediumOrchid" fontWeight="bold" exampleText="{ abs(-42) }"/>
+  <Color name="Custom functions" foreground="DodgerBlue" exampleText="{ Humanise(text) }"/>
+  <Color name="Custom properties" foreground="LightSeaGreen" exampleText="{ event.awardingfaction }"/>
+
+  <!-- The main rule set: it states that Cottle docs always begin as body text. -->
+  <RuleSet>
+    <Import ruleSet="Body text"/>
+  </RuleSet>
+
+  <!-- The Body text rule set: it is referenced recursively and can contain only code and comment spans.-->
+  <RuleSet name="Body text">
+    <Import ruleSet="Escape sequences"/>
+
+    <!-- comments -->
+    <Span color="Comment" multiline="true" begin="{\s*_" end="}" ruleSet="Comment"/>
+
+    <!-- code -->
+    <Span color="Code" multiline="true" ruleSet="Code">
+      <Begin color="Delimiter">{</Begin>
+      <End color="Delimiter">}</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Comment rule set simply caters for escape sequences. -->
+  <RuleSet name="Comment">
+    <Import ruleSet="Escape sequences"/>
+  </RuleSet>
+
+  <!-- The Code rule set. It can contain code, literals, comments and keywords. Certain keywords can recurse us back to a body text span. -->
+  <RuleSet name="Code">
+    <Import ruleSet="Escape sequences"/>
+    <Import ruleSet="Literals"/>
+    <Import ruleSet="Built-in keywords"/>
+    <Import ruleSet="Built-in operators"/>
+    <Import ruleSet="Built-in functions"/>
+    <Import ruleSet="Custom functions"/>
+    <Import ruleSet="Custom properties"/>
+
+    <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
+    <Rule color="UnexpectedDelimiter">
+      [{|:}]
+    </Rule>
+
+    <!-- String literals are treated as body text -->
+    <Span color="Body text" ruleSet="Body text" multiline="true">
+      <Begin color="Quote mark">"</Begin>
+      <End color="Quote mark">"</End>
+    </Span>
+
+    <!-- Same for single-quoted strings -->
+    <Span color="Body text" ruleSet="Body text" multiline="true">
+      <Begin color="Quote mark">'</Begin>
+      <End color="Quote mark">'</End>
+    </Span>
+
+    <!-- set (both value and function assignment) -->
+    <Span ruleSet="Set statement" multiline="true">
+      <Begin color="Keyword">\b(?:set)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+
+    <!-- declare (both value and function declaration) -->
+    <Span ruleSet="Declare statement" multiline="true">
+      <Begin color="Keyword">\b(?:declare)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+
+    <!-- if -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:if)\b</Begin>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
+    </Span>
+
+    <!-- elif -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:elif)\b</Begin>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
+    </Span>
+
+    <!-- else -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:else)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+
+    <!-- for -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:for)\b</Begin>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
+    </Span>
+
+    <!-- empty -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:empty)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+
+    <!-- while -->
+    <Span ruleSet="Predicate statement" multiline="true">
+      <Begin color="Keyword">\b(?:while)\b</Begin>
+      <End color="Delimiter">(?=})</End>
+    </Span>
+  </RuleSet>
+
+  <!-- Backslash escape sequences are common enough to merit a rule set -->
+  <RuleSet name="Escape sequences">
+    <Span>
+      <Begin color="EscapeDelimiter">\\</Begin>
+      <End>.</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Set statement rule set is used for both function assignment, which takes body text, and value assignment, which takes an expression -->
+  <RuleSet name="Set statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Keyword">to\s*:</Begin>
+      <End>(?=})</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Declare statement rule set is used for both function declaration, which takes body text, and variable declaration, which takes an expression -->
+  <RuleSet name="Declare statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Keyword">as\s*:</Begin>
+      <End>(?=})</End>
+    </Span>
+  </RuleSet>
+
+  <!-- The Predicate statement rule set is used in statements such as `if` and `elif`.
+  It says that we start with code (the predicate) until the first unescaped colon, and everything after that is recursive body text. -->
+  <RuleSet name="Predicate statement">
+    <Import ruleSet="Code"/>
+    <Span ruleSet="Body text" color="Body text" multiline="true">
+      <Begin color="Delimiter">:</Begin>
+      <End color="Delimiter">
+        (?&lt;!\|)\|(?!\|)  # single pipe not preceded or followed by another pipe
+        | (?=}) # lookahead to a closing brace
+      </End>
+    </Span>
+  </RuleSet>
+
+  <!-- Rule set for the colons in map literals not to be flagged as unexpected -->
+  <RuleSet name="Map Literals">
+    <Import ruleSet="Code"/>
+    <Span color="Delimiter" begin=":" end=""/>
+  </RuleSet>
+
+  <RuleSet name="Literals">
+    <!-- Digits -->
+    <Rule color="Literals">
+      \b
+      (?:  \d+(\.\d+)?   # number with optional floating point
+      |    \.\d+         # or just starting with floating point
+      )
+    </Rule>
+
+    <!-- Maps -->
+    <Span ruleSet="Map Literals" multiline="true">
+      <Begin color="Operator">\[</Begin>
+      <End color="Operator">]</End>
+    </Span>
+
+    <!-- String literals are treated as body text -->
+
+    <!-- Other literals -->
+    <Keywords color="Literals">
+      <Word>true</Word>
+      <Word>false</Word>
+      <Word>void</Word>
+    </Keywords>
+  </RuleSet>
+
+  <RuleSet name="Built-in keywords">
+    <Keywords color="Keyword">
+      <Word>and</Word>
+      <Word>dump</Word>
+      <Word>echo</Word>
+      <Word>elif</Word>
+      <Word>else</Word>
+      <Word>empty</Word>
+      <Word>for</Word>
+      <Word>if</Word>
+      <Word>in</Word>
+      <Word>is</Word>
+      <Word>not</Word>
+      <Word>or</Word>
+      <Word>return</Word>
+      <Word>set</Word>
+      <Word>to</Word>
+      <Word>while</Word>
+    </Keywords>
+  </RuleSet>
+
+  <RuleSet name="Built-in operators">
+    <Keywords color="Operator">
+      <Word>(</Word>
+      <Word>)</Word>
+      <Word>[</Word>
+      <Word>]</Word>
+      <Word>,</Word>
+      <Word>!</Word>
+      <Word>+</Word>
+      <Word>-</Word>
+      <Word>*</Word>
+      <Word>/</Word>
+      <Word>%</Word>
+      <Word>&lt;</Word>
+      <Word>&lt;=</Word>
+      <Word>=</Word>
+      <Word>!=</Word>
+      <Word>&gt;=</Word>
+      <Word>&gt;</Word>
+      <Word>&amp;&amp;</Word>
+      <Word>||</Word>
+    </Keywords>
+  </RuleSet>
+
+  <RuleSet name="Built-in functions">
+    <Keywords color="Built-in functions">
+      <Word>abs</Word>
+      <Word>add</Word>
+      <Word>call</Word>
+      <Word>cast</Word>
+      <Word>cat</Word>
+      <Word>ceil</Word>
+      <Word>char</Word>
+      <Word>cmp</Word>
+      <Word>cos</Word>
+      <Word>cross</Word>
+      <Word>default</Word>
+      <Word>defined</Word>
+      <Word>div</Word>
+      <Word>eq</Word>
+      <Word>except</Word>
+      <Word>filter</Word>
+      <Word>find</Word>
+      <Word>flip</Word>
+      <Word>floor</Word>
+      <Word>format</Word>
+      <Word>ge</Word>
+      <Word>gt</Word>
+      <Word>has</Word>
+      <Word>join</Word>
+      <Word>lcase</Word>
+      <Word>le</Word>
+      <Word>len</Word>
+      <Word>lt</Word>
+      <Word>map</Word>
+      <Word>match</Word>
+      <Word>max</Word>
+      <Word>min</Word>
+      <Word>mod</Word>
+      <Word>mul</Word>
+      <Word>ne</Word>
+      <Word>ord</Word>
+      <Word>pow</Word>
+      <Word>rand</Word>
+      <Word>range</Word>
+      <Word>round</Word>
+      <Word>sin</Word>
+      <Word>slice</Word>
+      <Word>sort</Word>
+      <Word>split</Word>
+      <Word>sub</Word>
+      <Word>token</Word>
+      <Word>type</Word>
+      <Word>ucase</Word>
+      <Word>union</Word>
+      <Word>when</Word>
+      <Word>xor</Word>
+      <Word>zip</Word>
+    </Keywords>
+  </RuleSet>
+
+  <RuleSet name="Custom functions">
+    <Keywords color="Custom functions">
+      <Word>BlueprintDetails</Word>
+      <Word>BodyDetails</Word>
+      <Word>CombatRatingDetails</Word>
+      <Word>Distance</Word>
+      <Word>EconomyDetails</Word>
+      <Word>Emphasize</Word>
+      <Word>EmpireRatingDetails</Word>
+      <Word>ExplorationRatingDetails</Word>
+      <Word>F</Word>
+      <Word>FederationRatingDetails</Word>
+      <Word>GalnetNewsArticle</Word>
+      <Word>GalnetNewsArticles</Word>
+      <Word>GalnetNewsDelete</Word>
+      <Word>GalnetNewsMarkRead</Word>
+      <Word>GalnetNewsMarkUnread</Word>
+      <Word>GovernmentDetails</Word>
+      <Word>Humanise</Word>
+      <Word>ICAO</Word>
+      <Word>List</Word>
+      <Word>Log</Word>
+      <Word>MaterialDetails</Word>
+      <Word>Occasionally</Word>
+      <Word>OneOf</Word>
+      <Word>P</Word>
+      <Word>Pause</Word>
+      <Word>Play</Word>
+      <Word>SecondsSince</Word>
+      <Word>SecurityLevelDetails</Word>
+      <Word>SetState</Word>
+      <Word>ShipCallsign</Word>
+      <Word>ShipDetails</Word>
+      <Word>ShipName</Word>
+      <Word>Spacialise</Word>
+      <Word>SpeechPitch</Word>
+      <Word>SpeechRate</Word>
+      <Word>SpeechVolume</Word>
+      <Word>StartsWithVowel</Word>
+      <Word>StateDetails</Word>
+      <Word>StationDetails</Word>
+      <Word>SuperpowerDetails</Word>
+      <Word>SystemDetails</Word>
+      <Word>TradeRatingDetails</Word>
+    </Keywords>
+  </RuleSet>
+
+  <RuleSet name="Custom properties">
+    <Keywords color="Custom properties">
+      <Word>abandoned</Word>
+      <Word>absolutemagnitude</Word>
+      <Word>absolutemagnitudeprobability</Word>
+      <Word>activefine</Word>
+      <Word>age</Word>
+      <Word>ageprobability</Word>
+      <Word>allbounties</Word>
+      <Word>allegiance</Word>
+      <Word>allfines</Word>
+      <Word>alliance</Word>
+      <Word>alreadydiscovered</Word>
+      <Word>alreadymapped</Word>
+      <Word>amount</Word>
+      <Word>approaching_surface</Word>
+      <Word>atmosphere</Word>
+      <Word>atmospherecompositions</Word>
+      <Word>awardingfaction</Word>
+      <Word>bankaccount.insuranceclaims</Word>
+      <Word>bankaccount.ownedshipcount</Word>
+      <Word>bankaccount.spentonammoconsumables</Word>
+      <Word>bankaccount.spentonfuel</Word>
+      <Word>bankaccount.spentoninsurance</Word>
+      <Word>bankaccount.spentonoutfitting</Word>
+      <Word>bankaccount.spentonrepairs</Word>
+      <Word>bankaccount.spentonships</Word>
+      <Word>bankaccount.wealth</Word>
+      <Word>blackmarket</Word>
+      <Word>blueprint</Word>
+      <Word>body</Word>
+      <Word>bodyname</Word>
+      <Word>bodytype</Word>
+      <Word>bonus</Word>
+      <Word>boost</Word>
+      <Word>bounty</Word>
+      <Word>brokerpercentage</Word>
+      <Word>brokertype</Word>
+      <Word>build</Word>
+      <Word>buymodule</Word>
+      <Word>buyprice</Word>
+      <Word>by</Word>
+      <Word>captain</Word>
+      <Word>cargotype</Word>
+      <Word>category</Word>
+      <Word>cgid</Word>
+      <Word>change</Word>
+      <Word>channel</Word>
+      <Word>chromaticity</Word>
+      <Word>cockpit</Word>
+      <Word>cockpitbreach</Word>
+      <Word>collected</Word>
+      <Word>combat</Word>
+      <Word>combat.assassinationprofits</Word>
+      <Word>combat.assassinations</Word>
+      <Word>combat.bountiesclaimed</Word>
+      <Word>combat.bountyhuntingprofit</Word>
+      <Word>combat.combatbondprofits</Word>
+      <Word>combat.combatbonds</Word>
+      <Word>combat.highestsinglereward</Word>
+      <Word>combat.skimmerskilled</Word>
+      <Word>combatrating</Word>
+      <Word>commander</Word>
+      <Word>commanders</Word>
+      <Word>commodities</Word>
+      <Word>commodity</Word>
+      <Word>commodityrewards</Word>
+      <Word>communal</Word>
+      <Word>compartments</Word>
+      <Word>composition</Word>
+      <Word>conflicts</Word>
+      <Word>contribution</Word>
+      <Word>contributiontype</Word>
+      <Word>contributors</Word>
+      <Word>corrosion</Word>
+      <Word>cost</Word>
+      <Word>count</Word>
+      <Word>cqc</Word>
+      <Word>cqc.creditsearned</Word>
+      <Word>cqc.killdeathratio</Word>
+      <Word>cqc.kills</Word>
+      <Word>cqc.timeplayedseconds</Word>
+      <Word>cqc.winlossratio</Word>
+      <Word>crafting.countofusedengineers</Word>
+      <Word>crafting.recipesgenerated</Word>
+      <Word>crafting.recipesgeneratedrank1</Word>
+      <Word>crafting.recipesgeneratedrank2</Word>
+      <Word>crafting.recipesgeneratedrank3</Word>
+      <Word>crafting.recipesgeneratedrank4</Word>
+      <Word>crafting.recipesgeneratedrank5</Word>
+      <Word>credits</Word>
+      <Word>crew</Word>
+      <Word>crewid</Word>
+      <Word>crime</Word>
+      <Word>crime.bountiesreceived</Word>
+      <Word>crime.fines</Word>
+      <Word>crime.highestbounty</Word>
+      <Word>crime.notoriety</Word>
+      <Word>crime.totalbounties</Word>
+      <Word>crime.totalfines</Word>
+      <Word>crimetype</Word>
+      <Word>datalinktype</Word>
+      <Word>delivered</Word>
+      <Word>density</Word>
+      <Word>densityprobability</Word>
+      <Word>deployable</Word>
+      <Word>deployed</Word>
+      <Word>destinationstation</Word>
+      <Word>destinationsystem</Word>
+      <Word>distance</Word>
+      <Word>distancefromarrival</Word>
+      <Word>distancefromstar</Word>
+      <Word>docked</Word>
+      <Word>donation</Word>
+      <Word>earthmass</Word>
+      <Word>eccentricity</Word>
+      <Word>eccentricityprobability</Word>
+      <Word>economy</Word>
+      <Word>economy2</Word>
+      <Word>efficiencytarget</Word>
+      <Word>empire</Word>
+      <Word>endmarketid</Word>
+      <Word>engineer</Word>
+      <Word>engineermodifications</Word>
+      <Word>estimatedhabzoneinner</Word>
+      <Word>estimatedhabzoneouter</Word>
+      <Word>estimatedvalue</Word>
+      <Word>experimentaleffect</Word>
+      <Word>expiry</Word>
+      <Word>exploration</Word>
+      <Word>exploration.greatestdistancefromstart</Word>
+      <Word>exploration.highestpayout</Word>
+      <Word>exploration.planetsscannedlevel2</Word>
+      <Word>exploration.planetsscannedlevel3</Word>
+      <Word>exploration.profits</Word>
+      <Word>exploration.systemsvisited</Word>
+      <Word>exploration.timeplayedseconds</Word>
+      <Word>exploration.totalhyperspacedistance</Word>
+      <Word>exploration.totalhyperspacejumps</Word>
+      <Word>faction</Word>
+      <Word>factions</Word>
+      <Word>factionstate</Word>
+      <Word>federation</Word>
+      <Word>femininerank</Word>
+      <Word>filename</Word>
+      <Word>fine</Word>
+      <Word>from</Word>
+      <Word>frommodule</Word>
+      <Word>frompower</Word>
+      <Word>fromslot</Word>
+      <Word>fsd_status</Word>
+      <Word>fuel</Word>
+      <Word>fuelcapacity</Word>
+      <Word>fuelremaining</Word>
+      <Word>fuelused</Word>
+      <Word>full</Word>
+      <Word>gliding</Word>
+      <Word>government</Word>
+      <Word>gravity</Word>
+      <Word>gravityprobability</Word>
+      <Word>group</Word>
+      <Word>hardpoints</Word>
+      <Word>health</Word>
+      <Word>height</Word>
+      <Word>horizons</Word>
+      <Word>hot</Word>
+      <Word>hotspots</Word>
+      <Word>hull</Word>
+      <Word>hullhealth</Word>
+      <Word>hullvalue</Word>
+      <Word>id</Word>
+      <Word>ident</Word>
+      <Word>illegal</Word>
+      <Word>inclination</Word>
+      <Word>inclinationprobability</Word>
+      <Word>independent</Word>
+      <Word>influence</Word>
+      <Word>innerradius</Word>
+      <Word>interdictee</Word>
+      <Word>interdictor</Word>
+      <Word>inventory</Word>
+      <Word>iscommander</Word>
+      <Word>iscomplete</Word>
+      <Word>item</Word>
+      <Word>items</Word>
+      <Word>killcount</Word>
+      <Word>kind</Word>
+      <Word>landable</Word>
+      <Word>landingpad</Word>
+      <Word>latitude</Word>
+      <Word>legalstatus</Word>
+      <Word>level</Word>
+      <Word>lightson</Word>
+      <Word>limit</Word>
+      <Word>loadout</Word>
+      <Word>loan</Word>
+      <Word>localisedname</Word>
+      <Word>localizedcommodityname</Word>
+      <Word>localizedsource</Word>
+      <Word>longitude</Word>
+      <Word>luminosity</Word>
+      <Word>luminosityclass</Word>
+      <Word>mainstar</Word>
+      <Word>marketid</Word>
+      <Word>marketId</Word>
+      <Word>mass</Word>
+      <Word>massprobability</Word>
+      <Word>match</Word>
+      <Word>material</Word>
+      <Word>materials</Word>
+      <Word>materialsrewards</Word>
+      <Word>materialtrader.encodedmaterialstraded</Word>
+      <Word>materialtrader.grade1materialstraded</Word>
+      <Word>materialtrader.grade2materialstraded</Word>
+      <Word>materialtrader.grade3materialstraded</Word>
+      <Word>materialtrader.grade4materialstraded</Word>
+      <Word>materialtrader.grade5materialstraded</Word>
+      <Word>materialtrader.materialstraded</Word>
+      <Word>materialtrader.rawmaterialstraded</Word>
+      <Word>materialtrader.tradescompleted</Word>
+      <Word>maxjumprange</Word>
+      <Word>merits</Word>
+      <Word>message</Word>
+      <Word>mining.materialscollected</Word>
+      <Word>mining.profits</Word>
+      <Word>mining.quantitymined</Word>
+      <Word>missionid</Word>
+      <Word>missionids</Word>
+      <Word>mode</Word>
+      <Word>model</Word>
+      <Word>module</Word>
+      <Word>modulename</Word>
+      <Word>modules</Word>
+      <Word>modulesvalue</Word>
+      <Word>multicrew.fightertimetotalseconds</Word>
+      <Word>multicrew.gunnertimetotalseconds</Word>
+      <Word>multicrew.multicrewcreditstotal</Word>
+      <Word>multicrew.multicrewfinestotal</Word>
+      <Word>multicrew.timetotalseconds</Word>
+      <Word>musictrack</Word>
+      <Word>name</Word>
+      <Word>nearestdestination</Word>
+      <Word>newdestinationstation</Word>
+      <Word>newdestinationsystem</Word>
+      <Word>newfaction</Word>
+      <Word>newrank</Word>
+      <Word>newstate</Word>
+      <Word>nonbodies</Word>
+      <Word>npccrew.died</Word>
+      <Word>npccrew.fired</Word>
+      <Word>npccrew.hired</Word>
+      <Word>npccrew.totalwages</Word>
+      <Word>numbodies</Word>
+      <Word>olddestinationstation</Word>
+      <Word>olddestinationsystem</Word>
+      <Word>oldfaction</Word>
+      <Word>oldrank</Word>
+      <Word>oldstate</Word>
+      <Word>optimalmass</Word>
+      <Word>orbitalperiod</Word>
+      <Word>orbitalperiodprobability</Word>
+      <Word>outerradius</Word>
+      <Word>package</Word>
+      <Word>paid</Word>
+      <Word>paid_quantity</Word>
+      <Word>paintjob</Word>
+      <Word>passengercount</Word>
+      <Word>passengers</Word>
+      <Word>passengers.accepted</Word>
+      <Word>passengers.delivered</Word>
+      <Word>passengers.disgruntled</Word>
+      <Word>passengers.ejected</Word>
+      <Word>passengers.vip</Word>
+      <Word>passengertype</Word>
+      <Word>passengervips</Word>
+      <Word>passengerwanted</Word>
+      <Word>payeefaction</Word>
+      <Word>percentileband</Word>
+      <Word>periapsis</Word>
+      <Word>periapsisprobability</Word>
+      <Word>permitsawarded</Word>
+      <Word>piloted</Word>
+      <Word>planettype</Word>
+      <Word>player</Word>
+      <Word>playercontrolled</Word>
+      <Word>population</Word>
+      <Word>power</Word>
+      <Word>powerstate</Word>
+      <Word>pressure</Word>
+      <Word>pressureprobability</Word>
+      <Word>price</Word>
+      <Word>probesused</Word>
+      <Word>profit</Word>
+      <Word>progresstype</Word>
+      <Word>quality</Word>
+      <Word>radius</Word>
+      <Word>radiusprobability</Word>
+      <Word>rank</Word>
+      <Word>rankprogress</Word>
+      <Word>rating</Word>
+      <Word>ratings</Word>
+      <Word>reason</Word>
+      <Word>rebuy</Word>
+      <Word>received</Word>
+      <Word>received_quantity</Word>
+      <Word>remaining</Word>
+      <Word>remainingjumpsinroute</Word>
+      <Word>repairedfully</Word>
+      <Word>replacementmodule</Word>
+      <Word>reputation</Word>
+      <Word>reserves</Word>
+      <Word>reward</Word>
+      <Word>rewardCommodity</Word>
+      <Word>rewardCommodityAmount</Word>
+      <Word>rewardMaterial</Word>
+      <Word>rewardMaterialAmount</Word>
+      <Word>rewardPermit</Word>
+      <Word>rewards</Word>
+      <Word>ringname</Word>
+      <Word>rings</Word>
+      <Word>role</Word>
+      <Word>rotationalperiod</Word>
+      <Word>rotationalperiodprobability</Word>
+      <Word>route</Word>
+      <Word>routedistance</Word>
+      <Word>routetype</Word>
+      <Word>scanstage</Word>
+      <Word>scantype</Word>
+      <Word>scoopable</Word>
+      <Word>searchandrescue.count</Word>
+      <Word>searchandrescue.profit</Word>
+      <Word>searchandrescue.traded</Word>
+      <Word>secondeconomy</Word>
+      <Word>secondsremaining</Word>
+      <Word>security</Word>
+      <Word>sellmodule</Word>
+      <Word>sellprice</Word>
+      <Word>semimajoraxis</Word>
+      <Word>semimajoraxisprobability</Word>
+      <Word>shared</Word>
+      <Word>shieldhealth</Word>
+      <Word>ship</Word>
+      <Word>shipid</Word>
+      <Word>shipident</Word>
+      <Word>shipname</Word>
+      <Word>ships</Word>
+      <Word>shortname</Word>
+      <Word>silentrunning</Word>
+      <Word>slot</Word>
+      <Word>slots</Word>
+      <Word>smuggling.averageprofit</Word>
+      <Word>smuggling.blackmarketprofits</Word>
+      <Word>smuggling.blackmarketstradedwith</Word>
+      <Word>smuggling.highestsingletransaction</Word>
+      <Word>smuggling.resourcessmuggled</Word>
+      <Word>solarmass</Word>
+      <Word>solarradius</Word>
+      <Word>soldprice</Word>
+      <Word>soldship</Word>
+      <Word>soldshipid</Word>
+      <Word>solidcompositions</Word>
+      <Word>source</Word>
+      <Word>stage</Word>
+      <Word>star</Word>
+      <Word>startdead</Word>
+      <Word>startlanded</Word>
+      <Word>startmarketid</Word>
+      <Word>state</Word>
+      <Word>station</Word>
+      <Word>stationDefinition</Word>
+      <Word>stationfaction</Word>
+      <Word>stationgovernment</Word>
+      <Word>stationservices</Word>
+      <Word>stationsignal</Word>
+      <Word>stationstate</Word>
+      <Word>stationtype</Word>
+      <Word>status</Word>
+      <Word>stellarclass</Word>
+      <Word>stolen</Word>
+      <Word>storedid</Word>
+      <Word>storedmodule</Word>
+      <Word>storedship</Word>
+      <Word>storedshipid</Word>
+      <Word>submitted</Word>
+      <Word>subsystem</Word>
+      <Word>subsystemhealth</Word>
+      <Word>succeeded</Word>
+      <Word>surfacesignals</Word>
+      <Word>swapoutmodule</Word>
+      <Word>synthesis</Word>
+      <Word>system</Word>
+      <Word>systemfaction</Word>
+      <Word>systemgovernment</Word>
+      <Word>systemname</Word>
+      <Word>systems</Word>
+      <Word>systemstate</Word>
+      <Word>target</Word>
+      <Word>targetfaction</Word>
+      <Word>targetlocked</Word>
+      <Word>targettype</Word>
+      <Word>temperature</Word>
+      <Word>tempprobability</Word>
+      <Word>terraformstate</Word>
+      <Word>thargoidencounters.imprints</Word>
+      <Word>thargoidencounters.lastshipmodel</Word>
+      <Word>thargoidencounters.lastsystem</Word>
+      <Word>thargoidencounters.totalencounters</Word>
+      <Word>thargoidencounters.wakesscanned</Word>
+      <Word>threat</Word>
+      <Word>threatlevel</Word>
+      <Word>tidallylocked</Word>
+      <Word>tier</Word>
+      <Word>tierreward</Word>
+      <Word>tilt</Word>
+      <Word>tiltprobability</Word>
+      <Word>time</Word>
+      <Word>timepledgeddays</Word>
+      <Word>timepledgedweeks</Word>
+      <Word>to</Word>
+      <Word>tomodule</Word>
+      <Word>topower</Word>
+      <Word>toprank</Word>
+      <Word>topranksize</Word>
+      <Word>toslot</Word>
+      <Word>total</Word>
+      <Word>totalbodies</Word>
+      <Word>totaltodeliver</Word>
+      <Word>trade</Word>
+      <Word>tradertype</Word>
+      <Word>trading</Word>
+      <Word>trading.averageprofit</Word>
+      <Word>trading.highestsingletransaction</Word>
+      <Word>trading.marketprofits</Word>
+      <Word>trading.marketstradedwith</Word>
+      <Word>trading.resourcestraded</Word>
+      <Word>transfercost</Word>
+      <Word>transfertime</Word>
+      <Word>unladenmass</Word>
+      <Word>updatetype</Word>
+      <Word>value</Word>
+      <Word>vehicle</Word>
+      <Word>version</Word>
+      <Word>victim</Word>
+      <Word>victimfaction</Word>
+      <Word>volcanism</Word>
+      <Word>wanted</Word>
+      <Word>weaponsdeployed</Word>
+      <Word>width</Word>
+      <Word>wing</Word>
+      <Word>x</Word>
+      <Word>y</Word>
+      <Word>z </Word>
+    </Keywords>
+  </RuleSet>
+
+</SyntaxDefinition>
