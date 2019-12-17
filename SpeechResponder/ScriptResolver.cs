@@ -26,7 +26,7 @@ namespace EddiSpeechResponder
 {
     public class ScriptResolver
     {
-        private readonly Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+        private readonly Dictionary<string, Script> scripts;
         private readonly Random random;
         private readonly CustomSetting setting;
         private readonly DataProviderService dataProviderService;
@@ -40,7 +40,7 @@ namespace EddiSpeechResponder
             dataProviderService = new DataProviderService();
             bgsService = new BgsService();
             random = new Random();
-            this.scripts = scripts;
+            this.scripts = scripts ?? new Dictionary<string, Script>();
             setting = new CustomSetting
             {
                 Trimmer = BuiltinTrimmers.CollapseBlankCharacters
@@ -290,14 +290,12 @@ namespace EddiSpeechResponder
                 if (Entree == "")
                 { return ""; }
                 string Sortie = "";
-                string UpperSortie = "";
                 foreach (char c in Entree)
                 {
                     Sortie = Sortie + c + " ";
                 }
-                UpperSortie = Sortie.ToUpper();
+                var UpperSortie = Sortie.ToUpper();
                 return UpperSortie.Trim();
-
             }, 1);
 
             store["Emphasize"] = new NativeFunction((values) =>
@@ -306,84 +304,65 @@ namespace EddiSpeechResponder
                 {
                     return @"<emphasis level =""strong"">" + values[0].AsString + @"</emphasis>";
                 }
-                else if (values.Count == 2)
+                if (values.Count == 2)
                 {
                     return @"<emphasis level =""" + values[1].AsString + @""">" + values[0].AsString + @"</emphasis>";
                 }
-                else
-                {
-                    return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
-                }
+                return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
             store["SpeechPitch"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
-                string pitch = "default";
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
                     return text;
                 }
-                else if (values.Count == 2)
+                if (values.Count == 2)
                 {
-                    pitch = values[1].AsString;
+                    string pitch = values[1].AsString ?? "default";
                     return @"<prosody pitch=""" + pitch + @""">" + text + "</prosody>";
                 }
-                else
-                {
-                    return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
-                }
+                return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
             store["SpeechRate"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
-                string rate = "default";
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
                     return text;
                 }
-                else if (values.Count == 2)
+                if (values.Count == 2)
                 {
-                    rate = values[1].AsString;
+                    string rate = values[1].AsString ?? "default";
                     return @"<prosody rate=""" + rate + @""">" + text + "</prosody>";
                 }
-                else
-                {
-                    return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";
-                }
+                return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
             store["SpeechVolume"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
-                string volume = "default";
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
                     return text;
                 }
-                else if (values.Count == 2)
+                if (values.Count == 2)
                 {
-                    volume = values[1].AsString;
+                    string volume = values[1].AsString ?? "default";
                     return @"<prosody volume=""" + volume + @""">" + text + "</prosody>";
                 }
-                else
-                {
-                    return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";
-                }
+                return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
             store["Transmit"] = new NativeFunction((values) =>
             {
-                string text = values[0].AsString;
-                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                if (values.Count == 1)
                 {
-                    return @"<transmit>" + values[0].AsString + "</transmit>"; // This is a synthetic tag used to signal to the speech service that radio effects should be enabled.
-                }
-                else
-                {
-                    return "The Transmit function is used improperly. Please review the documentation for correct usage.";
-                }
+                    return new ScriptResolver(scripts).resolveScript(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
+                } 
+                return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1);
 
             store["StartsWithVowel"] = new NativeFunction((values) =>
@@ -402,66 +381,73 @@ namespace EddiSpeechResponder
 
             store["Voice"] = new NativeFunction((values) =>
             {
-                string text = values[0].AsString;
-                string voice = values[1].AsString;
-                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
+                string text = values[0].AsString ?? string.Empty;
+                string voice = values[1].AsString ?? string.Empty;
+
+                if (SpeechService.Instance?.synth != null)
                 {
-                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
-                    && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
                     {
-                        voice = vc.VoiceInfo.Name;
-                        continue;
+                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
+                            && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        {
+                            voice = vc.VoiceInfo.Name;
+                            break;
+                        }
                     }
                 }
+
                 if (values.Count == 2)
                 {
                     return @"<voice name=""" + voice + @""">" + text + "</voice>";
                 }
-                else
-                {
-                    return "The Voice function is used improperly. Please review the documentation for correct usage.";
-                }
+                return "The Voice function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
             store["VoiceDetails"] = new NativeFunction((values) =>
             {
-                var result = new object();
                 if (values.Count == 0)
                 {
                     List<VoiceDetail> voices = new List<VoiceDetail>();
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
+                    if (SpeechService.Instance?.synth != null)
                     {
-                        if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
                         {
-                            voices.Add(new VoiceDetail(
-                                vc.VoiceInfo.Name,
-                                vc.VoiceInfo.Culture.Parent?.EnglishName ?? vc.VoiceInfo.Culture.EnglishName,
-                                vc.VoiceInfo.Culture.Parent?.NativeName ?? vc.VoiceInfo.Culture.NativeName,
-                                vc.VoiceInfo.Culture.Name,
-                                vc.VoiceInfo.Gender.ToString(),
-                                vc.Enabled
-                                ));
+                            if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                            {
+                                voices.Add(new VoiceDetail(
+                                    vc.VoiceInfo.Name,
+                                    vc.VoiceInfo.Culture.Parent.EnglishName,
+                                    vc.VoiceInfo.Culture.Parent.NativeName,
+                                    vc.VoiceInfo.Culture.Name,
+                                    vc.VoiceInfo.Gender.ToString(),
+                                    vc.Enabled
+                                    ));
+                            }
                         }
                     }
-                    result = voices;
-                    return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+                    return new ReflectionValue(voices);
                 }
-                else if (values.Count == 1)
+                if (values.Count == 1)
                 {
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
+                    VoiceDetail result = null;
+                    if (SpeechService.Instance?.synth != null && !string.IsNullOrEmpty(values[0].AsString))
                     {
-                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant())
-                        && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
                         {
-                            result = new VoiceDetail(
-                                vc.VoiceInfo.Name,
-                                vc.VoiceInfo.Culture.Parent?.EnglishName ?? vc.VoiceInfo.Culture.EnglishName,
-                                vc.VoiceInfo.Culture.Parent?.NativeName ?? vc.VoiceInfo.Culture.NativeName,
-                                vc.VoiceInfo.Culture.Name,
-                                vc.VoiceInfo.Gender.ToString(),
-                                vc.Enabled
-                                );
-                            continue;
+                            if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant())
+                            && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                            {
+                                result = new VoiceDetail(
+                                    vc.VoiceInfo.Name,
+                                    vc.VoiceInfo.Culture.Parent.EnglishName,
+                                    vc.VoiceInfo.Culture.Parent.NativeName,
+                                    vc.VoiceInfo.Culture.Name,
+                                    vc.VoiceInfo.Gender.ToString(),
+                                    vc.Enabled
+                                    );
+                                break;
+                            }
                         }
                     }
                     return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
@@ -522,10 +508,6 @@ namespace EddiSpeechResponder
             store["SecondsSince"] = new NativeFunction((values) =>
             {
                 long? date = (long?)values[0].AsNumber;
-                if (date == null)
-                {
-                    return null;
-                }
                 long? now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
                 return now - date;
@@ -535,7 +517,7 @@ namespace EddiSpeechResponder
             {
                 // Turn a string in to an ICAO definition
                 string value = values[0].AsString;
-                if (value == null || value == "")
+                if (string.IsNullOrEmpty(value))
                 {
                     return "";
                 }
@@ -557,13 +539,12 @@ namespace EddiSpeechResponder
 
             store["JumpDetails"] = new NativeFunction((values) =>
             {
-                ShipMonitor.JumpDetail result = new ShipMonitor.JumpDetail();
                 string value = values[0].AsString;
                 if (string.IsNullOrEmpty(value))
                 {
                     return null;
                 }
-                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails(value);
+                var result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails(value);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
@@ -658,8 +639,7 @@ namespace EddiSpeechResponder
 
             store["MissionDetails"] = new NativeFunction((values) =>
             {
-                List<Mission> missions = new List<Mission>();
-                missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();
+                var missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();
 
                 Mission result = missions?.FirstOrDefault(v => v.missionid == values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
@@ -819,11 +799,7 @@ namespace EddiSpeechResponder
             store["StationDetails"] = new NativeFunction((values) =>
             {
                 Station result;
-                if (values.Count == 0)
-                {
-                    result = EDDI.Instance.CurrentStation;
-                }
-                if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
+                if (values.Count == 0 || values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStation;
                 }
@@ -932,7 +908,7 @@ namespace EddiSpeechResponder
                         result.bodyshortname = body.shortname;
                     }
                 }
-                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+                return new ReflectionValue(result);
             }, 1, 2);
 
             store["CommodityMarketDetails"] = new NativeFunction((values) =>
@@ -973,11 +949,10 @@ namespace EddiSpeechResponder
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 Cottle.Value value = values[0];
                 Cargo result = null;
-                string edname = string.Empty;
 
                 if (value.Type == Cottle.ValueContent.String)
                 {
-                    edname = CommodityDefinition.FromNameOrEDName(value.AsString).edname;
+                    var edname = CommodityDefinition.FromNameOrEDName(value.AsString)?.edname;
                     result = cargoMonitor?.GetCargoWithEDName(edname);
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
@@ -989,8 +964,7 @@ namespace EddiSpeechResponder
 
             store["HaulageDetails"] = new NativeFunction((values) =>
             {
-                Haulage result = null;
-                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
+                var result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
