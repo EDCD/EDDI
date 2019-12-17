@@ -118,6 +118,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private string _phoneticName;
         /// <summary>the phonetic name of this ship</summary>
+        [JsonProperty("phoneticname")]
         public string phoneticName
         {
             get { return _phoneticName; }
@@ -127,7 +128,7 @@ namespace EddiDataDefinitions
                 {
                     _phoneticName = null;
                 }
-                else
+                else if (IPA.IsValid(value))
                 {
                     NotifyPropertyChanged("phoneticName");
                     _phoneticName = value;
@@ -136,6 +137,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
+        [JsonIgnore]
         public string phoneticname => SpokenName();
 
         // The type of mission
