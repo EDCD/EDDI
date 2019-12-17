@@ -1051,7 +1051,7 @@ namespace EddiJournalMonitor
                                     string ship = JsonParsing.getString(data, "ShipType");
                                     data.TryGetValue("ShipPrice", out val);
                                     long price = (long)val;
-                                    string system = JsonParsing.getString(data, "System");
+                                    string system = JsonParsing.getString(data, "System"); // Only written when the ship is in a different star system
                                     events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
