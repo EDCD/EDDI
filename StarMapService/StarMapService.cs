@@ -22,6 +22,9 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 50;
 
+        // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
+        private const int DefaultTimeoutMilliseconds = 10000;
+
         public static string commanderFrontierApiName { get; set; }
 
         private string commanderName { get; set; }
@@ -38,7 +41,10 @@ namespace EddiStarMapService
 
             public EdsmRestClient(string baseUrl)
             {
-                restClient = new RestClient(baseUrl);
+                restClient = new RestClient(baseUrl)
+                {
+                    Timeout = DefaultTimeoutMilliseconds
+                };
             }
 
             public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
