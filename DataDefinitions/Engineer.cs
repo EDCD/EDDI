@@ -90,15 +90,13 @@ namespace EddiDataDefinitions
 
         public static void AddOrUpdate(Engineer engineer)
         {
-            Engineer result = Engineer.FromNameOrId(engineer.name, engineer.id);
-            if (result == null)
+            int index = ENGINEERS.FindIndex(candidate => candidate.id == engineer.id);
+            if (index != -1)
             {
-                ENGINEERS.Add(engineer);
+                ENGINEERS[index] = engineer;
             }
             else
             {
-                Engineer oldEngineer = ENGINEERS.FirstOrDefault(eng => eng.id == engineer.id);
-                if (oldEngineer != null) { ENGINEERS.Remove(oldEngineer); }
                 ENGINEERS.Add(engineer);
             }
         }
