@@ -119,10 +119,10 @@
                 <Button x:Name="showDiffButton" FontSize="18" Content="{x:Static resx:SpeechResponder.compare_script_button}" VerticalAlignment="Top" Click="showDiffButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="4" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
-                <Button x:Name="acceptButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="acceptButton" IsDefault="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
                 <Button x:Name="helpButton" FontSize="18" Content="{x:Static resx:SpeechResponder.help_button}" VerticalAlignment="Top" Click="helpButtonClick" Margin="5,0,5,0"/>
                 <Button x:Name="variablesButton" FontSize="18" Content="{x:Static resx:SpeechResponder.script_variables_button}" VerticalAlignment="Top" Click="variablesButtonClick" Margin="5,0,5,0"/>
-                <Button x:Name="cancelButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5,0,0,0"/>
+                <Button x:Name="cancelButton" IsCancel="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
         </Grid>
     </DockPanel>
