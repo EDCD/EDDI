@@ -55,9 +55,6 @@
     <Import ruleSet="Custom functions"/>
     <Import ruleSet="Custom properties"/>
 
-    <!-- comments -->
-    <Span color="Comment" multiline="true" begin="{\s*_" end="}" ruleSet="Comment"/>
-
     <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
     <Rule color="UnexpectedDelimiter">
       [{|:}]
@@ -181,7 +178,7 @@
   <RuleSet name="Literals">
     <!-- Digits -->
     <Rule color="Literals">
-      \b 
+      \b
       (?:  \d+(\.\d+)?   # number with optional floating point
       |    \.\d+         # or just starting with floating point
       )
