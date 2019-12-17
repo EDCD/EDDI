@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.2-b1
   * Speech responder
-    * Added syntax coloring (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
+    * **Implmented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
 	* Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
 	* Enabled Cottle code within the `Transmit()` function.
 	* Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
