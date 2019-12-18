@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>コピー (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>切り取り (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>削除 (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>行を削除 (Ctrl+D)</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>検索（Ctrl+F）</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>貼り付け (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>やり直し (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>行番号を表示</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>取り消し (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>右端で折り返す</value>
+  </data>
 </root>
