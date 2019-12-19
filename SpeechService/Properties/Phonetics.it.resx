@@ -189,9 +189,18 @@
     <value>atlas</value>
     <comment>Optional phonetic pronunciation for atlas</comment>
   </data>
-  
-  
-  
+  <data name="aulin" xml:space="preserve">
+    <value>aulin</value>
+    <comment>Optional phonetic pronunciation for aulin</comment>
+  </data>
+  <data name="bajaja" xml:space="preserve">
+    <value>ba:ja:j a</value>
+    <comment>Optional phonetic pronunciation for bajaja</comment>
+  </data>
+  <data name="Bei" xml:space="preserve">
+    <value>bej</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
   
   
   
