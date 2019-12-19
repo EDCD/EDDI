@@ -141,24 +141,78 @@
     <value>alˈdɛbəɹən</value>
     <comment>Optional phonetic pronunciation for aldebaran</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Alrai" xml:space="preserve">
+    <value>ˈalraɪ</value>
+    <comment>Optional phonetic pronunciation for Alrai</comment>
+  </data>
+  <data name="anemoi" xml:space="preserve">
+    <value>enimoi</value>
+    <comment>Optional phonetic pronunciation for anemoi</comment>
+  </data>
+  <data name="antal" xml:space="preserve">
+    <value>antal</value>
+    <comment>Optional phonetic pronunciation for antal</comment>
+  </data>
+  <data name="Antliae" xml:space="preserve">
+    <value>antile</value>
+    <comment>Optional phonetic pronunciation for Antliae</comment>
+  </data>
+  <data name="apoyota" xml:space="preserve">
+    <value>apoiota</value>
+    <comment>Optional phonetic pronunciation for apoyota</comment>
+  </data>
+  <data name="Aquarii" xml:space="preserve">
+    <value>aquari</value>
+    <comment>Optional phonetic pronunciation for Aquarii</comment>
+  </data>
+  <data name="archon" xml:space="preserve">
+    <value>arkon</value>
+    <comment>Optional phonetic pronunciation for archon</comment>
+  </data>
+  <data name="Arietis" xml:space="preserve">
+    <value>arietis</value>
+    <comment>Optional phonetic pronunciation for Arietis</comment>
+  </data>
+  <data name="arissa" xml:space="preserve">
+    <value>arissa</value>
+    <comment>Optional phonetic pronunciation for arissa</comment>
+  </data>
+  <data name="arque" xml:space="preserve">
+    <value>ark</value>
+    <comment>Optional phonetic pronunciation for arque</comment>
+  </data>
+  <data name="asterope" xml:space="preserve">
+    <value>astɛroʊpeː</value>
+    <comment>Optional phonetic pronunciation for asterope</comment>
+  </data>
+  <data name="atlas" xml:space="preserve">
+    <value>atlas</value>
+    <comment>Optional phonetic pronunciation for atlas</comment>
+  </data>
+  <data name="aulin" xml:space="preserve">
+    <value>aulin</value>
+    <comment>Optional phonetic pronunciation for aulin</comment>
+  </data>
+  <data name="bajaja" xml:space="preserve">
+    <value>ba:ja:j a</value>
+    <comment>Optional phonetic pronunciation for bajaja</comment>
+  </data>
+  <data name="Bei" xml:space="preserve">
+    <value>bej</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
+  <data name="BeiDou_Bei" xml:space="preserve">
+    <value>bej</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
+  </data>
+  <data name="BeiDou_Dou" xml:space="preserve">
+    <value>ˈduː</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
+  </data>
+  <data name="Blanco" xml:space="preserve">
+    <value>Blɑnko</value>
+    <comment>Optional phonetic pronunciation for Blanco</comment>
+  </data>
   
   
   
