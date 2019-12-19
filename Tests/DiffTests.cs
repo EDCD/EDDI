@@ -18,11 +18,11 @@ namespace UnitTests
             List<DiffItem> diffItems = DiffTexts(a, b);
 
             Assert.AreEqual(3, diffItems.Count);
-            Assert.AreEqual("Unmodified", diffItems[0].type);
+            Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
-            Assert.AreEqual("Deleted", diffItems[1].type);
+            Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[1].type);
             Assert.AreEqual("Line 2", diffItems[1].data);
-            Assert.AreEqual("Unmodified", diffItems[2].type);
+            Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[2].type);
             Assert.AreEqual("Line 3", diffItems[2].data);
         }
 
@@ -35,9 +35,9 @@ namespace UnitTests
             List<DiffItem> diffItems = DiffTexts(a, b);
 
             Assert.AreEqual(2, diffItems.Count);
-            Assert.AreEqual(diffItems[0].type, "Deleted");
+            Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[0].type);
             Assert.AreEqual("The quick brown fox jumped over the lazy dog", diffItems[0].data);
-            Assert.AreEqual(diffItems[1].type, "Inserted");
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[1].type);
             Assert.AreEqual("The quick brown fox jumps over the lazy dog", diffItems[1].data);
         }
 
@@ -49,11 +49,11 @@ namespace UnitTests
             List<DiffItem> diffItems = DiffTexts(a, a);
 
             Assert.AreEqual(3, diffItems.Count);
-            Assert.AreEqual("Unmodified", diffItems[0].type);
+            Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
-            Assert.AreEqual("Unmodified", diffItems[1].type);
+            Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[1].type);
             Assert.AreEqual("Line 2", diffItems[1].data);
-            Assert.AreEqual("Unmodified", diffItems[2].type);
+            Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[2].type);
             Assert.AreEqual("Line 3", diffItems[2].data);
         }
 
@@ -66,17 +66,17 @@ namespace UnitTests
             List<DiffItem> diffItems = DiffTexts(a, b);
 
             Assert.AreEqual(6, diffItems.Count);
-            Assert.AreEqual("Deleted", diffItems[0].type);
+            Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
-            Assert.AreEqual("Deleted", diffItems[1].type);
+            Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[1].type);
             Assert.AreEqual("Line 2", diffItems[1].data);
-            Assert.AreEqual("Deleted", diffItems[2].type);
+            Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[2].type);
             Assert.AreEqual("Line 3", diffItems[2].data);
-            Assert.AreEqual("Inserted", diffItems[3].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[3].type);
             Assert.AreEqual("Something completely different", diffItems[3].data);
-            Assert.AreEqual("Inserted", diffItems[4].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[4].type);
             Assert.AreEqual("", diffItems[4].data);
-            Assert.AreEqual("Inserted", diffItems[5].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[5].type);
             Assert.AreEqual("", diffItems[5].data);
         }
 
@@ -89,11 +89,11 @@ namespace UnitTests
             List<DiffItem> diffItems = DiffTexts(a, b);
 
             Assert.AreEqual(3, diffItems.Count);
-            Assert.AreEqual("Inserted", diffItems[0].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
-            Assert.AreEqual("Inserted", diffItems[1].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[1].type);
             Assert.AreEqual("Line 2", diffItems[1].data);
-            Assert.AreEqual("Inserted", diffItems[2].type);
+            Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[2].type);
             Assert.AreEqual("Line 3", diffItems[2].data);
         }
     }
