@@ -10,7 +10,7 @@
   <Color name="Body text" foreground="DarkSlateGray" exampleText="This is body text"/>
   <Color name="Comment" foreground="Green" fontStyle="italic" exampleText="{_ This is a comment. }"/>
   <Color name="Code" foreground="Purple" exampleText="{ variableName }"/>
-  <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/>
+  <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/> 
   <Color name="UnexpectedDelimiter" foreground="Purple" background="Yellow" exampleText="{{}"/>
   <Color name="EscapeDelimiter" foreground="Orchid" exampleText="{ \} }"/>
   <Color name="Keyword" foreground="MediumVioletRed" exampleText="{ set ultimate answer to 42 }"/>
@@ -38,6 +38,12 @@
       <Begin color="Delimiter">{</Begin>
       <End color="Delimiter">}</End>
     </Span>
+
+    <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
+    <Rule color="UnexpectedDelimiter">
+      [}]
+    </Rule>
+      
   </RuleSet>
 
   <!-- The Comment rule set simply caters for escape sequences. -->
