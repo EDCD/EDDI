@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>Copia (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>Taglia (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Cancella (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>Cancella Riga (Ctrl+D)</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>Trova (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>Incolla (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Ripeti (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>Visualizza i numeri di riga</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Annulla (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>Vai a Capo Automaticamente</value>
+  </data>
 </root>
