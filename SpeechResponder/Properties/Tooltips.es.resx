@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>Copiar (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>Cortar (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Borrar (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>Borrar Línea (Ctrl+D)</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>Buscar (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>Pegar (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Rehacer (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>Mostar números de línea</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Deshacer (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>Ajustar Texto</value>
+  </data>
 </root>
