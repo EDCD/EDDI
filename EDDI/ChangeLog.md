@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.5.2-b1
   * Speech responder
     * Fixed a syntax error in the "FSD engaged" script.
+    * Fixed missing colons in "System report" script.
 
 ### 3.5.2-b1
   * Speech responder
