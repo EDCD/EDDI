@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.5.2-b1
+### 3.5.2-b2
   * Speech responder
     * Fixed a syntax error in the "FSD engaged" script.
     * Fixed missing colons in "System report" script.
