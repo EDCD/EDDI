@@ -137,7 +137,10 @@
     <value>alsaɪnɪ</value>
     <comment>Optional phonetic pronunciation for alcyone</comment>
   </data>
-  
+  <data name="aldebaran" xml:space="preserve">
+    <value>alˈdɛbəɹən</value>
+    <comment>Optional phonetic pronunciation for aldebaran</comment>
+  </data>
   
   
   
