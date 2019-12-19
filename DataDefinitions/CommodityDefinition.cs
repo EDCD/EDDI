@@ -379,6 +379,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667669, 351, "BakedGreebles", Foods, 8211, true),
                 new CommodityDefinition(128924333, 359, "RockforthFertiliser", Chemicals, 0, false),
                 new CommodityDefinition(128924334, 360, "AgronomicTreatment", Chemicals, 3464, false),
+                new CommodityDefinition(128958679, null, "ApaVietii", Narcotics, 10362, true),
                 // PowerPlay
                 new CommodityDefinition(128671289, null, "AislingMediaMaterials", Powerplay, 0, false),
                 new CommodityDefinition(128671290, null, "AislingMediaResources", Powerplay, 0, false),
