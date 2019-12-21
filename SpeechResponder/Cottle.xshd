@@ -10,9 +10,9 @@
   <Color name="Body text" foreground="DarkSlateGray" exampleText="This is body text"/>
   <Color name="Comment" foreground="Green" fontStyle="italic" exampleText="{_ This is a comment. }"/>
   <Color name="Code" foreground="Purple" exampleText="{ variableName }"/>
-  <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/> 
-  <Color name="UnexpectedDelimiter" foreground="Purple" background="Yellow" exampleText="{{}"/>
-  <Color name="EscapeDelimiter" foreground="Orchid" exampleText="{ \} }"/>
+  <Color name="Delimiter" foreground="Purple" fontWeight="bold" exampleText="{ | }"/>
+  <Color name="Unexpected delimiter" foreground="Purple" background="Yellow" exampleText="{{}"/>
+  <Color name="Escape delimiter" foreground="Orchid" exampleText="{ \} }"/>
   <Color name="Keyword" foreground="MediumVioletRed" exampleText="{ set ultimate answer to 42 }"/>
   <Color name="Quote mark" foreground="Blue" exampleText="{ '' }"/>
   <Color name="Operator" foreground="MediumVioletRed" fontWeight="bold" exampleText="{ a + b }"/>
@@ -40,10 +40,10 @@
     </Span>
 
     <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
-    <Rule color="UnexpectedDelimiter">
+    <Rule color="Unexpected delimiter">
       [}]
     </Rule>
-      
+
   </RuleSet>
 
   <!-- The Comment rule set simply caters for escape sequences. -->
@@ -59,10 +59,9 @@
     <Import ruleSet="Built-in operators"/>
     <Import ruleSet="Built-in functions"/>
     <Import ruleSet="Custom functions"/>
-    <Import ruleSet="Custom properties"/>
 
     <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
-    <Rule color="UnexpectedDelimiter">
+    <Rule color="Unexpected delimiter">
       [{|:}]
     </Rule>
 
@@ -134,12 +133,19 @@
       <Begin color="Keyword">\b(?:while)\b</Begin>
       <End color="Delimiter">(?=})</End>
     </Span>
+
+    <!-- Custom properties need to be invoked using the property accessor `.` before they become accessible -->
+    <Span ruleSet="Custom properties" multiline="true">
+      <Begin color="Delimiter">\.\s*</Begin>
+      <End>(?=\W)</End>
+    </Span>
+
   </RuleSet>
 
   <!-- Backslash escape sequences are common enough to merit a rule set -->
   <RuleSet name="Escape sequences">
     <Span>
-      <Begin color="EscapeDelimiter">\\</Begin>
+      <Begin color="Escape delimiter">\\</Begin>
       <End>.</End>
     </Span>
   </RuleSet>
