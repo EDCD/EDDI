@@ -162,6 +162,7 @@ namespace EddiSpeechResponder
 
             // TODO fetch this from configuration
             bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
+            bool useSSML = !SpeechServiceConfiguration.FromFile().DisableSsml;
 
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
@@ -286,16 +287,24 @@ namespace EddiSpeechResponder
 
             store["Spacialise"] = new NativeFunction((values) =>
             {
-                string Entree = values[0].AsString;
-                if (Entree == "")
-                { return ""; }
-                string Sortie = "";
-                foreach (char c in Entree)
+
+                if (useSSML)
                 {
-                    Sortie = Sortie + c + " ";
+                    return Translations.sayAsLettersOrNumbers(values[0].AsString);
                 }
-                var UpperSortie = Sortie.ToUpper();
-                return UpperSortie.Trim();
+                else
+                {
+                    string Entree = values[0].AsString;
+                    if (Entree == "")
+                    { return ""; }
+                    string Sortie = "";
+                    foreach (char c in Entree)
+                    {
+                        Sortie = Sortie + c + " ";
+                    }
+                    var UpperSortie = Sortie.ToUpper();
+                    return UpperSortie.Trim();
+                }
             }, 1);
 
             store["Emphasize"] = new NativeFunction((values) =>
