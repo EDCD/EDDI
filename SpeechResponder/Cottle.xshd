@@ -59,7 +59,6 @@
     <Import ruleSet="Built-in operators"/>
     <Import ruleSet="Built-in functions"/>
     <Import ruleSet="Custom functions"/>
-    <Import ruleSet="Custom properties"/>
 
     <!-- delimiters not matched by any other rule are unexpected (i.e. a syntax error) -->
     <Rule color="UnexpectedDelimiter">
@@ -133,6 +132,12 @@
     <Span ruleSet="Predicate statement" multiline="true">
       <Begin color="Keyword">\b(?:while)\b</Begin>
       <End color="Delimiter">(?=})</End>
+    </Span>
+    
+    <!-- Custom properties need to be invoked using the property accessor `.` before they become accessible -->
+    <Span ruleSet="Custom properties" multiline="true">
+      <Begin>(?&lt;=\.)</Begin>
+      <End>(?=\W)</End>
     </Span>
   </RuleSet>
 
