@@ -112,6 +112,7 @@
                                    WordWrap="True"
                                    ShowLineNumbers="True"
                                    SyntaxHighlighting="Cottle"
+                                   MouseUp="textEditorMouseUp"
                                    />
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="testButton" FontSize="18" Content="{x:Static resx:SpeechResponder.test_script_button}" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>

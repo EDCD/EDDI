@@ -6,6 +6,8 @@ using ICSharpCode.AvalonEdit.Search;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -198,6 +200,78 @@ namespace EddiSpeechResponder
             if (!string.IsNullOrWhiteSpace(ScriptDefaultValue))
             {
                 new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();
+            }
+        }
+
+        private void textEditorMouseUp(object sender, MouseButtonEventArgs e) 
+        {
+            if (e.ChangedButton != MouseButton.Right) return; 
+
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem menuItem = new MenuItem() { Header = Properties.Tooltips.cut };
+            menuItem.Click += CutAction;
+            contextMenu.Items.Add(menuItem);
+
+            menuItem = new MenuItem() { Header = Properties.Tooltips.copy };
+            menuItem.Click += CopyAction;
+            contextMenu.Items.Add(menuItem);
+
+            menuItem = new MenuItem() { Header = Properties.Tooltips.paste };
+            menuItem.Click += PasteAction;
+            contextMenu.Items.Add(menuItem);
+
+            menuItem = new MenuItem() { Header = Properties.Tooltips.delete };
+            menuItem.Click += DeleteAction;
+            contextMenu.Items.Add(menuItem);
+
+            menuItem = new MenuItem() { Header = Properties.Tooltips.undo };
+            menuItem.Click += UndoAction;
+            contextMenu.Items.Add(menuItem);
+
+            menuItem = new MenuItem() { Header = Properties.Tooltips.redo };
+            menuItem.Click += RedoAction;
+            contextMenu.Items.Add(menuItem);
+
+            scriptView.ContextMenu = contextMenu;
+        }
+
+        private void CutAction(object sender, RoutedEventArgs e)
+        {
+            scriptView.Cut();
+        }
+
+        private void CopyAction(object sender, RoutedEventArgs e)
+        {
+            scriptView.Copy();
+        }
+
+        private void PasteAction(object sender, RoutedEventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                scriptView.Paste();
+            }
+        }
+
+        private void DeleteAction(object sender, RoutedEventArgs e)
+        {
+            scriptView.Delete();
+        }
+
+        private void UndoAction(object sender, RoutedEventArgs e)
+        {
+            if (scriptView.CanUndo)
+            {
+                scriptView.Undo();
+            }
+        }
+
+        private void RedoAction(object sender, RoutedEventArgs e)
+        {
+            if (scriptView.CanRedo)
+            {
+                scriptView.Redo();
             }
         }
     }
