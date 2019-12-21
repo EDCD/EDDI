@@ -35,7 +35,13 @@
                 WordWrap="True"
                 ShowLineNumbers="True"
                 SyntaxHighlighting="Cottle"
-                />
+                >
+                <avalonEdit:TextEditor.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="ApplicationCommands.Copy"/>
+                    </ContextMenu>
+                </avalonEdit:TextEditor.ContextMenu>
+            </avalonEdit:TextEditor>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="1" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="okButton" IsCancel="True" IsDefault="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="okButtonClick" Margin="0,0,5,0"/>
             </UniformGrid>
