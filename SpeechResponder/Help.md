@@ -475,9 +475,9 @@ If you have not set up a name for your ship it will just return "your ship".
 
 ### Spacialise()
 
-This function will add spaces between letters in a string & convert to uppercase, in order to allow letters in a string to be pronounced individually.
+This function will allow letters and numbers in a string to be pronounced individually. If SSML is enabled, this function will render the text using SSML. If not, it will add spaces between letters in a string & convert to uppercase to assist the voice with achieving the proper pronunciation. 
 
-Spacialise() takes one argument: the number to Spacialise.
+Spacialise() takes one argument: the string of characters to Spacialise.
 
 Common usage of this is to provide a more human-sounding reading of a string of letters that are not a part of known word:
 

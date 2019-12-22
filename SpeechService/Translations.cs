@@ -646,7 +646,7 @@ namespace EddiSpeechService
             return String.Join(" ", elements).Trim();
         }
 
-        private static string sayAsLettersOrNumbers(string part)
+        public static string sayAsLettersOrNumbers(string part)
         {
             if (int.TryParse(part, out _))
             {
@@ -769,7 +769,7 @@ namespace EddiSpeechService
                         return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
                 }
             }
-            // Describe (less precisely) decimal values for more complex numbers
+            // Describe (less precisely) decimal values for more complex numbers    
             else
             {
                 if (nextDigit < 2)
