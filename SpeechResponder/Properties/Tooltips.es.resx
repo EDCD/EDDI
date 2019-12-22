@@ -129,6 +129,7 @@
   <data name="delete_line" xml:space="preserve">
     <value>Borrar Línea (Ctrl+D)</value>
   </data>
+  
   <data name="find" xml:space="preserve">
     <value>Buscar (Ctrl+F)</value>
   </data>
