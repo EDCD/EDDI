@@ -97,6 +97,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Line.
+        /// </summary>
+        public static string delete_line_no_shortcut {
+            get {
+                return ResourceManager.GetString("delete_line_no_shortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find (Ctrl+F).
         /// </summary>
         public static string find {

@@ -112,7 +112,22 @@
                                    WordWrap="True"
                                    ShowLineNumbers="True"
                                    SyntaxHighlighting="Cottle"
-                                   />
+                                   >
+                <avalonEdit:TextEditor.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="ApplicationCommands.Undo"/>
+                        <MenuItem Command="ApplicationCommands.Redo"/>
+                        <Separator/>
+                        <MenuItem Command="ApplicationCommands.Cut"/>
+                        <MenuItem Command="ApplicationCommands.Copy"/>
+                        <MenuItem Command="ApplicationCommands.Paste"/>
+                        <MenuItem Command="ApplicationCommands.Delete"/>
+                        <MenuItem Header="{x:Static resx:Tooltips.delete_line_no_shortcut}" Command="avalonEdit:AvalonEditCommands.DeleteLine"/>
+                        <Separator/>
+                        <MenuItem Command="ApplicationCommands.Find"/>
+                    </ContextMenu>
+                </avalonEdit:TextEditor.ContextMenu>
+            </avalonEdit:TextEditor>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="testButton" FontSize="18" Content="{x:Static resx:SpeechResponder.test_script_button}" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>
                 <Button x:Name="resetToDefaultButton" FontSize="18" Content="{x:Static resx:SpeechResponder.reset_script_button}" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
