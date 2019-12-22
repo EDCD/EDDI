@@ -19,5 +19,11 @@
                            WordWrap="True"
                            ShowLineNumbers="False"
                            SyntaxHighlighting="Cottle"
-                           />
+                           >
+        <avalonEdit:TextEditor.ContextMenu>
+            <ContextMenu>
+                <MenuItem Command="ApplicationCommands.Copy"/>
+            </ContextMenu>
+        </avalonEdit:TextEditor.ContextMenu>
+    </avalonEdit:TextEditor>
 </Window>
