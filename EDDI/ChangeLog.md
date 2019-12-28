@@ -4,31 +4,27 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.2
   * Speech responder
-    * Added context menus (aka right-click menus) to the view, edit and diff windows for scripts.
-    * Custom EDDI properties such as `remaining` are only colored as such when in context (i.e. after a period and optional whitespace).
+    * UI
+      * **Implemented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
+	  * Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
+      * Added context menus (aka right-click menus) to the view, edit and diff windows for scripts.
     * Extended `Spacialise()` to accept text as well as numbers. 
       * If SSML is enabled, it will render the text using the SSML function `SayAsLettersOrNumbers`. 
       * If not, it will add spaces between letters in a string and convert to uppercase. 
+    * Script fixes:
+      * Fixed a syntax error in the "FSD engaged" script.
+      * Fixed missing colons in "System report" script.
+    * Sundry:
+      * Enabled Cottle code within the `Transmit()` function.
+	  * Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
+  	  * Fixed "Sagittarius A *" pronunciation in Cereproc voices.
+	  * Fixed pronunciation of ship names with mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
+	  * Fixed pronunciation of "Krait Phantom".
+	  * Applied workaround for Cereproc voices not supporting IPA properly.
+	  * Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [#1629](https://github.com/EDCD/EDDI/issues/1629).
+	  * Applied `Humanise()` to the credits reported by the `Bond awarded` script
   * Mission monitor
     * Fixed a rare edge case with the "nearest route" algorithm ([#1651](https://github.com/EDCD/EDDI/issues/1651), [#1652](https://github.com/EDCD/EDDI/issues/1652)). 
-
-### 3.5.2-b2
-  * Speech responder
-    * Fixed a syntax error in the "FSD engaged" script.
-    * Fixed missing colons in "System report" script.
-
-### 3.5.2-b1
-  * Speech responder
-    * **Implemented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
-	* Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
-	* Enabled Cottle code within the `Transmit()` function.
-	* Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
-	* Fixed "Sagittarius A *" pronunciation in Cereproc voices.
-	* Fixed pronunciation of ship names with mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
-	* Fixed pronunciation of "Krait Phantom".
-	* Applied workaround for Cereproc voices not supporting IPA properly.
-	* Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [#1629](https://github.com/EDCD/EDDI/issues/1629).
-	* Applied `Humanise()` to the credits reported by the `Bond awarded` script
   * Core
     * Fixed shield state events not triggering ([#1605](https://github.com/EDCD/EDDI/issues/1605)).
 
