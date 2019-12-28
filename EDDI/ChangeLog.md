@@ -2,6 +2,16 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.2
+  * Speech responder
+    * Added context menus (aka right-click menus) to the view, edit and diff windows for scripts.
+    * Custom EDDI properties such as `remaining` are only colored as such when in context (i.e. after a period and optional whitespace).
+    * Extended `Spacialise()` to accept text as well as numbers. 
+      * If SSML is enabled, it will render the text using the SSML function `SayAsLettersOrNumbers`. 
+      * If not, it will add spaces between letters in a string and convert to uppercase. 
+  * Mission monitor
+    * Fixed a rare edge case with the "nearest route" algorithm ([#1651](https://github.com/EDCD/EDDI/issues/1651), [#1652](https://github.com/EDCD/EDDI/issues/1652)). 
+
 ### 3.5.2-b2
   * Speech responder
     * Fixed a syntax error in the "FSD engaged" script.
@@ -9,7 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.2-b1
   * Speech responder
-    * **Implmented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
+    * **Implemented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
 	* Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
 	* Enabled Cottle code within the `Transmit()` function.
 	* Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
