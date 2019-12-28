@@ -1136,7 +1136,11 @@ namespace EddiMissionMonitor
                             // Check if destination system previously added to the route
                             if (route.IndexOf(systems[destIndex]) == -1)
                             {
-                                nearestList.Add(distMatrix[currIndex][destIndex], destIndex);
+                                decimal distance = distMatrix[currIndex][destIndex];
+                                if (!nearestList.ContainsKey(distance))
+                                {
+                                    nearestList.Add(distance, destIndex);
+                                }
                             }
                         }
                         // Set the 'Nearest' system as the new 'current' system
