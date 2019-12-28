@@ -129,6 +129,9 @@
   <data name="delete_line" xml:space="preserve">
     <value>Apagar Linha (Ctrl+D)</value>
   </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Excluir linha</value>
+  </data>
   <data name="find" xml:space="preserve">
     <value>Procurar (Ctrl+F)</value>
   </data>

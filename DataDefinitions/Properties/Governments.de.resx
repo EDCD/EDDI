@@ -131,11 +131,11 @@
     <comment>Government type Dictatorship</comment>
   </data>
   <data name="Feudal" xml:space="preserve">
-    <value>Feudalismus</value>
+    <value>Feudalsystem</value>
     <comment>Government type Feudal</comment>
   </data>
   <data name="Imperial" xml:space="preserve">
-    <value>Imperialismus</value>
+    <value>Imperium</value>
     <comment>Government type Imperial</comment>
   </data>
   <data name="None" xml:space="preserve">
@@ -147,7 +147,7 @@
     <comment>Government type Patronage</comment>
   </data>
   <data name="PrisonColony" xml:space="preserve">
-    <value>Gefängniskolonie</value>
+    <value>Sträflingskolonie</value>
     <comment>Government type PrisonColony</comment>
   </data>
   <data name="Theocracy" xml:space="preserve">

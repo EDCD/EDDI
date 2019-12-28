@@ -129,6 +129,9 @@
   <data name="delete_line" xml:space="preserve">
     <value>Cancella Riga (Ctrl+D)</value>
   </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Elimina Riga</value>
+  </data>
   <data name="find" xml:space="preserve">
     <value>Trova (Ctrl+F)</value>
   </data>

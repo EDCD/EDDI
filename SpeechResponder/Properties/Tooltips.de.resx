@@ -129,6 +129,9 @@
   <data name="delete_line" xml:space="preserve">
     <value>Zeile löschen (Strg+D)</value>
   </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Zeile löschen</value>
+  </data>
   <data name="find" xml:space="preserve">
     <value>Suchen (Strg+F)</value>
   </data>

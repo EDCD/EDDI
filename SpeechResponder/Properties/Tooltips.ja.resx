@@ -129,6 +129,9 @@
   <data name="delete_line" xml:space="preserve">
     <value>行を削除 (Ctrl+D)</value>
   </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>行を削除</value>
+  </data>
   <data name="find" xml:space="preserve">
     <value>検索（Ctrl+F）</value>
   </data>
