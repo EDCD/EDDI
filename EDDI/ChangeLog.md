@@ -6,7 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * UI
       * **Implemented syntax coloring** (and there was much rejoicing). The engine is fully customizable: the UI for that will come later.
-	  * Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
+      * Cancel and OK buttons in secondary windows are now correctly bound to `Esc` and `Enter`.
       * Added context menus (aka right-click menus) to the view, edit and diff windows for scripts.
     * Extended `Spacialise()` to accept text as well as numbers. 
       * If SSML is enabled, it will render the text using the SSML function `SayAsLettersOrNumbers`. 
@@ -16,13 +16,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Fixed missing colons in "System report" script.
     * Sundry:
       * Enabled Cottle code within the `Transmit()` function.
-	  * Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
-  	  * Fixed "Sagittarius A *" pronunciation in Cereproc voices.
-	  * Fixed pronunciation of ship names with mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
-	  * Fixed pronunciation of "Krait Phantom".
-	  * Applied workaround for Cereproc voices not supporting IPA properly.
-	  * Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [#1629](https://github.com/EDCD/EDDI/issues/1629).
-	  * Applied `Humanise()` to the credits reported by the `Bond awarded` script
+      * Only ships with the "Explorer" role will recommend bodies to map/scan after honking the FSS in inhabited space.
+      * Fixed "Sagittarius A *" pronunciation in Cereproc voices.
+      * Fixed pronunciation of ship names with mark numbers in Roman numerals. Your "Cobra Mk III" is now spoken correctly.
+      * Fixed pronunciation of "Krait Phantom".
+      * Applied workaround for Cereproc voices not supporting IPA properly.
+      * Fixed `Engineer progressed` reporting rank but not stage when an engineer is unlocked [#1629](https://github.com/EDCD/EDDI/issues/1629).
+      * Applied `Humanise()` to the credits reported by the `Bond awarded` script
   * Mission monitor
     * Fixed a rare edge case with the "nearest route" algorithm ([#1651](https://github.com/EDCD/EDDI/issues/1651), [#1652](https://github.com/EDCD/EDDI/issues/1652)). 
   * Core
@@ -35,9 +35,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added defensive code to fail gracefully should the EDSM server have a hiccup and not respond.
   * Speech Responder
     * Don't repeat the `System state report` when returning to a system that we've visited recently.
-	* Fixed a typo in the `Engineer Progressed` script that could cause the Engineer's name to be omitted.
+    * Fixed a typo in the `Engineer Progressed` script that could cause the Engineer's name to be omitted.
   * VoiceAttack Responder
-	* Fixed a regression in 3.5.0: EDDI not remembering window position or tab position when running as a VoiceAttack plugin.
+    * Fixed a regression in 3.5.0: EDDI not remembering window position or tab position when running as a VoiceAttack plugin.
 
 ### 3.5.0
   * Promote 3.5.0-rc1 to final
@@ -68,7 +68,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Ensure exploration results are preserved when refreshing a 'stale' star system and the data is not yet available on the server.
     * Star system name now available as `systemname` in `Body scanned` and `Star scanned` events.
     * `totalbodies` now referenceable (within `StarSystem` object) after a discovery scan (honk).
-	* Added support for new faction state `Blight` (written as "Drought" in the journals).
+    * Added support for new faction state `Blight` (written as "Drought" in the journals).
   * Cargo Monitor
     * Fixed #1465 whereby (for example) when a limpet launch frees cargo space which the refinery immediately uses, the Cargo monitor got out of sync.
   * Events
@@ -88,7 +88,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `Ship targeted` event with new `power` property (if pledged).
   * Inara Responder
     * Simply paste in your Inara API key to have EDDI upload your Commander's progress to Inara. Uploads are batched for every 5 minutes to save bandwidth on both your machine and the Inara servers, and any outstanding events are sent upon game exit.
-	* EDDI can now also get commander details from Inara, which are accessible via Cottle and VA functions as described below.
+    * EDDI can now also get commander details from Inara, which are accessible via Cottle and VA functions as described below.
   * Speech Responder
     * UI revised to either `Delete` or `Reset` as script, as appropriate.
     * Replaced the `List launchbays` script with script `Launchbay report` (changed to conform to naming conventions for similar scripts). Added protection in script against empty launchbay data.
@@ -127,12 +127,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.4.2
   * Core
-	* Fixed issues around navigation routing, including the `Jumped` script not updating correctly.
+    * Fixed issues around navigation routing, including the `Jumped` script not updating correctly.
   * Material monitor
     * Added `Set` and `Clear` destination buttons.
   * Speech responder
     * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
-	* Revised `Route details` script.
+    * Revised `Route details` script.
 
 ### 3.4.2-b1
   * Core
