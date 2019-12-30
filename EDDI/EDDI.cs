@@ -1294,14 +1294,21 @@ namespace Eddi
             }
             else if (theEvent.bodyname != null)
             {
-                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-
                 // If we are not at a station then our station information is invalid 
                 CurrentStation = null;
 
                 // Update the body 
                 Logging.Debug("Now at body " + theEvent.bodyname);
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+
+                if (theEvent.latitude != null && theEvent.longitude != null)
+                {
+                    Environment = Constants.ENVIRONMENT_LANDED;
+                }
+                else
+                {
+                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                }
             }
             else
             {
@@ -1841,6 +1848,16 @@ namespace Eddi
 
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
+            // Set Vehicle state from ship model
+            if (theEvent.ship == "SRV")
+            {
+                Vehicle = Constants.VEHICLE_SRV;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+
             // If we see this it means that we aren't in CQC
             inCQC = false;
 

@@ -79,7 +79,7 @@ namespace EddiEvents
             this.frontierID = frontierID;
             this.horizons = horizons;
             this.shipid = shipId;
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.ship = ship == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(ship).model;
             this.shipname = shipName;
             this.shipident = shipIdent;
             this.startlanded = startedLanded;
