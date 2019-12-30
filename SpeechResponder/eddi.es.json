@@ -698,6 +698,15 @@
       "name": "Fine paid",
       "description": "Se activa cuando se paga una multa"
     },
+    "Flight assist": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Flight assist",
+      "description": "Se activa cuando se activa la asistencia de vuelo",
+    },
     "FinesBounties_Add": {
       "enabled": true,
       "priority": 3,
