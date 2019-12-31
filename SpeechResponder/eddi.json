@@ -964,6 +964,15 @@
       "name": "Killed",
       "description": "Triggered when you kill another player"
     },
+    "Hardpoints": {
+	  "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Hardpoint",
+      "default": true,
+      "name": "Hardpoints",
+      "description": "Triggered when you deploy or retract your landing gear"
+    },
     "Landing gear": {
       "enabled": true,
       "priority": 3,
