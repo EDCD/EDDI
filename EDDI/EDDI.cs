@@ -1848,7 +1848,7 @@ namespace Eddi
 
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
-            // Set Vehicle state from ship model
+            // Set Vehicle state for commander from ship model
             if (theEvent.ship == "SRV")
             {
                 Vehicle = Constants.VEHICLE_SRV;
@@ -1856,6 +1856,16 @@ namespace Eddi
             else
             {
                 Vehicle = Constants.VEHICLE_SHIP;
+            }
+
+            // Set Environment state for the ship if 'startlanded' is present in the event
+            if (theEvent.startlanded ?? false)
+            {
+                Environment = Constants.ENVIRONMENT_LANDED;
+            }
+            else if (theEvent.startlanded != null)
+            {
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             }
 
             // If we see this it means that we aren't in CQC
