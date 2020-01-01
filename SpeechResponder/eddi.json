@@ -968,7 +968,7 @@
 	  "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Hardpoint",
+      "script": null,
       "default": true,
       "name": "Hardpoints",
       "description": "Triggered when you deploy or retract your landing gear"
