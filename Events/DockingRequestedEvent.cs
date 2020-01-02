@@ -25,7 +25,7 @@ namespace EddiEvents
         [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
-        public string stationtype => stationDefinition.localizedName;
+        public string stationtype => stationDefinition?.localizedName;
 
         // Admin
         public long marketId { get; private set; }
