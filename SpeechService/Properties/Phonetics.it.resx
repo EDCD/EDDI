@@ -234,6 +234,19 @@
   
   
   
+  <data name="delaine" xml:space="preserve">
+    <value>diˈleɪn</value>
+    <comment>Optional phonetic pronunciation for delaine</comment>
+  </data>
+  
+  
+  
+  
+  
+  <data name="duval" xml:space="preserve">
+    <value>duːˈval</value>
+    <comment>Optional phonetic pronunciation for duval</comment>
+  </data>
   
   
   
@@ -268,14 +281,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="lavigny" xml:space="preserve">
+    <value>ləˈviːɲiː</value>
+    <comment>Optional phonetic pronunciation for lavigny</comment>
+  </data>
   
   
   
