@@ -26,7 +26,7 @@ namespace EddiEvents
         [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
-        public string stationtype => stationDefinition.localizedName;
+        public string stationtype => stationDefinition?.localizedName;
 
         [JsonProperty("landingpad")]
         public int landingpad { get; private set; }

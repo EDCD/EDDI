@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docking cancelled";
         public const string DESCRIPTION = "Triggered when your ship cancels a docking request at a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\", \"MarketID\": 128666762}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\", \"StationType\":\"Orbis\", \"MarketID\": 128666762}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingCancelledEvent()
@@ -25,7 +25,7 @@ namespace EddiEvents
         [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
-        public string stationtype => stationDefinition.localizedName;
+        public string stationtype => stationDefinition?.localizedName;
 
         // Admin
         public long? marketId { get; private set; }
