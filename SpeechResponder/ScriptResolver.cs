@@ -287,6 +287,7 @@ namespace EddiSpeechResponder
 
             store["Spacialise"] = new NativeFunction((values) =>
             {
+                if (values[0].AsString == null) { return null; }
 
                 if (useSSML)
                 {
