@@ -20,17 +20,17 @@ namespace EddiVoiceAttackResponder
     public class VoiceAttackVariables
     {
         // These are reference values for nullable items we monitor to determine whether VoiceAttack values need to be updated
-        private static StarSystem CurrentStarSystem { get; set; } = new StarSystem();
-        private static StarSystem HomeStarSystem { get; set; } = new StarSystem();
-        private static StarSystem LastStarSystem { get; set; } = new StarSystem();
-        private static StarSystem NextStarSystem { get; set; } = new StarSystem();
-        private static StarSystem DestinationStarSystem { get; set; } = new StarSystem();
-        private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
-        private static Body CurrentStellarBody { get; set; } = new Body();
-        private static Station CurrentStation { get; set; } = new Station();
-        private static Station HomeStation { get; set; } = new Station();
-        private static Station DestinationStation { get; set; } = new Station();
-        private static Commander Commander { get; set; } = new Commander();
+        private static StarSystem CurrentStarSystem { get; set; }
+        private static StarSystem HomeStarSystem { get; set; }
+        private static StarSystem LastStarSystem { get; set; }
+        private static StarSystem NextStarSystem { get; set; }
+        private static StarSystem DestinationStarSystem { get; set; }
+        private static StarSystem SquadronStarSystem { get; set; }
+        private static Body CurrentStellarBody { get; set; }
+        private static Station CurrentStation { get; set; }
+        private static Station HomeStation { get; set; }
+        private static Station DestinationStation { get; set; }
+        private static Commander Commander { get; set; }
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
         private static decimal DestinationDistanceLy { get; set; }
 
