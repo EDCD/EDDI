@@ -555,7 +555,7 @@ namespace EddiSpeechService
         {
             if (WasapiOut.IsSupportedOnCurrentPlatform)
             {
-                return new WasapiOut();
+                return new WasapiOut() { UseChannelMixingMatrices = true };
             }
             else
             {
