@@ -884,7 +884,7 @@
       "description": "Triggered when your ship enters or exits glide"
     },
     "Hardpoints": {
-	  "enabled": true,
+      "enabled": true,
       "priority": 3,
       "responder": true,
       "script": null,
