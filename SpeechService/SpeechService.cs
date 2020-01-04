@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CSCore.DSP;
 using Utilities;
 
 namespace EddiSpeechService
@@ -231,7 +232,7 @@ namespace EddiSpeechService
                     {
                         source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
                     }
-
+                    
                     play(source, priority);
                 }
             }
@@ -272,7 +273,44 @@ namespace EddiSpeechService
 
             using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
             {
-                ISoundOut soundOut = GetSoundOut();
+                ISoundOut soundOut = GetSoundOut(out int channels);
+
+                // Apply channel details to source, if applicable
+                if (channels == 8) // 7.1 surround
+                {
+                    if (source.WaveFormat.Channels == 1)
+                    {
+                        ChannelMatrix channelMatrix = ChannelMatrix.MonoToSevenDotOneSurround;
+                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
+                    }
+                    else if (source.WaveFormat.Channels == 2)
+                    {
+                        ChannelMatrix channelMatrix = ChannelMatrix.StereoToSevenDotOneSurround;
+                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
+                    }
+                }
+                else if (channels == 6) // 5.1 surround
+                {
+                    if (source.WaveFormat.Channels == 1)
+                    {
+                        ChannelMatrix channelMatrix = ChannelMatrix.MonoToFiveDotOneSurroundWithRear;
+                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
+                    }
+                    else if (source.WaveFormat.Channels == 2)
+                    {
+                        ChannelMatrix channelMatrix = ChannelMatrix.StereoToFiveDotOneSurroundWithRear;
+                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
+                    }
+                }
+                else if (channels >= 2) // Stereo (use stereo audio and allow surround systems to up-mix channels as needed)
+                {
+                    source = source.ToStereo();
+                }
+                else // Mono
+                {
+                    source = source.ToMono();
+                }
+
                 try
                 {
                     try
@@ -551,11 +589,14 @@ namespace EddiSpeechService
             Logging.Debug("Current speech ended");
         }
 
-        private ISoundOut GetSoundOut()
+        private ISoundOut GetSoundOut(out int channels)
         {
+            channels = 1;
             if (WasapiOut.IsSupportedOnCurrentPlatform)
             {
-                return new WasapiOut() { UseChannelMixingMatrices = true };
+                var sOut = new WasapiOut { UseChannelMixingMatrices = true };
+                channels = sOut.Device.DeviceFormat.Channels;
+                return sOut;
             }
             else
             {
