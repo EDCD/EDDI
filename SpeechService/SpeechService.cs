@@ -232,7 +232,7 @@ namespace EddiSpeechService
                     {
                         source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
                     }
-                    
+
                     play(source, priority);
                 }
             }
@@ -276,33 +276,7 @@ namespace EddiSpeechService
                 ISoundOut soundOut = GetSoundOut(out int channels);
 
                 // Apply channel details to source, if applicable
-                if (channels == 8) // 7.1 surround
-                {
-                    if (source.WaveFormat.Channels == 1)
-                    {
-                        ChannelMatrix channelMatrix = ChannelMatrix.MonoToSevenDotOneSurround;
-                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
-                    }
-                    else if (source.WaveFormat.Channels == 2)
-                    {
-                        ChannelMatrix channelMatrix = ChannelMatrix.StereoToSevenDotOneSurround;
-                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
-                    }
-                }
-                else if (channels == 6) // 5.1 surround
-                {
-                    if (source.WaveFormat.Channels == 1)
-                    {
-                        ChannelMatrix channelMatrix = ChannelMatrix.MonoToFiveDotOneSurroundWithRear;
-                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
-                    }
-                    else if (source.WaveFormat.Channels == 2)
-                    {
-                        ChannelMatrix channelMatrix = ChannelMatrix.StereoToFiveDotOneSurroundWithRear;
-                        source = source.AppendSource(x => new DmoChannelResampler(x, channelMatrix));
-                    }
-                }
-                else if (channels >= 2) // Stereo (use stereo audio and allow surround systems to up-mix channels as needed)
+                if (channels >= 2) // Stereo
                 {
                     source = source.ToStereo();
                 }
