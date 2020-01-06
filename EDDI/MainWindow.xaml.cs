@@ -428,6 +428,7 @@ namespace Eddi
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
             ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
             ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+            ttsDisableVoiceEffectsCheckbox.IsChecked = speechServiceConfiguration.DisableVoiceEffects;
             disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
             enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
 
@@ -1022,6 +1023,11 @@ namespace Eddi
             ttsUpdated();
         }
 
+        private void ttsDisableVoiceEffectsUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ttsUpdated();
@@ -1070,6 +1076,7 @@ namespace Eddi
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
                 DistortOnDamage = ttsDistortCheckbox.IsChecked.Value,
+                DisableVoiceEffects = ttsDisableVoiceEffectsCheckbox.IsChecked.Value,
                 DisableSsml = disableSsmlCheckbox.IsChecked.Value,
                 EnableIcao = enableIcaoCheckbox.IsChecked.Value
             };

@@ -128,7 +128,7 @@ namespace EddiSpeechResponder
             subtitles = configuration.Subtitles;
             subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Debug($"Reloaded {ResponderName()}");
-    }
+        }
 
         public void Handle(Event @event)
         {

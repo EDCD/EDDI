@@ -22,6 +22,9 @@ namespace EddiSpeechService
         [JsonProperty("distortOnDamage")]
         public bool DistortOnDamage { get; set; } = true;
 
+        [JsonProperty("disableVoiceEffects")]
+        public bool DisableVoiceEffects { get; set; } = false;
+
         [JsonProperty("rate")]
         public int Rate { get; set; } = 0;
 
@@ -83,6 +86,7 @@ namespace EddiSpeechService
             Volume = 100;
             EffectsLevel = 50;
             DistortOnDamage = true;
+            DisableVoiceEffects = false;
             DisableSsml = false;
             EnableIcao = false;
         }

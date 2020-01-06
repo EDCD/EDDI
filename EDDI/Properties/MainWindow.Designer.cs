@@ -412,6 +412,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable ship effects on voice:.
+        /// </summary>
+        public static string tab_tts_disable_voice_effects_label {
+            get {
+                return ResourceManager.GetString("tab_tts_disable_voice_effects_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distort the voice on ship damage:.
         /// </summary>
         public static string tab_tts_distort_label {

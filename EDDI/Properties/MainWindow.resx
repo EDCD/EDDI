@@ -175,6 +175,9 @@
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>Distort the voice on ship damage:</value>
   </data>
+  <data name="tab_tts_disable_voice_effects_label" xml:space="preserve">
+    <value>Disable ship effects on voice:</value>
+  </data>
   <data name="tab_tts_header" xml:space="preserve">
     <value>Text-to-Speech</value>
   </data>
