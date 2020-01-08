@@ -234,11 +234,27 @@
   
   
   
+  <data name="delaine" xml:space="preserve">
+    <value>diˈleɪn</value>
+    <comment>Optional phonetic pronunciation for delaine</comment>
+  </data>
+  <data name="denton" xml:space="preserve">
+    <value>ˈdɛnton</value>
+    <comment>Optional phonetic pronunciation for denton</comment>
+  </data>
   
   
   
   
+  <data name="duval" xml:space="preserve">
+    <value>duːˈval</value>
+    <comment>Optional phonetic pronunciation for duval</comment>
+  </data>
   
+  <data name="edmund" xml:space="preserve">
+    <value>ˈɛdmund</value>
+    <comment>Optional phonetic pronunciation for edmund</comment>
+  </data>
   
   
   
@@ -247,12 +263,24 @@
   
   
   
+  <data name="felicia" xml:space="preserve">
+    <value>fəˈlɪʃɪa</value>
+    <comment>Optional phonetic pronunciation for felicia</comment>
+  </data>
   
   
   
+  <data name="grom" xml:space="preserve">
+    <value>ˈɡrɒm</value>
+    <comment>Optional phonetic pronunciation for grom</comment>
+  </data>
   
   
   
+  <data name="hudson" xml:space="preserve">
+    <value>ˈhadson</value>
+    <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
   
   
   
@@ -268,11 +296,23 @@
   
   
   
+  <data name="lavigny" xml:space="preserve">
+    <value>ləˈviːɲiː</value>
+    <comment>Optional phonetic pronunciation for lavigny</comment>
+  </data>
   
   
+  <data name="li" xml:space="preserve">
+    <value>li</value>
+    <comment>Optional phonetic pronunciation for li</comment>
+  </data>
   
   
   
+  <data name="mahon" xml:space="preserve">
+    <value>ˈmaɑːn</value>
+    <comment>Optional phonetic pronunciation for mahon</comment>
+  </data>
   
   
   
@@ -288,12 +328,20 @@
   
   
   
+  <data name="patreus" xml:space="preserve">
+    <value>pətˈreus</value>
+    <comment>Optional phonetic pronunciation for patreus</comment>
+  </data>
   
   
   
   
   
   
+  <data name="pranav" xml:space="preserve">
+    <value>prɜːnʌv</value>
+    <comment>Optional phonetic pronunciation for pranav</comment>
+  </data>
   
   
   
@@ -303,6 +351,10 @@
   
   
   
+  <data name="rui" xml:space="preserve">
+    <value>rui</value>
+    <comment>Optional phonetic pronunciation for rui</comment>
+  </data>
   
   
   
@@ -324,35 +376,40 @@
   
   
   
+  <data name="torval" xml:space="preserve">
+    <value>tɔrːˈvæl</value>
+    <comment>Optional phonetic pronunciation for torval</comment>
+  </data>
   
   
   
   
   
+  <data name="winters" xml:space="preserve">
+    <value>ˈwɪntərs</value>
+    <comment>Optional phonetic pronunciation for winters</comment>
+  </data>
   
   
   
   
+  <data name="yong" xml:space="preserve">
+    <value>ˈjɒŋ</value>
+    <comment>Optional phonetic pronunciation for yong</comment>
+  </data>
+  <data name="yuri" xml:space="preserve">
+    <value>jʊəˈrjː</value>
+    <comment>Optional phonetic pronunciation for yuri</comment>
+  </data>
+  <data name="zachary" xml:space="preserve">
+    <value>ˈzakərɪ</value>
+    <comment>Optional phonetic pronunciation for zachary</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="zemina" xml:space="preserve">
+    <value>zəˈmiːnə</value>
+    <comment>Optional phonetic pronunciation for zemina</comment>
+  </data>
   
   
   
