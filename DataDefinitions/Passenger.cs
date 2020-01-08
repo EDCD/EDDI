@@ -16,11 +16,11 @@
 
         public Passenger(Passenger Passenger)
         {
-            this.missionid = missionid;
-            this.type = type;
-            this.vip = vip;
-            this.wanted = wanted;
-            this.amount = amount;
+            this.missionid = Passenger.missionid;
+            this.type = Passenger.type;
+            this.vip = Passenger.vip;
+            this.wanted = Passenger.wanted;
+            this.amount = Passenger.amount;
         }
 
         public Passenger(long MissionId, string Type, bool VIP, bool Wanted, int Amount)

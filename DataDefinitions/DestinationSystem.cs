@@ -10,7 +10,7 @@
 
         public DestinationSystem(DestinationSystem DestinationSystem)
         {
-            this.name = name;
+            this.name = DestinationSystem.name;
         }
 
         public DestinationSystem(string Name)
