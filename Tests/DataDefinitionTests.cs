@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -401,6 +402,41 @@ namespace UnitTests
             Assert.AreEqual(0, test3.crimerating);
             Assert.AreEqual(0, test3.servicerating);
             Assert.AreEqual(2, test3.powerrating);
+        }
+
+        [TestMethod]
+        public void TestExtensionMethods()
+        {
+            StarSystem system1 = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1);
+            StarSystem system2 = system1.Copy();
+            StarSystem system3 = system1;
+
+            Assert.AreEqual(127.0M, system1.x);
+
+            // system 1 and system2 are copies of one another. They do not share a reference to the same object.
+            Assert.IsFalse(system1.Equals(system2));
+            Assert.IsTrue(system1.DeepEquals(system2));
+
+            // system1 and system3 are both references to the same object.
+            Assert.IsTrue(system1.Equals(system3));
+
+            // sqlStarSystem1 and system2 are copies of one another, except one property has been altered.
+            // They do not share a reference to the same object and properties altered on system2 are not also altered on system1.
+            // Re-constituting the system from the source confirms the difference.
+            system2.x = null;
+            Assert.AreEqual(127.0M, system1.x);
+            Assert.IsFalse(system1.Equals(system2));
+            Assert.IsFalse(system1.DeepEquals(system2));
+            Assert.IsFalse(DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1).Equals(system2));
+
+            // system1 and system3 are still both references to the same object, so they are still equal.
+            // The property altered on system3 is also altered on system1.
+            // We have to re-constitute the system from the source to identify the difference.
+            system3.x = null;
+            Assert.AreEqual(null, system1.x);
+            Assert.IsTrue(system1.Equals(system3));
+            Assert.IsTrue(system1.DeepEquals(system3));
+            Assert.IsFalse(DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1).Equals(system3));
         }
     }
 }

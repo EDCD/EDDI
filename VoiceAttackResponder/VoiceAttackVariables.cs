@@ -20,17 +20,17 @@ namespace EddiVoiceAttackResponder
     public class VoiceAttackVariables
     {
         // These are reference values for nullable items we monitor to determine whether VoiceAttack values need to be updated
-        private static StarSystem CurrentStarSystem { get; set; } = new StarSystem();
-        private static StarSystem HomeStarSystem { get; set; } = new StarSystem();
-        private static StarSystem LastStarSystem { get; set; } = new StarSystem();
-        private static StarSystem NextStarSystem { get; set; } = new StarSystem();
-        private static StarSystem DestinationStarSystem { get; set; } = new StarSystem();
-        private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
-        private static Body CurrentStellarBody { get; set; } = new Body();
-        private static Station CurrentStation { get; set; } = new Station();
-        private static Station HomeStation { get; set; } = new Station();
-        private static Station DestinationStation { get; set; } = new Station();
-        private static Commander Commander { get; set; } = new Commander();
+        private static StarSystem CurrentStarSystem { get; set; }
+        private static StarSystem HomeStarSystem { get; set; }
+        private static StarSystem LastStarSystem { get; set; }
+        private static StarSystem NextStarSystem { get; set; }
+        private static StarSystem DestinationStarSystem { get; set; }
+        private static StarSystem SquadronStarSystem { get; set; }
+        private static Body CurrentStellarBody { get; set; }
+        private static Station CurrentStation { get; set; }
+        private static Station HomeStation { get; set; }
+        private static Station DestinationStation { get; set; }
+        private static Commander Commander { get; set; }
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
         private static decimal DestinationDistanceLy { get; set; }
 
@@ -242,10 +242,10 @@ namespace EddiVoiceAttackResponder
             // (For objects that are always constructed, we prefer using event handlers).
             try
             {
-                if (EDDI.Instance.CurrentStarSystem != CurrentStarSystem)
+                if (!EDDI.Instance.CurrentStarSystem.DeepEquals(CurrentStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
-                    CurrentStarSystem = EDDI.Instance.CurrentStarSystem;
+                    CurrentStarSystem = EDDI.Instance.CurrentStarSystem.Copy();
                 }
             }
             catch (Exception ex)
@@ -255,10 +255,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.LastStarSystem != LastStarSystem)
+                if (!EDDI.Instance.LastStarSystem.DeepEquals(LastStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
-                    LastStarSystem = EDDI.Instance.LastStarSystem;
+                    LastStarSystem = EDDI.Instance.LastStarSystem.Copy();
                 }
             }
             catch (Exception ex)
@@ -268,10 +268,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.NextStarSystem != NextStarSystem)
+                if (!EDDI.Instance.NextStarSystem.DeepEquals(NextStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref vaProxy);
-                    NextStarSystem = EDDI.Instance.NextStarSystem;
+                    NextStarSystem = EDDI.Instance.NextStarSystem.Copy();
                 }
             }
             catch (Exception ex)
@@ -281,10 +281,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.DestinationStarSystem != DestinationStarSystem)
+                if (!EDDI.Instance.DestinationStarSystem.DeepEquals(DestinationStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref vaProxy);
-                    DestinationStarSystem = EDDI.Instance.DestinationStarSystem;
+                    DestinationStarSystem = EDDI.Instance.DestinationStarSystem.Copy();
                 }
             }
             catch (Exception ex)
@@ -297,7 +297,7 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.DestinationDistanceLy != DestinationDistanceLy)
                 {
                     vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
-                    DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy;
+                    DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy.Copy();
                 }
             }
             catch (Exception ex)
@@ -307,22 +307,23 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.DestinationStation != DestinationStation)
+                if (!EDDI.Instance.DestinationStation.DeepEquals(DestinationStation))
                 {
                     setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref vaProxy);
-                    DestinationStation = EDDI.Instance.DestinationStation;
+                    DestinationStation = EDDI.Instance.DestinationStation.Copy();
                 }
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to set destination station", ex);
             }
+
             try
             {
-                if (EDDI.Instance.SquadronStarSystem != SquadronStarSystem)
+                if (!EDDI.Instance.SquadronStarSystem.DeepEquals(SquadronStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref vaProxy);
-                    SquadronStarSystem = EDDI.Instance.SquadronStarSystem;
+                    SquadronStarSystem = EDDI.Instance.SquadronStarSystem.Copy();
                 }
             }
             catch (Exception ex)
@@ -332,10 +333,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.HomeStarSystem != HomeStarSystem)
+                if (!EDDI.Instance.HomeStarSystem.DeepEquals(HomeStarSystem))
                 {
                     setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
-                    HomeStarSystem = EDDI.Instance.HomeStarSystem;
+                    HomeStarSystem = EDDI.Instance.HomeStarSystem.Copy();
 
                     // Backwards-compatibility with 1.x documented variables
                     try
@@ -363,10 +364,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.CurrentStellarBody != CurrentStellarBody)
+                if (!EDDI.Instance.CurrentStellarBody.DeepEquals(CurrentStellarBody))
                 {
                     setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref vaProxy);
-                    CurrentStellarBody = EDDI.Instance.CurrentStellarBody;
+                    CurrentStellarBody = EDDI.Instance.CurrentStellarBody.Copy();
                 }
             }
             catch (Exception ex)
@@ -376,10 +377,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.CurrentStation != CurrentStation)
+                if (!EDDI.Instance.CurrentStation.DeepEquals(CurrentStation))
                 {
                     setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
-                    CurrentStation = EDDI.Instance.CurrentStation;
+                    CurrentStation = EDDI.Instance.CurrentStation.Copy();
                 }
             }
             catch (Exception ex)
@@ -389,10 +390,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.HomeStation != HomeStation)
+                if (!EDDI.Instance.HomeStation.DeepEquals(HomeStation))
                 {
                     setStationValues(EDDI.Instance.HomeStation, "Home station", ref vaProxy);
-                    HomeStation = EDDI.Instance.HomeStation;
+                    HomeStation = EDDI.Instance.HomeStation.Copy();
                 }
             }
             catch (Exception ex)
@@ -403,10 +404,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.Cmdr != Commander)
+                if (!EDDI.Instance.Cmdr.DeepEquals(Commander))
                 {
                     setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
-                    Commander = EDDI.Instance.Cmdr;
+                    Commander = EDDI.Instance.Cmdr.Copy();
                 }
             }
             catch (Exception ex)
