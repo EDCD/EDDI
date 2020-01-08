@@ -866,6 +866,15 @@
       "name": "Glide",
       "description": "Triggered when your ship enters or exits glide"
     },
+    "Hardpoints": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hardpoints",
+      "description": "Triggered when you deploy or retract your hardpoints"
+    },
     "Heat damage": {
       "enabled": true,
       "priority": 3,

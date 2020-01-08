@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3
+  * Events
+    * Added new event `Hardpoints`, triggered when you deploy or retract your hardpoints.
+
 ### 3.5.2
   * Speech responder
     * UI

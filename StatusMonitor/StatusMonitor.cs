@@ -415,6 +415,10 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.enqueueEvent(new ShipLightsEvent(thisStatus.timestamp, thisStatus.lights_on));
                 }
+                if (thisStatus.hardpoints_deployed != lastStatus.hardpoints_deployed)
+                {
+                    EDDI.Instance.enqueueEvent(new ShipHardpointsEvent(thisStatus.timestamp, thisStatus.hardpoints_deployed));
+                }
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
                     gliding = false;
