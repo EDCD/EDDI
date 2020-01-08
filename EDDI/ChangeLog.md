@@ -5,6 +5,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.5.3
   * Events
     * Added new event `Hardpoints`, triggered when you deploy or retract your hardpoints.
+  * Speech Responder
+    * Fixed vocalization of whitespace characters by `Spacialise()`.
+  * VoiceAttack
+    * Fixed an exception that could occur when closing VoiceAttack.
+	* Fixed a bug ([#1666](https://github.com/EDCD/EDDI/issues/1666)) that could prevent variables `{DEC:System X} {DEC:System Y} {DEC:System Z}` from populating upon first entry into a system.
 
 ### 3.5.2
   * Speech responder
