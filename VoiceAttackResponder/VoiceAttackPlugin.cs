@@ -293,22 +293,34 @@ namespace EddiVoiceAttackResponder
         public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
+            
+            // Stop the updater thread.
+            updaterThread?.Abort();
 
             if (Application.Current?.Dispatcher != null)
             {
                 try
                 {
-                    Application.Current.Dispatcher.Invoke(() => Application.Current.MainWindow?.Close());
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Application.Current.Exit += OnExit;
+                        Application.Current.MainWindow?.Close();
+                        Application.Current.Shutdown();
+                    });
                 }
                 catch (Exception ex)
                 {
                     Logging.Debug("EDDI configuration UI close from VA failed." + ex + ".");
                 }
             }
+        }
 
-            updaterThread?.Abort();
-            Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
-            App.eddiMutex.ReleaseMutex();
+        private static void OnExit(object sender, ExitEventArgs e) 
+        {
+            if (!App.eddiMutex.SafeWaitHandle.IsClosed)
+            {
+                App.eddiMutex.ReleaseMutex();
+            }
         }
 
         public static void VA_StopCommand()
