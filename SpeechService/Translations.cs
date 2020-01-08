@@ -648,14 +648,24 @@ namespace EddiSpeechService
 
         public static string sayAsLettersOrNumbers(string part)
         {
-            if (int.TryParse(part, out _))
+            StringBuilder sb = new StringBuilder();
+            foreach (var c in part)
             {
-                return @"<say-as interpret-as=""number"">" + part + @"</say-as>";
+                var s = c.ToString();
+                if (new Regex(@"\d").IsMatch(s))
+                {
+                    sb.Append(@"<say-as interpret-as=""number"">" + s + @"</say-as>");
+                }
+                else if (new Regex(@"\w").IsMatch(s))
+                {
+                    sb.Append(@"<say-as interpret-as=""characters"">" + s + @"</say-as>");
+                }
+                else
+                {
+                    sb.Append(s);
+                }
             }
-            else
-            {
-                return @"<say-as interpret-as=""characters"">" + part + @"</say-as>";
-            }
+            return sb.ToString();
         }
 
         public static string Humanize(decimal? value)
