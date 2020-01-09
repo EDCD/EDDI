@@ -803,6 +803,15 @@
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
+    "Flight assist": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Flight assist",
+      "description": "Triggered when flight assist is toggled",
+    },
     "Friends status": {
       "enabled": true,
       "priority": 3,
