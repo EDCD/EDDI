@@ -227,7 +227,7 @@ namespace EddiSpeechService
                     stream.Seek(0, SeekOrigin.Begin);
 
                     IWaveSource source = new WaveFileReader(stream);
-                    if (!isAudio && !configuration.DisableVoiceEffects)
+                    if (!isAudio && (!configuration.DisableVoiceEffects || isRadio))
                     {
                         source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
                     }
