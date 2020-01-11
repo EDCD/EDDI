@@ -21,49 +21,53 @@ namespace EddiSpeechService
             if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
             {
                 // Add a base of 500ms plus 10ms per effect level over 50
-                Logging.Debug("Extending duration by " + 500 + Math.Max(0, (effectsLevel - 50) * 10) + "ms");
-                source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (effectsLevel - 50) * 10)));
+                int extMs = 500 + Math.Max(0, (effectsLevel - 50) * 10);
+                Logging.Debug("Extending duration by " + extMs + "ms");
+                source = source.AppendSource(x => new ExtendedDurationWaveSource(x, extMs));
             }
 
-            // We always have chorus
+            // We always apply chorus effects.
             if (chorusLevel != 0)
             {
-                source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * (effectsLevel) / ((decimal)100))), Delay = 16, Frequency = (effectsLevel / 10), Feedback = 25 });
+                // The "wetDryMix" mix is the percent of added chorus, with 0 indicating no added chorus.
+                const int delay = 16;
+                const int feedback = 25;
+                float wetDryMix = Math.Min(100, (int)(180 * effectsLevel / (decimal)100));
+                float frequency = (effectsLevel / 10);
+                source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = wetDryMix, Delay = delay, Frequency = frequency, Feedback = feedback });
             }
 
-            // We only have reverb and echo if we're not transmitting or receiving
-            if (!radio)
-            {
-                if (reverbLevel != 0)
-                {
-                    source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * (effectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100)) });
-                }
-
-                if (echoDelay != 0)
-                {
-                    source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * (effectsLevel) / ((decimal)100))), Feedback = 0 });
-                }
-            }
             // Apply a high pass filter for a radio effect
-            else
+            if (radio)
             {
                 var sampleSource = source.ToSampleSource().AppendSource(x => new BiQuadFilterSource(x));
                 sampleSource.Filter = new HighpassFilter(source.WaveFormat.SampleRate, 1015);
                 source = sampleSource.ToWaveSource();
             }
+            // We only have reverb and echo if we're not transmitting or receiving
+            else
+            {
+                if (reverbLevel != 0 && effectsLevel != 0)
+                {
+                    float reverbTime = (int)(1 + (999 * effectsLevel / (decimal)100));
+                    float reverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100));
+                    source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = reverbTime, ReverbMix = reverbMix });
+                }
+
+                if (echoDelay != 0 && effectsLevel != 0)
+                {
+                    // The "wetDryMix" mix is the percent of added echo, with 0 indicating no added echo.
+                    const int feedback = 0;
+                    float wetDryMix = Math.Max(5, (int)(10 * effectsLevel / (decimal)100));
+                    source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = wetDryMix, Feedback = feedback });
+                }
+            }
 
             // Adjust gain
             const int standardGain = 10;
-            if (effectsLevel != 0 && chorusLevel != 0)
-            {
-                int radioGain = radio ? 7 : 0;
-                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain + standardGain });
-            }
-            else
-            {
-                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = standardGain });
-            }
-
+            int radioGain = radio ? 7 : 0;
+            source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = (effectsLevel / 15) + radioGain + standardGain });
+            
             return source;
         }
 
