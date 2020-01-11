@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.3
   * Events
+    * Added new event `Flight assist`, triggered when you toggle flight assist on or off.
     * Added new event `Hardpoints`, triggered when you deploy or retract your hardpoints.
   * Speech Responder
     * Fixed vocalization of whitespace characters by `Spacialise()`.
