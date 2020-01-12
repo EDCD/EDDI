@@ -917,7 +917,7 @@ namespace EddiSpeechResponder
                         result.bodyshortname = body.shortname;
                     }
                 }
-                return new ReflectionValue(result);
+                return result == null ? new ReflectionValue(new object()) : new ReflectionValue(result);
             }, 1, 2);
 
             store["CommodityMarketDetails"] = new NativeFunction((values) =>
