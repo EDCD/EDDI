@@ -480,11 +480,15 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2SSSSS" + "$3");
 
             // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
-            // Also escape any double quotes inside the elements
+            // Also escape any double quotes or single quotes inside the elements
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
             result = Regex.Replace(result, "<(audio.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
@@ -500,6 +504,13 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "<(/voice)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(say-as.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/say-as)>", "XXXXX$1YYYYY");
+
+            // Cereproc uses some additional custom SSML tags (documented in https://www.cereproc.com/files/CereVoiceCloudGuide.pdf)
+            result = Regex.Replace(result, "<(usel.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/usel)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(spurt.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/spurt)>", "XXXXX$1YYYYY");
+
             // Now escape anything that is still present
             result = SecurityElement.Escape(result);
 
