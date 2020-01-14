@@ -1,6 +1,4 @@
-﻿using Cottle.Values;
-using Eddi;
-using EddiCompanionAppService;
+﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -200,8 +198,8 @@ namespace EddiSpeechResponder
         // Say something with a custom resolver
         public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
-            Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
-            string speech = resolver.resolve(scriptName, dict);
+            Dictionary<string, Cottle.Value> dict = resolver.createVariables(theEvent);
+            string speech = resolver.resolveFromName(scriptName, dict);
             if (speech != null)
             {
                 if (subtitles)
@@ -219,114 +217,7 @@ namespace EddiSpeechResponder
                 }
             }
         }
-
-        // Create Cottle variables from the EDDI information
-        private Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
-        {
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
-            {
-                ["capi_active"] = CompanionAppService.Instance?.active ?? false,
-                ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
-                ["environment"] = EDDI.Instance.Environment,
-                ["horizons"] = EDDI.Instance.inHorizons,
-                ["va_active"] = App.FromVA,
-                ["vehicle"] = EDDI.Instance.Vehicle
-            };
-
-            if (EDDI.Instance.Cmdr != null)
-            {
-                dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
-            }
-
-            if (EDDI.Instance.HomeStarSystem != null)
-            {
-                dict["homesystem"] = new ReflectionValue(EDDI.Instance.HomeStarSystem);
-            }
-
-            if (EDDI.Instance.HomeStation != null)
-            {
-                dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
-            }
-
-            if (EDDI.Instance.SquadronStarSystem != null)
-            {
-                dict["squadronsystem"] = new ReflectionValue(EDDI.Instance.SquadronStarSystem);
-            }
-
-            if (EDDI.Instance.CurrentStarSystem != null)
-            {
-                dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);
-            }
-
-            if (EDDI.Instance.LastStarSystem != null)
-            {
-                dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
-            }
-
-            if (EDDI.Instance.NextStarSystem != null)
-            {
-                dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
-            }
-
-            if (EDDI.Instance.DestinationStarSystem != null)
-            {
-                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
-            }
-
-            if (EDDI.Instance.DestinationStation != null)
-            {
-                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
-            }
-
-            if (EDDI.Instance.CurrentStation != null)
-            {
-                dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
-            }
-
-            if (EDDI.Instance.CurrentStellarBody != null)
-            {
-                dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
-            }
-
-            if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
-            {
-                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
-            }
-
-            if (theEvent != null)
-            {
-                dict["event"] = new ReflectionValue(theEvent);
-            }
-
-            if (EDDI.Instance.State != null)
-            {
-                dict["state"] = ScriptResolver.buildState();
-                Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
-            }
-
-            // Obtain additional variables from each monitor
-            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
-            {
-                IDictionary<string, object> monitorVariables = monitor.GetVariables();
-                if (monitorVariables != null)
-                {
-                    foreach (string key in monitorVariables.Keys)
-                    {
-                        if (monitorVariables[key] == null)
-                        {
-                            dict.Remove(key);
-                        }
-                        else
-                        {
-                            dict[key] = new ReflectionValue(monitorVariables[key]);
-                        }
-                    }
-                }
-            }
-
-            return dict;
-        }
-
+        
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();

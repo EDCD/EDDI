@@ -96,8 +96,10 @@ namespace UnitTests
             ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
-            string result = resolver.resolve("test", dict);
+            string result = resolver.resolveFromName("test", dict);
             Assert.AreEqual("Hello world", result);
+            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict);
+            Assert.AreEqual("Hello world", result2);
         }
 
         [TestMethod]
@@ -109,8 +111,10 @@ namespace UnitTests
             ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
-            string result = resolver.resolve("test", dict);
+            string result = resolver.resolveFromName("test", dict);
             Assert.AreEqual("Well Hello world", result);
+            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict);
+            Assert.AreEqual("Well Hello world", result2);
         }
 
         [TestMethod]
