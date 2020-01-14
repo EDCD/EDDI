@@ -927,7 +927,7 @@ namespace EddiVoiceAttackResponder
 
                     // Store in EDSM
                     IEdsmService edsmService = new StarMapService();
-                    edsmService?.sendStarMapComment(currentSystemName, comment);
+                    edsmService.sendStarMapComment(currentSystemName, comment);
                 }
             }
             catch (Exception e)
