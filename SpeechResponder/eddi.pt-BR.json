@@ -828,7 +828,7 @@
       "script": null,
       "default": true,
       "name": "Flight assist",
-      "description": "Triggered when flight assist is toggled",
+      "description": "Triggered when flight assist is toggled"
     },
     "FinesBounties_Add": {
       "enabled": true,

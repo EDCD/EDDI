@@ -801,7 +801,7 @@
       "script": null,
       "default": true,
       "name": "Flight assist",
-      "description": "Triggered when flight assist is toggled",
+      "description": "Triggered when flight assist is toggled"
     },
     "Friends status": {
       "enabled": false,
