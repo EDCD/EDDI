@@ -54,7 +54,7 @@ namespace EddiSpeechResponder
         public int priority(string name)
         {
             scripts.TryGetValue(name, out Script script);
-            return (script == null ? 5 : script.Priority);
+            return script?.Priority ?? 5;
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
@@ -1228,8 +1228,8 @@ namespace EddiSpeechResponder
                 if (curr?.x != null && dest?.x != null)
                 {
                     result = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
-                                + square((double)(curr.y - dest.y))
-                                + square((double)(curr.z - dest.z))), 2);
+                                + square((double)(curr.y ?? 0 - dest.y ?? 0))
+                                + square((double)(curr.z ?? 0 - dest.z ?? 0))), 2);
                 }
 
                 return new ReflectionValue(result);
@@ -1361,9 +1361,9 @@ namespace EddiSpeechResponder
             if (system == null) { return; }
             if (EDDI.Instance.HomeStarSystem != null && EDDI.Instance.HomeStarSystem.x != null && system.x != null)
             {
-                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
-                                                                      + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
-                                                                      + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
+                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x ?? 0 - EDDI.Instance.HomeStarSystem.x ?? 0), 2)
+                                                                      + Math.Pow((double)(system.y ?? 0 - EDDI.Instance.HomeStarSystem.y ?? 0), 2)
+                                                                      + Math.Pow((double)(system.z ?? 0 - EDDI.Instance.HomeStarSystem.z ?? 0), 2)), 2);
                 Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
