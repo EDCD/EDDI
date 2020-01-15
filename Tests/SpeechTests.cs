@@ -318,13 +318,6 @@ namespace SpeechTests
         }
 
         [TestMethod, TestCategory("Speech")]
-        public void TestSpeechServiceEscaping()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Say(null, "<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> & Co's shop");
-        }
-
-        [TestMethod, TestCategory("Speech")]
         public void TestSpeechServiceRadio()
         {
             Logging.Verbose = true;

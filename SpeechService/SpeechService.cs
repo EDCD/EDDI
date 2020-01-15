@@ -471,7 +471,7 @@ namespace EddiSpeechService
             }
         }
 
-        private string escapeSsml(string text)
+        public static string escapeSsml(string text)
         {
             // Our input text might have SSML elements in it but the rest needs escaping
             string result = text;
@@ -485,14 +485,14 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1WWWWW");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1WWWWW");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1WWWWW");
+            result = Regex.Replace(result, "(<[^>]*)\'", "$1WWWWW");
             result = Regex.Replace(result, "<(audio.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
-            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");   
             result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(prosody.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/prosody)>", "XXXXX$1YYYYY");
@@ -518,6 +518,7 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "XXXXX", "<");
             result = Regex.Replace(result, "YYYYY", ">");
             result = Regex.Replace(result, "ZZZZZ", "\"");
+            result = Regex.Replace(result, "WWWWW", "\'");
             result = Regex.Replace(result, "SSSSS", @"\");
             return result;
         }

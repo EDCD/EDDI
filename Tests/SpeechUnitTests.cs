@@ -438,5 +438,41 @@ namespace UnitTests
             }
             privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
         }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping1()
+        {
+            // Test escaping for invalid ssml.
+            var line = @"<invalid>test</invalid> <invalid withattribute='attribute'>test2</invalid>";
+            var result = SpeechService.escapeSsml(line);
+            Assert.AreEqual("&lt;invalid&gt;test&lt;/invalid&gt; &lt;invalid withattribute='attribute'&gt;test2&lt;/invalid&gt;", result);
+        }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping2()
+        {
+            // Test escaping for double quotes, single quotes, and <phoneme> ssml commands. XML characters outside of ssml elements are escaped.
+            var line = @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> & Co's shop";
+            var result = SpeechService.escapeSsml(line);
+            Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> &amp; Co&apos;s shop", result);
+        }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping3()
+        {
+            // Test escaping for <break> elements. XML characters outside of ssml elements are escaped.
+            var line = @"<break time=""100ms""/>He said ""Foo"".";
+            var result = SpeechService.escapeSsml(line);
+            Assert.AreEqual("<break time=\"100ms\"/>He said &quot;Foo&quot;.", result);
+        }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping4()
+        {
+            // Test escaping for Cereproc unique <usel> and <spurt> elements
+            var line = @"<spurt audio='g0001_004'>cough</spurt> This is a <usel variant=""1"">test</usel> sentence.";
+            var result = SpeechService.escapeSsml(line);
+            Assert.AreEqual(line, result);
+        }
     }
 }
