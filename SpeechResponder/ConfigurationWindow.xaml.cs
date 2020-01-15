@@ -276,8 +276,15 @@ namespace EddiSpeechResponder
                 string PersonalityName = window.PersonalityName?.Trim();
                 string PersonalityDescription = window.PersonalityDescription?.Trim();
                 Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
-                Personalities.Add(newPersonality);
-                Personality = newPersonality;
+                if (newPersonality == null)
+                {
+                    var _ = MessageBox.Show(window, "That name is taken. Please choose another name.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
+                else
+                {
+                    Personalities.Add(newPersonality);
+                    Personality = newPersonality;
+                }
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }

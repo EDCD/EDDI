@@ -162,7 +162,8 @@ namespace EddiSpeechResponder
         }
 
         /// <summary>
-        /// Create a copy of this file, altering the datapath appropriately
+        /// Create a copy of this file, altering the datapath appropriately.
+        /// Can return null if a personality of that name already exists, in which case the caller should present appropriate UI.
         /// </summary>
         public Personality Copy(string name, string description)
         {
@@ -175,17 +176,19 @@ namespace EddiSpeechResponder
             string iname = name.ToLowerInvariant();
             string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
             // Ensure it doesn't exist
-            if (!File.Exists(copyPath))
+            if (File.Exists(copyPath))
             {
-                ToFile(copyPath);
+                return null; // UI for this is the caller's job
             }
-            // Load the personality back in
+
+            // copy the personality via serializing and deserializing
+            ToFile(copyPath);
             Personality newPersonality = FromFile(copyPath);
+
             // Change its name and description and save it back out again
             newPersonality.Name = name;
             newPersonality.Description = description;
             newPersonality.ToFile();
-            // And finally return it
             return newPersonality;
         }
 
