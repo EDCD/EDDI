@@ -1,12 +1,11 @@
-﻿using System;
-using Eddi;
+﻿using Eddi;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -278,7 +277,7 @@ namespace EddiSpeechResponder
                 Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
                 if (newPersonality == null)
                 {
-                    var _ = MessageBox.Show(window, "That name is taken. Please choose another name.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    var _ = MessageBox.Show(window, Properties.SpeechResponder.name_taken, "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
                 else
                 {

@@ -286,6 +286,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to That name is taken. Please choose another name..
+        /// </summary>
+        public static string name_taken {
+            get {
+                return ResourceManager.GetString("name_taken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         public static string reset_script {

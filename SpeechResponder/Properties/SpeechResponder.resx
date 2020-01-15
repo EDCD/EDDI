@@ -230,4 +230,8 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Are you sure you want to reset the "{0}" script?</value>
   </data>
+  <data name="name_taken" xml:space="preserve">
+    <value>That name is taken. Please choose another name.</value>
+    <comment>Presented in a message box when the name supplied by the user is already taken by another item.</comment>
+  </data>
 </root>
