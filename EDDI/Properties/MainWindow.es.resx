@@ -278,8 +278,12 @@
   <data name="choose_lang_label_va" xml:space="preserve">
     <value>Seleccione el idioma de EDDI (Requiere reinicio de EDDI):</value>
   </data>
-  
-  
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Nombre (fonético)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Escuchar</value>
+  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonético Internacional</value>
   </data>
