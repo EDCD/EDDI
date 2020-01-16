@@ -117,13 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Nombre (fonético)</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Escuchar</value>
+  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonético Internacional</value>
   </data>
   <data name="ipa_resource1" xml:space="preserve">
-    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
+    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/es/</value>
   </data>
   <data name="ipa_resource2" xml:space="preserve">
     <value>https://tophonetics.com/</value>
