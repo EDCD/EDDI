@@ -2,6 +2,18 @@
 
 Here are some general guidelines and conventions for developers making contributions to the EDDI project.
 
+## Please talk to us first
+
+If you are a dev and want to make a fix or enhancement to EDDI, please talk to us on the [EDCD Discord](https://discord.gg/zQjjutY) or [here on GitHub](https://github.com/EDCD/EDDI) before starting work:
+
+1. to eliminate duplication of effort;
+2. to agree on a technical approach that doesn't conflict with other WIP;
+3. to ensure that the changes are in accord with the team's vision for the project, and if not, to adjust them accordingly.
+
+This is general good manners and will greatly enhance the likelihood of your PR being well received.
+
+There is sometimes a misconception that Open Source means that the primary project is obliged to accept PRs. That is not so. While you are 100% free to make changes in your own fork, we will only accept changes that are consistent with our vision for EDDI. Fundamental changes in particular need to be agreed in advance pleases.
+
 ## Git branch structure and tag conventions
 
 This is based on git-flow, but more relaxed:
@@ -11,7 +23,7 @@ This is based on git-flow, but more relaxed:
   * `master` points to the current production release. **All unit tests and code analysis must pass.** Fast-forwarding the `master` branch is preferred versus adding a merge commit.
   * `beta` points to the current beta release. **All unit tests and code analysis must pass.** Fast-forwarding the `beta` branch is preferred versus adding a merge commit.
   * `develop` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
-  * `l10n_develop` is the branch to which CrowdIn commits translations, and in general `l10n_` is the configurable prefix it will use if we unleash it on other branches.
+  * `l10n_develop` is the branch to which CrowdIn commits translations, and in general `l10n_` is the configurable prefix it will use if we unleash it on other branches. We generally squash-merge this branch, to reduce noise in the commit graph, then delete it so that CrowdIn will create a new one.
 
 ### Work in progress conventions
 
@@ -43,7 +55,7 @@ Please adhere to US spelling for all names in the source code, for consistency w
 
 ## Git commit conventions
   * Please use the standard Git convention of a short title in the first line and fuller body text in subsequent lines. However we aren't too strict about line lengths.
-  * Please reference issue numbers using the "hashtag" format `#123` in your commit message wherever possible. This lets GitHub create two-way hyperlinks between the issue report and the commit.
+  * Please reference issue numbers using the "hashtag" format `#123` in your commit message wherever possible. This lets GitHub create two-way hyperlinks between the issue report and the commit. [Certain text](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords) in a PR that fixes an issue can auto-close the issue when the PR is merged.
   * If in doubt, lean towards many small commits. This makes `git bisect` much more useful.
   * Please try at all costs to avoid a "mixed-up" commit, i.e. one that addresses more than one issue at once. One thing at a time is best. 
 
