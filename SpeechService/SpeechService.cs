@@ -21,7 +21,7 @@ namespace EddiSpeechService
     public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
-        private SpeechServiceConfiguration configuration;
+        public SpeechServiceConfiguration Configuration;
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut _activeSpeech;
@@ -84,7 +84,7 @@ namespace EddiSpeechService
 
         private SpeechService()
         {
-            configuration = SpeechServiceConfiguration.FromFile();
+            Configuration = SpeechServiceConfiguration.FromFile();
         }
 
         public void Dispose()
@@ -105,7 +105,7 @@ namespace EddiSpeechService
 
         public void ReloadConfiguration()
         {
-            configuration = SpeechServiceConfiguration.FromFile();
+            Configuration = SpeechServiceConfiguration.FromFile();
         }
 
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
@@ -168,7 +168,7 @@ namespace EddiSpeechService
             if (speech == null || speech.Trim() == "") { return; }
 
             // If the user wants to disable SSML then we remove any tags here
-            if (configuration.DisableSsml && (speech.Contains("<")))
+            if (Configuration.DisableSsml && (speech.Contains("<")))
             {
                 Logging.Debug("Removing SSML");
                 // User has disabled SSML so remove all tags
@@ -177,7 +177,7 @@ namespace EddiSpeechService
 
             if (string.IsNullOrWhiteSpace(voice))
             {
-                voice = configuration.StandardVoice;
+                voice = Configuration.StandardVoice;
             }
 
             // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
@@ -355,9 +355,9 @@ namespace EddiSpeechService
                             Logging.Warn("Failed to select voice " + voice, ex);
                         }
                     }
-                    Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
-                    synth.Rate = configuration.Rate;
-                    synth.Volume = configuration.Volume;
+                    Logging.Debug("Configuration is " + Configuration == null ? "<null>" : JsonConvert.SerializeObject(Configuration));
+                    synth.Rate = Configuration.Rate;
+                    synth.Volume = Configuration.Volume;
 
                     synth.SetOutputToWaveStream(stream);
 
