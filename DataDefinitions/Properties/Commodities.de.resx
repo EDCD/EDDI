@@ -130,7 +130,7 @@
     <comment>Commodity AganippeRush</comment>
   </data>
   <data name="AgriculturalMedicines" xml:space="preserve">
-    <value>Tiermedizin</value>
+    <value>Agrar-Medikamente</value>
     <comment>Commodity AgriculturalMedicines</comment>
   </data>
   <data name="AiRelics" xml:space="preserve">
