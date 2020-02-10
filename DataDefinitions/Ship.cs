@@ -318,6 +318,15 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            bulkheads = new Module();
+            powerplant = new Module();
+            thrusters = new Module();
+            powerdistributor = new Module();
+            frameshiftdrive = new Module();
+            lifesupport = new Module();
+            sensors = new Module();
+            fueltank = new Module();
+            cargohatch = new Module();
         }
 
         public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
@@ -334,6 +343,15 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            bulkheads = new Module();
+            powerplant = new Module();
+            thrusters = new Module();
+            powerdistributor = new Module();
+            frameshiftdrive = new Module();
+            lifesupport = new Module();
+            sensors = new Module();
+            fueltank = new Module();
+            cargohatch = new Module();
             this.activeFuelReservoirCapacity = reservoirFuelTankSize;
         }
 
