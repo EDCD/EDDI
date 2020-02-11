@@ -249,7 +249,7 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
     <value>Zurücksetzen der Verbindung.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>Bitte authentifizieren Sie EDDI's Verbindung zur Frontier API.</value>
+    <value>Bitte authentifizieren Sie die Verbindung von EDDI zur Frontier API.</value>
   </data>
   <data name="frontierApiNotEnabled" xml:space="preserve">
     <value>Nicht möglich</value>
