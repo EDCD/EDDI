@@ -266,6 +266,11 @@ namespace EddiDataProviderService
                         {
                             results.Add(result);
                         }
+                        else
+                        {
+                            // Something went wrong... retrieve new data.
+                            systemsToUpdate.Add(new KeyValuePair<string, object>(name, system));
+                        }
                     }
                 }
             }
@@ -310,27 +315,51 @@ namespace EddiDataProviderService
 
                                 // Carry over Body properties that we want to preserve (e.g. exploration data)
                                 oldStarSystem.TryGetValue("bodies", out object bodiesVal);
-                                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
-                                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+                                try
+                                {
+                                    List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
+                                    updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+                                }
+                                catch (Exception e) when (e is JsonException || e is JsonReaderException || e is JsonWriterException)
+                                {
+                                    Dictionary<string, object> data = new Dictionary<string, object>()
+                                    {
+                                        { "value", bodiesVal },
+                                        { "exception", e }
+                                    };
+                                    Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", data);
+                                }
 
                                 // Carry over Faction properties that we want to preserve (e.g. reputation data)
                                 oldStarSystem.TryGetValue("factions", out object factionsVal);
-                                if (factionsVal != null)
+                                try
                                 {
-                                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
-                                    if (oldFactions?.Count > 0)
+                                    if (factionsVal != null)
                                     {
-                                        foreach (var updatedFaction in updatedSystem.factions)
+                                        List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
+                                        if (oldFactions?.Count > 0)
                                         {
-                                            foreach (var oldFaction in oldFactions)
+                                            foreach (var updatedFaction in updatedSystem.factions)
                                             {
-                                                if (updatedFaction.name == oldFaction.name)
+                                                foreach (var oldFaction in oldFactions)
                                                 {
-                                                    updatedFaction.myreputation = oldFaction.myreputation;
+                                                    if (updatedFaction.name == oldFaction.name)
+                                                    {
+                                                        updatedFaction.myreputation = oldFaction.myreputation;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+                                }
+                                catch (Exception e) when (e is JsonException || e is JsonReaderException || e is JsonWriterException)
+                                {
+                                    Dictionary<string, object> data = new Dictionary<string, object>()
+                                    {
+                                        { "value", factionsVal },
+                                        { "exception", e }
+                                    };
+                                    Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", data);
                                 }
 
                                 // No station data needs to be carried over at this time.
