@@ -157,6 +157,8 @@ namespace UnitTests
             Assert.AreEqual(0.960938, (double)theEvent.solarmass, 0.001);
             Assert.AreEqual("K", theEvent.stellarclass);
             Assert.AreEqual(5108, theEvent.temperature);
+            Assert.AreEqual(5.375961M, theEvent.absolutemagnitude);
+            Assert.IsTrue(theEvent.mainstar ?? false);
             // Stellar extras
             Assert.AreEqual("yellow-orange", theEvent.chromaticity);
             Assert.AreEqual(99.33M, theEvent.massprobability);
@@ -180,6 +182,7 @@ namespace UnitTests
             Assert.AreEqual((decimal)659162.816, theEvent.radius);
             Assert.AreEqual(StarClass.solarradius((decimal)659162.816000000), theEvent.solarradius);
             Assert.AreEqual(0.94775, (double)theEvent.solarradius, 0.01);
+            Assert.IsTrue(theEvent.mainstar ?? false);
         }
 
         [TestMethod]
@@ -193,6 +196,29 @@ namespace UnitTests
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual(8, theEvent.stellarsubclass);
             Assert.IsTrue(theEvent.alreadydiscovered);
+            Assert.AreEqual(4916.66378995466M, theEvent.density);
+            Assert.AreEqual(1204, theEvent.estimatedvalue);
+            Assert.AreEqual(0.00456994738549848M, theEvent.luminosity);
+            Assert.AreEqual("Va", theEvent.luminosityclass);
+            Assert.IsTrue(!theEvent.mainstar ?? false);
+            Assert.AreEqual(32.983871M, theEvent.periapsis);
+            Assert.IsTrue(theEvent.scoopable);
+            Assert.AreEqual(0M, theEvent.tilt);
+            Assert.IsFalse(theEvent.alreadymapped);
+            Assert.AreEqual(2, theEvent.bodyId);
+            Assert.IsNull(theEvent.mapped);
+            Assert.IsInstanceOfType(theEvent.scanned, typeof(System.DateTime));
+            Assert.AreEqual(1, theEvent.parents.Count);
+            // Stellar extras
+            Assert.AreEqual(85, theEvent.absolutemagnitudeprobability);
+            Assert.AreEqual(37, theEvent.densityprobability);
+            Assert.AreEqual(86, theEvent.eccentricityprobability);
+            Assert.AreEqual(1, theEvent.inclinationprobability);
+            Assert.AreEqual(52, theEvent.orbitalperiodprobability);
+            Assert.AreEqual(8, theEvent.periapsisprobability);
+            Assert.AreEqual(61, theEvent.rotationalperiodprobability);
+            Assert.AreEqual(100, theEvent.semimajoraxisprobability);
+            Assert.IsNull(theEvent.tiltprobability);
         }
 
         [TestMethod]
