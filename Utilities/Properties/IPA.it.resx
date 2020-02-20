@@ -126,9 +126,7 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonetico Internazionale</value>
   </data>
-  <data name="ipa_resource1" xml:space="preserve">
-    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
-  </data>
+  
   <data name="ipa_resource2" xml:space="preserve">
     <value>https://tophonetics.com/</value>
   </data>
