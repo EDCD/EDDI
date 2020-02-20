@@ -127,7 +127,7 @@
     <value>国際音声記号（International Phonetic Alphabet, IPA）</value>
   </data>
   <data name="ipa_resource1" xml:space="preserve">
-    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
+    <value>https://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
   </data>
   <data name="ipa_resource2" xml:space="preserve">
     <value>https://tophonetics.com/ja/</value>

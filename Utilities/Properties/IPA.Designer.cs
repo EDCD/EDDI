@@ -115,7 +115,7 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/.
+        ///   Looks up a localized string similar to https://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/.
         /// </summary>
         public static string ipa_resource1 {
             get {

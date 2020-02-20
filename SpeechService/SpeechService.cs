@@ -367,7 +367,7 @@ namespace EddiSpeechService
                         Logging.Debug("Obtaining best guess culture");
                         string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
                         Logging.Debug("Best guess culture is " + culture);
-                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
+                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""https://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                         Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
                         if (voice != null && voice.StartsWith("CereVoice "))
                         {
