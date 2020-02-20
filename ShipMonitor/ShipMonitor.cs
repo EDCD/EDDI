@@ -350,6 +350,9 @@ namespace EddiShipMonitor
                 // Save swapped ship size for minor faction station update
                 LandingPadSize swappedShipSize = GetCurrentShip()?.size;
 
+                // Set ship hull and module health with a profile refresh before we write the stored ship.
+                EDDI.Instance?.refreshProfile();
+                
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
 
@@ -359,7 +362,7 @@ namespace EddiShipMonitor
                     Ship storedShip = GetShip(@event.storedshipid);
                     if (storedShip != null)
                     {
-                        // Set location of stored ship to the current sstem
+                        // Set location of stored ship to the current system
                         storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.systemname;
                         storedShip.station = EDDI.Instance?.CurrentStation?.name;
                     }
@@ -465,6 +468,7 @@ namespace EddiShipMonitor
             ship.rebuy = @event.rebuy;
             ship.unladenmass = @event.unladenmass;
             ship.maxjumprange = @event.maxjumprange;
+            ship.health = @event.hullhealth;
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
@@ -1057,9 +1061,9 @@ namespace EddiShipMonitor
                         ship = profileCurrentShip;
                         AddShip(ship);
                     }
-                    // Update launch bays and FSD optimum mass from profile
                     else
                     {
+                        // Update launch bays from profile
                         if (profileCurrentShip?.launchbays?.Any() ?? false)
                         {
                             ship.launchbays = profileCurrentShip.launchbays;
@@ -1068,7 +1072,42 @@ namespace EddiShipMonitor
                         {
                             ship.launchbays.Clear();
                         }
+                        // Update FSD optimum mass from profile
                         ship.optimalmass = profileCurrentShip.optimalmass;
+                        // Update ship hull health from profile
+                        ship.health = profileCurrentShip.health;
+                        // Update ship module health from profile
+                        ship.bulkheads.health = profileCurrentShip.bulkheads.health;
+                        ship.powerplant.health = profileCurrentShip.powerplant.health;
+                        ship.thrusters.health = profileCurrentShip.thrusters.health;
+                        ship.powerdistributor.health = profileCurrentShip.powerdistributor.health;
+                        ship.frameshiftdrive.health = profileCurrentShip.frameshiftdrive.health;
+                        ship.lifesupport.health = profileCurrentShip.lifesupport.health;
+                        ship.sensors.health = profileCurrentShip.sensors.health;
+                        ship.fueltank.health = profileCurrentShip.fueltank.health;
+                        ship.cargohatch.health = profileCurrentShip.cargohatch.health;
+                        foreach (var profileHardpoint in profileCurrentShip.hardpoints)
+                        {
+                            foreach (var shipHardpoint in ship.hardpoints)
+                            {
+                                if (profileHardpoint.module != null && profileHardpoint.module.invariantName == shipHardpoint.module.invariantName)
+                                {
+                                    shipHardpoint.module = shipHardpoint.module ?? new Module();
+                                    shipHardpoint.module.health = profileHardpoint.module.health;
+                                }
+                            }
+                        }
+                        foreach (var profileCompartment in profileCurrentShip.compartments)
+                        {
+                            foreach (var shipCompartment in ship.compartments)
+                            {
+                                if (profileCompartment.module != null && profileCompartment.module.invariantName == shipCompartment.module.invariantName)
+                                {
+                                    shipCompartment.module = shipCompartment.module ?? new Module();
+                                    shipCompartment.module.health = profileCompartment.module.health;
+                                }
+                            }
+                        }
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }

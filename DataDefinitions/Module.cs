@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public decimal power { get; set; }
         [JsonProperty]
-        public decimal health { get; set; }
+        public decimal health { get; set; } = 100M;
         [JsonProperty]
         public bool hot { get; set; } // False = `clean', true = `hot`
 
