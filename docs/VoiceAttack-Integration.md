@@ -299,6 +299,8 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Environment}: the environment the ship is in ("Docked", "Landed", "Normal space", "Supercruise" or "Witch space") 
   * {TXT:Vehicle}: the vehicle the commander is currently controlling ("Ship", "SRV" or "Fighter")
   * {BOOL:cAPI active}: true if the cAPI is currently active 
+  * {BOOL:icao active}: true if use of ICAO text replacements are currently enabled 
+  * {BOOL:ssml active}: true if ssml tags are currently enabled
   * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
   * {BOOL:EDDI speaking}: true if EDDI is currently speaking
 

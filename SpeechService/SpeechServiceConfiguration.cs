@@ -23,13 +23,13 @@ namespace EddiSpeechService
         public bool DistortOnDamage { get; set; } = true;
 
         [JsonProperty("rate")]
-        public int Rate { get; set; } = 0;
+        public int Rate { get; set; }
 
         [JsonProperty("disablessml")]
-        public bool DisableSsml { get; set; } = false;
+        public bool DisableSsml { get; set; }
 
         [JsonProperty("enableicao")]
-        public bool EnableIcao { get; set; } = false;
+        public bool EnableIcao { get; set; }
 
         [JsonIgnore]
         private string dataPath;

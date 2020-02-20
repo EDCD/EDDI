@@ -230,7 +230,9 @@ namespace EddiSpeechResponder
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,
                 ["va_active"] = App.FromVA,
-                ["vehicle"] = EDDI.Instance.Vehicle
+                ["vehicle"] = EDDI.Instance.Vehicle,
+                ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
+                ["ssml_active"] = !SpeechService.Instance.Configuration.DisableSsml,
             };
 
             if (EDDI.Instance.Cmdr != null)

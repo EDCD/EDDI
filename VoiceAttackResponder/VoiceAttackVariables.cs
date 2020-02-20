@@ -420,6 +420,8 @@ namespace EddiVoiceAttackResponder
             try
             {
                 vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance?.active ?? false);
+                vaProxy.SetBoolean("ssml active", !(SpeechService.Instance?.Configuration.DisableSsml ?? false));
+                vaProxy.SetBoolean("icao active", SpeechService.Instance?.Configuration.EnableIcao ?? false);
                 vaProxy.SetText("Environment", EDDI.Instance.Environment);
                 vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
                 vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());

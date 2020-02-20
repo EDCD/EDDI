@@ -107,20 +107,20 @@ namespace EddiSpeechService
         private int chorusLevelForShip(Ship ship)
         {
             // This may be affected by ship parameters
-            return (int)(60 * (Math.Max(fxLevel(distortionLevelForShip(ship)), (decimal)configuration.EffectsLevel) / 100M));
+            return (int)(60 * (Math.Max(fxLevel(distortionLevelForShip(ship)), (decimal)Configuration.EffectsLevel) / 100M));
         }
 
         private int reverbLevelForShip(Ship ship)
         {
             // This is not affected by ship parameters
-            return (int)(80 * ((decimal)configuration.EffectsLevel) / 100M);
+            return (int)(80 * ((decimal)Configuration.EffectsLevel) / 100M);
         }
 
         private int distortionLevelForShip(Ship ship)
         {
             // This is affected by ship health
             int distortionLevel = 0;
-            if (ship != null && configuration.DistortOnDamage)
+            if (ship != null && Configuration.DistortOnDamage)
             {
                 distortionLevel = (100 - (int)ship.health);
             }
@@ -133,10 +133,10 @@ namespace EddiSpeechService
             int distortionFX = 0;
             if (distortionLevel > 0)
             {
-                distortionFX = (int)Decimal.Round((distortionLevel / 100M) * (100M - configuration.EffectsLevel));
+                distortionFX = (int)Decimal.Round((distortionLevel / 100M) * (100M - Configuration.EffectsLevel));
                 Logging.Debug("Calculating effect of distortion on speech effects: +" + distortionFX);
             }
-            return configuration.EffectsLevel + distortionFX;
+            return Configuration.EffectsLevel + distortionFX;
         }
     }
 
