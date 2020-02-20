@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiBgsService
@@ -67,29 +66,16 @@ namespace EddiBgsService
 
                 if (responses?.Count > 0)
                 {
-                    List<Faction> factions = ParseFactionsAsync(responses);
+                    List<Faction> factions = ParseFactionsParallel(responses);
                     return factions.OrderBy(x => x.name).ToList();
                 }
             }
             return null;
         }
 
-        private List<Faction> ParseFactionsAsync(List<object> responses)
+        private List<Faction> ParseFactionsParallel(List<object> responses)
         {
-            List<Task<Faction>> factionTasks = new List<Task<Faction>>();
-            foreach (object response in responses)
-            {
-                factionTasks.Add(Task.Run(() => ParseFaction(response)));
-            }
-            Task.WhenAll(factionTasks.ToArray());
-
-            List<Faction> factions = new List<Faction>();
-            foreach (Task<Faction> task in factionTasks)
-            {
-                Faction faction = task.Result;
-                if (faction != null) { factions.Add(faction); };
-            }
-
+            List<Faction> factions = responses.AsParallel().Select(ParseFaction).ToList();
             return factions;
         }
 
