@@ -179,7 +179,7 @@ namespace UnitTests
 
             List<string> setKeys = new List<string>();
             EddiVoiceAttackResponder.VoiceAttackVariables.setEventValues(vaProxy, ev, setKeys);
-            EddiVoiceAttackResponder.VoiceAttackVariables.setEventExtendedValues(vaProxy, "EDDI " + ev.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), setKeys);
+            EddiVoiceAttackResponder.VoiceAttackVariables.setEventExtendedValuesParallel(vaProxy, "EDDI " + ev.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), setKeys);
 
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
             Assert.AreEqual(3, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan nonbodies").Value);
