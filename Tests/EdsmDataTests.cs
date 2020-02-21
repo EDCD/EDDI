@@ -64,7 +64,7 @@ namespace UnitTests
         {
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmBodies);
 
-            List<Body> bodies = fakeEdsmService.ParseStarMapBodies(response);
+            List<Body> bodies = fakeEdsmService.ParseStarMapBodiesParallel(response);
 
             Assert.IsNotNull(bodies);
 
@@ -295,7 +295,7 @@ namespace UnitTests
             // Test stations data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmStations);
 
-            List<Station> stations = fakeEdsmService.ParseStarMapStations(response);
+            List<Station> stations = fakeEdsmService.ParseStarMapStationsParallel(response);
 
             Assert.IsNotNull(stations);
 
@@ -359,7 +359,7 @@ namespace UnitTests
             // Test factions data
             JObject response = DeserializeJsonResource<JObject>(Resources.edsmFactions);
             string systemName = (string)response["name"];
-            List<Faction> factions = fakeEdsmService.ParseStarMapFactions(response, systemName);
+            List<Faction> factions = fakeEdsmService.ParseStarMapFactionsParallel(response, systemName);
 
             Assert.IsNotNull(factions);
 
