@@ -75,6 +75,7 @@ namespace EddiBgsService
 
         private List<Faction> ParseFactionsParallel(List<object> responses)
         {
+            // it is OK to allow nulls into this list; they will be handled upstream
             List<Faction> factions = responses.AsParallel().Select(ParseFaction).ToList();
             return factions;
         }
