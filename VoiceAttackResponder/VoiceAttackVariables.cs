@@ -92,7 +92,7 @@ namespace EddiVoiceAttackResponder
         public static void setEventExtendedValuesParallel(dynamic vaProxy, string prefix, dynamic json, List<string> setKeys)
         {
             var jProperties = ((JObject)json).Properties();
-            jProperties.AsParallel().ForAll(child => setEventExtendedValue(vaProxy, prefix, child, ref setKeys));
+            jProperties.AsParallel().Select(child => setEventExtendedValue(vaProxy, prefix, child, ref setKeys));
         }
 
         public static void setEventExtendedValue(dynamic vaProxy, string prefix, JProperty child, ref List<string> setKeys)
