@@ -24,27 +24,62 @@ namespace UnitTests
 
         public void SetText(string varName, string value)
         {
-            vaVars.Add(varName, value);
+            if (vaVars.ContainsKey(varName))
+            {
+                vaVars[varName] = value;
+            }
+            else
+            {
+                vaVars.Add(varName, value);
+            }
         }
 
         public void SetInt(string varName, int? value)
         {
-            vaVars.Add(varName, value);
+            if (vaVars.ContainsKey(varName))
+            {
+                vaVars[varName] = value;
+            }
+            else
+            {
+                vaVars.Add(varName, value);
+            }
         }
 
         public void SetBoolean(string varName, bool? value)
         {
-            vaVars.Add(varName, value);
+            if (vaVars.ContainsKey(varName))
+            {
+                vaVars[varName] = value;
+            }
+            else
+            {
+                vaVars.Add(varName, value);
+            }
         }
 
         public void SetDecimal(string varName, decimal? value)
         {
-            vaVars.Add(varName, value);
+            if (vaVars.ContainsKey(varName))
+            {
+                vaVars[varName] = value;
+            }
+            else
+            {
+                vaVars.Add(varName, value);
+            }
         }
 
         public void SetDate(string varName, DateTime? value)
         {
-            vaVars.Add(varName, value);
+            if (vaVars.ContainsKey(varName))
+            {
+                vaVars[varName] = value;
+            }
+            else
+            {
+                vaVars.Add(varName, value);
+            }
         }
     }
 
