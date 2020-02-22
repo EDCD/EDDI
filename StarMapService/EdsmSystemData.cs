@@ -71,7 +71,11 @@ namespace EddiStarMapService
                 var token = JToken.Parse(clientResponse.Content);
                 if (token is JArray responses)
                 {
-                    List<StarSystem> starSystems = responses.AsParallel().Select(s => ParseStarMapSystem(s.ToObject<JObject>())).OfType<StarSystem>().ToList();
+                    List<StarSystem> starSystems = responses
+                        .AsParallel()
+                        .Select(s => ParseStarMapSystem(s.ToObject<JObject>()))
+                        .Where(s => s != null)
+                        .ToList();
                     return starSystems;
                 }
             }
@@ -102,11 +106,15 @@ namespace EddiStarMapService
                 var token = JToken.Parse(clientResponse.Content);
                 if (token is JArray responses)
                 {
-                    List<Dictionary<string, object>> distantSystems = responses.AsParallel().Select(r => new Dictionary<string, object>()
-                    {
-                        { "distance", (decimal)r["distance"] },
-                        { "system", ParseStarMapSystem(r.ToObject<JObject>()) }
-                    }).OfType<Dictionary<string, object>>().ToList();
+                    List<Dictionary<string, object>> distantSystems = responses
+                        .AsParallel()
+                        .Select(r => new Dictionary<string, object>()
+                            {
+                                { "distance", (decimal)r["distance"] },
+                                { "system", ParseStarMapSystem(r.ToObject<JObject>()) }
+                            })
+                        .Where(s => s != null)
+                        .ToList();
                     return distantSystems;
                 }
             }
@@ -136,7 +144,11 @@ namespace EddiStarMapService
                 var token = JToken.Parse(clientResponse.Content);
                 if (token is JArray responses)
                 {
-                    List<StarSystem> starSystems = responses.AsParallel().Select(s => ParseStarMapSystem(s.ToObject<JObject>())).OfType<StarSystem>().ToList();
+                    List<StarSystem> starSystems = responses
+                        .AsParallel()
+                        .Select(s => ParseStarMapSystem(s.ToObject<JObject>()))
+                        .Where(s => s != null)
+                        .ToList();
                     return starSystems;
                 }
             }
