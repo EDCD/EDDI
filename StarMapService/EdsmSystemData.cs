@@ -37,7 +37,11 @@ namespace EddiStarMapService
                 var token = JToken.Parse(clientResponse.Content);
                 if (token is JArray responses)
                 {
-                    List<StarSystem> starSystems = responses.AsParallel().Select(s => ParseStarMapSystem(s.ToObject<JObject>())).OfType<StarSystem>().ToList();
+                    List<StarSystem> starSystems = responses
+                        .AsParallel()
+                        .Select(s => ParseStarMapSystem(s.ToObject<JObject>()))
+                        .Where(s => s != null)
+                        .ToList();
                     return starSystems;
                 }
             }

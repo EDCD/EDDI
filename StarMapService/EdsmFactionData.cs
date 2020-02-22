@@ -41,7 +41,11 @@ namespace EddiStarMapService
 
             if (factions != null)
             {
-                Factions = factions.AsParallel().Select(f => ParseStarMapFaction(f.ToObject<JObject>(), systemName)).OfType<Faction>().ToList();
+                Factions = factions
+                    .AsParallel()
+                    .Select(f => ParseStarMapFaction(f.ToObject<JObject>(), systemName))
+                    .Where(f => f != null)
+                    .ToList();
             }
             return Factions;
         }

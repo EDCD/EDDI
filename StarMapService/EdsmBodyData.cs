@@ -44,7 +44,11 @@ namespace EddiStarMapService
 
                 if (bodies != null)
                 {
-                    Bodies = bodies.AsParallel().Select(b => ParseStarMapBody(b.ToObject<JObject>(), system)).OfType<Body>().ToList();
+                    Bodies = bodies
+                        .AsParallel()
+                        .Select(b => ParseStarMapBody(b.ToObject<JObject>(), system))
+                        .Where(b => b != null)
+                        .ToList();
                 }
             }
             return Bodies;

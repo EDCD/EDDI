@@ -44,7 +44,11 @@ namespace EddiStarMapService
 
                 if (stations != null)
                 {
-                    Stations = stations.AsParallel().Select(s => ParseStarMapStation(s.ToObject<JObject>(), system)).OfType<Station>().ToList();
+                    Stations = stations
+                        .AsParallel()
+                        .Select(s => ParseStarMapStation(s.ToObject<JObject>(), system))
+                        .Where(s => s != null)
+                        .ToList();
                 }
                 // Sort stations by distance 
                 Stations = Stations.OrderBy(o => o.distancefromstar).ToList();
