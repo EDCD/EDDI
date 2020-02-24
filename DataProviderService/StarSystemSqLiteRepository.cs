@@ -212,8 +212,10 @@ namespace EddiDataProviderService
             List<DatabaseStarSystem> dataSets = Instance.ReadStarSystems(names);
 
             bool needToUpdate = false;
-            foreach (DatabaseStarSystem dbStarSystem in dataSets)
+
+            for (int i = 0; i < dataSets.Count; i++)
             {
+                DatabaseStarSystem dbStarSystem = dataSets[i];
                 if (dbStarSystem.systemJson != null)
                 {
                     // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
@@ -235,7 +237,7 @@ namespace EddiDataProviderService
                             needToUpdate = true;
                         }
                     }
-
+                    
                     if (needToUpdate)
                     {
                         // We want to update this star system (don't deserialize the old result at this time)
@@ -457,7 +459,7 @@ namespace EddiDataProviderService
             DateTime lastUpdated = DateTime.MinValue;
             DateTime? lastVisit = null;
             int totalVisits = 0;
-
+            
             using (SQLiteDataReader rdr = cmd.ExecuteReader())
             {
                 if (rdr.Read())
@@ -486,11 +488,11 @@ namespace EddiDataProviderService
                         }
                         if (rdr.GetName(i) == "starsystemlastupdated")
                         {
-                            lastUpdated = rdr.IsDBNull(i) ? DateTime.MinValue : rdr.GetDateTime(i);
+                            lastUpdated = rdr.IsDBNull(i) ? DateTime.MinValue : rdr.GetDateTime(i).ToUniversalTime();
                         }
                         if (rdr.GetName(i) == "lastvisit")
                         {
-                            lastVisit = rdr.IsDBNull(i) ? null : (DateTime?)rdr.GetValue(i);
+                            lastVisit = rdr.IsDBNull(i) ? null : (DateTime?)rdr.GetDateTime(i).ToUniversalTime();
                         }
                         if (rdr.GetName(i) == "totalvisits")
                         {
