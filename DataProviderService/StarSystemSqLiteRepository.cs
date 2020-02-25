@@ -109,11 +109,13 @@ namespace EddiDataProviderService
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
         private static StarSystemSqLiteRepository instance;
+        private StarSystemCache starSystemCache;
 
         private StarSystemSqLiteRepository(IEdsmService edsmService)
         {
             this.edsmService = edsmService;
             dataProviderService = new DataProviderService(edsmService);
+            starSystemCache = new StarSystemCache(30);
         }
 
         private static readonly object instanceLock = new object();
@@ -514,6 +516,13 @@ namespace EddiDataProviderService
         {
             if (systemName == string.Empty || data == string.Empty) { return null; }
 
+            // Check our short term star system cache for a previously deserialized star system and return that if it is available.
+            if (starSystemCache.Contains(systemName))
+            {
+                return starSystemCache.Get(systemName);
+            }
+
+            // Not found in memory, proceed with deserialization
             StarSystem result;
             try
             {
@@ -539,6 +548,13 @@ namespace EddiDataProviderService
                     result = null;
                 }
             }
+
+            // Save the deserialized star system to our short term star system cache for reference
+            if (result != null)
+            {
+                starSystemCache.Add(result);
+            }
+
             return result;
         }
 
@@ -551,7 +567,15 @@ namespace EddiDataProviderService
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
             if (!starSystems.Any()) { return; }
+            
+            // Update any star systems in our short term star system cache to minimize repeat deserialization
+            foreach (var starSystem in starSystems)
+            {
+                starSystemCache.Remove(starSystem.systemname);
+                starSystemCache.Add(starSystem);
+            }
 
+            // Determine whether we need to delete, insert, or update each system
             var delete = new List<StarSystem>();
             var update = new List<StarSystem>();
             var insert = new List<StarSystem>();
@@ -900,27 +924,6 @@ namespace EddiDataProviderService
             finally
             {
                 con.Dispose();
-            }
-        }
-
-        protected internal class DatabaseStarSystem
-        {
-            // Data as read from columns in our database
-            public string systemName { get; private set; }
-            public long? systemAddress { get; set; }
-            public long? edsmId { get; set; }
-            public string systemJson { get; set; }
-            public string comment { get; set; }
-            public DateTime lastUpdated { get; set; }
-            public DateTime? lastVisit { get; set; }
-            public int totalVisits { get; set; }
-
-            public DatabaseStarSystem(string systemName, long? systemAddress, long? edsmId, string systemJson)
-            {
-                this.systemName = systemName;
-                this.systemAddress = systemAddress;
-                this.edsmId = edsmId;
-                this.systemJson = systemJson;
             }
         }
     }
