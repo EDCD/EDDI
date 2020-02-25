@@ -2421,7 +2421,14 @@ namespace Eddi
         /// </summary>
         public List<EDDIMonitor> findMonitors()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(path))
+            {
+                Logging.Warn("Unable to start EDDI Monitors, application directory path not found.");
+                return null;
+            }
+
+            DirectoryInfo dir = new DirectoryInfo(path);
             List<EDDIMonitor> monitors = new List<EDDIMonitor>();
             Type pluginType = typeof(EDDIMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
@@ -2492,7 +2499,13 @@ namespace Eddi
         /// </summary>
         public List<EDDIResponder> findResponders()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(path))
+            {
+                Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
+                return null;
+            }
+            DirectoryInfo dir = new DirectoryInfo(path);
             List<EDDIResponder> responders = new List<EDDIResponder>();
             Type pluginType = typeof(EDDIResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
