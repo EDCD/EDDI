@@ -167,18 +167,35 @@ namespace Eddi
                     {
                         Task.Run(() => responders = findResponders()), // Set up responders
                         Task.Run(() => monitors = findMonitors()), // Set up monitors 
-                        Task.Run(() => updateHomeSystemStation(configuration)), // Set up home system details
-                        Task.Run(() => // Set up squadron details
-                        {
-                            updateSquadronSystem(configuration);
-                            Cmdr.squadronname = configuration.SquadronName;
-                            Cmdr.squadronid = configuration.SquadronID;
-                            Cmdr.squadronrank = configuration.SquadronRank;
-                            Cmdr.squadronallegiance = configuration.SquadronAllegiance;
-                            Cmdr.squadronpower = configuration.SquadronPower;
-                            Cmdr.squadronfaction = configuration.SquadronFaction;
-                        }),
                     });
+                    // If our home system and squadron system are the same, run those tasks in the same thread to prevent fetching from the star system database multiple times.
+                    // Otherwise, run them in seperate threads.
+                    void ActionUpdateHomeSystemStation()
+                    {
+                        updateHomeSystemStation(configuration);
+                    }
+                    void ActionUpdateSquadronSystem()
+                    {
+                        updateSquadronSystem(configuration);
+                        Cmdr.squadronname = configuration.SquadronName;
+                        Cmdr.squadronid = configuration.SquadronID;
+                        Cmdr.squadronrank = configuration.SquadronRank;
+                        Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                        Cmdr.squadronpower = configuration.SquadronPower;
+                        Cmdr.squadronfaction = configuration.SquadronFaction;
+                    }
+                    if (configuration.HomeSystem == configuration.SquadronSystem)
+                    {
+                        essentialAsyncTasks.Add(Task.Run((Action) ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
+                    }
+                    else
+                    {
+                        essentialAsyncTasks.AddRange(new List<Task>()
+                        {
+                            Task.Run(ActionUpdateHomeSystemStation),
+                            Task.Run(ActionUpdateSquadronSystem)
+                        });
+                    }
                 }
                 else
                 {
