@@ -220,8 +220,8 @@ namespace Eddi
                     {
                         essentialAsyncTasks.AddRange(new List<Task>()
                         {
-                            Task.Run(ActionUpdateHomeSystemStation),
-                            Task.Run(ActionUpdateSquadronSystem)
+                            Task.Run((Action)ActionUpdateHomeSystemStation),
+                            Task.Run((Action)ActionUpdateSquadronSystem)
                         });
                     }
                 }
