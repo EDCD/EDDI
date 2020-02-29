@@ -28,8 +28,6 @@ namespace Eddi
     /// </summary>
     public class EDDI
     {
-        private static EDDI instance;
-
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
 
@@ -42,18 +40,51 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
         public bool inCrew { get; private set; } = false;
-        public bool inHorizons { get; private set; } = true;
 
-        private bool _gameIsBeta = false;
+        public bool inHorizons 
+        {
+            get
+            {
+                if (_inHorizons != null)
+                {
+                    return (bool)_inHorizons;
+                }
+
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                _inHorizons = eliteConfiguration.Horizons;
+                return _inHorizons ?? true;
+            }
+            private set
+            {
+                _inHorizons = value;
+            } 
+        }
+        private bool? _inHorizons;
+
         public bool gameIsBeta
         {
-            get => _gameIsBeta;
+            get
+            {
+                if (_gameIsBeta != null)
+                {
+                    return (bool)_gameIsBeta;
+                }
+
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                _gameIsBeta = eliteConfiguration.Horizons;
+                return _gameIsBeta ?? false;
+            }
             private set
             {
                 _gameIsBeta = value;
-                CompanionAppService.Instance.inBeta = value;
+                Logging.Info(value ? "On beta" : "On live");
+                // (Re)configure the CompanionAppService service
+                CompanionAppService.Instance.gameIsBeta = value;
+                // (Re)configure the Inara service
+                Task.Run(() => { EddiInaraService.InaraService.Start(value, EddiIsBeta()); });
             }
         }
+        private bool? _gameIsBeta;
 
         static EDDI()
         {
@@ -61,7 +92,7 @@ namespace Eddi
             Directory.CreateDirectory(Constants.DATA_DIR);
         }
 
-        private static readonly object instanceLock = new object();
+        // EDDI Instance
         public static EDDI Instance
         {
             get
@@ -80,6 +111,8 @@ namespace Eddi
                 return instance;
             }
         }
+        private static EDDI instance;
+        private static readonly object instanceLock = new object();
 
         // Upgrade information
         public bool UpgradeAvailable = false;
@@ -150,11 +183,6 @@ namespace Eddi
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
-                // Set up the Elite configuration
-                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                gameIsBeta = eliteConfiguration.Beta;
-                Logging.Info(gameIsBeta ? "On beta" : "On live");
-                inHorizons = eliteConfiguration.Horizons;
 
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();

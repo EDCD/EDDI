@@ -66,7 +66,7 @@ namespace EddiCompanionAppService
         public event StateChangeHandler StateChanged;
 
         public CompanionAppCredentials Credentials;
-        public bool inBeta { get; set; } = false;
+        public bool gameIsBeta { get; set; } = false;
         public bool active => CurrentState == State.Authorized;
 
         private static CompanionAppService instance;
@@ -133,7 +133,7 @@ namespace EddiCompanionAppService
 
         private string ServerURL()
         {
-            return inBeta ? BETA_SERVER : LIVE_SERVER;
+            return gameIsBeta ? BETA_SERVER : LIVE_SERVER;
         }
 
         ///<summary>Log in. Throws an exception if it fails</summary>

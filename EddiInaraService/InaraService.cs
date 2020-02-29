@@ -43,15 +43,15 @@ namespace EddiInaraService
             }
         }
 
-        private static bool eddiInBeta;
-        private static bool gameInBeta;
+        private bool eddiInBeta;
+        private bool gameInBeta;
 
         public static void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
             Logging.Debug("Creating new Inara service instance.");
-            eddiInBeta = eddiIsBeta;
-            gameInBeta = gameIsBeta;
             _ = Instance;
+            Instance.eddiInBeta = eddiIsBeta;
+            Instance.gameInBeta = gameIsBeta;
         }
 
         protected InaraService()
