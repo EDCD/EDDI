@@ -81,8 +81,7 @@ namespace Eddi
                 // (Re)configure the CompanionAppService service
                 CompanionAppService.Instance.gameIsBeta = value;
                 // (Re)configure the Inara service
-                void ReconfigureInara() => EddiInaraService.InaraService.Start(value, EddiIsBeta());
-                Task.Run(ReconfigureInara);
+                EddiInaraService.InaraService.Start(value, EddiIsBeta());
             }
         }
         private bool? _gameIsBeta;
