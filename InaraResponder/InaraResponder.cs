@@ -1468,7 +1468,28 @@ namespace EddiInaraResponder
 
         private void SendQueuedAPIEventsAsync()
         {
-            InaraService.Instance.SendQueuedAPIEventsAsync();
+            try
+            {
+                InaraService.Instance.SendQueuedAPIEventsAsync();
+            }
+            catch (InaraException e)
+            {
+                if (e is InaraAuthenticationException)
+                {
+                    InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                    inaraConfiguration.validAPIkey = false;
+                    inaraConfiguration.ToFile();
+
+                    // TODO:
+                    // Verbally alert the user that the API key is invalid,
+                    // cease processing journal events until the API key is altered,
+                    // update the UI with a visual indicator that the API key is invalid
+                }
+                else
+                {
+                    // TODO: TBD
+                }
+            }
         }
 
         private void OnApplicationExit(object sender, EventArgs e)

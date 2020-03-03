@@ -20,6 +20,9 @@ namespace EddiInaraService
         [JsonProperty("lastSync")]
         public DateTime lastSync { get; set; }
 
+        [JsonProperty("validAPIkey")]
+        public bool validAPIkey { get; set; } = true;
+
         [JsonIgnore]
         private string dataPath;
 
