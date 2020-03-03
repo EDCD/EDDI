@@ -181,6 +181,14 @@ namespace EddiInaraService
                 {
                     // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
                     Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                    if (inaraResponse.eventStatusText == "Invalid API key.")
+                    {
+                        throw new InaraAuthenticationException(inaraResponse.eventStatusText);
+                    }
+                    else
+                    {
+                        throw new InaraErrorException(inaraResponse.eventStatusText);
+                    }
                 }
                 else
                 {
