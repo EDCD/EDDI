@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using EddiInaraService;
 using Utilities;
@@ -1468,28 +1469,30 @@ namespace EddiInaraResponder
 
         private void SendQueuedAPIEventsAsync()
         {
-            try
+            Task.Run(() => InaraService.Instance.SendQueuedAPIEventsAsync()).ContinueWith(t =>
             {
-                InaraService.Instance.SendQueuedAPIEventsAsync();
-            }
-            catch (InaraException e)
-            {
-                if (e is InaraAuthenticationException)
+                if (t.Exception != null)
                 {
-                    InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                    inaraConfiguration.validAPIkey = false;
-                    inaraConfiguration.ToFile();
+                    foreach (var e in t.Exception.InnerExceptions)
+                    {
+                        if (e is InaraAuthenticationException)
+                        {
+                            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                            inaraConfiguration.validAPIkey = false;
+                            inaraConfiguration.ToFile();
 
-                    // TODO:
-                    // Verbally alert the user that the API key is invalid,
-                    // cease processing journal events until the API key is altered,
-                    // update the UI with a visual indicator that the API key is invalid
+                            // TODO:
+                            // Verbally alert the user that the API key is invalid,
+                            // cease processing journal events until the API key is altered,
+                            // update the UI with a visual indicator that the API key is invalid
+                        }
+                        else
+                        {
+                            // TODO: TBD
+                        }
+                    }
                 }
-                else
-                {
-                    // TODO: TBD
-                }
-            }
+            }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void OnApplicationExit(object sender, EventArgs e)

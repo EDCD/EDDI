@@ -202,7 +202,7 @@ namespace EddiInaraService
             }
         }
 
-        public async void SendQueuedAPIEventsAsync()
+        public async Task SendQueuedAPIEventsAsync()
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
             while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
