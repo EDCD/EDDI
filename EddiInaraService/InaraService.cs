@@ -46,6 +46,9 @@ namespace EddiInaraService
         private static bool eddiInBeta;
         private static bool gameInBeta;
 
+        // Keep a list of data returning code 400 from the server so that we don't resend invalid data that hasn't been addressed.
+        private static List<string> invalidAPIEvents = new List<string>();
+
         public static void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
             Logging.Debug("Creating new Inara service instance.");
@@ -98,7 +101,7 @@ namespace EddiInaraService
 
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            if (string.IsNullOrEmpty(apiKey))
+            if (string.IsNullOrEmpty(apiKey) || invalidAPIEvents.Contains("Header"))
             {
                 return inaraResponses;
             }
@@ -109,7 +112,11 @@ namespace EddiInaraService
             {
                 InaraAPIEvent indexedEvent = events[i];
                 indexedEvent.eventCustomID = i;
-                indexedEvents.Add(indexedEvent);
+                if (!invalidAPIEvents.Contains(indexedEvent.eventName))
+                {
+                    // Add events, excluding events with issues that have returned a code 400 error in this instance.
+                    indexedEvents.Add(indexedEvent);
+                }
             }
 
             var client = new RestClient("https://inara.cz/inapi/v1/");
@@ -139,7 +146,7 @@ namespace EddiInaraService
             if (clientResponse.IsSuccessful)
             {
                 InaraResponses response = clientResponse.Data;
-                if (validateResponse(response.header, ref indexedEvents))
+                if (validateResponse(response.header, ref indexedEvents, true))
                 {
                     foreach (InaraResponse inaraResponse in response.events)
                     {
@@ -163,7 +170,7 @@ namespace EddiInaraService
             }
         }
 
-        private static bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents)
+        private static bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents, bool header = false)
         {
             if (inaraResponse.eventStatus == 200)
             {
@@ -181,6 +188,7 @@ namespace EddiInaraService
                 {
                     // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
                     Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                    invalidAPIEvents.Add(header ? "Header" : indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
                     if (inaraResponse.eventStatusText == "Invalid API key.")
                     {
                         throw new InaraAuthenticationException(inaraResponse.eventStatusText);
@@ -196,7 +204,6 @@ namespace EddiInaraService
                     // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
                     // Inara may also return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
                     Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-
                 }
                 return false;
             }
