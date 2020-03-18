@@ -70,11 +70,20 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. .
+        ///   Looks up a localized string similar to Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. .
         /// </summary>
         public static string desc {
             get {
                 return ResourceManager.GetString("desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Inara API key appears to be invalid; no data shall be sent..
+        /// </summary>
+        public static string inaraAPIerr {
+            get {
+                return ResourceManager.GetString("inaraAPIerr", resourceCulture);
             }
         }
         
