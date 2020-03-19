@@ -1675,7 +1675,7 @@
     <comment>Commodity RockforthFertiliser</comment>
   </data>
   <data name="agronomictreatment" xml:space="preserve">
-    <value>Tratamiento agronómico</value>
+    <value>Tratamiento Agrónomo</value>
     <comment>Commodity agronomictreatment</comment>
   </data>
   <data name="BakedGreebles" xml:space="preserve">
