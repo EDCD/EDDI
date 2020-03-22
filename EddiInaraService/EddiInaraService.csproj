@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InaraTooManyRequestsException.cs" />
     <Compile Include="InaraAuthenticationException.cs" />
     <Compile Include="InaraErrorException.cs" />
     <Compile Include="InaraException.cs" />
