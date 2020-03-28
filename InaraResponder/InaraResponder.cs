@@ -58,13 +58,13 @@ namespace EddiInaraResponder
 
         public void Stop()
         {
-            inaraService = null;
+            inaraService.Stop();
         }
 
         public void Reload()
         {
             Stop();
-            inaraService.Start();
+            inaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
         }
 
         private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
@@ -1305,27 +1305,25 @@ namespace EddiInaraResponder
 
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
         {
-            // Start or restart the Inara service
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            inaraConfiguration.commanderName = @event.name;
-            inaraConfiguration.commanderFrontierID = @event.frontierID;
-            inaraConfiguration.ToFile();
-            if (inaraConfiguration.commanderFrontierID != inaraService.commanderFrontierID)
+            // Updating the configuration will restart the Inara service
+            if (inaraService.commanderName != @event.name || inaraService.commanderFrontierID != @event.frontierID)
             {
-                inaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                inaraConfiguration.commanderName = @event.name;
+                inaraConfiguration.commanderFrontierID = @event.frontierID;
+                inaraConfiguration.ToFile();
             }
         }
 
         private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
-            // Start or restart the Inara service
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            inaraConfiguration.commanderName = @event.name;
-            inaraConfiguration.commanderFrontierID = @event.frontierID;
-            inaraConfiguration.ToFile();
-            if (inaraConfiguration.commanderFrontierID != inaraService.commanderFrontierID)
+            // Updating the configuration will restart the Inara service
+            if (inaraService.commanderName != @event.name || inaraService.commanderFrontierID != @event.frontierID)
             {
-                inaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                inaraConfiguration.commanderName = @event.name;
+                inaraConfiguration.commanderFrontierID = @event.frontierID;
+                inaraConfiguration.ToFile();
             }
         }
 

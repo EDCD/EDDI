@@ -10,49 +10,26 @@ using Utilities;
 
 namespace EddiInaraService
 {
-    public partial class InaraService : IInaraService, INotifyPropertyChanged
+    public partial class InaraService : IInaraService
     {
         // API Documentation: https://inara.cz/inara-api-docs/
 
         // Constants
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
-        private const int syncIntervalMilliSeconds = 60 * 5 * 1000; // 5 minutes
-        private const int delayedSyncIntervalMilliSeconds = syncIntervalMilliSeconds * 12; // 60 minutes
+        private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
+        private const int syncIntervalMilliSeconds = 1000 * 60 * 5; // 5 minutes
+        private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Configuration Variables
         public string commanderName { get; private set; }
         public string commanderFrontierID { get; private set; }
-        protected string apiKey
-        {
-            get 
-            { 
-                return _apiKey; 
-            }
-            private set 
-            {
-                _apiKey = value;
-                NotifyPropertyChanged("apiKey");
-            }
-        }
-        private string _apiKey;
+        private string apiKey;
+        private bool IsAPIkeyValid = true;
         public DateTime lastSync { get; private set; }
 
         // Other Variables
         private bool tooManyRequests;
         private static bool bgSyncRunning; // This must be static so that it is visible to child threads and tasks
-        public bool IsAPIkeyValid 
-        {
-            get
-            {
-                return _isAPIkeyValid;
-            }
-            private set
-            {
-                _isAPIkeyValid = value;
-                NotifyPropertyChanged("IsAPIkeyValid");
-            }
-        }
-        private bool _isAPIkeyValid = true;
         private static ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
         private readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
@@ -62,31 +39,43 @@ namespace EddiInaraService
         public void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
             Logging.Debug("Starting Inara service background sync.");
+            eddiInBeta = eddiIsBeta;
+            gameInBeta = gameIsBeta;
+
+            // Subscribe to events from the Inara configuration that require our attention
+            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
 
             // Set up the Inara service credentials
             SetInaraCredentials();
 
-            eddiInBeta = eddiIsBeta;
-            gameInBeta = gameIsBeta;
             Task.Run(BackgroundSync);
         }
 
         public void Stop()
         {
-            Logging.Debug("Stopping Inara service background sync.");
-            bgSyncRunning = false;
+            if (bgSyncRunning)
+            {
+                Logging.Debug("Stopping Inara service background sync.");
+                bgSyncRunning = false;
+            }
         }
 
         private async void BackgroundSync()
         {
             bgSyncRunning = true;
+
+            // Pause a short time to allow any initial events to build in the queue before our first sync
+            await Task.Delay(startupDelayMilliSeconds);
+
             while (bgSyncRunning)
             {
-                if (queuedAPIEvents.Count > 0 && IsAPIkeyValid)
+                if (IsAPIkeyValid && queuedAPIEvents.Count > 0)
                 {
                     try
                     {
                         SendQueuedAPIEvents();
+                        await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds);
+                        tooManyRequests = false;
                     }
                     catch (InaraException e)
                     {
@@ -103,16 +92,17 @@ namespace EddiInaraService
                             tooManyRequests = true;
                         }
                     }
-                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds);
-                    tooManyRequests = false;
                 }
             }
         }
 
-        private void SetInaraCredentials()
+        private void SetInaraCredentials(InaraConfiguration inaraCredentials = null)
         {
-            InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
-            if (inaraCredentials == null) { return; }
+            if (inaraCredentials is null)
+            {
+                inaraCredentials = InaraConfiguration.FromFile();
+                if (inaraCredentials == null) { return; }
+            }
 
             // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
             // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
@@ -146,6 +136,19 @@ namespace EddiInaraService
                     Logging.Info("Configuring Inara service for limited access: Commander name not detected.");
                 }
                 apiKey = readonlyAPIkey;
+            }
+        }
+
+        private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
+        {
+            if (inaraConfiguration.apiKey != apiKey 
+                || inaraConfiguration.commanderName != commanderName 
+                || inaraConfiguration.commanderFrontierID != commanderFrontierID 
+                || inaraConfiguration.isAPIkeyValid != IsAPIkeyValid)
+            {
+                Stop();
+                SetInaraCredentials(inaraConfiguration);
+                Start(gameInBeta, eddiInBeta);
             }
         }
 
@@ -299,13 +302,6 @@ namespace EddiInaraService
             {
                 queuedAPIEvents.Enqueue(inaraAPIEvent);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 
