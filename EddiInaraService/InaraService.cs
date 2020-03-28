@@ -34,21 +34,34 @@ namespace EddiInaraService
         private readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
         private static bool gameInBeta;
+        private Task backgroundSync;
+
+        public InaraService()
+        {
+            // Subscribe to events from the Inara configuration that require our attention
+            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
+        }
 
         // Methods
         public void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
-            Logging.Debug("Starting Inara service background sync.");
+            // Set up the Inara service credentials
+            SetInaraCredentials();
             eddiInBeta = eddiIsBeta;
             gameInBeta = gameIsBeta;
 
-            // Subscribe to events from the Inara configuration that require our attention
-            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
-
-            // Set up the Inara service credentials
-            SetInaraCredentials();
-
-            Task.Run(BackgroundSync);
+            bgSyncRunning = true;
+            if (backgroundSync?.Status is null 
+                || backgroundSync.Status == TaskStatus.RanToCompletion)
+            {
+                Logging.Debug("Starting Inara service background sync.");
+                backgroundSync = Task.Run(BackgroundSync);
+            }
+            else if (backgroundSync.Status == TaskStatus.Faulted)
+            {
+                Logging.Debug("Restarting Inara service background sync.");
+                backgroundSync = Task.Run(BackgroundSync);
+            }
         }
 
         public void Stop()
@@ -62,8 +75,6 @@ namespace EddiInaraService
 
         private async void BackgroundSync()
         {
-            bgSyncRunning = true;
-
             // Pause a short time to allow any initial events to build in the queue before our first sync
             await Task.Delay(startupDelayMilliSeconds);
 
