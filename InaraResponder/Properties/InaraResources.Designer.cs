@@ -79,11 +79,11 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Inara API key appears to be invalid; no data shall be sent..
+        ///   Looks up a localized string similar to Please enter a valid Inara API key..
         /// </summary>
-        public static string inaraAPIerr {
+        public static string invalidKeyErr {
             get {
-                return ResourceManager.GetString("inaraAPIerr", resourceCulture);
+                return ResourceManager.GetString("invalidKeyErr", resourceCulture);
             }
         }
         
