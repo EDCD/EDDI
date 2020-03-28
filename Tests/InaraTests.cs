@@ -9,10 +9,13 @@ namespace IntegrationTests
     [TestClass]
     public class InaraTests : TestBase
     {
+        private IInaraService inaraService;
+
         [TestInitialize]
         public void start()
         {
             MakeSafe();
+            inaraService = new InaraService();
         }
 
         [TestMethod]
@@ -23,7 +26,7 @@ namespace IntegrationTests
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
             };
-            List<InaraResponse> responses = InaraService.Instance.SendEventBatch(ref inaraAPIEvents, sendEvenForBetaGame: true);
+            List<InaraResponse> responses = inaraService.SendEventBatch(ref inaraAPIEvents, sendEvenForBetaGame: true);
 
             // Check that appropriate response IDs were assigned to each API event
             Assert.AreEqual(0, inaraAPIEvents[0].eventCustomID);
@@ -37,8 +40,7 @@ namespace IntegrationTests
         [TestMethod]
         public void TestGetCmdrProfiles()
         {
-            List<InaraCmdr> inaraCmdrs = InaraService.Instance
-                .GetCommanderProfiles(new string[] { "No such name", "Artie" });
+            List<InaraCmdr> inaraCmdrs = inaraService.GetCommanderProfiles(new string[] { "No such name", "Artie" });
             Assert.AreEqual(1, inaraCmdrs.Count);
             Assert.AreEqual("Artie", inaraCmdrs[0].username);
             Assert.AreEqual(1, inaraCmdrs[0].id);

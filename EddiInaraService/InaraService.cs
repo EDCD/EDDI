@@ -3,63 +3,114 @@ using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiInaraService
 {
-    public partial class InaraService
+    public partial class InaraService : IInaraService, INotifyPropertyChanged
     {
-        // API Documenation: https://inara.cz/inara-api-docs/
+        // API Documentation: https://inara.cz/inara-api-docs/
 
+        // Constants
+        private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
+        private const int syncIntervalMilliSeconds = 60 * 5 * 1000; // 5 minutes
+        private const int delayedSyncIntervalMilliSeconds = syncIntervalMilliSeconds * 12; // 60 minutes
+
+        // Configuration Variables
         public string commanderName { get; private set; }
         public string commanderFrontierID { get; private set; }
-        private string apiKey { get; set; }
-        public DateTime lastSync { get; set; }
+        protected string apiKey
+        {
+            get 
+            { 
+                return _apiKey; 
+            }
+            private set 
+            {
+                _apiKey = value;
+                NotifyPropertyChanged("apiKey");
+            }
+        }
+        private string _apiKey;
+        public DateTime lastSync { get; private set; }
 
-        private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
-
-        private ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
-
-        private static readonly object instanceLock = new object();
-
-        private static InaraService instance;
-        public static InaraService Instance
+        // Other Variables
+        private bool tooManyRequests;
+        private static bool bgSyncRunning; // This must be static so that it is visible to child threads and tasks
+        public bool IsAPIkeyValid 
         {
             get
             {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new InaraService();
-                        }
-                    }
-                }
-                return instance;
+                return _isAPIkeyValid;
+            }
+            private set
+            {
+                _isAPIkeyValid = value;
+                NotifyPropertyChanged("IsAPIkeyValid");
             }
         }
-
+        private bool _isAPIkeyValid = true;
+        private static ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
+        private readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
         private static bool gameInBeta;
 
-        // Keep a list of data returning code 400 from the server so that we don't resend invalid data that hasn't been addressed.
-        private static List<string> invalidAPIEvents = new List<string>();
-
-        public static void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
+        // Methods
+        public void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
-            Logging.Debug("Creating new Inara service instance.");
+            Logging.Debug("Starting Inara service background sync.");
+
+            // Set up the Inara service credentials
+            SetInaraCredentials();
+
             eddiInBeta = eddiIsBeta;
             gameInBeta = gameIsBeta;
-            _ = Instance;
+            Task.Run(BackgroundSync);
         }
 
-        protected InaraService()
+        public void Stop()
         {
-            // Set up the Inara service
+            Logging.Debug("Stopping Inara service background sync.");
+            bgSyncRunning = false;
+        }
+
+        private async void BackgroundSync()
+        {
+            bgSyncRunning = true;
+            while (bgSyncRunning)
+            {
+                if (queuedAPIEvents.Count > 0 && IsAPIkeyValid)
+                {
+                    try
+                    {
+                        SendQueuedAPIEvents();
+                    }
+                    catch (InaraException e)
+                    {
+                        if (e is InaraAuthenticationException)
+                        {
+                            // The Inara API key has been rejected. We'll note and remember that.
+                            IsAPIkeyValid = false;
+                            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                            inaraConfiguration.isAPIkeyValid = false;
+                            inaraConfiguration.ToFile();
+                        }
+                        if (e is InaraTooManyRequestsException)
+                        {
+                            tooManyRequests = true;
+                        }
+                    }
+                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds);
+                    tooManyRequests = false;
+                }
+            }
+        }
+
+        private void SetInaraCredentials()
+        {
             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
             if (inaraCredentials == null) { return; }
 
@@ -74,23 +125,27 @@ namespace EddiInaraService
 
             lastSync = inaraCredentials.lastSync;
             apiKey = inaraCredentials.apiKey;
-            if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(commanderName))
+            IsAPIkeyValid = inaraCredentials.isAPIkeyValid;
+            if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(commanderName) && IsAPIkeyValid)
             {
                 // fully configured
                 Logging.Info("Configuring EDDI access to Inara profile data");
             }
             else
             {
-                apiKey = readonlyAPIkey;
-                if (string.IsNullOrEmpty(inaraCredentials.apiKey))
+                if (string.IsNullOrEmpty(apiKey))
                 {
                     Logging.Info("Configuring Inara service for limited access: API key not set.");
                 }
-
+                if (!IsAPIkeyValid)
+                {
+                    Logging.Info("Configuring Inara service for limited access: API key is invalid.");
+                }
                 if (string.IsNullOrEmpty(commanderName))
                 {
                     Logging.Info("Configuring Inara service for limited access: Commander name not detected.");
                 }
+                apiKey = readonlyAPIkey;
             }
         }
 
@@ -101,7 +156,7 @@ namespace EddiInaraService
 
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            if (string.IsNullOrEmpty(apiKey) || invalidAPIEvents.Contains("Header"))
+            if (string.IsNullOrEmpty(apiKey))
             {
                 return inaraResponses;
             }
@@ -170,7 +225,7 @@ namespace EddiInaraService
             }
         }
 
-        private static bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents, bool header = false)
+        private bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents, bool header = false)
         {
             if (inaraResponse.eventStatus == 200)
             {
@@ -188,14 +243,24 @@ namespace EddiInaraService
                 {
                     // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
                     Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
-                    invalidAPIEvents.Add(header ? "Header" : indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
-                    if (inaraResponse.eventStatusText == "Invalid API key.")
+
+                    if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
                     {
-                        throw new InaraAuthenticationException(inaraResponse.eventStatusText);
-                    }
-                    else
-                    {
-                        throw new InaraErrorException(inaraResponse.eventStatusText);
+                        if (inaraResponse.eventStatusText.Contains("Invalid API key"))
+                        {
+                            throw new InaraAuthenticationException(inaraResponse.eventStatusText);
+                        }
+                        else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
+                        {
+                            throw new InaraTooManyRequestsException(inaraResponse.eventStatusText);
+                        }
+                        else
+                        {
+                            // There may be an issue with a specific API event.
+                            // We'll add that API event to a list and omit sending that event again in this instance.
+                            invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
+                            throw new InaraErrorException(inaraResponse.eventStatusText);
+                        }
                     }
                 }
                 else
@@ -209,20 +274,22 @@ namespace EddiInaraService
             }
         }
 
-        public async Task SendQueuedAPIEventsAsync()
+        public void SendQueuedAPIEvents()
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
-            while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
+            while (queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
             {
                 queue.Add(pendingEvent);
             }
             if (queue.Count > 0)
             {
-                await Task.Run(() => Instance.SendEventBatch(ref queue));
-                Instance.lastSync = queue.Max(e => e.eventTimeStamp);
-                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                inaraConfiguration.lastSync = Instance.lastSync;
-                inaraConfiguration.ToFile();
+                if (SendEventBatch(ref queue).Count > 0)
+                {
+                    lastSync = queue.Max(e => e.eventTimeStamp);
+                    InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                    inaraConfiguration.lastSync = lastSync;
+                    inaraConfiguration.ToFile();
+                }
             }
         }
 
@@ -230,8 +297,15 @@ namespace EddiInaraService
         {
             if (!(inaraAPIEvent is null) && lastSync < inaraAPIEvent.eventTimeStamp)
             {
-                Instance.queuedAPIEvents.Enqueue(inaraAPIEvent);
+                queuedAPIEvents.Enqueue(inaraAPIEvent);
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 

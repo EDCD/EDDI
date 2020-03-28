@@ -1152,7 +1152,8 @@ namespace EddiSpeechResponder
                 {
                     if (!string.IsNullOrWhiteSpace(commanderName))
                     {
-                        var result = EddiInaraService.InaraService.Instance.GetCommanderProfile(commanderName);
+                        EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
+                        var result = inaraService.GetCommanderProfile(commanderName);
                         return new ReflectionValue(result ?? new object());
                     }
                 }
