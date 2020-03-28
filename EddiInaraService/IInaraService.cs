@@ -17,7 +17,6 @@ namespace EddiInaraService
 
         // API Event Queue Management
         void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent);
-        void SendQueuedAPIEvents();
         List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool sendEvenForBetaGame = false);
 
         // Commander Profiles
