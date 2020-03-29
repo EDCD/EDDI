@@ -58,6 +58,42 @@ namespace EddiDataDefinitions
             }
         }
 
+        private long? _hullvalue;
+        /// <summary>the value of the ship's hull, in credits</summary>
+        public long? hullvalue
+        {
+            get
+            {
+                return _hullvalue;
+            }
+            set
+            {
+                if (_hullvalue != value)
+                {
+                    _hullvalue = value;
+                    NotifyPropertyChanged("hullvalue");
+                }
+            }
+        }
+
+        private long? _modulesvalue;
+        /// <summary>the value of the ship's hull, in credits</summary>
+        public long? modulesvalue
+        {
+            get
+            {
+                return _modulesvalue;
+            }
+            set
+            {
+                if (_modulesvalue != value)
+                {
+                    _modulesvalue = value;
+                    NotifyPropertyChanged("modulesvalue");
+                }
+            }
+        }
+
         /// <summary>the value of the ship's rebuy, in credits</summary>
         public long rebuy { get; set; }
 
@@ -260,6 +296,8 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        [Obsolete("Please use 'starsystem' instead")]
+        public string system => starsystem; // Legacy Cottle scripts may use `system` rather than `starsystem`. 
 
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
         public string station { get; set; }
@@ -281,7 +319,6 @@ namespace EddiDataDefinitions
         public Module powerdistributor { get; set; }
         public Module sensors { get; set; }
         public Module fueltank { get; set; }
-        public Module datalinkscanner { get; set; }
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
         public List<LaunchBay> launchbays { get; set; }

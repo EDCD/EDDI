@@ -465,6 +465,8 @@ namespace EddiShipMonitor
             {
                 ship.value = (long)@event.value;
             }
+            ship.hullvalue = @event.hullvalue;
+            ship.modulesvalue = @event.modulesvalue;
             ship.rebuy = @event.rebuy;
             ship.unladenmass = @event.unladenmass;
             ship.maxjumprange = @event.maxjumprange;
@@ -675,10 +677,6 @@ namespace EddiShipMonitor
                     else if (modulename == "CargoHatch" && ship.cargohatch != null)
                     {
                         ship.cargohatch.health = 1;
-                    }
-                    else if (modulename == "DataLinkScanner" && ship.datalinkscanner != null)
-                    {
-                        ship.datalinkscanner.health = 1;
                     }
                     else if (modulename.Contains("Hardpoint"))
                     {
