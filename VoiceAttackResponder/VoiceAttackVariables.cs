@@ -576,8 +576,15 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetText(prefix + " size", ship?.size?.localizedName);
                     vaProxy.SetDecimal(prefix + " value", ship?.value);
                     vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
+                    vaProxy.SetDecimal(prefix + " hull value", ship?.hullvalue);
+                    vaProxy.SetText(prefix + " hull value (spoken)", Translations.Humanize(ship?.hullvalue));
+                    vaProxy.SetDecimal(prefix + " modules value", ship?.modulesvalue);
+                    vaProxy.SetText(prefix + " modules value (spoken)", Translations.Humanize(ship?.modulesvalue));
+                    vaProxy.SetDecimal(prefix + " rebuy", ship?.rebuy);
+                    vaProxy.SetText(prefix + " rebuy (spoken)", Translations.Humanize(ship?.rebuy));
                     vaProxy.SetDecimal(prefix + " health", ship?.health);
                     vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
+                    vaProxy.SetBoolean(prefix + " hot", ship?.hot);
 
                     setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);
                     setShipModuleOutfittingValues(ship?.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
@@ -638,9 +645,8 @@ namespace EddiVoiceAttackResponder
                             setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
                             setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting, baseHardpointName + " module", ref vaProxy);
                         }
+                        vaProxy.SetInt(prefix + " hardpoints", numTinyHardpoints + numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
 
-                        vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
-                        vaProxy.SetInt(prefix + " utility slots", numTinyHardpoints);
                         // Compartments
                         int curCompartment = 0;
                         foreach (Compartment Compartment in ship.compartments)

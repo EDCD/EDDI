@@ -87,7 +87,8 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {BOOL:Status altitude from average radius} true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
 
 ## Ship Variables
-
+Note: "Tiny" hardpoints are utility slots.
+  * {TXT:Ship manufacturer}: (e.g. "Lakon", "Core Dynamics")
   * {TXT:Ship model}: the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
   * {TXT:Ship model (spoken)}: the model of the ship as would be spoken (e.g. "Cobra Mark 4")
   * {TXT:Ship name}: the name of the ship
@@ -100,56 +101,63 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Ship size}: the size of the ship (Small, Medium, or Large)
   * {DEC:Ship value}: the replacement cost of the ship plus modules
   * {TXT:Ship value (spoken)}: the replacement cost of the ship plus modules as would be spoken
+  * {DEC:Ship hull value}: the replacement cost of the ship's hull
+  * {TXT:Ship hull value (spoken)}: the replacement cost of the ship's hull as would be spoken
+  * {DEC:Ship modules value}: the replacement cost of the ship's modules
+  * {TXT:Ship modules value (spoken)}: the replacement cost of the ship's modules as would be spoken
+  * {DEC:Ship rebuy}: the insurance rebuy for the ship in credits
+  * {TXT:Ship rebuy (spoken)}: the insurance rebuy for the ship in credits as would be spoken
   * {INT:Ship cargo capacity}: the maximum cargo capacity of the ship as currently configured
   * {INT:Ship cargo carried}: the cargo currently being carried by the ship
   * {INT:Ship limpets carried}: the number of limpets currently being carried by the ship
-  * {DEC:Ship health}: the percentage health of the ship's hull
+  * {DEC:Ship health}: the last reported percentage health of the ship's hull
+  * {INT:Ship hot}: true if the ship is currently wanted
   * {TXT:Ship bulkheads}: the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
   * {INT:Ship bulkheads class}: the class of bulkheads fitted to the ship (e.g. 3)
   * {TXT:Ship bulkheads grade}: the grade of bulkheads fitted to the ship (e.g. "A")
-  * {DEC:Ship bulkheads health}: the percentage health of the bulkheads fitted to the ship
+  * {DEC:Ship bulkheads health}: the last reported percentage health of the bulkheads fitted to the ship
   * {DEC:Ship bulkheads cost}: the purchase cost of the bulkheads
   * {DEC:Ship bulkheads value}: the undiscounted cost of the bulkheads
   * {DEC:Ship bulkheads discount}: the percentage discount of the purchased bulkheads against the undiscounted cost
   * {TXT:Ship power plant}: the name of power plant fitted to the ship
   * {INT:Ship power plant class}: the class of bulkheads fitted to the ship (e.g. 3)
   * {TXT:Ship power plant grade}: the grade of bulkheads fitted to the ship (e.g. "A")
-  * {DEC:Ship power plant health}: the percentage health of the power plant fitted to the ship
+  * {DEC:Ship power plant health}: the last reported percentage health of the power plant fitted to the ship
   * {DEC:Ship power plant cost}: the purchase cost of the power plant
   * {DEC:Ship power plant value}: the undiscounted cost of the power plant
   * {DEC:Ship power plant discount}: the percentage discount of the purchased power plant against the undiscounted cost
   * {TXT:Ship thrusters}: the name of thrusters fitted to the ship
   * {INT:Ship thrusters class}: the class of thrusters fitted to the ship (e.g. 3)
   * {TXT:Ship thrusters grade}: the grade of thrusters fitted to the ship (e.g. "A")
-  * {DEC:Ship thrusters health}: the percentage health of the thrusters fitted to the ship
+  * {DEC:Ship thrusters health}: the last reported percentage health of the thrusters fitted to the ship
   * {DEC:Ship thrusters cost}: the purchase cost of the thrusters
   * {DEC:Ship thrusters value}: the undiscounted cost of the thrusters
   * {DEC:Ship thrusters discount}: the percentage discount of the purchased thrusters against the undiscounted cost
   * {TXT:Ship frame shift drive}: the name of frame shift drive fitted to the ship
   * {INT:Ship frame shift drive class}: the class of frame shift drive fitted to the ship (e.g. 3)
   * {TXT:Ship frame shift drive grade}: the grade of frame shift drive fitted to the ship (e.g. "A")
-  * {DEC:Ship frame shift drive health}: the percentage health of the frame shift drive fitted to the ship
+  * {DEC:Ship frame shift drive health}: the last reported percentage health of the frame shift drive fitted to the ship
   * {DEC:Ship frame shift drive cost}: the purchase cost of the frame shift drive
   * {DEC:Ship frame shift drive value}: the undiscounted cost of the frame shift drive
   * {DEC:Ship frame shift drive discount}: the percentage discount of the purchased frame shift drive against the undiscounted cost
   * {TXT:Ship life support}: the name of life support fitted to the ship (e.g. "6D")
   * {INT:Ship life support class}: the class of life support fitted to the ship (e.g. 3)
   * {TXT:Ship life support grade}: the grade of life support fitted to the ship (e.g. "A")
-  * {DEC:Ship life support health}: the percentage health of the life support fitted to the ship
+  * {DEC:Ship life support health}: the last reported percentage health of the life support fitted to the ship
   * {DEC:Ship life support cost}: the purchase cost of the life support
   * {DEC:Ship life support value}: the undiscounted cost of the life support
   * {DEC:Ship life support discount}: the percentage discount of the purchased life support against the undiscounted cost
   * {TXT:Ship power distributor}: the name of power distributor fitted to the ship
   * {INT:Ship power distributor class}: the class of power distributor fitted to the ship (e.g. 3)
   * {TXT:Ship power distributor drive grade}: the grade of power distributor fitted to the ship (e.g. "A")
-  * {DEC:Ship power distributor health}: the percentage health of the power distributor fitted to the ship
+  * {DEC:Ship power distributor health}: the last reported percentage health of the power distributor fitted to the ship
   * {DEC:Ship power distributor cost}: the purchase cost of the power distributor
   * {DEC:Ship power distributor value}: the undiscounted cost of the power distributor
   * {DEC:Ship power distributor discount}: the percentage discount of the purchased power distributor against the undiscounted cost
   * {TXT:Ship sensors}: the name of sensors fitted to the ship
   * {INT:Ship sensors class}: the class of sensors fitted to the ship (e.g. 3)
   * {TXT:Ship sensors drive grade}: the grade of sensors fitted to the ship (e.g. "A")
-  * {DEC:Ship sensors health}: the percentage health of the sensors fitted to the ship
+  * {DEC:Ship sensors health}: the last reported percentage health of the sensors fitted to the ship
   * {DEC:Ship sensors cost}: the purchase cost of the sensors
   * {DEC:Ship sensors value}: the undiscounted cost of the sensors
   * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
@@ -165,19 +173,26 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module}: the name of the module in this slot
   * {INT:Ship tiny/small/medium/large/huge hardpoint *n* module class}: the class of the module in this slot
   * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module grade}: the grade of the module in this slot
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module health}: the percentage health of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module health}: the last reported percentage health of the module in this slot
   * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module cost}: the purchase cost of the module in this slot
   * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module value}: the undiscounted cost of the module in this slot
   * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module discount}: the percentage discount of the purchased module against the undiscounted cost
+  * {INT:Ship hardpoints} the total number of filled hardpoints slots (to use when looping through hardpoint data)
   * {INT:Ship Compartment *n* size}: the size of this slot
   * {BOOL:Ship Compartment *n* occupied}: true if there is a module in this slot, otherwise false
   * {TXT:Ship compartment *n* module}: the name of the module in this slot
   * {INT:Ship compartment *n* module class}: the class of the module in this slot
   * {TXT:Ship compartment *n* module grade}: the grade of the module in this slot
-  * {DEC:Ship compartment *n* module health}: the percentage health of the module in this slot
+  * {DEC:Ship compartment *n* module health}: the last reported percentage health of the module in this slot
   * {DEC:Ship compartment *n* module cost}: the purchase cost of the module in this slot
   * {DEC:Ship compartment *n* module value}: the undiscounted cost of the module in this slot
   * {DEC:Ship compartment *n* module station cost}: the purchase cost of the module at this station
+  * {INT:Ship compartments} the total number of filled compartment slots (to use when looping through compartment data)
+
+### Stored ship variables
+  * {TXT:Ship system}: the name of the star system where the ship is stored
+  * {TXT:Ship station}: the name of the station where the ship is stored
+  * {DEC:Ship distance}: the distance to the star system where the ship is stored
 
 ## Current System Variables
 
