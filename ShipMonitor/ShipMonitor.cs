@@ -140,6 +140,10 @@ namespace EddiShipMonitor
             {
                 handleCommanderContinuedEvent((CommanderContinuedEvent)@event);
             }
+            else if (@event is LocationEvent)
+            {
+                handleLocationEvent((LocationEvent)@event);
+            }
             else if (@event is JumpedEvent)
             {
                 handleJumpedEvent((JumpedEvent)@event);
@@ -305,6 +309,21 @@ namespace EddiShipMonitor
                     }
                     if (!@event.fromLoad) { writeShips(); }
                 }
+            }
+        }
+
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            if (@event.timestamp > updatedAt)
+            {
+                foreach (Ship shipInYard in shipyard)
+                {
+                    // Ignore current ship, since (obviously) it's not stored
+                    if (shipInYard.LocalId == currentShipId) { continue; }
+                    // Otherwise, update the distance to that ship
+                    shipInYard.distance = shipInYard.Distance(@event.x, @event.y, @event.z);
+                }
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
