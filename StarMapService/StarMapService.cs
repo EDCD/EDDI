@@ -25,7 +25,7 @@ namespace EddiStarMapService
         // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
         private const int DefaultTimeoutMilliseconds = 10000;
 
-        public static string commanderFrontierApiName { get; set; }
+        public static string inGameCommanderName { get; set; }
 
         private string commanderName { get; set; }
         private string apiKey { get; set; }
@@ -65,7 +65,7 @@ namespace EddiStarMapService
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
             {
                 // Commander name might come from EDSM credentials or from the game and companion app
-                string cmdrName = starMapCredentials.commanderName ?? commanderFrontierApiName;
+                string cmdrName = starMapCredentials.commanderName ?? inGameCommanderName;
                 if (!string.IsNullOrEmpty(cmdrName))
                 {
                     apiKey = starMapCredentials.apiKey?.Trim();
@@ -82,7 +82,7 @@ namespace EddiStarMapService
             }
         }
 
-        private bool EdsmCredentialsSet()
+        public bool EdsmCredentialsSet()
         {
             return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
         }

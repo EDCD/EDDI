@@ -158,7 +158,7 @@ namespace EddiDataProviderService
         // EDSM flight log synchronization (named star systems)
         public List<StarSystem> syncFromStarMapService(List<StarSystem> starSystems)
         {
-            if (edsmService != null && starSystems.Count > 0)
+            if (edsmService != null && edsmService.EdsmCredentialsSet() && starSystems.Count > 0)
             {
                 try
                 {
