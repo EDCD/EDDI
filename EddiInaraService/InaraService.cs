@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
@@ -43,6 +44,7 @@ namespace EddiInaraService
         }
 
         // Methods
+        [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
         public void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
             // Set up the Inara service credentials
@@ -55,12 +57,12 @@ namespace EddiInaraService
                 || backgroundSync.Status == TaskStatus.RanToCompletion)
             {
                 Logging.Debug("Starting Inara service background sync.");
-                backgroundSync = Task.Run(BackgroundSync);
+                backgroundSync = Task.Run(() => BackgroundSync());
             }
             else if (backgroundSync.Status == TaskStatus.Faulted)
             {
                 Logging.Debug("Restarting Inara service background sync.");
-                backgroundSync = Task.Run(BackgroundSync);
+                backgroundSync = Task.Run(() => BackgroundSync());
             }
         }
 
