@@ -279,6 +279,8 @@ namespace EddiDataDefinitions
             }
         }
 
+        // <summary>the location where this ship is stored; null if the commander is in this ship</summary>
+
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         private string _starsystem;
         public string starsystem
@@ -302,11 +304,15 @@ namespace EddiDataDefinitions
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
         public string station { get; set; }
         public long? marketid { get; set; }
+        public decimal? x { get; set; }
+        public decimal? y { get; set; }
+        public decimal? z { get; set; }
 
         // Other properties for when this ship is stored
         public bool intransit { get; set; }
         public long? transferprice { get; set; }
         public long? transfertime { get; set; }
+        public decimal? distance { get; set; }
 
         public decimal health { get; set; }
         public Module cargohatch { get; set; }
@@ -447,6 +453,21 @@ namespace EddiDataDefinitions
                 }
             }
             return result;
+        }
+
+        /// <summary> Calculates the distance from the specified coordinates to the ship's recorded x, y, and z coordinates </summary>
+        public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
+        {
+            // Work out the distance to the system where the ship is stored if we can
+            if (x is null || y is null || z is null || fromX is null || fromY is null || fromZ is null)
+            {
+                // We don't know how far away the ship is
+                return null;
+            }
+            decimal dx = (fromX - x) ?? 0M;
+            decimal dy = (fromY - y) ?? 0M;
+            decimal dz = (fromZ - z) ?? 0M;
+            return (decimal)(Math.Sqrt((double)((dx * dx) + (dy * dy) + (dz * dz))));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    

@@ -337,6 +337,7 @@ Stored ship information
     - `starsystem` system in which the ship is stored
     - `station` station in which the ship is stored
     - `marketid` market ID of the station in which the ship is stored
+    - `distance` the distance to the stored ship, in light years
     - `intransit` true if the ship is in transit
     - `transferprice` price to transfer ship to current location (0 if in transit)
     - `transfertime` time to transfer ship to current location (0 if in transit)

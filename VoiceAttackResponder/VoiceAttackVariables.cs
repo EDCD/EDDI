@@ -662,23 +662,7 @@ namespace EddiVoiceAttackResponder
                     {
                         vaProxy.SetText(prefix + " system", ship.starsystem);
                         vaProxy.SetText(prefix + " station", ship.station);
-                        StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(ship.starsystem);
-
-                        // Work out the distance to the system where the ship is stored if we can
-                        // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
-                        if (EDDI.Instance.CurrentStarSystem?.x != null & StoredShipStarSystem?.x != null)
-                        {
-                            decimal dx = (EDDI.Instance.CurrentStarSystem.x - StoredShipStarSystem.x) ?? 0M;
-                            decimal dy = (EDDI.Instance.CurrentStarSystem.y - StoredShipStarSystem.y) ?? 0M;
-                            decimal dz = (EDDI.Instance.CurrentStarSystem.z - StoredShipStarSystem.z) ?? 0M;
-                            decimal distance = (decimal)(Math.Sqrt((double)((dx * dx) + (dy * dy) + (dz * dz))));
-                            vaProxy.SetDecimal(prefix + " distance", distance);
-                        }
-                        else
-                        {
-                            // We don't know how far away the ship is
-                            vaProxy.SetDecimal(prefix + " distance", null);
-                        }
+                        vaProxy.SetDecimal(prefix + " distance", ship.distance);
                     }
 
                     setStatus(ref vaProxy, "Operational");
