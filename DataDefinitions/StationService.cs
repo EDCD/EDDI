@@ -16,6 +16,9 @@ namespace EddiDataDefinitions
             var Dock = new StationService("Dock");
             var AutoDock = new StationService("AutoDock");
             var BlackMarket = new StationService("BlackMarket");
+            var CarrierFuel = new StationService("CarrierFuel");
+            var CarrierManagement = new StationService("CarrierManagement");
+            var CarrierVendor = new StationService("CarrierVendor");
             var Commodities = new StationService("Commodities");
             var Contacts = new StationService("Contacts");
             var Exploration = new StationService("Exploration");
@@ -41,6 +44,9 @@ namespace EddiDataDefinitions
             var MaterialTrader = new StationService("MaterialTrader");
             var StationMenu = new StationService("StationMenu");
             var Shop = new StationService("Shop");
+            var Livery = new StationService("Livery");
+            var ModulePacks = new StationService("ModulePacks");
+            var VoucherRedemption = new StationService("VoucherRedemption");
         }
 
         public static readonly StationService None;
