@@ -27,6 +27,7 @@ namespace EddiDataDefinitions
             var Tourism = new Economy("Tourism");
             var Military = new Economy("Military");
             var Prison = new Economy("Prison");
+            var Carrier = new Economy("Carrier");
         }
 
         public static readonly Economy None;
