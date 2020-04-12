@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ultra-Compact Processor Prototypes.
+        /// </summary>
+        public static string Advert1 {
+            get {
+                return ResourceManager.GetString("Advert1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aganippe Rush.
         /// </summary>
         public static string AganippeRush {
@@ -93,6 +102,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AgriculturalMedicines {
             get {
                 return ResourceManager.GetString("AgriculturalMedicines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agronomic Treatment.
+        /// </summary>
+        public static string agronomictreatment {
+            get {
+                return ResourceManager.GetString("agronomictreatment", resourceCulture);
             }
         }
         
@@ -304,6 +322,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crom Silver Fesh.
+        /// </summary>
+        public static string AnimalEffigies {
+            get {
+                return ResourceManager.GetString("AnimalEffigies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Animal Meat.
         /// </summary>
         public static string Animalmeat {
@@ -417,6 +444,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AzCancriFormula42 {
             get {
                 return ResourceManager.GetString("AzCancriFormula42", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baked Greebles.
+        /// </summary>
+        public static string BakedGreebles {
+            get {
+                return ResourceManager.GetString("BakedGreebles", resourceCulture);
             }
         }
         
@@ -3162,6 +3198,15 @@ namespace EddiDataDefinitions.Properties {
         public static string TrinketsOfFortune {
             get {
                 return ResourceManager.GetString("TrinketsOfFortune", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tritium.
+        /// </summary>
+        public static string Tritium {
+            get {
+                return ResourceManager.GetString("Tritium", resourceCulture);
             }
         }
         

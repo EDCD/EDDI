@@ -1689,4 +1689,8 @@
     <value>Crom Silver Fesh</value>
     <comment>Commodity Crom Silver Fesh</comment>
   </data>
+  <data name="Tritium" xml:space="preserve">
+    <value>Tritium</value>
+    <comment>Commodity Tritium</comment>
+  </data>
 </root>
