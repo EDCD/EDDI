@@ -106,6 +106,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fleet Carrier.
+        /// </summary>
+        public static string FleetCarrier {
+            get {
+                return ResourceManager.GetString("FleetCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Megaship.
         /// </summary>
         public static string Megaship {
