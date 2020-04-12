@@ -242,7 +242,7 @@
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
-    <value>Carrier Vendor</value>
+    <value>Fleet Carrier Vendor</value>
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>Station Service: ModulePacks</comment>
   </data>
   <data name="VoucherRedemption" xml:space="preserve">
-    <value>Voucher Redemption</value>
+    <value>Redemption Office</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
 </root>

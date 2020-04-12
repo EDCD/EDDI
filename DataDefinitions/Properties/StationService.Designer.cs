@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carrier Vendor.
+        ///   Looks up a localized string similar to Fleet Carrier Vendor.
         /// </summary>
         public static string CarrierVendor {
             get {
@@ -358,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Voucher Redemption.
+        ///   Looks up a localized string similar to Redemption Office.
         /// </summary>
         public static string VoucherRedemption {
             get {
