@@ -117,7 +117,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
-                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType") ?? "None");
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
                                     Faction controllingfaction = getFaction(data, "Station", systemName);
                                     decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
@@ -204,7 +204,7 @@ namespace EddiJournalMonitor
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType") ?? "None");
+                                    BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -224,9 +224,9 @@ namespace EddiJournalMonitor
                                     int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
                                     decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                     Faction controllingfaction = getFaction(data, "System", systemName);
-                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy") ?? "$economy_None");
-                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy") ?? "$economy_None"); ;
-                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity") ?? "None");
+                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
+                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
+                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
                                     long? population = JsonParsing.getOptionalLong(data, "Population");
 
                                     // Parse factions array data
@@ -3855,7 +3855,7 @@ namespace EddiJournalMonitor
                     FactionPresence factionPresense = new FactionPresence()
                     {
                         systemName = systemName,
-                        FactionState = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None"),
+                        FactionState = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState")) ?? FactionState.None,
                     };
                     faction.presences.Add(factionPresense);
                 }
@@ -3899,8 +3899,8 @@ namespace EddiJournalMonitor
             {
                 // Core data
                 string fName = JsonParsing.getString(factionDetail, "Name");
-                FactionState fState = FactionState.FromEDName(JsonParsing.getString(factionDetail, "FactionState") ?? "None");
-                Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment") ?? "$government_None;");
+                FactionState fState = FactionState.FromEDName(JsonParsing.getString(factionDetail, "FactionState")) ?? FactionState.None;
+                Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment")) ?? Government.None;
                 decimal influence = JsonParsing.getDecimal(factionDetail, "Influence");
                 Superpower fAllegiance = getAllegiance(factionDetail, "Allegiance");
                 Happiness happiness = Happiness.FromEDName(JsonParsing.getString(factionDetail, "Happiness") ?? string.Empty);
@@ -3929,7 +3929,7 @@ namespace EddiJournalMonitor
                     var activeStatesList = (List<object>)activeStatesVal;
                     foreach (IDictionary<string, object> activeState in activeStatesList)
                     {
-                        factionPresense.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State") ?? "None"));
+                        factionPresense.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State")) ?? FactionState.None);
                     }
                 }
 
@@ -3941,7 +3941,7 @@ namespace EddiJournalMonitor
                     foreach (IDictionary<string, object> pendingState in pendingStatesList)
                     {
                         FactionTrendingState pTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(pendingState, "State") ?? "None"),
+                            FactionState.FromEDName(JsonParsing.getString(pendingState, "State")) ?? FactionState.None,
                             JsonParsing.getInt(pendingState, "Trend")
                         );
                         factionPresense.PendingStates.Add(pTrendingState);
@@ -3956,7 +3956,7 @@ namespace EddiJournalMonitor
                     foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
                     {
                         FactionTrendingState rTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "State") ?? "None"),
+                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "State")) ?? FactionState.None,
                             JsonParsing.getInt(recoveringState, "Trend")
                         );
                         factionPresense.RecoveringStates.Add(rTrendingState);
