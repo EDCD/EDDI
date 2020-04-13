@@ -9,6 +9,7 @@
         {
             resourceManager = Properties.FactionStates.ResourceManager;
             resourceManager.IgnoreCase = false;
+            missingEDNameHandler = (edname) => new FactionState(edname);
 
             // Faction states have been broken out into the following categories:
             // - Economic status -reflects the wealth of a system.
