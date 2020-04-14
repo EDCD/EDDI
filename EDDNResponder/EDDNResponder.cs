@@ -26,7 +26,8 @@ namespace EDDNResponder
         private static readonly string[] fullLocationEvents =
         {
             "FSDJump",
-            "Location"
+            "Location",
+            "CarrierJump"
         };
 
         // We support sending these events to EDDN. These events contain partial location data... location data will need to be enriched. 
