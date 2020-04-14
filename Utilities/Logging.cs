@@ -21,7 +21,7 @@ namespace Utilities
     public partial class Logging : _Rollbar
     {
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
-        public static bool Verbose { get; set; } = false;
+        public static bool Verbose { get; set; }
 
         public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
@@ -223,10 +223,11 @@ namespace Utilities
 
         private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            if (RollbarLocator.RollbarInstance.Config.Enabled != false)
+            if (RollbarLocator.RollbarInstance.Config.Enabled == false) { return; }
+            string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
+            if (!string.IsNullOrEmpty(personID))
             {
-                string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
-                if (personID.Length > 0)
+                try
                 {
                     switch (errorLevel)
                     {
@@ -243,6 +244,10 @@ namespace Utilities
                             }
                             break;
                     }
+                }
+                catch
+                {
+                    // Nothing to do here. Just continue gracefully.
                 }
             }
         }
@@ -299,7 +304,7 @@ namespace Utilities
             }
         }
 
-        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
+        protected static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
         {
             if (!filterMessages)
             {
@@ -310,48 +315,51 @@ namespace Utilities
             var request = new RestRequest("/items/", Method.GET);
             request.AddParameter("access_token", rollbarReadToken);
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
-            Dictionary<string, object> response = clientResponse.Data;
-
-            response.TryGetValue("err", out object val); // Check for errors before we proceed
-            if ((long)val == 0)
+            if (clientResponse.Data is Dictionary<string, object> response)
             {
-                response.TryGetValue("result", out val);
-                Dictionary<string, object> result = (Dictionary<string, object>)val;
-
-                result.TryGetValue("items", out val);
-                SimpleJson.JsonArray jsonArray = (SimpleJson.JsonArray)val;
-                object[] items = jsonArray.ToArray();
-
-                foreach (object Item in items)
+                response.TryGetValue("err", out object val); // Check for errors before we proceed
+                if (val != null && (long)val == 0)
                 {
-                    Dictionary<string, object> item = (Dictionary<string, object>)Item;
-                    string itemMessage = JsonParsing.getString(item, "title");
-
-                    if (itemMessage.ToLowerInvariant() == message.ToLowerInvariant())
+                    response.TryGetValue("result", out val);
+                    if (val is Dictionary<string, object> result)
                     {
-                        string itemStatus = JsonParsing.getString(item, "status");
-                        long itemId = JsonParsing.getLong(item, "id");
-                        bool uniqueData = isUniqueData(itemId, thisData);
-                        string itemResolvedVersion = JsonParsing.getString(item, "environment");
+                        result.TryGetValue("items", out val);
+                        if (val is SimpleJson.JsonArray jsonArray)
+                        {
+                            object[] items = jsonArray.ToArray();
+                            foreach (object Item in items)
+                            {
+                                Dictionary<string, object> item = (Dictionary<string, object>)Item;
+                                string itemMessage = JsonParsing.getString(item, "title");
 
-                        // Filter messages & data so that we send only reports which are unique
-                        if (itemStatus.ToLowerInvariant() == "active" && !uniqueData)
-                        {
-                            return false; // Note that if an item reoccurs after being marked as "resolved" it is automatically reactivated.
-                        }
-                        else if (itemResolvedVersion != null)
-                        {
-                            try
-                            {
-                                Version resolvedVersion = new Version(itemResolvedVersion);
-                                if (resolvedVersion > Constants.EDDI_VERSION)
+                                if (itemMessage.ToLowerInvariant() == message.ToLowerInvariant())
                                 {
-                                    return false; // This has been marked as resolved in a more current client version.
+                                    string itemStatus = JsonParsing.getString(item, "status");
+                                    long itemId = JsonParsing.getLong(item, "id");
+                                    bool uniqueData = isUniqueData(itemId, thisData);
+                                    string itemResolvedVersion = JsonParsing.getString(item, "environment");
+
+                                    // Filter messages & data so that we send only reports which are unique
+                                    if (itemStatus.ToLowerInvariant() == "active" && !uniqueData)
+                                    {
+                                        return false; // Note that if an item reoccurs after being marked as "resolved" it is automatically reactivated.
+                                    }
+                                    else if (itemResolvedVersion != null)
+                                    {
+                                        try
+                                        {
+                                            Version resolvedVersion = new Version(itemResolvedVersion);
+                                            if (resolvedVersion > Constants.EDDI_VERSION)
+                                            {
+                                                return false; // This has been marked as resolved in a more current client version.
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            // error parsing version string, ignore
+                                        }
+                                    }
                                 }
-                            }
-                            catch (Exception)
-                            {
-                                // error parsing version string, ignore
                             }
                         }
                     }
@@ -360,7 +368,7 @@ namespace Utilities
             return true;
         }
 
-        public static bool isUniqueData(long itemId, Dictionary<string, object> thisData = null)
+        private static bool isUniqueData(long itemId, Dictionary<string, object> thisData = null)
         {
             if (thisData is null)
             {
@@ -371,34 +379,37 @@ namespace Utilities
             var request = new RestRequest("/item/" + itemId + "/instances/", Method.GET);
             request.AddParameter("access_token", rollbarReadToken);
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
-            Dictionary<string, object> response = clientResponse.Data;
-
-            response.TryGetValue("err", out object val); // Check for errors before we proceed
-            if ((long)val == 0)
+            if (clientResponse.Data is Dictionary<string, object> response)
             {
-                response.TryGetValue("result", out val);
-                Dictionary<string, object> result = (Dictionary<string, object>)val;
-
-                result.TryGetValue("instances", out val);
-                SimpleJson.JsonArray jsonArray = (SimpleJson.JsonArray)val;
-                object[] instances = jsonArray.ToArray();
-
-                foreach (object Instance in instances)
+                response.TryGetValue("err", out object val); // Check for errors before we proceed
+                if (val != null && (long)val == 0)
                 {
-                    Dictionary<string, object> instance = (Dictionary<string, object>)Instance;
+                    response.TryGetValue("result", out val);
 
-                    instance.TryGetValue("data", out val);
-                    Dictionary<string, object> instanceData = (Dictionary<string, object>)val;
-
-                    instanceData.TryGetValue("custom", out val);
-                    Dictionary<string, object> customData = (Dictionary<string, object>)val;
-
-                    if (customData != null)
+                    if (val is Dictionary<string, object> result)
                     {
-                        if (customData.Keys.Count == thisData.Keys.Count &&
-                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k]?.ToString()?.ToLowerInvariant(), customData[k]?.ToString()?.ToLowerInvariant())))
+                        result.TryGetValue("instances", out val);
+                        if (val is SimpleJson.JsonArray jsonArray)
                         {
-                            return false;
+                            object[] instances = jsonArray.ToArray();
+                            foreach (object Instance in instances)
+                            {
+                                Dictionary<string, object> instance = (Dictionary<string, object>)Instance;
+                                instance.TryGetValue("data", out val);
+                                if (val is Dictionary<string, object> instanceData)
+                                {
+                                    instanceData.TryGetValue("custom", out val);
+                                    Dictionary<string, object> customData = (Dictionary<string, object>)val;
+                                    if (customData != null)
+                                    {
+                                        if (customData.Keys.Count == thisData.Keys.Count &&
+                                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k]?.ToString().ToLowerInvariant(), customData[k]?.ToString().ToLowerInvariant())))
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
