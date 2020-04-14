@@ -38,8 +38,9 @@ namespace EddiStarMapService
                 if (token is JArray responses)
                 {
                     List<StarSystem> starSystems = new List<StarSystem>();
-                    foreach (JObject response in responses)
+                    foreach (var jToken in responses)
                     {
+                        var response = (JObject)jToken;
                         if (response != null)
                         {
                             starSystems.Add(ParseStarMapSystem(response));
@@ -75,8 +76,9 @@ namespace EddiStarMapService
                 if (token is JArray responses)
                 {
                     List<StarSystem> starSystems = new List<StarSystem>();
-                    foreach (JObject response in responses)
+                    foreach (var jToken in responses)
                     {
+                        var response = (JObject) jToken;
                         if (response != null)
                         {
                             starSystems.Add(ParseStarMapSystem(response));
