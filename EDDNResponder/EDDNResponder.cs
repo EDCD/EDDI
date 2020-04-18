@@ -41,6 +41,7 @@ namespace EDDNResponder
         // These events must be ignored to prevent enriching events with incorrect location data
         private static readonly string[] ignoredEvents =
         {
+            "CarrierJumpRequest", // CarrierJumpRequest events describing the system the carrier is jumping too rather than the system we are in
             "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
             "StartJump"  // Scan events can register after StartJump and before we actually leave the originating system
         };
