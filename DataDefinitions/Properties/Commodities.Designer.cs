@@ -2770,6 +2770,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pod Outer Tissue.
+        /// </summary>
+        public static string S6_TissueSample_Cells {
+            get {
+                return ResourceManager.GetString("S6_TissueSample_Cells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pod Mesoglea.
         /// </summary>
         public static string S6_TissueSample_Mesoglea {

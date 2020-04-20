@@ -380,6 +380,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128922783, null, "M3_TissueSample_Mycelium", Salvage, 0, false),
                 new CommodityDefinition(128922784, null, "M3_TissueSample_Spores", Salvage, 0, false),
                 new CommodityDefinition(128922785, null, "S6_TissueSample_Mesoglea", Salvage, 0, false),
+                new CommodityDefinition(128922786, null, "S6_TissueSample_Cells", Salvage, 0, false),
                 new CommodityDefinition(128924325, 343, "Rhodplumsite", Minerals, 0, false),
                 new CommodityDefinition(128924326, 344, "Serendibite", Minerals, 0, false),
                 new CommodityDefinition(128924327, 345, "Monazite", Minerals, 0, false),

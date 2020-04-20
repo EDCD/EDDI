@@ -1741,4 +1741,8 @@
     <value>Pod Mesoglea</value>
     <comment>Commodity S6_TissueSample_Mesoglea</comment>
   </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Pod Outer Tissue</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
 </root>
