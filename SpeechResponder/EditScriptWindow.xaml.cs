@@ -17,8 +17,8 @@ namespace EddiSpeechResponder
 	/// </summary>
 	public partial class EditScriptWindow : Window, INotifyPropertyChanged
 	{
-		private readonly Dictionary<string, Script> scripts;
-		private Script script;
+		private readonly Dictionary<string, Script> _scripts;
+		private Script _script;
 		private readonly string originalName;
 
 		private string scriptName;
@@ -51,6 +51,18 @@ namespace EddiSpeechResponder
 			set { responder = value; OnPropertyChanged("Responder"); }
 		}
 
+		private int _priority;
+
+		public int Priority
+		{
+			get { return _priority; }
+			set
+			{
+				_priority = value;
+				OnPropertyChanged(nameof(Priority));
+			}
+		}
+
 		public string ScriptDefaultValue;
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -67,26 +79,28 @@ namespace EddiSpeechResponder
 			DataContext = this;
 			SearchPanel.Install(scriptView);
 
-			this.scripts = scripts;
+			this._scripts = scripts;
 			this.originalName = name;
 
-			scripts.TryGetValue(name, out script);
-			if (script == null)
+			scripts.TryGetValue(name, out _script);
+			if (_script == null)
 			{
 				// This is a new script
 				ScriptName = "New script";
 				ScriptDescription = null;
 				ScriptValue = null;
 				Responder = false;
+				Priority = 3;
 			}
 			else
 			{
 				// This is an existing script
-				ScriptName = script.Name;
-				ScriptDescription = script.Description;
-				ScriptValue = script.Value;
-				ScriptDefaultValue = script.defaultValue;
-				Responder = script.Responder;
+				ScriptName = _script.Name;
+				ScriptDescription = _script.Description;
+				ScriptValue = _script.Value;
+				ScriptDefaultValue = _script.defaultValue;
+				Responder = _script.Responder;
+				Priority = _script.Priority;
 			}
 
 			// See if there is the default value for this script is empty
@@ -118,22 +132,27 @@ namespace EddiSpeechResponder
 		{
 			// Update the script
 			string newScriptText = scriptView.Text;
-			if (script != null)
+			if (_script != null)
 			{
-				Script newScript = new Script(scriptName, scriptDescription, script?.Responder ?? false, newScriptText, script.Priority, script.defaultValue);
-				script = newScript;
+				Script newScript = new Script(scriptName, 
+					scriptDescription, 
+					_script?.Responder ?? false,
+					newScriptText, 
+					Priority, 
+					_script.defaultValue);
+				_script = newScript;
 			}
 
 			Script defaultScript = null;
-			if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+			if (Personality.Default().Scripts?.TryGetValue(_script.Name, out defaultScript) ?? false)
 			{
-				script = Personality.UpgradeScript(script, defaultScript);
+				_script = Personality.UpgradeScript(_script, defaultScript);
 			}
 
 			// Might be updating an existing script so remove it from the list before adding
-			scripts.Remove(originalName);
+			_scripts.Remove(originalName);
 
-			scripts.Add(script.Name, script);
+			_scripts.Add(_script.Name, _script);
 
 			DialogResult = true;
 			this.Close();
@@ -166,10 +185,15 @@ namespace EddiSpeechResponder
 
 		private void testButtonClick(object sender, RoutedEventArgs e)
 		{
-			ScriptRecoveryService.SaveRecoveryScript(ScriptValue, ScriptName, ScriptDescription, Responder);
+			ScriptRecoveryService.SaveRecoveryScript(ScriptValue, 
+				ScriptName, 
+				ScriptDescription, 
+				Responder,
+				Priority, 
+				_script.defaultValue);
 			// Splice the new script in to the existing scripts
 			ScriptValue = scriptView.Text;
-			Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
+			Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
 			Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
 			newScripts.Remove(ScriptName);
 			newScripts.Add(ScriptName, testScript);
@@ -179,7 +203,7 @@ namespace EddiSpeechResponder
 
 			// See if we have a sample
 			List<Event> sampleEvents;
-			object sample = Events.SampleByName(script.Name);
+			object sample = Events.SampleByName(_script.Name);
 			if (sample == null)
 			{
 				sampleEvents = new List<Event>();
@@ -207,7 +231,7 @@ namespace EddiSpeechResponder
 			}
 			foreach (Event sampleEvent in sampleEvents)
 			{
-				speechResponder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(script.Name));
+				speechResponder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(_script.Name));
 			}
 		}
 
