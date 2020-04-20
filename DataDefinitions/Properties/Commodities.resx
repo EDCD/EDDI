@@ -1737,4 +1737,8 @@
     <value>Mollusc Spores</value>
     <comment>Commodity M3_TissueSample_Spores</comment>
   </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Pod Mesoglea</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
 </root>
