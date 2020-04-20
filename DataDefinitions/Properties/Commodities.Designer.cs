@@ -1897,6 +1897,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mollusc Brain Tissue.
+        /// </summary>
+        public static string M_TissueSample_Nerves {
+            get {
+                return ResourceManager.GetString("M_TissueSample_Nerves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mollusc Soft tissue.
         /// </summary>
         public static string M_TissueSample_Soft {

@@ -1701,4 +1701,8 @@
     <value>Mollusc Soft tissue</value>
     <comment>Commodity M_TissueSample_Soft</comment>
   </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Mollusc Brain Tissue</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
 </root>
