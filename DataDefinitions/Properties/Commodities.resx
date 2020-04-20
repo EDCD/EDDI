@@ -1705,4 +1705,8 @@
     <value>Mollusc Brain Tissue</value>
     <comment>Commodity M_TissueSample_Nerves</comment>
   </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Pod Core Tissue</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
 </root>

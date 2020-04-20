@@ -2707,6 +2707,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pod Core Tissue.
+        /// </summary>
+        public static string S_TissueSample_Cells {
+            get {
+                return ResourceManager.GetString("S_TissueSample_Cells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samarium.
         /// </summary>
         public static string Samarium {
