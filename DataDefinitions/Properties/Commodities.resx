@@ -1721,4 +1721,8 @@
     <value>Anomaly Particles</value>
     <comment>Commodity P_ParticulateSample</comment>
   </data>
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Pod Tissue</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
 </root>

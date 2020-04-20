@@ -2743,6 +2743,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pod Tissue.
+        /// </summary>
+        public static string S9_TissueSample_Shell {
+            get {
+                return ResourceManager.GetString("S9_TissueSample_Shell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samarium.
         /// </summary>
         public static string Samarium {
