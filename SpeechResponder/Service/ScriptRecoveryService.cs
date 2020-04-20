@@ -12,7 +12,7 @@ namespace EddiSpeechResponder.Service
 	{
 		static ScriptRecoveryService()
 		{
-			WorkingDirectory = Directory.GetCurrentDirectory();
+			WorkingDirectory = Utilities.Constants.DATA_DIR;
 		}
 
 		public ScriptRecoveryService(EditScriptWindow scriptWindow)
