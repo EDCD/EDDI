@@ -91,6 +91,7 @@ namespace EddiSpeechResponder
 						MessageBoxOptions.DefaultDesktopOnly);
 					if (messageBoxResult == MessageBoxResult.Yes)
 					{
+						Personality.Scripts[recoveredScript.Name] = recoveredScript;
 						OpenEditScriptWindow(recoveredScript);
 					}
 				}
