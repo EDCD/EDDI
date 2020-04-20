@@ -1693,4 +1693,8 @@
     <value>Tritium</value>
     <comment>Commodity Tritium</comment>
   </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Mollusc Fluid</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
 </root>

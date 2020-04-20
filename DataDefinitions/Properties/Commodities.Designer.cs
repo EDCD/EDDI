@@ -1888,6 +1888,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mollusc Fluid.
+        /// </summary>
+        public static string M_TissueSample_Fluid {
+            get {
+                return ResourceManager.GetString("M_TissueSample_Fluid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Magnetic Emitter Coil.
         /// </summary>
         public static string MagneticEmitterCoil {
