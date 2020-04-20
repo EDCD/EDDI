@@ -78,7 +78,12 @@ namespace EddiSpeechResponder.Service
 				try
 				{
 					await Task.Delay(TimeSpan.FromSeconds(3));
-					SaveRecoveryScript(window.ScriptValue, window.ScriptName, window.ScriptDescription, window.Responder);
+					SaveRecoveryScript(window.ScriptValue, 
+						window.ScriptName, 
+						window.ScriptDescription, 
+						window.Responder, 
+						window.Priority, 
+						window.ScriptDefaultValue);
 				}
 				finally
 				{
@@ -93,11 +98,13 @@ namespace EddiSpeechResponder.Service
 		public void SaveRecoveryScript(string scriptValue,
 			string scriptName,
 			string scriptDescription,
-			bool isResponder)
+			bool isResponder, 
+			int priority, 
+			string defaultScript)
 		{
 			lock (_lockRoot)
 			{
-				var script = new Script(scriptName, scriptDescription, isResponder, scriptValue);
+				var script = new Script(scriptName, scriptDescription, isResponder, scriptValue, priority, defaultScript);
 				var serializeObject = JsonConvert.SerializeObject(script);
 				File.WriteAllText(_tempFileName, serializeObject);
 			}
