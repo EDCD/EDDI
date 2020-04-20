@@ -1733,4 +1733,8 @@
     <value>Mollusc Mycelium</value>
     <comment>Commodity M3_TissueSample_Mycelium</comment>
   </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Mollusc Spores</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
 </root>
