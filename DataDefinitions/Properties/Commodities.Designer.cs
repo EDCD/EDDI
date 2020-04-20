@@ -2716,6 +2716,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pod Dead Tissue.
+        /// </summary>
+        public static string S_TissueSample_Surface {
+            get {
+                return ResourceManager.GetString("S_TissueSample_Surface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samarium.
         /// </summary>
         public static string Samarium {

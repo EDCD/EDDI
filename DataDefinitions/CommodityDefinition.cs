@@ -371,6 +371,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128922518, null, "M_TissueSample_Soft", Salvage, 0, false),
                 new CommodityDefinition(128922519, null, "M_TissueSample_Nerves", Salvage, 0, false),
                 new CommodityDefinition(128922520, null, "S_TissueSample_Cells", Salvage, 0, false),
+                new CommodityDefinition(128922521, null, "S_TissueSample_Surface", Salvage, 0, false),
                 new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, false),
                 new CommodityDefinition(128924325, 343, "Rhodplumsite", Minerals, 0, false),
                 new CommodityDefinition(128924326, 344, "Serendibite", Minerals, 0, false),

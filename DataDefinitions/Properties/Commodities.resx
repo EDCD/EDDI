@@ -1709,4 +1709,8 @@
     <value>Pod Core Tissue</value>
     <comment>Commodity S_TissueSample_Cells</comment>
   </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Pod Dead Tissue</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
 </root>
