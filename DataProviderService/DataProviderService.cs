@@ -63,17 +63,18 @@ namespace EddiDataProviderService
                     starSystem.AddOrUpdateBodies(bodies);
                 }
 
-                if (starSystem?.population > 0)
+                if (starSystem.population > 0)
                 {
                     List<Faction> factions = new List<Faction>();
+                    List<Station> stations = new List<Station>();
                     if (showFactions || showStations)
                     {
-                        factions = edsmService.GetStarMapFactions(starSystem.systemname);
+                        factions = edsmService.GetStarMapFactions(starSystem.systemname) ?? factions;
                         starSystem.factions = factions;
                     }
                     if (showStations)
                     {
-                        List<Station> stations = edsmService.GetStarMapStations(starSystem.systemname);
+                        stations = edsmService.GetStarMapStations(starSystem.systemname) ?? stations;
                         starSystem.stations = SetStationFactionData(stations, factions);
                         starSystem.stations = stations;
                     }
@@ -127,7 +128,7 @@ namespace EddiDataProviderService
                 try
                 {
                     List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog(lastSync);
-                    if (flightLogs.Count > 0)
+                    if (flightLogs?.Count > 0)
                     {
                         Logging.Debug("Syncing from EDSM");
                         Dictionary<string, string> comments = edsmService.getStarMapComments();
@@ -165,33 +166,36 @@ namespace EddiDataProviderService
                     List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog(null, starSystems.Select(s => s.systemname).ToArray());
                     Dictionary<string, string> comments = edsmService.getStarMapComments();
 
-                    foreach (StarSystem starSystem in starSystems)
+                    if (flightLogs != null)
                     {
-                        if (starSystem?.systemname != null)
+                        foreach (StarSystem starSystem in starSystems)
                         {
-                            Logging.Debug("Syncing star system " + starSystem.systemname + " from EDSM.");
-                            foreach (StarMapResponseLogEntry flightLog in flightLogs)
+                            if (starSystem?.systemname != null)
                             {
-                                if (flightLog.system == starSystem.systemname)
+                                Logging.Debug("Syncing star system " + starSystem.systemname + " from EDSM.");
+                                foreach (StarMapResponseLogEntry flightLog in flightLogs)
                                 {
-                                    if (starSystem.EDSMID == null)
+                                    if (flightLog.system == starSystem.systemname)
                                     {
-                                        starSystem.EDSMID = flightLog.systemId;
-                                    }
-                                    else
-                                    {
-                                        if (starSystem.EDSMID != flightLog.systemId)
+                                        if (starSystem.EDSMID == null)
                                         {
-                                            continue;
+                                            starSystem.EDSMID = flightLog.systemId;
                                         }
+                                        else
+                                        {
+                                            if (starSystem.EDSMID != flightLog.systemId)
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        starSystem.visitLog.Add(flightLog.date);
                                     }
-                                    starSystem.visitLog.Add(flightLog.date);
                                 }
-                            }
-                            var comment = comments.FirstOrDefault(s => s.Key == starSystem.systemname);
-                            if (!string.IsNullOrEmpty(comment.Value))
-                            {
-                                starSystem.comment = comment.Value;
+                                var comment = comments.FirstOrDefault(s => s.Key == starSystem.systemname);
+                                if (!string.IsNullOrEmpty(comment.Value))
+                                {
+                                    starSystem.comment = comment.Value;
+                                }
                             }
                         }
                     }
