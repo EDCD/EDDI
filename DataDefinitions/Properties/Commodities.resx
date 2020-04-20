@@ -1745,4 +1745,8 @@
     <value>Pod Outer Tissue</value>
     <comment>Commodity S6_TissueSample_Cells</comment>
   </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Pod Shell Tissue</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
 </root>
