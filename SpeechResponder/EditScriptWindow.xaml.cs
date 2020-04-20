@@ -113,7 +113,7 @@ namespace EddiSpeechResponder
 
 			scriptView.Text = scriptValue;
 			ScriptRecoveryService = new ScriptRecoveryService(this);
-			ScriptRecoveryService.BeginScriptRecovery(ScriptName);
+			ScriptRecoveryService.BeginScriptRecovery();
 			scriptView.TextChanged += ScriptView_TextChanged;
 		}
 
