@@ -234,6 +234,6 @@
     <value>Recovered Script</value>
   </data>
   <data name="messagebox_recoveredScript" xml:space="preserve">
-    <value>EDDI has recovered a script after the application has Crashed. Do you want to open it?</value>
+    <value>EDDI has recovered a script that was being edited when the program closed unexpectedly. Do you want to re-open it?</value>
   </data>
 </root>

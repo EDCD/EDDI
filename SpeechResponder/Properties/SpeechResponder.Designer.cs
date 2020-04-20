@@ -277,7 +277,7 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDDI has recovered a script after the application has Crashed. Do you want to open it?.
+        ///   Looks up a localized string similar to EDDI has recovered a script that was being edited when the program closed unexpectedly. Do you want to re-open it?.
         /// </summary>
         public static string messagebox_recoveredScript {
             get {
