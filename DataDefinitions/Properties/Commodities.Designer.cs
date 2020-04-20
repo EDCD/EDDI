@@ -1924,6 +1924,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mollusc Mycelium.
+        /// </summary>
+        public static string M3_TissueSample_Mycelium {
+            get {
+                return ResourceManager.GetString("M3_TissueSample_Mycelium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Magnetic Emitter Coil.
         /// </summary>
         public static string MagneticEmitterCoil {
