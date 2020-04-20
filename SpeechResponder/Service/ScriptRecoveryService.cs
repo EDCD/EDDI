@@ -39,7 +39,7 @@ namespace EddiSpeechResponder.Service
 				return null;
 			}
 
-			return JsonConvert.DeserializeObject<Script>(File.ReadAllText(recoveringScript));
+			return JsonConvert.DeserializeObject<Script>(recoveringScript);
 		}
 
 		/// <summary>
