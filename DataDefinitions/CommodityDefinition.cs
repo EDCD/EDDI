@@ -368,6 +368,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128793114, 358, "PlatinumAloy", Metals, 18333, true),
                 new CommodityDefinition(128913661, 341, "Nanomedicines", Medicines, 0, false),
                 new CommodityDefinition(128922517, null, "M_TissueSample_Fluid", Salvage, 0, false),
+                new CommodityDefinition(128922518, null, "M_TissueSample_Soft", Salvage, 0, false),
                 new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, false),
                 new CommodityDefinition(128924325, 343, "Rhodplumsite", Minerals, 0, false),
                 new CommodityDefinition(128924326, 344, "Serendibite", Minerals, 0, false),

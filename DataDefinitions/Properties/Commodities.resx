@@ -1697,4 +1697,8 @@
     <value>Mollusc Fluid</value>
     <comment>Commodity M_TissueSample_Fluid</comment>
   </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Mollusc Soft tissue</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
 </root>
