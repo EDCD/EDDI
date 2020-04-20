@@ -2356,6 +2356,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anomaly Particles.
+        /// </summary>
+        public static string P_ParticulateSample {
+            get {
+                return ResourceManager.GetString("P_ParticulateSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Painite.
         /// </summary>
         public static string Painite {

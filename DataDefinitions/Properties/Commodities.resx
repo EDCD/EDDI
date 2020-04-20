@@ -1717,4 +1717,8 @@
     <value>Pod Surface Tissue</value>
     <comment>Commodity S_TissueSample_Core</comment>
   </data>
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Anomaly Particles</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
 </root>
