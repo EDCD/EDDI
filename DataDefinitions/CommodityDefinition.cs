@@ -376,6 +376,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128922523, null, "P_ParticulateSample", Salvage, 0, false),
                 new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, false),
                 new CommodityDefinition(128922781, null, "S9_TissueSample_Shell", Salvage, 0, false),
+                new CommodityDefinition(128922782, null, "M3_TissueSample_Membrane", Salvage, 0, false),
                 new CommodityDefinition(128924325, 343, "Rhodplumsite", Minerals, 0, false),
                 new CommodityDefinition(128924326, 344, "Serendibite", Minerals, 0, false),
                 new CommodityDefinition(128924327, 345, "Monazite", Minerals, 0, false),

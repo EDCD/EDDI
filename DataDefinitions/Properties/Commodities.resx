@@ -1725,4 +1725,8 @@
     <value>Pod Tissue</value>
     <comment>Commodity S9_TissueSample_Shell</comment>
   </data>
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Mollusc Membrane</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
 </root>

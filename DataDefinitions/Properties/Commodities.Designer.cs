@@ -1915,6 +1915,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mollusc Membrane.
+        /// </summary>
+        public static string M3_TissueSample_Membrane {
+            get {
+                return ResourceManager.GetString("M3_TissueSample_Membrane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Magnetic Emitter Coil.
         /// </summary>
         public static string MagneticEmitterCoil {
