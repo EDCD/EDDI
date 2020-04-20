@@ -29,8 +29,15 @@ namespace EddiSpeechResponder.Service
 
 		public static Script GetRecoveredScript()
 		{
-			var recoveringScript = Directory.EnumerateFiles(WorkingDirectory, "*.temp").FirstOrDefault();
-			if (recoveringScript == null)
+			var recoveredScriptPath = Path.Combine(WorkingDirectory, "editedScript.temp");
+
+			if (!File.Exists(recoveredScriptPath))
+			{
+				return null;
+			}
+
+			var recoveringScript = File.ReadAllText(recoveredScriptPath);
+			if (string.IsNullOrWhiteSpace(recoveringScript))
 			{
 				return null;
 			}
@@ -41,10 +48,9 @@ namespace EddiSpeechResponder.Service
 		/// <summary>
 		///		Will be called when ether the name of the script has changed or the script edit window was opened
 		/// </summary>
-		/// <param name="scriptName"></param>
-		public void BeginScriptRecovery(string scriptName)
+		public void BeginScriptRecovery()
 		{
-			_tempFileName = Path.Combine(WorkingDirectory, scriptName + ".temp");
+			_tempFileName = Path.Combine(WorkingDirectory, "editedScript.temp");
 
 			if (File.Exists(_tempFileName))
 			{
