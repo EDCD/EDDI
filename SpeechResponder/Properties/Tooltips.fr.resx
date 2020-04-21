@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>Copier (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>Couper (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Supprimer (Suppr)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>Supprimer Ligne (Ctrl+D)</value>
+  </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Supprimer Ligne</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>Rechercher (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>Coller (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Refaire (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>Afficher les numéros de ligne</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Défaire (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>Retour à la ligne</value>
+  </data>
 </root>

@@ -142,7 +142,7 @@
     <value>Rehacer (Ctrl+Y)</value>
   </data>
   <data name="show_line_numbers" xml:space="preserve">
-    <value>Mostar números de línea</value>
+    <value>Mostrar números de línea</value>
   </data>
   <data name="undo" xml:space="preserve">
     <value>Deshacer (Ctrl+Z)</value>
