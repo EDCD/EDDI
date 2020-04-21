@@ -120,9 +120,7 @@
   <data name="clear_route_button" xml:space="preserve">
     <value>Cancella la Rotta</value>
   </data>
-  <data name="clear_route_button_desc" xml:space="preserve">
-    <value>Cancella la Rotta di missione ed il sistema di destinazione.</value>
-  </data>
+  
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Cancella la Rotta:</value>
   </data>
