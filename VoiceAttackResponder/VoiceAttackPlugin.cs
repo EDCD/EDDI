@@ -901,7 +901,7 @@ namespace EddiVoiceAttackResponder
             // Step 3 - pass it through the script resolver
             res = new ScriptResolver(null).resolveFromValue(res);
 
-            return res;
+            return res ?? "";
         }
 
         /// <summary>
