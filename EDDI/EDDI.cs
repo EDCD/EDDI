@@ -28,8 +28,6 @@ namespace Eddi
     /// </summary>
     public class EDDI
     {
-        private static EDDI instance;
-
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
 
@@ -42,18 +40,51 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
         public bool inCrew { get; private set; } = false;
-        public bool inHorizons { get; private set; } = true;
 
-        private bool _gameIsBeta = false;
+        public bool inHorizons 
+        {
+            get
+            {
+                if (_inHorizons != null)
+                {
+                    return (bool)_inHorizons;
+                }
+
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                _inHorizons = eliteConfiguration.Horizons;
+                return _inHorizons ?? true;
+            }
+            private set
+            {
+                _inHorizons = value;
+            } 
+        }
+        private bool? _inHorizons;
+
         public bool gameIsBeta
         {
-            get => _gameIsBeta;
+            get
+            {
+                if (_gameIsBeta != null)
+                {
+                    return (bool)_gameIsBeta;
+                }
+
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                _gameIsBeta = eliteConfiguration.Horizons;
+                return _gameIsBeta ?? false;
+            }
             private set
             {
                 _gameIsBeta = value;
-                CompanionAppService.Instance.inBeta = value;
+                Logging.Info(value ? "On beta" : "On live");
+                // (Re)configure the CompanionAppService service
+                CompanionAppService.Instance.gameIsBeta = value;
+                // (Re)configure the Inara service
+                EddiInaraService.InaraService.Start(value, EddiIsBeta());
             }
         }
+        private bool? _gameIsBeta;
 
         static EDDI()
         {
@@ -61,7 +92,7 @@ namespace Eddi
             Directory.CreateDirectory(Constants.DATA_DIR);
         }
 
-        private static readonly object instanceLock = new object();
+        // EDDI Instance
         public static EDDI Instance
         {
             get
@@ -80,6 +111,8 @@ namespace Eddi
                 return instance;
             }
         }
+        private static EDDI instance;
+        private static readonly object instanceLock = new object();
 
         // Upgrade information
         public bool UpgradeAvailable = false;
@@ -150,11 +183,6 @@ namespace Eddi
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
-                // Set up the Elite configuration
-                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                gameIsBeta = eliteConfiguration.Beta;
-                Logging.Info(gameIsBeta ? "On beta" : "On live");
-                inHorizons = eliteConfiguration.Horizons;
 
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -167,18 +195,35 @@ namespace Eddi
                     {
                         Task.Run(() => responders = findResponders()), // Set up responders
                         Task.Run(() => monitors = findMonitors()), // Set up monitors 
-                        Task.Run(() => updateHomeSystemStation(configuration)), // Set up home system details
-                        Task.Run(() => // Set up squadron details
-                        {
-                            updateSquadronSystem(configuration);
-                            Cmdr.squadronname = configuration.SquadronName;
-                            Cmdr.squadronid = configuration.SquadronID;
-                            Cmdr.squadronrank = configuration.SquadronRank;
-                            Cmdr.squadronallegiance = configuration.SquadronAllegiance;
-                            Cmdr.squadronpower = configuration.SquadronPower;
-                            Cmdr.squadronfaction = configuration.SquadronFaction;
-                        }),
                     });
+                    // If our home system and squadron system are the same, run those tasks in the same thread to prevent fetching from the star system database multiple times.
+                    // Otherwise, run them in seperate threads.
+                    void ActionUpdateHomeSystemStation()
+                    {
+                        updateHomeSystemStation(configuration);
+                    }
+                    void ActionUpdateSquadronSystem()
+                    {
+                        updateSquadronSystem(configuration);
+                        Cmdr.squadronname = configuration.SquadronName;
+                        Cmdr.squadronid = configuration.SquadronID;
+                        Cmdr.squadronrank = configuration.SquadronRank;
+                        Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                        Cmdr.squadronpower = configuration.SquadronPower;
+                        Cmdr.squadronfaction = configuration.SquadronFaction;
+                    }
+                    if (configuration.HomeSystem == configuration.SquadronSystem)
+                    {
+                        essentialAsyncTasks.Add(Task.Run((Action) ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
+                    }
+                    else
+                    {
+                        essentialAsyncTasks.AddRange(new List<Task>()
+                        {
+                            Task.Run((Action)ActionUpdateHomeSystemStation),
+                            Task.Run((Action)ActionUpdateSquadronSystem)
+                        });
+                    }
                 }
                 else
                 {
@@ -2404,7 +2449,14 @@ namespace Eddi
         /// </summary>
         public List<EDDIMonitor> findMonitors()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(path))
+            {
+                Logging.Warn("Unable to start EDDI Monitors, application directory path not found.");
+                return null;
+            }
+
+            DirectoryInfo dir = new DirectoryInfo(path);
             List<EDDIMonitor> monitors = new List<EDDIMonitor>();
             Type pluginType = typeof(EDDIMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
@@ -2475,7 +2527,13 @@ namespace Eddi
         /// </summary>
         public List<EDDIResponder> findResponders()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(path))
+            {
+                Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
+                return null;
+            }
+            DirectoryInfo dir = new DirectoryInfo(path);
             List<EDDIResponder> responders = new List<EDDIResponder>();
             Type pluginType = typeof(EDDIResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
