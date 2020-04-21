@@ -132,8 +132,8 @@ namespace UnitTests
             Assert.AreEqual(Superpower.None, faction2.Allegiance);
             Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
         }
-        [TestMethod]
 
+        [TestMethod]
         public void TestParseNoFactions()
         {
             // Setup
