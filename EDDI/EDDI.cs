@@ -251,12 +251,6 @@ namespace Eddi
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the Frontier API is enabled.");
-                        // Pass our commander's Frontier API name to the StarMapService (if it has been set) 
-                        // (the Frontier API name may differ from the EDSM name)
-                        if (Cmdr?.name != null)
-                        {
-                            StarMapService.commanderFrontierApiName = Cmdr.name;
-                        }
                     }
                     else
                     {
@@ -1879,7 +1873,11 @@ namespace Eddi
         private bool eventCommanderLoading(CommanderLoadingEvent theEvent) 
         {
             // Set our commander name and ID
-            Cmdr.name = theEvent.name;
+            if (Cmdr.name != theEvent.name)
+            {
+                Cmdr.name = theEvent.name;
+                ObtainResponder("EDSM Responder").Reload();
+            }
             Cmdr.EDID = theEvent.frontierID;
             return true;
         }
@@ -1910,7 +1908,11 @@ namespace Eddi
             inCQC = false;
 
             // Set our commander name and ID
-            Cmdr.name = theEvent.commander;
+            if (Cmdr.name != theEvent.commander)
+            {
+                Cmdr.name = theEvent.commander;
+                ObtainResponder("EDSM Responder").Reload();
+            }
             Cmdr.EDID = theEvent.frontierID;
 
             // Set game version
