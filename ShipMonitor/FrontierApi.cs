@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using EddiDataProviderService;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -37,6 +38,12 @@ namespace EddiShipMonitor
                             {
                                 ship.starsystem = (string)shipObj["starsystem"]["name"];
                                 ship.station = (string)shipObj["station"]["name"];
+
+                                // Get the ship's coordinates for distance calculations
+                                StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(ship.starsystem);
+                                ship.x = StoredShipStarSystem.x;
+                                ship.y = StoredShipStarSystem.y;
+                                ship.z = StoredShipStarSystem.z;
                             }
                             shipyard.Add(ship);
                         }

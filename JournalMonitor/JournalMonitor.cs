@@ -1122,10 +1122,18 @@ namespace EddiJournalMonitor
                                                     {
                                                         StarSystem systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(starSystem, true);
                                                         ship.station = systemData?.stations?.FirstOrDefault(s => s.marketId == ship.marketid)?.name;
+                                                        ship.x = systemData?.x;
+                                                        ship.y = systemData?.y;
+                                                        ship.z = systemData?.z;
+                                                        ship.distance = ship.Distance(EDDI.Instance?.CurrentStarSystem?.x, EDDI.Instance?.CurrentStarSystem?.y, EDDI.Instance?.CurrentStarSystem?.z);
                                                     }
                                                     else
                                                     {
                                                         ship.station = station;
+                                                        ship.x = EDDI.Instance?.CurrentStarSystem?.x;
+                                                        ship.y = EDDI.Instance?.CurrentStarSystem?.y;
+                                                        ship.z = EDDI.Instance?.CurrentStarSystem?.z;
+                                                        ship.distance = 0;
                                                     }
                                                     shipyard.Add(ship);
                                                 }

@@ -315,7 +315,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `phoneticname` the name of the ship, using any phonetic pronunciation that has been set and is supported by the current voice 
     - `ident` the identifier of the ship
     - `role` the role of the ship 
-    - `health` the current health of the hull, from 0 to 100
+    - `health` the last reported health of the hull, from 0 to 100
     - `bulkheads` details of the ship's bulkheads (this is a Module object)
     - `powerplant` details of the ship's powerplant (this is a Module object)
     - `thrusters` details of the ship's thrusters (this is a Module object)
@@ -326,17 +326,18 @@ Any values might be missing, depending on EDDI's configuration.
     - `fueltank` details of the ship's fuel tank (this is a Module object)
     - `fueltankcapacity` the capacity of the main fuel tank
     - `fueltanktotalcapacity` the capacity of the main fuel tank plus all secondary fuel tanks
-    - `maxjump` maximum distance ship has jumped
-    - `maxfuel` fuel used for `max jump` (excluding synthesis)
+    - `maxjumprange` maximum unladen jump range of the ship
+    - `maxfuelperjump` fuel required for `max jump` (excluding synthesis)
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
     - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects)
 
 Stored ship information
 
-    - `system` system in which the ship is stored
+    - `starsystem` system in which the ship is stored
     - `station` station in which the ship is stored
     - `marketid` market ID of the station in which the ship is stored
+    - `distance` the distance to the stored ship, in light years
     - `intransit` true if the ship is in transit
     - `transferprice` price to transfer ship to current location (0 if in transit)
     - `transfertime` time to transfer ship to current location (0 if in transit)
@@ -370,7 +371,7 @@ An internal module.
     - `priority` current power priority of the module
     - `position` position of module in 'Modules' panel, according to power usage (highest = 1)
     - `power` power usage, measured in MegaWatts (MW)
-    - `health` current health of the module
+    - `health` last reported health of the module
     - `mount` only for weapons, this defines the type of mount (fixed, gimballed, turreted)
     - `clipcapacity` only for weapons with ammunition, this defines the clip capacity of the loaded weapon
     - `hoppercapacity` only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
