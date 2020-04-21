@@ -18,6 +18,11 @@ namespace UnitTests
             MakeSafe();
         }
 
+        private string CondenseSpaces(string s)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(s, @"\s+", " ");
+        }
+
         [TestMethod]
         public void TestSpeechPriorityIfInOrder()
         {
@@ -151,7 +156,8 @@ namespace UnitTests
                 pathingResults.Add(pathedString);
             }
 
-            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
@@ -171,7 +177,8 @@ namespace UnitTests
                 pathingResults.Add(pathedString);
             }
 
-            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
@@ -199,7 +206,8 @@ namespace UnitTests
                 pathingResults.Add(pathedString);
             }
 
-            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
@@ -283,7 +291,8 @@ namespace UnitTests
                 pathingResults.Add(pathedString);
             }
 
-            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
