@@ -305,7 +305,7 @@ namespace EddiDataDefinitions
             {
                 // get the canonical FactionState object for the given EDName
                 factionPresence.FactionState =
-                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
+                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname) ?? FactionState.None;
             }
         }
 
