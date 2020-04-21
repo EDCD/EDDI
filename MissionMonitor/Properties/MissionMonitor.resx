@@ -121,7 +121,7 @@
     <value>Clear Route</value>
   </data>
   <data name="clear_route_button_desc" xml:space="preserve">
-    <value>Clears the misions route and Destination System.</value>
+    <value>Clears the missions route and Destination System.</value>
   </data>
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Clear Route:</value>
