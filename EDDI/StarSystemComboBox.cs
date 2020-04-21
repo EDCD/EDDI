@@ -15,7 +15,8 @@ namespace Eddi
         private List<string> SystemsBeginningWith(string systemName)
         {
             IEdsmService edsmService = new StarMapService();
-            return edsmService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.systemname).ToList();
+            return edsmService.GetStarMapSystemsPartial(systemName, false, false)?.Select(s => s.systemname).ToList()
+                ?? new List<string>();
         }
 
         internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)

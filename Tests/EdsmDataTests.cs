@@ -438,7 +438,7 @@ namespace UnitTests
             List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystems(systemNames, true, false);
 
             // Assert
-            Assert.AreEqual(3, starSystems.Count);
+            Assert.AreEqual(3, starSystems?.Count);
         }
 
         [TestMethod]

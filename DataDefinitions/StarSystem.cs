@@ -292,10 +292,13 @@ namespace EddiDataDefinitions
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
-                string factionState = (string)additionalJsonData?["state"];
-                if (factionState != null)
+                if (additionalJsonData.ContainsKey("state"))
                 {
-                    factionPresence.FactionState = FactionState.FromEDName(factionState) ?? FactionState.None;
+                    string factionState = (string)additionalJsonData?["state"];
+                    if (factionState != null)
+                    {
+                        factionPresence.FactionState = FactionState.FromEDName(factionState) ?? FactionState.None;
+                    }
                 }
             }
             else

@@ -198,7 +198,7 @@ namespace EddiDataProviderService
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (String.IsNullOrEmpty(name)) { return null; }
-            return GetStarSystems(new[] { name }, refreshIfOutdated).FirstOrDefault();
+            return GetStarSystems(new[] { name }, refreshIfOutdated)?.FirstOrDefault();
         }
 
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
