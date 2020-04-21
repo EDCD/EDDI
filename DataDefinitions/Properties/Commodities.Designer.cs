@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ultra-Compact Processor Prototypes.
+        /// </summary>
+        public static string Advert1 {
+            get {
+                return ResourceManager.GetString("Advert1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aganippe Rush.
         /// </summary>
         public static string AganippeRush {
@@ -93,6 +102,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AgriculturalMedicines {
             get {
                 return ResourceManager.GetString("AgriculturalMedicines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agronomic Treatment.
+        /// </summary>
+        public static string agronomictreatment {
+            get {
+                return ResourceManager.GetString("agronomictreatment", resourceCulture);
             }
         }
         
@@ -304,6 +322,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crom Silver Fesh.
+        /// </summary>
+        public static string AnimalEffigies {
+            get {
+                return ResourceManager.GetString("AnimalEffigies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Animal Meat.
         /// </summary>
         public static string Animalmeat {
@@ -417,6 +444,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AzCancriFormula42 {
             get {
                 return ResourceManager.GetString("AzCancriFormula42", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baked Greebles.
+        /// </summary>
+        public static string BakedGreebles {
+            get {
+                return ResourceManager.GetString("BakedGreebles", resourceCulture);
             }
         }
         
@@ -1852,6 +1888,60 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mollusc Fluid.
+        /// </summary>
+        public static string M_TissueSample_Fluid {
+            get {
+                return ResourceManager.GetString("M_TissueSample_Fluid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mollusc Brain Tissue.
+        /// </summary>
+        public static string M_TissueSample_Nerves {
+            get {
+                return ResourceManager.GetString("M_TissueSample_Nerves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mollusc Soft tissue.
+        /// </summary>
+        public static string M_TissueSample_Soft {
+            get {
+                return ResourceManager.GetString("M_TissueSample_Soft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mollusc Membrane.
+        /// </summary>
+        public static string M3_TissueSample_Membrane {
+            get {
+                return ResourceManager.GetString("M3_TissueSample_Membrane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mollusc Mycelium.
+        /// </summary>
+        public static string M3_TissueSample_Mycelium {
+            get {
+                return ResourceManager.GetString("M3_TissueSample_Mycelium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mollusc Spores.
+        /// </summary>
+        public static string M3_TissueSample_Spores {
+            get {
+                return ResourceManager.GetString("M3_TissueSample_Spores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Magnetic Emitter Coil.
         /// </summary>
         public static string MagneticEmitterCoil {
@@ -2293,6 +2383,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anomaly Particles.
+        /// </summary>
+        public static string P_ParticulateSample {
+            get {
+                return ResourceManager.GetString("P_ParticulateSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Painite.
         /// </summary>
         public static string Painite {
@@ -2640,6 +2739,69 @@ namespace EddiDataDefinitions.Properties {
         public static string Rutile {
             get {
                 return ResourceManager.GetString("Rutile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Core Tissue.
+        /// </summary>
+        public static string S_TissueSample_Cells {
+            get {
+                return ResourceManager.GetString("S_TissueSample_Cells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Surface Tissue.
+        /// </summary>
+        public static string S_TissueSample_Core {
+            get {
+                return ResourceManager.GetString("S_TissueSample_Core", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Dead Tissue.
+        /// </summary>
+        public static string S_TissueSample_Surface {
+            get {
+                return ResourceManager.GetString("S_TissueSample_Surface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Outer Tissue.
+        /// </summary>
+        public static string S6_TissueSample_Cells {
+            get {
+                return ResourceManager.GetString("S6_TissueSample_Cells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Shell Tissue.
+        /// </summary>
+        public static string S6_TissueSample_Coenosarc {
+            get {
+                return ResourceManager.GetString("S6_TissueSample_Coenosarc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Mesoglea.
+        /// </summary>
+        public static string S6_TissueSample_Mesoglea {
+            get {
+                return ResourceManager.GetString("S6_TissueSample_Mesoglea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pod Tissue.
+        /// </summary>
+        public static string S9_TissueSample_Shell {
+            get {
+                return ResourceManager.GetString("S9_TissueSample_Shell", resourceCulture);
             }
         }
         
@@ -3162,6 +3324,15 @@ namespace EddiDataDefinitions.Properties {
         public static string TrinketsOfFortune {
             get {
                 return ResourceManager.GetString("TrinketsOfFortune", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tritium.
+        /// </summary>
+        public static string Tritium {
+            get {
+                return ResourceManager.GetString("Tritium", resourceCulture);
             }
         }
         

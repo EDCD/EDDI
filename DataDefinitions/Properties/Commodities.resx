@@ -1689,4 +1689,64 @@
     <value>Crom Silver Fesh</value>
     <comment>Commodity Crom Silver Fesh</comment>
   </data>
+  <data name="Tritium" xml:space="preserve">
+    <value>Tritium</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Mollusc Fluid</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Mollusc Soft tissue</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Mollusc Brain Tissue</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Pod Core Tissue</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Pod Dead Tissue</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Pod Surface Tissue</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Anomaly Particles</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Pod Tissue</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Mollusc Membrane</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Mollusc Mycelium</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Mollusc Spores</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Pod Mesoglea</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Pod Outer Tissue</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Pod Shell Tissue</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
 </root>

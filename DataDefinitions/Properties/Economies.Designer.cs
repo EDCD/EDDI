@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Economies {
@@ -70,11 +70,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Private Enterprise.
+        /// </summary>
+        public static string Carrier {
+            get {
+                return ResourceManager.GetString("Carrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Colony.
         /// </summary>
         public static string Colony {
             get {
                 return ResourceManager.GetString("Colony", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damaged.
+        /// </summary>
+        public static string Damaged {
+            get {
+                return ResourceManager.GetString("Damaged", resourceCulture);
             }
         }
         
@@ -124,11 +142,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prison.
+        /// </summary>
+        public static string Prison {
+            get {
+                return ResourceManager.GetString("Prison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refinery.
         /// </summary>
         public static string Refinery {
             get {
                 return ResourceManager.GetString("Refinery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repair.
+        /// </summary>
+        public static string Repair {
+            get {
+                return ResourceManager.GetString("Repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rescue.
+        /// </summary>
+        public static string Rescue {
+            get {
+                return ResourceManager.GetString("Rescue", resourceCulture);
             }
         }
         

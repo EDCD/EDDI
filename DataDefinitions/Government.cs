@@ -29,6 +29,7 @@ namespace EddiDataDefinitions
             var Theocracy = new Government("$government_Theocracy;");
             var Workshop = new Government("$government_Workshop;");
             var Engineer = new Government("$government_engineer;");
+            var Carrier = new Government("$government_Carrier;");
         }
 
         public static readonly Government None;

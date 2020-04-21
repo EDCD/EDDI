@@ -307,6 +307,21 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void StationServiceLegacyTest()
+        {
+            // In Elite Dangerous v3.7, the edName "Workshop" is replaced by "Engineer" and the edName "SearchAndRescue" is replaced by "SearchRescue".
+            // Test for backwards and forwards compatibility.
+            StationService workshop = StationService.FromEDName("Workshop");
+            StationService engineer = StationService.FromEDName("Engineer");
+
+            StationService searchAndRescue = StationService.FromEDName("SearchAndRescue");
+            StationService searchRescue = StationService.FromEDName("SearchRescue");
+
+            Assert.IsTrue(workshop.DeepEquals(engineer));
+            Assert.IsTrue(searchAndRescue.DeepEquals(searchRescue));
+        }
+
+        [TestMethod]
         public void FrontierApiCmdrTest()
         {
             Commander commander = new Commander()

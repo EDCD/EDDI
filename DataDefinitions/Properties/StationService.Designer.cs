@@ -79,6 +79,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tritium Depot.
+        /// </summary>
+        public static string CarrierFuel {
+            get {
+                return ResourceManager.GetString("CarrierFuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carrier Management.
+        /// </summary>
+        public static string CarrierManagement {
+            get {
+                return ResourceManager.GetString("CarrierManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fleet Carrier Vendor.
+        /// </summary>
+        public static string CarrierVendor {
+            get {
+                return ResourceManager.GetString("CarrierVendor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commodities.
         /// </summary>
         public static string Commodities {
@@ -151,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Livery.
+        /// </summary>
+        public static string Livery {
+            get {
+                return ResourceManager.GetString("Livery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material Trader.
         /// </summary>
         public static string MaterialTrader {
@@ -174,6 +210,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MissionsGenerated {
             get {
                 return ResourceManager.GetString("MissionsGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module Packs.
+        /// </summary>
+        public static string ModulePacks {
+            get {
+                return ResourceManager.GetString("ModulePacks", resourceCulture);
             }
         }
         
@@ -309,6 +354,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Tuning {
             get {
                 return ResourceManager.GetString("Tuning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redemption Office.
+        /// </summary>
+        public static string VoucherRedemption {
+            get {
+                return ResourceManager.GetString("VoucherRedemption", resourceCulture);
             }
         }
         

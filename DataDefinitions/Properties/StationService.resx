@@ -233,4 +233,28 @@
     <value>Shop</value>
     <comment>Station Service: Shop</comment>
   </data>
+  <data name="CarrierFuel" xml:space="preserve">
+    <value>Tritium Depot</value>
+    <comment>Station Service: CarrierFuel</comment>
+  </data>
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Carrier Management</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Fleet Carrier Vendor</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Livery</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Module Packs</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Redemption Office</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>
