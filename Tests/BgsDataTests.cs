@@ -132,5 +132,25 @@ namespace UnitTests
             Assert.AreEqual(Superpower.None, faction2.Allegiance);
             Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
         }
+        [TestMethod]
+
+        public void TestParseNoFactions()
+        {
+            // Setup
+            string endpoint = "v4/factions?";
+            string json = "";
+            RestRequest data = new RestRequest();
+            fakeBgsRestClient.Expect(endpoint, json, data);
+            var queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(BgsService.FactionParameters.factionName, "")
+            };
+
+            // Act
+            List<Faction> factions = fakeBgsService.GetFactions(endpoint, queryList);
+
+            // Assert
+            Assert.IsNull(factions);
+        }
     }
 }
