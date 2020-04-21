@@ -431,10 +431,11 @@ namespace EddiVoiceAttackResponder
             }
             try
             {
-                var profile = EddiInaraService.InaraService.Instance.GetCommanderProfile(commanderName);
-                if (profile != null)
+                EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
+                var result = inaraService.GetCommanderProfile(commanderName);
+                if (result != null)
                 {
-                    OpenOrStoreURI(ref vaProxy, profile.url);
+                    OpenOrStoreURI(ref vaProxy, result.url);
                 }
                 else
                 {

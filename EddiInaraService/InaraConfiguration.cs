@@ -20,11 +20,16 @@ namespace EddiInaraService
         [JsonProperty("lastSync")]
         public DateTime lastSync { get; set; }
 
+        [JsonProperty("isAPIkeyValid")]
+        public bool isAPIkeyValid { get; set; } = true;
+
         [JsonIgnore]
         private string dataPath;
 
         [JsonIgnore]
         static readonly object fileLock = new object();
+
+        public static EventHandler ConfigurationUpdated;
 
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
@@ -93,6 +98,9 @@ namespace EddiInaraService
             {
                 Files.Write(filename, json);
             }
+
+            // Communicate the updated configuration to all subscribed processes
+            ConfigurationUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -132,4 +132,7 @@
   <data name="p2" xml:space="preserve">
     <value>Once you have entered your API key, EDDI will begin to transmit game session data to Inara.</value>
   </data>
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>Please enter a valid Inara API key.</value>
+  </data>
 </root>

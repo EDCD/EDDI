@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:InaraResources.p1}"/>
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:InaraResources.api_key_label}"/>
-            <TextBox x:Name="inaraApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="inaraApiKeyChanged"/>
+            <TextBox x:Name="inaraApiKeyTextBox" Text="{Binding Path=apiKey, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="InaraApiKeyChanged"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:InaraResources.p2}"/>
         </Grid>
     </DockPanel>

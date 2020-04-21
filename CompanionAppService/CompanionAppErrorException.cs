@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace EddiCompanionAppService
 {
@@ -9,5 +10,11 @@ namespace EddiCompanionAppService
         public EliteDangerousCompanionAppErrorException() : base() { }
 
         public EliteDangerousCompanionAppErrorException(string message) : base(message) { }
+
+        public EliteDangerousCompanionAppErrorException(string message, Exception innerException) : base(message, innerException)
+        { }
+
+        protected EliteDangerousCompanionAppErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
+        { }
     }
 }

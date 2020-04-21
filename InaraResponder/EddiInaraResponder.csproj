@@ -92,6 +92,10 @@
       <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
       <Name>EddiShipMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
+      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
+      <Name>EddiSpeechService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>
@@ -108,6 +112,7 @@
     <EmbeddedResource Include="Properties\InaraResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InaraResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\InaraResources.ru.resx" />
   </ItemGroup>

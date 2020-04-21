@@ -80,8 +80,6 @@ namespace Eddi
                 Logging.Info(value ? "On beta" : "On live");
                 // (Re)configure the CompanionAppService service
                 CompanionAppService.Instance.gameIsBeta = value;
-                // (Re)configure the Inara service
-                EddiInaraService.InaraService.Start(value, EddiIsBeta());
             }
         }
         private bool? _gameIsBeta;
@@ -264,11 +262,6 @@ namespace Eddi
                     {
                         Logging.Info("EDDI access to the Frontier API is not enabled.");
                     }
-                });
-                Task.Run(() =>
-                {
-                    // Set up the Inara service
-                    EddiInaraService.InaraService.Start(gameIsBeta, EddiIsBeta());
                 });
 
                 // Make sure that our essential tasks have completed before we start
