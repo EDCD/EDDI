@@ -897,6 +897,10 @@ namespace EddiVoiceAttackResponder
                 string[] options = res.Split(';');
                 res = options[random.Next(0, options.Length)];
             }
+
+            // Step 3 - pass it through the script resolver
+            res = new ScriptResolver(null).resolveFromValue(res);
+
             return res;
         }
 
@@ -923,7 +927,7 @@ namespace EddiVoiceAttackResponder
 
                     // Store in EDSM
                     IEdsmService edsmService = new StarMapService();
-                    edsmService?.sendStarMapComment(currentSystemName, comment);
+                    edsmService.sendStarMapComment(currentSystemName, comment);
                 }
             }
             catch (Exception e)

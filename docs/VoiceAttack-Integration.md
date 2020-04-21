@@ -320,64 +320,156 @@ EDDI's VoiceAttack plugin allows you to access its features in your own profile.
 
 ![](../images/VoiceAttack-PluginView.jpg)
 
-## say
+Note: Though the examples in this section show variables being passed as parameters within the plugin interface, it is no longer necessary to do so. Rather, when the plugin is invoked then the plugin will search for variables matching the plugin context and set prior to invoking the plugin.
 
-This function uses EDDI's voice to read a script. It takes one mandatory and two optional parameters.
+## Speech functions
+
+### say
+
+This function uses EDDI's voice to read a script. It takes one mandatory and two optional variables as parameters.
+
 - 'Script' (text variable) is a mandatory parameter containing the script to be read. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say' and passing the parameters described above.
+To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'say'.
 
-## speech
+### speech
 
-This function uses EDDI's voice to read a Speech Responder script. It takes one mandatory and two optional parameters.
+This function uses EDDI's voice to read a Speech Responder script. It takes one mandatory and two optional variables as parameters.
+
 - 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
  
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say' and passing the parameters described above.
+To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'speech'.
 
-## shutup
+### transmit
+
+This function uses EDDI's voice to read a Speech Responder script with a radio effect. It takes one mandatory and two optional variables as parameters.
+
+- 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
+- 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
+- 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
+ 
+To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'transmit'.
+
+### shutup
 
 This function stops any active EDDI speech. There are no parameters.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 
-## disablespeechresponder
+### disablespeechresponder
 
 This function tells the speech responder to not talk unless specifically asked for information. There are no parameters. This lasts until either VoiceAttack is restarted or an enablespeechresponder call is made.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'disablespeechresponder'.
 
-## enablespeechresponder
+### enablespeechresponder
 
 This function tells the speech responder to respond normally to events. There are no parameters.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'enablespeechresponder'.
 
-## setspeechresponderpersonality
+### setspeechresponderpersonality
 
-This function changes the speech responder's personality. It takes one mandatory parameter.
+This function changes the speech responder's personality. It takes one mandatory variable as a parameter.
+
 - 'Personality' (text variable) is a mandatory parameter containing the name of the personality to invoke.
 
 Note that unlike enablespeechresponder and disablespeechresponder any changes made here are persistent.
 
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality' and passing the 'Personality' parameter.
+To use this function in your own commands set the 'Personality' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality'.
 
-## setstate
+## Information functions
 
-This function pushes a state variable to EDDI's internal session state, allowing it to be shared with other responders. It takes two mandatory parameters.
+### coriolis, edshipyard, eddbsystem, or eddbstation
+
+Looks up the current ship, the current starsystem, or the current station (as applicable). A web uri is written to '\{TXT: EDDI uri\}' and, unless '\{BOOL:EDDI open uri in browser\}' has been set to false, the uri is opened in the default browser.
+
+### inara
+
+Looks up a named commander on the website Inara.cz. It takes one mandatory variable as a parameter.
+
+- 'Name' (text variable) is a mandatory parameter containing the name of the commander to look up on Inara.cz.
+
+A web uri is written to '\{TXT: EDDI uri\}' and, unless '\{BOOL:EDDI open uri in browser\}' has been set to false, the uri is opened in the default browser.
+
+To use this function in your own commands set the 'Name' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'inara'.
+
+### jumpdetails
+
+This function will provide jump information based on your ship loadout and current fuel level. It takes one mandatory variable as a parameter.
+
+- 'Type variable' (text variable) is a mandatory parameter containing the type of the information to return.
+
+  * `next` range of next jump at current fuel mass and current laden mass
+  * `max` maximum jump range at minimum fuel mass and current laden mass
+  * `total` total range of multiple jumps from current fuel mass and current laden mass
+  * `full` total range of multiple jumps from maximum fuel mass and current laden mass
+
+When this function is used, the following variables will be updated and made available for use in VoiceAttack:
+
+- \{DEC:Ship jump detail distance\}
+- \{INT:Ship jump detail jumps\}
+
+To use this function in your own commands set the 'Type variable' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'jumpdetails'.
+
+### route
+
+This function will produce a destination/route for valid mission destinations. It takes one mandatory and two optional variables as parameters.
+
+- 'Type variable' (text variable) is a mandatory parameter containing the type of update to execute.
+
+  * `cancel` Cancel the currently stored route.
+  * `encoded` Nearest encoded materials trader.
+  * `expiring` Destination of your next expiring mission.
+  * `facilitator` Nearest 'Legal Facilities' contact.
+  * `farthest` Mission destination farthest from your current location.
+  * `guardian` Nearest guardian technology broker.
+  * `human` Nearest human technology broker.
+  * `manufactured` Nearest manufactured materials trader.
+  * `most` Nearest system with the most missions.
+  * `nearest` Mission destination nearest to your current location.
+  * `next` Next destination in the currently stored route.
+  * `raw` Nearest raw materials trader.
+  * `route` 'Traveling Salesman' (RNNA) route for all active missions.
+  * `scoop` Nearest scoopable star system.
+  * `set` Set destination route to a single system.
+  * `source` Destination to nearest mission 'cargo source'.
+  * `update` Update to the next mission route destination (use this once all missions in the current system are completed).
+
+- 'System variable' (text variable) is an optional parameter for the following route update types. 
+
+  * `most` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+  * `route` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+  * `set` If set, the resulting route shall proceed directly to the specified single star system rather than to the last star system identified in a route search.
+  * `source` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+  * `update` If set, the specified star system shall be removed from the route rather than removing the prior mission route destination.
+
+- 'Station variable' (text variable) is an optional parameter for the following route update types
+
+  * `set` If set, the resulting route shall proceed directly to the specified single star system and station rather than to the last star system and station identified in a route search.
+
+To use this function in your own commands set the 'Type variable' parameter and when appropriate the `System variable` and 'Station variable' parameters then use the 'Execute an external plugin function' command with the plugin context set to 'route'. Upon success, a '((EDDI route details))' event is triggered, providing event data as described [in the appropriate wiki page](https://github.com/EDCD/EDDI/wiki/Route-details-event).
+
+## Utility functions
+
+### setstate
+
+This function pushes a state variable to EDDI's internal session state, allowing it to be shared with other responders. It takes two mandatory variables as parameters.
+
 - 'State variable' (text variable) is a mandatory parameter containing the name of the VoiceAttack variable to store in EDDI.
 - The variable to store in EDDI (integer, boolean, decimal, or text variable), as referenced by the 'State variable' parameter.
 
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setstate' and passing the parameters described above. This function will read the text variable 'State variable' and store the VoiceAttack variable named in there as a state variable.  
+To use this function in your own commands set the variables described above then use the 'Execute an external plugin function' command with the plugin context set to 'setstate'. This function will read the text variable 'State variable' and store the VoiceAttack variable named in there as a state variable.  
 
 For example, if you wanted to store the VoiceAttack boolean variable "Verbose" as a state variable you would:
 
     * set the boolean variable "Verbose" to the desired value
     * set the text variable "State variable" to "Verbose"
-    * call EDDI with the context set to "setstate" and passing the text variable parameter "State variable"
+    * call EDDI with the context set to "setstate"
 
 ![](../images/VoiceAttack-PluginView-SetState.jpg)
 
@@ -389,11 +481,40 @@ To access the same variable from within EDDI's Speech Responder, you would call 
 
 Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).
 
-## coriolis, edshipyard, eddbsystem, or eddbstation
-Looks up the current ship, the current starsystem, or the current station (as applicable). A web uri is written to {TXT: EDDI uri} and, unless {BOOL:EDDI open uri in browser} has been set to false, the uri is opened in the default browser.
+### configuration
 
-## inara
-Looks up a named commander on the website Inara.cz. It takes one mandatory parameter.
-- 'Name' (text variable) is a mandatory parameter containing the name of the commander to look up on Inara.cz.
+This function opens or restores EDDI's UI. There are no parameters.
 
-A web uri is written to {TXT: EDDI uri} and, unless {BOOL:EDDI open uri in browser} has been set to false, the uri is opened in the default browser.
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'configuration'.
+
+### configurationminimize
+
+This function minimizes EDDI's UI. There are no parameters.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'configurationminimize'.
+
+### configurationmaximize
+
+This function maximizes EDDI's UI. There are no parameters.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'configurationmaximize'.
+
+### configurationrestore
+
+This function restores EDDI's UI to a normal window. There are no parameters.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'configurationrestore'.
+
+### configurationclose
+
+This function closes EDDI's UI. There are no parameters.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'configurationclose'.
+
+### system comment
+
+Sets a comment on the current star system on the website EDSM.net. You must have entered your EDSM credentials in EDDI's EDSM responder for this to work. It takes one mandatory variable as a parameter.
+
+- 'EDDI system comment' (text variable) is a mandatory parameter containing the comment to add to the current star system on EDSM.net.
+
+To use this function in your own commands set the 'EDDI system comment' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'system comment'.

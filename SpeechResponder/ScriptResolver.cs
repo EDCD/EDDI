@@ -7,15 +7,19 @@ using Cottle.Values;
 using Eddi;
 using EddiBgsService;
 using EddiCargoMonitor;
+using EddiCompanionAppService;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEvents;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechService;
+using EddiStatusMonitor;
 using GalnetMonitor;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,18 +51,20 @@ namespace EddiSpeechResponder
             };
         }
 
-        public string resolve(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
-        {
-            return resolve(name, buildStore(vars), master);
-        }
-
         public int priority(string name)
         {
             scripts.TryGetValue(name, out Script script);
-            return (script == null ? 5 : script.Priority);
+            return script?.Priority ?? 5;
         }
 
-        public string resolve(string name, BuiltinStore store, bool master = true)
+        /// <summary> From a custom dictionary of variable values in the default store </summary>
+        public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
+        {
+            return resolveFromName(name, buildStore(vars), master);
+        }
+
+        /// <summary> From a custom store </summary>
+        public string resolveFromName(string name, BuiltinStore store, bool master = true)
         {
             Logging.Debug("Resolving script " + name);
             scripts.TryGetValue(name, out Script script);
@@ -74,13 +80,23 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script.Value, store, master, script);
+            return resolveFromValue(script.Value, store, master, script);
         }
 
-        /// <summary>
-        /// Resolve a script with an existing store
-        /// </summary>
-        public string resolveScript(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
+        /// <summary> From the default dictionary of variable values in the default store </summary>
+        public string resolveFromValue(string scriptValue, bool master = true)
+        {
+            return resolveFromValue(scriptValue, createVariables(), master);
+        }
+
+        /// <summary> From a custom dictionary of variable values in the default store </summary>
+        public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool master = true)
+        {
+            return resolveFromValue(scriptValue, buildStore(vars), master);
+        }
+
+        /// <summary> From a custom store </summary>
+        public string resolveFromValue(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
         {
             try
             {
@@ -153,6 +169,115 @@ namespace EddiSpeechResponder
                     .Replace("}", "closing curly bracket");
         }
 
+        // Create Cottle variables from the EDDI information
+        protected internal Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
+        {
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
+            {
+                ["capi_active"] = CompanionAppService.Instance?.active ?? false,
+                ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
+                ["environment"] = EDDI.Instance.Environment,
+                ["horizons"] = EDDI.Instance.inHorizons,
+                ["va_active"] = App.FromVA,
+                ["vehicle"] = EDDI.Instance.Vehicle,
+                ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
+                ["ssml_active"] = !SpeechService.Instance.Configuration.DisableSsml,
+            };
+
+            if (EDDI.Instance.Cmdr != null)
+            {
+                dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
+            }
+
+            if (EDDI.Instance.HomeStarSystem != null)
+            {
+                dict["homesystem"] = new ReflectionValue(EDDI.Instance.HomeStarSystem);
+            }
+
+            if (EDDI.Instance.HomeStation != null)
+            {
+                dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
+            }
+
+            if (EDDI.Instance.SquadronStarSystem != null)
+            {
+                dict["squadronsystem"] = new ReflectionValue(EDDI.Instance.SquadronStarSystem);
+            }
+
+            if (EDDI.Instance.CurrentStarSystem != null)
+            {
+                dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);
+            }
+
+            if (EDDI.Instance.LastStarSystem != null)
+            {
+                dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
+            }
+
+            if (EDDI.Instance.NextStarSystem != null)
+            {
+                dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStarSystem != null)
+            {
+                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStation != null)
+            {
+                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
+            }
+
+            if (EDDI.Instance.CurrentStation != null)
+            {
+                dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
+            }
+
+            if (EDDI.Instance.CurrentStellarBody != null)
+            {
+                dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
+            }
+
+            if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
+            {
+                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
+            }
+
+            if (theEvent != null)
+            {
+                dict["event"] = new ReflectionValue(theEvent);
+            }
+
+            if (EDDI.Instance.State != null)
+            {
+                dict["state"] = ScriptResolver.buildState();
+                Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
+            }
+
+            // Obtain additional variables from each monitor
+            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+            {
+                IDictionary<string, object> monitorVariables = monitor.GetVariables();
+                if (monitorVariables != null)
+                {
+                    foreach (string key in monitorVariables.Keys)
+                    {
+                        if (monitorVariables[key] == null)
+                        {
+                            dict.Remove(key);
+                        }
+                        else
+                        {
+                            dict[key] = new ReflectionValue(monitorVariables[key]);
+                        }
+                    }
+                }
+            }
+
+            return dict;
+        }
+
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
@@ -167,7 +292,7 @@ namespace EddiSpeechResponder
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolve(values[0].AsString, store, false);
+                return new ScriptResolver(scripts).resolveFromName(values[0].AsString, store, false);
             }, 1);
 
             // Translation functions
@@ -229,14 +354,14 @@ namespace EddiSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store, false);
+                return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, store, false);
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(values[1].AsString, store, false);
                 }
                 else
                 {
@@ -370,7 +495,7 @@ namespace EddiSpeechResponder
             {
                 if (values.Count == 1)
                 {
-                    return new ScriptResolver(scripts).resolveScript(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
                 } 
                 return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1);
@@ -1103,8 +1228,8 @@ namespace EddiSpeechResponder
                 if (curr?.x != null && dest?.x != null)
                 {
                     result = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
-                                + square((double)(curr.y - dest.y))
-                                + square((double)(curr.z - dest.z))), 2);
+                                + square((double)(curr.y ?? 0 - dest.y ?? 0))
+                                + square((double)(curr.z ?? 0 - dest.z ?? 0))), 2);
                 }
 
                 return new ReflectionValue(result);
@@ -1236,9 +1361,9 @@ namespace EddiSpeechResponder
             if (system == null) { return; }
             if (EDDI.Instance.HomeStarSystem != null && EDDI.Instance.HomeStarSystem.x != null && system.x != null)
             {
-                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
-                                                                      + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
-                                                                      + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
+                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x ?? 0 - EDDI.Instance.HomeStarSystem.x ?? 0), 2)
+                                                                      + Math.Pow((double)(system.y ?? 0 - EDDI.Instance.HomeStarSystem.y ?? 0), 2)
+                                                                      + Math.Pow((double)(system.z ?? 0 - EDDI.Instance.HomeStarSystem.z ?? 0), 2)), 2);
                 Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
