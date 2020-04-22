@@ -1656,6 +1656,10 @@
   
   
   
+  <data name="Tritium" xml:space="preserve">
+    <value>Tritium</value>
+    <comment>Commodity Tritium</comment>
+  </data>
   
   
   
@@ -1664,10 +1668,18 @@
   
   
   
-  
-  
-  
-  
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Mollusc membrán</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Mollusc micélium</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Mollusc spórák</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
   
   
   
