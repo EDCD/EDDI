@@ -39,7 +39,7 @@ namespace EddiBgsService
             List<Faction> factions = GetFactions(factionEndpoint, queryList);
 
             // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
-            if (systemName != null && factions.Count > 1)
+            if (systemName != null && factions?.Count > 1)
             {
                 foreach (Faction faction in factions)
                 {
