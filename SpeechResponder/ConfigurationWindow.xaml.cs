@@ -80,23 +80,23 @@ namespace EddiSpeechResponder
                 }
             }
 
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                var recoveredScript = ScriptRecoveryService.GetRecoveredScript();
-                if (recoveredScript != null)
-                {
-                    var messageBoxResult = MessageBox.Show(Properties.SpeechResponder.messagebox_recoveredScript,
-                        Properties.SpeechResponder.messagebox_recoveredScript_title,
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
-                        MessageBoxOptions.DefaultDesktopOnly);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        Personality.Scripts[recoveredScript.Name] = recoveredScript;
-                        OpenEditScriptWindow(recoveredScript);
-                    }
-                }
-            }), DispatcherPriority.ApplicationIdle);
-        }
+			Dispatcher.BeginInvoke(new Action(() =>
+			{
+				var recoveredScript = ScriptRecoveryService.GetRecoveredScript();
+				if (recoveredScript != null)
+				{
+					var messageBoxResult = MessageBox.Show(Properties.SpeechResponder.messagebox_recoveredScript,
+						Properties.SpeechResponder.messagebox_recoveredScript_title,
+						MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
+						MessageBoxOptions.DefaultDesktopOnly);
+					if (messageBoxResult == MessageBoxResult.Yes)
+					{
+						Personality.Scripts[recoveredScript.Name] = recoveredScript;
+						OpenEditScriptWindow(recoveredScript);
+					}
+				}
+			}), DispatcherPriority.ApplicationIdle);
+		}
 
 
         private void eddiScriptsEnabledUpdated(object sender, RoutedEventArgs e)
