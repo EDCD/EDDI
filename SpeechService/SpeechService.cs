@@ -52,7 +52,9 @@ namespace EddiSpeechService
             }
         }
         private int activeSpeechPriority;
-
+        
+        public SortedList<string, string> lexemes { get; private set; } = new SortedList<string, string>();
+        
         private static readonly object synthLock = new object();
         public SpeechSynthesizer synth { get; private set; } = new SpeechSynthesizer();
 
@@ -86,6 +88,7 @@ namespace EddiSpeechService
                         {
                             Logging.Debug("No Speech service instance: creating one");
                             instance = new SpeechService();
+                            instance.AddOrUpdateLexicons();
                         }
                     }
                 }
@@ -366,6 +369,7 @@ namespace EddiSpeechService
                     synth.SetOutputToWaveStream(stream);
 
                     // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                    speech = ApplyLexicons(speech);
                     if (speech.Contains("<"))
                     {
                         Logging.Debug("Obtaining best guess culture");
@@ -421,8 +425,8 @@ namespace EddiSpeechService
             {
                 if (vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                 {
-                    if (vc.Enabled) { synth.SelectVoice(voice); }
                 }
+                    if (vc.Enabled) { synth.SelectVoice(voice); }
             }
         }
 
@@ -449,6 +453,73 @@ namespace EddiSpeechService
             }
             return guess;
         }
+
+
+        private void AddOrUpdateLexicons()
+        {
+            // Add lexicons from our installation directory
+            AddLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons");
+
+            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
+            AddLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons");
+        }
+
+        private void AddLexiconsFromDirectory(string directory)
+        {
+            DirectoryInfo dir = new DirectoryInfo(directory);
+            if (dir.Exists)
+            {
+                foreach (FileInfo file in dir.GetFiles("*.lexicon", SearchOption.AllDirectories))
+                {
+                    try
+                    {
+                        string json = Files.Read(file.FullName);
+                        var result = JsonConvert.DeserializeObject<SortedList<string, string>>(json);
+                        foreach (var kvPair in result)
+                        {
+                            lexemes.Remove(kvPair.Key);
+                            lexemes.Add(kvPair.Key, kvPair.Value);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Invalid .lexicon file: " + file.FullName, ex);
+                    }
+                }
+            }
+            else
+            {
+                dir.Create();
+            }
+        }
+
+        public string ApplyLexicons(string val)
+        {
+            if (string.IsNullOrEmpty(val))
+            {
+                return null;
+            }
+
+            foreach (KeyValuePair<string, string> lexeme in lexemes)
+            {
+                // Search out and replace text defined by our lexicons
+                // Ignore text that is enclosed in SSML or just a portion of another word
+                Match match = Regex.Match(val, @"(?:>\b" + lexeme.Key + @"\b<)|(\b" + lexeme.Key + @"\b)", RegexOptions.IgnoreCase);
+                if (match != null && match.Success)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
+                    sb.Append(lexeme.Value);
+                    sb.Append("\">");
+                    sb.Append(match.Value);
+                    sb.Append("</phoneme>");
+                    var replacement = sb.ToString();
+                    val = Regex.Replace(val, lexeme.Key, replacement, RegexOptions.IgnoreCase);
+                }
+            }
+
+            return val;
+        }   
 
         private void StartSpeech(ref ISoundOut soundout, int priority)
         {
