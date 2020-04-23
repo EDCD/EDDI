@@ -1657,12 +1657,21 @@
   
   
   <data name="Tritium" xml:space="preserve">
-    <value>Tritium</value>
+    <value>Tricium</value>
     <comment>Commodity Tritium</comment>
   </data>
-  
-  
-  
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Mollusc folyadék</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Mollusc bőrminta</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Mollusc agyvelő minta</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
   
   
   
