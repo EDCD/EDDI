@@ -225,15 +225,15 @@
   </data>
   
   <data name="CarrierFuel" xml:space="preserve">
-    <value>Tritium depó</value>
+    <value>Tricium raktár</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
-    <value>Flottaszállító menedzselés</value>
+    <value>Hordozó menedzsment</value>
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
-    <value>Flottaszállító kereskedő</value>
+    <value>Flotta hordozó kereskedő</value>
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
