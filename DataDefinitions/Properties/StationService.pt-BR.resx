@@ -237,7 +237,10 @@
     <value>Depósito de Tritio</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
-  
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Gerenciamento do Porta Frota</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
   <data name="CarrierVendor" xml:space="preserve">
     <value>Vendedor do Porta Frota</value>
     <comment>Station Service: CarrierVendor</comment>
