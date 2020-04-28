@@ -234,7 +234,7 @@
     <comment>Station Service: Shop</comment>
   </data>
   <data name="CarrierFuel" xml:space="preserve">
-    <value>Tritiumlager</value>
+    <value>Tritiumvorkommen</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
