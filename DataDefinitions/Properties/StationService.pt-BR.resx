@@ -234,7 +234,7 @@
     <comment>Station Service: Shop</comment>
   </data>
   <data name="CarrierFuel" xml:space="preserve">
-    <value>Depósito de Tritio</value>
+    <value>Depósito de Trítio</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
@@ -242,7 +242,7 @@
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
-    <value>Vendedor do Porta Frota</value>
+    <value>Vendedor de Porta-Frota</value>
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
@@ -253,5 +253,8 @@
     <value>Pacote de Módulos</value>
     <comment>Station Service: ModulePacks</comment>
   </data>
-  
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Escritório de Resgate</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>
