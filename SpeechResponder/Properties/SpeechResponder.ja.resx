@@ -230,4 +230,6 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>スクリプト "{0}" をリセットしますか？</value>
   </data>
+  
+  
 </root>
