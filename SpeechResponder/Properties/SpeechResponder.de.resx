@@ -230,4 +230,6 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Möchten Sie Skript "{0} wirklich zurücksetzen?</value>
   </data>
+  
+  
 </root>
