@@ -170,7 +170,7 @@
     <comment>An Ocellus Starport</comment>
   </data>
   <data name="FleetCarrier" xml:space="preserve">
-    <value>Porta Frota</value>
+    <value>Porta-Frota</value>
     <comment>A Fleet Carrier</comment>
   </data>
 </root>
