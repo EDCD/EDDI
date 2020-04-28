@@ -158,7 +158,7 @@
     <comment>Economy type Damaged</comment>
   </data>
   <data name="Carrier" xml:space="preserve">
-    <value>Empresa Privada</value>
+    <value>Empreendimento Privado</value>
     <comment>Economy Type Carrier</comment>
   </data>
 </root>
