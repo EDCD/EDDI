@@ -277,6 +277,24 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EDDI has recovered a script that was being edited when the program closed unexpectedly. Do you want to re-open it?.
+        /// </summary>
+        public static string messagebox_recoveredScript {
+            get {
+                return ResourceManager.GetString("messagebox_recoveredScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recovered Script.
+        /// </summary>
+        public static string messagebox_recoveredScript_title {
+            get {
+                return ResourceManager.GetString("messagebox_recoveredScript_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speech Responder.
         /// </summary>
         public static string name {

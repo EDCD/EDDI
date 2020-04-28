@@ -1,15 +1,16 @@
-﻿using System;
-using Eddi;
+﻿using Eddi;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using EddiSpeechResponder.Service;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -76,7 +77,25 @@ namespace EddiSpeechResponder
                     break;
                 }
             }
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var recoveredScript = ScriptRecoveryService.GetRecoveredScript();
+                if (recoveredScript != null)
+                {
+                    var messageBoxResult = MessageBox.Show(Properties.SpeechResponder.messagebox_recoveredScript,
+                        Properties.SpeechResponder.messagebox_recoveredScript_title,
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
+                        MessageBoxOptions.DefaultDesktopOnly);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        Personality.Scripts[recoveredScript.Name] = recoveredScript;
+                        OpenEditScriptWindow(recoveredScript);
+                    }
+                }
+            }), DispatcherPriority.ApplicationIdle);
         }
+
 
         private void eddiScriptsEnabledUpdated(object sender, RoutedEventArgs e)
         {
@@ -103,6 +122,11 @@ namespace EddiSpeechResponder
         private void editScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            OpenEditScriptWindow(script);
+        }
+
+        private void OpenEditScriptWindow(Script script)
+        {
             EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
