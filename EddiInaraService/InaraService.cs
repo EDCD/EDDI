@@ -170,6 +170,7 @@ namespace EddiInaraService
         {
             if (!sendEvenForBetaGame && gameInBeta) { return null; }
 
+            // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
             if (string.IsNullOrEmpty(apiKey))
@@ -227,7 +228,6 @@ namespace EddiInaraService
                         }
                     }
                 }
-                return inaraResponses;
             }
             else
             {
@@ -237,8 +237,8 @@ namespace EddiInaraService
                     // Re-enqueue and send at a later time.
                     EnqueueAPIEvent(inaraAPIEvent);
                 }
-                return null;
             }
+            return inaraResponses;
         }
 
         private bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents, bool header = false)
