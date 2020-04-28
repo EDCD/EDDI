@@ -230,10 +230,4 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Möchten Sie Skript "{0} wirklich zurücksetzen?</value>
   </data>
-  <data name="messagebox_recoveredScript_title" xml:space="preserve">
-    <value>Wiederhergestelltes Script</value>
-  </data>
-  <data name="messagebox_recoveredScript" xml:space="preserve">
-    <value>EDDI hat ein Script nach dem Crash wiederhergestellt. Jetzt öffnen?</value>
-  </data>
 </root>
