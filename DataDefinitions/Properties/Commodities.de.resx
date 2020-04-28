@@ -1694,11 +1694,17 @@
     <comment>Commodity Tritium</comment>
   </data>
   <data name="M_TissueSample_Fluid" xml:space="preserve">
-    <value>Weichtierflüssigkeit</value>
+    <value>Molluskenflüssigkeit</value>
     <comment>Commodity M_TissueSample_Fluid</comment>
   </data>
-  
-  
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Molluskenweichgewebe</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Molluskengehirngewebe</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
   
   
   
@@ -1707,9 +1713,18 @@
     <comment>Commodity P_ParticulateSample</comment>
   </data>
   
-  
-  
-  
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Molluskenmembran</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Molluskenmyzel</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Molluskensporen</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
   
   
   
