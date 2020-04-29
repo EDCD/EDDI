@@ -123,7 +123,16 @@ namespace EddiSpeechResponder
                 }
                 catch (Exception e)
                 {
-                    Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
+                    // malformed JSON for some reason: rename so that the user can examine and fix it.
+                    string newFileName = filename + ".malformed";
+                    if (File.Exists(newFileName))
+                    {
+                        // no point keeping a history: only the latest is likely to be useful. Pro users will be using version control anyway.
+                        File.Delete(newFileName);
+                    }
+                    File.Move(filename, newFileName);
+
+                    Logging.Error($"Could not parse \"{filename}\": moved to \"{newFileName}\". Error was \"{e.Message}\"");
                 }
             }
 
