@@ -270,32 +270,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestPathingString7()
-        {
-            string pathingString = @"[{TXT:Ship model} {TXT:Ship callsign (spoken)};This is {TXT:Ship model} {TXT:Ship callsign (spoken)}] [requesting docking permission;requesting docking clearance;requesting permission to dock;requesting clearance to dock].";
-            List<string> pathingOptions = new List<string>() {
-                "{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking permission."
-                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking permission."
-                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking clearance."
-                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking clearance."
-                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting clearance to dock."
-                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting clearance to dock."
-                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting permission to dock."
-                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting permission to dock."
-            };
-
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
-            {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
-                pathingResults.Add(pathedString);
-            }
-
-            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
-            Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
-        }
-
-        [TestMethod]
         public void TestSectorTranslations()
         {
             Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
