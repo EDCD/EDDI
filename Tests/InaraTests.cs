@@ -16,6 +16,7 @@ namespace IntegrationTests
         {
             MakeSafe();
             inaraService = new InaraService();
+            inaraService.Start(true);
         }
 
         [TestMethod]
@@ -23,8 +24,8 @@ namespace IntegrationTests
         {
             List<InaraAPIEvent> inaraAPIEvents = new List<InaraAPIEvent>()
             {
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
+                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } }, true)},
+                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } }, true)}
             };
             List<InaraResponse> responses = inaraService.SendEventBatch(ref inaraAPIEvents, sendEvenForBetaGame: true);
 
