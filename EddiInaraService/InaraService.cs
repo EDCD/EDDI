@@ -168,15 +168,11 @@ namespace EddiInaraService
         // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
         public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool sendEvenForBetaGame = false)
         {
-            if (!sendEvenForBetaGame && gameInBeta) { return null; }
-
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return inaraResponses;
-            }
+            if (!sendEvenForBetaGame && gameInBeta) { return inaraResponses; }
+            if (string.IsNullOrEmpty(apiKey)) { return inaraResponses; }
 
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
