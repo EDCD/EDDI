@@ -12,7 +12,7 @@ namespace EddiInaraService
         DateTime lastSync { get; }
 
         // Background Sync
-        void Start(bool gameIsBeta = false, bool eddiIsBeta = false);
+        void Start(bool eddiIsBeta = false);
         void Stop();
 
         // API Event Queue Management

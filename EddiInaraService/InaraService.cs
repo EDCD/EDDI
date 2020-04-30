@@ -34,7 +34,6 @@ namespace EddiInaraService
         private static ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
         private readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
-        private static bool gameInBeta;
         private Task backgroundSync;
 
         public InaraService()
@@ -45,12 +44,11 @@ namespace EddiInaraService
 
         // Methods
         [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
-        public void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
+        public void Start(bool eddiIsBeta = false)
         {
             // Set up the Inara service credentials
             SetInaraCredentials();
             eddiInBeta = eddiIsBeta;
-            gameInBeta = gameIsBeta;
 
             bgSyncRunning = true;
             if (backgroundSync?.Status is null 
@@ -161,7 +159,7 @@ namespace EddiInaraService
             {
                 Stop();
                 SetInaraCredentials(inaraConfiguration);
-                Start(gameInBeta, eddiInBeta);
+                Start(eddiInBeta);
             }
         }
 
@@ -171,7 +169,6 @@ namespace EddiInaraService
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            if (!sendEvenForBetaGame && gameInBeta) { return inaraResponses; }
             if (string.IsNullOrEmpty(apiKey)) { return inaraResponses; }
 
             // Flag each event with a unique ID we can use when processing responses
@@ -180,6 +177,7 @@ namespace EddiInaraService
             {
                 InaraAPIEvent indexedEvent = events[i];
                 indexedEvent.eventCustomID = i;
+                if (!sendEvenForBetaGame && indexedEvent.gameInBeta) { continue; }
                 if (!invalidAPIEvents.Contains(indexedEvent.eventName))
                 {
                     // Add events, excluding events with issues that have returned a code 400 error in this instance.
