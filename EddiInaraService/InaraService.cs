@@ -22,45 +22,32 @@ namespace EddiInaraService
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Configuration Variables
-        public string commanderName { get; private set; }
-        public string commanderFrontierID { get; private set; }
+        public string commanderName { get; set; }
+        public string commanderFrontierID { get; set; }
         private string apiKey;
         private bool IsAPIkeyValid = true;
         public DateTime lastSync { get; private set; }
 
         // Other Variables
-        private bool tooManyRequests;
+        private static bool tooManyRequests;
         private static bool bgSyncRunning; // This must be static so that it is visible to child threads and tasks
         private static ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
-        private readonly List<string> invalidAPIEvents = new List<string>();
+        private static readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
-        private Task backgroundSync;
-
-        public InaraService()
-        {
-            // Subscribe to events from the Inara configuration that require our attention
-            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
-        }
 
         // Methods
         [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
         public void Start(bool eddiIsBeta = false)
         {
-            // Set up the Inara service credentials
-            SetInaraCredentials();
             eddiInBeta = eddiIsBeta;
-
-            bgSyncRunning = true;
-            if (backgroundSync?.Status is null 
-                || backgroundSync.Status == TaskStatus.RanToCompletion)
+            if (!bgSyncRunning)
             {
+                // Set up the Inara service credentials
+                SetInaraCredentials();
+                
+                bgSyncRunning = true;
                 Logging.Debug("Starting Inara service background sync.");
-                backgroundSync = Task.Run(() => BackgroundSync());
-            }
-            else if (backgroundSync.Status == TaskStatus.Faulted)
-            {
-                Logging.Debug("Restarting Inara service background sync.");
-                backgroundSync = Task.Run(() => BackgroundSync());
+                Task.Run(() => BackgroundSync());
             }
         }
 
@@ -147,19 +134,6 @@ namespace EddiInaraService
                     Logging.Info("Configuring Inara service for limited access: Commander name not detected.");
                 }
                 apiKey = readonlyAPIkey;
-            }
-        }
-
-        private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
-        {
-            if (inaraConfiguration.apiKey != apiKey 
-                || inaraConfiguration.commanderName != commanderName 
-                || inaraConfiguration.commanderFrontierID != commanderFrontierID 
-                || inaraConfiguration.isAPIkeyValid != IsAPIkeyValid)
-            {
-                Stop();
-                SetInaraCredentials(inaraConfiguration);
-                Start(eddiInBeta);
             }
         }
 
