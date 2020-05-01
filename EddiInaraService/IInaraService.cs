@@ -7,8 +7,8 @@ namespace EddiInaraService
     public interface IInaraService
     {
         // Variables
-        string commanderName { get; }
-        string commanderFrontierID { get; }
+        string commanderName { get; set; }
+        string commanderFrontierID { get; set; }
         DateTime lastSync { get; }
 
         // Background Sync
