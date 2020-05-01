@@ -3,7 +3,6 @@ using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -174,7 +173,7 @@ namespace EddiInaraService
 
             Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
             var clientResponse = client.Execute<InaraResponses>(request);
-            if ((bool)clientResponse?.IsSuccessful)
+            if (clientResponse.IsSuccessful)
             {
                 InaraResponses response = clientResponse.Data;
                 if (validateResponse(response.header, ref indexedEvents, true))
