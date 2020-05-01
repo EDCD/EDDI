@@ -22,10 +22,10 @@ namespace EddiInaraService
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Configuration Variables
-        public string commanderName { get; set; }
-        public string commanderFrontierID { get; set; }
-        private string apiKey;
-        private bool IsAPIkeyValid = true;
+        public string commanderName { get; private set; }
+        public string commanderFrontierID { get; private set; }
+        private string apiKey { get; set; }
+        private bool IsAPIkeyValid { get; set; } = true;
         public DateTime lastSync { get; private set; }
 
         // Other Variables
@@ -41,10 +41,7 @@ namespace EddiInaraService
         {
             eddiInBeta = eddiIsBeta;
             if (!bgSyncRunning)
-            {
-                // Set up the Inara service credentials
-                SetInaraCredentials();
-                
+            {              
                 bgSyncRunning = true;
                 Logging.Debug("Starting Inara service background sync.");
                 Task.Run(() => BackgroundSync());
@@ -65,9 +62,14 @@ namespace EddiInaraService
             // Pause a short time to allow any initial events to build in the queue before our first sync
             await Task.Delay(startupDelayMilliSeconds);
 
+            if (string.IsNullOrEmpty(commanderName) || string.IsNullOrEmpty(commanderFrontierID) || string.IsNullOrEmpty(apiKey))
+            {
+                SetInaraCredentials();
+            }
+
             while (bgSyncRunning)
             {
-                if (IsAPIkeyValid && apiKey != readonlyAPIkey && queuedAPIEvents.Count > 0)
+                if (IsAPIkeyValid && apiKey != readonlyAPIkey && !string.IsNullOrEmpty(commanderName) && queuedAPIEvents.Count > 0)
                 {
                     try
                     {
@@ -114,7 +116,7 @@ namespace EddiInaraService
             lastSync = inaraCredentials.lastSync;
             apiKey = inaraCredentials.apiKey;
             IsAPIkeyValid = inaraCredentials.isAPIkeyValid;
-            if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(commanderName) && IsAPIkeyValid)
+            if (!string.IsNullOrEmpty(apiKey) && IsAPIkeyValid)
             {
                 // fully configured
                 Logging.Info("Configuring EDDI access to Inara profile data");
@@ -129,10 +131,6 @@ namespace EddiInaraService
                 {
                     Logging.Info("Configuring Inara service for limited access: API key is invalid.");
                 }
-                if (string.IsNullOrEmpty(commanderName))
-                {
-                    Logging.Info("Configuring Inara service for limited access: Commander name not detected.");
-                }
                 apiKey = readonlyAPIkey;
             }
         }
@@ -142,8 +140,6 @@ namespace EddiInaraService
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
-
-            if (string.IsNullOrEmpty(apiKey)) { return inaraResponses; }
 
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
@@ -167,9 +163,9 @@ namespace EddiInaraService
                     { "appName", "EDDI" },
                     { "appVersion", Constants.EDDI_VERSION.ToString() },
                     { "isDeveloped", eddiInBeta },
-                    { "commanderName", commanderName ?? (eddiInBeta ? "TestCmdr" : null) },
-                    { "commanderFrontierID", commanderFrontierID },
-                    { "APIkey", apiKey }
+                    { "commanderName", !string.IsNullOrEmpty(commanderName) ? commanderName : (eddiInBeta ? "TestCmdr" : null) },
+                    { "commanderFrontierID", !string.IsNullOrEmpty(commanderFrontierID) ? commanderFrontierID : null },
+                    { "APIkey", !string.IsNullOrEmpty(apiKey) ? apiKey : readonlyAPIkey }
                 },
                 events = indexedEvents
             };
@@ -239,6 +235,7 @@ namespace EddiInaraService
                         }
                         else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
                         {
+                            // Note: This can be thrown by over-use of the readonly API key.
                             throw new InaraTooManyRequestsException(inaraResponse.eventStatusText);
                         }
                         else
@@ -267,7 +264,7 @@ namespace EddiInaraService
                 if (!sendEvenForBetaGame && pendingEvent.gameInBeta) { continue; }
 
                 // Exclude and discard events with issues that have returned a code 400 error in this instance.
-                if (!invalidAPIEvents.Contains(pendingEvent.eventName)) { continue; }
+                if (invalidAPIEvents.Contains(pendingEvent.eventName)) { continue; }
 
                 queue.Add(pendingEvent);
             }
