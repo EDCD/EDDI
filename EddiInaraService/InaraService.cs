@@ -183,7 +183,7 @@ namespace EddiInaraService
 
             Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
             var clientResponse = client.Execute<InaraResponses>(request);
-            if (clientResponse.IsSuccessful)
+            if ((bool)clientResponse?.IsSuccessful)
             {
                 InaraResponses response = clientResponse.Data;
                 if (validateResponse(response.header, ref indexedEvents, true))
@@ -199,6 +199,7 @@ namespace EddiInaraService
             }
             else
             {
+                // Inara may return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
                 Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
                 foreach (InaraAPIEvent inaraAPIEvent in events)
                 {
@@ -254,7 +255,7 @@ namespace EddiInaraService
                         }
                     }
                 }
-                // Inara may return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
+                // Unknown response
                 Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
                 return false;
             }
