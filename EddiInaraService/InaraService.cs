@@ -266,6 +266,9 @@ namespace EddiInaraService
                 // Exclude and discard events with issues that have returned a code 400 error in this instance.
                 if (invalidAPIEvents.Contains(pendingEvent.eventName)) { continue; }
 
+                // Exclude and discard old / stale events
+                if (lastSync > pendingEvent.eventTimeStamp) { continue; }
+
                 queue.Add(pendingEvent);
             }
             if (queue.Count > 0)
@@ -287,10 +290,7 @@ namespace EddiInaraService
                 Logging.Error("Cannot enqueue 'get' Inara API events as these require an immediate response. Send these directly.");
                 return;
             }
-            if (!(inaraAPIEvent is null) && lastSync < inaraAPIEvent.eventTimeStamp)
-            {
-                queuedAPIEvents.Enqueue(inaraAPIEvent);
-            }
+            queuedAPIEvents.Enqueue(inaraAPIEvent);
         }
     }
 
