@@ -223,7 +223,14 @@ namespace EddiInaraService
                     { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
                     { "InaraResponse", inaraResponse }
                 };
-                if (inaraResponse.eventStatus == 400)
+                if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
+                {
+                    // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
+                    // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
+                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+                    return true;
+                }
+                else if (inaraResponse.eventStatus == 400)
                 {
                     // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
                     Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
@@ -247,13 +254,8 @@ namespace EddiInaraService
                         }
                     }
                 }
-                else
-                {
-                    // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
-                    // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
-                    // Inara may also return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
-                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                }
+                // Inara may return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
+                Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
                 return false;
             }
         }
