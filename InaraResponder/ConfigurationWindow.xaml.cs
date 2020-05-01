@@ -54,7 +54,7 @@ namespace EddiInaraResponder
             }
         }
 
-        private void InputTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void InputTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             inputTimer.Stop();
             UpdateConfiguration();
