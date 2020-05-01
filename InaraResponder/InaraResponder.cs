@@ -1308,9 +1308,10 @@ namespace EddiInaraResponder
             // Updating the configuration will restart the Inara service
             if (inaraService.commanderName != @event.name || inaraService.commanderFrontierID != @event.frontierID)
             {
-                inaraService.commanderName = @event.name;
-                inaraService.commanderFrontierID = @event.frontierID;
-                Reload();
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                inaraConfiguration.commanderName = @event.name;
+                inaraConfiguration.commanderFrontierID = @event.frontierID;
+                inaraConfiguration.ToFile();
             }
         }
 
@@ -1319,9 +1320,10 @@ namespace EddiInaraResponder
             // Updating the configuration will restart the Inara service
             if (inaraService.commanderName != @event.name || inaraService.commanderFrontierID != @event.frontierID)
             {
-                inaraService.commanderName = @event.name;
-                inaraService.commanderFrontierID = @event.frontierID;
-                Reload();
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                inaraConfiguration.commanderName = @event.name;
+                inaraConfiguration.commanderFrontierID = @event.frontierID;
+                inaraConfiguration.ToFile();
             }
         }
 
