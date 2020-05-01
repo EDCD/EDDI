@@ -19,16 +19,7 @@ namespace EddiInaraResponder
 
     public class InaraResponder : EDDIResponder
     {
-        public IInaraService inaraService 
-        {
-            get
-            {
-                if (_inaraService is null) { return new InaraService(); }
-                return _inaraService;
-            }
-            private set => _inaraService = value;
-        }
-        private IInaraService _inaraService;
+        private IInaraService inaraService = new InaraService();
 
         public string ResponderName()
         {
@@ -53,7 +44,7 @@ namespace EddiInaraResponder
             InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
 
             Logging.Info($"Initialized {ResponderName()}");
-            return inaraService != null;
+            return true;
         }
 
         public void Stop()
