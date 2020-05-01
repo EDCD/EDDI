@@ -67,7 +67,7 @@ namespace EddiInaraService
 
             while (bgSyncRunning)
             {
-                if (IsAPIkeyValid && queuedAPIEvents.Count > 0)
+                if (IsAPIkeyValid && apiKey != readonlyAPIkey && queuedAPIEvents.Count > 0)
                 {
                     try
                     {
@@ -151,12 +151,7 @@ namespace EddiInaraService
             {
                 InaraAPIEvent indexedEvent = events[i];
                 indexedEvent.eventCustomID = i;
-                if (!sendEvenForBetaGame && indexedEvent.gameInBeta) { continue; }
-                if (!invalidAPIEvents.Contains(indexedEvent.eventName))
-                {
-                    // Add events, excluding events with issues that have returned a code 400 error in this instance.
-                    indexedEvents.Add(indexedEvent);
-                }
+                indexedEvents.Add(indexedEvent);
             }
 
             var client = new RestClient("https://inara.cz/inapi/v1/");
@@ -199,7 +194,7 @@ namespace EddiInaraService
             }
             else
             {
-                // Inara may return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
+                // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
                 Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
                 foreach (InaraAPIEvent inaraAPIEvent in events)
                 {
@@ -261,11 +256,19 @@ namespace EddiInaraService
             }
         }
 
-        public void SendQueuedAPIEvents()
+        public void SendQueuedAPIEvents(bool sendEvenForBetaGame = false)
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
             while (queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
             {
+                // Events filtered here will not update the `lastSync` variable.
+
+                // Exclude and discard events from beta versions of Elite by default
+                if (!sendEvenForBetaGame && pendingEvent.gameInBeta) { continue; }
+
+                // Exclude and discard events with issues that have returned a code 400 error in this instance.
+                if (!invalidAPIEvents.Contains(pendingEvent.eventName)) { continue; }
+
                 queue.Add(pendingEvent);
             }
             if (queue.Count > 0)
@@ -282,6 +285,11 @@ namespace EddiInaraService
 
         public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)
         {
+            if (inaraAPIEvent.eventName.StartsWith("get"))
+            {
+                Logging.Error("Cannot enqueue 'get' Inara API events as these require an immediate response. Send these directly.");
+                return;
+            }
             if (!(inaraAPIEvent is null) && lastSync < inaraAPIEvent.eventTimeStamp)
             {
                 queuedAPIEvents.Enqueue(inaraAPIEvent);
