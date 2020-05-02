@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using EddiInaraService;
 using System.Timers;
 using System.Windows.Controls;
+using Eddi;
 
 namespace EddiInaraResponder
 {
@@ -72,6 +73,7 @@ namespace EddiInaraResponder
 
             // Save and reload
             inaraConfiguration.ToFile();
+            EDDI.Instance.Reload(Properties.InaraResources.name);
         }
 
         private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)
