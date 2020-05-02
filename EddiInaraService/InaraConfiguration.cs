@@ -28,9 +28,7 @@ namespace EddiInaraService
 
         [JsonIgnore]
         static readonly object fileLock = new object();
-
-        public static EventHandler ConfigurationUpdated;
-
+        
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\inara.json is used
@@ -98,9 +96,6 @@ namespace EddiInaraService
             {
                 Files.Write(filename, json);
             }
-
-            // Communicate the updated configuration to all subscribed processes
-            ConfigurationUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

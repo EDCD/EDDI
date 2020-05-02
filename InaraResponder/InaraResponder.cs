@@ -41,7 +41,13 @@ namespace EddiInaraResponder
             Reload();
 
             // Subscribe to events from the Inara configuration that require our attention
-            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
+            InaraService.invalidAPIkey += (s, e) => 
+            {
+                // Alert the user that there is a problem with the Inara API key
+                Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
+                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor(EddiShipMonitor.Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture));
+                SpeechService.Instance.Say(shipMonitor.GetCurrentShip(), Properties.InaraResources.invalidKeyErr);
+            };
 
             Logging.Info($"Initialized {ResponderName()}");
             return true;
@@ -56,18 +62,6 @@ namespace EddiInaraResponder
         {
             Stop();
             inaraService.Start(EDDI.Instance.EddiIsBeta());
-        }
-
-        private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
-        {
-            if (!inaraConfiguration.isAPIkeyValid)
-            {
-                // Alert the user that there is a problem with the Inara API key
-                Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
-                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor(EddiShipMonitor.Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture));
-                SpeechService.Instance.Say(shipMonitor.GetCurrentShip(), Properties.InaraResources.invalidKeyErr);                
-            }
-            Reload();
         }
 
         public UserControl ConfigurationTabItem()
