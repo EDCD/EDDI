@@ -30,7 +30,7 @@ namespace EddiInaraResponder
         public ConfigurationWindow()
         {
             // Subscribe to events that require our attention
-            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
+            InaraService.invalidAPIkey += (s, e) => { OnInvalidAPIkey((InaraConfiguration)s); };
             inputTimer.Elapsed += InputTimer_Elapsed;
 
             DataContext = this;
@@ -74,7 +74,7 @@ namespace EddiInaraResponder
             inaraConfiguration.ToFile();
         }
 
-        private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
+        private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)
         {
             Dispatcher.Invoke(() =>
             {
