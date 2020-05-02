@@ -94,11 +94,6 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (inaraService?.lastSync > theEvent.timestamp)
-            {
-                return;
-            }
-
             try
             {
                 Logging.Debug("Handling event " + JsonConvert.SerializeObject(theEvent));
@@ -1297,7 +1292,6 @@ namespace EddiInaraResponder
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
                 inaraConfiguration.ToFile();
-                Reload();
             }
         }
 
@@ -1309,7 +1303,6 @@ namespace EddiInaraResponder
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
                 inaraConfiguration.ToFile();
-                Reload();
             }
         }
 
