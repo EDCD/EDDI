@@ -1298,6 +1298,7 @@ namespace EddiInaraResponder
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
                 inaraConfiguration.ToFile();
+                Reload();
             }
         }
 
@@ -1310,6 +1311,7 @@ namespace EddiInaraResponder
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
                 inaraConfiguration.ToFile();
+                Reload();
             }
         }
 
