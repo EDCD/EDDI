@@ -67,6 +67,7 @@ namespace EddiInaraResponder
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor(EddiShipMonitor.Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture));
                 SpeechService.Instance.Say(shipMonitor.GetCurrentShip(), Properties.InaraResources.invalidKeyErr);                
             }
+            Reload();
         }
 
         public UserControl ConfigurationTabItem()
