@@ -20,11 +20,12 @@ namespace EddiInaraService
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Configuration Variables
-        public string commanderName { get; private set; }
-        public string commanderFrontierID { get; private set; }
-        private string apiKey { get; set; }
-        private bool IsAPIkeyValid { get; set; } = true;
-        public DateTime lastSync { get; private set; }
+        private InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+        public string commanderName => inaraConfiguration.commanderName;
+        public string commanderFrontierID => inaraConfiguration.commanderFrontierID;
+        private string apiKey => inaraConfiguration.apiKey;
+        private bool IsAPIkeyValid => inaraConfiguration.isAPIkeyValid;
+        public DateTime lastSync => inaraConfiguration.lastSync;
 
         // Other Variables
         private static bool tooManyRequests;
@@ -79,8 +80,6 @@ namespace EddiInaraService
                             if (e is InaraAuthenticationException)
                             {
                                 // The Inara API key has been rejected. We'll note and remember that.
-                                IsAPIkeyValid = false;
-                                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
                                 inaraConfiguration.isAPIkeyValid = false;
                                 inaraConfiguration.ToFile();
                                 invalidAPIkey.Invoke(inaraConfiguration, new EventArgs());
@@ -257,9 +256,7 @@ namespace EddiInaraService
             {
                 if (SendEventBatch(ref queue, sendEvenForBetaGame).Count > 0)
                 {
-                    lastSync = queue.Max(e => e.eventTimeStamp);
-                    InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                    inaraConfiguration.lastSync = lastSync;
+                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
                     inaraConfiguration.ToFile();
                 }
             }
