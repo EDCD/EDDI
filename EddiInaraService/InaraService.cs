@@ -3,7 +3,6 @@ using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
@@ -36,7 +35,6 @@ namespace EddiInaraService
         public static EventHandler invalidAPIkey;
 
         // Methods
-        [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
         public void Start(bool eddiIsBeta = false)
         {
             eddiInBeta = eddiIsBeta;
