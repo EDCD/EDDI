@@ -61,10 +61,7 @@ namespace EddiInaraService
             // Pause a short time to allow any initial events to build in the queue before our first sync
             await Task.Delay(startupDelayMilliSeconds);
 
-            if (string.IsNullOrEmpty(commanderName) || string.IsNullOrEmpty(commanderFrontierID) || string.IsNullOrEmpty(apiKey))
-            {
-                SetInaraCredentials();
-            }
+            SetInaraCredentials();
 
             while (bgSyncRunning)
             {
@@ -230,11 +227,23 @@ namespace EddiInaraService
                     {
                         if (inaraResponse.eventStatusText.Contains("Invalid API key"))
                         {
+                            // Re-enqueue the data so we can send it again later.
+                            foreach (var indexedEvent in indexedEvents)
+                            {
+                                indexedEvent.eventCustomID = null;
+                                EnqueueAPIEvent(indexedEvent);
+                            }
                             throw new InaraAuthenticationException(inaraResponse.eventStatusText);
                         }
                         else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
                         {
                             // Note: This can be thrown by over-use of the readonly API key.
+                            // Re-enqueue the data so we can send it again later.
+                            foreach (var indexedEvent in indexedEvents)
+                            {
+                                indexedEvent.eventCustomID = null;
+                                EnqueueAPIEvent(indexedEvent);
+                            }
                             throw new InaraTooManyRequestsException(inaraResponse.eventStatusText);
                         }
                         else
