@@ -19,6 +19,6 @@ namespace EddiInaraService
 
         // Commander Profiles
         InaraCmdr GetCommanderProfile(string cmdrName);
-        List<InaraCmdr> GetCommanderProfiles(string[] cmdrNames);
+        List<InaraCmdr> GetCommanderProfiles(IEnumerable<string> cmdrNames);
     }
 }

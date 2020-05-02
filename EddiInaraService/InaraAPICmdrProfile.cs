@@ -17,7 +17,7 @@ namespace EddiInaraService
             return GetCommanderProfiles(new string[] { cmdrName })?.FirstOrDefault();
         }
 
-        public List<InaraCmdr> GetCommanderProfiles(string[] cmdrNames)
+        public List<InaraCmdr> GetCommanderProfiles(IEnumerable<string> cmdrNames)
         {
             List<InaraCmdr> cmdrs = new List<InaraCmdr>();
 
