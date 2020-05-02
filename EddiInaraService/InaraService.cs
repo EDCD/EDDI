@@ -20,9 +20,9 @@ namespace EddiInaraService
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Configuration Variables
-        private InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-        public string commanderName => inaraConfiguration.commanderName;
-        public string commanderFrontierID => inaraConfiguration.commanderFrontierID;
+        private readonly InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+        private string commanderName => inaraConfiguration.commanderName;
+        private string commanderFrontierID => inaraConfiguration.commanderFrontierID;
         private string apiKey => inaraConfiguration.apiKey;
         private bool IsAPIkeyValid => inaraConfiguration.isAPIkeyValid;
         public DateTime lastSync => inaraConfiguration.lastSync;
@@ -30,7 +30,7 @@ namespace EddiInaraService
         // Other Variables
         private static bool tooManyRequests;
         private static bool bgSyncRunning; // This must be static so that it is visible to child threads and tasks
-        private static ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
+        private static readonly ConcurrentQueue<InaraAPIEvent> queuedAPIEvents = new ConcurrentQueue<InaraAPIEvent>();
         private static readonly List<string> invalidAPIEvents = new List<string>();
         private static bool eddiInBeta;
         public static EventHandler invalidAPIkey;
