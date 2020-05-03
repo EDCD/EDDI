@@ -69,12 +69,13 @@ namespace EddiInaraService
 
             if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
             List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
-
-            var client = new RestClient("https://inara.cz/inapi/v1/");
-            var request = new RestRequest(Method.POST);
-            InaraSendJson inaraRequest = new InaraSendJson()
+            if (indexedEvents.Count > 0)
             {
-                header = new Dictionary<string, object>()
+                var client = new RestClient("https://inara.cz/inapi/v1/");
+                var request = new RestRequest(Method.POST);
+                InaraSendJson inaraRequest = new InaraSendJson()
+                {
+                    header = new Dictionary<string, object>()
                 {
                     // Per private conversation with Artie and per Inara API docs, the `isDeveloped` property
                     // should (counterintuitively) be set to true when the an application is in development.
@@ -87,32 +88,33 @@ namespace EddiInaraService
                     { "commanderFrontierID", !string.IsNullOrEmpty(inaraConfiguration?.commanderFrontierID) ? inaraConfiguration.commanderFrontierID : null },
                     { "APIkey", !string.IsNullOrEmpty(inaraConfiguration?.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
                 },
-                events = indexedEvents
-            };
-            request.RequestFormat = DataFormat.Json;
-            request.AddBody(inaraRequest); // uses JsonSerializer
+                    events = indexedEvents
+                };
+                request.RequestFormat = DataFormat.Json;
+                request.AddBody(inaraRequest); // uses JsonSerializer
 
-            Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
-            var clientResponse = client.Execute<InaraResponses>(request);
-            if (clientResponse.IsSuccessful)
-            {
-                InaraResponses response = clientResponse.Data;
-                if (validateResponse(response.header, indexedEvents, true))
+                Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
+                var clientResponse = client.Execute<InaraResponses>(request);
+                if (clientResponse.IsSuccessful)
                 {
-                    foreach (InaraResponse inaraResponse in response.events)
+                    InaraResponses response = clientResponse.Data;
+                    if (validateResponse(response.header, indexedEvents, true))
                     {
-                        if (validateResponse(inaraResponse, indexedEvents))
+                        foreach (InaraResponse inaraResponse in response.events)
                         {
-                            inaraResponses.Add(inaraResponse);
+                            if (validateResponse(inaraResponse, indexedEvents))
+                            {
+                                inaraResponses.Add(inaraResponse);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
-                Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
-                ReEnqueueAPIEvents(events);
+                else
+                {
+                    // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
+                    Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
+                    ReEnqueueAPIEvents(events);
+                }
             }
             return inaraResponses;
         }
