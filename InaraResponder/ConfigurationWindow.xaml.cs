@@ -6,12 +6,11 @@ using System.Runtime.CompilerServices;
 using EddiInaraService;
 using System.Timers;
 using System.Windows.Controls;
-using Eddi;
 
 namespace EddiInaraResponder
 {
     /// <summary> Interaction logic for ConfigurationWindow.xaml </summary>
-    public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged, INotifyDataErrorInfo
+    public partial class ConfigurationWindow : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         // Set up a timer... wait 3 seconds before reconfiguring the InaraService for any change in the API key
         private const int delayMilliseconds = 3000;
@@ -71,9 +70,8 @@ namespace EddiInaraResponder
             // Update the changed API key in our configuration
             inaraConfiguration.apiKey = apiKey;
 
-            // Save and reload
+            // Save the updated configuration
             inaraConfiguration.ToFile();
-            EDDI.Instance.Reload(Properties.InaraResources.name);
         }
 
         private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)
@@ -124,7 +122,8 @@ namespace EddiInaraResponder
 
         // Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }

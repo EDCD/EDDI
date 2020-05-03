@@ -19,31 +19,19 @@ namespace EddiInaraService
         private const int syncIntervalMilliSeconds = 1000 * 60 * 5; // 5 minutes
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
-        // Configuration Variables
-        private readonly InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-        private string commanderName => inaraConfiguration.commanderName;
-        private string commanderFrontierID => inaraConfiguration.commanderFrontierID;
-        private string apiKey => inaraConfiguration.apiKey;
-        private bool IsAPIkeyValid => inaraConfiguration.isAPIkeyValid;
-        public DateTime lastSync => inaraConfiguration.lastSync;
-
-        // Other Variables
+        // Variables
         private static bool tooManyRequests;
-        private static bool bgSyncRunning; // This must be static so that it is visible to child threads and tasks
+        public static bool bgSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
         private static readonly ConcurrentQueue<InaraAPIEvent> queuedAPIEvents = new ConcurrentQueue<InaraAPIEvent>();
         private static readonly List<string> invalidAPIEvents = new List<string>();
-        private static bool eddiInBeta;
         public static EventHandler invalidAPIkey;
 
-        // Methods
         public void Start(bool eddiIsBeta = false)
         {
-            eddiInBeta = eddiIsBeta;
             if (!bgSyncRunning)
             {              
-                bgSyncRunning = true;
                 Logging.Debug("Starting Inara service background sync.");
-                Task.Run(BackgroundSync);
+                Task.Run(() => BackgroundSync(eddiIsBeta));
             }
         }
 
@@ -56,79 +44,31 @@ namespace EddiInaraService
             }
         }
 
-        private async void BackgroundSync()
+        private async void BackgroundSync(bool eddiIsBeta)
         {
             // Pause a short time to allow any initial events to build in the queue before our first sync
-            await Task.Delay(startupDelayMilliSeconds);
+            await Task.Delay(startupDelayMilliSeconds).ConfigureAwait(false);
 
-            if (!string.IsNullOrEmpty(apiKey) && IsAPIkeyValid)
+            bgSyncRunning = true;
+            while (bgSyncRunning)
             {
-                bgSyncRunning = true;
-                Logging.Debug("Starting Inara service background sync.");
-                while (bgSyncRunning)
+                if (queuedAPIEvents.Count > 0)
                 {
-                    if (IsAPIkeyValid && apiKey != readonlyAPIkey && !string.IsNullOrEmpty(commanderName) && queuedAPIEvents.Count > 0)
-                    {
-                        try
-                        {
-                            SendQueuedAPIEvents();
-                            await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds);
-                            tooManyRequests = false;
-                        }
-                        catch (InaraException e)
-                        {
-                            if (e is InaraAuthenticationException)
-                            {
-                                // The Inara API key has been rejected. We'll note and remember that.
-                                inaraConfiguration.isAPIkeyValid = false;
-                                inaraConfiguration.ToFile();
-                                invalidAPIkey.Invoke(inaraConfiguration, new EventArgs());
-                            }
-                            if (e is InaraTooManyRequestsException)
-                            {
-                                tooManyRequests = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(apiKey))
-                {
-                    Logging.Info("Background sync not started: API key not set.");
-                }
-                if (!IsAPIkeyValid)
-                {
-                    Logging.Info("Background sync not started: API key is invalid.");
+                    await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta)).ConfigureAwait(false);
+                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds).ConfigureAwait(false);
+                    tooManyRequests = false;
                 }
             }
         }
 
         // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
-        public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool sendEvenForBetaGame = false)
+        public List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta = false)
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            // Flag each event with a unique ID we can use when processing responses
-            List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
-            for (int i = 0; i < events.Count; i++)
-            {
-                InaraAPIEvent indexedEvent = events[i];
-                indexedEvent.eventCustomID = i;
-
-                // Exclude and discard events with issues that have returned a code 400 error in this instance.
-                if (invalidAPIEvents.Contains(indexedEvent.eventName)) { continue; }
-
-                // Exclude and discard old / stale events
-                if (lastSync > indexedEvent.eventTimeStamp) { continue; }
-
-                // Exclude and discard events from beta versions of Elite by default
-                if (!sendEvenForBetaGame && indexedEvent.gameInBeta) { continue; }
-
-                indexedEvents.Add(indexedEvent);
-            }
+            if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
+            List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
 
             var client = new RestClient("https://inara.cz/inapi/v1/");
             var request = new RestRequest(Method.POST);
@@ -142,10 +82,10 @@ namespace EddiInaraService
                     // Quote: `isDeveloped is meant as "the app is currently being developed and may be broken`
                     { "appName", "EDDI" },
                     { "appVersion", Constants.EDDI_VERSION.ToString() },
-                    { "isDeveloped", eddiInBeta },
-                    { "commanderName", !string.IsNullOrEmpty(commanderName) ? commanderName : (eddiInBeta ? "TestCmdr" : null) },
-                    { "commanderFrontierID", !string.IsNullOrEmpty(commanderFrontierID) ? commanderFrontierID : null },
-                    { "APIkey", !string.IsNullOrEmpty(apiKey) ? apiKey : readonlyAPIkey }
+                    { "isDeveloped", eddiIsBeta },
+                    { "commanderName", !string.IsNullOrEmpty(inaraConfiguration?.commanderName) ? inaraConfiguration.commanderName : (eddiIsBeta ? "TestCmdr" : null) },
+                    { "commanderFrontierID", !string.IsNullOrEmpty(inaraConfiguration?.commanderFrontierID) ? inaraConfiguration.commanderFrontierID : null },
+                    { "APIkey", !string.IsNullOrEmpty(inaraConfiguration?.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
                 },
                 events = indexedEvents
             };
@@ -157,11 +97,11 @@ namespace EddiInaraService
             if (clientResponse.IsSuccessful)
             {
                 InaraResponses response = clientResponse.Data;
-                if (validateResponse(response.header, ref indexedEvents, true))
+                if (validateResponse(response.header, indexedEvents, true))
                 {
                     foreach (InaraResponse inaraResponse in response.events)
                     {
-                        if (validateResponse(inaraResponse, ref indexedEvents))
+                        if (validateResponse(inaraResponse, indexedEvents))
                         {
                             inaraResponses.Add(inaraResponse);
                         }
@@ -172,89 +112,124 @@ namespace EddiInaraService
             {
                 // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
                 Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
-                foreach (InaraAPIEvent inaraAPIEvent in events)
-                {
-                    // Re-enqueue and send at a later time.
-                    EnqueueAPIEvent(inaraAPIEvent);
-                }
+                ReEnqueueAPIEvents(events);
             }
             return inaraResponses;
         }
 
-        private bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents, bool header = false)
+        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
         {
-            if (inaraResponse.eventStatus == 200)
+            // Flag each event with a unique ID we can use when processing responses
+            List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
+            for (int i = 0; i < events.Count; i++)
             {
-                // 200 - Ok
-                return true;
+                InaraAPIEvent indexedEvent = events[i];
+                indexedEvent.eventCustomID = i;
+
+                // Exclude and discard events with issues that have returned a code 400 error in this instance.
+                if (invalidAPIEvents.Contains(indexedEvent.eventName)) { continue; }
+
+                // Exclude and discard old / stale events
+                if (inaraConfiguration?.lastSync > indexedEvent.eventTimeStamp) { continue; }
+
+                // Note: the Inara Responder does not queue events while the game is in beta.
+
+                indexedEvents.Add(indexedEvent);
+            }
+
+            return indexedEvents;
+        }
+
+        private bool validateResponse(InaraResponse inaraResponse, List<InaraAPIEvent> indexedEvents, bool header = false)
+        {
+            // 200 - Ok
+            if (inaraResponse.eventStatus == 200) { return true; }
+
+            // Anything else - something is wrong (or notable).
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
+                { "InaraResponse", inaraResponse }
+            };
+
+            // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
+            // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
+            if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
+            {
+                Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+            }
+            // Other errors
+            else if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
+            {
+                if (header)
+                {
+                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+                    if (inaraResponse.eventStatusText.Contains("Invalid API key"))
+                    {
+                        ReEnqueueAPIEvents(indexedEvents);
+                        // The Inara API key has been rejected. We'll note and remember that.
+                        InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                        inaraConfiguration.isAPIkeyValid = false;
+                        inaraConfiguration.ToFile();
+                        // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
+                        invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                    }
+                    else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
+                    {
+                        // Note: This can be thrown by over-use of the readonly API key.
+                        ReEnqueueAPIEvents(indexedEvents);
+                        tooManyRequests = true;
+                    }
+                }
+                else
+                {
+                    // There may be an issue with a specific API event.
+                    // We'll add that API event to a list and omit sending that event again in this instance.
+                    Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                    invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
+                }
             }
             else
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
-                    { "InaraResponse", inaraResponse }
-                };
-                if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
-                {
-                    // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
-                    // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
-                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                    return true;
-                }
-                else if (inaraResponse.eventStatus == 400)
-                {
-                    // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
-                    Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
-
-                    if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
-                    {
-                        if (inaraResponse.eventStatusText.Contains("Invalid API key"))
-                        {
-                            // Re-enqueue the data so we can send it again later.
-                            foreach (var indexedEvent in indexedEvents)
-                            {
-                                indexedEvent.eventCustomID = null;
-                                EnqueueAPIEvent(indexedEvent);
-                            }
-                            throw new InaraAuthenticationException(inaraResponse.eventStatusText);
-                        }
-                        else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
-                        {
-                            // Note: This can be thrown by over-use of the readonly API key.
-                            // Re-enqueue the data so we can send it again later.
-                            foreach (var indexedEvent in indexedEvents)
-                            {
-                                indexedEvent.eventCustomID = null;
-                                EnqueueAPIEvent(indexedEvent);
-                            }
-                            throw new InaraTooManyRequestsException(inaraResponse.eventStatusText);
-                        }
-                        else
-                        {
-                            // There may be an issue with a specific API event.
-                            // We'll add that API event to a list and omit sending that event again in this instance.
-                            invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
-                            throw new InaraErrorException(inaraResponse.eventStatusText);
-                        }
-                    }
-                }
-                // Unknown response
-                Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                return false;
+                // Inara responded, but no status text description was given.
+                Logging.Error("Inara responded with: ", JsonConvert.SerializeObject(data));
             }
+            return false;
         }
 
-        public void SendQueuedAPIEvents(bool sendEvenForBetaGame = false)
+        private bool checkAPIcredentialsOk(InaraConfiguration inaraConfiguration)
+        {
+            if (!inaraConfiguration.isAPIkeyValid) 
+            { 
+                Logging.Warn("Background sync skipped: API key is invalid."); 
+                invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs()); 
+                return false; 
+            }
+            if (string.IsNullOrEmpty(inaraConfiguration.apiKey)) 
+            { 
+                Logging.Info("Background sync skipped: API key not set."); 
+                return false; 
+            }
+            if (string.IsNullOrEmpty(inaraConfiguration.commanderName)) 
+            { 
+                Logging.Debug("Background sync skipped: Commander name not set."); 
+                return false; 
+            }
+            return true;
+        }
+
+        public void SendQueuedAPIEvents(bool eddiIsBeta)
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
             while (queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
             {
                 queue.Add(pendingEvent);
             }
-            if (queue.Count > 0)
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            if (queue.Count > 0 && checkAPIcredentialsOk(inaraConfiguration))
             {
-                if (SendEventBatch(ref queue, sendEvenForBetaGame).Count > 0)
+                var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
+                if (responses.Count > 0)
                 {
                     inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
                     inaraConfiguration.ToFile();
@@ -270,6 +245,19 @@ namespace EddiInaraService
                 return;
             }
             queuedAPIEvents.Enqueue(inaraAPIEvent);
+        }
+
+        private void ReEnqueueAPIEvents(IEnumerable<InaraAPIEvent> inaraAPIEvents)
+        {
+            // Re-enqueue the data so we can send it again later.
+            foreach (var inaraAPIEvent in inaraAPIEvents)
+            {
+                // Do not re-enqueue 'get' Inara API events
+                if (inaraAPIEvent.eventName.StartsWith("get")) {continue; }
+                // Clear any ID / index value assigned to the data
+                inaraAPIEvent.eventCustomID = null;
+                EnqueueAPIEvent(inaraAPIEvent);
+            }
         }
     }
 
@@ -295,6 +283,6 @@ namespace EddiInaraService
 
         public object eventData { get; set; }
 
-        public int eventCustomID { get; set; } // Optional index
+        public int eventCustomID { get; set; } // Optional index. Used to match outgoing API events to responses.
     }
 }
