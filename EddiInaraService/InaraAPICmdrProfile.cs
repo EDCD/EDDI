@@ -14,7 +14,7 @@ namespace EddiInaraService
 
         public InaraCmdr GetCommanderProfile(string cmdrName)
         {
-            return GetCommanderProfiles(new string[] { cmdrName })?.FirstOrDefault();
+            return GetCommanderProfiles(new[] { cmdrName })?.FirstOrDefault();
         }
 
         public List<InaraCmdr> GetCommanderProfiles(IEnumerable<string> cmdrNames)
@@ -29,7 +29,7 @@ namespace EddiInaraService
                     { "searchName", cmdrName }
                 }));
             }
-            List<InaraResponse> responses = SendEventBatch(ref events, sendEvenForBetaGame: true);
+            var responses = SendEventBatch(events, InaraConfiguration.FromFile());
             foreach (InaraResponse inaraResponse in responses)
             {
                 string jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);
