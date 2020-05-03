@@ -38,14 +38,13 @@ namespace EddiInaraResponder
 
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraApiKeyTextBox.Text = inaraConfiguration.apiKey;
-            SetAPIKeyValidity(inaraConfiguration.isAPIkeyValid);
         }
 
         private void InaraApiKeyChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
-                if (textBox.IsLoaded && textBox.Name == "inaraApiKeyTextBox")
+                if (textBox.Name == "inaraApiKeyTextBox")
                 {
                     SetAPIKeyValidity(true);
                     inputTimer.Stop();
