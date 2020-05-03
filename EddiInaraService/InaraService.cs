@@ -3,7 +3,9 @@ using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -67,54 +69,61 @@ namespace EddiInaraService
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
-            if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
-            List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
-            if (indexedEvents.Count > 0)
+            try
             {
-                var client = new RestClient("https://inara.cz/inapi/v1/");
-                var request = new RestRequest(Method.POST);
-                InaraSendJson inaraRequest = new InaraSendJson()
+                if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
+                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
+                if (indexedEvents.Count > 0)
                 {
-                    header = new Dictionary<string, object>()
-                {
-                    // Per private conversation with Artie and per Inara API docs, the `isDeveloped` property
-                    // should (counterintuitively) be set to true when the an application is in development.
-                    // Quote: `it's "true" because the app "is (being) developed"`
-                    // Quote: `isDeveloped is meant as "the app is currently being developed and may be broken`
-                    { "appName", "EDDI" },
-                    { "appVersion", Constants.EDDI_VERSION.ToString() },
-                    { "isDeveloped", eddiIsBeta },
-                    { "commanderName", !string.IsNullOrEmpty(inaraConfiguration?.commanderName) ? inaraConfiguration.commanderName : (eddiIsBeta ? "TestCmdr" : null) },
-                    { "commanderFrontierID", !string.IsNullOrEmpty(inaraConfiguration?.commanderFrontierID) ? inaraConfiguration.commanderFrontierID : null },
-                    { "APIkey", !string.IsNullOrEmpty(inaraConfiguration?.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
-                },
-                    events = indexedEvents
-                };
-                request.RequestFormat = DataFormat.Json;
-                request.AddBody(inaraRequest); // uses JsonSerializer
-
-                Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
-                var clientResponse = client.Execute<InaraResponses>(request);
-                if (clientResponse.IsSuccessful)
-                {
-                    InaraResponses response = clientResponse.Data;
-                    if (validateResponse(response.header, indexedEvents, true))
+                    var client = new RestClient("https://inara.cz/inapi/v1/");
+                    var request = new RestRequest(Method.POST);
+                    InaraSendJson inaraRequest = new InaraSendJson()
                     {
-                        foreach (InaraResponse inaraResponse in response.events)
+                        header = new Dictionary<string, object>()
                         {
-                            if (validateResponse(inaraResponse, indexedEvents))
+                            // Per private conversation with Artie and per Inara API docs, the `isDeveloped` property
+                            // should (counterintuitively) be set to true when the an application is in development.
+                            // Quote: `it's "true" because the app "is (being) developed"`
+                            // Quote: `isDeveloped is meant as "the app is currently being developed and may be broken`
+                            { "appName", "EDDI" },
+                            { "appVersion", Constants.EDDI_VERSION.ToString() },
+                            { "isDeveloped", eddiIsBeta },
+                            { "commanderName", !string.IsNullOrEmpty(inaraConfiguration?.commanderName) ? inaraConfiguration.commanderName : (eddiIsBeta ? "TestCmdr" : null) },
+                            { "commanderFrontierID", !string.IsNullOrEmpty(inaraConfiguration?.commanderFrontierID) ? inaraConfiguration.commanderFrontierID : null },
+                            { "APIkey", !string.IsNullOrEmpty(inaraConfiguration?.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
+                        },
+                        events = indexedEvents
+                    };
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddBody(inaraRequest); // uses JsonSerializer
+
+                    Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<InaraResponses>(request);
+                    if (clientResponse.IsSuccessful)
+                    {
+                        InaraResponses response = clientResponse.Data;
+                        if (validateResponse(response.header, indexedEvents, true))
+                        {
+                            foreach (InaraResponse inaraResponse in response.events)
                             {
-                                inaraResponses.Add(inaraResponse);
+                                if (validateResponse(inaraResponse, indexedEvents))
+                                {
+                                    inaraResponses.Add(inaraResponse);
+                                }
                             }
                         }
                     }
+                    else
+                    {
+                        // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
+                        Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
+                        ReEnqueueAPIEvents(events);
+                    }
                 }
-                else
-                {
-                    // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
-                    Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
-                    ReEnqueueAPIEvents(events);
-                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Sending data to the Inara server failed.", ex);
             }
             return inaraResponses;
         }
@@ -147,56 +156,64 @@ namespace EddiInaraService
             // 200 - Ok
             if (inaraResponse.eventStatus == 200) { return true; }
 
-            // Anything else - something is wrong (or notable).
+            // Anything else - something is wrong.
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
                 { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
                 { "InaraResponse", inaraResponse }
             };
-
-            // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
-            // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
-            if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
+            try
             {
-                Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-            }
-            // Other errors
-            else if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
-            {
-                if (header)
+                // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
+                // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
+                if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
                 {
                     Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                    if (inaraResponse.eventStatusText.Contains("Invalid API key"))
+                }
+                // Other errors
+                else if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
+                {
+                    if (header)
                     {
-                        ReEnqueueAPIEvents(indexedEvents);
-                        // The Inara API key has been rejected. We'll note and remember that.
-                        InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                        inaraConfiguration.isAPIkeyValid = false;
-                        inaraConfiguration.ToFile();
-                        // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
-                        invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                        Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+                        if (inaraResponse.eventStatusText.Contains("Invalid API key"))
+                        {
+                            ReEnqueueAPIEvents(indexedEvents);
+                            // The Inara API key has been rejected. We'll note and remember that.
+                            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                            inaraConfiguration.isAPIkeyValid = false;
+                            inaraConfiguration.ToFile();
+                            // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
+                            invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                        }
+                        else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
+                        {
+                            // Note: This can be thrown by over-use of the readonly API key.
+                            ReEnqueueAPIEvents(indexedEvents);
+                            tooManyRequests = true;
+                        }
                     }
-                    else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
+                    else
                     {
-                        // Note: This can be thrown by over-use of the readonly API key.
-                        ReEnqueueAPIEvents(indexedEvents);
-                        tooManyRequests = true;
+                        // There may be an issue with a specific API event.
+                        // We'll add that API event to a list and omit sending that event again in this instance.
+                        Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, data);
+                        invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
                     }
                 }
                 else
                 {
-                    // There may be an issue with a specific API event.
-                    // We'll add that API event to a list and omit sending that event again in this instance.
-                    Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
-                    invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
+                    // Inara responded, but no status text description was given.
+                    Logging.Error("Inara responded with: ", data);
                 }
+                return false;
             }
-            else
+            catch (Exception e)
             {
-                // Inara responded, but no status text description was given.
-                Logging.Error("Inara responded with: ", JsonConvert.SerializeObject(data));
+                data.Add("Exception", e);
+                Logging.Error("Failed to handle Inara server response", data);
+                return false;
             }
-            return false;
         }
 
         private bool checkAPIcredentialsOk(InaraConfiguration inaraConfiguration)
