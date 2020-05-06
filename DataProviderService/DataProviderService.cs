@@ -31,10 +31,10 @@ namespace EddiDataProviderService
 
         public List<StarSystem> GetSystemsData(string[] systemNames, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
         {
-            if (systemNames == null || systemNames.Length == 0) { return null; }
+            if (systemNames == null || systemNames.Length == 0) { return new List<StarSystem>(); }
 
             List<StarSystem> starSystems = edsmService.GetStarMapSystems(systemNames, showCoordinates, showSystemInformation);
-            if (starSystems == null) { return null; }
+            if (starSystems == null) { return new List<StarSystem>(); }
 
             List<StarSystem> fullStarSystems = new List<StarSystem>();
             foreach (string systemName in systemNames)
