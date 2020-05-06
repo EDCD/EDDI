@@ -3645,7 +3645,8 @@ namespace EddiJournalMonitor
                                         statistics.thargoidencounters.totalencounters = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_TOTAL");
                                         statistics.thargoidencounters.lastsystem = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SYSTEM");
                                         statistics.thargoidencounters.lastshipmodel = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SHIP");
-                                        statistics.thargoidencounters.lasttimestamp = DateTime.Parse(JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP"));
+                                        var lastTimeStampString = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP");
+                                        statistics.thargoidencounters.lasttimestamp = !string.IsNullOrEmpty(lastTimeStampString) ? DateTime.Parse(lastTimeStampString) : (DateTime?)null;
                                     }
 
                                     data.TryGetValue("Crafting", out object craftingVal);
