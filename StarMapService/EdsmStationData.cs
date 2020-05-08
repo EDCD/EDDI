@@ -13,7 +13,7 @@ namespace EddiStarMapService
     {
         public List<Station> GetStarMapStations(string system, long? edsmId = null)
         {
-            if (system == null) { return null; }
+            if (system == null) { return new List<Station>(); }
 
             var request = new RestRequest("api-system-v1/stations", Method.POST);
             request.AddParameter("systemName", system);
@@ -31,7 +31,7 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return null;
+            return new List<Station>();
         }
 
         public List<Station> ParseStarMapStationsParallel(JObject response)

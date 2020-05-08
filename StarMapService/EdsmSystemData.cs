@@ -14,13 +14,13 @@ namespace EddiStarMapService
         public StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
             if (system == null) { return null; }
-            return GetStarMapSystems(new string[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
+            return GetStarMapSystems(new[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
         }
 
         /// <summary> At least one system name is required. </summary>
         public List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true, bool showSystemInformation = true)
         {
-            if (systems == null) { return null; }
+            if (systems == null) { return new List<StarSystem>(); }
 
             var request = new RestRequest("api-v1/systems", Method.POST);
             foreach (string system in systems)
@@ -49,13 +49,13 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return null;
+            return new List<StarSystem>();
         }
 
         /// <summary> Partial of system name is required. </summary>
         public List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
-            if (system == null) { return null; }
+            if (system == null) { return new List<StarSystem>(); }
 
             var request = new RestRequest("api-v1/systems", Method.POST);
 
@@ -83,13 +83,13 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return null;
+            return new List<StarSystem>(); 
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
         public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
-            if (starSystem == null) { return null; }
+            if (starSystem == null) { return new List<Dictionary<string, object>>(); }
 
             var request = new RestRequest("api-v1/sphere-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
@@ -122,13 +122,13 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return null;
+            return new List<Dictionary<string, object>>();
         }
 
         /// <summary> Get star systems around a specified system in a cube, with a maximum cube size of 200 light years. </summary>
         public List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
-            if (starSystem == null) { return null; }
+            if (starSystem == null) { return new List<StarSystem>(); }
 
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
@@ -152,7 +152,7 @@ namespace EddiStarMapService
                     return starSystems;
                 }
             }
-            return null;
+            return new List<StarSystem>();
         }
 
         public StarSystem ParseStarMapSystem(JObject response)
