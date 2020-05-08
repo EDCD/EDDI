@@ -12,6 +12,17 @@
         WindowStyle="ToolWindow"
         Height="200" Width="300"
         >
+    <Window.Resources>
+        <Style x:Key="textBoxWithValidationToolTip" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>

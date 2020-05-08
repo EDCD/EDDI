@@ -394,6 +394,24 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please supply a name.
+        /// </summary>
+        public static string validation_tooltip_name_empty {
+            get {
+                return ResourceManager.GetString("validation_tooltip_name_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to That name is taken; please supply another.
+        /// </summary>
+        public static string validation_tooltip_name_taken {
+            get {
+                return ResourceManager.GetString("validation_tooltip_name_taken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string view_script {
