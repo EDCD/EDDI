@@ -233,10 +233,28 @@
     <value>Loja</value>
     <comment>Station Service: Shop</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="CarrierFuel" xml:space="preserve">
+    <value>Depósito de Trítio</value>
+    <comment>Station Service: CarrierFuel</comment>
+  </data>
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Gerenciamento do Porta Frota</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Vendedor de Porta-Frota</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Projeto</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Pacote de Módulos</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Escritório de Resgate</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>
