@@ -13,7 +13,8 @@ namespace EddiStarMapService
         /// <summary> Exactly one system name is required. </summary>
         public StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
-            return system == null ? null : GetStarMapSystems(new[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
+            if (system == null) { return null; }
+            return GetStarMapSystems(new[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
         }
 
         /// <summary> At least one system name is required. </summary>

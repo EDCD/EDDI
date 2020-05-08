@@ -141,7 +141,8 @@ namespace EddiDataProviderService
 
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
-            return name == string.Empty ? null : GetOrCreateStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
+            if (name == string.Empty) { return null; }
+            return GetOrCreateStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
@@ -163,7 +164,8 @@ namespace EddiDataProviderService
 
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
-            return name == string.Empty ? null : GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated)?.FirstOrDefault();
+            if (name == string.Empty) { return null; }
+            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated)?.FirstOrDefault();
         }
 
         public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
@@ -193,7 +195,8 @@ namespace EddiDataProviderService
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
-            return string.IsNullOrEmpty(name) ? null : GetStarSystems(new[] { name }, refreshIfOutdated)?.FirstOrDefault();
+            if (String.IsNullOrEmpty(name)) { return null; }
+            return GetStarSystems(new[] { name }, refreshIfOutdated)?.FirstOrDefault();
         }
 
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
