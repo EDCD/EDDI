@@ -202,7 +202,8 @@ namespace EddiDataProviderService
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
         {
             List<StarSystem> results = new List<StarSystem>();
-            if (!File.Exists(DbFile) || !names.Any()) { return results; }
+            if (!File.Exists(DbFile)) { return results; }
+            if (!names.Any()) { return results; }
 
             List<DatabaseStarSystem> systemsToUpdate = new List<DatabaseStarSystem>();
             List<DatabaseStarSystem> dataSets = Instance.ReadStarSystems(names);
