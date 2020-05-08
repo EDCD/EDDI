@@ -132,5 +132,7 @@
   <data name="p2" xml:space="preserve">
     <value>Sobald Sie Ihren API-Schlüssel eingegeben haben, beginnt EDDI, die Daten der Spielsitzung an Inara zu übertragen.</value>
   </data>
-  
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>Bitte geben Sie einen gültigen Inara-API-Schlüssel ein.</value>
+  </data>
 </root>
