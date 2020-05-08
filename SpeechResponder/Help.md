@@ -370,7 +370,11 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 
 ### RouteDetails()
 
-This function will produce a destination/route for valid mission destinations, dependent on the following 'routetype':
+This function will produce a destination/route for valid mission destinations.
+
+RouteDetails takes one mandatory argument, the `routetype`, and up to two optional arguments.
+
+The following `routetype` values are valid:
 
   * `cancel` Cancel the currently stored route.
   * `encoded` Nearest encoded materials trader.
@@ -380,16 +384,22 @@ This function will produce a destination/route for valid mission destinations, d
   * `guardian` Nearest guardian technology broker.
   * `human` Nearest human technology broker.
   * `manufactured` Nearest manufactured materials trader.
-  * `most` Nearest system with the most missions.
+  * `most` Nearest system with the most missions. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
   * `nearest` Mission destination nearest to your current location.
   * `next` Next destination in the currently stored route.
   * `raw` Nearest raw materials trader.
-  * `route` 'Traveling Salesman' (RNNA) route for all active missions.
+  * `route` 'Traveling Salesman' (RNNA) route for all active missions. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
   * `scoop` Nearest scoopable star system.
-  * `set` Set destination route to a single system.
-  * `source` Destination to nearest mission 'cargo source'.
-  * `update` Update to the next mission route destination, once all 
-missions in current system are completed.
+  * `set` Set destination route to a single system. Sets the route destination to the last star system name returned from a `Route details` event. An optional second argument sets the route destination to the star system name specified instead. An optional third argument sets the destination station.
+  * `source` Destination to nearest mission 'cargo source'. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system. 
+  * `update` Update to the next mission route destination, once all missions in current system are completed. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+    
+Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
+
+    {RouteDetails("cancel")}
+    {RouteDetails("set", "Achenar", "Macmillan Terminal")}
+    {set system to RouteDetails("nearest")}
+    {set system to RouteDetails("most", "Sol")}
 
 Upon success of the query, a 'Route details' event is triggered, providing a following event data:
 
@@ -412,10 +422,6 @@ Upon success of the query, a 'Route details' event is triggered, providing a fol
   * `routedistance` Remaining distance of the route (multiple or single), with the following exceptions:
       * `scoop` Distance of the search radius.
   * `missionids` Mission ID(s) associated with the destination system.
-
-Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
-
-    {set system to RouteDetails("nearest")}
 
 ### SecondsSince()
 

@@ -433,7 +433,7 @@ To use this function in your own commands set the 'Type variable' parameter then
 
 ### route
 
-This function will produce a destination/route for valid mission destinations. It takes one mandatory and two optional variables as parameters.
+This function will produce a destination/route for valid mission destinations. It takes one mandatory and up to two optional variables as parameters.
 
 - 'Type variable' (text variable) is a mandatory parameter containing the type of update to execute.
 
@@ -451,7 +451,7 @@ This function will produce a destination/route for valid mission destinations. I
   * `raw` Nearest raw materials trader.
   * `route` 'Traveling Salesman' (RNNA) route for all active missions.
   * `scoop` Nearest scoopable star system.
-  * `set` Set destination route to a single system.
+  * `set` Set destination route to the last star system name returned from a `Route details` event. 
   * `source` Destination to nearest mission 'cargo source'.
   * `update` Update to the next mission route destination (use this once all missions in the current system are completed).
 
@@ -468,6 +468,8 @@ This function will produce a destination/route for valid mission destinations. I
   * `set` If set, the resulting route shall proceed directly to the specified single star system and station rather than to the last star system and station identified in a route search.
 
 To use this function in your own commands set the 'Type variable' parameter and when appropriate the `System variable` and 'Station variable' parameters then use the 'Execute an external plugin function' command with the plugin context set to 'route'. Upon success, a '((EDDI route details))' event is triggered, providing event data as described [in the appropriate wiki page](https://github.com/EDCD/EDDI/wiki/Route-details-event).
+
+Upon success of the query, a 'Route details' event is triggered with details from the destination and route.
 
 ## Utility functions
 
