@@ -1690,19 +1690,64 @@
     <value>Aliento Cromado de Plata</value>
     <comment>Commodity Crom Silver Fesh</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Tritium" xml:space="preserve">
+    <value>Tritio</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Fluido de Molusco</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Tejido blando de Molusco</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Tejido cerebral de molusco</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Tejido de núcleo de vaina</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Tejido muerto de vaina</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Tejido de Superficie de Vaina</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Partículas de Anomalía</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Tejido de vaina</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Membrana de molusco</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Micelio de Molusco</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Esporas de Molusco</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Mesoglea de vaina</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Tejido exterior de vaina</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Tejido de caparazón de vaina</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
 </root>
