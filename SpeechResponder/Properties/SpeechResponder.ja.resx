@@ -230,4 +230,10 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>スクリプト "{0}" をリセットしますか？</value>
   </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>復元されたスクリプト</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDIが異常終了した際に編集中だったスクリプトを復元しました。再開しますか？</value>
+  </data>
 </root>
