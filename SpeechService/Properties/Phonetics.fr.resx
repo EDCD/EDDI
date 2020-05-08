@@ -333,10 +333,7 @@
     <value>ɛdmund</value>
     <comment>Optional phonetic pronunciation for edmund</comment>
   </data>
-  <data name="electra" xml:space="preserve">
-    <value>elɛktʁa</value>
-    <comment>Optional phonetic pronunciation for electra</comment>
-  </data>
+  
   <data name="eranin" xml:space="preserve">
     <value>eʁanɛ̃</value>
     <comment>Optional phonetic pronunciation for eranin</comment>
