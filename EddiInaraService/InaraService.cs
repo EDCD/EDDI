@@ -248,7 +248,7 @@ namespace EddiInaraService
             if (queue.Count > 0 && checkAPIcredentialsOk(inaraConfiguration))
             {
                 var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
-                if (responses.Count > 0)
+                if (responses != null && responses.Count > 0)
                 {
                     inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
                     inaraConfiguration.ToFile();
