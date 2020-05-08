@@ -299,7 +299,7 @@ namespace EddiInaraService
             }
             if (queue.Count > 0)
             {
-                if (SendEventBatch(ref queue).Count > 0)
+                if (SendEventBatch(ref queue)?.Count > 0)
                 {
                     lastSync = queue.Max(e => e.eventTimeStamp);
                     InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
