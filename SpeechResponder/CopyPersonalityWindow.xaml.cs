@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 
 namespace EddiSpeechResponder
 {
@@ -37,10 +38,16 @@ namespace EddiSpeechResponder
             }
         }
 
+        bool CanAccept()
+        {
+            return string.IsNullOrWhiteSpace(Error);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            acceptButton.IsEnabled = CanAccept();
         }
 
         public CopyPersonalityWindow(IEnumerable<Personality> personalities)
@@ -55,7 +62,7 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            DialogResult = !Validation.GetHasError(this.PersonalityNameField);
+            DialogResult = !Validation.GetHasError(PersonalityNameField);
             Close();
         }
 
@@ -66,7 +73,16 @@ namespace EddiSpeechResponder
         }
 
 #region DataErrorInfo
-        public string Error => null;
+        public string Error
+        {
+            get
+            {
+                string result = this["PersonalityName"];
+                if (!string.IsNullOrEmpty(result)) { return result; }
+
+                return result;
+            }
+        }
 
         public string this[string columnName]
         {
@@ -76,15 +92,16 @@ namespace EddiSpeechResponder
                 {
                     case "PersonalityName":
                         return ValidatePersonalityName();
+
                     default:
-                        return "";
+                        return string.Empty;
                 }
             }
         }
 
         string ValidatePersonalityName()
         {
-            string trimmedName = personalityName?.Trim()?.ToLower();
+            string trimmedName = personalityName?.Trim().ToLower();
 
             if (string.IsNullOrEmpty(trimmedName))
             {
