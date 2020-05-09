@@ -26,8 +26,8 @@ namespace EddiSpeechResponder
                 OnPropertyChanged(PersonalityName);
             }
         }
-        private string personalityDescription;
 
+        private string personalityDescription;
         public string PersonalityDescription
         {
             get => personalityDescription;
@@ -58,6 +58,8 @@ namespace EddiSpeechResponder
             {
                 existingNames.Add(personality.Name.ToLower());
             }
+
+            acceptButton.IsEnabled = CanAccept();
         }
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
