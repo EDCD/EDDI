@@ -161,5 +161,8 @@
     <value>Engenheiro</value>
     <comment>Government type engineer</comment>
   </data>
-  
+  <data name="Carrier" xml:space="preserve">
+    <value>Propriedade Privada</value>
+    <comment>Government Type Carrier</comment>
+  </data>
 </root>

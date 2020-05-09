@@ -161,5 +161,8 @@
     <value>speciale, in quanto sede di un ingegnere</value>
     <comment>Government type engineer</comment>
   </data>
-  
+  <data name="Carrier" xml:space="preserve">
+    <value>Proprietà Privata</value>
+    <comment>Government Type Carrier</comment>
+  </data>
 </root>

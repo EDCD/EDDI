@@ -226,4 +226,6 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Biztos benne, szeretné visszaállítani a(z) "{0}" szkriptet?</value>
   </data>
+  
+  
 </root>

@@ -132,5 +132,7 @@
   <data name="p2" xml:space="preserve">
     <value>Una volta inserita la tua chiave API, EDDI inizierà a comunicare i dati relativi alle tue sessioni di gioco ad Inara.</value>
   </data>
-  
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>Inserisci un codice API di Inara valido.</value>
+  </data>
 </root>

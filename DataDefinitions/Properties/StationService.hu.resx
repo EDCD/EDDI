@@ -224,10 +224,28 @@
     <comment>Station Service: Station Menu</comment>
   </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="CarrierFuel" xml:space="preserve">
+    <value>Tricium raktár</value>
+    <comment>Station Service: CarrierFuel</comment>
+  </data>
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Hordozó menedzsment</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Flotta hordozó kereskedő</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Festés</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Modul csomagok</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Beváltó iroda</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>

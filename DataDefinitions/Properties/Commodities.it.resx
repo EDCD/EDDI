@@ -1689,19 +1689,64 @@
     <value>Fesh argentato di Crom</value>
     <comment>Commodity Crom Silver Fesh</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Tritium" xml:space="preserve">
+    <value>Trizio</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Fluido Malacologico</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Tessuto molle Malacologico</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>tessuto cerebrale Malacologico</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Tessuto interno di Baccello</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Tessuto necrotico di Baccello</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Tessuto superficiale di Baccello</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Particole di Anomalia</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Tessuto di Baccello</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Membrana Malacologica</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Micelio Malacologico</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Spore Malacologiche</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Mesoglea di Baccello</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Tessuto Esterno di Baccello</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Tessuto di Valva di Baccello</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
 </root>

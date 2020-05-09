@@ -132,5 +132,7 @@
   <data name="p2" xml:space="preserve">
     <value>APIキーを入力すると、EDDIはゲームセッションデータのInaraへの送信を開始します。</value>
   </data>
-  
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>有効なInara APIキーを入力してください。</value>
+  </data>
 </root>

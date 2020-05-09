@@ -230,4 +230,6 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Êtes vous sur de vouloir réinitialiser le script "{0}" ?</value>
   </data>
+  
+  
 </root>
