@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 
 namespace EddiSpeechResponder
 {
@@ -75,6 +73,7 @@ namespace EddiSpeechResponder
         }
 
 #region DataErrorInfo
+        // C#'s lack of string-based enums is annoying here. We have to resort to string literals, which are vulnerable to typos.
         public string Error
         {
             get
@@ -86,11 +85,11 @@ namespace EddiSpeechResponder
             }
         }
 
-        public string this[string columnName]
+        public string this[string fieldName]
         {
             get
             {
-                switch (columnName)
+                switch (fieldName)
                 {
                     case "PersonalityName":
                         return ValidatePersonalityName();
