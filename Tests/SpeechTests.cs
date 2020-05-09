@@ -351,5 +351,13 @@ namespace SpeechTests
                 speechresponder.Handle(@event);
             }
         }
+
+
+        [TestMethod, TestCategory("Speech")]
+        public void TestSpeechPhonemes()
+        {
+            var line = @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>";
+            SpeechService.Instance.Speak(line, null, 0, 40, 0, 0, 0);
+        }
     }
 }

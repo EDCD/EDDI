@@ -176,6 +176,7 @@ namespace Utilities
 
         private static string FilterProperties(string json)
         {
+            if (json == null) {return null;}
             try
             {
                 var data = JObject.Parse(json);

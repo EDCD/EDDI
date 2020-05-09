@@ -13,7 +13,7 @@ namespace EddiStarMapService
     {
         public List<Faction> GetStarMapFactions(string systemName, long? edsmId = null)
         {
-            if (systemName == null) { return null; }
+            if (systemName == null) { return new List<Faction>(); }
 
             var request = new RestRequest("api-system-v1/factions", Method.POST);
             request.AddParameter("systemName", systemName);
@@ -31,7 +31,7 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return null;
+            return new List<Faction>();
         }
 
         public List<Faction> ParseStarMapFactionsParallel(JObject response, string systemName)

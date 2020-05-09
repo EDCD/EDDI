@@ -240,10 +240,7 @@
   
   
   
-  <data name="electra" xml:space="preserve">
-    <value>Elektra</value>
-    <comment>Optional phonetic pronunciation for electra</comment>
-  </data>
+  
   <data name="eranin" xml:space="preserve">
     <value>Eranin</value>
     <comment>Optional phonetic pronunciation for eranin</comment>

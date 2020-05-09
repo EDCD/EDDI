@@ -230,4 +230,10 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>Tem certeza que deseja reiniciar o script "{0}"?</value>
   </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>Script Recuperado</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI recuperou um script que estava sendo editado quando o programa fechou inesperadamente. Você quer reabri-lo?</value>
+  </data>
 </root>
