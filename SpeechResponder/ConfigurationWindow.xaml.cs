@@ -291,7 +291,7 @@ namespace EddiSpeechResponder
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            CopyPersonalityWindow window = new CopyPersonalityWindow(Personality)
+            CopyPersonalityWindow window = new CopyPersonalityWindow(Personalities)
             {
                 Owner = Window.GetWindow(this)
             };

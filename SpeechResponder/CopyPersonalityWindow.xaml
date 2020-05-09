@@ -35,16 +35,22 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Name="PersonalityNameField">
+            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}" />
+            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" 
+                     Name="PersonalityNameField" 
+                     Style="{StaticResource textBoxWithValidationToolTip}">
                 <TextBox.Text>
-                    <Binding Path="PersonalityName" Mode="TwoWay" />
+                    <Binding Path="PersonalityName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
                 </TextBox.Text>
             </TextBox>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"></TextBlock>
+            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
             <TextBox Margin="10" Grid.Row="1" Grid.Column="1">
                 <TextBox.Text>
-                    <Binding Path="PersonalityDescription" Mode="TwoWay"></Binding>
+                    <Binding Path="PersonalityDescription" Mode="TwoWay" />
                 </TextBox.Text>
             </TextBox>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
