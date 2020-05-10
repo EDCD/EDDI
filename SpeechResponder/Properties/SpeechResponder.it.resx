@@ -236,4 +236,6 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EEDI ha recuperato uno Script che stavi modificando quando il programma si è chiuso inaspettatamente. Vuoi riaprirlo?</value>
   </data>
+  
+  
 </root>
