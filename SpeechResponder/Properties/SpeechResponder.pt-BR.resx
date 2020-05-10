@@ -236,4 +236,6 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDI recuperou um script que estava sendo editado quando o programa fechou inesperadamente. Você quer reabri-lo?</value>
   </data>
+  
+  
 </root>
