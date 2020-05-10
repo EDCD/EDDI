@@ -236,6 +236,10 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDI recuperou um script que estava sendo editado quando o programa fechou inesperadamente. Você quer reabri-lo?</value>
   </data>
-  
-  
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>Por favor digite um nome</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>Esse nome de usuário já está sendo usado. Por favor, tente outro</value>
+  </data>
 </root>
