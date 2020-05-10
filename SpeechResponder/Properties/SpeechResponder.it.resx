@@ -236,6 +236,10 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EEDI ha recuperato uno Script che stavi modificando quando il programma si è chiuso inaspettatamente. Vuoi riaprirlo?</value>
   </data>
-  
-  
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>Si prega di inserire un nome</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>Questo nome è già stato usato; si prega di sceglierne un altro</value>
+  </data>
 </root>
