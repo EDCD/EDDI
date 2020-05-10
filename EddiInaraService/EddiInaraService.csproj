@@ -48,10 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InaraTooManyRequestsException.cs" />
-    <Compile Include="InaraAuthenticationException.cs" />
-    <Compile Include="InaraErrorException.cs" />
-    <Compile Include="InaraException.cs" />
     <Compile Include="InaraAPICmdrProfile.cs" />
     <Compile Include="InaraAPIEvent.cs" />
     <Compile Include="InaraCmdr.cs" />

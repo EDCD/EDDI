@@ -10,7 +10,7 @@ using System.Windows.Controls;
 namespace EddiInaraResponder
 {
     /// <summary> Interaction logic for ConfigurationWindow.xaml </summary>
-    public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged, INotifyDataErrorInfo
+    public partial class ConfigurationWindow : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         // Set up a timer... wait 3 seconds before reconfiguring the InaraService for any change in the API key
         private const int delayMilliseconds = 3000;
@@ -30,7 +30,7 @@ namespace EddiInaraResponder
         public ConfigurationWindow()
         {
             // Subscribe to events that require our attention
-            InaraConfiguration.ConfigurationUpdated += (s, e) => { OnConfigurationUpdated((InaraConfiguration)s); };
+            InaraService.invalidAPIkey += (s, e) => { OnInvalidAPIkey((InaraConfiguration)s); };
             inputTimer.Elapsed += InputTimer_Elapsed;
 
             DataContext = this;
@@ -38,14 +38,13 @@ namespace EddiInaraResponder
 
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraApiKeyTextBox.Text = inaraConfiguration.apiKey;
-            SetAPIKeyValidity(inaraConfiguration.isAPIkeyValid);
         }
 
         private void InaraApiKeyChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
-                if (textBox.IsLoaded && textBox.Name == "inaraApiKeyTextBox")
+                if (textBox.Name == "inaraApiKeyTextBox")
                 {
                     SetAPIKeyValidity(true);
                     inputTimer.Stop();
@@ -54,7 +53,7 @@ namespace EddiInaraResponder
             }
         }
 
-        private void InputTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void InputTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             inputTimer.Stop();
             UpdateConfiguration();
@@ -70,11 +69,11 @@ namespace EddiInaraResponder
             // Update the changed API key in our configuration
             inaraConfiguration.apiKey = apiKey;
 
-            // Save and reload
+            // Save the updated configuration
             inaraConfiguration.ToFile();
         }
 
-        private void OnConfigurationUpdated(InaraConfiguration inaraConfiguration)
+        private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)
         {
             Dispatcher.Invoke(() =>
             {
@@ -122,7 +121,8 @@ namespace EddiInaraResponder
 
         // Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }

@@ -6,13 +6,13 @@ namespace EddiInaraService
 {
     public class InaraAPIEvent
     {
-        public string eventName { get; set; }
+        public string eventName { get; private set; }
 
         public string eventTimestamp => eventTimeStamp.ToString("s") + "Z";
 
-        public object eventData { get; set; }
+        public object eventData { get; private set; }
 
-        public int? eventCustomID { get; set; } // Optional index
+        public int? eventCustomID { get; set; } // Optional index. May be set while processing.
 
         // Helper properties
 
