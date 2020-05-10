@@ -236,4 +236,6 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDIが異常終了した際に編集中だったスクリプトを復元しました。再開しますか？</value>
   </data>
+  
+  
 </root>
