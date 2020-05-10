@@ -12,6 +12,17 @@
         WindowStyle="ToolWindow"
         Height="200" Width="300"
         >
+    <Window.Resources>
+        <Style x:Key="textBoxWithValidationToolTip" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" 
+                            />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -24,13 +35,35 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Name="PersonalityNameField" Text="{Binding Path=PersonalityName, Mode=TwoWay}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=PersonalityDescription, Mode=TwoWay}"/>
+            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}" />
+            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" 
+                     Name="PersonalityNameField" 
+                     Style="{StaticResource textBoxWithValidationToolTip}">
+                <TextBox.Text>
+                    <Binding Path="PersonalityName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}" />
+            <TextBox Margin="10" Grid.Row="1" Grid.Column="1">
+                <TextBox.Text>
+                    <Binding Path="PersonalityDescription" Mode="TwoWay" />
+                </TextBox.Text>
+            </TextBox>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
-                <Button x:Name="acceptButton" IsDefault="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10" IsEnabled="{Binding Path=AbleToAccept}"/>
-                <Button x:Name="cancelButton" IsCancel="True" FontSize="18" Content="{x:Static resx:SpeechResponder.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
+                <Button x:Name="acceptButton" IsDefault="True" FontSize="18" 
+                        Content="{x:Static resx:SpeechResponder.button_ok}" 
+                        VerticalAlignment="Top" 
+                        Click="acceptButtonClick" 
+                        Margin="10"/>
+                <Button x:Name="cancelButton" IsCancel="True" FontSize="18" 
+                        Content="{x:Static resx:SpeechResponder.button_cancel}" 
+                        VerticalAlignment="Top" 
+                        Click="cancelButtonClick" 
+                        Margin="10"/>
             </UniformGrid>
         </Grid>
     </DockPanel>
