@@ -236,4 +236,10 @@
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDIが異常終了した際に編集中だったスクリプトを復元しました。再開しますか？</value>
   </data>
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>名前を入力してください。</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>その名前はすでに使用されています。他の名前を入力してください。</value>
+  </data>
 </root>
