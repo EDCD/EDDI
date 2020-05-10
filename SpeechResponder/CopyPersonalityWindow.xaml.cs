@@ -31,7 +31,7 @@ namespace EddiSpeechResponder
             get => personalityDescription;
             set
             {
-                personalityDescription = value; 
+                personalityDescription = value;
                 OnPropertyChanged(PersonalityDescription);
             }
         }

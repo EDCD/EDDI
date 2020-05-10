@@ -17,8 +17,8 @@
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                        Path=(Validation.Errors)/ErrorContent}"/>
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}" 
+                            />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -56,7 +56,8 @@
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
                 <Button x:Name="acceptButton" IsDefault="True" FontSize="18" 
                         Content="{x:Static resx:SpeechResponder.button_ok}" 
-                        VerticalAlignment="Top" Click="acceptButtonClick" 
+                        VerticalAlignment="Top" 
+                        Click="acceptButtonClick" 
                         Margin="10"/>
                 <Button x:Name="cancelButton" IsCancel="True" FontSize="18" 
                         Content="{x:Static resx:SpeechResponder.button_cancel}" 
