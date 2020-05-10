@@ -73,14 +73,11 @@ namespace EddiSpeechResponder
         }
 
 #region DataErrorInfo
-        // C#'s lack of string-based enums is annoying here. We have to resort to string literals, which are vulnerable to typos.
         public string Error
         {
             get
             {
-                string result = this["PersonalityName"];
-                if (!string.IsNullOrEmpty(result)) { return result; }
-
+                string result = this[nameof(PersonalityName)];
                 return result;
             }
         }
@@ -91,7 +88,7 @@ namespace EddiSpeechResponder
             {
                 switch (fieldName)
                 {
-                    case "PersonalityName":
+                    case nameof(PersonalityName):
                         return ValidatePersonalityName();
 
                     default:
