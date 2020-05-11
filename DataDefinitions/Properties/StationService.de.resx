@@ -238,11 +238,11 @@
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
-    <value>Trägerverwaltung</value>
+    <value>Carrier-Verwaltung</value>
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
-    <value>Flottenträgerverkäufer</value>
+    <value>Carrier-Verkäufer</value>
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
