@@ -97,7 +97,7 @@ namespace EddiEdsmResponder
             IEdsmService edsmService = new StarMapService();
             await Task.Factory.StartNew(() => obtainEdsmLogs(edsmService, progress), TaskCreationOptions.LongRunning);
 
-            starMapConfiguration.lastSync = DateTime.UtcNow;
+            starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
             starMapConfiguration.ToFile();
         }
 
