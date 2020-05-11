@@ -506,7 +506,7 @@ namespace EddiStatusMonitor
             {
                 jumping = true;
             }
-            EDDI.Instance.enqueueEvent(new ShipFsdEvent(DateTime.UtcNow, "charging complete") { raw = @event.raw, fromLoad = @event.fromLoad });
+            EDDI.Instance.enqueueEvent(new ShipFsdEvent(DateTime.UtcNow, "charging complete") { fromLoad = @event.fromLoad });
         }
 
         public void PostHandle(Event @event)
