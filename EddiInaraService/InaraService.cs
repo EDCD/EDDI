@@ -24,16 +24,16 @@ namespace EddiInaraService
         // Variables
         private static bool tooManyRequests;
         public static bool bgSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
-        private static readonly ConcurrentQueue<InaraAPIEvent> queuedAPIEvents = new ConcurrentQueue<InaraAPIEvent>();
+        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
         private static readonly List<string> invalidAPIEvents = new List<string>();
         public static EventHandler invalidAPIkey;
 
         public void Start(bool eddiIsBeta = false)
         {
             if (!bgSyncRunning)
-            {              
+            {
                 Logging.Debug("Starting Inara service background sync.");
-                Task.Run(() => BackgroundSync(eddiIsBeta));
+                Task.Run(() => BackgroundSync(eddiIsBeta)).ConfigureAwait(false);
             }
         }
 
@@ -54,12 +54,9 @@ namespace EddiInaraService
             bgSyncRunning = true;
             while (bgSyncRunning)
             {
-                if (queuedAPIEvents.Count > 0)
-                {
-                    await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta)).ConfigureAwait(false);
-                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds).ConfigureAwait(false);
-                    tooManyRequests = false;
-                }
+                await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta)).ConfigureAwait(false);
+                await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds).ConfigureAwait(false);
+                tooManyRequests = false;
             }
         }
 
@@ -240,12 +237,15 @@ namespace EddiInaraService
         public void SendQueuedAPIEvents(bool eddiIsBeta)
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
-            while (queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
+            // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+            // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+            foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable())
             {
                 queue.Add(pendingEvent);
+                if (queue.Count > 0 && queuedAPIEvents.Count == 0) { break; }
             }
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            if (queue.Count > 0 && checkAPIcredentialsOk(inaraConfiguration))
+            if (checkAPIcredentialsOk(inaraConfiguration))
             {
                 var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
                 if (responses != null && responses.Count > 0)
@@ -263,7 +263,7 @@ namespace EddiInaraService
                 Logging.Error("Cannot enqueue 'get' Inara API events as these require an immediate response. Send these directly.");
                 return;
             }
-            queuedAPIEvents.Enqueue(inaraAPIEvent);
+            queuedAPIEvents.Add(inaraAPIEvent);
         }
 
         private void ReEnqueueAPIEvents(IEnumerable<InaraAPIEvent> inaraAPIEvents)
