@@ -40,7 +40,7 @@ namespace EddiStarMapService
         private string commanderName { get; set; }
         private string apiKey { get; set; }
         private readonly IEdsmRestClient restClient;
-        private static readonly ConcurrentQueue<IDictionary<string, object>> queuedEvents = new ConcurrentQueue<IDictionary<string, object>>();
+        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
         public static bool bgJournalSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
         
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
@@ -104,7 +104,7 @@ namespace EddiStarMapService
             if (!bgJournalSyncRunning)
             {
                 Logging.Debug("Enabling EDSM Responder event sync.");
-                Task.Run(BackgroundJournalSync);
+                Task.Run(BackgroundJournalSync).ConfigureAwait(false);
             }
         }
 
@@ -125,18 +125,15 @@ namespace EddiStarMapService
             bgJournalSyncRunning = true;
             while (bgJournalSyncRunning)
             {
-                if (queuedEvents.Count > 0)
-                {
-                    await Task.Run(SendQueuedEvents).ConfigureAwait(false);
-                    await Task.Delay(syncIntervalMilliSeconds).ConfigureAwait(false);
-                }
+                await Task.Run(SendQueuedEvents).ConfigureAwait(false);
+                await Task.Delay(syncIntervalMilliSeconds).ConfigureAwait(false);
             }
         }
 
         public void EnqueueEvent(IDictionary<string, object> eventObject)
         {
             if (eventObject is null) { return; }
-            queuedEvents.Enqueue(eventObject);
+            queuedEvents.Add(eventObject);
         }
 
         private void ReEnqueueEvents(IEnumerable<IDictionary<string, object>> eventData)
@@ -144,14 +141,13 @@ namespace EddiStarMapService
             if (eventData is null) { return; }
             // Re-enqueue the data so we can send it again later (preserving order as best we can).
             var newQueue = eventData.ToList();
-            while (queuedEvents.Count > 0)
+            while (queuedEvents.TryTake(out var eventObject))
             {
-                queuedEvents.TryDequeue(out var eventObject);
                 newQueue.Add(eventObject);
             }
             foreach (var eventObject in newQueue)
             {
-                queuedEvents.Enqueue(eventObject);
+                queuedEvents.Add(eventObject);
             }
         }
 
@@ -159,14 +155,14 @@ namespace EddiStarMapService
         {
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             var queue = new List<IDictionary<string, object>>();
-            while (queuedEvents.TryDequeue(out var pendingEvent))
+            // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+            // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+            foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable())
             {
                 queue.Add(pendingEvent);
+                if (queue.Count > 0 && queuedEvents.Count == 0) { break; }
             }
-            if (queue.Count > 0)
-            {
-                SendEventBatch(queue, starMapConfiguration);
-            }
+            SendEventBatch(queue, starMapConfiguration);
         }
 
         private void SendEventBatch(List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration)
