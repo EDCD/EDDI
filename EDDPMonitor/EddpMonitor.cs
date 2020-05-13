@@ -233,8 +233,7 @@ namespace EddiEddpMonitor
 
                 if (EDDI.Instance.CurrentStarSystem != null)
                 {
-
-                    if (watch.MaxDistanceFromShip != null)
+                    if (watch.MaxDistanceFromShip != null && EDDI.Instance.CurrentStarSystem.x != null && EDDI.Instance.CurrentStarSystem.y != null && EDDI.Instance.CurrentStarSystem.z != null)
                     {
                         // Calculate the distance of the system from the ship
                         decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.CurrentStarSystem.x - x), 2)
@@ -245,13 +244,16 @@ namespace EddiEddpMonitor
                             continue;
                         }
                     }
+                }
 
-                    if (watch.MaxDistanceFromHome != null)
+                if (EDDI.Instance.HomeStarSystem != null)
+                {
+                    if (watch.MaxDistanceFromHome != null && EDDI.Instance.HomeStarSystem.x != null && EDDI.Instance.HomeStarSystem.y != null && EDDI.Instance.HomeStarSystem.z != null)
                     {
                         // Calculate the distance of the system from the home system
-                        decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.HomeStarSystem.x - x), 2)
-                                                     + Math.Pow((double)(EDDI.Instance.HomeStarSystem.y - y), 2)
-                                                     + Math.Pow((double)(EDDI.Instance.HomeStarSystem.z - z), 2));
+                        decimal distance = (decimal)Math.Sqrt(Math.Pow((double)((decimal)EDDI.Instance.HomeStarSystem.x - x), 2)
+                                                     + Math.Pow((double)((decimal)EDDI.Instance.HomeStarSystem.y - y), 2)
+                                                     + Math.Pow((double)((decimal)EDDI.Instance.HomeStarSystem.z - z), 2));
                         if (distance > watch.MaxDistanceFromHome)
                         {
                             continue;
