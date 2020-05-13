@@ -104,7 +104,7 @@ namespace EddiStarMapService
             if (!bgJournalSyncRunning)
             {
                 Logging.Debug("Enabling EDSM Responder event sync.");
-                Task.Run(BackgroundJournalSync).ConfigureAwait(false);
+                Task.Run(() => BackgroundJournalSync()).ConfigureAwait(false);
             }
         }
 
@@ -125,7 +125,7 @@ namespace EddiStarMapService
             bgJournalSyncRunning = true;
             while (bgJournalSyncRunning)
             {
-                await Task.Run(SendQueuedEvents).ConfigureAwait(false);
+                await Task.Run(() => SendQueuedEvents()).ConfigureAwait(false);
                 await Task.Delay(syncIntervalMilliSeconds).ConfigureAwait(false);
             }
         }
