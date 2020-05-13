@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LegalStatus {
@@ -79,11 +79,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hostile.
+        /// </summary>
+        public static string Hostile {
+            get {
+                return ResourceManager.GetString("Hostile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hunter.
         /// </summary>
         public static string Hunter {
             get {
                 return ResourceManager.GetString("Hunter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal cargo.
+        /// </summary>
+        public static string IllegalCargo {
+            get {
+                return ResourceManager.GetString("IllegalCargo", resourceCulture);
             }
         }
         
@@ -102,6 +120,24 @@ namespace EddiDataDefinitions.Properties {
         public static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passenger wanted.
+        /// </summary>
+        public static string PassengerWanted {
+            get {
+                return ResourceManager.GetString("PassengerWanted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speeding.
+        /// </summary>
+        public static string Speeding {
+            get {
+                return ResourceManager.GetString("Speeding", resourceCulture);
             }
         }
         

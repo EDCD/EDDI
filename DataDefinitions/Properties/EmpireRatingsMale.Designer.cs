@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EmpireRatingsMale {
@@ -57,6 +57,141 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baron.
+        /// </summary>
+        public static string Baron {
+            get {
+                return ResourceManager.GetString("Baron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count.
+        /// </summary>
+        public static string Count {
+            get {
+                return ResourceManager.GetString("Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duke.
+        /// </summary>
+        public static string Duke {
+            get {
+                return ResourceManager.GetString("Duke", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Earl.
+        /// </summary>
+        public static string Earl {
+            get {
+                return ResourceManager.GetString("Earl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to King.
+        /// </summary>
+        public static string King {
+            get {
+                return ResourceManager.GetString("King", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Knight.
+        /// </summary>
+        public static string Knight {
+            get {
+                return ResourceManager.GetString("Knight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lord.
+        /// </summary>
+        public static string Lord {
+            get {
+                return ResourceManager.GetString("Lord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marquis.
+        /// </summary>
+        public static string Marquis {
+            get {
+                return ResourceManager.GetString("Marquis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master.
+        /// </summary>
+        public static string Master {
+            get {
+                return ResourceManager.GetString("Master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outsider.
+        /// </summary>
+        public static string Outsider {
+            get {
+                return ResourceManager.GetString("Outsider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prince.
+        /// </summary>
+        public static string Prince {
+            get {
+                return ResourceManager.GetString("Prince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serf.
+        /// </summary>
+        public static string Serf {
+            get {
+                return ResourceManager.GetString("Serf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squire.
+        /// </summary>
+        public static string Squire {
+            get {
+                return ResourceManager.GetString("Squire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viscount.
+        /// </summary>
+        public static string Viscount {
+            get {
+                return ResourceManager.GetString("Viscount", resourceCulture);
             }
         }
     }

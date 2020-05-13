@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TradeRatings {
@@ -57,6 +57,87 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broker.
+        /// </summary>
+        public static string Broker {
+            get {
+                return ResourceManager.GetString("Broker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dealer.
+        /// </summary>
+        public static string Dealer {
+            get {
+                return ResourceManager.GetString("Dealer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite.
+        /// </summary>
+        public static string Elite {
+            get {
+                return ResourceManager.GetString("Elite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entrepreneur.
+        /// </summary>
+        public static string Entrepreneur {
+            get {
+                return ResourceManager.GetString("Entrepreneur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merchant.
+        /// </summary>
+        public static string Merchant {
+            get {
+                return ResourceManager.GetString("Merchant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mostly Penniless.
+        /// </summary>
+        public static string MostlyPenniless {
+            get {
+                return ResourceManager.GetString("MostlyPenniless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peddler.
+        /// </summary>
+        public static string Peddler {
+            get {
+                return ResourceManager.GetString("Peddler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penniless.
+        /// </summary>
+        public static string Penniless {
+            get {
+                return ResourceManager.GetString("Penniless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tycoon.
+        /// </summary>
+        public static string Tycoon {
+            get {
+                return ResourceManager.GetString("Tycoon", resourceCulture);
             }
         }
     }
