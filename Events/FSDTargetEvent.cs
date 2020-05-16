@@ -15,6 +15,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("system", "The name of the destination system");
             VARIABLES.Add("remainingjumpsinroute", "The remaining number of jumps in the current route");
+            VARIABLES.Add("starclass", "The primary star's class");
         }
 
         [JsonProperty("system")]
@@ -26,11 +27,15 @@ namespace EddiEvents
         [JsonProperty("remainingjumpsinroute")]
         public int remainingjumpsinroute { get; private set; }
 
-        public FSDTargetEvent(DateTime timestamp, string system, long systemAddress, int remainingjumpsinroute) : base(timestamp, NAME)
+        [JsonProperty("starclass")]
+        public string starclass { get; private set; }
+
+        public FSDTargetEvent(DateTime timestamp, string system, long systemAddress, int remainingjumpsinroute, string starclass) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
             this.remainingjumpsinroute = remainingjumpsinroute;
+            this.starclass = starclass;
         }
     }
 }

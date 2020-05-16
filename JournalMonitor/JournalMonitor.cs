@@ -315,7 +315,7 @@ namespace EddiJournalMonitor
                                     {
                                         // Target might be a ship, but if not then the string we provide is repopulated in ship.model so use it regardless
                                         Ship ship = ShipDefinitions.FromEDModel(target);
-                                        target = ship.model;
+                                        target = !string.IsNullOrEmpty(ship.model) ? ship.model : JsonParsing.getString(data, "Target_Localised");
                                     }
 
                                     string victimFaction = getFactionName(data, "VictimFaction");
@@ -3463,7 +3463,8 @@ namespace EddiJournalMonitor
                                     string systemName = JsonParsing.getString(data, "Name");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     int remainingJumpsInRoute = JsonParsing.getOptionalInt(data, "RemainingJumpsInRoute") ?? 0;
-                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress, remainingJumpsInRoute) { raw = line, fromLoad = fromLogLoad });
+                                    string starclass = JsonParsing.getString(data, "StarClass");
+                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress, remainingJumpsInRoute, starclass) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
