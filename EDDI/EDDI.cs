@@ -130,9 +130,6 @@ namespace Eddi
 
         public string vaVersion { get; set; }
 
-        // Information obtained from the companion app service
-        public DateTime ApiTimeStamp { get; private set; }
-
         // Information obtained from the configuration
         public StarSystem HomeStarSystem { get; private set; } = new StarSystem();
         public Station HomeStation { get; private set; }
@@ -1504,7 +1501,7 @@ namespace Eddi
                             // Update the current station commodities
                             allowMarketUpdate = false;
                             CurrentStation.commodities = quotes;
-                            CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
+                            CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(info.timestamp);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -1549,7 +1546,7 @@ namespace Eddi
                             // Update the current station outfitting
                             allowOutfittingUpdate = false;
                             CurrentStation.outfitting = modules;
-                            CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
+                            CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(info.timestamp);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -1594,7 +1591,7 @@ namespace Eddi
                             // Update the current station shipyard
                             allowShipyardUpdate = false;
                             CurrentStation.shipyard = ships;
-                            CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
+                            CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(info.timestamp);
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");
@@ -2289,14 +2286,11 @@ namespace Eddi
             {
                 try
                 {
-                    // Save a timestamp when the API refreshes, so that we can compare whether events are more or less recent
-                    ApiTimeStamp = DateTime.UtcNow;
-
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
                         // Update our commander object
-                        Cmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, ApiTimeStamp, JournalTimeStamp, out bool cmdrMatches);
+                        Cmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
 
                         // Stop if the commander returned from the profile does not match our expected commander name
                         if (!cmdrMatches) { return false; }
@@ -2623,14 +2617,11 @@ namespace Eddi
                             // If we're docked, the lastStation information is located within the lastSystem identified by the profile
                             if (profile.docked && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
-                                ApiTimeStamp = DateTime.UtcNow;
-                                long profileTime = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
-
                                 Logging.Debug("Fetching station profile");
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
 
                                 // Post an update event
-                                Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
+                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
                                 enqueueEvent(@event);
 
                                 // See if we need to update our current station
@@ -2640,14 +2631,27 @@ namespace Eddi
                                 {
                                     // We have the required station information
                                     Logging.Debug("Current station matches profile information; updating info");
-                                    CurrentStation.commodities = stationProfile.LastStation.commodities;
-                                    CurrentStation.economyShares = stationProfile.LastStation.economyShares;
-                                    CurrentStation.prohibited = stationProfile.LastStation.prohibited;
-                                    CurrentStation.commoditiesupdatedat = profileTime;
-                                    CurrentStation.outfitting = stationProfile.LastStation.outfitting;
-                                    CurrentStation.shipyard = stationProfile.LastStation.shipyard;
-                                    CurrentStation.updatedat = profileTime;
-
+                                    if (CurrentStation.commoditiesupdatedat < stationProfile.LastStation.commoditiesupdatedat)
+                                    {
+                                        CurrentStation.prohibited = stationProfile.LastStation.prohibited;
+                                        CurrentStation.economyShares = stationProfile.LastStation.economyShares;
+                                        CurrentStation.commodities = stationProfile.LastStation.commodities;
+                                        CurrentStation.commoditiesupdatedat = stationProfile.LastStation.commoditiesupdatedat;
+                                    }
+                                    if (CurrentStation.outfittingupdatedat < stationProfile.LastStation.outfittingupdatedat)
+                                    {
+                                        CurrentStation.outfitting = stationProfile.LastStation.outfitting;
+                                        CurrentStation.outfittingupdatedat = stationProfile.LastStation.outfittingupdatedat;
+                                    }
+                                    if (CurrentStation.shipyardupdatedat < stationProfile.LastStation.shipyardupdatedat)
+                                    {
+                                        CurrentStation.shipyard = stationProfile.LastStation.shipyard;
+                                        CurrentStation.shipyardupdatedat = stationProfile.LastStation.shipyardupdatedat;
+                                    }
+                                    if (CurrentStation.updatedat < Dates.fromDateTimeToSeconds(stationProfile.timestamp))
+                                    {
+                                        CurrentStation.updatedat = Dates.fromDateTimeToSeconds(stationProfile.timestamp);
+                                    }
                                     // Update the current station information in our backend DB
                                     Logging.Debug("Star system information updated from remote server; updating local copy");
                                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);

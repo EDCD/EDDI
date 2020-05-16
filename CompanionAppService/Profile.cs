@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 
 namespace EddiCompanionAppService
@@ -8,7 +9,10 @@ namespace EddiCompanionAppService
     /// </summary>
     public class Profile
     {
-        // The JSON object
+        /// <summary>The timestamp returned from the CAPI server</summary>
+        public DateTime timestamp { get; set; }
+
+        /// <summary>The JSON object</summary>
         public JObject json { get; set; }
 
         /// <summary>The commander</summary>

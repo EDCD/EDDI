@@ -371,7 +371,7 @@ namespace EddiCompanionAppService
 
             try
             {
-                string data = obtainProfile(ServerURL() + PROFILE_URL);
+                string data = obtainProfile(ServerURL() + PROFILE_URL, out DateTime timestamp);
 
                 if (data == null || data == "Profile unavailable")
                 {
@@ -386,7 +386,7 @@ namespace EddiCompanionAppService
                     else
                     {
                         // Looks like login worked; try again
-                        data = obtainProfile(ServerURL() + PROFILE_URL);
+                        data = obtainProfile(ServerURL() + PROFILE_URL, out timestamp);
 
                         if (data == null || data == "Profile unavailable")
 
@@ -402,7 +402,7 @@ namespace EddiCompanionAppService
                 try
                 {
                     JObject json = JObject.Parse(data);
-                    cachedProfile = ProfileFromJson(data);
+                    cachedProfile = ProfileFromJson(data, timestamp);
                 }
                 catch (JsonException ex)
                 {
@@ -430,7 +430,7 @@ namespace EddiCompanionAppService
             try
             {
                 Logging.Debug("Getting station market data");
-                string market = obtainProfile(ServerURL() + MARKET_URL);
+                string market = obtainProfile(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
                 market = "{\"lastStarport\":" + market + "}";
                 JObject marketJson = JObject.Parse(market);
                 string lastStarport = (string)marketJson["lastStarport"]["name"];
@@ -443,19 +443,20 @@ namespace EddiCompanionAppService
                     // Don't have a station so make one up
                     cachedProfile.LastStation = new Station { name = lastStarport, marketId = marketId };
                 }
-                cachedProfile.CurrentStarSystem.systemname = systemName;
+                if (cachedProfile.CurrentStarSystem != null) { cachedProfile.CurrentStarSystem.systemname = systemName; }
 
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
                     cachedProfile.LastStation.economyShares = EconomiesFromProfile(marketJson);
                     cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
+                    cachedProfile.LastStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp);
                 }
 
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
                 {
                     Logging.Debug("Getting station outfitting data");
-                    string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL);
+                    string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
                     outfitting = "{\"lastStarport\":" + outfitting + "}";
                     JObject outfittingJson = JObject.Parse(outfitting);
                     cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
@@ -465,7 +466,7 @@ namespace EddiCompanionAppService
                 {
                     Logging.Debug("Getting station shipyard data");
                     Thread.Sleep(5000);
-                    string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL);
+                    string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
                     shipyard = "{\"lastStarport\":" + shipyard + "}";
                     JObject shipyardJson = JObject.Parse(shipyard);
                     cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
@@ -485,7 +486,7 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-        private string obtainProfile(string url)
+        private string obtainProfile(string url, out DateTime timestamp)
         {
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
@@ -506,15 +507,18 @@ namespace EddiCompanionAppService
 
                     if (response.StatusCode == HttpStatusCode.Found)
                     {
+                        timestamp = DateTime.MinValue;
                         return null;
                     }
 
+                    timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
                     return getResponseData(response);
                 }
             }
             else
             {
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                timestamp = DateTime.MinValue;
                 return null;
             }
         }
@@ -541,17 +545,23 @@ namespace EddiCompanionAppService
          */
         private string getResponseData(HttpWebResponse response)
         {
+            if (response is null) { return null; }
             // Obtain and parse our response
             var encoding = response.CharacterSet == ""
                     ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet);
+                    : Encoding.GetEncoding(response.CharacterSet ?? string.Empty);
 
             Logging.Debug("Reading response");
             using (var stream = response.GetResponseStream())
             {
+                if (stream == null) 
+                {
+                    Logging.Warn("No response stream");
+                    return null; 
+                }
                 var reader = new StreamReader(stream, encoding);
                 string data = reader.ReadToEnd();
-                if (data == null || data.Trim() == "")
+                if (string.IsNullOrEmpty(data) || data.Trim() == "")
                 {
                     Logging.Warn("No data returned");
                     return null;
@@ -595,22 +605,23 @@ namespace EddiCompanionAppService
         }
 
         /// <summary>Create a  profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(string data)
+        public static Profile ProfileFromJson(string data, DateTime timestamp)
         {
             Profile profile = null;
-            if (data != null && data != "")
+            if (!string.IsNullOrEmpty(data))
             {
-                profile = ProfileFromJson(JObject.Parse(data));
+                profile = ProfileFromJson(JObject.Parse(data), timestamp);
             }
             return profile;
         }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(JObject json)
+        public static Profile ProfileFromJson(JObject json, DateTime timestamp)
         {
             Profile Profile = new Profile
             {
-                json = json
+                json = json,
+                timestamp = timestamp
             };
 
             if (json["commander"] != null)
@@ -672,8 +683,9 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                foreach (JProperty moduleJsonProperty in json["lastStarport"]["modules"])
+                foreach (var jToken in json["lastStarport"]["modules"])
                 {
+                    var moduleJsonProperty = (JProperty) jToken;
                     JObject moduleJson = (JObject)moduleJsonProperty.Value;
                     // Not interested in paintjobs, decals, ...
                     string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
@@ -753,8 +765,9 @@ namespace EddiCompanionAppService
             List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
-                foreach (JObject commodityJSON in json["lastStarport"]["commodities"])
+                foreach (var jToken in json["lastStarport"]["commodities"])
                 {
+                    var commodityJSON = (JObject) jToken;
                     CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(commodityJSON);
                     if (quote != null)
                     {
@@ -784,10 +797,14 @@ namespace EddiCompanionAppService
 
                 // unavailable_list is a JArray containing JObjects
                 JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
-                foreach (JObject shipJson in unavailableList)
+                if (unavailableList != null)
                 {
-                    Ship Ship = ShipyardShipFromProfile(shipJson);
-                    Ships.Add(Ship);
+                    foreach (var jToken in unavailableList)
+                    {
+                        var shipJson = (JObject) jToken;
+                        Ship Ship = ShipyardShipFromProfile(shipJson);
+                        Ships.Add(Ship);
+                    }
                 }
             }
 
