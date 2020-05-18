@@ -67,6 +67,11 @@ namespace Utilities
         {
             {1, 4.00M}, {2, 6.00M}, {3, 7.75M}, {4, 9.25M}, {5, 10.50M}
         };
+
+        // Fleet Carrier Constants
+        public const int carrierPreJumpSeconds = 900; // 15 minutes (900s) to spool up before jumping
+        public const int carrierPostJumpSeconds = 300; // 5 minutes (300s) cool down
+        public const int carrierLandingPadLockdownSeconds = 200; // Landing pads are locked down 200 seconds prior to jumping
     }
 
     public class ConstantConverters

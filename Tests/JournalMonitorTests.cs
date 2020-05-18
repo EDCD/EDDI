@@ -1227,5 +1227,44 @@ namespace UnitTests
             EngineerProgressedEvent rankEvent2 = (EngineerProgressedEvent)events[0];
             Assert.AreEqual(2, rankEvent2.Engineer?.rank);
         }
+
+        [TestMethod]
+        public void TestCarrierJumpedEvent()
+        {
+            string line = "{\"timestamp\":\"2020-05-17T14:07:24Z\",\"event\":\"CarrierJump\",\"Docked\":true,\"StationName\":\"G53-K3Q\",\"StationType\":\"FleetCarrier\",\"MarketID\":3700571136,\"StationFaction\":{\"Name\":\"FleetCarrier\"},\"StationGovernment\":\"$government_Carrier;\",\"StationGovernment_Localised\":\"Private Ownership \",\"StationServices\":[\"dock\",\"autodock\",\"blackmarket\",\"commodities\",\"contacts\",\"exploration\",\"crewlounge\",\"rearm\",\"refuel\",\"repair\",\"engineer\",\"flightcontroller\",\"stationoperations\",\"stationMenu\",\"carriermanagement\",\"carrierfuel\",\"voucherredemption\"],\"StationEconomy\":\"$economy_Carrier;\",\"StationEconomy_Localised\":\"Private Enterprise\",\"StationEconomies\":[{\"Name\":\"$economy_Carrier;\",\"Name_Localised\":\"Private Enterprise\",\"Proportion\":1}],\"StarSystem\":\"Aparctias\",\"SystemAddress\":358797513434,\"StarPos\":[25.1875,-56.375,22.90625],\"SystemAllegiance\":\"Independent\",\"SystemEconomy\":\"$economy_Colony;\",\"SystemEconomy_Localised\":\"Colony\",\"SystemSecondEconomy\":\"$economy_Refinery;\",\"SystemSecondEconomy_Localised\":\"Refinery\",\"SystemGovernment\":\"$government_Dictatorship;\",\"SystemGovernment_Localised\":\"Dictatorship\",\"SystemSecurity\":\"$SYSTEM_SECURITY_medium;\",\"SystemSecurity_Localised\":\"Medium Security\",\"Population\":80000,\"Body\":\"Aparctias\",\"BodyID\":0,\"BodyType\":\"Star\",\"Powers\":[\"Yuri Grom\"],\"PowerplayState\":\"Exploited\",\"Factions\":[{\"Name\":\"Union of Aparctias Future\",\"FactionState\":\"None\",\"Government\":\"Democracy\",\"Influence\":0.062,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0},{\"Name\":\"Monarchy of Aparctias\",\"FactionState\":\"None\",\"Government\":\"Feudal\",\"Influence\":0.035,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0},{\"Name\":\"Aparctias Purple Council\",\"FactionState\":\"Boom\",\"Government\":\"Anarchy\",\"Influence\":0.049,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"ActiveStates\":[{\"State\":\"Boom\"}]},{\"Name\":\"Beta-3 Tucani Silver Allied Net\",\"FactionState\":\"None\",\"Government\":\"Corporate\",\"Influence\":0.096,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0.32538},{\"Name\":\"Falcons' Nest\",\"FactionState\":\"None\",\"Government\":\"Confederacy\",\"Influence\":0.078,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"RecoveringStates\":[{\"State\":\"NaturalDisaster\",\"Trend\":0}]},{\"Name\":\"EG Union\",\"FactionState\":\"War\",\"Government\":\"Dictatorship\",\"Influence\":0.34,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"ActiveStates\":[{\"State\":\"Boom\"},{\"State\":\"War\"}]},{\"Name\":\"Paladin Consortium\",\"FactionState\":\"War\",\"Government\":\"Democracy\",\"Influence\":0.34,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"PendingStates\":[{\"State\":\"Boom\",\"Trend\":0},{\"State\":\"CivilLiberty\",\"Trend\":0}],\"ActiveStates\":[{\"State\":\"War\"}]}],\"SystemFaction\":{\"Name\":\"EG Union\",\"FactionState\":\"War\"},\"Conflicts\":[{\"WarType\":\"war\",\"Status\":\"active\",\"Faction1\":{\"Name\":\"EG Union\",\"Stake\":\"Hancock Refinery\",\"WonDays\":1},\"Faction2\":{\"Name\":\"Paladin Consortium\",\"Stake\":\"\",\"WonDays\":0}}]}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            CarrierJumpedEvent @event = (CarrierJumpedEvent)events[0];
+            Assert.IsTrue(@event.docked);
+            Assert.AreEqual("G53-K3Q", @event.carriername);
+            Assert.AreEqual("Fleet Carrier", @event.carrierType.invariantName);
+            Assert.AreEqual(3700571136, @event.carrierId);
+            Assert.AreEqual("FleetCarrier", @event.carrierFaction.name);
+            Assert.AreEqual("Private Ownership", @event.carrierFaction.Government.invariantName);
+            Assert.AreEqual(17, @event.carrierServices.Count);
+            Assert.AreEqual(1, @event.carrierEconomies.Count);
+            Assert.AreEqual("Private Enterprise", @event.carrierEconomies[0].economy.invariantName);
+            Assert.AreEqual("Aparctias", @event.systemname);
+			Assert.AreEqual(358797513434, @event.systemAddress);
+            Assert.AreEqual(25.1875M, @event.x);
+            Assert.AreEqual(-56.375M, @event.y);
+	        Assert.AreEqual(22.90625M, @event.z);
+            Assert.AreEqual("Independent", @event.controllingsystemfaction.Allegiance.invariantName);
+            Assert.AreEqual("Colony", @event.systemEconomy.invariantName);
+            Assert.AreEqual("Refinery", @event.systemEconomy2.invariantName);
+            Assert.AreEqual("Dictatorship", @event.controllingsystemfaction.Government.invariantName);
+            Assert.AreEqual("Medium", @event.securityLevel.invariantName);
+            Assert.AreEqual(80000, @event.population);
+            Assert.AreEqual("Aparctias", @event.bodyname);
+            Assert.AreEqual(0, @event.bodyId);
+            Assert.AreEqual("Star", @event.bodyType.invariantName);
+            Assert.AreEqual("Yuri Grom", @event.Power.invariantName);
+            Assert.AreEqual("Exploited", @event.powerState.invariantName);
+            Assert.AreEqual(7, @event.factions.Count);
+            Assert.AreEqual("EG Union", @event.controllingsystemfaction.name);
+            Assert.AreEqual("War", @event.controllingsystemfaction.presences.FirstOrDefault(p => p.systemName == "Aparctias")?.FactionState.invariantName);
+            Assert.AreEqual(1, @event.conflicts.Count);
+            Assert.AreEqual("EG Union", @event.conflicts[0].faction1);
+            Assert.AreEqual("Paladin Consortium", @event.conflicts[0].faction2);
+        }
     }
 }

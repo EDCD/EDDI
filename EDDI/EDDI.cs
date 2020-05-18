@@ -916,6 +916,18 @@ namespace Eddi
                     {
                         passEvent = eventPowerVoucherReceived((PowerVoucherReceivedEvent)@event);
                     }
+                    else if (@event is CarrierJumpEngagedEvent)
+                    {
+                        passEvent = eventCarrierJumpEngaged((CarrierJumpEngagedEvent)@event);
+                    }
+                    else if (@event is CarrierJumpedEvent)
+                    {
+                        passEvent = eventCarrierJumped((CarrierJumpedEvent)@event);
+                    }
+                    else if (@event is CarrierPadsLockedEvent)
+                    {
+                        passEvent = eventCarrierPadsLocked((CarrierPadsLockedEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -940,7 +952,177 @@ namespace Eddi
                 }
             }
         }
-        
+
+        private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event) 
+        {
+            // Only update our information if we are still docked at the carrier
+            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
+            {
+                // Keep track of our environment
+                Environment = Constants.ENVIRONMENT_WITCH_SPACE;
+
+                // We are in the ship
+                Vehicle = Constants.VEHICLE_SHIP;
+
+                // Remove information about the current stellar body 
+                CurrentStellarBody = null;
+
+                // Set the destination system as the current star system
+                updateCurrentSystem(@event.systemname);
+
+                // (When jumping near a body) Set the destination body as the current stellar body
+                if (@event.bodyname != null)
+                {
+                    updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
+                    CurrentStellarBody.bodyId = @event.bodyId;
+                }
+            }
+            return true;
+        }
+
+        private bool eventCarrierPadsLocked(CarrierPadsLockedEvent @event) 
+        {
+            // Only trigger this event when we are still at the carrier
+            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool eventCarrierJumped(CarrierJumpedEvent @event) 
+        {
+            if (@event.docked)
+            {
+                Logging.Info("Carrier jumped to: " + @event.systemname);
+
+                // We are docked and in the ship
+                Environment = Constants.ENVIRONMENT_DOCKED;
+                Vehicle = Constants.VEHICLE_SHIP;
+
+                // Remove the carrier from its prior location (of any) so that we can re-save it with a new location
+                // If we haven't already updated our current star system, the carrier should be in `CurrentStarSystem`. If we have, it should be in `LastStarSystem`.
+                if (CurrentStation.marketId == @event.carrierId || CurrentStation.name == @event.carriername)
+                {
+                    CurrentStarSystem.stations.Remove(CurrentStation);
+                }
+                else
+                {
+                    CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
+                    if (CurrentStation is null)
+                    {
+                        CurrentStation = LastStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
+                        if (CurrentStation != null)
+                        {
+                            LastStarSystem.stations.Remove(CurrentStation);
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(LastStarSystem);
+                        }
+                    }
+                }
+                if (CurrentStation == null)
+                {
+                    // This carrier is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder.
+                    CurrentStation = new Station()
+                    {
+                        name = @event.carriername,
+                        marketId = @event.carrierId,
+                    };
+                }
+
+                // Update current station properties
+                CurrentStation.systemname = @event.systemname;
+                CurrentStation.systemAddress = @event.systemAddress;
+                CurrentStation.Faction = @event.carrierFaction;
+                CurrentStation.LargestPad = LandingPadSize.Large; // Carriers always include large pads
+                CurrentStation.Model = @event.carrierType;
+                CurrentStation.economyShares = @event.carrierEconomies;
+                CurrentStation.stationServices = @event.carrierServices;
+
+                // Update our current star system and carrier location
+                updateCurrentSystem(@event.systemname);
+                CurrentStarSystem.systemAddress = @event.systemAddress;
+                CurrentStarSystem.x = @event.x;
+                CurrentStarSystem.y = @event.y;
+                CurrentStarSystem.z = @event.z;
+                CurrentStarSystem.stations.Add(CurrentStation);
+
+                // Update the mutable system data from the journal
+                if (@event.population != null)
+                {
+                    CurrentStarSystem.population = @event.population;
+                    CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
+                    CurrentStarSystem.securityLevel = @event.securityLevel;
+                    CurrentStarSystem.Faction = @event.controllingsystemfaction;
+                }
+
+                // Update system faction data if available
+                if (@event.factions != null)
+                {
+                    CurrentStarSystem.factions = @event.factions;
+
+                    // Update station controlling faction data
+                    foreach (Station station in CurrentStarSystem.stations)
+                    {
+                        Faction stationFaction = @event.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                        if (stationFaction != null)
+                        {
+                            station.Faction = stationFaction;
+                        }
+                    }
+
+                    // Check if current system is inhabited by or HQ for squadron faction
+                    Faction squadronFaction = @event.factions.FirstOrDefault(f =>
+                    {
+                        var squadronhomesystem = f.presences.
+                            FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem;
+                        return squadronhomesystem != null && ((bool)squadronhomesystem || f.squadronfaction);
+                    });
+                    if (squadronFaction != null)
+                    {
+                        updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
+                    }
+                }
+
+                // (When near a body) Update the body
+                if (@event.bodyname != null)
+                {
+                    updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
+                    CurrentStellarBody.bodyId = @event.bodyId;
+                    CurrentStellarBody.bodyType = @event.bodyType;
+                }
+
+                // (When pledged) Powerplay information
+                CurrentStarSystem.Power = @event.Power ?? CurrentStarSystem.Power;
+                CurrentStarSystem.powerState = @event.powerState ?? CurrentStarSystem.powerState;
+
+                // Kick off the profile refresh if the companion API is available
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                {
+                    // Refresh station data
+                    if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
+                    profileUpdateNeeded = true;
+                    profileStationRequired = CurrentStation.name;
+                    Thread updateThread = new Thread(() =>
+                    {
+                        Thread.Sleep(5000);
+                        conditionallyRefreshProfile();
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    updateThread.Start();
+                }
+            }
+            else
+            {
+                // We shouldn't be here - `the CarrierJump` event is only supposed to be written when docked with a fleet carrier as it jumps.
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                Logging.Error("Whoops! CarrierJump event recorded when not docked.", @event);
+                throw new NotImplementedException();
+            }
+            return true;
+        }
+
         private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
         {
             Cmdr.Power = @event.Power;

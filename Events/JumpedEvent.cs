@@ -44,7 +44,6 @@ namespace EddiEvents
 
         public decimal z { get; private set; }
 
-        /// <summary> Documented by the journal, but apparently never written. We can't rely on this being set. </summary>
         public string star { get; private set; }
 
         public decimal distance { get; private set; }
@@ -74,7 +73,7 @@ namespace EddiEvents
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // Powerplay properties (only when pledged)
-        string power => Power.localizedName;
+        public string power => Power.localizedName;
         public string powerstate => powerState.localizedName;
 
         // These properties are not intended to be user facing
