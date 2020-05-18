@@ -151,6 +151,18 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {ExplorationRatingDetails("Surveyor").rank} times.
 
+### F()
+
+This function is used inside a script to invoke another script.
+
+F() takes a single parameter that is the name of the script to invoke.
+
+One example of its use is in the script for the event `Trade Promotion`:
+
+    You have been recognised for your trading ability, {F("Honorific")}.
+
+Here the call to script `Honorific` will generate the right title for the player, according to their allegiance.
+
 ### FactionDetails()
 
 This function will provide full information for a minor faction given its name.
