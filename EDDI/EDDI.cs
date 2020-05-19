@@ -958,17 +958,20 @@ namespace Eddi
             // Only update our information if we are still docked at the carrier
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
             {
-                // Keep track of our environment
+                // We are in witch space and in the ship.
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
-
-                // We are in the ship
                 Vehicle = Constants.VEHICLE_SHIP;
 
-                // Remove information about the current stellar body 
-                CurrentStellarBody = null;
+                // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
+                CurrentStarSystem.stations.Remove(CurrentStation);
+                CurrentStation.systemname = @event.systemname;
+                CurrentStation.systemAddress = @event.systemAddress;
 
                 // Set the destination system as the current star system
                 updateCurrentSystem(@event.systemname);
+
+                // Add the carrier to the destination system
+                CurrentStarSystem.stations.Add(CurrentStation);
 
                 // (When jumping near a body) Set the destination body as the current stellar body
                 if (@event.bodyname != null)
@@ -1022,14 +1025,12 @@ namespace Eddi
                 if (CurrentStation == null)
                 {
                     // This carrier is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder.
-                    CurrentStation = new Station()
-                    {
-                        name = @event.carriername,
-                        marketId = @event.carrierId,
-                    };
+                    CurrentStation = new Station();
                 }
 
                 // Update current station properties
+                CurrentStation.name = @event.carriername;
+                CurrentStation.marketId = @event.carrierId;
                 CurrentStation.systemname = @event.systemname;
                 CurrentStation.systemAddress = @event.systemAddress;
                 CurrentStation.Faction = @event.carrierFaction;
@@ -1040,10 +1041,14 @@ namespace Eddi
 
                 // Update our current star system and carrier location
                 updateCurrentSystem(@event.systemname);
+
+                // Update our system properties
                 CurrentStarSystem.systemAddress = @event.systemAddress;
                 CurrentStarSystem.x = @event.x;
                 CurrentStarSystem.y = @event.y;
                 CurrentStarSystem.z = @event.z;
+
+                // Add our carrier to the new current star system
                 CurrentStarSystem.stations.Add(CurrentStation);
 
                 // Update the mutable system data from the journal
@@ -1084,7 +1089,7 @@ namespace Eddi
                 }
 
                 // (When near a body) Update the body
-                if (@event.bodyname != null)
+                if (@event.bodyname != null && CurrentStellarBody.bodyname != @event.bodyname)
                 {
                     updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
                     CurrentStellarBody.bodyId = @event.bodyId;
