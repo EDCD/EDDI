@@ -45,7 +45,12 @@ If your WIP branch has gotten so far behind `develop` that code and project file
 
 ## Coding conventions
 
-Please adhere to US spelling for all names in the source code, for consistency with the .NET framework and to simplify searching the code base, e.g. for all variables whose name contains "color".
+  * Please adhere to US spelling for all names in the source code, for consistency with the .NET framework and to simplify searching the code base, e.g. for all variables whose name contains "color".
+  * Please always use braces around blocks following control statements such as `if`, `else`, `for` and `foreach`, etc. Rationale: the Apple "goto fail" bug.
+    * You can still write one-line guard statements such as:
+```cs
+if(gaurdFailed) {return;}
+```
 
 ## Version conventions
   * Please be aware that departing from the expected version string format may break the code that talks to the update server.
@@ -83,3 +88,14 @@ To regenerate the auto-generated parts of the Wiki:
 Building the release target will create in `bin\Installer` both the installer `EDDI-[version-number].exe` and a zip of the debug symbols called `PDBs.zip`. These debug symbols are required for symbolicating stack traces and crash dumps from users, and are tied using UUIDs to the *exact* build session that created the the executables. If they are lost, it is no good to rebuild them later from the same source code: the ones from the build session need to be uploaded to Github along with the installer.
 
 The update server is governed by `info.json` in https://github.com/EDCD/EDDP.git.
+
+## Ancillary services
+
+### CrowdIn
+We use CrowdIn for translation: https://crowdin.com/project/eddi and it governs all non-English RESX files. That is, we don't edit non-English RESX files locally and in the event of a merge conflict, CrowdIn wins.
+
+### AppVeyor
+We use AppVeyor for continuous integration: https://ci.appveyor.com/project/richardbuckle/eddi
+
+### CodeCov
+We use CodeCov for code coverage but this may change https://codecov.io/gh/EDCD/EDDI
