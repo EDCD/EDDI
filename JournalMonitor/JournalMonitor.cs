@@ -3850,16 +3850,21 @@ namespace EddiJournalMonitor
 
                                         // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
                                         // These may be cancelled via the cancellation token source above.
+
+                                        // Jumps seems to always be scheduled for 16 minutes after the request, minus the absolute value of the difference from 10 seconds after the minute
+                                        // (i.e. between 15 minutes and 15 minutes 50 seconds after the request)
+                                        int varSeconds = Math.Abs(10 - timestamp.Second);
+
                                         Task.Run(async () =>
                                         {
-                                            int timeMs = (Constants.carrierPreJumpSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
                                             await Task.Delay(timeMs);
                                             EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.AddMilliseconds(timeMs), carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
 
                                         Task.Run(async () =>
                                         {
-                                            int timeMs = (Constants.carrierPreJumpSeconds) * 1000;
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds) * 1000;
                                             await Task.Delay(timeMs);
                                             EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
