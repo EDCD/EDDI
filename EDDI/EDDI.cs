@@ -1487,10 +1487,12 @@ namespace Eddi
                     Environment = Constants.ENVIRONMENT_DOCKED;
                     Vehicle = Constants.VEHICLE_SHIP;
 
-                    // Our data source may not include the market id or system address
+                    // Update station properties known from this event
                     station.marketId = theEvent.marketId;
                     station.systemAddress = theEvent.systemAddress;
                     station.Faction = theEvent.controllingstationfaction;
+                    station.Model = theEvent.stationModel;
+                    station.distancefromstar = theEvent.distancefromstar;
 
                     // Kick off the profile refresh if the companion API is available
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
