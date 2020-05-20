@@ -956,19 +956,33 @@ namespace Eddi
         private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event) 
         {
             // Only update our information if we are still docked at the carrier
-            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
+            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
             {
                 // We are in witch space and in the ship.
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
                 Vehicle = Constants.VEHICLE_SHIP;
 
+                // Make sure we have at least basic information about the destination star system
+                if (NextStarSystem is null)
+                {
+                    NextStarSystem = new StarSystem()
+                    {
+                        systemname = @event.systemname,
+                        systemAddress = @event.systemAddress
+                    };
+                }
+
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                CurrentStarSystem.stations.Remove(CurrentStation);
-                CurrentStation.systemname = @event.systemname;
-                CurrentStation.systemAddress = @event.systemAddress;
+                CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
 
                 // Set the destination system as the current star system
                 updateCurrentSystem(@event.systemname);
+
+                // Update our station information
+                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId) ?? new Station();
+                CurrentStation.marketId = @event.carrierId;
+                CurrentStation.systemname = @event.systemname;
+                CurrentStation.systemAddress = @event.systemAddress;
 
                 // Add the carrier to the destination system
                 CurrentStarSystem.stations.Add(CurrentStation);
@@ -1005,9 +1019,9 @@ namespace Eddi
 
                 // Remove the carrier from its prior location (of any) so that we can re-save it with a new location
                 // If we haven't already updated our current star system, the carrier should be in `CurrentStarSystem`. If we have, it should be in `LastStarSystem`.
-                if (CurrentStation.marketId == @event.carrierId || CurrentStation.name == @event.carriername)
+                if (CurrentStation?.marketId == @event.carrierId || CurrentStation?.name == @event.carriername)
                 {
-                    CurrentStarSystem.stations.Remove(CurrentStation);
+                    CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
                 }
                 else
                 {
@@ -1017,7 +1031,7 @@ namespace Eddi
                         CurrentStation = LastStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
                         if (CurrentStation != null)
                         {
-                            LastStarSystem.stations.Remove(CurrentStation);
+                            LastStarSystem.stations.RemoveAll(s => s.marketId == @event.carrierId);
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(LastStarSystem);
                         }
                     }
@@ -1089,7 +1103,7 @@ namespace Eddi
                 }
 
                 // (When near a body) Update the body
-                if (@event.bodyname != null && CurrentStellarBody.bodyname != @event.bodyname)
+                if (@event.bodyname != null && CurrentStellarBody?.bodyname != @event.bodyname)
                 {
                     updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
                     CurrentStellarBody.bodyId = @event.bodyId;
@@ -1099,6 +1113,11 @@ namespace Eddi
                 // (When pledged) Powerplay information
                 CurrentStarSystem.Power = @event.Power ?? CurrentStarSystem.Power;
                 CurrentStarSystem.powerState = @event.powerState ?? CurrentStarSystem.powerState;
+
+                // Update to most recent information
+                CurrentStarSystem.visitLog.Add(@event.timestamp);
+                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(@event.timestamp);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
