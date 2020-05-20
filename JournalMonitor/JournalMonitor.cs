@@ -3812,12 +3812,15 @@ namespace EddiJournalMonitor
                                     events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, systemfaction, factions, conflicts, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, docked, carrierName, carrierType, carrierId, stationFaction, stationServices, stationEconomies) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
-                                    Task.Run(async () => 
+                                    if (!fromLogLoad)
                                     {
-                                        int timeMs = Constants.carrierPostJumpSeconds * 1000;
-                                        await Task.Delay(timeMs);
-                                        EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType, carrierId) { fromLoad = fromLogLoad });
-                                    }).ConfigureAwait(false);
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = Constants.carrierPostJumpSeconds * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType, carrierId) { fromLoad = fromLogLoad });
+                                        }).ConfigureAwait(false);
+                                    }
                                 }
                                 handled = true;
                                 break;
@@ -3839,25 +3842,28 @@ namespace EddiJournalMonitor
                                         carrierJumpCancellationTS.Dispose();
                                     }
 
-                                    // Generate a new cancellation token source
-                                    carrierJumpCancellationTS = new CancellationTokenSource();
-                                    carrierJumpCancellationTokenSources.Add(carrierId, carrierJumpCancellationTS);
-
-                                    // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
-                                    // These may be cancelled via the cancellation token source above.
-                                    var test1 = Task.Run(async () =>
+                                    if (!fromLogLoad)
                                     {
-                                        int timeMs = (Constants.carrierPreJumpSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
-                                        await Task.Delay(timeMs);
-                                        EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.AddMilliseconds(timeMs), carrierId) { fromLoad = fromLogLoad });
-                                    }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+                                        // Generate a new cancellation token source
+                                        carrierJumpCancellationTS = new CancellationTokenSource();
+                                        carrierJumpCancellationTokenSources.Add(carrierId, carrierJumpCancellationTS);
 
-                                    var test2 = Task.Run(async () => 
-                                    {
-                                        int timeMs = (Constants.carrierPreJumpSeconds) * 1000;
-                                        await Task.Delay(timeMs);
-                                        EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
-                                    }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+                                        // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
+                                        // These may be cancelled via the cancellation token source above.
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = (Constants.carrierPreJumpSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.AddMilliseconds(timeMs), carrierId) { fromLoad = fromLogLoad });
+                                        }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = (Constants.carrierPreJumpSeconds) * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                        }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+                                    }
                                 }
                                 handled = true;
                                 break;
