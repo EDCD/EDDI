@@ -7,7 +7,7 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier jump engaged";
         public const string DESCRIPTION = "Triggered when your fleet carrier performs a jump";
-        public static CarrierJumpEngagedEvent SAMPLE = new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Aparctias", 0, 3700571136);
+        public static CarrierJumpEngagedEvent SAMPLE = new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136);
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -35,8 +35,10 @@ namespace EddiEvents
         public long? systemAddress { get; private set; }
         public long? bodyId { get; private set; }
         public long? carrierId { get; private set; }
+        public string originSystemName { get; private set; }
+        public long? originSystemAddress { get; private set; }
 
-        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, long systemAddress, string originSystemName, long? originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

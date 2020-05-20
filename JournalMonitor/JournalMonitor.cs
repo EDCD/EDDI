@@ -3866,7 +3866,9 @@ namespace EddiJournalMonitor
                                         {
                                             int timeMs = (Constants.carrierPreJumpSeconds - varSeconds) * 1000;
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                            string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+                                            long? originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+                                            EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
                                     }
                                 }
