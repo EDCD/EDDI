@@ -12,10 +12,6 @@ namespace EddiEvents
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static MarketInformationUpdatedEvent()
-        {
-        }
-
         public bool inHorizons { get; private set; }
 
         public string starSystem { get; private set; }
@@ -32,6 +28,8 @@ namespace EddiEvents
 
         public List<Ship> shipyard { get; private set; }
 
+        /// <summary>The timestamp recorded for this event must be generated from game or server data.
+        /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>
         public MarketInformationUpdatedEvent(DateTime timestamp, bool inHorizons, string starSystem, string stationName, long? marketId, List<CommodityMarketQuote> commodities, List<string> prohibitedCommodities, List<Module> outfitting, List<Ship> shipyard) : base(timestamp, NAME)
         {
             this.inHorizons = inHorizons;
