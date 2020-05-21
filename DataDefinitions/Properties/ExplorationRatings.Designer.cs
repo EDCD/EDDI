@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ExplorationRatings {
@@ -57,6 +57,87 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aimless.
+        /// </summary>
+        public static string Aimless {
+            get {
+                return ResourceManager.GetString("Aimless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite.
+        /// </summary>
+        public static string Elite {
+            get {
+                return ResourceManager.GetString("Elite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mostly Aimless.
+        /// </summary>
+        public static string MostlyAimless {
+            get {
+                return ResourceManager.GetString("MostlyAimless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pathfinder.
+        /// </summary>
+        public static string Pathfinder {
+            get {
+                return ResourceManager.GetString("Pathfinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pioneer.
+        /// </summary>
+        public static string Pioneer {
+            get {
+                return ResourceManager.GetString("Pioneer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranger.
+        /// </summary>
+        public static string Ranger {
+            get {
+                return ResourceManager.GetString("Ranger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scout.
+        /// </summary>
+        public static string Scout {
+            get {
+                return ResourceManager.GetString("Scout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surveyor.
+        /// </summary>
+        public static string Surveyor {
+            get {
+                return ResourceManager.GetString("Surveyor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trailblazer.
+        /// </summary>
+        public static string Trailblazer {
+            get {
+                return ResourceManager.GetString("Trailblazer", resourceCulture);
             }
         }
     }

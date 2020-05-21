@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class FederationRatings {
@@ -57,6 +57,141 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Admiral.
+        /// </summary>
+        public static string Admiral {
+            get {
+                return ResourceManager.GetString("Admiral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cadet.
+        /// </summary>
+        public static string Cadet {
+            get {
+                return ResourceManager.GetString("Cadet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chief Petty Officer.
+        /// </summary>
+        public static string ChiefPettyOfficer {
+            get {
+                return ResourceManager.GetString("ChiefPettyOfficer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ensign.
+        /// </summary>
+        public static string Ensign {
+            get {
+                return ResourceManager.GetString("Ensign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lieutenant.
+        /// </summary>
+        public static string Lieutenant {
+            get {
+                return ResourceManager.GetString("Lieutenant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lieutenant Commander.
+        /// </summary>
+        public static string LieutenantCommander {
+            get {
+                return ResourceManager.GetString("LieutenantCommander", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Midshipman.
+        /// </summary>
+        public static string Midshipman {
+            get {
+                return ResourceManager.GetString("Midshipman", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Petty Officer.
+        /// </summary>
+        public static string PettyOfficer {
+            get {
+                return ResourceManager.GetString("PettyOfficer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post Captain.
+        /// </summary>
+        public static string PostCaptain {
+            get {
+                return ResourceManager.GetString("PostCaptain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post Commander.
+        /// </summary>
+        public static string PostCommander {
+            get {
+                return ResourceManager.GetString("PostCommander", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rear Admiral.
+        /// </summary>
+        public static string RearAdmiral {
+            get {
+                return ResourceManager.GetString("RearAdmiral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recruit.
+        /// </summary>
+        public static string Recruit {
+            get {
+                return ResourceManager.GetString("Recruit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vice Admiral.
+        /// </summary>
+        public static string ViceAdmiral {
+            get {
+                return ResourceManager.GetString("ViceAdmiral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrant Officer.
+        /// </summary>
+        public static string WarrantOfficer {
+            get {
+                return ResourceManager.GetString("WarrantOfficer", resourceCulture);
             }
         }
     }

@@ -131,9 +131,9 @@ namespace Eddi
         public string vaVersion { get; set; }
 
         // Information obtained from the configuration
-        public StarSystem HomeStarSystem { get; private set; } = new StarSystem();
+        public StarSystem HomeStarSystem { get; private set; } // May be null when the commander hasn't set a home star system
         public Station HomeStation { get; private set; }
-        public StarSystem SquadronStarSystem { get; private set; } = new StarSystem();
+        public StarSystem SquadronStarSystem { get; private set; } // May be null when the commander hasn't set a squadron star system
 
         // Destination variables
         public StarSystem DestinationStarSystem { get; private set; }
@@ -2620,12 +2620,14 @@ namespace Eddi
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
+            if (HomeStarSystem is null) { return; }
             system.distancefromhome = getSystemDistance(system, HomeStarSystem);
             Logging.Debug("Distance from home is " + system.distancefromhome);
         }
 
         public void setSystemDistanceFromDestination(StarSystem system)
         {
+            if (DestinationStarSystem is null) { return; }
             DestinationDistanceLy = getSystemDistance(system, DestinationStarSystem);
             Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
         }

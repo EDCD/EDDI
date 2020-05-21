@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CQCRatings {
@@ -57,6 +57,87 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amateur.
+        /// </summary>
+        public static string Amateur {
+            get {
+                return ResourceManager.GetString("Amateur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champion.
+        /// </summary>
+        public static string Champion {
+            get {
+                return ResourceManager.GetString("Champion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite.
+        /// </summary>
+        public static string Elite {
+            get {
+                return ResourceManager.GetString("Elite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Helpless.
+        /// </summary>
+        public static string Helpless {
+            get {
+                return ResourceManager.GetString("Helpless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hero.
+        /// </summary>
+        public static string Hero {
+            get {
+                return ResourceManager.GetString("Hero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        public static string Legend {
+            get {
+                return ResourceManager.GetString("Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mostly Helpless.
+        /// </summary>
+        public static string MostlyHelpless {
+            get {
+                return ResourceManager.GetString("MostlyHelpless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Professional.
+        /// </summary>
+        public static string Professional {
+            get {
+                return ResourceManager.GetString("Professional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semi-professional.
+        /// </summary>
+        public static string SemiProfessional {
+            get {
+                return ResourceManager.GetString("SemiProfessional", resourceCulture);
             }
         }
     }

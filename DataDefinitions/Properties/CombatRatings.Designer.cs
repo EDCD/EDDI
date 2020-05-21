@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CombatRatings {
@@ -57,6 +57,87 @@ namespace EddiDataDefinitions.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Competent.
+        /// </summary>
+        public static string Competent {
+            get {
+                return ResourceManager.GetString("Competent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dangerous.
+        /// </summary>
+        public static string Dangerous {
+            get {
+                return ResourceManager.GetString("Dangerous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deadly.
+        /// </summary>
+        public static string Deadly {
+            get {
+                return ResourceManager.GetString("Deadly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite.
+        /// </summary>
+        public static string Elite {
+            get {
+                return ResourceManager.GetString("Elite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expert.
+        /// </summary>
+        public static string Expert {
+            get {
+                return ResourceManager.GetString("Expert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Harmless.
+        /// </summary>
+        public static string Harmless {
+            get {
+                return ResourceManager.GetString("Harmless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master.
+        /// </summary>
+        public static string Master {
+            get {
+                return ResourceManager.GetString("Master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mostly Harmless.
+        /// </summary>
+        public static string MostlyHarmless {
+            get {
+                return ResourceManager.GetString("MostlyHarmless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Novice.
+        /// </summary>
+        public static string Novice {
+            get {
+                return ResourceManager.GetString("Novice", resourceCulture);
             }
         }
     }
