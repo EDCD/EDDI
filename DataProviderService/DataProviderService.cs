@@ -250,7 +250,7 @@ namespace EddiDataProviderService
         {
             StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-            starMapConfiguration.lastSync = DateTime.UtcNow;
+            starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
             starMapConfiguration.ToFile();
         }
     }

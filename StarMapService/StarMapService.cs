@@ -2,10 +2,12 @@
 using RestSharp;
 using RestSharp.Serializers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiStarMapService
@@ -19,18 +21,28 @@ namespace EddiStarMapService
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
     public partial class StarMapService : IEdsmService
     {
-        // Set the maximum batch size we will use for syncing before we write systems to our sql database
+        // The maximum batch size we will use for syncing flight logs before we write systems to our sql database
         public const int syncBatchSize = 50;
 
         // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
         private const int DefaultTimeoutMilliseconds = 10000;
 
-        public static string inGameCommanderName { get; set; }
+        // The timeout for journal events is lengthened to 30 seconds (as recommended by Anthor in private message)
+        private const int JournalTimeoutMilliseconds = 30000;
+        
+        // Pause a short time to allow any initial events to build in the queue before our first EDSM responder event sync
+        private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
 
+        // The minimum interval between EDSM responder event syncs
+        private const int syncIntervalMilliSeconds = 5000; // 5 seconds
+
+        public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
         private string apiKey { get; set; }
         private readonly IEdsmRestClient restClient;
-
+        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
+        public static bool bgJournalSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
+        
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
@@ -87,52 +99,129 @@ namespace EddiStarMapService
             return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
         }
 
-        public void sendEvent(string eventData)
+        public void StartJournalSync()
+        {
+            if (!bgJournalSyncRunning)
+            {
+                Logging.Debug("Enabling EDSM Responder event sync.");
+                Task.Run(() => BackgroundJournalSync()).ConfigureAwait(false);
+            }
+        }
+
+        public void StopJournalSync()
+        {
+            if (bgJournalSyncRunning)
+            {
+                Logging.Debug("Stopping EDSM Responder event sync.");
+                bgJournalSyncRunning = false;
+            }
+        }
+
+        private async void BackgroundJournalSync()
+        {
+            // Pause a short time to allow any initial events to build in the queue before our first sync
+            await Task.Delay(startupDelayMilliSeconds).ConfigureAwait(false);
+
+            bgJournalSyncRunning = true;
+            while (bgJournalSyncRunning)
+            {
+                await Task.Run(() => SendQueuedEvents()).ConfigureAwait(false);
+                await Task.Delay(syncIntervalMilliSeconds).ConfigureAwait(false);
+            }
+        }
+
+        public void EnqueueEvent(IDictionary<string, object> eventObject)
+        {
+            if (eventObject is null) { return; }
+            queuedEvents.Add(eventObject);
+        }
+
+        private void ReEnqueueEvents(IEnumerable<IDictionary<string, object>> eventData)
+        {
+            if (eventData is null) { return; }
+            // Re-enqueue the data so we can send it again later (preserving order as best we can).
+            var newQueue = eventData.ToList();
+            while (queuedEvents.TryTake(out var eventObject))
+            {
+                newQueue.Add(eventObject);
+            }
+            foreach (var eventObject in newQueue)
+            {
+                queuedEvents.Add(eventObject);
+            }
+        }
+
+        private void SendQueuedEvents()
+        {
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            var queue = new List<IDictionary<string, object>>();
+            // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+            // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+            foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable())
+            {
+                queue.Add(pendingEvent);
+                if (queue.Count > 0 && queuedEvents.Count == 0) { break; }
+            }
+            SendEventBatch(queue, starMapConfiguration);
+        }
+
+        private void SendEventBatch(List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration)
         {
             if (!EdsmCredentialsSet()) { return; }
 
-            // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
+            // Filter any stale data
+            eventData = eventData
+                .Where(e => JsonParsing.getDateTime("timestamp", e) > starMapConfiguration.lastJournalSync)
+                .ToList();
+            if (eventData.Count == 0) { return; }
+
+            // The EDSM responder has a `gameIsBeta` flag that it checks prior to sending data via this method.  
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("fromSoftware", Constants.EDDI_NAME);
             request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
-            request.AddParameter("message", eventData);
+            request.AddParameter("message", JsonConvert.SerializeObject(eventData).Normalize());
+            request.Timeout = JournalTimeoutMilliseconds;
 
-            Thread thread = new Thread(() =>
+            try
             {
-                try
+                Logging.Debug("Sending message to EDSM: " + restClient.BuildUri(request).AbsoluteUri);
+                var clientResponse = restClient.Execute<StarMapLogResponse>(request);
+                StarMapLogResponse response = clientResponse.Data;
+
+                if (response is null)
                 {
-                    Logging.Debug("Sending event to EDSM: " + restClient.BuildUri(request).AbsoluteUri);
-                    var clientResponse = restClient.Execute<StarMapLogResponse>(request);
-                    StarMapLogResponse response = clientResponse.Data;
-                    if (response?.msgnum != 100)
+                    Logging.Warn(clientResponse.ErrorMessage);
+                    ReEnqueueEvents(eventData);
+                }
+                else if (response.msgnum >= 100 && response.msgnum <= 103)
+                {
+                    // 100 -  Everything went fine! 
+                    // 101 -  The journal message was already processed in our database. 
+                    // 102 -  The journal message was already in a newer version in our database. 
+                    // 103 -  Duplicate event request (already reported from another software client). 
+                    starMapConfiguration.lastJournalSync = eventData
+                        .Select(e => JsonParsing.getDateTime("timestamp", e))
+                        .Max();
+                    starMapConfiguration.ToFile();
+                }
+                if (response?.msgnum != 100)
+                {
+                    if (!string.IsNullOrEmpty(response?.msg))
                     {
-                        if (response?.msg != null)
-                        {
-                            Logging.Warn("EDSM responded with " + response?.msg);
-                        }
-                        else
-                        {
-                            Logging.Warn(clientResponse?.ErrorMessage);
-                        }
+                        Logging.Warn("EDSM responded with: " + response.msg);
                     }
-                    Thread.Sleep(200); // Add a buffer to prevent time outs.
+                    else
+                    {
+                        Logging.Warn("EDSM responded with: " + JsonConvert.SerializeObject(response));
+                    }
                 }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Failed to send event to EDSM", ex);
-                }
-            })
+            }
+            catch (Exception ex)
             {
-                IsBackground = true,
-                Name = "StarMapService send event"
-            };
-            thread.Start();
+                Logging.Warn("Failed to send event to EDSM", ex);
+            }
         }
 
         public void sendStarMapComment(string systemName, string comment)

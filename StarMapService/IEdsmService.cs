@@ -6,7 +6,7 @@ namespace EddiStarMapService
 {
     public interface IEdsmService
     {
-        void sendEvent(string eventData);
+        void EnqueueEvent(IDictionary<string, object> eventObject);
         void sendStarMapComment(string systemName, string comment);
         void SetEdsmCredentials();
         bool EdsmCredentialsSet();
@@ -24,5 +24,7 @@ namespace EddiStarMapService
         Traffic GetStarMapHostility(string systemName, long? edsmId = null);
         Traffic GetStarMapTraffic(string systemName, long? edsmId = null);
         Traffic GetStarMapDeaths(string systemName, long? edsmId = null);
+        void StartJournalSync();
+        void StopJournalSync();
     }
 }
