@@ -28,12 +28,6 @@ namespace EddiEvents
             VARIABLES.Add("marketId", "The market ID of the station at which the commander is docked");
             VARIABLES.Add("stationtype", "The type of the station at which the commander is docked");
 
-            // Pre-3.3.03 faction variables
-            VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
-            VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
-            VARIABLES.Add("government", "The government of the system in which the commander resides");
-            VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
-
             // Post-3.3.03 faction variables
             VARIABLES.Add("systemfaction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("systemstate", "The state of the faction controlling the system in which the commander resides");
@@ -41,6 +35,7 @@ namespace EddiEvents
             VARIABLES.Add("stationfaction", "The faction controlling the station, if the commander is docked");
             VARIABLES.Add("stationstate", "The state of the faction controlling the station, if the commander is docked");
             VARIABLES.Add("stationgovernment", "The government of the station, if the commander is docked");
+            VARIABLES.Add("stationallegiance", "The government of the station, if the commander is docked");
 
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
             VARIABLES.Add("economy2", "The secondary economy of the system in which the commander resides, if any");
@@ -85,12 +80,6 @@ namespace EddiEvents
 
         public decimal? latitude { get; private set; }
 
-        // Pre-3.3.03 faction properties to maintain script/profile backwards compatability
-        public string faction => controllingsystemfaction?.name;
-        public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
-        public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
-        public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
-
         // Post-3.3.03 faction properties
         public string systemfaction => controllingsystemfaction?.name;
         public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
@@ -99,10 +88,10 @@ namespace EddiEvents
         public string stationfaction => controllingstationfaction?.name;
         public string stationstate => (controllingstationfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
         public string stationgovernment => (controllingstationfaction?.Government ?? Government.None).localizedName;
-        public string stationallegiancet => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
+        public string stationallegiance => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // Powerplay properties (only when pledged)
-        string power => Power.localizedName;
+        public string power => Power.localizedName;
         public string powerstate => powerState.localizedName;
 
         // Deprecated, maintained for compatibility with user scripts
@@ -110,6 +99,14 @@ namespace EddiEvents
         public string system => systemname;
         [JsonIgnore, Obsolete("Use bodyname instead")]
         public string body => bodyname;
+        [JsonIgnore, Obsolete("Use systemfaction instead")]
+        public string faction => controllingsystemfaction?.name;
+        [JsonIgnore, Obsolete("Use systemstate instead")]
+        public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
+        [JsonIgnore, Obsolete("Use systemgovernment instead")]
+        public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
+        [JsonIgnore, Obsolete("Use systemallegiance instead")]
+        public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }

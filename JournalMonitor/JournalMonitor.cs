@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
@@ -27,6 +28,8 @@ namespace EddiJournalMonitor
         { }
 
         private enum ShipyardType { ShipsHere, ShipsRemote }
+
+        private static Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources = new Dictionary<long, CancellationTokenSource>();
 
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
@@ -3734,6 +3737,157 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "CarrierJump":
+                                {
+                                    // Get destination star system data
+                                    string systemName = JsonParsing.getString(data, "StarSystem");
+                                    data.TryGetValue("StarPos", out object starposVal);
+                                    List<object> starPos = (List<object>)starposVal;
+                                    decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
+                                    decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
+                                    decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    Economy systemEconomy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
+                                    Economy systemEconomy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
+                                    Faction systemfaction = getFaction(data, "System", systemName);
+                                    SecurityLevel systemSecurity = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
+                                    systemSecurity.fallbackLocalizedName = JsonParsing.getString(data, "SystemSecurity_Localised");
+                                    long? systemPopulation = JsonParsing.getOptionalLong(data, "Population");
+
+                                    // Get destination body data (if any)
+                                    string bodyName = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
+
+                                    // Get carrier data
+                                    bool docked = JsonParsing.getBool(data, "Docked");
+                                    string carrierName = JsonParsing.getString(data, "StationName");
+                                    StationModel carrierType = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+                                    long carrierId = JsonParsing.getLong(data, "MarketID");
+                                    Faction stationFaction = getFaction(data, "Station", systemName);
+
+                                    // Get carrier services data
+                                    List<StationService> stationServices = new List<StationService>();
+                                    data.TryGetValue("StationServices", out object stationserviceVal);
+                                    List<string> stationservices = (stationserviceVal as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+                                    foreach (string service in stationservices)
+                                    {
+                                        stationServices.Add(StationService.FromEDName(service));
+                                    }
+
+                                    // Get carrier economies and their shares
+                                    data.TryGetValue("StationEconomies", out object economiesVal);
+                                    List<object> economies = economiesVal as List<object> ?? new List<object>();
+                                    List<EconomyShare> stationEconomies = new List<EconomyShare>();
+                                    foreach (Dictionary<string, object> economyshare in economies)
+                                    {
+                                        Economy economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                        economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                        decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                        if (economy != Economy.None && share > 0)
+                                        {
+                                            stationEconomies.Add(new EconomyShare(economy, share));
+                                        }
+                                    }
+
+                                    // Parse factions array data
+                                    List<Faction> factions = new List<Faction>();
+                                    data.TryGetValue("Factions", out object factionsVal);
+                                    if (factionsVal != null)
+                                    {
+                                        factions = getFactions(factionsVal, systemName);
+                                    }
+
+                                    // Parse conflicts array data
+                                    List<Conflict> conflicts = new List<Conflict>();
+                                    data.TryGetValue("Conflicts", out object conflictsVal);
+                                    if (conflictsVal != null)
+                                    {
+                                        conflicts = getConflicts(conflictsVal, factions);
+                                    }
+
+                                    // Powerplay data (if pledged)
+                                    getPowerplayData(data, out Power powerplayPower, out PowerplayState powerplayState);
+
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, systemfaction, factions, conflicts, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, docked, carrierName, carrierType, carrierId, stationFaction, stationServices, stationEconomies) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Generate secondary event when the carrier jump cooldown completes
+                                    if (!fromLogLoad)
+                                    {
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = Constants.carrierPostJumpSeconds * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType, carrierId) { fromLoad = fromLogLoad });
+                                        }).ConfigureAwait(false);
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "CarrierJumpRequest":
+                                {
+                                    long carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string systemName = JsonParsing.getString(data, "SystemName");
+                                    string bodyName = JsonParsing.getString(data, "Body");
+                                    long bodyId = JsonParsing.getLong(data, "BodyID");
+
+                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Cancel any pending carrier jump related events
+                                    if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
+                                    {
+                                        carrierJumpCancellationTokenSources.Remove(carrierId);
+                                        carrierJumpCancellationTS.Cancel();
+                                        carrierJumpCancellationTS.Dispose();
+                                    }
+
+                                    if (!fromLogLoad)
+                                    {
+                                        // Generate a new cancellation token source
+                                        carrierJumpCancellationTS = new CancellationTokenSource();
+                                        carrierJumpCancellationTokenSources.Add(carrierId, carrierJumpCancellationTS);
+
+                                        // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
+                                        // These may be cancelled via the cancellation token source above.
+
+                                        // Jumps seems to always be scheduled for 16 minutes after the request, minus the absolute value of the difference from 10 seconds after the minute
+                                        // (i.e. between 15 minutes and 15 minutes 50 seconds after the request)
+                                        int varSeconds = Math.Abs(10 - timestamp.Second);
+
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.AddMilliseconds(timeMs), carrierId) { fromLoad = fromLogLoad });
+                                        }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds) * 1000;
+                                            await Task.Delay(timeMs);
+                                            string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+                                            long? originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+                                            EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                        }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "CarrierJumpCancelled":
+                                {
+                                    long carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    // Cancel any pending carrier jump related events
+                                    if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
+                                    {
+                                        carrierJumpCancellationTokenSources.Remove(carrierId);
+                                        carrierJumpCancellationTS.Cancel();
+                                        carrierJumpCancellationTS.Dispose();
+                                    }
+                                    events.Add(new CarrierJumpCancelledEvent(timestamp, carrierId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "CodexDiscovery":
@@ -3749,6 +3903,7 @@ namespace EddiJournalMonitor
                             case "WingJoin":
                             case "WingLeave":
                             case "SharedBookmarkToSquadron":
+                            case "WonATrophyForSquadron":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
@@ -4169,6 +4324,7 @@ namespace EddiJournalMonitor
 
         public void Stop()
         {
+            foreach (var carrierJumpCancellationTS in carrierJumpCancellationTokenSources.Values) { carrierJumpCancellationTS.Dispose(); }
             stop();
         }
 

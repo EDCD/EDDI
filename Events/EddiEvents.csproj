@@ -65,7 +65,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarrierJumpCancelledEvent.cs" />
+    <Compile Include="CarrierJumpRequestEvent.cs" />
+    <Compile Include="CarrierPadsLockedEvent.cs" />
+    <Compile Include="CarrierJumpEngagedEvent.cs" />
+    <Compile Include="CarrierCooldownEvent.cs" />
     <Compile Include="CommanderReputationEvent.cs" />
+    <Compile Include="CarrierJumpedEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
     <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />

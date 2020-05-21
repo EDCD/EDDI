@@ -227,6 +227,60 @@
       "name": "Cargo wingupdate",
       "description": "Triggered when a wing-mate collects or delivers cargo for a wing mission"
     },
+    "Carrier cooldown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fleet carrier cooldown completed.",
+      "default": true,
+      "name": "Carrier cooldown",
+      "description": "Triggered when you were docked at a fleet carrier during a jump and it completes its cooldown"
+    },
+    "Carrier jump cancelled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fleet carrier jump cancelled.",
+      "default": true,
+      "name": "Carrier jump cancelled",
+      "description": "Triggered when you cancel a scheduled fleet carrier jump"
+    },
+    "Carrier jump engaged": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'carrier jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n{SetState('eddi_context_system_lastvisit', system.lastVisitSeconds)}\r\n\r\n{if environment = \"Docked\":\r\n\r\n    {_ Zero the 'remaining jump' context to only use values following this event _}\r\n    {SetState('eddi_context_remaining_jumps', 0)}\r\n\r\n    {set reportsystem to SystemDetails(event.systemname)}\r\n\r\n    {OneOf(\"Jump in progress\",\"Entering portal\")} to the {P(reportsystem.systemname)} system\r\n        {if len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n        near\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname)}\r\n    }.\r\n\r\n    {if reportsystem.systemname = homesystem.systemname:\r\n        Welcome home, {F(\"Honorific\")}\r\n    |else:       \r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!reportsystem.allegiance || reportsystem.allegiance = \"None\" || reportsystem.allegiance = \"Independent\"):\r\n            You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != reportsystem.allegiance && system.allegiance && system.allegiance != \"None\":\r\n            You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {reportsystem.allegiance} space.\r\n            {if cmdr.title != \"Commander\":\r\n                Welcome back {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if reportsystem.visits = 0:\r\n            This is your first visit to this system.\r\n        |elif reportsystem.visits = 1:\r\n            This is your second visit to this system.\r\n        |elif reportsystem.visits = 2:\r\n            {Occasionally(2, \"This is your third visit to this system.\")}\r\n        |elif reportsystem.visits = 3:\r\n            {Occasionally(2, \"This is your fourth visit to this system.\")}\r\n        |else:\r\n            {Occasionally(3, \"You have visited this system {reportsystem.visits} times.\")}\r\n        }\r\n\r\n        {if reportsystem.population && reportsystem.population > 0:\r\n            {if SecondsSince(reportsystem.lastVisitSeconds) > 3600:\r\n                {F(\"System report\")}\r\n            }\r\n        |else:\r\n            {OneOf(\"This system is not populated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n        }\r\n\r\n        {if reportsystem.distancefromhome:\r\n            {set ReportDistanceFromHome() to:\r\n                {return cat(\r\n                \tOneOf(\"You are\", \"Current location is\", \"You are now\"), \" \",\r\n\t                Humanise(reportsystem.distancefromhome), \" lightyears from \",\r\n\t                OneOf(\"home\", \"{P(homesystem.name)}\"), \".\"\r\n\t            )}\r\n            }\r\n            {Occasionally(7, ReportDistanceFromHome())}\r\n        }\r\n\r\n        {if reportsystem.comment:\r\n            You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {reportsystem.comment}.\r\n        }\r\n    }\r\n|else:\r\n    Fleet carrier arriving at the {P(event.systemname)} system\r\n    {if len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n        near\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname)}\r\n    }.\r\n}",
+      "default": true,
+      "name": "Carrier jump engaged",
+      "description": "Triggered when your fleet carrier performs a jump"
+    },
+    "Carrier jump request": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fleet carrier jump scheduled. Course laid in for the {P(event.systemname)} star system\r\n{if len(event.shortname) > 0:\r\n    {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n    , arriving near\r\n    {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n    {P(event.shortname)}\r\n}.",
+      "default": true,
+      "name": "Carrier jump request",
+      "description": "Triggered when you request that your fleet carrier performs a jump"
+    },
+    "Carrier jumped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Carrier jumped }\r\n{_ Triggered when you are docked at a fleet carrier as it completes a jump }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'carrier jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', event.systemname)}\r\n{SetState('eddi_context_system_system', event.systemname)}\r\n{SetState('eddi_context_wanted_list', \"\")}\r\n\r\nFleet carrier {P(event.carriername)} has arrived at the {P(event.systemname)} system\r\n{if event.bodyname && len(event.bodyname) > 0:\r\n    , near the {event.bodytype} {P(event.bodyname)}\r\n}.\r\n{Pause(1000)}\r\n\r\n{_ Update mission data if we have arrived at our mission destination. _}\r\n{if destinationsystem && destinationsystem.name != \"\":\r\n    {RouteDetails(\"update\")}\r\n}\r\n\r\n{_ Report faction states only if it's been more than an hour (3600 seconds) since our last visit. _}\r\n{if SecondsSince(state.eddi_context_system_lastvisit) / 3600 > 1:\r\n    {set state_report to F(\"System state report\")}\r\n}\r\n\r\n{set system_missions to F(\"Mission check system\")}\r\n{set system_crimes to F(\"Crime check system\")}\r\n\r\n{if state_report || system_missions || (system_crimes && find(system_crimes, \"Warning\") < 0):\r\n    {Pause(500)}\r\n    Information:\r\n}\r\n\r\n{if state_report:\r\n    {Pause(500)}\r\n    {state_report}\r\n}\r\n{if system_missions:\r\n    {Pause(500)}\r\n    {system_missions}\r\n}\r\n{if system_crimes:\r\n    {Pause(500)}\r\n    {system_crimes}\r\n}\r\n",
+      "default": true,
+      "name": "Carrier jumped",
+      "description": "Triggered when you are docked at a fleet carrier as it completes a jump"
+    },
+    "Carrier pads locked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Landing pads locked. Final jump preparations initiated.",
+      "default": true,
+      "name": "Carrier pads locked",
+      "description": "Triggered when your fleet carrier locks landing pads prior to a jump"
+    },
     "Cleared save": {
       "enabled": true,
       "priority": 3,
