@@ -1265,6 +1265,40 @@ namespace UnitTests
             Assert.AreEqual(1, @event.conflicts.Count);
             Assert.AreEqual("EG Union", @event.conflicts[0].faction1);
             Assert.AreEqual("Paladin Consortium", @event.conflicts[0].faction2);
+
+        public void TestShipRepairedEvent()
+        {
+			string line = "{ \"timestamp\":\"2016-09-25T12:31:38Z\", \"event\":\"Repair\", \"Item\":\"Wear\", \"Cost\":2824 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
+            Assert.AreEqual("Ship Integrity", @event.item);
+            Assert.IsNull(@event.module);
+            Assert.AreEqual(0, @event.modules.Count);
+            Assert.AreEqual(2824, @event.price);
+        }
+
+        [TestMethod]
+        public void TestShipRepairedEvent2()
+        {
+            string line = "{ \"timestamp\":\"2020-03-31T13:39:42Z\", \"event\":\"Repair\", \"Items\":[ \"$hpt_dumbfiremissilerack_fixed_large_name;\", \"$hpt_beamlaser_gimbal_medium_name;\", \"$hpt_railgun_fixed_medium_name;\", \"$hpt_beamlaser_gimbal_medium_name;\", \"$hpt_dumbfiremissilerack_fixed_large_name;\" ], \"Cost\":34590 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
+            Assert.IsInstanceOfType(@event.items, typeof(List<string>));
+            Assert.AreEqual(5, @event.items.Count);
+            Assert.AreEqual(34590, @event.price);
+            Assert.IsNull(@event.item);
+        }
+
+        [TestMethod]
+        public void TestShipRepairedEvent3()
+        {
+            string line = "{ \"timestamp\":\"2020-05-13T08:45:03Z\", \"event\":\"RepairAll\", \"Cost\":104817 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
+            Assert.AreEqual("All", @event.item);
+            Assert.IsNull(@event.module);
+            Assert.AreEqual(0, @event.modules.Count);
+            Assert.AreEqual(104817, @event.price);
         }
     }
 }

@@ -1878,7 +1878,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipName()} repaired.",
+      "script": "{if len(event.items) > 0:\r\n    {List(event.items)} repaired.\r\n|else:\r\n    {if event.item = \"Paint\":\r\n        {Occasionally(2, \"{ShipName()}'s\")} \r\n        paint \r\n        {OneOf(\"restored.\", \"renewed.\")}\r\n    |elif event.item = \"Ship Integrity\" || event.item = \"Wear\":\r\n        {Occasionally(2, \"{ShipName()}'s\")} \r\n        {Occasionally(2, '{OneOf(\\\"regular\\\", \\\"standard\\\")}')} \r\n        maintenance completed.\r\n    |elif find(event.item, \"Cockpit\") > -1:\r\n        Canopy repaired.\r\n    |else:\r\n        {ShipName()} repaired.\r\n    }\r\n}",
       "default": true,
       "name": "Ship repaired",
       "description": "Triggered when you repair your ship"
