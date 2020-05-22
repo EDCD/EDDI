@@ -3895,21 +3895,35 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "DiscoveryScan":
-                            case "EngineerLegacyConvert":
+                            case "AsteroidCracked":
+                            case "CarrierBuy":
+                            case "CarrierStats":
+                            case "CarrierBankTransfer":
+                            case "CarrierCancelDecommission":
+                            case "CarrierCrewServices":
+                            case "CarrierDecommission":
+                            case "CarrierDepositFuel":
+                            case "CarrierDockingPermission":
+                            case "CarrierFinance":
+                            case "CarrierModulePack":
+                            case "CarrierNameChanged":
+                            case "CarrierShipPack":
+                            case "CarrierTradeOrder":
                             case "CodexDiscovery":
                             case "CodexEntry":
+                            case "CrimeVictim":
+                            case "DiscoveryScan":
+                            case "EngineerLegacyConvert":
+                            case "NavRoute":
+                            case "ProspectedAsteroid":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
-                            case "ProspectedAsteroid":
-                            case "AsteroidCracked":
-                            case "CrimeVictim":
                             case "Scanned":
+                            case "SharedBookmarkToSquadron":
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
                             case "WingLeave":
-                            case "SharedBookmarkToSquadron":
                             case "WonATrophyForSquadron":
                                 // we silently ignore these, but forward them to the responders
                                 break;
