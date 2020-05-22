@@ -70,6 +70,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Claim.
+        /// </summary>
+        internal static string Claim {
+            get {
+                return ResourceManager.GetString("Claim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete.
         /// </summary>
         internal static string Complete {

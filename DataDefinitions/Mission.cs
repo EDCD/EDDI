@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
             {"helpfinishtheorder", "delivery"},
             {"helpwithpreventionmeasures", "massacre"},
             {"miningtoorder", "mining"},
+            {"piracyfraud", "delivery"},
             {"planetaryincursions", "scan"},
             {"rampantleadership", "assassinate"},
             {"regainfooting", "assassinate"},
@@ -131,14 +132,38 @@ namespace EddiDataDefinitions
         public bool originreturn { get; set; }
 
         public string faction { get; set; }
-        public string factionstate { get; set; }
+
+        // The state of the minor faction
+        [JsonProperty("factionstate")]
+        public string factionstate
+        {
+
+            get => FactionState?.localizedName ?? FactionState.None.localizedName;
+            set
+            {
+                FactionState fsDef = FactionState.FromName(value);
+                this.FactionState = fsDef;
+            }
+        }
+        [JsonIgnore]
+        private FactionState _FactionState = FactionState.None;
+        [JsonIgnore]
+        public FactionState FactionState
+        {
+            get { return _FactionState; }
+            set { _FactionState = value; }
+        }
 
         public string influence { get; set; }
         public string reputation { get; set; }
 
         public bool chained => name.ToLowerInvariant().Contains("chained");
         public bool communal { get; set; }
-        public bool legal => !name.ToLowerInvariant().Contains("illegal") && !name.ToLowerInvariant().Contains("smuggle");
+        public bool legal => !name.ToLowerInvariant().Contains("hack")
+            && !name.ToLowerInvariant().Contains("illegal")
+            && !name.ToLowerInvariant().Contains("piracy")
+            && !name.ToLowerInvariant().Contains("smuggle");
+
         public bool shared { get; set; }
         public bool wing { get; set; }
 

@@ -185,4 +185,48 @@
     <value>Blight</value>
     <comment>Faction state Drought, but translated as Blight</comment>
   </data>
+  <data name="Blight" xml:space="preserve">
+    <value>Blight</value>
+    <comment>Faction state Blight</comment>
+  </data>
+  <data name="ColdWar" xml:space="preserve">
+    <value>Cold War</value>
+    <comment>Faction state ColdWar</comment>
+  </data>
+  <data name="Colonisation" xml:space="preserve">
+    <value>Colonisation</value>
+    <comment>Faction state Colonisation</comment>
+  </data>
+  <data name="HistoricEvent" xml:space="preserve">
+    <value>Historic Event</value>
+    <comment>Faction state HistoricEvent</comment>
+  </data>
+  <data name="InfrastructureFailure" xml:space="preserve">
+    <value>Infrastructure Failure</value>
+    <comment>Faction state InfrastructureFailure</comment>
+  </data>
+  <data name="NaturalDisaster" xml:space="preserve">
+    <value>Natural Disaster</value>
+    <comment>Faction state NaturalDisaster</comment>
+  </data>
+  <data name="PublicHoliday" xml:space="preserve">
+    <value>Public Holiday</value>
+    <comment>Faction state PublicHoliday</comment>
+  </data>
+  <data name="Revolution" xml:space="preserve">
+    <value>Revolution</value>
+    <comment>Faction state Revolution</comment>
+  </data>
+  <data name="TechnologicalLeap" xml:space="preserve">
+    <value>Technological Leap</value>
+    <comment>Faction state TechnologicalLeap</comment>
+  </data>
+  <data name="Terrorism" xml:space="preserve">
+    <value>Terrorism</value>
+    <comment>Faction state Terrorism</comment>
+  </data>
+  <data name="TradeWar" xml:space="preserve">
+    <value>Trade War</value>
+    <comment>Faction state TradeWar</comment>
+  </data>
 </root>

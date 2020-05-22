@@ -119,11 +119,18 @@
   </resheader>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
+    <comment>MissionStatus Active</comment>
+  </data>
+  <data name="Claim" xml:space="preserve">
+    <value>Claim</value>
+    <comment>MissionStatus Claim</comment>
   </data>
   <data name="Complete" xml:space="preserve">
     <value>Complete</value>
+    <comment>MissionStatus Complete</comment>
   </data>
   <data name="Failed" xml:space="preserve">
     <value>Failed</value>
+    <comment>MissionStatus Failed</comment>
   </data>
 </root>
