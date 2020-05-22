@@ -63,7 +63,7 @@ namespace EddiDataDefinitions
             // In Elite Dangerous v3.7, "Workshop" is replaced by "Engineer" and "SearchAndRescue" is replaced by "SearchRescue"
             // Preserve the original edname for backwards compatibility.
             return ResourceBasedLocalizedEDName<StationService>.FromEDName(
-                edname.Replace("Engineer", "Workshop").Replace("SearchRescue", "SearchAndRescue")
+                edname.ToLowerInvariant().Replace("engineer", "workshop").Replace("searchrescue", "searchandrescue")
                 );
         }
     }
