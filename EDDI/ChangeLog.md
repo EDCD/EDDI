@@ -7,8 +7,15 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added support for all documented events etc for the Fleet Carriers update.
     * Behave gracefully rather than crashing to desktop when the EDSM servers are timing out.
   * Events
+    * Added new event `Carrier cooldown`, triggered when you were docked at a fleet carrier during a jump and it completes its cooldown.
+    * Added new event `Carrier jump cancelled`, triggered when you cancel a scheduled fleet carrier jump.
+    * Added new event `Carrier jump engaged`, triggered when your fleet carrier performs a jump.
+    * Added new event `Carrier jump request`, triggered when you request that your fleet carrier performs a jump.
+    * Added new event `Carrier jump jumped`, triggered when you are docked at a fleet carrier as it completes a jump.
+    * Added new event `Carrier pads locked`, triggered when your fleet carrier locks landing pads prior to a jump.
     * Added new event `Flight assist`, triggered when you toggle flight assist on or off.
     * Added new event `Hardpoints`, triggered when you deploy or retract your hardpoints.
+    * Updated `Ship repaired` script .
   * Inara Responder
     * Many performance improvements.
   * Speech Responder
