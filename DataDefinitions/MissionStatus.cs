@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
             var Active = new MissionStatus("Active", 0);
             var Complete = new MissionStatus("Complete", 1);
             var Failed = new MissionStatus("Failed", 2);
+            var Claim = new MissionStatus("Claim", 3);
         }
 
         public int status { get; private set; }

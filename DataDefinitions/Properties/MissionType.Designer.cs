@@ -329,5 +329,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("Special", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Zone.
+        /// </summary>
+        internal static string StartZone {
+            get {
+                return ResourceManager.GetString("StartZone", resourceCulture);
+            }
+        }
     }
 }

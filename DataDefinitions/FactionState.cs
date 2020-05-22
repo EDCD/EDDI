@@ -22,22 +22,37 @@
             // Lower tier states can cancel higher tier states from the same category.
 
             None = new FactionState("None");
-            var Retreat = new FactionState("Retreat");              // Movement state
-            var War = new FactionState("War");                      // Conflict state
-            var Lockdown = new FactionState("Lockdown");            // Security state
+            var Boom = new FactionState("Boom");                    // Economic state
+            var Bust = new FactionState("Bust");                    // Economic state
             var CivilLiberty = new FactionState("CivilLiberty");    // Security state
             var CivilUnrest = new FactionState("CivilUnrest");      // Security state
             var CivilWar = new FactionState("CivilWar");            // Conflict state
-            var Boom = new FactionState("Boom");                    // Economic state
-            var Expansion = new FactionState("Expansion");          // Movement state
-            var Bust = new FactionState("Bust");                    // Economic state
-            var Outbreak = new FactionState("Outbreak");            // Other state (disease)
-            var Famine = new FactionState("Famine");                // Economic state
             var Election = new FactionState("Election");            // Conflict state
+            var Expansion = new FactionState("Expansion");          // Movement state
+            var Famine = new FactionState("Famine");                // Economic state
             var Investment = new FactionState("Investment");        // Economic state
-            var PirateAttack = new FactionState("PirateAttack");    // Other state (pirates)
+            var Lockdown = new FactionState("Lockdown");            // Security state
+            var Outbreak = new FactionState("Outbreak");            // Other state (disease)
+            var Retreat = new FactionState("Retreat");              // Movement state
+            var War = new FactionState("War");                      // Conflict state
+
+            // April 2019 Update
+            var Drought = new FactionState("Drought");              // Other state
             var Incursion = new FactionState("Incursion");          // Other state (Thargoids)
-            var Drought = new FactionState("Drought");              // Other state, shown as "Blight" in the UI
+            var PirateAttack = new FactionState("PirateAttack");    // Other state (pirates)
+
+            // January 2020 Update
+            var Blight = new FactionState("Blight");
+            var ColdWar = new FactionState("ColdWar");
+            var Colonisation = new FactionState("Colonisation");
+            var HistoricEvent = new FactionState("HistoricEvent");
+            var InfrastructureFailure = new FactionState("InfrastructureFailure");
+            var NaturalDisaster = new FactionState("NaturalDisaster");
+            var PublicHoliday = new FactionState("PublicHoliday");
+            var Revolution = new FactionState("Revolution");
+            var TechnologicalLeap = new FactionState("TechnologicalLeap");
+            var Terrorism = new FactionState("Terrorism");
+            var TradeWar = new FactionState("TradeWar");
         }
 
         public static readonly FactionState None;

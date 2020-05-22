@@ -41,6 +41,7 @@
             var Sightseeing = new MissionType("Sightseeing");
             var Smuggle = new MissionType("Smuggle");
             var Special = new MissionType("Special");
+            var StartZone = new MissionType("StartZone");
         }
 
         // dummy used to ensure that the static constructor has run
