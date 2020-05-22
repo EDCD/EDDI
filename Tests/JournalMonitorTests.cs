@@ -1244,10 +1244,10 @@ namespace UnitTests
             Assert.AreEqual(1, @event.carrierEconomies.Count);
             Assert.AreEqual("Private Enterprise", @event.carrierEconomies[0].economy.invariantName);
             Assert.AreEqual("Aparctias", @event.systemname);
-			Assert.AreEqual(358797513434, @event.systemAddress);
+            Assert.AreEqual(358797513434, @event.systemAddress);
             Assert.AreEqual(25.1875M, @event.x);
             Assert.AreEqual(-56.375M, @event.y);
-	        Assert.AreEqual(22.90625M, @event.z);
+            Assert.AreEqual(22.90625M, @event.z);
             Assert.AreEqual("Independent", @event.controllingsystemfaction.Allegiance.invariantName);
             Assert.AreEqual("Colony", @event.systemEconomy.invariantName);
             Assert.AreEqual("Refinery", @event.systemEconomy2.invariantName);
@@ -1265,7 +1265,9 @@ namespace UnitTests
             Assert.AreEqual(1, @event.conflicts.Count);
             Assert.AreEqual("EG Union", @event.conflicts[0].faction1);
             Assert.AreEqual("Paladin Consortium", @event.conflicts[0].faction2);
+        }
 
+        [TestMethod]
         public void TestShipRepairedEvent()
         {
 			string line = "{ \"timestamp\":\"2016-09-25T12:31:38Z\", \"event\":\"Repair\", \"Item\":\"Wear\", \"Cost\":2824 }";
