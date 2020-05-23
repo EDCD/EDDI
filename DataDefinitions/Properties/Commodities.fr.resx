@@ -1670,7 +1670,10 @@
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
   
-  
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Traitement agronomique</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
   
   
   
