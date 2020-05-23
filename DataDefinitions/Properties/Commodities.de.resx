@@ -1705,14 +1705,26 @@
     <value>Molluskengehirngewebe</value>
     <comment>Commodity M_TissueSample_Nerves</comment>
   </data>
-  
-  
-  
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Schalenkerngewebeprobe</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Schalenaussengewebeprobe</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Schalenoberflächengewebeprobe</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
   <data name="P_ParticulateSample" xml:space="preserve">
     <value>Anomalie-Partikel</value>
     <comment>Commodity P_ParticulateSample</comment>
   </data>
-  
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Schalengewebeprobe</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
   <data name="M3_TissueSample_Membrane" xml:space="preserve">
     <value>Molluskenmembran</value>
     <comment>Commodity M3_TissueSample_Membrane</comment>
@@ -1725,7 +1737,16 @@
     <value>Molluskensporen</value>
     <comment>Commodity M3_TissueSample_Spores</comment>
   </data>
-  
-  
-  
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Mesogleaprobe</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Schalenaussengewebeprobe</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Korallengewebeprobe</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
 </root>
