@@ -333,7 +333,10 @@
     <value>ɛdmund</value>
     <comment>Optional phonetic pronunciation for edmund</comment>
   </data>
-  
+  <data name="electra" xml:space="preserve">
+    <value>iˈlɛktrə</value>
+    <comment>Optional phonetic pronunciation for electra</comment>
+  </data>
   <data name="eranin" xml:space="preserve">
     <value>eʁanɛ̃</value>
     <comment>Optional phonetic pronunciation for eranin</comment>
@@ -694,7 +697,10 @@
     <value>to</value>
     <comment>Optional phonetic pronunciation for TauCeti_Tau</comment>
   </data>
-  
+  <data name="taygeta" xml:space="preserve">
+    <value>teɪˈɪdʒᵻtə</value>
+    <comment>Optional phonetic pronunciation for taygeta</comment>
+  </data>
   <data name="Thaa" xml:space="preserve">
     <value>taa</value>
     <comment>Optional phonetic pronunciation for Thaa</comment>
@@ -711,7 +717,10 @@
     <value>tʁijɑ̃ɡl</value>
     <comment>Optional phonetic pronunciation for Trianguli</comment>
   </data>
-  
+  <data name="Trifid" xml:space="preserve">
+    <value>ˈtraɪfɪd</value>
+    <comment>Optional phonetic pronunciation for Trifid</comment>
+  </data>
   <data name="tse" xml:space="preserve">
     <value>tse</value>
     <comment>Optional phonetic pronunciation for tse</comment>
@@ -720,8 +729,14 @@
     <value>tykana</value>
     <comment>Optional phonetic pronunciation for Tucanae</comment>
   </data>
-  
-  
+  <data name="Wei" xml:space="preserve">
+    <value>weɪ</value>
+    <comment>Optional phonetic pronunciation for Wei</comment>
+  </data>
+  <data name="winters" xml:space="preserve">
+    <value>ˈwɪntəs</value>
+    <comment>Optional phonetic pronunciation for winters</comment>
+  </data>
   <data name="Wredguia" xml:space="preserve">
     <value>wʁedɡja</value>
     <comment>Optional phonetic pronunciation for Wredguia</comment>
@@ -754,8 +769,20 @@
     <value>zaɔ̃s</value>
     <comment>Optional phonetic pronunciation for zaonce</comment>
   </data>
-  
-  
-  
-  
+  <data name="zemina" xml:space="preserve">
+    <value>zəˈmiːnə</value>
+    <comment>Optional phonetic pronunciation for zemina</comment>
+  </data>
+  <data name="zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhang</comment>
+  </data>
+  <data name="zhangfei_fei" xml:space="preserve">
+    <value>feɪ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_fei</comment>
+  </data>
+  <data name="zhangfei_zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
+  </data>
 </root>
