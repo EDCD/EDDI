@@ -234,11 +234,11 @@
     <comment>Station Service: Shop</comment>
   </data>
   <data name="CarrierFuel" xml:space="preserve">
-    <value>Tritiumlager</value>
+    <value>Tritium-Depot</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
-    <value>Carrier-Verwaltung</value>
+    <value>Carrier Management</value>
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
