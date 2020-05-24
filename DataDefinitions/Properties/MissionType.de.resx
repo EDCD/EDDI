@@ -207,4 +207,7 @@
   <data name="Special" xml:space="preserve">
     <value>Spezial</value>
   </data>
+  <data name="StartZone" xml:space="preserve">
+    <value>Startzone</value>
+  </data>
 </root>
