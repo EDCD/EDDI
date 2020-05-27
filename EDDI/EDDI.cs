@@ -41,48 +41,18 @@ namespace Eddi
         public bool inCQC { get; private set; } = false;
         public bool inCrew { get; private set; } = false;
 
-        public bool inHorizons 
-        {
-            get
-            {
-                if (_inHorizons != null)
-                {
-                    return (bool)_inHorizons;
-                }
+        public bool inHorizons { get; private set; } = true;
 
-                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                _inHorizons = eliteConfiguration.Horizons;
-                return _inHorizons ?? true;
-            }
-            private set
-            {
-                _inHorizons = value;
-            } 
-        }
-        private bool? _inHorizons;
-
+        private bool _gameIsBeta = false;
         public bool gameIsBeta
         {
-            get
-            {
-                if (_gameIsBeta != null)
-                {
-                    return (bool)_gameIsBeta;
-                }
-
-                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                _gameIsBeta = eliteConfiguration.Horizons;
-                return _gameIsBeta ?? false;
-            }
+            get => _gameIsBeta;
             private set
             {
                 _gameIsBeta = value;
-                Logging.Info(value ? "On beta" : "On live");
-                // (Re)configure the CompanionAppService service
                 CompanionAppService.Instance.gameIsBeta = value;
             }
         }
-        private bool? _gameIsBeta;
 
         static EDDI()
         {
@@ -178,6 +148,12 @@ namespace Eddi
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
+
+                // Set up the Elite configuration
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                gameIsBeta = eliteConfiguration.Beta;
+                Logging.Info(gameIsBeta ? "On beta" : "On live");
+                inHorizons = eliteConfiguration.Horizons;
 
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
