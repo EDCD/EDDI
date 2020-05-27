@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using EddiCore;
+using EddiDataDefinitions;
 using EddiNavigationService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnitTests;
@@ -18,7 +19,7 @@ namespace IntegrationTests
         [TestMethod]
         public void TestSetDestination()
         {
-            PrivateObject eddiInstance = new PrivateObject(Eddi.EDDI.Instance);
+            PrivateObject eddiInstance = new PrivateObject(EDDI.Instance);
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
 
             // Set a route to a known star system and verify detination details
@@ -44,7 +45,7 @@ namespace IntegrationTests
         [TestMethod]
         public void TestGetService()
         {
-            PrivateObject eddiInstance = new PrivateObject(Eddi.EDDI.Instance);
+            PrivateObject eddiInstance = new PrivateObject(EDDI.Instance);
             PrivateObject navInstance = new PrivateObject(NavigationService.Instance);
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
             eddiInstance.SetFieldOrProperty("CurrentShip", new Ship() { size = LandingPadSize.Medium });

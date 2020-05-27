@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using System.Windows.Controls;
 using System.Windows.Data;
+using EddiCore;
 
 namespace EddiCargoMonitor
 {

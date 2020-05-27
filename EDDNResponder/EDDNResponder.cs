@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
+using EddiCore;
 using Utilities;
 
 namespace EDDNResponder

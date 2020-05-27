@@ -2,7 +2,7 @@
 using System.AddIn.Pipeline;
 using System.Windows.Controls;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>
     /// The methods required for an EDDI responder.

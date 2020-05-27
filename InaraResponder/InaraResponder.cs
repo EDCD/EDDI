@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Controls;
+using EddiCore;
 using Utilities;
 
 namespace EddiInaraResponder

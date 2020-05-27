@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using EddiCore;
 
 namespace Eddi
 {

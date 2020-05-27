@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Threading;
+using EddiCore;
 using Utilities;
 
 namespace SpeechTests

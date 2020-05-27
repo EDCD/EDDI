@@ -7,6 +7,7 @@ using EddiShipMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using EddiCore;
 
 namespace UnitTests
 {
@@ -503,7 +504,7 @@ namespace UnitTests
             string line2 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Offline\", \"Name\":\"_Testy_McTest_\" }";
 
             // Setup
-            Eddi.EDDI eddiInstance = Eddi.EDDI.Instance;
+            EDDI eddiInstance = EDDI.Instance;
             Friend[] preexistingFriends = eddiInstance.Cmdr.friends.ToArray();
             PrivateObject privateEddiInstance = new PrivateObject(eddiInstance);
             bool eventFriends(FriendsEvent friendsEvent)
@@ -1028,7 +1029,7 @@ namespace UnitTests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
-            PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             var result = (bool)privateObject.Invoke("eventJumped", new object[] { @event });
             Assert.IsTrue(result);
         }
