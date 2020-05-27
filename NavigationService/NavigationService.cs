@@ -8,6 +8,7 @@ using EddiStarMapService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EddiCore;
 using Utilities;
 
 namespace EddiNavigationService

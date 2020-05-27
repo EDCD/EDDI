@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Rollbar;
 using System.IO;
+using EddiCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests

@@ -18,9 +18,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Eddi;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>
     /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
@@ -275,7 +276,7 @@ namespace Eddi
                 {
                     EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
-                    string spokenVersion = info.version.Replace(".", $" {Properties.EddiResources.point} ");
+                    string spokenVersion = info.version.Replace(".", $" {Eddi.Properties.EddiResources.point} ");
                     Motd = info.motd;
                     if (updateServerInfo.productionbuilds != null)
                     {
@@ -287,7 +288,7 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!App.FromVA)
                         {
-                            string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
+                            string message = String.Format(Eddi.Properties.EddiResources.mandatory_upgrade, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeRequired = true;
@@ -302,7 +303,7 @@ namespace Eddi
                         // There is an update available
                         if (!App.FromVA)
                         {
-                            string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
+                            string message = String.Format(Eddi.Properties.EddiResources.update_available, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeAvailable = true;
@@ -313,13 +314,13 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, 0);
+                SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.update_server_unreachable, 0);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
 
-        [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public void Upgrade()
         {
             try
@@ -327,11 +328,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, 0);
+                    SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.downloading_upgrade, 0);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, 0);
+                        SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.download_failed, 0);
                     }
                     else
                     {
@@ -341,7 +342,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, 0);
+                        SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.starting_upgrade, 0);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -350,7 +351,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, 0);
+                SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.upgrade_failed, 0);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -2623,7 +2624,7 @@ namespace Eddi
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Properties.EddiResources.Commander;
+                Cmdr.title = Eddi.Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -2702,13 +2703,13 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }

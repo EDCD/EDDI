@@ -7,6 +7,7 @@ using ICSharpCode.AvalonEdit.Search;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using EddiCore;
 using EddiSpeechResponder.Service;
 using Utilities;
 
