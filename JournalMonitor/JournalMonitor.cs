@@ -2876,10 +2876,10 @@ namespace EddiJournalMonitor
                                             long missionId = JsonParsing.getLong(missionProperties, "MissionID");
                                             string name = JsonParsing.getString(missionProperties, "Name");
                                             decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
-                                            DateTime expiry = DateTime.Now.AddSeconds((double)expires);
+                                            DateTime expiry = DateTime.UtcNow.AddSeconds((double)expires);
 
-                                            // If mission is 'Active' and expires = 0, then set status to 'Complete'
-                                            MissionStatus missionStatus = (i == 0 && expires == 0) ? MissionStatus.FromStatus(1) : status;
+                                            // If mission is 'Active' and expires = 0, then set status to 'Claim'
+                                            MissionStatus missionStatus = i == 0 && expires == 0 ? MissionStatus.FromStatus(3) : status;
                                             Mission newMission = new Mission(missionId, name, expiry, missionStatus);
                                             if (newMission == null)
                                             {
