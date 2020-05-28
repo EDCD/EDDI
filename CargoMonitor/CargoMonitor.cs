@@ -509,6 +509,7 @@ namespace EddiCargoMonitor
                             haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
+
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
                         haulage.startmarketid = @event.startmarketid;
@@ -525,6 +526,7 @@ namespace EddiCargoMonitor
                             if (haulage != null)
                             {
                                 haulage.remaining = amountRemaining;
+                                haulage.need = amountRemaining;
 
                                 //Update commodity definition
                                 haulage.amount = @event.totaltodeliver;
@@ -538,7 +540,6 @@ namespace EddiCargoMonitor
                                 haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null);
                                 cargo.haulageData.Add(haulage);
                             }
-                            cargo.CalculateNeed();
                         }
                         else
                         {
@@ -553,8 +554,11 @@ namespace EddiCargoMonitor
                             string name = mission?.name ?? (@event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing");
                             haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
-                            cargo.CalculateNeed();
                         }
+
+                        // Update 'Need' when cargo is delivered, as the 'Cargo' event handler does not update 'Collect' mission types
+                        cargo.CalculateNeed();
+
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
                         haulage.endmarketid = (haulage.endmarketid == 0) ? @event.endmarketid : haulage.endmarketid;
@@ -582,6 +586,7 @@ namespace EddiCargoMonitor
                             // Cargo instantiated by either 'Mission accepted' event, previous 'WingUpdate' or 'Collect' updates
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
                             haulage.remaining = amountRemaining;
+                            haulage.need = amountRemaining;
                         }
                         else
                         {
@@ -592,8 +597,8 @@ namespace EddiCargoMonitor
                             haulage = new Haulage(@event.missionid ?? 0, name, null, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
-                        cargo.CalculateNeed();
 
+                        // Generate a derived event when a wing-mate collects or delivers cargo for a wing mission
                         int amount = Math.Max(@event.collected - haulage.collected, @event.delivered - haulage.delivered);
                         if (amount > 0)
                         {
@@ -603,6 +608,9 @@ namespace EddiCargoMonitor
                             haulage.delivered = @event.delivered;
                             haulage.startmarketid = @event.startmarketid;
                             haulage.endmarketid = @event.endmarketid;
+
+                            // Update 'Need' when a wing-mate delivers cargo for a wing mission
+                            if (updatetype == "Deliver") { cargo.CalculateNeed(); }
                         }
 
                         // Check for mission completion
