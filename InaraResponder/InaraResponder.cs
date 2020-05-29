@@ -157,6 +157,10 @@ namespace EddiInaraResponder
                 {
                     handleCargoEvent(cargoEvent);
                 }
+                else if (theEvent is CarrierJumpedEvent carrierJumpedEvent)
+                {
+                    handleCarrierJumpedEvent(carrierJumpedEvent);
+                }
                 else if (theEvent is CommodityCollectedEvent commodityCollectedEvent)
                 {
                     handleCommodityCollectedEvent(commodityCollectedEvent);
@@ -308,6 +312,20 @@ namespace EddiInaraResponder
                 };
                 Logging.Error("Failed to handle event " + theEvent.type, data);
             }
+        }
+
+        private void handleCarrierJumpedEvent(CarrierJumpedEvent @event) 
+        {
+            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelCarrierJump", new Dictionary<string, object>()
+            {
+                { "starsystemName", @event.systemname },
+                { "shipType", currentShip.model },
+                { "shipGameID", currentShip.LocalId }
+            }));
+            // Note: There is a "jumpDistance" input property for this event,
+            // but the current recommendation from the API documentation is to omit it.
         }
 
         private void handleCommunityGoalEvent(CommunityGoalEvent @event)
