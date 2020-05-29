@@ -42,17 +42,7 @@ namespace Eddi
         public bool inCrew { get; private set; } = false;
 
         public bool inHorizons { get; private set; } = true;
-
-        private bool _gameIsBeta = false;
-        public bool gameIsBeta
-        {
-            get => _gameIsBeta;
-            private set
-            {
-                _gameIsBeta = value;
-                CompanionAppService.Instance.gameIsBeta = value;
-            }
-        }
+        public bool gameIsBeta { get; private set; } = false;
 
         static EDDI()
         {
@@ -154,6 +144,11 @@ namespace Eddi
                 gameIsBeta = eliteConfiguration.Beta;
                 Logging.Info(gameIsBeta ? "On beta" : "On live");
                 inHorizons = eliteConfiguration.Horizons;
+
+                // Set up our CompanionAppService instance
+                // CAUTION: CompanionAppService.Instance must be invoked with the EDDI .ctor to correctly
+                // configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
+                CompanionAppService.Instance.gameIsBeta = gameIsBeta;
 
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
