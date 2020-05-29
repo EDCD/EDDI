@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>Configuration for Elite</summary>
     public class EliteConfiguration
