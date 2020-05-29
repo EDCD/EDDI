@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b2
+  * Frontier API
+    * Fixed an issue whereby the login process would try to launch a second instance of EDDI and fail.
+
 ### 3.5.3-b1
   * Core
     * Added support for all documented events etc for the Fleet Carriers update.
