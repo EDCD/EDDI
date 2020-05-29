@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore
 {
     public class ShipyardInfoReader
     {
