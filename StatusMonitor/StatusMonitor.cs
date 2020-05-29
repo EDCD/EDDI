@@ -576,12 +576,12 @@ namespace EddiStatusMonitor
             if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
             {
                 Ship ship = EDDI.Instance.CurrentShip;
-                if (ship?.fueltanktotalcapacity != null && fuelRemaining != null)
+                if (ship?.fueltanktotalcapacity > 0)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
                     decimal percent = (decimal)(fuelRemaining / (ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) * 100);
                     fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
-                    fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond);
+                    fuel_seconds = fuelPerSecond > 0 ? (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond) : null;
                 }
             }
             else if (currentStatus.vehicle == Constants.VEHICLE_SRV)
@@ -589,7 +589,7 @@ namespace EddiStatusMonitor
                 const decimal srvFuelTankCapacity = 0.45M;
                 decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
                 fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
-                fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)(srvFuelTankCapacity / fuelPerSecond);
+                fuel_seconds = fuelPerSecond > 0 ? (int?)(srvFuelTankCapacity / fuelPerSecond) : null;
             }
             return; // At present, fighters do not appear to consume fuel.
         }
