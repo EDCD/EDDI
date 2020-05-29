@@ -73,8 +73,8 @@ namespace EddiEvents
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // Powerplay properties (only when pledged)
-        public string power => Power.localizedName;
-        public string powerstate => powerState.localizedName;
+        public string power => (Power ?? Power.None).localizedName;
+        public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
