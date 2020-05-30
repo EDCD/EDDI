@@ -112,6 +112,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiInaraResponder", "Inara
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiInaraService", "EddiInaraService\EddiInaraService.csproj", "{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiNavigationMonitor", "NavigationMonitor\EddiNavigationMonitor.csproj", "{99F79039-803B-4709-A24F-4D8104D1E5D2}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCore", "EddiCore\EddiCore.csproj", "{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}"
 EndProject
 Global
@@ -228,6 +230,10 @@ Global
 		{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F79039-803B-4709-A24F-4D8104D1E5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F79039-803B-4709-A24F-4D8104D1E5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F79039-803B-4709-A24F-4D8104D1E5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F79039-803B-4709-A24F-4D8104D1E5D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU

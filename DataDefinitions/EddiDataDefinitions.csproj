@@ -74,6 +74,7 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
+    <Compile Include="Bookmark.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="PowerplayState.cs" />
@@ -92,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="RouteInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
