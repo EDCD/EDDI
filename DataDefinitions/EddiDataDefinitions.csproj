@@ -73,6 +73,7 @@
     <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
+    <Compile Include="Bookmark.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\PowerplayState.Designer.cs">
@@ -85,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="RouteInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
