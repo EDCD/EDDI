@@ -6,6 +6,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiMissionMonitor;
 using EddiShipMonitor;
+using EddiNavigationMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -3314,6 +3315,14 @@ namespace EddiJournalMonitor
                                         events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
 
                                     }
+                                }
+                                handled = true;
+                                break;
+                            case "Route":
+                                {
+                                    List<RouteInfo> route = new List<RouteInfo>();
+                                    route = RouteInfoReader.FromFile().Route;
+                                    events.Add(new RouteEvent(timestamp, route) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
