@@ -154,7 +154,7 @@ namespace EddiSpeechResponder
                 fixPersonalityInfo(personality);
             }
 
-            return personality;
+            return personality ?? (isDefault ? null : Default());
         }
 
         /// <summary>
@@ -162,11 +162,11 @@ namespace EddiSpeechResponder
         /// </summary>
         public void ToFile(string filename = null)
         {
-            if (filename == null)
+            if (string.IsNullOrEmpty(filename))
             {
                 filename = dataPath;
             }
-            if (filename == null)
+            if (string.IsNullOrEmpty(filename))
             {
                 filename = DEFAULT_USER_PATH;
             }
