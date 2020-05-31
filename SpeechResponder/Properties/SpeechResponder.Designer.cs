@@ -142,15 +142,6 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eddi.json.
-        /// </summary>
-        public static string default_personality_script_filename {
-            get {
-                return ResourceManager.GetString("default_personality_script_filename", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete Personality.
         /// </summary>
         public static string delete_personality_caption {

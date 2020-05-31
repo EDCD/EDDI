@@ -2,8 +2,10 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Utilities;
@@ -36,8 +38,17 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         static readonly object fileLock = new object();
 
-        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
-        private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
+        private static string DEFAULT_PERSONALITY_SCRIPT_FILENAME => "eddi"
+            + "." + (CultureInfo.CurrentCulture.Name != CultureInfo.InvariantCulture.Name ? CultureInfo.CurrentCulture.IetfLanguageTag : "")
+            + ".json";
+        private static readonly string DEFAULT_PERSONALITY_SCRIPT_FILENAME_INV = "eddi.json";
+        private static readonly string APP_DIR = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException()).FullName;
+        private static readonly string DEFAULT_PATH = File.Exists(APP_DIR + @"\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME) 
+            ? APP_DIR + @"\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME 
+            : APP_DIR + @"\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME_INV;
+        private static readonly string DEFAULT_USER_PATH = File.Exists(Constants.DATA_DIR + @"\personalities\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME) 
+            ? Constants.DATA_DIR + @"\personalities\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME 
+            : Constants.DATA_DIR + @"\personalities\" + DEFAULT_PERSONALITY_SCRIPT_FILENAME_INV;
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {

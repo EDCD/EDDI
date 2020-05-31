@@ -144,10 +144,6 @@
   <data name="default_is_read_only" xml:space="preserve">
     <value>The default personality cannot be modified. If you wish to make changes, create a copy.</value>
   </data>
-  <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.json</value>
-    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
-  </data>
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Delete Personality</value>
   </data>
