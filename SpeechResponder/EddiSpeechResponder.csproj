@@ -214,16 +214,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="eddi.de.json" />
     <None Include="eddi.es.json" />
     <None Include="eddi.fr.json" />
-    <None Include="eddi.hu.json" />
-    <None Include="eddi.it.json" />
     <None Include="eddi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="eddi.pt-BR.json" />
-    <None Include="eddi.ru.json" />
     <None Include="packages.config" />
     <None Include="SpeechResponderHelp.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
