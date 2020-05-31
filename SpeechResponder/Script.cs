@@ -46,7 +46,10 @@ namespace EddiSpeechResponder
         }
 
         [JsonProperty("default")]
-        public bool Default => Value == defaultValue;
+        // Determine whether the script matches the default, treating empty strings and null values as equal
+        public bool Default => string.IsNullOrWhiteSpace(Value) 
+            ? string.IsNullOrWhiteSpace(defaultValue) 
+            : string.Equals(Value, defaultValue);
 
         [JsonIgnore]
         public bool IsResettableOrDeletable
