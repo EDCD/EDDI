@@ -23,49 +23,62 @@ namespace Utilities
         public static string Read(string name)
         {
             string result = null;
+            int attempts = 10;
+            int ioDelayMs = 25;
             if (name != null)
             {
-                try
+                while (attempts > 0)
                 {
-                    result = File.ReadAllText(name, Encoding.UTF8);
-                }
-                catch (ArgumentException ex)
-                {
-                    Logging.Error("Failed to read from " + name, ex);
-                }
-                catch (PathTooLongException ex)
-                {
-                    Logging.Error("Path " + name + " too long", ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    Logging.Error("Directory for " + name + " not found", ex);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    if (!ignoreMissing)
+                    try
                     {
-                        Logging.Error("File " + name + " not found", ex);
+                        result = File.ReadAllText(name, Encoding.UTF8);
                     }
-                }
-                catch (IOException ex)
-                {
-                    if (!ignoreMissing)
+                    catch (ArgumentException ex)
                     {
-                        Logging.Error("IO exception for " + name, ex);
+                        Logging.Error("Failed to read from " + name, ex);
                     }
+                    catch (PathTooLongException ex)
+                    {
+                        Logging.Error("Path " + name + " too long", ex);
+                    }
+                    catch (DirectoryNotFoundException ex)
+                    {
+                        Logging.Error("Directory for " + name + " not found", ex);
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        if (!ignoreMissing)
+                        {
+                            Logging.Error("File " + name + " not found", ex);
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        if (!ignoreMissing)
+                        {
+                            attempts--;
+                            Logging.Debug($"IO read exception for {name}, {attempts} attempts left", ex);
+                            Thread.Sleep(ioDelayMs);
+                            continue;
+                        }
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Logging.Error("Not allowed to read from " + name, ex);
+                    }
+                    catch (NotSupportedException ex)
+                    {
+                        Logging.Error("Not supported reading from " + name, ex);
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Logging.Error("Security exception reading from " + name, ex);
+                    }
+                    break;
                 }
-                catch (UnauthorizedAccessException ex)
+                if (attempts == 0)
                 {
-                    Logging.Error("Not allowed to read from " + name, ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Logging.Error("Not supported reading from " + name, ex);
-                }
-                catch (SecurityException ex)
-                {
-                    Logging.Error("Security exception reading from " + name, ex);
+                    throw new IOException("IO read failed for " + name + ", too many attempts.");
                 }
 
             }
@@ -88,38 +101,52 @@ namespace Utilities
                     return;
                 }
 
-                // Attempt to write the file
-                try
+                int attempts = 20;
+                int ioDelayMs = 25;
+
+                while (attempts > 0)
                 {
-                    File.WriteAllText(name, content, Encoding.UTF8);
+                    // Attempt to write the file
+                    try
+                    {
+                        File.WriteAllText(name, content, Encoding.UTF8);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Logging.Error("Failed to write to " + name, ex);
+                    }
+                    catch (PathTooLongException ex)
+                    {
+                        Logging.Error("Path " + name + " too long", ex);
+                    }
+                    catch (DirectoryNotFoundException ex)
+                    {
+                        Logging.Error("Directory for " + name + " not found", ex);
+                    }
+                    catch (IOException ex)
+                    {
+                        attempts--;
+                        Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
+                        Thread.Sleep(ioDelayMs);
+                        continue;
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Logging.Error("Not allowed to write to " + name, ex);
+                    }
+                    catch (NotSupportedException ex)
+                    {
+                        Logging.Error("Not supported writing to " + name, ex);
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Logging.Error("Security exception writing to " + name, ex);
+                    }
+                    break;
                 }
-                catch (ArgumentException ex)
+                if (attempts == 0)
                 {
-                    Logging.Error("Failed to write to " + name, ex);
-                }
-                catch (PathTooLongException ex)
-                {
-                    Logging.Error("Path " + name + " too long", ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    Logging.Error("Directory for " + name + " not found", ex);
-                }
-                catch (IOException ex)
-                {
-                    Logging.Error("IO exception for " + name, ex);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    Logging.Error("Not allowed to write to " + name, ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Logging.Error("Not supported writing to " + name, ex);
-                }
-                catch (SecurityException ex)
-                {
-                    Logging.Error("Security exception writing to " + name, ex);
+                    throw new IOException("IO write failed for " + name + ", too many attempts.");
                 }
             }
         }
