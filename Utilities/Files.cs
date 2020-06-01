@@ -52,16 +52,6 @@ namespace Utilities
                             Logging.Error("File " + name + " not found", ex);
                         }
                     }
-                    catch (IOException ex)
-                    {
-                        if (!ignoreMissing)
-                        {
-                            attempts--;
-                            Logging.Debug($"IO read exception for {name}, {attempts} attempts left", ex);
-                            Thread.Sleep(ioDelayMs);
-                            continue;
-                        }
-                    }
                     catch (UnauthorizedAccessException ex)
                     {
                         Logging.Error("Not allowed to read from " + name, ex);
@@ -73,6 +63,20 @@ namespace Utilities
                     catch (SecurityException ex)
                     {
                         Logging.Error("Security exception reading from " + name, ex);
+                    }
+                    catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
+                    {
+                        if (!ignoreMissing)
+                        {
+                            attempts--;
+                            Logging.Debug($"IO read exception for {name}, {attempts} attempts left", ex);
+                            Thread.Sleep(ioDelayMs);
+                            continue;
+                        }
+                    }
+                    catch (IOException ex) // Other IO issue 
+                    {
+                        Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
                     }
                     break;
                 }
@@ -123,13 +127,6 @@ namespace Utilities
                     {
                         Logging.Error("Directory for " + name + " not found", ex);
                     }
-                    catch (IOException ex)
-                    {
-                        attempts--;
-                        Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
-                        Thread.Sleep(ioDelayMs);
-                        continue;
-                    }
                     catch (UnauthorizedAccessException ex)
                     {
                         Logging.Error("Not allowed to write to " + name, ex);
@@ -141,6 +138,17 @@ namespace Utilities
                     catch (SecurityException ex)
                     {
                         Logging.Error("Security exception writing to " + name, ex);
+                    }
+                    catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
+                    {
+                        attempts--;
+                        Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
+                        Thread.Sleep(ioDelayMs);
+                        continue;
+                    }
+                    catch (IOException ex) // Other IO issue 
+                    {
+                        Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
                     }
                     break;
                 }
