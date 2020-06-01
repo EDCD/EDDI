@@ -1,4 +1,5 @@
 ﻿using EddiCompanionAppService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
@@ -19,15 +20,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using EddiCore;
 using Utilities;
 
 namespace Eddi
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window
     {
         struct LanguageDef : IComparable<LanguageDef>
         {
@@ -869,7 +869,7 @@ namespace Eddi
             if (runBetaCheck)
             {
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
-                EDDI.Instance.CheckUpgrade();
+	            App.CheckUpgrade();
                 setStatusInfo();
             }
             else
@@ -886,7 +886,7 @@ namespace Eddi
             if (runBetaCheck)
             {
                 // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
-                EDDI.Instance.CheckUpgrade();
+                App.CheckUpgrade();
                 setStatusInfo();
             }
             else
@@ -919,9 +919,9 @@ namespace Eddi
             versionText.Text = Constants.EDDI_VERSION.ToString();
             Title = "EDDI v." + Constants.EDDI_VERSION;
 
-            if (EDDI.Instance.UpgradeVersion != null)
+            if (App.UpgradeVersion != null)
             {
-                statusText.Text = String.Format(Properties.EddiResources.update_message, EDDI.Instance.UpgradeVersion);
+                statusText.Text = String.Format(Properties.EddiResources.update_message, App.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = App.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -989,7 +989,7 @@ namespace Eddi
             }
             else
             {
-                // Logout from the companion app and start again
+                // Logout from the companion EddiApplication and start again
                 CompanionAppService.Instance.Logout();
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, 0);
                 if (App.FromVA)
@@ -1228,7 +1228,7 @@ namespace Eddi
 
         private void upgradeClicked(object sender, RoutedEventArgs e)
         {
-            EDDI.Instance.Upgrade();
+            App.Upgrade();
         }
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
