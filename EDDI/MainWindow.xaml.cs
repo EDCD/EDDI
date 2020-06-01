@@ -869,7 +869,7 @@ namespace Eddi
             if (runBetaCheck)
             {
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
-	            App.CheckUpgrade();
+	            EddiUpgrader.CheckUpgrade();
                 setStatusInfo();
             }
             else
@@ -886,7 +886,7 @@ namespace Eddi
             if (runBetaCheck)
             {
                 // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
-                App.CheckUpgrade();
+                EddiUpgrader.CheckUpgrade();
                 setStatusInfo();
             }
             else
@@ -919,9 +919,9 @@ namespace Eddi
             versionText.Text = Constants.EDDI_VERSION.ToString();
             Title = "EDDI v." + Constants.EDDI_VERSION;
 
-            if (App.UpgradeVersion != null)
+            if (EddiUpgrader.UpgradeVersion != null)
             {
-                statusText.Text = String.Format(Properties.EddiResources.update_message, App.UpgradeVersion);
+                statusText.Text = String.Format(Properties.EddiResources.update_message, EddiUpgrader.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = App.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -1228,7 +1228,7 @@ namespace Eddi
 
         private void upgradeClicked(object sender, RoutedEventArgs e)
         {
-            App.Upgrade();
+            EddiUpgrader.Upgrade();
         }
 
         private void EDDIClicked(object sender, RoutedEventArgs e)

@@ -133,6 +133,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EddiUpgrader.cs" />
     <Compile Include="MarketInfoReader.cs" />
     <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="Settings.cs" />
