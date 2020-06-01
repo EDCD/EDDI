@@ -1050,30 +1050,24 @@ namespace EddiCargoMonitor
                 Haulage cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);
                 if (cargoHaulage != null)
                 {
-                    int need = cargoHaulage.remaining - info.count;
-
                     // Check for sold haulage
-                    if (need != cargoHaulage.need)
+                    if (checkHaulage && cargoHaulage.need > info.count)
                     {
-                        if (checkHaulage && need > cargoHaulage.need)
+                        // We lost haulage
+                        switch (cargoHaulage.typeEDName)
                         {
-                            // We lost haulage
-                            switch (cargoHaulage.typeEDName)
-                            {
-                                case "delivery":
-                                case "deliverywing":
-                                case "smuggle":
+                            case "delivery":
+                            case "deliverywing":
+                            case "smuggle":
+                                {
+                                    cargoHaulage.status = "Failed";
+                                    if (mission != null)
                                     {
-                                        cargoHaulage.status = "Failed";
-                                        if (mission != null)
-                                        {
-                                            mission.statusDef = MissionStatus.FromEDName("Failed");
-                                        }
+                                        mission.statusDef = MissionStatus.FromEDName("Failed");
                                     }
-                                    break;
-                            }
+                                }
+                                break;
                         }
-                        cargoHaulage.need = need;
                     }
                 }
                 else
