@@ -311,6 +311,19 @@ namespace EddiDataProviderService
                         {
                             // Carry over StarSystem properties that we want to preserve
                             updatedSystem.totalbodies = JsonParsing.getOptionalInt(oldStarSystem, "discoverableBodies") ?? 0;
+                            if (oldStarSystem.TryGetValue("visitLog", out object visitLogObj))
+                            {
+                                // Visits should sync from EDSM, but in case there is a problem with the connection we will also seed back in our old star system visit data
+                                if (visitLogObj is List<object> oldVisitLog)
+                                {
+                                    foreach (DateTime visit in oldVisitLog)
+                                    {
+                                        // The SortedSet<T> class does not accept duplicate elements so we can safely add timestamps which may be duplicates of visits already reported from EDSM.
+                                        // If an item is already in the set, processing continues and no exception is thrown.
+                                        updatedSystem.visitLog.Add(visit);
+                                    }
+                                }
+                            }
 
                             // Carry over Body properties that we want to preserve (e.g. exploration data)
                             oldStarSystem.TryGetValue("bodies", out object bodiesVal);
