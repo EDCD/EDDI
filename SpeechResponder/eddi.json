@@ -2192,7 +2192,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{if event.playercontrolled = true:\r\n  Touchdown \r\n  {if body.name: on {P(body.name)} }.\r\n|else:\r\n  {ShipName()} has touched down\r\n  {if body.name: on {P(body.name)} }.\r\n}\r\n\r\n{Pause(2000)}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" :\r\n   Coordinates are  {round(event.latitude, 2)} degrees latitude, {round(event.longitude, 2)} degrees longitude.\r\n}\r\n",
+      "script": "{_ Touchdown _}\r\n{_ Triggered when your ship touches down on a planet's surface _}\r\n\r\n\r\n{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{if event.playercontrolled = true && state.eddi_context_last_subject != 'location':\r\n  Touchdown \r\n  {if body.name: on {P(body.name)} }.\r\n|else:\r\n  {ShipName()} has touched down\r\n  {if body.name: on {P(body.name)} }.\r\n}\r\n\r\n{Pause(2000)}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" :\r\n   Coordinates are  {round(event.latitude, 2)} degrees latitude, {round(event.longitude, 2)} degrees longitude.\r\n}\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'ship')}\r\n{SetState('eddi_context_last_action', 'land')}\r\n",
       "default": true,
       "name": "Touchdown",
       "description": "Triggered when your ship touches down on a planet's surface"
