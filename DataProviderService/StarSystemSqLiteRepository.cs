@@ -296,7 +296,7 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private List<StarSystem> PreserveUnsyncedProperties(List<StarSystem> updatedSystems, List<DatabaseStarSystem> systemsToUpdate)
+        private static List<StarSystem> PreserveUnsyncedProperties(List<StarSystem> updatedSystems, List<DatabaseStarSystem> systemsToUpdate)
         {
             if (updatedSystems is null) {return new List<StarSystem>(); }
             foreach (StarSystem updatedSystem in updatedSystems)
