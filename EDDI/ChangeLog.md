@@ -2,6 +2,25 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b3
+  * Mission Monitor
+    * Added new `claim` state for missions where the expiration timer ceases upon completion of mission requirements. `Assassinate` and `Massacre` mission types, as an example. 
+  * Speech Responder
+    * Updated scripts to improve reporting of crime and mission related information: 
+      * `Crime check station` 
+      * `Crime check system`
+      * `Entered normal space`
+      * `Location`
+      * `Mission check galaxy` 
+      * `Mission check system` 
+      * `Mission check station`
+      * `Mission completed`
+      * `Mission report`
+      * `Touchdown`
+
+**Cargo Monitor**
+* Fixed bug where `need` property did not update for `Collect` mission types, as a market buy is not mission specific. Issue resolved in the handler for the `CargoDepot` event, which provides the associated mission ID.
+
 ### 3.5.3-b2
   * Frontier API
     * Fixed an issue whereby the login process would try to launch a second instance of EDDI and fail.
