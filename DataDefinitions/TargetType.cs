@@ -20,6 +20,7 @@
             var Security = new TargetType("Security");
             var Smuggler = new TargetType("Smuggler");
             var Terrorist = new TargetType("Terrorist");
+            var TerroristLeader = new TargetType("TerroristLeader");
             var Trader = new TargetType("Trader");
             var VenerableGeneral = new TargetType("VenerableGeneral");
             var DeserterASS = new TargetType("DeserterASS");
