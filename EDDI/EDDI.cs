@@ -22,7 +22,8 @@ namespace EddiCore
 {
 	/// <summary>
 	/// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
-	/// and keep them up-to-date with changes that occur.  It also passes on messages to responders to handle as required.
+	/// and keep them up-to-date with changes that occur.
+    /// It also acts as the switchboard for passing events through all parts of the application including both responders and monitors.
 	/// </summary>
 	public class EDDI
     {

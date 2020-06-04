@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EddiCore;
+using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiCore;
-using EddiSpeechService;
 using Utilities;
 
 namespace Eddi
