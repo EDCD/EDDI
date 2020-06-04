@@ -202,7 +202,7 @@
     <comment>Faction state HistoricEvent</comment>
   </data>
   <data name="InfrastructureFailure" xml:space="preserve">
-    <value>Infrastrukturfehler</value>
+    <value>Infrastruktur-Ausfall</value>
     <comment>Faction state InfrastructureFailure</comment>
   </data>
   <data name="NaturalDisaster" xml:space="preserve">
