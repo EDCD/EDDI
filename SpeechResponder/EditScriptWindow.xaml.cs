@@ -131,7 +131,7 @@ namespace EddiSpeechResponder
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
             // Update the script
-            string newScriptText = scriptView.Text;
+            string newScriptText = string.IsNullOrWhiteSpace(scriptView.Text) ? null : scriptView.Text;
             if (_script != null)
             {
                 Script newScript = new Script(scriptName, 
