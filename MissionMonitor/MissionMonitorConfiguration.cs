@@ -13,6 +13,7 @@ namespace EddiMissionMonitor
         public ObservableCollection<Mission> missions { get; set; }
 
         public DateTime updatedat { get; set; }
+        public int goalsCount { get; set; }
         public int missionsCount { get; set; }
         public int? missionWarning { get; set; }
         public string missionsRouteList { get; set; }

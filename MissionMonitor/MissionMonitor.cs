@@ -30,20 +30,11 @@ namespace EddiMissionMonitor
         public ObservableCollection<Mission> missions { get; private set; }
 
         private DateTime updateDat;
+        public int goalsCount;
         public int missionsCount;
         public int? missionWarning;
         public string missionsRouteList;
         public decimal missionsRouteDistance;
-
-        private readonly List<string> noExpiryAfterComplete = new List<string> {
-            "assassinate",
-            "assassinatewing",
-            "disable",
-            "disablewing",
-            "massacre",
-            "massacrethargoid",
-            "massacrewing"
-        };
 
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
@@ -144,7 +135,7 @@ namespace EddiMissionMonitor
                         {
                             // Check for mission types which have no expiry after requiremensts completed
                             string type = mission.typeEDName.ToLowerInvariant();
-                            if (mission.statusEDName == "Complete" && noExpiryAfterComplete.Contains(type))
+                            if (mission.statusEDName == "Claim")
                             {
                                 mission.timeremaining = String.Empty;
                                 continue;
@@ -354,36 +345,20 @@ namespace EddiMissionMonitor
                     {
                         case "Active":
                             {
-                                if (missionEntry.statusEDName == "Failed" && mission.expiry > missionEntry.expiry)
+                                if (missionEntry.statusEDName == "Failed")
                                 {
-                                    missionEntry.expiry = mission.expiry;
-                                    missionEntry.statusDef = MissionStatus.FromEDName("Active");
-                                    update = true;
-                                }
-
-                                if (missionEntry.statusEDName == "Active" && missionEntry.destinationsystem == missionEntry.originsystem)
-                                {
-                                    string type = missionEntry.typeEDName.ToLowerInvariant();
-                                    switch (type)
+                                    if (mission.expiry > missionEntry.expiry)
                                     {
-                                        case "assassinate":
-                                        case "assassinatewing":
-                                        case "disable":
-                                        case "disablewing":
-                                        case "hack":
-                                        case "longdistanceexpedition":
-                                        case "passengervip":
-                                        case "piracy":
-                                        case "rescue":
-                                        case "salvage":
-                                        case "scan":
-                                        case "sightseeing":
-                                            {
-                                                missionEntry.statusDef = MissionStatus.FromEDName("Complete");
-                                                update = true;
-                                            }
-                                            break;
+                                        // Fix status if erroneously reported as failed
+                                        missionEntry.expiry = mission.expiry;
+                                        missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                        update = true;
                                     }
+                                }
+                                else if (missionEntry.statusEDName == "Active")
+                                {
+                                    // Update status on a missed 'redirect'
+                                    update = UpdateRedirectStatus(missionEntry);
                                 }
                             }
                             break;
@@ -411,20 +386,28 @@ namespace EddiMissionMonitor
                 // Add missions to mission log
                 else
                 {
-                    AddMission(mission);
-                    update = true;
+                    // Starter zone missions have no consistent 'accepted' or 'completed' events, so exclude them from the mission log
+                    if (mission.typeEDName != "StartZone")
+                    {
+                        AddMission(mission);
+                        update = true;
+                    }
                 }
             }
 
             // Remove strays from the mission log
             foreach (Mission missionEntry in missions.ToList())
             {
-                Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
-                if (mission == null)
+                // Ensure Community Goals remain in the mission log
+                if (!missionEntry.communal)
                 {
-                    // Strip out the stray from the mission log
-                    RemoveMissionWithMissionId(missionEntry.missionid);
-                    update = true;
+                    Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
+                    if (mission == null || mission.name.Contains("StartZone"))
+                    {
+                        // Strip out the stray and 'StartZone' missions from the log
+                        RemoveMissionWithMissionId(missionEntry.missionid);
+                        update = true;
+                    }
                 }
             }
             return update;
@@ -458,7 +441,7 @@ namespace EddiMissionMonitor
                     // Dummy mission to populate 'Passengers' parameters
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
                     MissionStatus status = MissionStatus.FromEDName("Active");
-                    mission = new Mission(passenger.missionid, "Mission_None", DateTime.Now.AddDays(1), status)
+                    mission = new Mission(passenger.missionid, "Mission_None", DateTime.UtcNow.AddDays(1), status)
                     {
                         passengertypeEDName = passenger.type,
                         passengervips = passenger.vip,
@@ -641,8 +624,9 @@ namespace EddiMissionMonitor
             bool update = false;
 
             // Protect against duplicates and empty strings
-            bool exists = missions.Any(m => m.missionid == @event.missionid);
-            if (!exists && !string.IsNullOrEmpty(@event.name))
+            bool exists = missions?.Any(m => m.missionid == @event.missionid) ?? false;
+            bool valid = !string.IsNullOrEmpty(@event.name) && !@event.name.Contains("StartZone");
+            if (!exists && valid)
             {
                 MissionStatus status = MissionStatus.FromEDName("Active");
                 Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry, status)
@@ -841,13 +825,7 @@ namespace EddiMissionMonitor
                 {
                     mission.destinationsystem = @event.newdestinationsystem;
                     mission.destinationstation = @event.newdestinationstation;
-
-                    if (mission.originreturn && mission.originsystem == @event.newdestinationsystem
-                        && mission.originstation == @event.newdestinationstation)
-                    {
-                        mission.statusDef = MissionStatus.FromEDName("Complete");
-                    }
-                    update = true;
+                    update = UpdateRedirectStatus(mission);
                 }
             }
             return update;
@@ -857,6 +835,7 @@ namespace EddiMissionMonitor
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
+                ["goalsCount"] = goalsCount,
                 ["missions"] = new List<Mission>(missions),
                 ["missionsCount"] = missionsCount,
                 ["missionWarning"] = missionWarning,
@@ -870,12 +849,14 @@ namespace EddiMissionMonitor
         {
             lock (missionsLock)
             {
-                // Write cargo configuration with current inventory
+                // Write missions configuration with current missions log
+                goalsCount = missions.Where(m => m.communal).Count();
                 missionsCount = missions.Where(m => !m.shared && !m.communal).Count();
                 MissionMonitorConfiguration configuration = new MissionMonitorConfiguration
                 {
                     updatedat = updateDat,
                     missions = missions,
+                    goalsCount = goalsCount,
                     missionsCount = missionsCount,
                     missionWarning = missionWarning,
                     missionsRouteList = missionsRouteList,
@@ -1408,6 +1389,51 @@ namespace EddiMissionMonitor
                         }
                         break;
                 }
+            }
+            return false;
+        }
+
+        public bool UpdateRedirectStatus(Mission mission)
+        {
+            if (mission.originreturn && mission.originsystem == mission.destinationsystem
+                && mission.originstation == mission.destinationstation)
+            {
+                string type = mission.typeEDName.ToLowerInvariant();
+                switch (type)
+                {
+                    case "assassinate":
+                    case "assassinatewing":
+                    case "disable":
+                    case "disablewing":
+                    case "massacre":
+                    case "massacrethargoid":
+                    case "massacrewing":
+                        {
+                            if (mission.statusEDName != "Claim")
+                            {
+                                mission.statusDef = MissionStatus.FromEDName("Claim");
+                                return true;
+                            }
+                        }
+                        break;
+                    case "hack":
+                    case "longdistanceexpedition":
+                    case "passengervip":
+                    case "piracy":
+                    case "rescue":
+                    case "salvage":
+                    case "scan":
+                    case "sightseeing":
+                        {
+                            if (mission.statusEDName != "Complete")
+                            {
+                                mission.statusDef = MissionStatus.FromEDName("Complete");
+                                return true;
+                            }
+                        }
+                        break;
+                }
+
             }
             return false;
         }
