@@ -154,4 +154,7 @@
     <value>Deserteur</value>
     <comment>Assassination mission target: Deserter</comment>
   </data>
+  <data name="TerroristLeader" xml:space="preserve">
+    <value>Terroristenführer</value>
+  </data>
 </root>
