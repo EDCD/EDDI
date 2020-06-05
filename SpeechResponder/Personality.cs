@@ -33,9 +33,6 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private string dataPath;
 
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
         private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
         private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
@@ -163,10 +160,7 @@ namespace EddiSpeechResponder
             if (filename != DEFAULT_PATH)
             {
                 string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                lock (fileLock)
-                {
-                    Files.Write(filename, json);
-                }
+                Files.Write(filename, json);
             }
         }
 

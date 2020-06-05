@@ -22,9 +22,7 @@ namespace EddiCompanionAppService
 
         [JsonIgnore]
         private string dataPath = defaultPath;
-
-        static readonly object fileLock = new object();
-
+        
         /// <summary>
         /// Obtain credentials from a file. If filepath is not supplied then defaultPath is used.
         /// </summary>
@@ -79,10 +77,7 @@ namespace EddiCompanionAppService
             filename = filename ?? dataPath ?? defaultPath;
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }
