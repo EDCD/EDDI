@@ -25,9 +25,6 @@ namespace EddiInaraService
 
         [JsonIgnore]
         private string dataPath;
-
-        [JsonIgnore]
-        static readonly object fileLock = new object();
         
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
@@ -92,10 +89,7 @@ namespace EddiInaraService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }

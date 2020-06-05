@@ -24,10 +24,7 @@ namespace EddiCrimeMonitor
 
         [JsonIgnore]
         private string dataPath;
-
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
+        
         public CrimeMonitorConfiguration()
         {
             criminalrecord = new ObservableCollection<FactionRecord>();
@@ -113,10 +110,7 @@ namespace EddiCrimeMonitor
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             Logging.Debug("Configuration to file: " + json);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }

@@ -34,9 +34,6 @@ namespace EddiSpeechService
         [JsonIgnore]
         private string dataPath;
 
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
         /// <summary>
         /// Obtain speech config from a file. If  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\speech.json is used
@@ -99,10 +96,7 @@ namespace EddiSpeechService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }
