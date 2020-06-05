@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.5.3-b3
+  * Core
+    * Implemented a speculative fix for system visit counts sometimes becoming reset.
   * Mission Monitor
     * Added new `claim` state for missions where the expiration timer ceases upon completion of mission requirements. `Assassinate` and `Massacre` mission types, as an example. 
   * Speech Responder
