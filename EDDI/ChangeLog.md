@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.5.3-b3
+  * Cargo Monitor
+    * Fixed a bug where the `need` property of mission-related cargo did not properly update for `Collect` mission types.
   * Core
     * Implemented a speculative fix for system visit counts sometimes becoming reset.
   * Mission Monitor
@@ -19,9 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission completed`
       * `Mission report`
       * `Touchdown`
-
-**Cargo Monitor**
-* Fixed bug where `need` property did not update for `Collect` mission types, as a market buy is not mission specific. Issue resolved in the handler for the `CargoDepot` event, which provides the associated mission ID.
+    * Updated the community translation of the default personality for Brazilian Portuguese.
 
 ### 3.5.3-b2
   * Frontier API
