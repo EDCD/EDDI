@@ -296,7 +296,7 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private List<StarSystem> PreserveUnsyncedProperties(List<StarSystem> updatedSystems, List<DatabaseStarSystem> systemsToUpdate)
+        private static List<StarSystem> PreserveUnsyncedProperties(List<StarSystem> updatedSystems, List<DatabaseStarSystem> systemsToUpdate)
         {
             if (updatedSystems is null) {return new List<StarSystem>(); }
             foreach (StarSystem updatedSystem in updatedSystems)
@@ -309,64 +309,89 @@ namespace EddiDataProviderService
 
                         if (oldStarSystem != null)
                         {
-                            // Carry over StarSystem properties that we want to preserve
-                            updatedSystem.totalbodies = JsonParsing.getOptionalInt(oldStarSystem, "discoverableBodies") ?? 0;
-
-                            // Carry over Body properties that we want to preserve (e.g. exploration data)
-                            oldStarSystem.TryGetValue("bodies", out object bodiesVal);
-                            try
-                            {
-                                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
-                                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
-                            }
-                            catch (Exception e) when (e is JsonException || e is JsonReaderException || e is JsonWriterException)
-                            {
-                                Dictionary<string, object> data = new Dictionary<string, object>()
-                                    {
-                                        { "value", bodiesVal },
-                                        { "exception", e }
-                                    };
-                                Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", data);
-                            }
-
-                            // Carry over Faction properties that we want to preserve (e.g. reputation data)
-                            oldStarSystem.TryGetValue("factions", out object factionsVal);
-                            try
-                            {
-                                if (factionsVal != null)
-                                {
-                                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
-                                    if (oldFactions?.Count > 0)
-                                    {
-                                        foreach (var updatedFaction in updatedSystem.factions)
-                                        {
-                                            foreach (var oldFaction in oldFactions)
-                                            {
-                                                if (updatedFaction.name == oldFaction.name)
-                                                {
-                                                    updatedFaction.myreputation = oldFaction.myreputation;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception e) when (e is JsonException || e is JsonReaderException || e is JsonWriterException)
-                            {
-                                Dictionary<string, object> data = new Dictionary<string, object>()
-                                    {
-                                        { "value", factionsVal },
-                                        { "exception", e }
-                                    };
-                                Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", data);
-                            }
-
+                            PreserveSystemProperties(updatedSystem, oldStarSystem);
+                            PreserveBodyProperties(updatedSystem, oldStarSystem);
+                            PreserveFactionProperties(updatedSystem, oldStarSystem);
                             // No station data needs to be carried over at this time.
                         }
                     }
                 }
             }
             return updatedSystems;
+        }
+
+        private static void PreserveSystemProperties(StarSystem updatedSystem, IDictionary<string, object> oldStarSystem)
+        {
+            // Carry over StarSystem properties that we want to preserve
+            updatedSystem.totalbodies = JsonParsing.getOptionalInt(oldStarSystem, "discoverableBodies") ?? 0;
+            if (oldStarSystem.TryGetValue("visitLog", out object visitLogObj))
+            {
+                // Visits should sync from EDSM, but in case there is a problem with the connection we will also seed back in our old star system visit data
+                if (visitLogObj is List<object> oldVisitLog)
+                {
+                    foreach (DateTime visit in oldVisitLog)
+                    {
+                        // The SortedSet<T> class does not accept duplicate elements so we can safely add timestamps which may be duplicates of visits already reported from EDSM.
+                        // If an item is already in the set, processing continues and no exception is thrown.
+                        updatedSystem.visitLog.Add(visit);
+                    }
+                }
+            }
+        }
+
+        private static void PreserveBodyProperties(StarSystem updatedSystem, IDictionary<string, object> oldStarSystem)
+        {
+            // Carry over Body properties that we want to preserve (e.g. exploration data)
+            oldStarSystem.TryGetValue("bodies", out object bodiesVal);
+            try
+            {
+                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
+                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+            }
+            catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "value", bodiesVal },
+                    { "exception", e }
+                };
+                Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", data);
+            }
+        }
+
+        private static void PreserveFactionProperties(StarSystem updatedSystem, IDictionary<string, object> oldStarSystem)
+        {
+            // Carry over Faction properties that we want to preserve (e.g. reputation data)
+            oldStarSystem.TryGetValue("factions", out object factionsVal);
+            try
+            {
+                if (factionsVal != null)
+                {
+                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
+                    if (oldFactions?.Count > 0)
+                    {
+                        foreach (var updatedFaction in updatedSystem.factions)
+                        {
+                            foreach (var oldFaction in oldFactions)
+                            {
+                                if (updatedFaction.name == oldFaction.name)
+                                {
+                                    updatedFaction.myreputation = oldFaction.myreputation;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "value", factionsVal },
+                    { "exception", e }
+                };
+                Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", data);
+            }
         }
 
         private List<DatabaseStarSystem> ReadStarSystems(string[] names)

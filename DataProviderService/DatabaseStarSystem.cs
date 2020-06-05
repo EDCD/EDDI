@@ -2,7 +2,7 @@
 
 namespace EddiDataProviderService
 {
-    internal class DatabaseStarSystem
+    public class DatabaseStarSystem
     {
         // Data as read from columns in our database
         public string systemName { get; private set; }

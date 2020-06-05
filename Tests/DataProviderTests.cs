@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Tests.Properties;
 
 namespace UnitTests
@@ -178,6 +179,33 @@ namespace UnitTests
             StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system" });
             Assert.IsNotNull(starSystem);
             Assert.AreEqual("No such system", starSystem.systemname);
+        }
+
+        [TestMethod]
+        public void TestPreservedProperties()
+        {
+            // Set up our original star systems
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem5);
+            List<DatabaseStarSystem> systemsToUpdate = new List<DatabaseStarSystem>() { new DatabaseStarSystem(system.systemname, system.systemAddress, system.EDSMID, JsonConvert.SerializeObject(system)) };
+
+            // Set up a copy where we mimic missing data not recovered from the server
+            StarSystem systemCopy = system.Copy();
+            systemCopy.totalbodies = 0;
+            systemCopy.visitLog.Clear();
+            systemCopy.bodies.Clear();
+            List<StarSystem> updatedSystems = new List<StarSystem>() { systemCopy };
+
+            // Invoke the method under test
+            PrivateType privateType = new PrivateType(typeof(StarSystemSqLiteRepository));
+            var results = ((List<StarSystem>)privateType
+                .InvokeStatic("PreserveUnsyncedProperties", new object[] { updatedSystems, systemsToUpdate }));
+            var result = results[0];
+
+            // Evaluate the results. The result must include the preserved data.
+            Assert.AreEqual(20, result.totalbodies);
+            Assert.AreEqual(8557, result.bodies?.FirstOrDefault(b => b?.bodyId == 0)?.EDSMID);
+            Assert.AreEqual(17, result.visits);
+            Assert.AreEqual("2017-12-11T06:17:06", result.lastvisit?.ToString("s"));
         }
     }
 }
