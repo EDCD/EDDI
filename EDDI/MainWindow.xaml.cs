@@ -153,9 +153,7 @@ namespace Eddi
         }
 
         private bool runBetaCheck = false;
-
-        private static readonly object logLock = new object();
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -1184,10 +1182,7 @@ namespace Eddi
         {
             if (File.Exists(fromLogPath))
             {
-                lock (logLock)
-                {
-                    File.WriteAllText(toTruncatedLogPath, File.ReadAllText(fromLogPath));
-                }
+                Files.Write(toTruncatedLogPath, Files.Read(fromLogPath));
 
                 // Truncate log files more than the specified size MB in size
                 const long maxLogSizeBytes = 5 * 1024 * 1024; // 5 MB (before zipping)
