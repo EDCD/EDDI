@@ -10,6 +10,15 @@
       "name": "AFMU repairs",
       "description": "Activado al reparar módulos utilizando la Unidad de automantenimiento (AFMU)"
     },
+    "Asteroid cracked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Asteroid cracked",
+      "description": "Triggered when you break up a 'Motherlode' asteroid for mining"
+    },
     "Blueprint make report": {
       "enabled": true,
       "priority": 3,

@@ -3896,6 +3896,12 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "AsteroidCracked":
+                                {
+                                    string bodyName = JsonParsing.getString(data, "Body");
+                                    events.Add(new AsteroidCrackedEvent(timestamp, bodyName) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierBuy":
                             case "CarrierStats":
                             case "CarrierBankTransfer":
