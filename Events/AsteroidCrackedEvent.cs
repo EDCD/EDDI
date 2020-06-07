@@ -13,7 +13,7 @@ namespace EddiEvents
 
         static AsteroidCrackedEvent()
         { 
-        VARIABLES.Add("bodyname", "The name of the nearest body (normally the ring where the asteroid was found)");
+            VARIABLES.Add("bodyname", "The name of the nearest body (normally the ring where the asteroid was found)");
         }
 
         public string bodyname { get; private set; }
