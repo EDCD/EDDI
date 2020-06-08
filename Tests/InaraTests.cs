@@ -3,47 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Tests.Properties;
-using UnitTests;
-
-namespace IntegrationTests
-{
-    [TestClass]
-    public class InaraTests : TestBase
-    {
-        private IInaraService inaraService;
-
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-            inaraService = new InaraService();
-        }
-
-        [TestMethod]
-        public void TestSendEventBatch()
-        {
-            // This integration test will work best using a valid API key. While it can work with the read-only API key, if the read-only API has been over-utilized then the test can fail due to too many requests.
-            List<InaraAPIEvent> inaraAPIEvents = new List<InaraAPIEvent>()
-            {
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
-            };
-            List<InaraResponse> responses = inaraService.SendEventBatch(inaraAPIEvents, InaraConfiguration.FromFile(), true);
-
-            // Check that only valid responses were returned
-            if (responses.Count == 1)
-            {
-                Assert.AreEqual(200, responses[0].eventStatus);
-                Assert.AreEqual(1, responses[0].eventCustomID);
-                Assert.AreEqual(@"https://inara.cz/cmdr/1/", ((Dictionary<string, object>)responses[0].eventData)["inaraURL"]);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-    }
-}
 
 namespace UnitTests
 {
