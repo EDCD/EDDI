@@ -35,16 +35,16 @@ namespace UnitTests
         public void TestCargoConfig()
         {
             string cargoConfigJson = @"{
-	            ""cargo"": [{
-		            ""edname"": ""DamagedEscapePod"",
-		            ""stolen"": 0,
-		            ""haulage"": 0,
-		            ""owned"": 4,
-		            ""need"": 0,
-		            ""total"": 4,
-		            ""ejected"": 0,
-		            ""price"": 11912,
-		            ""haulageData"": [{
+                ""cargo"": [{
+    	            ""edname"": ""DamagedEscapePod"",
+    	            ""stolen"": 0,
+    	            ""haulage"": 0,
+    	            ""owned"": 4,
+    	            ""need"": 0,
+    	            ""total"": 4,
+    	            ""ejected"": 0,
+    	            ""price"": 11912,
+    	            ""haulageData"": [{
                         ""missionid"": 413563829,
                         ""name"": ""Mission_Salvage_Expansion"",
                         ""typeEDName"": ""Salvage"",
@@ -61,30 +61,30 @@ namespace UnitTests
                         ""expiry"": null,
                         ""shared"": false
                     }]
-	            },
-	            {
-		            ""edname"": ""USSCargoBlackBox"",
-		            ""stolen"": 4,
-		            ""haulage"": 0,
-		            ""owned"": 0,
-		            ""need"": 0,
-		            ""total"": 4,
-		            ""ejected"": 0,
-		            ""price"": 6995,
-		            ""haulageData"": []
-	            },
-	            {
-		            ""edname"": ""Drones"",
-		            ""stolen"": 0,
-		            ""haulage"": 0,
-		            ""owned"": 21,
-		            ""need"": 0,
-		            ""total"": 21,
-		            ""ejected"": 0,
-		            ""price"": 101,
-		            ""haulageData"": []
-	            }],
-	            ""cargocarried"": 29
+                },
+                {
+    	            ""edname"": ""USSCargoBlackBox"",
+    	            ""stolen"": 4,
+    	            ""haulage"": 0,
+    	            ""owned"": 0,
+    	            ""need"": 0,
+    	            ""total"": 4,
+    	            ""ejected"": 0,
+    	            ""price"": 6995,
+    	            ""haulageData"": []
+                },
+                {
+    	            ""edname"": ""Drones"",
+    	            ""stolen"": 0,
+    	            ""haulage"": 0,
+    	            ""owned"": 21,
+    	            ""need"": 0,
+    	            ""total"": 21,
+    	            ""ejected"": 0,
+    	            ""price"": 101,
+    	            ""haulageData"": []
+                }],
+                ""cargocarried"": 29
             }";
             // Save original data
             CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();

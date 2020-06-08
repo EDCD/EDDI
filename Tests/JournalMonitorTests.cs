@@ -563,89 +563,89 @@ namespace UnitTests
         {
             string line = @"{
             ""timestamp"": ""2018-08-08T06: 56: 20Z"",
-	            ""event"": ""FSDJump"",
-	            ""StarSystem"": ""Diaguandri"",
+                ""event"": ""FSDJump"",
+                ""StarSystem"": ""Diaguandri"",
         	    ""SystemAddress"": 670417429889,
-	            ""StarPos"": [-41.06250, -62.15625, -103.25000],
-	            ""SystemAllegiance"": ""Independent"",
-	            ""SystemEconomy"": ""$economy_HighTech;"",
-	            ""SystemEconomy_Localised"": ""HighTech"",
-	            ""SystemSecondEconomy"": ""$economy_Refinery;"",
-	            ""SystemSecondEconomy_Localised"": ""Refinery"",
-	            ""SystemGovernment"": ""$government_Democracy;"",
-	            ""SystemGovernment_Localised"": ""Democracy"",
-	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	            ""SystemSecurity_Localised"": ""MediumSecurity"",
-	            ""Population"": 10303479,
-	            ""JumpDist"": 19.340,
-	            ""FuelUsed"": 2.218082,
-	            ""FuelLevel"": 23.899260,
-	            ""Factions"": [{
-		            ""Name"": ""DiaguandriInterstellar"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Corporate"",
-		            ""Influence"": 0.100398,
-		            ""Allegiance"": ""Independent""
-	            },
-	            {
-		            ""Name"": ""People'sMET20Liberals"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.123260,
-		            ""Allegiance"": ""Federation""
-	            },
-	            {
-		            ""Name"": ""PilotsFederationLocalBranch"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.000000,
-		            ""Allegiance"": ""PilotsFederation""
-	            },
-	            {
-		            ""Name"": ""NaturalDiaguandriRegulatoryState"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Dictatorship"",
-		            ""Influence"": 0.020875,
-		            ""Allegiance"": ""Independent"",
-		            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
-	            },
-	            {
-		            ""Name"": ""CartelofDiaguandri"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Anarchy"",
-		            ""Influence"": 0.009940,
-		            ""Allegiance"": ""Independent"",
-		            ""PendingStates"": [{""State"": ""Bust"", ""Trend"": 0}, {""State"": ""CivilUnrest"", ""Trend"": 1}],
-		            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
-	            },
-	            {
-		            ""Name"": ""RevolutionaryPartyofDiaguandri"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.124254,
-		            ""Allegiance"": ""Federation"",
-		            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}, {""State"": ""Bust"", ""Trend"": 1}]
-	            },
-	            {
-		            ""Name"": ""TheBrotherhoodoftheDarkCircle"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Corporate"",
-		            ""Influence"": 0.093439,
-		            ""Allegiance"": ""Independent"",
-		            ""RecoveringStates"": [{""State"": ""CivilUnrest"", ""Trend"": 1}]
+                ""StarPos"": [-41.06250, -62.15625, -103.25000],
+                ""SystemAllegiance"": ""Independent"",
+                ""SystemEconomy"": ""$economy_HighTech;"",
+                ""SystemEconomy_Localised"": ""HighTech"",
+                ""SystemSecondEconomy"": ""$economy_Refinery;"",
+                ""SystemSecondEconomy_Localised"": ""Refinery"",
+                ""SystemGovernment"": ""$government_Democracy;"",
+                ""SystemGovernment_Localised"": ""Democracy"",
+                ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+                ""SystemSecurity_Localised"": ""MediumSecurity"",
+                ""Population"": 10303479,
+                ""JumpDist"": 19.340,
+                ""FuelUsed"": 2.218082,
+                ""FuelLevel"": 23.899260,
+                ""Factions"": [{
+    	            ""Name"": ""DiaguandriInterstellar"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Corporate"",
+    	            ""Influence"": 0.100398,
+    	            ""Allegiance"": ""Independent""
                 },
                 {
-		            ""Name"": ""EXO"",
-		            ""FactionState"": ""Expansion"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.527833,
-		            ""Allegiance"": ""Independent"",
-		            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}]
-	            }],
+    	            ""Name"": ""People'sMET20Liberals"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.123260,
+    	            ""Allegiance"": ""Federation""
+                },
+                {
+    	            ""Name"": ""PilotsFederationLocalBranch"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.000000,
+    	            ""Allegiance"": ""PilotsFederation""
+                },
+                {
+    	            ""Name"": ""NaturalDiaguandriRegulatoryState"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Dictatorship"",
+    	            ""Influence"": 0.020875,
+    	            ""Allegiance"": ""Independent"",
+    	            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+                },
+                {
+    	            ""Name"": ""CartelofDiaguandri"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Anarchy"",
+    	            ""Influence"": 0.009940,
+    	            ""Allegiance"": ""Independent"",
+    	            ""PendingStates"": [{""State"": ""Bust"", ""Trend"": 0}, {""State"": ""CivilUnrest"", ""Trend"": 1}],
+    	            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+                },
+                {
+    	            ""Name"": ""RevolutionaryPartyofDiaguandri"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.124254,
+    	            ""Allegiance"": ""Federation"",
+    	            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}, {""State"": ""Bust"", ""Trend"": 1}]
+                },
+                {
+    	            ""Name"": ""TheBrotherhoodoftheDarkCircle"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Corporate"",
+    	            ""Influence"": 0.093439,
+    	            ""Allegiance"": ""Independent"",
+    	            ""RecoveringStates"": [{""State"": ""CivilUnrest"", ""Trend"": 1}]
+                },
+                {
+    	            ""Name"": ""EXO"",
+    	            ""FactionState"": ""Expansion"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.527833,
+    	            ""Allegiance"": ""Independent"",
+    	            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}]
+                }],
                 ""SystemFaction"": {
-		            ""Name"": ""EXO"",
-		            ""FactionState"": ""Expansion""
-	            }
+    	            ""Name"": ""EXO"",
+    	            ""FactionState"": ""Expansion""
+                }
             }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
@@ -737,115 +737,115 @@ namespace UnitTests
         {
             string line = @"{
                 ""timestamp"": ""2018-08-12T02: 52: 13Z"",
-	            ""event"": ""Location"",
-	            ""Docked"": true,
-	            ""MarketID"": 3223343616,
-	            ""StationName"": ""Ray Gateway"",
-	            ""StationType"": ""Coriolis"",
-	            ""StarSystem"": ""Diaguandri"",
-	            ""SystemAddress"": 670417429889,
-	            ""StarPos"": [-41.06250,
-	            -62.15625,
-	            -103.25000],
-	            ""SystemAllegiance"": ""Independent"",
-	            ""SystemEconomy"": ""$economy_HighTech;"",
+                ""event"": ""Location"",
+                ""Docked"": true,
+                ""MarketID"": 3223343616,
+                ""StationName"": ""Ray Gateway"",
+                ""StationType"": ""Coriolis"",
+                ""StarSystem"": ""Diaguandri"",
+                ""SystemAddress"": 670417429889,
+                ""StarPos"": [-41.06250,
+                -62.15625,
+                -103.25000],
+                ""SystemAllegiance"": ""Independent"",
+                ""SystemEconomy"": ""$economy_HighTech;"",
     	        ""SystemEconomy_Localised"": ""HighTech"",
     	        ""SystemSecondEconomy"": ""$economy_Refinery;"",
-	            ""SystemSecondEconomy_Localised"": ""Refinery"",
-	            ""SystemGovernment"": ""$government_Democracy;"",
-	            ""SystemGovernment_Localised"": ""Democracy"",
-	            ""StationGovernment"": ""$government_Democracy;"",
-	            ""StationGovernment_Localised"": ""Democracy"",
-	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	            ""SystemSecurity_Localised"": ""MediumSecurity"",
-	            ""Population"": 10303479,
-	            ""Body"": ""Ray Gateway"",
-	            ""BodyID"": 32,
-	            ""BodyType"": ""Station"",
-	            ""Factions"": [{
-		            ""Name"": ""Diaguandri Interstellar"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Corporate"",
-		            ""Influence"": 0.090000,
-		            ""Allegiance"": ""Independent"",
-		            ""RecoveringStates"": [{
-			            ""State"": ""Boom"",
-			            ""Trend"": 0
-		            }]
-	            },
-	            {
-		            ""Name"": ""People's MET 20 Liberals"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.206000,
-		         ""Allegiance"": ""Federation""
-	            },
-	            {
-		            ""Name"": ""Pilots Federation Local Branch"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.000000,
-		            ""Allegiance"": ""PilotsFederation""
-	            },
-	            {
-		            ""Name"": ""Natural Diaguandri Regulatory State"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Dictatorship"",
-		            ""Influence"": 0.072000,
-		            ""Allegiance"": ""Independent""
-	            },
-	            {
-		            ""Name"": ""Cartel of Diaguandri"",
-		            ""FactionState"": ""Bust"",
-		            ""Government"": ""Anarchy"",
-		            ""Influence"": 0.121000,
-		            ""Allegiance"": ""Independent"",
-		            ""PendingStates"": [{
-			            ""State"": ""Boom"",
-			            ""Trend"": 1
-		            },
-		            {
-			            ""State"": ""CivilUnrest"",
-			            ""Trend"": -1
-		            }]
-	            },
-	            {
-		            ""Name"": ""Revolutionary Party of Diaguandri"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.181000,
-		            ""Allegiance"": ""Federation"",
-		            ""PendingStates"": [{
-			            ""State"": ""Bust"",
-			            ""Trend"": 0
-		            }]
-	            },
-	            {
-		            ""Name"": ""The Brotherhood of the Dark Circle"",
-		            ""FactionState"": ""Boom"",
-		            ""Government"": ""Corporate"",
-		            ""Influence"": 0.086000,
-		            ""Allegiance"": ""Independent""
-	            },
-	            {
-		            ""Name"": ""EXO"",
-		            ""FactionState"": ""None"",
-		            ""Government"": ""Democracy"",
-		            ""Influence"": 0.244000,
-		            ""Allegiance"": ""Independent"",
-		            ""PendingStates"": [{
-			            ""State"": ""Boom"",
-			            ""Trend"": 1
-		            }]
-	            }],
-	            ""SystemFaction"": {
-		            ""Name"": ""EXO"",
-		            ""FactionState"": ""None""
-	            },
-	            ""StationFaction"": {
-		            ""Name"": ""EXO"",
-		            ""FactionState"": ""None""
-	            }
+                ""SystemSecondEconomy_Localised"": ""Refinery"",
+                ""SystemGovernment"": ""$government_Democracy;"",
+                ""SystemGovernment_Localised"": ""Democracy"",
+                ""StationGovernment"": ""$government_Democracy;"",
+                ""StationGovernment_Localised"": ""Democracy"",
+                ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+                ""SystemSecurity_Localised"": ""MediumSecurity"",
+                ""Population"": 10303479,
+                ""Body"": ""Ray Gateway"",
+                ""BodyID"": 32,
+                ""BodyType"": ""Station"",
+                ""Factions"": [{
+    	            ""Name"": ""Diaguandri Interstellar"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Corporate"",
+    	            ""Influence"": 0.090000,
+    	            ""Allegiance"": ""Independent"",
+    	            ""RecoveringStates"": [{
+    		            ""State"": ""Boom"",
+    		            ""Trend"": 0
+    	            }]
+                },
+                {
+    	            ""Name"": ""People's MET 20 Liberals"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.206000,
+    	         ""Allegiance"": ""Federation""
+                },
+                {
+    	            ""Name"": ""Pilots Federation Local Branch"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.000000,
+    	            ""Allegiance"": ""PilotsFederation""
+                },
+                {
+    	            ""Name"": ""Natural Diaguandri Regulatory State"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Dictatorship"",
+    	            ""Influence"": 0.072000,
+    	            ""Allegiance"": ""Independent""
+                },
+                {
+    	            ""Name"": ""Cartel of Diaguandri"",
+    	            ""FactionState"": ""Bust"",
+    	            ""Government"": ""Anarchy"",
+    	            ""Influence"": 0.121000,
+    	            ""Allegiance"": ""Independent"",
+    	            ""PendingStates"": [{
+    		            ""State"": ""Boom"",
+    		            ""Trend"": 1
+    	            },
+    	            {
+    		            ""State"": ""CivilUnrest"",
+    		            ""Trend"": -1
+    	            }]
+                },
+                {
+    	            ""Name"": ""Revolutionary Party of Diaguandri"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.181000,
+    	            ""Allegiance"": ""Federation"",
+    	            ""PendingStates"": [{
+    		            ""State"": ""Bust"",
+    		            ""Trend"": 0
+    	            }]
+                },
+                {
+    	            ""Name"": ""The Brotherhood of the Dark Circle"",
+    	            ""FactionState"": ""Boom"",
+    	            ""Government"": ""Corporate"",
+    	            ""Influence"": 0.086000,
+    	            ""Allegiance"": ""Independent""
+                },
+                {
+    	            ""Name"": ""EXO"",
+    	            ""FactionState"": ""None"",
+    	            ""Government"": ""Democracy"",
+    	            ""Influence"": 0.244000,
+    	            ""Allegiance"": ""Independent"",
+    	            ""PendingStates"": [{
+    		            ""State"": ""Boom"",
+    		            ""Trend"": 1
+    	            }]
+                }],
+                ""SystemFaction"": {
+    	            ""Name"": ""EXO"",
+    	            ""FactionState"": ""None""
+                },
+                ""StationFaction"": {
+    	            ""Name"": ""EXO"",
+    	            ""FactionState"": ""None""
+                }
             }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
@@ -1162,42 +1162,42 @@ namespace UnitTests
         [TestMethod]
         public void TestSurfaceSignalsEvent()
         {
-	        string line = "{ \"timestamp\":\"2019-09-24T02:40:34Z\", \"event\":\"SAASignalsFound\", \"BodyName\":\"HIP 41908 AB 1 c a\", \"SystemAddress\":61461226668, \"BodyID\":11, \"Signals\":[ { \"Type\":\"$SAA_SignalType_Biological;\", \"Type_Localised\":\"Biological\", \"Count\":16 }, { \"Type\":\"$SAA_SignalType_Geological;\", \"Type_Localised\":\"Geological\", \"Count\":17 }, { \"Type\":\"$SAA_SignalType_Human;\", \"Type_Localised\":\"Human\", \"Count\":4 } ] }";
-	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
-	        SurfaceSignalsEvent surfaceSignalEvent = (SurfaceSignalsEvent)events[0];
-	        Assert.AreEqual("HIP 41908 AB 1 c a", surfaceSignalEvent.bodyname);
-	        Assert.AreEqual(61461226668, surfaceSignalEvent.systemAddress);
-	        Assert.AreEqual(3, surfaceSignalEvent.surfacesignals.Count);
-	        Assert.AreEqual("Biological Surface Signal", surfaceSignalEvent.surfacesignals[0].signalSource.invariantName);
-	        Assert.AreEqual(16, surfaceSignalEvent.surfacesignals[0].amount);
-	        Assert.AreEqual("Geological Surface Signal", surfaceSignalEvent.surfacesignals[1].signalSource.invariantName);
-	        Assert.AreEqual(17, surfaceSignalEvent.surfacesignals[1].amount);
-	        Assert.AreEqual("Human Surface Signal", surfaceSignalEvent.surfacesignals[2].signalSource.invariantName);
-	        Assert.AreEqual(4, surfaceSignalEvent.surfacesignals[2].amount);
+            string line = "{ \"timestamp\":\"2019-09-24T02:40:34Z\", \"event\":\"SAASignalsFound\", \"BodyName\":\"HIP 41908 AB 1 c a\", \"SystemAddress\":61461226668, \"BodyID\":11, \"Signals\":[ { \"Type\":\"$SAA_SignalType_Biological;\", \"Type_Localised\":\"Biological\", \"Count\":16 }, { \"Type\":\"$SAA_SignalType_Geological;\", \"Type_Localised\":\"Geological\", \"Count\":17 }, { \"Type\":\"$SAA_SignalType_Human;\", \"Type_Localised\":\"Human\", \"Count\":4 } ] }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SurfaceSignalsEvent surfaceSignalEvent = (SurfaceSignalsEvent)events[0];
+            Assert.AreEqual("HIP 41908 AB 1 c a", surfaceSignalEvent.bodyname);
+            Assert.AreEqual(61461226668, surfaceSignalEvent.systemAddress);
+            Assert.AreEqual(3, surfaceSignalEvent.surfacesignals.Count);
+            Assert.AreEqual("Biological Surface Signal", surfaceSignalEvent.surfacesignals[0].signalSource.invariantName);
+            Assert.AreEqual(16, surfaceSignalEvent.surfacesignals[0].amount);
+            Assert.AreEqual("Geological Surface Signal", surfaceSignalEvent.surfacesignals[1].signalSource.invariantName);
+            Assert.AreEqual(17, surfaceSignalEvent.surfacesignals[1].amount);
+            Assert.AreEqual("Human Surface Signal", surfaceSignalEvent.surfacesignals[2].signalSource.invariantName);
+            Assert.AreEqual(4, surfaceSignalEvent.surfacesignals[2].amount);
         }
 
         [TestMethod]
         public void TestTouchdownEventBio()
         {
-	        string line = "{ \"timestamp\":\"2019 - 09 - 26T06: 42:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.165684, \"Longitude\":-123.219307, \"NearestDestination\":\"$SAA_Unknown_Signal:#type=$SAA_SignalType_Biological;:#index=15;\", \"NearestDestination_Localised\":\"Surface signal: Biological (15)\" }";
-	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
-	        TouchdownEvent @event = (TouchdownEvent)events[0];
-	        Assert.IsTrue(@event.playercontrolled);
-	        Assert.AreEqual(-44.165684M, @event.latitude);
-	        Assert.AreEqual(-123.219307M, @event.longitude);
-	        Assert.AreEqual("Biological Surface Signal", @event.nearestDestination.invariantName);
+            string line = "{ \"timestamp\":\"2019 - 09 - 26T06: 42:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.165684, \"Longitude\":-123.219307, \"NearestDestination\":\"$SAA_Unknown_Signal:#type=$SAA_SignalType_Biological;:#index=15;\", \"NearestDestination_Localised\":\"Surface signal: Biological (15)\" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            TouchdownEvent @event = (TouchdownEvent)events[0];
+            Assert.IsTrue(@event.playercontrolled);
+            Assert.AreEqual(-44.165684M, @event.latitude);
+            Assert.AreEqual(-123.219307M, @event.longitude);
+            Assert.AreEqual("Biological Surface Signal", @event.nearestDestination.invariantName);
         }
 
         [TestMethod]
         public void TestTouchdownEventGuardian()
         {
-	        string line = "{ \"timestamp\":\"2019 - 09 - 26T04: 55:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.464405, \"Longitude\":-95.072144, \"NearestDestination\":\"$Ancient_Tiny_003:#index=1;\", \"NearestDestination_Localised\":\"Guardian Structure\" }";
-	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
-	        TouchdownEvent @event = (TouchdownEvent)events[0];
-	        Assert.IsTrue(@event.playercontrolled);
-	        Assert.AreEqual(-44.464405M, @event.latitude);
-	        Assert.AreEqual(-95.072144M, @event.longitude);
-	        Assert.AreEqual("Guardian Structure", @event.nearestDestination.invariantName);
+            string line = "{ \"timestamp\":\"2019 - 09 - 26T04: 55:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.464405, \"Longitude\":-95.072144, \"NearestDestination\":\"$Ancient_Tiny_003:#index=1;\", \"NearestDestination_Localised\":\"Guardian Structure\" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            TouchdownEvent @event = (TouchdownEvent)events[0];
+            Assert.IsTrue(@event.playercontrolled);
+            Assert.AreEqual(-44.464405M, @event.latitude);
+            Assert.AreEqual(-95.072144M, @event.longitude);
+            Assert.AreEqual("Guardian Structure", @event.nearestDestination.invariantName);
         }
 
         [TestMethod]
@@ -1271,7 +1271,7 @@ namespace UnitTests
         [TestMethod]
         public void TestShipRepairedEvent()
         {
-			string line = "{ \"timestamp\":\"2016-09-25T12:31:38Z\", \"event\":\"Repair\", \"Item\":\"Wear\", \"Cost\":2824 }";
+    		string line = "{ \"timestamp\":\"2016-09-25T12:31:38Z\", \"event\":\"Repair\", \"Item\":\"Wear\", \"Cost\":2824 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
             Assert.AreEqual("Ship Integrity", @event.item);

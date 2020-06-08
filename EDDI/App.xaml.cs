@@ -9,10 +9,10 @@ using Utilities;
 
 namespace Eddi
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
         public static Mutex eddiMutex { get; private set; }
 
@@ -37,8 +37,8 @@ namespace Eddi
             EddiUpgrader.CheckUpgrade();
             if (EddiUpgrader.UpgradeRequired)
             {
-	            // We are too old to continue; initialize in a "safe mode". 
-	            EDDI.Init(true);
+                // We are too old to continue; initialize in a "safe mode". 
+                EDDI.Init(true);
             }
 
             if (FromVA)
