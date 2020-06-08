@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EddiCore;
+using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiCore;
-using EddiSpeechService;
 using Utilities;
 
 namespace Eddi
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
     {
         public static Mutex eddiMutex { get; private set; }
 
