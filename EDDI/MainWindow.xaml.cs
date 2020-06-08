@@ -24,10 +24,10 @@ using Utilities;
 
 namespace Eddi
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
         struct LanguageDef : IComparable<LanguageDef>
         {
@@ -869,7 +869,7 @@ namespace Eddi
             if (runBetaCheck)
             {
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
-	            EddiUpgrader.CheckUpgrade();
+                EddiUpgrader.CheckUpgrade();
                 setStatusInfo();
             }
             else

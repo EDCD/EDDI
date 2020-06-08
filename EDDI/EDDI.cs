@@ -20,12 +20,12 @@ using Utilities;
 
 namespace EddiCore
 {
-	/// <summary>
-	/// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
-	/// and keep them up-to-date with changes that occur.
+    /// <summary>
+    /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
+    /// and keep them up-to-date with changes that occur.
     /// It also acts as the switchboard for passing events through all parts of the application including both responders and monitors.
-	/// </summary>
-	public class EDDI
+    /// </summary>
+    public class EDDI
     {
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
@@ -51,17 +51,17 @@ namespace EddiCore
 
         public static void Init(bool safeMode)
         {
-	        if (instance == null)
-	        {
-		        lock (instanceLock)
-		        {
-			        if (instance == null)
-			        {
-				        Logging.Debug("No EDDI instance: creating one");
-				        instance = new EDDI(safeMode);
-			        }
-		        }
-	        }
+            if (instance == null)
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        Logging.Debug("No EDDI instance: creating one");
+                        instance = new EDDI(safeMode);
+                    }
+                }
+            }
         }
 
         // EDDI Instance
@@ -69,7 +69,7 @@ namespace EddiCore
         {
             get
             {
-				Init(false);
+                Init(false);
                 return instance;
             }
         }
@@ -120,7 +120,7 @@ namespace EddiCore
 
         private EDDI(bool safeMode)
         {
-	        running = !safeMode;
+            running = !safeMode;
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");

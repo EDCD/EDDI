@@ -54,7 +54,7 @@ namespace UnitTests
         public void TestMaterialAmountFromJson()
         {
             string json = @"{
-				""amount"": 1,
+                ""amount"": 1,
                 ""material"": ""Molybdenum""
             }";
             MaterialAmount materialAmount = JsonConvert.DeserializeObject<MaterialAmount>(json);
