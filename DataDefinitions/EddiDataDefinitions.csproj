@@ -72,13 +72,20 @@
   <ItemGroup>
     <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintTemplate.cs" />
+    <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="CommodityPresence.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PowerplayState.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AsteroidMaterialContent.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsteroidMaterialContent.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Ship.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -597,6 +604,10 @@
     <EmbeddedResource Include="Properties\PowerplayState.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PowerplayState.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AsteroidMaterialContent.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AsteroidMaterialContent.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.ru.resx" />

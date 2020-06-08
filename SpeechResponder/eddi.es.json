@@ -10,6 +10,24 @@
       "name": "AFMU repairs",
       "description": "Activado al reparar módulos utilizando la Unidad de automantenimiento (AFMU)"
     },
+    "Asteroid cracked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Asteroid cracked",
+      "description": "Triggered when you break up a 'Motherlode' asteroid for mining"
+    },
+    "Asteroid prospected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set minimumPercent to 10} {_ The minimum percentage surface mineral concentration to report _}\r\n{set spokenCores to [\r\n    \"Alexandrite\": false,\r\n    \"Benitoite\": false,\r\n    \"Grandidierite\": false,\r\n    \"Low Temperature Diamond\": true,\r\n    \"Monazite\": false,\r\n    \"Musgravite\": false,\r\n    \"Rhodplumsite\": false,\r\n    \"Serendibite\": false,\r\n    \"Void Opals\": true,\r\n]}\r\n{set spokenMinerals to [\r\n    \"Bauxite\": false,\r\n    \"Bertrandite\": false,\r\n    \"Bromellite\": false,\r\n    \"Cobalt\": false,\r\n    \"Coltan\": false,\r\n    \"Cryolite\": false,\r\n    \"Gallite\": false,\r\n    \"Gold\": false,\r\n    \"Goslarite\": false,\r\n    \"Hydrogen Peroxide\": false,\r\n    \"Indite\": false,\r\n    \"Jadeite\": false,\r\n    \"Lepidolite\": false,\r\n    \"Lithium Hydroxide\": false,\r\n    \"Liquid oxygen\": false,\r\n    \"Low Temperature Diamonds\": true,\r\n    \"Methane Clathrate\": false,\r\n    \"Methanol Monohydrate\": false,\r\n    \"Moissanite\": false,\r\n    \"Osmium\": false,\r\n    \"Painite\": true,\r\n    \"Platinum\": false,\r\n    \"Palladium\": false,\r\n    \"Praseodymium\": false,\r\n    \"Pyrophyllite\": false,\r\n    \"Rutile\": false,\r\n    \"Samarium\": false,\r\n    \"Silver\": false,\r\n    \"Taaffeite\": false,\r\n    \"Thorium\": false,\r\n    \"Tritium\": true,\r\n    \"Uraninite\": false,\r\n    \"Water\": false,\r\n]}\r\n\r\n{if len(event.motherlode) > 0 && spokenCores[event.motherlode]:\r\n   Motherlode detected: {event.motherlode}.\r\n}\r\n\r\n{set minerals to []}\r\n{for mineral in event.commodities:\r\n    {if mineral.percentage > minimumPercent && spokenMinerals[mineral.commodity]:\r\n        {set mineral_desc to: \r\n            {round(mineral.percentage)} percent {mineral.commodity}\r\n        }\r\n        {set minerals to cat(minerals, [mineral_desc])}\r\n    }\r\n}\r\n{if len(minerals) > 0:\r\n    Asteroid contains {List(minerals)}\r\n    {if event.materialcontent = \"High\":\r\n        and a high concentration of engineering materials\r\n    }.\r\n    {if event.remaining < 100:\r\n        It is {100 - event.remaining} percent depleted.\r\n    }\r\n}",
+      "default": true,
+      "name": "Asteroid prospected",
+      "description": "Triggered when using a prospecting drone"
+    },
     "Blueprint make report": {
       "enabled": true,
       "priority": 3,

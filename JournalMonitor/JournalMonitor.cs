@@ -3896,6 +3896,50 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "AsteroidCracked":
+                                {
+                                    string bodyName = JsonParsing.getString(data, "Body");
+                                    events.Add(new AsteroidCrackedEvent(timestamp, bodyName) { raw = line, fromLoad = fromLogLoad });
+                                }       
+                                handled = true;
+                                break;
+                            case "ProspectedAsteroid":
+                                {
+                                    data.TryGetValue("Materials", out object val); // (array of Name and Proportion)
+                                    List<CommodityPresence> commodities = new List<CommodityPresence>();
+                                    if (val is List<object> listVal)
+                                    {
+                                        foreach (var commodityVal in listVal)
+                                        {   
+                                            if (commodityVal is Dictionary<string, object> commodityData)
+                                            {
+                                                string commodityEdName = JsonParsing.getString(commodityData, "Name");
+                                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityEdName);
+                                                decimal proportion = JsonParsing.getDecimal(commodityData, "Proportion"); // Out of 100
+                                                if (commodity != null)
+                                                {
+                                                    commodity.fallbackLocalizedName = JsonParsing.getString(commodityData, "Name_Localised");
+                                                    commodities.Add(new CommodityPresence(commodity, proportion));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    string content = JsonParsing.getString(data, "Content"); // (a string representing High/Medium/Low material content)
+                                    AsteroidMaterialContent materialContent = new AsteroidMaterialContent(content);
+                                    materialContent.fallbackLocalizedName = JsonParsing.getString(data, "Content_Localised")?.Replace("Material Content: ", "");
+                                    decimal remaining = JsonParsing.getDecimal(data, "Remaining"); // Out of 100
+
+                                    // If a motherlode commodity is present
+                                    CommodityDefinition motherlodeCommodityDefinition = null;
+                                    string motherlodeEDName = JsonParsing.getString(data, "MotherlodeMaterial"); 
+                                    if (!string.IsNullOrEmpty(motherlodeEDName))
+                                    {
+                                        motherlodeCommodityDefinition = CommodityDefinition.FromEDName(motherlodeEDName);
+                                    }
+
+                                    events.Add(new AsteroidProspectedEvent(timestamp, commodities, materialContent, remaining, motherlodeCommodityDefinition) { raw = line, fromLoad = fromLogLoad });
+                                }   
+                                handled = true;
+                                break;
                             case "CarrierBuy":
                             case "CarrierStats":
                             case "CarrierBankTransfer":
@@ -3915,7 +3959,6 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "NavRoute":
-                            case "ProspectedAsteroid":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
