@@ -2,9 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using Tests.Properties;
 using UnitTests;
-
-// Note: Tests work best if the tester has a valid API key configured for Inara.
 
 namespace IntegrationTests
 {
@@ -23,6 +22,7 @@ namespace IntegrationTests
         [TestMethod]
         public void TestSendEventBatch()
         {
+            // This integration test will work best using a valid API key. While it can work with the read-only API key, if the read-only API has been over-utilized then the test can fail due to too many requests.
             List<InaraAPIEvent> inaraAPIEvents = new List<InaraAPIEvent>()
             {
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
@@ -36,25 +36,6 @@ namespace IntegrationTests
                 Assert.AreEqual(200, responses[0].eventStatus);
                 Assert.AreEqual(1, responses[0].eventCustomID);
                 Assert.AreEqual(@"https://inara.cz/cmdr/1/", ((Dictionary<string, object>)responses[0].eventData)["inaraURL"]);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestGetCmdrProfiles()
-        {
-            List<InaraCmdr> inaraCmdrs = inaraService.GetCommanderProfiles(new string[] { "No such name", "Artie" });
-            Assert.AreEqual(1, inaraCmdrs?.Count);
-
-            if (inaraCmdrs?.Count == 1)
-            {
-                Assert.AreEqual("Artie", inaraCmdrs[0]?.username);
-                Assert.AreEqual(1, inaraCmdrs[0]?.id);
-                Assert.AreEqual("Artie", inaraCmdrs[0]?.commandername);
-                Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
             }
             else
             {
@@ -115,6 +96,34 @@ namespace UnitTests
         private void OnInvalidAPIkey(object sender, EventArgs e) 
         {
             invalidAPIkeyTestPassed = true;
+        }
+
+        [TestMethod]
+        public void TestCmdrProfiles()
+        {
+            List<InaraCmdr> inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
+            Assert.AreEqual(1, inaraCmdrs?.Count);
+            Assert.AreEqual("Artie", inaraCmdrs[0]?.username);
+            Assert.AreEqual(1, inaraCmdrs[0]?.id);
+            Assert.AreEqual("Artie", inaraCmdrs[0]?.commandername);
+            Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
+            Assert.AreEqual("Independent", inaraCmdrs[0]?.preferredallegiance);
+            Assert.IsNull(inaraCmdrs[0]?.preferredpower);
+            Assert.AreEqual("Freelancer", inaraCmdrs[0]?.preferredrole);
+            Assert.AreEqual("https://inara.cz/data/users/0/1x1673.jpg", inaraCmdrs[0]?.imageurl);
+            Assert.AreEqual("https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
+            Assert.AreEqual(6, inaraCmdrs[0]?.commanderranks.Count);
+            Assert.AreEqual("trade", inaraCmdrs[0]?.commanderranks[1]?.rank);
+            Assert.AreEqual(8, inaraCmdrs[0]?.commanderranks[1]?.rankvalue);
+            Assert.AreEqual(1.0, inaraCmdrs[0]?.commanderranks[1]?.progress);
+            Assert.AreEqual("cqc", inaraCmdrs[0]?.commanderranks[3]?.rank);
+            Assert.AreEqual(3, inaraCmdrs[0]?.commanderranks[3]?.rankvalue);
+            Assert.AreEqual(0.11, inaraCmdrs[0]?.commanderranks[3]?.progress);
+            Assert.AreEqual(5, inaraCmdrs[0]?.squadron?.id);
+            Assert.AreEqual("Inara Dojo", inaraCmdrs[0]?.squadron?.name);
+            Assert.AreEqual(9, inaraCmdrs[0]?.squadron?.memberscount);
+            Assert.AreEqual("Squadron commander", inaraCmdrs[0]?.squadron?.squadronrank);
+            Assert.AreEqual("https://inara.cz/squadron/5/", inaraCmdrs[0]?.squadron?.url);
         }
     }
 }
