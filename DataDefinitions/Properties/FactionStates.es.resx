@@ -185,8 +185,14 @@
     <value>Plaga</value>
     <comment>Faction state Drought, but translated as Blight</comment>
   </data>
-  
-  
+  <data name="Blight" xml:space="preserve">
+    <value>Plaga</value>
+    <comment>Faction state Blight</comment>
+  </data>
+  <data name="ColdWar" xml:space="preserve">
+    <value>Guerra Fría</value>
+    <comment>Faction state ColdWar</comment>
+  </data>
   
   
   
