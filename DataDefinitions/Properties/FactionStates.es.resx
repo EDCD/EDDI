@@ -206,7 +206,7 @@
     <comment>Faction state InfrastructureFailure</comment>
   </data>
   <data name="NaturalDisaster" xml:space="preserve">
-    <value>Desastre Narutal</value>
+    <value>Desastre Natural</value>
     <comment>Faction state NaturalDisaster</comment>
   </data>
   <data name="PublicHoliday" xml:space="preserve">
