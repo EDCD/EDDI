@@ -237,9 +237,24 @@
     <value>Depósito de Tritio</value>
     <comment>Station Service: CarrierFuel</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Administración del Porta Flotas</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Vendedor de Porta Frotas</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Pintura</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Paquetes de Módulos</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Oficina de Reembolso</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>
