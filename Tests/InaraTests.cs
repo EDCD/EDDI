@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -60,29 +61,47 @@ namespace UnitTests
         [TestMethod]
         public void TestCmdrProfiles()
         {
-            List<InaraCmdr> inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
-            Assert.AreEqual(1, inaraCmdrs?.Count);
-            Assert.AreEqual("Artie", inaraCmdrs[0]?.username);
-            Assert.AreEqual(1, inaraCmdrs[0]?.id);
-            Assert.AreEqual("Artie", inaraCmdrs[0]?.commandername);
-            Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
-            Assert.AreEqual("Independent", inaraCmdrs[0]?.preferredallegiance);
-            Assert.IsNull(inaraCmdrs[0]?.preferredpower);
-            Assert.AreEqual("Freelancer", inaraCmdrs[0]?.preferredrole);
-            Assert.AreEqual("https://inara.cz/data/users/0/1x1673.jpg", inaraCmdrs[0]?.imageurl);
-            Assert.AreEqual("https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
-            Assert.AreEqual(6, inaraCmdrs[0]?.commanderranks.Count);
-            Assert.AreEqual("trade", inaraCmdrs[0]?.commanderranks[1]?.rank);
-            Assert.AreEqual(8, inaraCmdrs[0]?.commanderranks[1]?.rankvalue);
-            Assert.AreEqual(1.0, inaraCmdrs[0]?.commanderranks[1]?.progress);
-            Assert.AreEqual("cqc", inaraCmdrs[0]?.commanderranks[3]?.rank);
-            Assert.AreEqual(3, inaraCmdrs[0]?.commanderranks[3]?.rankvalue);
-            Assert.AreEqual(0.11, inaraCmdrs[0]?.commanderranks[3]?.progress);
-            Assert.AreEqual(5, inaraCmdrs[0]?.squadron?.id);
-            Assert.AreEqual("Inara Dojo", inaraCmdrs[0]?.squadron?.name);
-            Assert.AreEqual(9, inaraCmdrs[0]?.squadron?.memberscount);
-            Assert.AreEqual("Squadron commander", inaraCmdrs[0]?.squadron?.squadronrank);
-            Assert.AreEqual("https://inara.cz/squadron/5/", inaraCmdrs[0]?.squadron?.url);
+            try 
+            {
+                var expectedCmdrs = new List<InaraCmdr>()
+                { 
+                    new InaraCmdr()
+                    {
+                        id = 1,
+                        username = "Artie",
+                        commandername = "Artie",
+                        commanderranks = new List<InaraCmdrRanks>()
+                        {
+                            new InaraCmdrRanks() { rank = "combat", rankvalue = 7, progress = 0.31 },
+                            new InaraCmdrRanks() { rank = "trade", rankvalue = 8, progress = 1.0 },
+                            new InaraCmdrRanks() { rank = "exploration", rankvalue = 6, progress = 0.65 },
+                            new InaraCmdrRanks() { rank = "cqc", rankvalue = 3, progress = 0.11 },
+                            new InaraCmdrRanks() { rank = "empire", rankvalue = 12, progress = 0.34 },
+                            new InaraCmdrRanks() { rank = "federation", rankvalue = 12, progress = 0.94 }
+                        },
+                        preferredallegiance = "Independent",
+                        preferredpower = null,
+                        squadron = new InaraCmdrSquadron()
+                        { 
+                            id = 5,
+                            name = "Inara Dojo",
+                            memberscount = 9,
+                            squadronrank = "Squadron commander",
+                            url = "https://inara.cz/squadron/5/"
+                        },
+                        preferredrole = "Freelancer",
+                        imageurl = "https://inara.cz/data/users/0/1x1673.jpg",
+                        url = "https://inara.cz/cmdr/1/"
+                    }
+                };
+
+                var inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
+                Assert.IsTrue(expectedCmdrs.DeepEquals(inaraCmdrs));
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
         }
     }
 }
