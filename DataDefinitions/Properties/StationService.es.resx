@@ -246,7 +246,7 @@
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
-    <value>Pintura</value>
+    <value>Diseño</value>
     <comment>Station Service: Livery</comment>
   </data>
   <data name="ModulePacks" xml:space="preserve">
