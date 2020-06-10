@@ -194,9 +194,7 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Frissítés letöltésének kezdése.</value>
   </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>Nem tudtam kapcsolódni a frissítési szerveremhez. Amennyiben a probléma továbbra is fennáll, kérlek látogasd meg a fórumot.</value>
-  </data>
+  
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Csak egy EDDI futhatható egyszerre.
 
