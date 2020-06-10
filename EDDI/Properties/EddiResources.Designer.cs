@@ -432,7 +432,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I could not connect to my update server. If this recurs, please check the forum to see if it is a known problem..
+        ///   Looks up a localized string similar to Eddi could not connect to its update server. If this recurs, please check the forum to see if it is a known problem..
         /// </summary>
         public static string update_server_unreachable {
             get {

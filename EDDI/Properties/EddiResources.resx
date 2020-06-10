@@ -195,7 +195,7 @@
     <value>Starting upgrade.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
-    <value>I could not connect to my update server. If this recurs, please check the forum to see if it is a known problem.</value>
+    <value>Eddi could not connect to its update server. If this recurs, please check the forum to see if it is a known problem.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Only one instance of EDDI can run at a time.
