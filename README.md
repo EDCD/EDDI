@@ -51,3 +51,23 @@ If you have an issue with EDDI then please [report it](https://github.com/EDCD/E
 # Uninstalling EDDI
 
 If you want to uninstall EDDI then you can do so through the Windows control panel.  Any data that EDDI creates is stored in the %APPDATA%\EDDI directory, and this can also be removed on uninstall.
+
+# Thanks
+
+We would like to express our gratitude to the various products, services, and APIs which which make EDDI's development possible, including:
+
+![https://elitedangerous.com/](images/Elite-Dangerous_100x100.png)
+![https://www.edsm.net/](images/edsmLogo_100x100.jpg)
+![https://www.inara.cz/](images/inaraLogo_100x100.png)
+![https://www.voiceattack.com](images/voiceattackLogo_100x100.png)
+![https://www.microsoft.com](images/MSFT_272x100.png)
+![https://www.jetbrains.com/?from=EDDI](images/jetbrains_100x100.png)
+![https://www.rollbar.com](images/rollbar_100x100.png)
+
+- https://www.appveyor.com/
+- https://elitebgs.app/api/ebgs
+- https://github.com/r3c/cottle
+- https://github.com/icsharpcode/AvalonEdit
+- https://github.com/JamesNK/Newtonsoft.Json
+  
+Note: Logos and trademarks in this section are not the property of the EDDI development team. These are sourced from publicly available press kits or otherwise used with permission.
