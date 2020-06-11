@@ -56,13 +56,13 @@ If you want to uninstall EDDI then you can do so through the Windows control pan
 
 We would like to express our gratitude to the various products, services, and APIs which which make EDDI's development possible, including:
 
-![https://elitedangerous.com/](images/Elite-Dangerous_100x100.png)
-![https://www.edsm.net/](images/edsmLogo_100x100.jpg)
-![https://www.inara.cz/](images/inaraLogo_100x100.png)
-![https://www.voiceattack.com](images/voiceattackLogo_100x100.png)
-![https://www.microsoft.com](images/MSFT_272x100.png)
-![https://www.jetbrains.com/?from=EDDI](images/jetbrains_100x100.png)
-![https://www.rollbar.com](images/rollbar_100x100.png)
+[![https://elitedangerous.com/](images/Elite-Dangerous_100x100.png)](https://elitedangerous.com/)
+[![https://www.edsm.net/](images/edsmLogo_100x100.jpg)](https://www.edsm.net/)
+[![https://www.inara.cz/](images/inaraLogo_100x100.png)](https://www.inara.cz/)
+[![https://www.voiceattack.com](images/voiceattackLogo_100x100.png)](https://www.voiceattack.com)
+[![https://www.microsoft.com](images/MSFT_272x100.png)](https://www.microsoft.com)
+[![https://www.jetbrains.com/?from=EDDI](images/jetbrains_100x100.png)](https://www.jetbrains.com/?from=EDDI)
+[![https://www.rollbar.com](images/rollbar_100x100.png)](https://www.rollbar.com)
 
 - https://www.appveyor.com/
 - https://elitebgs.app/api/ebgs
