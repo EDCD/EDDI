@@ -194,7 +194,9 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>更新を開始しています。</value>
   </data>
-  
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>アップデートサーバに接続できません。繰り返し発生する場合、フォーラムを確認してみてください。</value>
+  </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>EDDIの複数実行は不可能です。</value>
   </data>
