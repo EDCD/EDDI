@@ -54,7 +54,7 @@ If you want to uninstall EDDI then you can do so through the Windows control pan
 
 # Thanks
 
-We would like to express our gratitude to the various products, services, and APIs which which make EDDI's development possible, including:
+We would like to express our gratitude to the various products, services, and APIs which make EDDI's development possible, including:
 
 [![https://elitedangerous.com/](images/Elite-Dangerous_100x100.png)](https://elitedangerous.com/)
 [![https://www.edsm.net/](images/edsmLogo_100x100.jpg)](https://www.edsm.net/)
