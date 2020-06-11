@@ -17,21 +17,21 @@ namespace EddiDataDefinitions
         {
             if (definition == null)
             {
-                string name = null;
+                string _name = null;
                 if (additionalJsonData != null)
                 {
-                    if (name == null && additionalJsonData.ContainsKey("EDName"))
+                    if (additionalJsonData.ContainsKey("EDName"))
                     {
-                        name = (string)additionalJsonData?["EDName"];
+                        _name = (string)additionalJsonData?["EDName"];
                     }
-                    if (name == null && additionalJsonData.ContainsKey("name"))
+                    if (_name == null && additionalJsonData.ContainsKey("name"))
                     {
-                        name = (string)additionalJsonData?["name"];
+                        _name = (string)additionalJsonData?["name"];
                     }
                 }
-                if (name != null)
+                if (_name != null)
                 {
-                    definition = CommodityDefinition.FromNameOrEDName(name);
+                    definition = CommodityDefinition.FromNameOrEDName(_name);
                 }
             }
             additionalJsonData = null;
@@ -130,7 +130,7 @@ namespace EddiDataDefinitions
             CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID(eliteId) ?? CommodityDefinition.FromEDName(edName);
             if (commodityDef == null || (string)capiJSON["name"] != commodityDef.edname)
             {
-                if (commodityDef.edname != "Drones")
+                if (commodityDef?.edname != "Drones")
                 {
                     // Unknown commodity; report the full object so that we can update the definitions 
                     Logging.Info("Commodity definition error: " + (string)capiJSON["name"], JsonConvert.SerializeObject(capiJSON));
@@ -169,9 +169,9 @@ namespace EddiDataDefinitions
             };
 
             List<string> StatusFlags = new List<string>();
-            foreach (dynamic statusFlag in capiJSON["statusFlags"])
+            foreach (string statusFlag in capiJSON["statusFlags"])
             {
-                StatusFlags.Add((string)statusFlag);
+                StatusFlags.Add(statusFlag);
             }
             quote.StatusFlags = StatusFlags;
             return quote;
@@ -191,7 +191,7 @@ namespace EddiDataDefinitions
             CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID(eliteId) ?? CommodityDefinition.FromEDName(edName);
             if (commodityDef == null || edName != commodityDef.edname.ToLowerInvariant())
             {
-                if (commodityDef.edname != "Drones")
+                if (commodityDef?.edname != "Drones")
                 {
                     // Unknown commodity; report the full object so that we can update the definitions 
                     Logging.Info("Commodity definition error: " + edName);
@@ -205,7 +205,8 @@ namespace EddiDataDefinitions
             {
                 fromFDev = true,
                 buyprice = item.buyprice,
-                avgprice = item.meanprice,
+                // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
+                avgprice = item.meanprice > 0 ? item.meanprice : commodityDef.avgprice, 
                 stock = item.stock,
                 stockbracket = item.stockbracket,
                 sellprice = item.sellprice,
