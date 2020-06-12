@@ -3975,8 +3975,6 @@ namespace EddiJournalMonitor
                             case "CrimeVictim":
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
-                            case "NavRoute":
-                            case "ProspectedAsteroid":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
