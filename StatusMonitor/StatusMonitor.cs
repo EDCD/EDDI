@@ -23,6 +23,10 @@ namespace EddiStatusMonitor
         public Status currentStatus { get; private set; } = new Status();
         public Status lastStatus { get; private set; } = new Status();
 
+        // Declare our constants
+        private const int pollingIntervalActiveMs = 500;
+        private const int pollingIntervalRelaxedMs = 5000;
+
         // Miscellaneous tracking
         private bool gliding;
         private bool jumping;
@@ -102,44 +106,51 @@ namespace EddiStatusMonitor
                         // Main loop
                         while (running)
                         {
-                            if (!fileInfo.Exists)
+                            if (Processes.IsEliteRunning())
                             {
-                                // Status.json could not be found. Sleep until a Status.json file is found.
-                                Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                                while (!fileInfo.Exists)
+                                if (!fileInfo.Exists)
                                 {
-                                    Thread.Sleep(5000);
-                                    fileInfo = Files.FileInfo(Directory, "Status.json");
+                                    // Status.json could not be found. Sleep until a Status.json file is found.
+                                    Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                                    while (!fileInfo.Exists)
+                                    {
+                                        Thread.Sleep(pollingIntervalRelaxedMs);
+                                        fileInfo = Files.FileInfo(Directory, "Status.json");
+                                    }
+                                    Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
+                                    return;
                                 }
-                                Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
-                                return;
+                                else
+                                {
+                                    string thisStatus = string.Empty;
+                                    try
+                                    {
+                                        fs.Seek(0, SeekOrigin.Begin);
+                                        thisStatus = reader.ReadLine() ?? string.Empty;
+                                    }
+                                    catch (Exception)
+                                    {
+                                        // file open elsewhere or being written, just wait for the next pass
+                                    }
+                                    if (lastStatusJson != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
+                                    {
+                                        Status status = ParseStatusEntry(thisStatus);
+
+                                        // Spin off a thread to pass status entry updates in the background
+                                        Thread updateThread = new Thread(() => handleStatus(status))
+                                        {
+                                            IsBackground = true
+                                        };
+                                        updateThread.Start();
+                                    }
+                                    lastStatusJson = thisStatus;
+                                }
+                                Thread.Sleep(pollingIntervalActiveMs);
                             }
                             else
                             {
-                                string thisStatus = string.Empty;
-                                try
-                                {
-                                    fs.Seek(0, SeekOrigin.Begin);
-                                    thisStatus = reader.ReadLine() ?? string.Empty;
-                                }
-                                catch (Exception)
-                                {
-                                    // file open elsewhere or being written, just wait for the next pass
-                                }
-                                if (lastStatusJson != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
-                                {
-                                    Status status = ParseStatusEntry(thisStatus);
-
-                                    // Spin off a thread to pass status entry updates in the background
-                                    Thread updateThread = new Thread(() => handleStatus(status))
-                                    {
-                                        IsBackground = true
-                                    };
-                                    updateThread.Start();
-                                }
-                                lastStatusJson = thisStatus;
+                                Thread.Sleep(pollingIntervalRelaxedMs);
                             }
-                            Thread.Sleep(500);
                         }
                     }
                 }
@@ -457,9 +468,9 @@ namespace EddiStatusMonitor
             }
         }
 
-        private void OnStatus(EventHandler statusUpdatedEvent, Status currentStatus)
+        private void OnStatus(EventHandler statusUpdatedEvent, Status status)
         {
-            statusUpdatedEvent?.Invoke(currentStatus, EventArgs.Empty);
+            statusUpdatedEvent?.Invoke(status, EventArgs.Empty);
         }
 
         private static string GetSavedGamesDir()
