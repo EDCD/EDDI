@@ -3318,11 +3318,11 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Route":
+                            case "NavRoute":
                                 {
                                     List<RouteInfo> route = new List<RouteInfo>();
                                     route = RouteInfoReader.FromFile().Route;
-                                    events.Add(new RouteEvent(timestamp, route) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new NavRouteEvent(timestamp, route) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3976,6 +3976,7 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "NavRoute":
+                            case "ProspectedAsteroid":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
