@@ -1,7 +1,7 @@
 ﻿using Eddi;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -21,6 +21,13 @@ namespace EddiNavigationMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<Bookmark> bookmarks { get; private set; }
+
+        private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
+
+        // Navigation route data
+        public string navDestination;
+        public string navRouteList;
+        public decimal navRouteDistance;
 
         private DateTime updateDat;
 
@@ -54,9 +61,9 @@ namespace EddiNavigationMonitor
             initializeNavigationMonitor();
         }
 
-        public void initializeNavigationMonitor(NavigationMonitorConfiguration configuration = null)
+        public void initializeNavigationMonitor()
         {
-            readBookmarks(configuration);
+            readBookmarks();
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -121,13 +128,13 @@ namespace EddiNavigationMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is RouteEvent)
+            if (@event is NavRouteEvent)
             {
-                handleRouteEvent((RouteEvent)@event);
+                handleRouteEvent((NavRouteEvent)@event);
             }
 
         }
-        private void handleRouteEvent(RouteEvent @event)
+        private void handleRouteEvent(NavRouteEvent @event)
         {
             if (@event.timestamp > updateDat)
             {
@@ -149,30 +156,27 @@ namespace EddiNavigationMonitor
         {
             lock (bookmarksLock)
             {
-                // Write cargo configuration with current inventory
-                NavigationMonitorConfiguration configuration = new NavigationMonitorConfiguration()
-                {
-                    updatedat = updateDat,
-                    bookmarks = bookmarks,
-
-                };
-                configuration.ToFile();
+                // Write bookmarks configuration with current list
+                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                navConfig.bookmarks = bookmarks;
+                navConfig.updatedat = updateDat;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
         }
 
-        private void readBookmarks(NavigationMonitorConfiguration configuration = null)
+        private void readBookmarks()
         {
             lock (bookmarksLock)
             {
-                // Obtain current cargo inventory from configuration
-                configuration = configuration ?? NavigationMonitorConfiguration.FromFile();
-                updateDat = configuration.updatedat;
+                // Obtain current bookmarks list from configuration
+                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                updateDat = navConfig.updatedat;
 
                 // Build a new bookmark list
                 bookmarks.Clear();
-                foreach (Bookmark bookmark in configuration.bookmarks)
+                foreach (Bookmark bookmark in navConfig.bookmarks)
                 {
                     bookmarks.Add(bookmark);
                 }

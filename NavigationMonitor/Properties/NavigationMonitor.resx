@@ -120,8 +120,14 @@
   <data name="add_button" xml:space="preserve">
     <value>Add Bookmark</value>
   </data>
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Allows manual addition of a bookmark.</value>
+  </data>
   <data name="blank_bookmark" xml:space="preserve">
     <value>Enter System Name</value>
+  </data>
+  <data name="find_text" xml:space="preserve">
+    <value>Find:</value>
   </data>
   <data name="header_body" xml:space="preserve">
     <value>Body</value>
@@ -144,16 +150,103 @@
   <data name="navigation_monitor_name" xml:space="preserve">
     <value>Navigation Monitor</value>
   </data>
-  <data name="para1" xml:space="preserve">
-    <value>Below is a list of all your bookmarks.</value>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Prioritize Orbital Stations:</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Tip: Maximize the allowed search distance to minimize search times.</value>
   </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Allows manual removal of a bookmark.</value>
+  </data>
+  <data name="search_button" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="search_distance" xml:space="preserve">
+    <value>Max Search Distance From Main Star (Ls):</value>
+  </data>
+  <data name="search_query_crime_facilitator" xml:space="preserve">
+    <value>Legal Facilities</value>
+  </data>
+  <data name="search_query_missions_expiring" xml:space="preserve">
+    <value>Expiring</value>
+  </data>
+  <data name="search_query_missions_farthest" xml:space="preserve">
+    <value>Farthest</value>
+  </data>
+  <data name="search_query_missions_most" xml:space="preserve">
+    <value>Most</value>
+  </data>
+  <data name="search_query_missions_nearest" xml:space="preserve">
+    <value>Nearest Mission System</value>
+  </data>
+  <data name="search_query_missions_next" xml:space="preserve">
+    <value>Next System In Route</value>
+  </data>
+  <data name="search_query_missions_route" xml:space="preserve">
+    <value>Missions Route</value>
+  </data>
+  <data name="search_query_missions_source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="search_query_missions_update" xml:space="preserve">
+    <value>Update Route</value>
+  </data>
+  <data name="search_query_services_encoded" xml:space="preserve">
+    <value>Encoded Materials Trader</value>
+  </data>
+  <data name="search_query_services_guardian" xml:space="preserve">
+    <value>Guardian Technology Broker</value>
+  </data>
+  <data name="search_query_services_human" xml:space="preserve">
+    <value>Human Technology Broker</value>
+  </data>
+  <data name="search_query_services_manufactured" xml:space="preserve">
+    <value>Manufactured Materials Trader</value>
+  </data>
+  <data name="search_query_services_raw" xml:space="preserve">
+    <value>Raw Materials Trader</value>
+  </data>
+  <data name="search_query_ship_cancel" xml:space="preserve">
+    <value>Cancel Route</value>
+  </data>
+  <data name="search_query_ship_scoop" xml:space="preserve">
+    <value>Scoopable Star</value>
+  </data>
+  <data name="search_query_ship_set" xml:space="preserve">
+    <value>Set Route</value>
+  </data>
+  <data name="search_type_crime" xml:space="preserve">
+    <value>Crime</value>
+  </data>
+  <data name="search_type_missions" xml:space="preserve">
+    <value>Missions</value>
+  </data>
+  <data name="search_type_services" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="search_type_ship" xml:space="preserve">
+    <value>Ship</value>
+  </data>
   <data name="set_button" xml:space="preserve">
-    <value>Set</value>
+    <value>Set Course</value>
+  </data>
+  <data name="set_button_desc" xml:space="preserve">
+    <value>Set course to the result of the Navigation query.</value>
+  </data>
+  <data name="station_textbox_desc" xml:space="preserve">
+    <value>Station:</value>
+  </data>
+  <data name="system_textbox_desc" xml:space="preserve">
+    <value>System:</value>
   </data>
   <data name="update_button" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Update the bookmark (system, body, POI name, etc) information.</value>
   </data>
 </root>
