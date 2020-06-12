@@ -90,7 +90,7 @@ namespace EddiStatusMonitor
             {
                 Logging.Error("Directory " + Directory + " not supported: ", nsex);
             }
-            if (fileInfo.Exists)
+            if (fileInfo != null)
             {
                 try
                 {
@@ -102,11 +102,11 @@ namespace EddiStatusMonitor
                         // Main loop
                         while (running)
                         {
-                            if (fileInfo == null)
+                            if (!fileInfo.Exists)
                             {
                                 // Status.json could not be found. Sleep until a Status.json file is found.
                                 Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                                while (fileInfo == null)
+                                while (!fileInfo.Exists)
                                 {
                                     Thread.Sleep(5000);
                                     fileInfo = Files.FileInfo(Directory, "Status.json");
