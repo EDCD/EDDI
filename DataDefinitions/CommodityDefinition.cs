@@ -374,7 +374,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128922521, null, "S_TissueSample_Surface", Salvage, 0, false),
                 new CommodityDefinition(128922522, null, "S_TissueSample_Core", Salvage, 0, false),
                 new CommodityDefinition(128922523, null, "P_ParticulateSample", Salvage, 0, false),
-                new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, false),
+                new CommodityDefinition(128922524, 342, "Duradrives", ConsumerItems, 0, true),
                 new CommodityDefinition(128922781, null, "S9_TissueSample_Shell", Salvage, 0, false),
                 new CommodityDefinition(128922782, null, "M3_TissueSample_Membrane", Salvage, 0, false),
                 new CommodityDefinition(128922783, null, "M3_TissueSample_Mycelium", Salvage, 0, false),
