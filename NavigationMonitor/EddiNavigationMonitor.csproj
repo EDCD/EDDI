@@ -62,7 +62,7 @@
       <DependentUpon>NavigationMonitor.resx</DependentUpon>
     </Compile>
     <Compile Include="NavRouteEvent.cs" />
-    <Compile Include="RouteInfoReader.cs" />
+    <Compile Include="NavRouteInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
