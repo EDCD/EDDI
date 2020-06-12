@@ -55,17 +55,20 @@
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavigationMonitor.cs" />
-    <Compile Include="NavigationMonitorConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\NavigationMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NavigationMonitor.resx</DependentUpon>
     </Compile>
-    <Compile Include="RouteEvent.cs" />
+    <Compile Include="NavRouteEvent.cs" />
     <Compile Include="RouteInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
@@ -85,6 +88,10 @@
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
       <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
       <Name>EddiNavigationService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
+      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
+      <Name>EddiShipMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>

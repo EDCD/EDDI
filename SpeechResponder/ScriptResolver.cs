@@ -782,9 +782,6 @@ namespace EddiSpeechResponder
 
             store["RouteDetails"] = new NativeFunction((values) =>
             {
-                CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
-                MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
-                int materialMonitorDistance = materialMonitor.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
                 string result = null;
                 string value = values[0].AsString;
                 if (!string.IsNullOrEmpty(value))
@@ -793,12 +790,12 @@ namespace EddiSpeechResponder
                     {
                         case "cancel":
                             {
-                                NavigationService.Instance.CancelDestination();
+                                NavigationService.Instance.CancelRoute();
                             }
                             break;
                         case "encoded":
                             {
-                                result = NavigationService.Instance.GetServiceRoute("encoded", materialMonitorDistance);
+                                result = NavigationService.Instance.GetServiceRoute("encoded");
                             }
                             break;
                         case "expiring":
@@ -808,9 +805,7 @@ namespace EddiSpeechResponder
                             break;
                         case "facilitator":
                             {
-                                int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
-                                bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                                result = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                                result = NavigationService.Instance.GetServiceRoute("facilitator");
                             }
                             break;
                         case "farthest":
@@ -820,17 +815,17 @@ namespace EddiSpeechResponder
                             break;
                         case "guardian":
                             {
-                                result = NavigationService.Instance.GetServiceRoute("guardian", materialMonitorDistance);
+                                result = NavigationService.Instance.GetServiceRoute("guardian");
                             }
                             break;
                         case "human":
                             {
-                                result = NavigationService.Instance.GetServiceRoute("human", materialMonitorDistance);
+                                result = NavigationService.Instance.GetServiceRoute("human");
                             }
                             break;
                         case "manufactured":
                             {
-                                result = NavigationService.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
+                                result = NavigationService.Instance.GetServiceRoute("manufactured");
                             }
                             break;
                         case "most":
@@ -857,7 +852,7 @@ namespace EddiSpeechResponder
                             break;
                         case "raw":
                             {
-                                result = NavigationService.Instance.GetServiceRoute("raw", materialMonitorDistance);
+                                result = NavigationService.Instance.GetServiceRoute("raw");
                             }
                             break;
                         case "route":
@@ -889,15 +884,15 @@ namespace EddiSpeechResponder
                             {
                                 if (values.Count == 3)
                                 {
-                                    result = NavigationService.Instance.SetDestination(values[1].AsString, values[2].AsString);
+                                    result = NavigationService.Instance.SetRoute(values[1].AsString, values[2].AsString);
                                 }
                                 else if (values.Count == 2)
                                 {
-                                    result = NavigationService.Instance.SetDestination(values[1].AsString);
+                                    result = NavigationService.Instance.SetRoute(values[1].AsString);
                                 }
                                 else
                                 {
-                                    result = NavigationService.Instance.SetDestination();
+                                    result = NavigationService.Instance.SetRoute();
                                 }
                             }
                             break;

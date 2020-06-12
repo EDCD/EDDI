@@ -5,23 +5,23 @@ using System.Collections.Generic;
 
 namespace EddiNavigationMonitor
 {
-    public class RouteEvent : Event
+    public class NavRouteEvent : Event
     {
-        public const string NAME = "Route";
+        public const string NAME = "Nav route";
         public const string DESCRIPTION = "Triggered when the navigation route is updated";
         public const string SAMPLE = null;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static RouteEvent()
+        static NavRouteEvent()
         {
         }
 
-        public List<RouteInfo> route { get; private set; }
+        public List<RouteInfo> navRoute { get; private set; }
 
-        public RouteEvent(DateTime timestamp, List<RouteInfo> route) : base(timestamp, NAME)
+        public NavRouteEvent(DateTime timestamp, List<RouteInfo> route) : base(timestamp, NAME)
         {
-            this.route = route;
+            this.navRoute = route;
         }
     }
 }
