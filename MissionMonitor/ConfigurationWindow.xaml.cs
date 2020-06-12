@@ -1,9 +1,8 @@
 ﻿using Eddi;
+using EddiConfigService;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -18,6 +17,9 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+
+        private MissionMonitorConfiguration missionsConfig = new MissionMonitorConfiguration();
+
         private MissionMonitor missionMonitor()
         {
             return (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
@@ -29,8 +31,8 @@ namespace EddiMissionMonitor
 
             missionsData.ItemsSource = missionMonitor()?.missions;
 
-            MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
-            missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture);
+            missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+            missionWarningInt.Text = missionsConfig.missionWarning?.ToString(CultureInfo.InvariantCulture);
         }
 
         private void missionsUpdated(object sender, DataTransferEventArgs e)
@@ -41,90 +43,19 @@ namespace EddiMissionMonitor
 
         private void warningChanged(object sender, TextChangedEventArgs e)
         {
-            MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
+            missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
             try
             {
                 int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? Constants.missionWarningDefault
                     : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
                 missionMonitor().missionWarning = warning;
-                configuration.missionWarning = warning;
-                configuration.ToFile();
+                missionsConfig.missionWarning = warning;
+                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
             }
             catch
             {
                 // Bad user input; ignore it
             }
-        }
-
-        private void getRoute(object sender, RoutedEventArgs e)
-        {
-            Button updateButton = (Button)sender;
-            updateButton.Foreground = Brushes.Red;
-            updateButton.FontWeight = FontWeights.Bold;
-
-            Thread getRouteThread = new Thread(() =>
-            {
-                string nextSystem = missionMonitor().GetMissionsRoute();
-                Dispatcher?.Invoke(() =>
-                {
-                    updateButton.Foreground = Brushes.Black;
-                    updateButton.FontWeight = FontWeights.Regular;
-
-                    // If 'next system' found, send to clipboard
-                    if (nextSystem != null)
-                    {
-                        Clipboard.SetData(DataFormats.Text, nextSystem);
-                    }
-                });
-            })
-            {
-                IsBackground = true
-            };
-            getRouteThread.Start();
-        }
-
-        private void nextInRoute(object sender, RoutedEventArgs e)
-        {
-            string nextSystem = missionMonitor().SetNextInRoute();
-
-            // If 'next system' found, send to clipboard
-            if (nextSystem != null)
-            {
-                Clipboard.SetData(DataFormats.Text, nextSystem);
-            }
-
-        }
-
-        private void updateRoute(object sender, RoutedEventArgs e)
-        {
-            Button updateButton = (Button)sender;
-            updateButton.Foreground = Brushes.Red;
-            updateButton.FontWeight = FontWeights.Bold;
-
-            Thread updateRouteThread = new Thread(() =>
-            {
-                string nextSystem = missionMonitor().UpdateRoute();
-                Dispatcher?.Invoke(() =>
-                {
-                    updateButton.Foreground = Brushes.Black;
-                    updateButton.FontWeight = FontWeights.Regular;
-
-                    // If 'next system' found, send to clipboard
-                    if (nextSystem != null)
-                    {
-                        Clipboard.SetData(DataFormats.Text, nextSystem);
-                    }
-                });
-            })
-            {
-                IsBackground = true
-            };
-            updateRouteThread.Start();
-        }
-
-        private void clearRoute(object sender, RoutedEventArgs e)
-        {
-            missionMonitor().CancelRoute();
         }
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
@@ -134,6 +65,5 @@ namespace EddiMissionMonitor
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
         }
-
     }
 }

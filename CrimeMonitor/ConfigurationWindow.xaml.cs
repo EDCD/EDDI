@@ -31,10 +31,6 @@ namespace EddiCrimeMonitor
             InitializeComponent();
 
             criminalRecord.ItemsSource = crimeMonitor()?.criminalrecord;
-
-            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            prioritizeOrbitalStations.IsChecked = configuration.prioritizeOrbitalStations;
-            maxStationDistanceInt.Text = configuration.maxStationDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
         }
 
         private void addRecord(object sender, RoutedEventArgs e)
@@ -83,92 +79,6 @@ namespace EddiCrimeMonitor
                     IsBackground = true
                 };
                 factionStationThread.Start();
-            }
-        }
-
-        private void findIFRoute(object sender, RoutedEventArgs e)
-        {
-            Button updateButton = (Button)sender;
-            updateButton.Foreground = Brushes.Red;
-            updateButton.FontWeight = FontWeights.Bold;
-
-            Thread IFRouteThread = new Thread(() =>
-            {
-                int distance = crimeMonitor().maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
-                bool isChecked = crimeMonitor().prioritizeOrbitalStations;
-                string IFSystem = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
-                Dispatcher?.Invoke(() =>
-                {
-                    updateButton.Foreground = Brushes.Black;
-                    updateButton.FontWeight = FontWeights.Regular;
-
-                    // If 'next system' found, send to clipboard
-                    if (IFSystem != null)
-                    {
-                        Clipboard.SetData(DataFormats.Text, IFSystem);
-                    }
-                });
-            })
-            {
-                IsBackground = true
-            };
-            IFRouteThread.Start();
-        }
-
-        private void prioritizeOrbitalStationsEnabled(object sender, RoutedEventArgs e)
-        {
-            updateCheckbox();
-        }
-
-        private void prioritizeOrbitalStationsDisabled(object sender, RoutedEventArgs e)
-        {
-            updateCheckbox();
-        }
-
-        private void updateCheckbox()
-        {
-            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            bool isChecked = prioritizeOrbitalStations.IsChecked.Value;
-            if (configuration.prioritizeOrbitalStations != isChecked)
-            {
-                crimeMonitor().prioritizeOrbitalStations = isChecked;
-                configuration.prioritizeOrbitalStations = isChecked;
-                configuration.ToFile();
-                crimeMonitor().UpdateStations();
-            }
-        }
-
-        private void maxStationDistance_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                maxStationDistance_Changed();
-            }
-        }
-
-        private void maxStationDistance_LostFocus(object sender, RoutedEventArgs e)
-        {
-            maxStationDistance_Changed();
-        }
-
-        private void maxStationDistance_Changed()
-        {
-            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            try
-            {
-                int? distance = string.IsNullOrWhiteSpace(maxStationDistanceInt.Text)
-                    ? 10000 : Convert.ToInt32(maxStationDistanceInt.Text, CultureInfo.InvariantCulture);
-                if (distance != configuration.maxStationDistanceFromStarLs)
-                {
-                    crimeMonitor().maxStationDistanceFromStarLs = distance;
-                    configuration.maxStationDistanceFromStarLs = distance;
-                    configuration.ToFile();
-                    crimeMonitor().UpdateStations();
-                }
-            }
-            catch
-            {
-                // Bad user input; ignore it
             }
         }
 

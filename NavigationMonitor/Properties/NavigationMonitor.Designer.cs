@@ -70,11 +70,29 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows manual addition of a bookmark..
+        /// </summary>
+        public static string add_button_desc {
+            get {
+                return ResourceManager.GetString("add_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter System Name.
         /// </summary>
         public static string blank_bookmark {
             get {
                 return ResourceManager.GetString("blank_bookmark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find:.
+        /// </summary>
+        public static string find_text {
+            get {
+                return ResourceManager.GetString("find_text", resourceCulture);
             }
         }
         
@@ -142,11 +160,20 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is a list of all your bookmarks..
+        ///   Looks up a localized string similar to Prioritize Orbital Stations:.
         /// </summary>
-        public static string para1 {
+        public static string orbital_station_checkbox {
             get {
-                return ResourceManager.GetString("para1", resourceCulture);
+                return ResourceManager.GetString("orbital_station_checkbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip: Maximize the allowed search distance to minimize search times..
+        /// </summary>
+        public static string p1 {
+            get {
+                return ResourceManager.GetString("p1", resourceCulture);
             }
         }
         
@@ -160,11 +187,254 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set.
+        ///   Looks up a localized string similar to Allows manual removal of a bookmark..
+        /// </summary>
+        public static string remove_button_desc {
+            get {
+                return ResourceManager.GetString("remove_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string search_button {
+            get {
+                return ResourceManager.GetString("search_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Search Distance From Main Star (Ls):.
+        /// </summary>
+        public static string search_distance {
+            get {
+                return ResourceManager.GetString("search_distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legal Facilities.
+        /// </summary>
+        public static string search_query_crime_facilitator {
+            get {
+                return ResourceManager.GetString("search_query_crime_facilitator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expiring.
+        /// </summary>
+        public static string search_query_missions_expiring {
+            get {
+                return ResourceManager.GetString("search_query_missions_expiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Farthest.
+        /// </summary>
+        public static string search_query_missions_farthest {
+            get {
+                return ResourceManager.GetString("search_query_missions_farthest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Most.
+        /// </summary>
+        public static string search_query_missions_most {
+            get {
+                return ResourceManager.GetString("search_query_missions_most", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nearest Mission System.
+        /// </summary>
+        public static string search_query_missions_nearest {
+            get {
+                return ResourceManager.GetString("search_query_missions_nearest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next System In Route.
+        /// </summary>
+        public static string search_query_missions_next {
+            get {
+                return ResourceManager.GetString("search_query_missions_next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions Route.
+        /// </summary>
+        public static string search_query_missions_route {
+            get {
+                return ResourceManager.GetString("search_query_missions_route", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string search_query_missions_source {
+            get {
+                return ResourceManager.GetString("search_query_missions_source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Route.
+        /// </summary>
+        public static string search_query_missions_update {
+            get {
+                return ResourceManager.GetString("search_query_missions_update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encoded Materials Trader.
+        /// </summary>
+        public static string search_query_services_encoded {
+            get {
+                return ResourceManager.GetString("search_query_services_encoded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Technology Broker.
+        /// </summary>
+        public static string search_query_services_guardian {
+            get {
+                return ResourceManager.GetString("search_query_services_guardian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Human Technology Broker.
+        /// </summary>
+        public static string search_query_services_human {
+            get {
+                return ResourceManager.GetString("search_query_services_human", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manufactured Materials Trader.
+        /// </summary>
+        public static string search_query_services_manufactured {
+            get {
+                return ResourceManager.GetString("search_query_services_manufactured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raw Materials Trader.
+        /// </summary>
+        public static string search_query_services_raw {
+            get {
+                return ResourceManager.GetString("search_query_services_raw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel Route.
+        /// </summary>
+        public static string search_query_ship_cancel {
+            get {
+                return ResourceManager.GetString("search_query_ship_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scoopable Star.
+        /// </summary>
+        public static string search_query_ship_scoop {
+            get {
+                return ResourceManager.GetString("search_query_ship_scoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Route.
+        /// </summary>
+        public static string search_query_ship_set {
+            get {
+                return ResourceManager.GetString("search_query_ship_set", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crime.
+        /// </summary>
+        public static string search_type_crime {
+            get {
+                return ResourceManager.GetString("search_type_crime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions.
+        /// </summary>
+        public static string search_type_missions {
+            get {
+                return ResourceManager.GetString("search_type_missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Services.
+        /// </summary>
+        public static string search_type_services {
+            get {
+                return ResourceManager.GetString("search_type_services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship.
+        /// </summary>
+        public static string search_type_ship {
+            get {
+                return ResourceManager.GetString("search_type_ship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Course.
         /// </summary>
         public static string set_button {
             get {
                 return ResourceManager.GetString("set_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set course to the result of the Navigation query..
+        /// </summary>
+        public static string set_button_desc {
+            get {
+                return ResourceManager.GetString("set_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station:.
+        /// </summary>
+        public static string station_textbox_desc {
+            get {
+                return ResourceManager.GetString("station_textbox_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System:.
+        /// </summary>
+        public static string system_textbox_desc {
+            get {
+                return ResourceManager.GetString("system_textbox_desc", resourceCulture);
             }
         }
         
@@ -174,6 +444,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string update_button {
             get {
                 return ResourceManager.GetString("update_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the bookmark (system, body, POI name, etc) information..
+        /// </summary>
+        public static string update_button_desc {
+            get {
+                return ResourceManager.GetString("update_button_desc", resourceCulture);
             }
         }
     }
