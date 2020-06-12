@@ -1,11 +1,12 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Utilities;
 
-namespace EddiNavigationMonitor
+namespace EddiConfigService
 {
     /// <summary>Storage for configuration of cargo details</summary>
     public class NavigationMonitorConfiguration
@@ -13,6 +14,18 @@ namespace EddiNavigationMonitor
         public ObservableCollection<Bookmark> bookmarks { get; set; }
 
         public DateTime updatedat { get; set; }
+        public int? maxSearchDistanceFromStarLs { get; set; }
+        public bool prioritizeOrbitalStations { get; set; }
+
+        public string navDestination { get; set; }
+        public string navRouteList { get; set; }
+        public decimal navRouteDistance { get; set; }
+        public string missionsRouteList { get; set; }
+        public decimal missionsRouteDistance { get; set; }
+        public string searchQuery { get; set; }
+        public string searchSystem { get; set; }
+        public string searchStation { get; set; }
+        public decimal searchDistance { get; set; }
 
         [JsonIgnore]
         private string dataPath;

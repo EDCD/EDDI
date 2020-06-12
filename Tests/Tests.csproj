@@ -189,6 +189,10 @@
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
       <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
       <Name>EddiCrimeMonitor</Name>
