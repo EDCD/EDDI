@@ -1010,12 +1010,6 @@ namespace EddiMissionMonitor
             }
             return false;
         }
-        public void UpdateDestinationData(string system, string station, decimal distance)
-        {
-            EDDI.Instance.updateDestinationSystem(system);
-            EDDI.Instance.DestinationDistanceLy = distance;
-            EDDI.Instance.updateDestinationStation(station);
-        }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {

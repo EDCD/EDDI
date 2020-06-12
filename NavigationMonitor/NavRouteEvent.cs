@@ -17,11 +17,11 @@ namespace EddiNavigationMonitor
         {
         }
 
-        public List<RouteInfo> navRoute { get; private set; }
+        public List<NavRouteInfo> navRoute { get; private set; }
 
-        public NavRouteEvent(DateTime timestamp, List<RouteInfo> route) : base(timestamp, NAME)
+        public NavRouteEvent(DateTime timestamp, List<NavRouteInfo> navRoute) : base(timestamp, NAME)
         {
-            this.navRoute = route;
+            this.navRoute = navRoute;
         }
     }
 }
