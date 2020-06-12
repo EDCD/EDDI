@@ -80,7 +80,7 @@ namespace EddiStatusMonitor
             running = true;
 
             // Start off by moving to the end of the file
-            string lastStatus = string.Empty;
+            string lastStatusJson = string.Empty;
             FileInfo fileInfo = null;
             try
             {
@@ -97,7 +97,7 @@ namespace EddiStatusMonitor
                     using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
                     {
-                        lastStatus = reader.ReadLine() ?? string.Empty;
+                        lastStatusJson = reader.ReadLine() ?? string.Empty;
 
                         // Main loop
                         while (running)
@@ -126,7 +126,7 @@ namespace EddiStatusMonitor
                                 {
                                     // file open elsewhere or being written, just wait for the next pass
                                 }
-                                if (lastStatus != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
+                                if (lastStatusJson != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
                                 {
                                     Status status = ParseStatusEntry(thisStatus);
 
@@ -137,7 +137,7 @@ namespace EddiStatusMonitor
                                     };
                                     updateThread.Start();
                                 }
-                                lastStatus = thisStatus;
+                                lastStatusJson = thisStatus;
                             }
                             Thread.Sleep(500);
                         }
