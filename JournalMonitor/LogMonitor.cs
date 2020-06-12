@@ -14,7 +14,11 @@ namespace EddiJournalMonitor
         public string Directory;
         public Regex Filter;
         public Action<string, bool> Callback;
-        public static string journalFileName = null;
+        public static string journalFileName;
+
+        // Declare our constants
+        private const int pollingIntervalActiveMs = 100;
+        private const int pollingIntervalRelaxedMs = 5000;
 
         // Keep track of status
         private bool running;
@@ -39,12 +43,28 @@ namespace EddiJournalMonitor
 
             running = true;
             long lastSize = 0;
-            FileInfo fileInfo = null;
+            bool activePolling = false;
 
             // Main loop
             while (running)
             {
-                fileInfo = FindLatestFile(Directory, Filter);
+                if (!string.IsNullOrEmpty(journalFileName))
+                {
+                    // We've already found and processed a journal file. 
+                    // We'll use relaxed file system polling unless the game is running.
+                    if (Processes.IsEliteRunning())
+                    {
+                        activePolling = true;
+                    }
+                    else
+                    {
+                        activePolling = false;
+                        Thread.Sleep(pollingIntervalRelaxedMs);
+                        continue;
+                    }
+                }
+
+                var fileInfo = FindLatestFile(Directory, Filter);
                 if (fileInfo == null)
                 {
                     // A player journal file could not be found. Sleep until a player journal file is found.
@@ -57,7 +77,7 @@ namespace EddiJournalMonitor
                     Logging.Info("Elite Dangerous player journal found. Journal monitor activated.");
                     return;
                 }
-                else if (fileInfo?.Name != null && fileInfo?.Name != journalFileName)
+                else if (fileInfo.Name != journalFileName)
                 {
                     // We have found a player journal file that is fresher than the one we are using
                     bool isFirstLoad = journalFileName == null;
@@ -104,7 +124,7 @@ namespace EddiJournalMonitor
                     }
                     lastSize = thisSize;
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(activePolling ? pollingIntervalActiveMs : pollingIntervalRelaxedMs); 
             }
         }
 
@@ -153,7 +173,7 @@ namespace EddiJournalMonitor
 
                 // First line should be a file header
                 string firstLine = lines.FirstOrDefault();
-                if (firstLine.Contains("Fileheader"))
+                if (!string.IsNullOrEmpty(firstLine) && firstLine.Contains("Fileheader"))
                 {
                     // Pass this along as an event
                     Callback(firstLine, isLoadEvent);
@@ -208,14 +228,11 @@ namespace EddiJournalMonitor
                 try
                 {
                     FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
-                    if (info != null)
-                    {
-                        // This info can be cached so force a refresh
-                        info.Refresh();
-                    }
+                    // This info can be cached so force a refresh
+                    info?.Refresh();
                     return info;
                 }
-                catch { }
+                catch { } // Nothing to do here
             }
 
             return null;

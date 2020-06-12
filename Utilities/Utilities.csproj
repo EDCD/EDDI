@@ -90,6 +90,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Processes.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IPA.cs" />
     <Compile Include="IpaResources.xaml.cs">
