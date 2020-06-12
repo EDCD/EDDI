@@ -966,6 +966,50 @@ namespace EddiMissionMonitor
             return distance;
         }
 
+        public bool UpdateRedirectStatus(Mission mission)
+        {
+            if (mission.originreturn && mission.originsystem == mission.destinationsystem
+                && mission.originstation == mission.destinationstation)
+            {
+                string type = mission.typeEDName.ToLowerInvariant();
+                switch (type)
+                {
+                    case "assassinate":
+                    case "assassinatewing":
+                    case "disable":
+                    case "disablewing":
+                    case "massacre":
+                    case "massacrethargoid":
+                    case "massacrewing":
+                        {
+                            if (mission.statusEDName != "Claim")
+                            {
+                                mission.statusDef = MissionStatus.FromEDName("Claim");
+                                return true;
+                            }
+                        }
+                        break;
+                    case "hack":
+                    case "longdistanceexpedition":
+                    case "passengervip":
+                    case "piracy":
+                    case "rescue":
+                    case "salvage":
+                    case "scan":
+                    case "sightseeing":
+                        {
+                            if (mission.statusEDName != "Complete")
+                            {
+                                mission.statusDef = MissionStatus.FromEDName("Complete");
+                                return true;
+                            }
+                        }
+                        break;
+                }
+
+            }
+            return false;
+        }
         public void UpdateDestinationData(string system, string station, decimal distance)
         {
             EDDI.Instance.updateDestinationSystem(system);
