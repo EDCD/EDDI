@@ -63,17 +63,17 @@ namespace EddiNavigationService
             }
         };
 
+        private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
+        private static NavigationService instance;
+        private static readonly object instanceLock = new object();
 
-        private IEdsmService edsmService;
         public NavigationService(IEdsmService edsmService)
         {
             this.edsmService = edsmService;
+            dataProviderService = new DataProviderService(edsmService);
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
         }
-
-        private static NavigationService instance;
-        private static readonly object instanceLock = new object();
 
         public static NavigationService Instance
         {

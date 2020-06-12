@@ -93,7 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
-    <Compile Include="RouteInfo.cs" />
+    <Compile Include="NavRouteInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
