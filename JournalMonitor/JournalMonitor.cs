@@ -3839,6 +3839,13 @@ namespace EddiJournalMonitor
                                     string bodyName = JsonParsing.getString(data, "Body");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
 
+                                    // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
+                                    if (string.IsNullOrEmpty(bodyName) && !string.IsNullOrEmpty(systemName))
+                                    {
+                                        StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName);
+                                        bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
+                                    }
+
                                     events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId) { raw = line, fromLoad = fromLogLoad });
 
                                     // Cancel any pending carrier jump related events
