@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Utilities
 {
@@ -95,7 +96,7 @@ namespace Utilities
         /// </summary>
         /// <param name="name"></param>
         /// <param name="content"></param>
-        public static void Write(string name, string content)
+        public static async void Write(string name, string content)
         {
             if (name != null && content != null)
             {
@@ -106,57 +107,60 @@ namespace Utilities
                     return;
                 }
 
-                int attempts = 20;
-                int ioDelayMs = 25;
+                await Task.Run(() =>
+                {
+                    int attempts = 20;
+                    int ioDelayMs = 25;
 
-                while (attempts > 0)
-                {
-                    // Attempt to write the file
-                    try
+                    while (attempts > 0)
                     {
-                        LockManager.GetLock(name, () => File.WriteAllText(name, content, Encoding.UTF8));
+                        // Attempt to write the file
+                        try
+                        {
+                            LockManager.GetLock(name, () => File.WriteAllText(name, content, Encoding.UTF8));
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            Logging.Error("Failed to write to " + name, ex);
+                        }
+                        catch (PathTooLongException ex)
+                        {
+                            Logging.Error("Path " + name + " too long", ex);
+                        }
+                        catch (DirectoryNotFoundException ex)
+                        {
+                            Logging.Error("Directory for " + name + " not found", ex);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            Logging.Error("Not allowed to write to " + name, ex);
+                        }
+                        catch (NotSupportedException ex)
+                        {
+                            Logging.Error("Not supported writing to " + name, ex);
+                        }
+                        catch (SecurityException ex)
+                        {
+                            Logging.Error("Security exception writing to " + name, ex);
+                        }
+                        catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
+                        {
+                            attempts--;
+                            Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
+                            Thread.Sleep(ioDelayMs);
+                            continue;
+                        }
+                        catch (IOException ex) // Other IO issue 
+                        {
+                            Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
+                        }
+                        break;
                     }
-                    catch (ArgumentException ex)
+                    if (attempts == 0)
                     {
-                        Logging.Error("Failed to write to " + name, ex);
+                        throw new IOException("IO write failed for " + name + ", too many attempts.");
                     }
-                    catch (PathTooLongException ex)
-                    {
-                        Logging.Error("Path " + name + " too long", ex);
-                    }
-                    catch (DirectoryNotFoundException ex)
-                    {
-                        Logging.Error("Directory for " + name + " not found", ex);
-                    }
-                    catch (UnauthorizedAccessException ex)
-                    {
-                        Logging.Error("Not allowed to write to " + name, ex);
-                    }
-                    catch (NotSupportedException ex)
-                    {
-                        Logging.Error("Not supported writing to " + name, ex);
-                    }
-                    catch (SecurityException ex)
-                    {
-                        Logging.Error("Security exception writing to " + name, ex);
-                    }
-                    catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
-                    {
-                        attempts--;
-                        Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
-                        Thread.Sleep(ioDelayMs);
-                        continue;
-                    }
-                    catch (IOException ex) // Other IO issue 
-                    {
-                        Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
-                    }
-                    break;
-                }
-                if (attempts == 0)
-                {
-                    throw new IOException("IO write failed for " + name + ", too many attempts.");
-                }
+                }).ConfigureAwait(false);
             }
         }
 
