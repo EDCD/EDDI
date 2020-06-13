@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Rollbar.Telemetry;
 using Rollbar;
 using System;
 using System.Collections.Generic;
@@ -290,6 +291,7 @@ namespace Utilities
 #endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
+            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 3));
         }
 
         public static void ExceptionHandler(Exception exception)
