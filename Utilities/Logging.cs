@@ -118,7 +118,7 @@ namespace Utilities
             Dictionary<string, object> preppedData = PrepRollbarData(ref originalData);
             if (originalData is null || preppedData != null)
             {
-                await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, originalData, preppedData, memberName, filePath)).ConfigureAwait(false); 
+                await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, preppedData, memberName, filePath)).ConfigureAwait(false); 
             }
         }
 
@@ -223,7 +223,7 @@ namespace Utilities
             return json;
         }
 
-        private static void SendToRollbar(ErrorLevel errorLevel, string message, object originalData, Dictionary<string, object> preppedData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        private static void SendToRollbar(ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             if (RollbarLocator.RollbarInstance.Config.Enabled == false) { return; }
             string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
@@ -235,12 +235,12 @@ namespace Utilities
                     {
                         case ErrorLevel.Error:
                             RollbarLocator.RollbarInstance.Error(message, preppedData);
-                            log(errorLevel, $"Reporting error, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
+                            log(errorLevel, $"Reporting error, anonymous ID {personID}: {message} {JsonConvert.SerializeObject(preppedData)}", memberName, filePath);
                             break;
                         default:
                             // If this is an Info Report, report only unique messages and data
                             RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
-                            log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
+                            log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {JsonConvert.SerializeObject(preppedData)}", memberName, filePath);
                             break;
                     }
                 }
