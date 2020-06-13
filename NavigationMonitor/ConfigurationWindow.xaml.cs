@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiConfigService;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiNavigationService;
 using EddiShipMonitor;
 using System;
@@ -24,6 +25,8 @@ namespace EddiNavigationMonitor
         private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
         private string searchTypeSelection = String.Empty;
         private string searchQuerySelection = String.Empty;
+        private string dropdownSearchSystem = null;
+        private string dropdownSearchStation = null;
 
         private readonly List<string> searchType = new List<string> {
             "crime",
@@ -349,23 +352,82 @@ namespace EddiNavigationMonitor
             searchThread.Start();
         }
 
-        private void searchSystemChanged(object sender, TextChangedEventArgs e)
+        private void executeSelect(object sender, RoutedEventArgs e)
         {
+            StarSystem curr = EDDI.Instance.CurrentStarSystem;
+            StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(dropdownSearchSystem, true);
 
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            navConfig.searchQuery = "dropdown";
+            navConfig.searchSystem = dropdownSearchSystem;
+            navConfig.searchStation = dropdownSearchStation;
+            navConfig.searchDistance = NavigationService.Instance.CalculateDistance(curr, dest);
+            ConfigService.Instance.navigationMonitorConfiguration = navConfig;
         }
 
-        private void searchSystemText_LostFocus(object sender, RoutedEventArgs e)
+        private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            void changeHandler()
+            {
+                // Reset the search station due to selecting new search system
+                if (dropdownSearchStation != null)
+                {
+                    dropdownSearchStation = null;
+                    searchStationDropDown.SelectedItem = Properties.NavigationMonitor.no_station;
+                    ConfigureSearchStationOptions(null);
+                }
+            }
+            searchSystemDropDown.TextDidChange(sender, e, dropdownSearchSystem, changeHandler);
         }
-        private void searchStationChanged(object sender, TextChangedEventArgs e)
-        {
 
+        private void SearchSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            void changeHandler(string newValue)
+            {
+                // Update to new search system
+                dropdownSearchSystem = newValue;
+
+                // Update station options for new system
+                ConfigureSearchStationOptions(dropdownSearchSystem);
+            }
+            searchSystemDropDown.SelectionDidChange(changeHandler);
         }
 
-        private void searchStationText_LostFocus(object sender, RoutedEventArgs e)
+        private void SearchSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
+            searchSystemDropDown.DidLoseFocus(oldValue: dropdownSearchSystem);
+        }
 
+        private void ConfigureSearchStationOptions(string system)
+        {
+            List<string> SearchStationOptions = new List<string>
+                {
+                    Properties.NavigationMonitor.no_station
+                };
+
+            if (system != null)
+            {
+                StarSystem SearchSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
+                if (SearchSystem?.stations != null)
+                {
+                    foreach (Station station in SearchSystem.stations)
+                    {
+                        SearchStationOptions.Add(station.name);
+                    }
+                }
+            }
+            // sort but leave "No Station" at the top
+            SearchStationOptions.Sort(1, SearchStationOptions.Count - 1, null);
+            searchStationDropDown.ItemsSource = SearchStationOptions;
+        }
+
+        private void searchStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            string searchStationName = searchStationDropDown.SelectedItem?.ToString();
+            if (dropdownSearchStation != searchStationName)
+            {
+                dropdownSearchStation = searchStationName == Properties.NavigationMonitor.no_station ? null : searchStationName;
+            }
         }
 
         private void bookmarksUpdated(object sender, DataTransferEventArgs e)
