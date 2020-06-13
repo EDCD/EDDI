@@ -116,14 +116,15 @@ namespace Utilities
         {
             message = Redaction.RedactEnvironmentVariables(message);
             Dictionary<string, object> preppedData = PrepRollbarData(ref originalData);
-            if (preppedData != null) 
-            { 
+            if (originalData is null || preppedData != null)
+            {
                 await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, originalData, preppedData, memberName, filePath)).ConfigureAwait(false); 
             }
         }
 
         private static Dictionary<string, object> PrepRollbarData(ref object data)
         {
+            if (data is null) { return null; }
             try
             {
                 // Serialize the data to a string 
@@ -420,7 +421,7 @@ namespace Utilities
             return true;
         }
 
-        public static void EnableDisableRollbar(bool enabled)
+        public static void EnableDisable(bool enabled)
         {
             RollbarLocator.RollbarInstance.Config.Enabled = enabled;
         }
