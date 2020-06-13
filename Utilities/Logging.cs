@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Rollbar.Telemetry;
 
 namespace Utilities
 {
@@ -292,6 +293,7 @@ namespace Utilities
 #endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
+            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 3));
         }
 
         public static void ExceptionHandler(Exception exception)
