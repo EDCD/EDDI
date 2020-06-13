@@ -72,9 +72,9 @@ namespace EddiNavigationMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Allows manual addition of a bookmark..
         /// </summary>
-        public static string add_button_desc {
+        public static string add_button_tooltip {
             get {
-                return ResourceManager.GetString("add_button_desc", resourceCulture);
+                return ResourceManager.GetString("add_button_tooltip", resourceCulture);
             }
         }
         
@@ -160,6 +160,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Station.
+        /// </summary>
+        public static string no_station {
+            get {
+                return ResourceManager.GetString("no_station", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prioritize Orbital Stations:.
         /// </summary>
         public static string orbital_station_checkbox {
@@ -189,9 +198,9 @@ namespace EddiNavigationMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Allows manual removal of a bookmark..
         /// </summary>
-        public static string remove_button_desc {
+        public static string remove_button_tooltip {
             get {
-                return ResourceManager.GetString("remove_button_desc", resourceCulture);
+                return ResourceManager.GetString("remove_button_tooltip", resourceCulture);
             }
         }
         
@@ -201,6 +210,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string search_button {
             get {
                 return ResourceManager.GetString("search_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute search query.
+        /// </summary>
+        public static string search_button_tooltip {
+            get {
+                return ResourceManager.GetString("search_button_tooltip", resourceCulture);
             }
         }
         
@@ -403,7 +421,25 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set Course.
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string select_button {
+            get {
+                return ResourceManager.GetString("select_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Sytem &amp; Station in the dropdown menus.
+        /// </summary>
+        public static string select_button_tooltip {
+            get {
+                return ResourceManager.GetString("select_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Route.
         /// </summary>
         public static string set_button {
             get {
@@ -414,9 +450,9 @@ namespace EddiNavigationMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Set course to the result of the Navigation query..
         /// </summary>
-        public static string set_button_desc {
+        public static string set_button_tooltip {
             get {
-                return ResourceManager.GetString("set_button_desc", resourceCulture);
+                return ResourceManager.GetString("set_button_tooltip", resourceCulture);
             }
         }
         
@@ -450,9 +486,9 @@ namespace EddiNavigationMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Update the bookmark (system, body, POI name, etc) information..
         /// </summary>
-        public static string update_button_desc {
+        public static string update_button_tooltip {
             get {
-                return ResourceManager.GetString("update_button_desc", resourceCulture);
+                return ResourceManager.GetString("update_button_tooltip", resourceCulture);
             }
         }
     }

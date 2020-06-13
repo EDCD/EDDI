@@ -120,7 +120,7 @@
   <data name="add_button" xml:space="preserve">
     <value>Add Bookmark</value>
   </data>
-  <data name="add_button_desc" xml:space="preserve">
+  <data name="add_button_tooltip" xml:space="preserve">
     <value>Allows manual addition of a bookmark.</value>
   </data>
   <data name="blank_bookmark" xml:space="preserve">
@@ -150,6 +150,9 @@
   <data name="navigation_monitor_name" xml:space="preserve">
     <value>Navigation Monitor</value>
   </data>
+  <data name="no_station" xml:space="preserve">
+    <value>No Station</value>
+  </data>
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Prioritize Orbital Stations:</value>
   </data>
@@ -159,11 +162,14 @@
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>
   </data>
-  <data name="remove_button_desc" xml:space="preserve">
+  <data name="remove_button_tooltip" xml:space="preserve">
     <value>Allows manual removal of a bookmark.</value>
   </data>
   <data name="search_button" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="search_button_tooltip" xml:space="preserve">
+    <value>Execute search query</value>
   </data>
   <data name="search_distance" xml:space="preserve">
     <value>Max Search Distance From Main Star (Ls):</value>
@@ -231,10 +237,16 @@
   <data name="search_type_ship" xml:space="preserve">
     <value>Ship</value>
   </data>
-  <data name="set_button" xml:space="preserve">
-    <value>Set Course</value>
+  <data name="select_button" xml:space="preserve">
+    <value>Select</value>
   </data>
-  <data name="set_button_desc" xml:space="preserve">
+  <data name="select_button_tooltip" xml:space="preserve">
+    <value>Select Sytem &amp; Station in the dropdown menus</value>
+  </data>
+  <data name="set_button" xml:space="preserve">
+    <value>Set Route</value>
+  </data>
+  <data name="set_button_tooltip" xml:space="preserve">
     <value>Set course to the result of the Navigation query.</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
@@ -246,7 +258,7 @@
   <data name="update_button" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="update_button_desc" xml:space="preserve">
+  <data name="update_button_tooltip" xml:space="preserve">
     <value>Update the bookmark (system, body, POI name, etc) information.</value>
   </data>
 </root>
