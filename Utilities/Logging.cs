@@ -112,13 +112,13 @@ namespace Utilities
             }
         }
 
-        private static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        private static async void Report(ErrorLevel errorLevel, string message, object originalData = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             message = Redaction.RedactEnvironmentVariables(message);
-            Dictionary<string, object> thisData = PrepRollbarData(ref data);
-            if (thisData != null)
-            {
-                var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, thisData, memberName, filePath));
+            Dictionary<string, object> preppedData = PrepRollbarData(ref originalData);
+            if (preppedData != null) 
+            { 
+                await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, originalData, preppedData, memberName, filePath)).ConfigureAwait(false); 
             }
         }
 
@@ -222,7 +222,7 @@ namespace Utilities
             return json;
         }
 
-        private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        private static void SendToRollbar(ErrorLevel errorLevel, string message, object originalData, Dictionary<string, object> preppedData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             if (RollbarLocator.RollbarInstance.Config.Enabled == false) { return; }
             string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
@@ -233,15 +233,15 @@ namespace Utilities
                     switch (errorLevel)
                     {
                         case ErrorLevel.Error:
-                            RollbarLocator.RollbarInstance.Error(message, thisData);
-                            log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
+                            RollbarLocator.RollbarInstance.Error(message, preppedData);
+                            log(errorLevel, $"Reporting error, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
                             break;
                         default:
                             // If this is an Info Report, report only unique messages and data
-                            if (isUniqueMessage(message, thisData))
+                            if (isUniqueMessage(message, preppedData))
                             {
-                                RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
-                                log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
+                                RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                                log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
                             }
                             break;
                     }
@@ -282,6 +282,8 @@ namespace Utilities
                     Root = "/"
                 },
                 MaxReportsPerMinute = 1,
+                IpAddressCollectionPolicy = IpAddressCollectionPolicy.DoNotCollect,
+                PayloadPostTimeout = TimeSpan.FromSeconds(10), 
 #if DEBUG
                 Enabled = false,
 #else
@@ -416,6 +418,11 @@ namespace Utilities
                 }
             }
             return true;
+        }
+
+        public static void EnableDisableRollbar(bool enabled)
+        {
+            RollbarLocator.RollbarInstance.Config.Enabled = enabled;
         }
     }
 }
