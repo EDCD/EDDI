@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using Rollbar;
 using System;
 using System.Collections.Generic;
@@ -240,11 +239,8 @@ namespace Utilities
                             break;
                         default:
                             // If this is an Info Report, report only unique messages and data
-                            if (isUniqueMessage(message, preppedData))
-                            {
-                                RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
-                                log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
-                            }
+                            RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                            log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {originalData}", memberName, filePath);
                             break;
                     }
                 }
@@ -303,124 +299,8 @@ namespace Utilities
                 { "StackTrace", exception.StackTrace ?? "StackTrace not available" }
             };
 
-            if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
-            {
-                Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ":" + exception);
-                RollbarLocator.RollbarInstance.Error(exception, trace);
-            }
-        }
-
-        protected static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
-        {
-            if (!filterMessages)
-            {
-                return true;
-            }
-
-            var client = new RestClient("https://api.rollbar.com/api/1");
-            var request = new RestRequest("/items/", Method.GET);
-            request.AddParameter("access_token", rollbarReadToken);
-            var clientResponse = client.Execute<Dictionary<string, object>>(request);
-            if (clientResponse.Data is Dictionary<string, object> response)
-            {
-                response.TryGetValue("err", out object val); // Check for errors before we proceed
-                if (val != null && (long)val == 0)
-                {
-                    response.TryGetValue("result", out val);
-                    if (val is Dictionary<string, object> result)
-                    {
-                        result.TryGetValue("items", out val);
-                        if (val is SimpleJson.JsonArray jsonArray)
-                        {
-                            object[] items = jsonArray.ToArray();
-                            foreach (object Item in items)
-                            {
-                                Dictionary<string, object> item = (Dictionary<string, object>)Item;
-                                string itemMessage = JsonParsing.getString(item, "title");
-
-                                if (itemMessage.ToLowerInvariant() == message.ToLowerInvariant())
-                                {
-                                    string itemStatus = JsonParsing.getString(item, "status");
-                                    long itemId = JsonParsing.getLong(item, "id");
-                                    bool uniqueData = isUniqueData(itemId, thisData);
-                                    string itemResolvedVersion = JsonParsing.getString(item, "environment");
-
-                                    // Filter messages & data so that we send only reports which are unique
-                                    if (itemStatus.ToLowerInvariant() == "active" && !uniqueData)
-                                    {
-                                        return false; // Note that if an item reoccurs after being marked as "resolved" it is automatically reactivated.
-                                    }
-                                    else if (itemResolvedVersion != null)
-                                    {
-                                        try
-                                        {
-                                            Version resolvedVersion = new Version(itemResolvedVersion);
-                                            if (resolvedVersion > Constants.EDDI_VERSION)
-                                            {
-                                                return false; // This has been marked as resolved in a more current client version.
-                                            }
-                                        }
-                                        catch (Exception)
-                                        {
-                                            // error parsing version string, ignore
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
-        private static bool isUniqueData(long itemId, Dictionary<string, object> thisData = null)
-        {
-            if (thisData is null)
-            {
-                return true;
-            }
-
-            var client = new RestClient("https://api.rollbar.com/api/1");
-            var request = new RestRequest("/item/" + itemId + "/instances/", Method.GET);
-            request.AddParameter("access_token", rollbarReadToken);
-            var clientResponse = client.Execute<Dictionary<string, object>>(request);
-            if (clientResponse.Data is Dictionary<string, object> response)
-            {
-                response.TryGetValue("err", out object val); // Check for errors before we proceed
-                if (val != null && (long)val == 0)
-                {
-                    response.TryGetValue("result", out val);
-
-                    if (val is Dictionary<string, object> result)
-                    {
-                        result.TryGetValue("instances", out val);
-                        if (val is SimpleJson.JsonArray jsonArray)
-                        {
-                            object[] instances = jsonArray.ToArray();
-                            foreach (object Instance in instances)
-                            {
-                                Dictionary<string, object> instance = (Dictionary<string, object>)Instance;
-                                instance.TryGetValue("data", out val);
-                                if (val is Dictionary<string, object> instanceData)
-                                {
-                                    instanceData.TryGetValue("custom", out val);
-                                    Dictionary<string, object> customData = (Dictionary<string, object>)val;
-                                    if (customData != null)
-                                    {
-                                        if (customData.Keys.Count == thisData.Keys.Count &&
-                                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k]?.ToString().ToLowerInvariant(), customData[k]?.ToString().ToLowerInvariant())))
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
+            Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ":" + exception);
+            RollbarLocator.RollbarInstance.Error(exception, trace);
         }
 
         public static void EnableDisable(bool enabled)
