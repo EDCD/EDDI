@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,10 @@ namespace EddiConfigService
     {
         private static ConfigService instance;
         private static readonly object instanceLock = new object();
-        private static readonly object configLock = new object();
+        private static readonly object cargoLock = new object();
+        private static readonly object missionLock = new object();
+        private static readonly object navigationLock = new object();
+
         public static ConfigService Instance
         {
             get
@@ -43,19 +47,24 @@ namespace EddiConfigService
         {
             get
             {
-                lock (configLock)
-                {
-                    return _cargoMonitorConfiguration ?? CargoMonitorConfiguration.FromFile();
-                }
+                return _cargoMonitorConfiguration ?? CargoMonitorConfiguration.FromFile();
             }
             set
             {
-                _cargoMonitorConfiguration = value;
-                lock (configLock)
+                var stackTrace = new StackTrace();
+                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
+                if (Namespace == "EddiCargoMonitor")
                 {
-                    // Write configuration with current missions data
+                    lock (cargoLock)
+                    {
+                        _cargoMonitorConfiguration = value;
+                    }
+
+                    // Write configuration with current cargo data
                     value.ToFile();
                 }
+                else
+                { }
             }
         }
 
@@ -64,18 +73,23 @@ namespace EddiConfigService
         {
             get
             {
-                lock (configLock)
-                {
-                    return _missionMonitorConfiguration ?? MissionMonitorConfiguration.FromFile();
-                }
+                return _missionMonitorConfiguration ?? MissionMonitorConfiguration.FromFile();
             }
             set
-            { _missionMonitorConfiguration = value;
-                lock (configLock)
+            {
+                var stackTrace = new StackTrace();
+                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
+                if (Namespace == "EddiMissionMonitor")
                 {
+                    lock (missionLock)
+                    {
+                        _missionMonitorConfiguration = value;
+                    }
+
                     // Write configuration with current missions data
                     value.ToFile();
                 }
+                else { }
             }
         }
 
@@ -84,19 +98,23 @@ namespace EddiConfigService
         {
             get
             {
-                lock (configLock)
-                {
-                    return _navigationMonitorConfiguration ?? NavigationMonitorConfiguration.FromFile();
-                }
+                return _navigationMonitorConfiguration ?? NavigationMonitorConfiguration.FromFile();
             }
             set
             {
-                _navigationMonitorConfiguration = value;
-                lock (configLock)
+                var stackTrace = new StackTrace();
+                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
+                if (Namespace == "EddiNavigationMonitor" || Namespace == "EddiNavigationService")
                 {
-                    // Write configuration with current missions data
+                    lock (navigationLock)
+                    {
+                        _navigationMonitorConfiguration = value;
+                    }
+
+                    // Write configuration with current navigation data
                     value.ToFile();
                 }
+                else { }
             }
         }
     }
