@@ -52,6 +52,7 @@ namespace Utilities
         {
             data = Redaction.RedactEnvironmentVariables(data);
             method = Redaction.RedactEnvironmentVariables(method);
+            string shortPath = null;
             lock (logLock)
             {
                 try
@@ -59,7 +60,7 @@ namespace Utilities
                     using (StreamWriter file = new StreamWriter(LogFile, true))
                     {
                         string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
-                        string shortPath = Path.GetFileNameWithoutExtension(path);
+                        shortPath = Path.GetFileNameWithoutExtension(path);
                         shortPath = Redaction.RedactEnvironmentVariables(shortPath);
                         file.WriteLine($"{timestamp} [{errorlevel}] {shortPath}:{method} {data}");
                     }
@@ -69,6 +70,7 @@ namespace Utilities
                     // Failed; can't do anything about it as we're in the logging code anyway
                 }
             }
+            WriteTelemetry($"{shortPath}:{method}", data);
         }
 
         public static void incrementLogs()
@@ -119,6 +121,25 @@ namespace Utilities
             if (originalData is null || preppedData != null)
             {
                 await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, preppedData, memberName, filePath)).ConfigureAwait(false); 
+            }
+        }
+
+        private static async void WriteTelemetry(string message, object originalData = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            message = Redaction.RedactEnvironmentVariables(message);
+            Dictionary<string, object> preppedData = PrepRollbarData(ref originalData);
+            if (originalData is null || preppedData != null)
+            {
+                await System.Threading.Tasks.Task.Run(() =>
+                {
+                    TelemetryCollector.Instance.Capture(
+                        new Rollbar.DTOs.Telemetry(
+                            Rollbar.DTOs.TelemetrySource.Client,
+                            Rollbar.DTOs.TelemetryLevel.Debug,
+                            new Rollbar.DTOs.LogTelemetry(message, PrepRollbarData(ref originalData))
+                            )
+                        );
+                }).ConfigureAwait(false);
             }
         }
 
@@ -289,7 +310,7 @@ namespace Utilities
 #endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
-            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 3));
+            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 10));
         }
 
         public static void ExceptionHandler(Exception exception)
