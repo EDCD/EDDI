@@ -1573,6 +1573,7 @@ namespace Eddi
 
         private bool eventDocked(DockedEvent theEvent)
         {
+            bool passEvent = true;
             updateCurrentSystem(theEvent.system);
 
             // Upon docking, allow manual station updates once
@@ -1580,63 +1581,67 @@ namespace Eddi
             allowOutfittingUpdate = true;
             allowShipyardUpdate = true;
 
-            if (Environment == Constants.ENVIRONMENT_DOCKED)
+            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+            if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
             {
-                // We are already at this station; nothing to do
+                // We are already at this station
                 Logging.Debug("Already at station " + theEvent.station);
-                return false;
+                passEvent = false;
+            }
+            else
+            {
+                // Update the station
+                Logging.Debug("Now at station " + theEvent.station);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                    station = new Station
+                    {
+                        name = theEvent.station,
+                        systemname = theEvent.system
+                    };
+                    CurrentStarSystem.stations.Add(station);
+                }
             }
 
             // We are docked and in the ship
-            Environment = Constants.ENVIRONMENT_DOCKED;
-            Vehicle = Constants.VEHICLE_SHIP;
-
-            // Update the station
-            Logging.Debug("Now at station " + theEvent.station);
-            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
-            if (station == null)
+            if (station != null)
             {
-                // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                station = new Station
+                Environment = Constants.ENVIRONMENT_DOCKED;
+                Vehicle = Constants.VEHICLE_SHIP;
+
+                // Not all stations in our database will have a system address or market id, so we set them here
+                station.systemAddress = theEvent.systemAddress;
+                station.marketId = theEvent.marketId;
+
+                // Information from the event might be more current than our data source so use it in preference
+                station.Faction = theEvent.controllingfaction;
+                station.stationServices = theEvent.stationServices;
+                station.economyShares = theEvent.economyShares;
+
+                // Update other station information available from the event
+                station.Model = theEvent.stationModel;
+                station.stationServices = theEvent.stationServices;
+                station.distancefromstar = theEvent.distancefromstar;
+
+                CurrentStation = station;
+                CurrentStellarBody = null;
+
+                // Kick off the profile refresh if the companion API is available
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
-                    name = theEvent.station,
-                    systemname = theEvent.system
-                };
-                CurrentStarSystem.stations.Add(station);
+                    // Refresh station data
+                    if (theEvent.fromLoad || !passEvent) { return true; } // Don't fire this event when loading pre-existing logs or if we were already at this station
+                    profileUpdateNeeded = true;
+                    profileStationRequired = CurrentStation.name;
+                    Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                    {
+                        IsBackground = true
+                    };
+                    updateThread.Start();
+                }
             }
-
-            // Not all stations in our database will have a system address or market id, so we set them here
-            station.systemAddress = theEvent.systemAddress;
-            station.marketId = theEvent.marketId;
-
-            // Information from the event might be more current than our data source so use it in preference
-            station.Faction = theEvent.controllingfaction;
-            station.stationServices = theEvent.stationServices;
-            station.economyShares = theEvent.economyShares;
-
-            // Update other station information available from the event
-            station.Model = theEvent.stationModel;
-            station.stationServices = theEvent.stationServices;
-            station.distancefromstar = theEvent.distancefromstar;
-
-            CurrentStation = station;
-            CurrentStellarBody = null;
-
-            // Kick off the profile refresh if the companion API is available
-            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
-            {
-                // Refresh station data
-                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                profileUpdateNeeded = true;
-                profileStationRequired = CurrentStation.name;
-                Thread updateThread = new Thread(() => conditionallyRefreshProfile())
-                {
-                    IsBackground = true
-                };
-                updateThread.Start();
-            }
-
-            return true;
+            return passEvent;
         }
 
         private bool eventUndocked(UndockedEvent theEvent)
