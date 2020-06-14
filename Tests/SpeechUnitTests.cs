@@ -272,8 +272,8 @@ namespace UnitTests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
-            Assert.AreEqual("P P M 5 2 8 7", Translations.StarSystem("PPM 5287"));
+            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.GetTranslation("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("P P M 5 2 8 7", Translations.GetTranslation("PPM 5287"));
         }
 
         [TestMethod]
@@ -392,7 +392,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslationVesper()
         {
-            Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
+            Assert.AreEqual(Translations.GetTranslation("VESPER-M4"), "Vesper M 4");
         }
 
         [TestMethod]

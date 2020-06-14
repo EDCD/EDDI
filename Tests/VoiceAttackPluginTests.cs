@@ -74,35 +74,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestTranslateStarSystems()
-        {
-            Assert.AreEqual("L H S 1 2 3 4 5", Translations.StarSystem("LHS 12345"));
-            Assert.AreEqual("H R 1 2 3 4 5", Translations.StarSystem("HR 12345"));
-            Assert.AreEqual("C X O U J 0 6 1 7 0 5 point 3 plus 2 2 2 1 2 7", Translations.StarSystem("CXOU J061705.3+222127"));
-            Assert.AreEqual("S D S S J 1 4 1 6 plus 1 3 4 8", Translations.StarSystem("SDSS J1416+1348"));
-            Assert.AreEqual("U G C S J 1 2 2 0 3 1 point 5 6 plus 2 4 3 6 1 4 point 8", Translations.StarSystem("UGCS J122031.56+243614.8"));
-            Assert.AreEqual("X T E J 1 7 4 8 minus 2 8 8", Translations.StarSystem("XTE J1748-288"));
-            Assert.AreEqual("", Translations.StarSystem(""));
-        }
-
-        [TestMethod]
-        public void TestTranslateStarSystemsStability()
-        {
-            string[] starSystems = Resources.starsystems.Split(new[] { '\r', '\n' });
-
-            foreach (string starSystem in starSystems)
-            {
-                Translations.StarSystem(starSystem);
-            }
-        }
-
-        [TestMethod]
-        public void TestTranslateCallsigns()
-        {
-            Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>", Translations.ICAO("GAX-1094"));
-        }
-
-        [TestMethod]
         public void TestSqlRepositoryPresent()
         {
             StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;

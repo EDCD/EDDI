@@ -573,7 +573,7 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetText(prefix + " ident", ship.ident);
                     vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship.ident, false));
                     vaProxy.SetText(prefix + " role", ship.Role?.localizedName);
-                    vaProxy.SetText(prefix + " size", ship.size?.localizedName);
+                    vaProxy.SetText(prefix + " size", ship.Size?.localizedName);
                     vaProxy.SetDecimal(prefix + " value", ship.value);
                     vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship.value));
                     vaProxy.SetDecimal(prefix + " hull value", ship.hullvalue);

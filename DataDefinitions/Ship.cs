@@ -21,17 +21,23 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string manufacturer { get; set; }
 
-        /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
+        /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.) (rendered using ssml and IPA)</summary>
         [JsonIgnore]
-        public List<Translation> phoneticmanufacturer { get; set; }
+        public string phoneticmanufacturer => SpokenManufacturer();
 
-        /// <summary>the spoken model of the ship (Python, Anaconda, etc.)</summary>
+        /// <summary>the spoken model of the ship (Python, Anaconda, etc.) (rendered using ssml and IPA)</summary>
         [JsonIgnore]
-        public List<Translation> phoneticmodel { get; set; }
+        public string phoneticmodel => SpokenModel();
+        [JsonIgnore]
+        public List<Translation> phoneticModel { get; set; }
 
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public LandingPadSize size { get; set; }
+        public LandingPadSize Size { get; set; }
+
+        /// <summary>the spoken size of this ship</summary>
+        [JsonIgnore]
+        public string size => Size.localizedName;
 
         /// <summary>the size of the military compartment slots</summary>
         [JsonIgnore]
@@ -372,15 +378,14 @@ namespace EddiDataDefinitions
             cargohatch = new Module();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
+        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
         {
             this.EDID = EDID;
             this.EDName = EDName;
             manufacturer = Manufacturer;
-            phoneticmanufacturer = PhoneticManufacturer;
             model = Model;
-            phoneticmodel = PhoneticModel;
-            size = LandingPadSize.FromEDName(Size);
+            phoneticModel = PhoneticModel;
+            this.Size = LandingPadSize.FromEDName(Size);
             militarysize = MilitarySize;
             health = 100M;
             hardpoints = new List<Hardpoint>();
@@ -406,8 +411,8 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string model = (defaultname ?? SpokenModel()) ?? Properties.Ship._ship;
-            string result = Properties.Ship.your + " " + model;
+            string ship = (defaultname ?? phoneticmodel) ?? Properties.Ship._ship;
+            string result = Properties.Ship.your + " " + ship;
             if (!string.IsNullOrWhiteSpace(phoneticName))
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";
@@ -422,14 +427,14 @@ namespace EddiDataDefinitions
         public string SpokenModel()
         {
             string result;
-            if (phoneticmodel == null)
+            if (phoneticModel == null)
             {
                 result = model;
             }
             else
             {
                 result = "";
-                foreach (Translation item in phoneticmodel)
+                foreach (Translation item in phoneticModel)
                 {
                     result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
                 }
@@ -437,23 +442,7 @@ namespace EddiDataDefinitions
             return result;
         }
 
-        public string SpokenManufacturer()
-        {
-            string result;
-            if (phoneticmanufacturer == null)
-            {
-                result = manufacturer;
-            }
-            else
-            {
-                result = "";
-                foreach (Translation item in phoneticmanufacturer)
-                {
-                    result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
-                }
-            }
-            return result;
-        }
+        public string SpokenManufacturer() => ShipDefinitions.SpokenManufacturer(manufacturer) ?? manufacturer;
 
         /// <summary> Calculates the distance from the specified coordinates to the ship's recorded x, y, and z coordinates </summary>
         public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
@@ -538,9 +527,8 @@ namespace EddiDataDefinitions
                 EDID = template.EDID;
                 EDName = template.EDName;
                 manufacturer = template.manufacturer;
-                phoneticmanufacturer = template.phoneticmanufacturer;
-                phoneticmodel = template.phoneticmodel;
-                size = template.size;
+                phoneticModel = template.phoneticModel;
+                Size = template.Size;
                 militarysize = template.militarysize;
                 activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
                 if (Role == null)

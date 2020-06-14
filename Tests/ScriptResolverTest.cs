@@ -32,11 +32,11 @@ namespace UnitTests
         [TestMethod]
         public void TestTemplateFunctional()
         {
-            var document = new SimpleDocument(@"You are entering the {System(system)} system.");
+            var document = new SimpleDocument(@"You are entering the {P(system)} system.");
             var store = new BuiltinStore();
-            store["System"] = new NativeFunction((values) =>
+            store["P"] = new NativeFunction((values) =>
             {
-                return Translations.StarSystem(values[0].AsString);
+                return Translations.GetTranslation(values[0].AsString);
             }, 1);
             store["system"] = "Alrai";
             var result = document.Render(store);
