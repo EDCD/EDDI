@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
@@ -155,7 +156,8 @@ namespace EddiInaraService
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
                 { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
-                { "InaraResponse", inaraResponse }
+                { "InaraResponse", inaraResponse },
+                { "Stacktrace", new StackTrace() }
             };
             try
             {
