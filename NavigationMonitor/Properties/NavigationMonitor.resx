@@ -222,9 +222,6 @@
   <data name="search_query_ship_scoop" xml:space="preserve">
     <value>Scoopable Star</value>
   </data>
-  <data name="search_query_ship_set" xml:space="preserve">
-    <value>Set Route</value>
-  </data>
   <data name="search_type_crime" xml:space="preserve">
     <value>Crime</value>
   </data>

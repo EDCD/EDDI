@@ -50,7 +50,6 @@ namespace EddiNavigationMonitor
             "raw",
             "route",
             "scoop",
-            "set",
             "source",
             "update"
         };
@@ -325,13 +324,7 @@ namespace EddiNavigationMonitor
                                 searchSystem = NavigationService.Instance.GetScoopRoute(detail.distance);
                             }
                             break;
-                        case "set":
-                            {
-                                searchSystem = NavigationService.Instance.SetRoute();
-                            }
-                            break;
                     }
-
                 }
 
                 Dispatcher?.Invoke(() =>
@@ -354,15 +347,7 @@ namespace EddiNavigationMonitor
 
         private void executeSelect(object sender, RoutedEventArgs e)
         {
-            StarSystem curr = EDDI.Instance.CurrentStarSystem;
-            StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(dropdownSearchSystem, true);
-
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            navConfig.searchQuery = "dropdown";
-            navConfig.searchSystem = dropdownSearchSystem;
-            navConfig.searchStation = dropdownSearchStation;
-            navConfig.searchDistance = NavigationService.Instance.CalculateDistance(curr, dest);
-            ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+            NavigationService.Instance.SetRoute(dropdownSearchSystem, dropdownSearchStation);
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)

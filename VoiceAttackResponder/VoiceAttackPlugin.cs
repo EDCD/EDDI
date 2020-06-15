@@ -1053,20 +1053,13 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "set":
                         {
-                            if (string.IsNullOrEmpty(system))
+                            if (string.IsNullOrEmpty(station))
                             {
-                                NavigationService.Instance.SetRoute();
+                                NavigationService.Instance.SetRoute(system);
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(station))
-                                {
-                                    NavigationService.Instance.SetRoute(system);
-                                }
-                                else
-                                {
-                                    NavigationService.Instance.SetRoute(system, station);
-                                }
+                                NavigationService.Instance.SetRoute(system, station);
                             }
                         }
                         break;
