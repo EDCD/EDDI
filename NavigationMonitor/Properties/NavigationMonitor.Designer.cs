@@ -376,15 +376,6 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set Route.
-        /// </summary>
-        public static string search_query_ship_set {
-            get {
-                return ResourceManager.GetString("search_query_ship_set", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Crime.
         /// </summary>
         public static string search_type_crime {
