@@ -290,8 +290,14 @@ namespace Utilities
         {
             lock (GetLock(filename))
             {
-                action();
-                Unlock(filename);
+                try 
+                {
+                    action();
+                }
+                finally
+                {
+                    Unlock(filename);
+                }
             }
         }
 
