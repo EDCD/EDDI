@@ -90,6 +90,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LockManager.cs" />
     <Compile Include="Processes.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IPA.cs" />
