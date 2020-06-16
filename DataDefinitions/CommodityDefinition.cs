@@ -366,7 +366,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128748428, 356, "BuckyballBeerMats", ConsumerItems, 7957, true),
                 new CommodityDefinition(128793113, 357, "HarmaSilverSeaRum", Narcotics, 9762, true),
                 new CommodityDefinition(128793114, 358, "PlatinumAloy", Metals, 18333, true),
-                new CommodityDefinition(128913661, 341, "Nanomedicines", Medicines, 0, false),
+                new CommodityDefinition(128913661, 341, "Nanomedicines", Medicines, 0, true),
                 new CommodityDefinition(128922517, null, "M_TissueSample_Fluid", Salvage, 0, false),
                 new CommodityDefinition(128922518, null, "M_TissueSample_Soft", Salvage, 0, false),
                 new CommodityDefinition(128922519, null, "M_TissueSample_Nerves", Salvage, 0, false),
