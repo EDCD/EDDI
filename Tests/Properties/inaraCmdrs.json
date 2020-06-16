@@ -1,0 +1,51 @@
+[
+	{
+		"userID": 1,
+		"userName": "Artie",
+		"commanderName": "Artie",
+		"commanderRanksPilot": [
+			{
+				"rankName": "combat",
+				"rankValue": 7,
+				"rankProgress": 0.31
+			},
+			{
+				"rankName": "trade",
+				"rankValue": 8,
+				"rankProgress": 1.0
+			},
+			{
+				"rankName": "exploration",
+				"rankValue": 6,
+				"rankProgress": 0.65
+			},
+			{
+				"rankName": "cqc",
+				"rankValue": 3,
+				"rankProgress": 0.11
+			},
+			{
+				"rankName": "empire",
+				"rankValue": 12,
+				"rankProgress": 0.34
+			},
+			{
+				"rankName": "federation",
+				"rankValue": 12,
+				"rankProgress": 0.94
+			}
+		],
+		"preferredAllegianceName": "Independent",
+		"preferredPowerName": null,
+		"commanderSquadron": {
+			"SquadronID": 5,
+			"SquadronName": "Inara Dojo",
+			"SquadronMembersCount": 9,
+			"SquadronMemberRank": "Squadron commander",
+			"inaraURL": "https://inara.cz/squadron/5/"
+		},
+		"preferredGameRole": "Freelancer",
+		"avatarImageURL": "https://inara.cz/data/users/0/1x1673.jpg",
+		"inaraURL": "https://inara.cz/cmdr/1/"
+	}
+]

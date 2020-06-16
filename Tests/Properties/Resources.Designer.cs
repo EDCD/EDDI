@@ -183,6 +183,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] inaraCmdrs {
+            get {
+                object obj = ResourceManager.GetObject("inaraCmdrs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] loadout {
             get {
                 object obj = ResourceManager.GetObject("loadout", resourceCulture);

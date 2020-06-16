@@ -308,6 +308,7 @@
     <None Include="Properties\bgsFactionResponse.json" />
     <None Include="Properties\CapitalSystems.json" />
     <None Include="Properties\cubeSystemsAroundSol.json" />
+    <None Include="Properties\inaraCmdrs.json" />
     <None Include="Properties\Sol.json" />
     <None Include="Properties\SolBodies.json" />
     <None Include="Properties\SolFactions.json" />
@@ -321,8 +322,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Choose>

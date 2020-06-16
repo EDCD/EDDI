@@ -2,67 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using UnitTests;
-
-// Note: Tests work best if the tester has a valid API key configured for Inara.
-
-namespace IntegrationTests
-{
-    [TestClass]
-    public class InaraTests : TestBase
-    {
-        private IInaraService inaraService;
-
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-            inaraService = new InaraService();
-        }
-
-        [TestMethod]
-        public void TestSendEventBatch()
-        {
-            List<InaraAPIEvent> inaraAPIEvents = new List<InaraAPIEvent>()
-            {
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
-                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
-            };
-            List<InaraResponse> responses = inaraService.SendEventBatch(inaraAPIEvents, InaraConfiguration.FromFile(), true);
-
-            // Check that only valid responses were returned
-            if (responses.Count == 1)
-            {
-                Assert.AreEqual(200, responses[0].eventStatus);
-                Assert.AreEqual(1, responses[0].eventCustomID);
-                Assert.AreEqual(@"https://inara.cz/cmdr/1/", ((Dictionary<string, object>)responses[0].eventData)["inaraURL"]);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-        [TestMethod]
-        public void TestGetCmdrProfiles()
-        {
-            List<InaraCmdr> inaraCmdrs = inaraService.GetCommanderProfiles(new string[] { "No such name", "Artie" });
-            Assert.AreEqual(1, inaraCmdrs?.Count);
-
-            if (inaraCmdrs?.Count == 1)
-            {
-                Assert.AreEqual("Artie", inaraCmdrs[0]?.username);
-                Assert.AreEqual(1, inaraCmdrs[0]?.id);
-                Assert.AreEqual("Artie", inaraCmdrs[0]?.commandername);
-                Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0]?.url);
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-    }
-}
+using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -115,6 +56,52 @@ namespace UnitTests
         private void OnInvalidAPIkey(object sender, EventArgs e) 
         {
             invalidAPIkeyTestPassed = true;
+        }
+
+        [TestMethod]
+        public void TestCmdrProfiles()
+        {
+            try 
+            {
+                var expectedCmdrs = new List<InaraCmdr>()
+                { 
+                    new InaraCmdr()
+                    {
+                        id = 1,
+                        username = "Artie",
+                        commandername = "Artie",
+                        commanderranks = new List<InaraCmdrRanks>()
+                        {
+                            new InaraCmdrRanks() { rank = "combat", rankvalue = 7, progress = 0.31 },
+                            new InaraCmdrRanks() { rank = "trade", rankvalue = 8, progress = 1.0 },
+                            new InaraCmdrRanks() { rank = "exploration", rankvalue = 6, progress = 0.65 },
+                            new InaraCmdrRanks() { rank = "cqc", rankvalue = 3, progress = 0.11 },
+                            new InaraCmdrRanks() { rank = "empire", rankvalue = 12, progress = 0.34 },
+                            new InaraCmdrRanks() { rank = "federation", rankvalue = 12, progress = 0.94 }
+                        },
+                        preferredallegiance = "Independent",
+                        preferredpower = null,
+                        squadron = new InaraCmdrSquadron()
+                        { 
+                            id = 5,
+                            name = "Inara Dojo",
+                            memberscount = 9,
+                            squadronrank = "Squadron commander",
+                            url = "https://inara.cz/squadron/5/"
+                        },
+                        preferredrole = "Freelancer",
+                        imageurl = "https://inara.cz/data/users/0/1x1673.jpg",
+                        url = "https://inara.cz/cmdr/1/"
+                    }
+                };
+
+                var inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
+                Assert.IsTrue(expectedCmdrs.DeepEquals(inaraCmdrs));
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
         }
     }
 }
