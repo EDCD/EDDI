@@ -1,4 +1,5 @@
-﻿using EddiCrimeMonitor;
+﻿using System;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -8,15 +9,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using EddiCore;
+using System.Text;
+using EddiDataProviderService;
+using EddiStarMapService;
+using Newtonsoft.Json.Linq;
+using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
     [TestClass]
     public class JournalMonitorTests : TestBase
     {
+        FakeEdsmRestClient fakeEdsmRestClient;
+        StarMapService fakeEdsmService;
+        private DataProviderService dataProviderService;
+
         [TestInitialize]
         public void start()
         {
+            fakeEdsmRestClient = new FakeEdsmRestClient();
+            fakeEdsmService = new StarMapService(fakeEdsmRestClient);
+            dataProviderService = new DataProviderService(fakeEdsmService);
             MakeSafe();
         }
 
@@ -1302,6 +1316,34 @@ namespace UnitTests
             Assert.IsNull(@event.module);
             Assert.AreEqual(0, @event.modules.Count);
             Assert.AreEqual(104817, @event.price);
+        }
+
+        [TestMethod]
+        public void TestCarrierJumpRequestMissingBody()
+        {
+            // There is an FDev bug which caused the `Body` property not to be written for a `CarrierJumpRequest` event.
+            // Test that we handle that scenario gracefully.
+
+            // Set up our data resources with canned data
+            string systemsResource = "api-v1/systems";
+            string systemsJson = "[" + Encoding.UTF8.GetString(Resources.edsmSystem) + "]";
+            List<JObject> systemsData = new List<JObject>();
+            fakeEdsmRestClient.Expect(systemsResource, systemsJson, systemsData);
+            string bodiesResource = "api-system-v1/bodies";
+            string bodiesJson = Encoding.UTF8.GetString(Resources.edsmBodies);
+            List<JObject> bodiesData = new List<JObject>();
+            fakeEdsmRestClient.Expect(bodiesResource, bodiesJson, bodiesData);
+
+            // Parse the event
+            string line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            CarrierJumpRequestEvent @event = (CarrierJumpRequestEvent)events[0];
+
+            // Declare our expected value
+            CarrierJumpRequestEvent expectedEvent = new CarrierJumpRequestEvent(new DateTime(2020, 6, 12, 11, 1, 40, DateTimeKind.Utc), "Shinrarta Dezhra", 3932277478106, "Shinrarta Dezhra B 2", 16, 3701442048) { raw = line, fromLoad = false };
+
+            // Assert the results
+            Assert.IsTrue(expectedEvent.DeepEquals(@event));
         }
     }
 }
