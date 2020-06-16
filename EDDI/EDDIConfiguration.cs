@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>Configuration for EDDI</summary>
     public class EDDIConfiguration : INotifyPropertyChanged

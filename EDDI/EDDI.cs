@@ -1,30 +1,29 @@
-﻿using EddiCompanionAppService;
+﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
-using EddiStarMapService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>
     /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
-    /// and keep them up-to-date with changes that occur.  It also passes on messages to responders to handle as required.
+    /// and keep them up-to-date with changes that occur.
+    /// It also acts as the switchboard for passing events through all parts of the application including both responders and monitors.
     /// </summary>
     public class EDDI
     {
@@ -50,35 +49,32 @@ namespace Eddi
             Directory.CreateDirectory(Constants.DATA_DIR);
         }
 
+        public static void Init(bool safeMode)
+        {
+            if (instance == null)
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        Logging.Debug("No EDDI instance: creating one");
+                        instance = new EDDI(safeMode);
+                    }
+                }
+            }
+        }
+
         // EDDI Instance
         public static EDDI Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No EDDI instance: creating one");
-                            instance = new EDDI();
-                        }
-                    }
-                }
+                Init(false);
                 return instance;
             }
         }
         private static EDDI instance;
         private static readonly object instanceLock = new object();
-
-        // Upgrade information
-        public bool UpgradeAvailable = false;
-        public bool UpgradeRequired = false;
-        public string UpgradeVersion;
-        public string UpgradeLocation;
-        public string Motd;
-        public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
@@ -122,19 +118,12 @@ namespace Eddi
         // The event queue
         public ConcurrentQueue<Event> eventQueue { get; private set; } = new ConcurrentQueue<Event>();
 
-        private EDDI()
+        private EDDI(bool safeMode)
         {
+            running = !safeMode;
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
-
-                // Start by fetching information from the update server, and handling appropriately
-                CheckUpgrade();
-                if (UpgradeRequired)
-                {
-                    // We are too old to continue; initialize in a "safe mode". 
-                    running = false;
-                }
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
@@ -250,109 +239,6 @@ namespace Eddi
             // use test endpoints if the game is in beta or EDDI is not release candidate or final
             return EDDI.Instance.gameIsBeta || EddiIsBeta();
 #endif
-        }
-
-        /// <summary>
-        /// Check to see if an upgrade is available and populate relevant variables
-        /// </summary>
-        public void CheckUpgrade()
-        {
-            // Clear the old values
-            UpgradeRequired = false;
-            UpgradeAvailable = false;
-            UpgradeLocation = null;
-            UpgradeVersion = null;
-            Motd = null;
-
-            try
-            {
-                ServerInfo updateServerInfo = ServerInfo.FromServer(Constants.EDDI_SERVER_URL);
-                if (updateServerInfo == null)
-                {
-                    throw new Exception("Failed to contact update server");
-                }
-                else
-                {
-                    EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                    InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
-                    string spokenVersion = info.version.Replace(".", $" {Properties.EddiResources.point} ");
-                    Motd = info.motd;
-                    if (updateServerInfo.productionbuilds != null)
-                    {
-                        ProductionBuilds = updateServerInfo.productionbuilds;
-                    }
-                    Utilities.Version minVersion = new Utilities.Version(info.minversion);
-                    if (minVersion > Constants.EDDI_VERSION)
-                    {
-                        // There is a mandatory update available
-                        if (!App.FromVA)
-                        {
-                            string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
-                            SpeechService.Instance.Say(null, message, 0);
-                        }
-                        UpgradeRequired = true;
-                        UpgradeLocation = info.url;
-                        UpgradeVersion = info.version;
-                        return;
-                    }
-
-                    Utilities.Version latestVersion = new Utilities.Version(info.version);
-                    if (latestVersion > Constants.EDDI_VERSION)
-                    {
-                        // There is an update available
-                        if (!App.FromVA)
-                        {
-                            string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
-                            SpeechService.Instance.Say(null, message, 0);
-                        }
-                        UpgradeAvailable = true;
-                        UpgradeLocation = info.url;
-                        UpgradeVersion = info.version;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, 0);
-                Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
-            }
-        }
-
-        [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        public void Upgrade()
-        {
-            try
-            {
-                if (UpgradeLocation != null)
-                {
-                    Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, 0);
-                    string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
-                    if (updateFile == null)
-                    {
-                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, 0);
-                    }
-                    else
-                    {
-                        // Inno setup will attempt to restart this application so register it
-                        NativeMethods.RegisterApplicationRestart(null, RestartFlags.NONE);
-
-                        Logging.Info("Downloaded update to " + updateFile);
-                        Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                        File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, 0);
-                        Logging.Info("Starting upgrade.");
-
-                        Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, 0);
-                Logging.Error("Upgrade failed", ex);
-            }
         }
 
         public void Start()
@@ -2623,7 +2509,7 @@ namespace Eddi
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Properties.EddiResources.Commander;
+                Cmdr.title = Eddi.Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -2702,13 +2588,13 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }

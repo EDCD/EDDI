@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using EddiCore;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -238,7 +239,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>Set all values</summary>
         public static void setStandardValues(ref dynamic vaProxy)
         {
-            // Update our nullable primary objects only if they don't match the state of the EDDI instance.	
+            // Update our nullable primary objects only if they don't match the state of the EDDI instance.    
             // (For objects that are always constructed, we prefer using event handlers).
             try
             {
@@ -415,7 +416,7 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to set commander values", ex);
             }
 
-            // On every event...	
+            // On every event...    
             // Set miscellaneous values
             try
             {

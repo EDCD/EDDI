@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Windows.Controls;
+using EddiCore;
 using Utilities;
 
 namespace EddiVoiceAttackResponder

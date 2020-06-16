@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiMissionMonitor;

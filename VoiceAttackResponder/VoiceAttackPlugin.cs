@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EddiCore;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -150,23 +151,23 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // Display instance information if available
-                if (EDDI.Instance.UpgradeRequired)
+                if (EddiUpgrader.UpgradeRequired)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
-                else if (EDDI.Instance.UpgradeAvailable)
+                else if (EddiUpgrader.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
-                if (EDDI.Instance.Motd != null)
+                if (EddiUpgrader.Motd != null)
                 {
-                    vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
-                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
+                    vaProxy.WriteToLog("Message from EDDI: " + EddiUpgrader.Motd, "black");
+                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EddiUpgrader.Motd);
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 

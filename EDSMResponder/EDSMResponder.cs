@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;
+using EddiCore;
 using Utilities;
 
 namespace EddiEdsmResponder
