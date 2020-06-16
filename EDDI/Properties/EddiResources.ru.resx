@@ -192,9 +192,7 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Начинается обновление.</value>
   </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>Я не смог подключиться к серверу обновлений. Пожалуйста, зайдите на форум и посмотрите известно-ли нам об этом.</value>
-  </data>
+  
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Одновременно может выполняться только одна копия программы.
 

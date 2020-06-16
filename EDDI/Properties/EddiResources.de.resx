@@ -195,7 +195,8 @@
     <value>Starte Upgrade.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
-    <value>Ich konnte keine Verbindung zu meinem Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum, ob es sich um ein bekanntes Problem handelt.</value>
+    <value>EDDI konnte keine Verbindung zum Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum 
+( https://forums.frontier.co.uk/threads/eddi-3-3-bring-your-cockpit-to-life.387955/ ) oder bei github - issues ( https://github. com/EDCD/EDDI/issues ), ob es sich um ein bekanntes Problem handelt.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.

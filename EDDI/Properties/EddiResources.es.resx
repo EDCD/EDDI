@@ -195,7 +195,7 @@
     <value>Iniciando actualización.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
-    <value>No pude conectarme a mi servidor de actualización. Si esto es recurrente, verifique en el foro para ver si es un problema ya conocido.</value>
+    <value>No se puede conectar al servidor de actualizaciones. Si esto es recurrente, verifícalo en el foro para ver si es un problema ya conocido.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Solo se puede ejecutar una instancia de EDDI a la vez.

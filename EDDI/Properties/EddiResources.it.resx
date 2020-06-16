@@ -195,7 +195,7 @@
     <value>Aggiornamento avviato.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
-    <value>Impossibile connettersi al server per l'aggiornamento. Qualora riaccadesse si prega di controllare il forum per appurare se sia un problema noto.</value>
+    <value>EDDI non ha potuto connettersi al proprio server per l'aggiornamento. Se ciò dovesse ripetersi, si prega di controllare il relativo Forum per controllare se si tratta di un problema noto.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>E' consentita una sola istanza di EDDI alla volta.

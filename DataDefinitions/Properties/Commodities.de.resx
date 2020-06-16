@@ -794,7 +794,7 @@
     <comment>Commodity LiveHecateSeaWorms</comment>
   </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
-    <value>Niedrigtemperatur Diamanten</value>
+    <value>Tieftemperaturdiamanten</value>
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
   <data name="LTTHypersweet" xml:space="preserve">
@@ -1662,7 +1662,7 @@
     <comment>Commodity Alexandrite</comment>
   </data>
   <data name="Opal" xml:space="preserve">
-    <value>Leere Opale</value>
+    <value>Leerenopal</value>
     <comment>Commodity Opal</comment>
   </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">

@@ -154,7 +154,7 @@
     <comment>BodyType "Null"</comment>
   </data>
   <data name="PlanetaryRing" xml:space="preserve">
-    <value>Anillo planetario</value>
+    <value>Anillo Planetario</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
   <data name="Moon" xml:space="preserve">

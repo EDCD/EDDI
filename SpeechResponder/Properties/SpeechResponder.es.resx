@@ -230,8 +230,16 @@
   <data name="reset_script_message" xml:space="preserve">
     <value>¿Seguro que quiere reiniciar el script "{0}"?</value>
   </data>
-  
-  
-  
-  
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>Script Recuperado</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI ha recuperado un script que se estaba editando cuando el programa se cerró inesperadamente. ¿Quieres volver a abrirlo?</value>
+  </data>
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>Por favor, ingrese un nombre</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>Este nombre de usuario ya está en uso. Por favor, elige otro</value>
+  </data>
 </root>
