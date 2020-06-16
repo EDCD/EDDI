@@ -20,7 +20,7 @@ This is based on git-flow, but more relaxed:
 
   * We dispense with git-flow's ceremony concerning release branches.
   * Releases are tagged in the format `Release/3.0.0-b1`. There are some older release tags in the repo that lack the `Release/` prefix but never mind.
-  * `master` points to the current production release. **All unit tests and code analysis must pass.** Fast-forwarding the `master` branch is preferred versus adding a merge commit.
+  * `stable` points to the current production release. **All unit tests and code analysis must pass.** Fast-forwarding the `stable` branch is preferred versus adding a merge commit.
   * `beta` points to the current beta release. **All unit tests and code analysis must pass.** Fast-forwarding the `beta` branch is preferred versus adding a merge commit.
   * `develop` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
   * `l10n_develop` is the branch to which CrowdIn commits translations, and in general `l10n_` is the configurable prefix it will use if we unleash it on other branches. We generally squash-merge this branch, to reduce noise in the commit graph, then delete it so that CrowdIn will create a new one.
