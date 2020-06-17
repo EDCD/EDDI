@@ -166,7 +166,8 @@ namespace EddiDataDefinitions
                 {
                     fromFDev = true,
                     buyprice = (int)capiJSON["buyPrice"],
-                    avgprice = (int)capiJSON["meanPrice"],
+                    // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
+                    avgprice = (int)capiJSON["meanPrice"] > 0 ? (int)capiJSON["meanPrice"] : commodityDef.avgprice,
                     stock = (int)capiJSON["stock"],
                     stockbracket = intStringOrNull(capiJSON, "stockBracket"),
                     sellprice = (int)capiJSON["sellPrice"],
