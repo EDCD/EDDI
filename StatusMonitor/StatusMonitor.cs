@@ -84,7 +84,6 @@ namespace EddiStatusMonitor
             running = true;
 
             // Start off by moving to the end of the file
-            string lastStatusJson = string.Empty;
             FileInfo fileInfo = null;
             try
             {
@@ -101,7 +100,7 @@ namespace EddiStatusMonitor
                     using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
                     {
-                        lastStatusJson = reader.ReadLine() ?? string.Empty;
+                        string lastStatusJson = reader.ReadLine() ?? string.Empty;
 
                         // Main loop
                         while (running)
@@ -110,40 +109,11 @@ namespace EddiStatusMonitor
                             {
                                 if (!fileInfo.Exists)
                                 {
-                                    // Status.json could not be found. Sleep until a Status.json file is found.
-                                    Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                                    while (!fileInfo.Exists)
-                                    {
-                                        Thread.Sleep(pollingIntervalRelaxedMs);
-                                        fileInfo = Files.FileInfo(Directory, "Status.json");
-                                    }
-                                    Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
-                                    return;
+                                    WaitForStatusFile(ref fileInfo);
                                 }
                                 else
                                 {
-                                    string thisStatus = string.Empty;
-                                    try
-                                    {
-                                        fs.Seek(0, SeekOrigin.Begin);
-                                        thisStatus = reader.ReadLine() ?? string.Empty;
-                                    }
-                                    catch (Exception)
-                                    {
-                                        // file open elsewhere or being written, just wait for the next pass
-                                    }
-                                    if (lastStatusJson != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
-                                    {
-                                        Status status = ParseStatusEntry(thisStatus);
-
-                                        // Spin off a thread to pass status entry updates in the background
-                                        Thread updateThread = new Thread(() => handleStatus(status))
-                                        {
-                                            IsBackground = true
-                                        };
-                                        updateThread.Start();
-                                    }
-                                    lastStatusJson = thisStatus;
+                                    lastStatusJson = ReadStatus(lastStatusJson, fs, reader);
                                 }
                                 Thread.Sleep(pollingIntervalActiveMs);
                             }
@@ -159,6 +129,45 @@ namespace EddiStatusMonitor
                     // file open elsewhere or being written, just wait for the next pass
                 }
             }
+        }
+
+        private void WaitForStatusFile(ref FileInfo fileInfo)
+        {
+            // Status.json could not be found. Sleep until a Status.json file is found.
+            Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
+            while (!fileInfo.Exists)
+            {
+                Thread.Sleep(pollingIntervalRelaxedMs);
+                fileInfo = Files.FileInfo(Directory, "Status.json");
+            }
+            Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
+        }
+
+        private string ReadStatus(string lastStatusJson, FileStream fs, StreamReader reader)
+        {
+            string thisStatusJson = string.Empty;
+            try
+            {
+                fs.Seek(0, SeekOrigin.Begin);
+                thisStatusJson = reader.ReadLine() ?? string.Empty;
+            }
+            catch (Exception)
+            {
+                // file open elsewhere or being written, just wait for the next pass
+            }
+            if (lastStatusJson != thisStatusJson && !string.IsNullOrWhiteSpace(thisStatusJson))
+            {
+                Status status = ParseStatusEntry(thisStatusJson);
+
+                // Spin off a thread to pass status entry updates in the background
+                Thread updateThread = new Thread(() => handleStatus(status))
+                {
+                    IsBackground = true
+                };
+                updateThread.Start();
+            }
+            lastStatusJson = thisStatusJson;
+            return lastStatusJson;
         }
 
         public void Stop()

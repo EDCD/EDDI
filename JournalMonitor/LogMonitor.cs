@@ -16,7 +16,6 @@ namespace EddiJournalMonitor
         public Action<string, bool> Callback;
         public static string journalFileName;
 
-        // Declare our constants
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
