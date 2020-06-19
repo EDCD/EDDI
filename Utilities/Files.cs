@@ -10,6 +10,11 @@ namespace Utilities
 {
     public class Files
     {
+        private const int readAttempts = 10;
+        private const int readIODelayMs = 25;
+        private const int writeAttempts = 20;
+        private const int writeIODelayMs = 25;
+        
         /// <summary> Ignore missing config files on first launch? </summary>
         public static bool ignoreMissing { get; set; } = false;
 
@@ -24,16 +29,14 @@ namespace Utilities
         public static string Read(string fileName)
         {
             string result = null;
-            int attempts = 10;
-            int ioDelayMs = 25;
+            int attempts = readAttempts;
             if (fileName != null)
             {
                 while (attempts > 0 && TryRead(fileName, attempts, out result))
                 {
                     attempts--;
-                    Thread.Sleep(ioDelayMs);
+                    Thread.Sleep(readIODelayMs);
                 }
-
                 if (attempts == 0)
                 {
                     throw new IOException("IO read failed for " + fileName + ", too many attempts.");
@@ -114,13 +117,11 @@ namespace Utilities
 
                 await Task.Run(() =>
                 {
-                    int attempts = 20;
-                    int ioDelayMs = 25;
-
+                    int attempts = writeAttempts;
                     while (attempts > 0 && TryWrite(fileName, attempts, content))
                     {
                         attempts--;
-                        Thread.Sleep(ioDelayMs);
+                        Thread.Sleep(writeIODelayMs);
                     }
                     if (attempts == 0)
                     {
