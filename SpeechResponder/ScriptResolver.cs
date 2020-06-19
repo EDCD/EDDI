@@ -2,7 +2,6 @@
 using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Settings;
-using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
 using EddiBgsService;
@@ -24,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cottle;
 using EddiCore;
 using Utilities;
 
@@ -59,13 +59,13 @@ namespace EddiSpeechResponder
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
+        public string resolveFromName(string name, Dictionary<Value, Value> vars, bool master = true)
         {
             return resolveFromName(name, buildStore(vars), master);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromName(string name, BuiltinStore store, bool master = true)
+        public string resolveFromName(string name, IContext store, bool master = true)
         {
             Logging.Debug("Resolving script " + name);
             scripts.TryGetValue(name, out Script script);
@@ -91,13 +91,13 @@ namespace EddiSpeechResponder
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool master = true)
+        public string resolveFromValue(string scriptValue, Dictionary<Value, Value> vars, bool master = true)
         {
             return resolveFromValue(scriptValue, buildStore(vars), master);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromValue(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
+        public string resolveFromValue(string script, IContext store, bool master = true, Script scriptObject = null)
         {
             try
             {
@@ -171,9 +171,9 @@ namespace EddiSpeechResponder
         }
 
         // Create Cottle variables from the EDDI information
-        protected internal Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
+        protected internal Dictionary<Value, Value> createVariables(Event theEvent = null)
         {
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
+            Dictionary<Value, Value> dict = new Dictionary<Value, Value>
             {
                 ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
@@ -282,42 +282,42 @@ namespace EddiSpeechResponder
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
-        private BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars)
+        private IContext buildStore(Dictionary<Value, Value> vars)
         {
-            BuiltinStore store = new BuiltinStore();
+            IContext context = Context.CreateBuiltin(vars);
 
             // TODO fetch this from configuration
             bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
             bool useSSML = !SpeechServiceConfiguration.FromFile().DisableSsml;
 
             // Function to call another script
-            store["F"] = new NativeFunction((values) =>
+            vars["F"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveFromName(values[0].AsString, store, false);
+                return new ScriptResolver(scripts).resolveFromName(values[0].AsString, vars, false);
             }, 1);
 
             // Translation functions
-            store["P"] = new NativeFunction((values) =>
+            vars["P"] = new NativeFunction((values) =>
             {
                 string val = values[0].AsString;
                 return Translations.GetTranslation(val, useICAO);
             }, 1);
 
             // Boolean constants
-            store["true"] = true;
-            store["false"] = false;
+            vars["true"] = true;
+            vars["false"] = false;
 
             // Helper functions
-            store["OneOf"] = new NativeFunction((values) =>
+            vars["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, store, false);
+                return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, vars, false);
             });
 
-            store["Occasionally"] = new NativeFunction((values) =>
+            vars["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveFromValue(values[1].AsString, store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(values[1].AsString, vars, false);
                 }
                 else
                 {
@@ -325,12 +325,12 @@ namespace EddiSpeechResponder
                 }
             }, 2);
 
-            store["Humanise"] = new NativeFunction((values) =>
+            vars["Humanise"] = new NativeFunction((values) =>
             {
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
-            store["List"] = new NativeFunction((values) =>
+            vars["List"] = new NativeFunction((values) =>
             {
                 string output = String.Empty;
                 string localisedAnd = Properties.SpeechResponder.localizedAnd;
@@ -356,17 +356,17 @@ namespace EddiSpeechResponder
                 return output;
             }, 1);
 
-            store["Pause"] = new NativeFunction((values) =>
+            vars["Pause"] = new NativeFunction((values) =>
             {
                 return @"<break time=""" + values[0].AsNumber + @"ms"" />";
             }, 1);
 
-            store["Play"] = new NativeFunction((values) =>
+            vars["Play"] = new NativeFunction((values) =>
             {
                 return @"<audio src=""" + values[0].AsString + @""" />";
             }, 1);
 
-            store["Spacialise"] = new NativeFunction((values) =>
+            vars["Spacialise"] = new NativeFunction((values) =>
             {
                 if (values[0].AsString == null) { return null; }
 
@@ -389,7 +389,7 @@ namespace EddiSpeechResponder
                 }
             }, 1);
 
-            store["Emphasize"] = new NativeFunction((values) =>
+            vars["Emphasize"] = new NativeFunction((values) =>
             {
                 if (values.Count == 1)
                 {
@@ -402,7 +402,7 @@ namespace EddiSpeechResponder
                 return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
-            store["SpeechPitch"] = new NativeFunction((values) =>
+            vars["SpeechPitch"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -417,7 +417,7 @@ namespace EddiSpeechResponder
                 return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
-            store["SpeechRate"] = new NativeFunction((values) =>
+            vars["SpeechRate"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -432,7 +432,7 @@ namespace EddiSpeechResponder
                 return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
-            store["SpeechVolume"] = new NativeFunction((values) =>
+            vars["SpeechVolume"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -447,16 +447,16 @@ namespace EddiSpeechResponder
                 return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
-            store["Transmit"] = new NativeFunction((values) =>
+            vars["Transmit"] = new NativeFunction((values) =>
             {
                 if (values.Count == 1)
                 {
-                    return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", vars, false);
                 } 
                 return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1);
 
-            store["StartsWithVowel"] = new NativeFunction((values) =>
+            vars["StartsWithVowel"] = new NativeFunction((values) =>
             {
                 string Entree = values[0].AsString;
                 if (Entree == "")
@@ -470,7 +470,7 @@ namespace EddiSpeechResponder
 
             }, 1);
 
-            store["Voice"] = new NativeFunction((values) =>
+            vars["Voice"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString ?? string.Empty;
                 string voice = values[1].AsString ?? string.Empty;
@@ -495,7 +495,7 @@ namespace EddiSpeechResponder
                 return "The Voice function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2);
 
-            store["VoiceDetails"] = new NativeFunction((values) =>
+            vars["VoiceDetails"] = new NativeFunction((values) =>
             {
                 if (values.Count == 0)
                 {
@@ -549,9 +549,9 @@ namespace EddiSpeechResponder
             //
             // Commander-specific functions
             //
-            store["CommanderName"] = new NativeFunction((values) => EDDI.Instance.Cmdr.SpokenName(), 0, 0);
+            vars["CommanderName"] = new NativeFunction((values) => EDDI.Instance.Cmdr.SpokenName(), 0, 0);
 
-            store["ShipName"] = new NativeFunction((values) =>
+            vars["ShipName"] = new NativeFunction((values) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
                 string model = (values.Count == 2 ? values[1].AsString : null);
@@ -559,7 +559,7 @@ namespace EddiSpeechResponder
                 return ship.SpokenName();
             }, 0, 2);
 
-            store["ShipCallsign"] = new NativeFunction((values) =>
+            vars["ShipCallsign"] = new NativeFunction((values) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
                 Ship ship = findShip(localId, null);
@@ -596,7 +596,7 @@ namespace EddiSpeechResponder
             // Obtain definition objects for various items
             //
 
-            store["SecondsSince"] = new NativeFunction((values) =>
+            vars["SecondsSince"] = new NativeFunction((values) =>
             {
                 long? date = (long?)values[0].AsNumber;
                 long? now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
@@ -604,7 +604,7 @@ namespace EddiSpeechResponder
                 return now - date;
             }, 1);
 
-            store["ICAO"] = new NativeFunction((values) =>
+            vars["ICAO"] = new NativeFunction((values) =>
             {
                 // Turn a string in to an ICAO definition
                 string value = values[0].AsString;
@@ -622,13 +622,13 @@ namespace EddiSpeechResponder
                 return Translations.ICAO(value);
             }, 1);
 
-            store["ShipDetails"] = new NativeFunction((values) =>
+            vars["ShipDetails"] = new NativeFunction((values) =>
             {
                 Ship result = ShipDefinitions.FromModel(values[0].AsString);
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["JumpDetails"] = new NativeFunction((values) =>
+            vars["JumpDetails"] = new NativeFunction((values) =>
             {
                 string value = values[0].AsString;
                 if (string.IsNullOrEmpty(value))
@@ -639,7 +639,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["CombatRatingDetails"] = new NativeFunction((values) =>
+            vars["CombatRatingDetails"] = new NativeFunction((values) =>
             {
                 CombatRating result = CombatRating.FromName(values[0].AsString);
                 if (result == null)
@@ -649,7 +649,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["TradeRatingDetails"] = new NativeFunction((values) =>
+            vars["TradeRatingDetails"] = new NativeFunction((values) =>
             {
                 TradeRating result = TradeRating.FromName(values[0].AsString);
                 if (result == null)
@@ -659,7 +659,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["ExplorationRatingDetails"] = new NativeFunction((values) =>
+            vars["ExplorationRatingDetails"] = new NativeFunction((values) =>
             {
                 ExplorationRating result = ExplorationRating.FromName(values[0].AsString);
                 if (result == null)
@@ -669,7 +669,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["EmpireRatingDetails"] = new NativeFunction((values) =>
+            vars["EmpireRatingDetails"] = new NativeFunction((values) =>
             {
                 EmpireRating result = EmpireRating.FromName(values[0].AsString);
                 if (result == null)
@@ -679,7 +679,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["FederationRatingDetails"] = new NativeFunction((values) =>
+            vars["FederationRatingDetails"] = new NativeFunction((values) =>
             {
                 FederationRating result = FederationRating.FromName(values[0].AsString);
                 if (result == null)
@@ -689,7 +689,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["SystemDetails"] = new NativeFunction((values) =>
+            vars["SystemDetails"] = new NativeFunction((values) =>
             {
                 StarSystem result;
                 if (values.Count == 0)
@@ -708,7 +708,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["BodyDetails"] = new NativeFunction((values) =>
+            vars["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
                 if (values.Count == 0)
@@ -728,7 +728,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 2);
 
-            store["MissionDetails"] = new NativeFunction((values) =>
+            vars["MissionDetails"] = new NativeFunction((values) =>
             {
                 var missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();
 
@@ -736,7 +736,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["RouteDetails"] = new NativeFunction((values) =>
+            vars["RouteDetails"] = new NativeFunction((values) =>
             {
                 CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
                 MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
@@ -886,7 +886,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 3);
 
-            store["StationDetails"] = new NativeFunction((values) =>
+            vars["StationDetails"] = new NativeFunction((values) =>
             {
                 Station result;
                 if (values.Count == 0 || values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
@@ -911,7 +911,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 2);
 
-            store["FactionDetails"] = new NativeFunction((values) =>
+            vars["FactionDetails"] = new NativeFunction((values) =>
             {
                 Faction result;
                 if (values.Count == 0)
@@ -929,7 +929,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 2);
 
-            store["SuperpowerDetails"] = new NativeFunction((values) =>
+            vars["SuperpowerDetails"] = new NativeFunction((values) =>
             {
                 Superpower result = Superpower.FromName(values[0].AsString);
                 if (result == null)
@@ -939,7 +939,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["StateDetails"] = new NativeFunction((values) =>
+            vars["StateDetails"] = new NativeFunction((values) =>
             {
                 FactionState result = FactionState.FromName(values[0].AsString);
                 if (result == null)
@@ -949,7 +949,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["EconomyDetails"] = new NativeFunction((values) =>
+            vars["EconomyDetails"] = new NativeFunction((values) =>
             {
                 Economy result = Economy.FromName(values[0].AsString);
                 if (result == null)
@@ -959,13 +959,13 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["EngineerDetails"] = new NativeFunction((values) =>
+            vars["EngineerDetails"] = new NativeFunction((values) =>
             {
                 Engineer result = Engineer.FromName(values[0].AsString);
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["GovernmentDetails"] = new NativeFunction((values) =>
+            vars["GovernmentDetails"] = new NativeFunction((values) =>
             {
                 Government result = Government.FromName(values[0].AsString);
                 if (result == null)
@@ -975,7 +975,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["SecurityLevelDetails"] = new NativeFunction((values) =>
+            vars["SecurityLevelDetails"] = new NativeFunction((values) =>
             {
                 SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
                 if (result == null)
@@ -985,7 +985,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["MaterialDetails"] = new NativeFunction((values) =>
+            vars["MaterialDetails"] = new NativeFunction((values) =>
             {
                 Material result = Material.FromName(values[0].AsString);
                 if (result?.edname != null && values.Count == 2)
@@ -1001,7 +1001,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 2);
 
-            store["CommodityMarketDetails"] = new NativeFunction((values) =>
+            vars["CommodityMarketDetails"] = new NativeFunction((values) =>
             {
                 CommodityMarketQuote result = null;
                 CommodityMarketQuote CommodityDetails(string commodityLocalizedName, Station station)
@@ -1034,7 +1034,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 0, 3);
 
-            store["CargoDetails"] = new NativeFunction((values) =>
+            vars["CargoDetails"] = new NativeFunction((values) =>
             {
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 Cottle.Value value = values[0];
@@ -1052,13 +1052,13 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["HaulageDetails"] = new NativeFunction((values) =>
+            vars["HaulageDetails"] = new NativeFunction((values) =>
             {
                 var result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["BlueprintDetails"] = new NativeFunction((values) =>
+            vars["BlueprintDetails"] = new NativeFunction((values) =>
             {
                 string blueprintName = values[0].AsString;
                 int blueprintGrade = Convert.ToInt32(values[1].AsNumber);
@@ -1066,7 +1066,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 2);
 
-            store["TrafficDetails"] = new NativeFunction((values) =>
+            vars["TrafficDetails"] = new NativeFunction((values) =>
             {
                 Traffic result = null;
                 string systemName = values[0].AsString;
@@ -1095,13 +1095,13 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result ?? new object());
             }, 1, 2);
 
-            store["GalnetNewsArticle"] = new NativeFunction((values) =>
+            vars["GalnetNewsArticle"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 return new ReflectionValue(result ?? new object());
             }, 1);
 
-            store["GalnetNewsArticles"] = new NativeFunction((values) =>
+            vars["GalnetNewsArticles"] = new NativeFunction((values) =>
             {
                 List<News> results = null;
                 if (values.Count == 0)
@@ -1122,7 +1122,7 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(results ?? new List<News>());
             }, 0, 2);
 
-            store["GalnetNewsMarkRead"] = new NativeFunction((values) =>
+            vars["GalnetNewsMarkRead"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1132,7 +1132,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1);
 
-            store["GalnetNewsMarkUnread"] = new NativeFunction((values) =>
+            vars["GalnetNewsMarkUnread"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1142,7 +1142,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1);
 
-            store["GalnetNewsDelete"] = new NativeFunction((values) =>
+            vars["GalnetNewsDelete"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1152,7 +1152,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1);
 
-            store["Distance"] = new NativeFunction((values) =>
+            vars["Distance"] = new NativeFunction((values) =>
             {
                 double square(double x) => x * x;
                 decimal result = 0;
@@ -1191,43 +1191,43 @@ namespace EddiSpeechResponder
                 return new ReflectionValue(result);
             }, 1, 6);
 
-            store["Log"] = new NativeFunction((values) =>
+            vars["Log"] = new NativeFunction((values) =>
             {
                 Logging.Info(values[0].AsString);
                 return "";
             }, 1);
 
-            store["SetState"] = new NativeFunction((values) =>
+            vars["SetState"] = new NativeFunction((values) =>
             {
                 string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
                 Cottle.Value value = values[1];
                 if (value.Type == Cottle.ValueContent.Boolean)
                 {
                     EDDI.Instance.State[name] = value.AsBoolean;
-                    store["state"] = buildState();
+                    vars["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
                 {
                     EDDI.Instance.State[name] = value.AsNumber;
-                    store["state"] = buildState();
+                    vars["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.String)
                 {
                     EDDI.Instance.State[name] = value.AsString;
-                    store["state"] = buildState();
+                    vars["state"] = buildState();
                 }
                 // Ignore other possibilities
                 return "";
             }, 2);
 
-            store["RefreshProfile"] = new NativeFunction((values) =>
+            vars["RefreshProfile"] = new NativeFunction((values) =>
             {
                 bool stationRefresh = (values.Count == 0 ? false : values[0].AsBoolean);
                 EDDI.Instance.refreshProfile(stationRefresh);
                 return "";
             }, 0, 1);
 
-            store["InaraDetails"] = new NativeFunction((values) =>
+            vars["InaraDetails"] = new NativeFunction((values) =>
             {
                 if (values[0].AsString is string commanderName)
                 {
@@ -1241,13 +1241,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1);
 
-            // Variables
-            foreach (KeyValuePair<string, Cottle.Value> entry in vars)
-            {
-                store[entry.Key] = entry.Value;
-            }
-
-            return store;
+            return context;
         }
 
         public static Dictionary<Cottle.Value, Cottle.Value> buildState()
