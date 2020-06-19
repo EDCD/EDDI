@@ -276,12 +276,9 @@ namespace Utilities
     public class _Rollbar
     {
         // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
-        // We have a limited data plan, so before sending exceptions and other reports, we shall use the API to check that the item is unique
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
-        const string rollbarReadToken = "66e63ff290854a75b8b4c3263f084db6";
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
-        private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
         public static bool TelemetryEnabled {
             get => RollbarLocator.RollbarInstance.Config.Enabled;
             set => RollbarLocator.RollbarInstance.Config.Enabled = value;
