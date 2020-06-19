@@ -19,16 +19,16 @@ namespace Utilities
         /// <summary>
         /// Read a file, handling exceptions
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="fileName"></param>
         /// <returns></returns>
-        public static string Read(string name)
+        public static string Read(string fileName)
         {
             string result = null;
             int attempts = 10;
             int ioDelayMs = 25;
-            if (name != null)
+            if (fileName != null)
             {
-                while (attempts > 0 && TryRead(name, attempts, out result))
+                while (attempts > 0 && TryRead(fileName, attempts, out result))
                 {
                     attempts--;
                     Thread.Sleep(ioDelayMs);
@@ -36,62 +36,61 @@ namespace Utilities
 
                 if (attempts == 0)
                 {
-                    throw new IOException("IO read failed for " + name + ", too many attempts.");
+                    throw new IOException("IO read failed for " + fileName + ", too many attempts.");
                 }
-
             }
             return result;
         }
 
-        private static bool TryRead(string name, int attempts, out string result)
+        private static bool TryRead(string fileName, int attempts, out string result)
         {
             result = null;
             try
             {
-                result = File.ReadAllText(name, Encoding.UTF8);
+                result = File.ReadAllText(fileName, Encoding.UTF8);
             }
             catch (ArgumentException ex)
             {
-                Logging.Error("Failed to read from " + name, ex);
+                Logging.Error("Failed to read from " + fileName, ex);
             }
             catch (PathTooLongException ex)
             {
-                Logging.Error("Path " + name + " too long", ex);
+                Logging.Error("Path " + fileName + " too long", ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                Logging.Error("Directory for " + name + " not found", ex);
+                Logging.Error("Directory for " + fileName + " not found", ex);
             }
             catch (FileNotFoundException ex)
             {
                 if (!ignoreMissing)
                 {
-                    Logging.Error("File " + name + " not found", ex);
+                    Logging.Error("File " + fileName + " not found", ex);
                 }
             }
             catch (UnauthorizedAccessException ex)
             {
-                Logging.Error("Not allowed to read from " + name, ex);
+                Logging.Error("Not allowed to read from " + fileName, ex);
             }
             catch (NotSupportedException ex)
             {
-                Logging.Error("Not supported reading from " + name, ex);
+                Logging.Error("Not supported reading from " + fileName, ex);
             }
             catch (SecurityException ex)
             {
-                Logging.Error("Security exception reading from " + name, ex);
+                Logging.Error("Security exception reading from " + fileName, ex);
             }
             catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
             {
                 if (!ignoreMissing)
                 {
-                    Logging.Debug($"IO read exception for {name}, {attempts} attempts left", ex);
+                    Logging.Debug($"IO read exception for {fileName}, {attempts} attempts left", ex);
                     return true; // We have failed to read the file and will need to make another attempt
                 }
             }
             catch (IOException ex) // Other IO issue 
             {
-                Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
+                Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
             }
             // We have either successfully read the file or encountered an exception that would not benefit from another attempt
             return false; 
@@ -100,16 +99,16 @@ namespace Utilities
         /// <summary>
         /// Write a file, handling exceptions
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="fileName"></param>
         /// <param name="content"></param>
-        public static async void Write(string name, string content)
+        public static async void Write(string fileName, string content)
         {
-            if (name != null && content != null)
+            if (fileName != null && content != null)
             {
                 // Skip writing to storage if we're unit testing
                 if (unitTesting)
                 {
-                    Logging.Debug("Skipping write to " + name + " during unit test");
+                    Logging.Debug("Skipping write to " + fileName + " during unit test");
                     return;
                 }
 
@@ -118,59 +117,58 @@ namespace Utilities
                     int attempts = 20;
                     int ioDelayMs = 25;
 
-                    while (attempts > 0 && TryWrite(name, attempts, content))
+                    while (attempts > 0 && TryWrite(fileName, attempts, content))
                     {
                         attempts--;
                         Thread.Sleep(ioDelayMs);
                     }
                     if (attempts == 0)
                     {
-                        throw new IOException("IO write failed for " + name + ", too many attempts.");
+                        throw new IOException("IO write failed for " + fileName + ", too many attempts.");
                     }
-
                 }).ConfigureAwait(false);
             }
         }
 
-        private static bool TryWrite(string name, int attempts, string content)
+        private static bool TryWrite(string fileName, int attempts, string content)
         {
             // Attempt to write the file
             try
             {
-                LockManager.GetLock(name, () => File.WriteAllText(name, content, Encoding.UTF8));
+                LockManager.GetLock(fileName, () => File.WriteAllText(fileName, content, Encoding.UTF8));
             }
             catch (ArgumentException ex)
             {
-                Logging.Error("Failed to write to " + name, ex);
+                Logging.Error("Failed to write to " + fileName, ex);
             }
             catch (PathTooLongException ex)
             {
-                Logging.Error("Path " + name + " too long", ex);
+                Logging.Error("Path " + fileName + " too long", ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                Logging.Error("Directory for " + name + " not found", ex);
+                Logging.Error("Directory for " + fileName + " not found", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Logging.Error("Not allowed to write to " + name, ex);
+                Logging.Error("Not allowed to write to " + fileName, ex);
             }
             catch (NotSupportedException ex)
             {
-                Logging.Error("Not supported writing to " + name, ex);
+                Logging.Error("Not supported writing to " + fileName, ex);
             }
             catch (SecurityException ex)
             {
-                Logging.Error("Security exception writing to " + name, ex);
+                Logging.Error("Security exception writing to " + fileName, ex);
             }
             catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
             {
-                Logging.Debug($"IO write exception for {name}, {attempts} attempts left", ex);
+                Logging.Debug($"IO write exception for {fileName}, {attempts} attempts left", ex);
                 return true; // We have failed to write the file and will need to make another attempt
             }
             catch (IOException ex) // Other IO issue 
             {
-                Logging.Error($"IO write exception for {name}, {ex.Message}", ex);
+                Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
             }
             // We have either successfully written to the file or encountered an exception that would not benefit from another attempt
             return false;
