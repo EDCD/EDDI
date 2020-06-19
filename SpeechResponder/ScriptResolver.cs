@@ -1,5 +1,4 @@
 ﻿using Cottle;
-using Cottle.Values;
 using Eddi;
 using EddiBgsService;
 using EddiCargoMonitor;
@@ -19,6 +18,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using EddiCore;
 using Utilities;
@@ -32,6 +32,7 @@ namespace EddiSpeechResponder
         private readonly DocumentConfiguration setting;
         private readonly DataProviderService dataProviderService;
         private readonly BgsService bgsService;
+        private readonly BindingFlags bindingFlags;
 
         public static object Instance { get; set; }
 
@@ -46,6 +47,7 @@ namespace EddiSpeechResponder
             {
                 Trimmer = DocumentConfiguration.TrimRepeatedWhitespaces
             };
+            bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         }
 
         public int priority(string name)
@@ -183,67 +185,67 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.Cmdr != null)
             {
-                dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
+                dict["cmdr"] = Value.FromReflection(EDDI.Instance.Cmdr, bindingFlags);
             }
 
             if (EDDI.Instance.HomeStarSystem != null)
             {
-                dict["homesystem"] = new ReflectionValue(EDDI.Instance.HomeStarSystem);
+                dict["homesystem"] = Value.FromReflection(EDDI.Instance.HomeStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.HomeStation != null)
             {
-                dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
+                dict["homestation"] = Value.FromReflection(EDDI.Instance.HomeStation, bindingFlags);
             }
 
             if (EDDI.Instance.SquadronStarSystem != null)
             {
-                dict["squadronsystem"] = new ReflectionValue(EDDI.Instance.SquadronStarSystem);
+                dict["squadronsystem"] = Value.FromReflection(EDDI.Instance.SquadronStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.CurrentStarSystem != null)
             {
-                dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);
+                dict["system"] = Value.FromReflection(EDDI.Instance.CurrentStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.LastStarSystem != null)
             {
-                dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
+                dict["lastsystem"] = Value.FromReflection(EDDI.Instance.LastStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.NextStarSystem != null)
             {
-                dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+                dict["nextsystem"] = Value.FromReflection(EDDI.Instance.NextStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.DestinationStarSystem != null)
             {
-                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+                dict["destinationsystem"] = Value.FromReflection(EDDI.Instance.DestinationStarSystem, bindingFlags);
             }
 
             if (EDDI.Instance.DestinationStation != null)
             {
-                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
+                dict["destinationstation"] = Value.FromReflection(EDDI.Instance.DestinationStation, bindingFlags);
             }
 
             if (EDDI.Instance.CurrentStation != null)
             {
-                dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
+                dict["station"] = Value.FromReflection(EDDI.Instance.CurrentStation, bindingFlags);
             }
 
             if (EDDI.Instance.CurrentStellarBody != null)
             {
-                dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
+                dict["body"] = Value.FromReflection(EDDI.Instance.CurrentStellarBody, bindingFlags);
             }
 
             if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
+                dict["status"] = Value.FromReflection(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus, bindingFlags);
             }
 
             if (theEvent != null)
             {
-                dict["event"] = new ReflectionValue(theEvent);
+                dict["event"] = Value.FromReflection(theEvent, bindingFlags);
             }
 
             if (EDDI.Instance.State != null)
@@ -266,7 +268,7 @@ namespace EddiSpeechResponder
                         }
                         else
                         {
-                            dict[key] = new ReflectionValue(monitorVariables[key]);
+                            dict[key] = Value.FromReflection(monitorVariables[key], bindingFlags);
                         }
                     }
                 }
@@ -287,13 +289,13 @@ namespace EddiSpeechResponder
             bool useSSML = !SpeechServiceConfiguration.FromFile().DisableSsml;
 
             // Function to call another script
-            vars["F"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["F"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return new ScriptResolver(scripts).resolveFromName(values[0].AsString, vars, false);
             }, 1));
 
             // Translation functions
-            vars["P"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["P"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string val = values[0].AsString;
                 return Translations.GetTranslation(val, useICAO);
@@ -304,12 +306,12 @@ namespace EddiSpeechResponder
             vars["false"] = false;
 
             // Helper functions
-            vars["OneOf"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["OneOf"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, vars, false);
             }));
 
-            vars["Occasionally"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Occasionally"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
@@ -321,12 +323,12 @@ namespace EddiSpeechResponder
                 }
             }, 2));
 
-            vars["Humanise"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Humanise"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
-                return Translations.Humanize(values[0].AsNumber);
+                return Translations.Humanize((decimal)values[0].AsNumber);
             }, 1));
 
-            vars["List"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["List"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string result = String.Empty;
                 string localisedAnd = Properties.SpeechResponder.localizedAnd;
@@ -352,19 +354,19 @@ namespace EddiSpeechResponder
                 return result;
             }, 1));
 
-            vars["Pause"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Pause"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return @"<break time=""" + values[0].AsNumber + @"ms"" />";
             }, 1));
 
-            vars["Play"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Play"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return @"<audio src=""" + values[0].AsString + @""" />";
             }, 1));
 
-            vars["Spacialise"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Spacialise"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
-                if (values[0].AsString == null) { return null; }
+                if (values[0].AsString == null) { return ""; }
 
                 if (useSSML)
                 {
@@ -385,7 +387,7 @@ namespace EddiSpeechResponder
                 }
             }, 1));
 
-            vars["Emphasize"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Emphasize"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 if (values.Count == 1)
                 {
@@ -398,7 +400,7 @@ namespace EddiSpeechResponder
                 return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2));
 
-            vars["SpeechPitch"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SpeechPitch"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -413,7 +415,7 @@ namespace EddiSpeechResponder
                 return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2));
 
-            vars["SpeechRate"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SpeechRate"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -428,7 +430,7 @@ namespace EddiSpeechResponder
                 return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2));
 
-            vars["SpeechVolume"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SpeechVolume"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -443,7 +445,7 @@ namespace EddiSpeechResponder
                 return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2));
 
-            vars["Transmit"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Transmit"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 if (values.Count == 1)
                 {
@@ -452,7 +454,7 @@ namespace EddiSpeechResponder
                 return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1));
 
-            vars["StartsWithVowel"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["StartsWithVowel"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string Entree = values[0].AsString;
                 if (Entree == "")
@@ -466,7 +468,7 @@ namespace EddiSpeechResponder
 
             }, 1));
 
-            vars["Voice"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Voice"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string text = values[0].AsString ?? string.Empty;
                 string voice = values[1].AsString ?? string.Empty;
@@ -491,7 +493,7 @@ namespace EddiSpeechResponder
                 return "The Voice function is used improperly. Please review the documentation for correct usage.";
             }, 1, 2));
 
-            vars["VoiceDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["VoiceDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 if (values.Count == 0)
                 {
@@ -513,7 +515,7 @@ namespace EddiSpeechResponder
                             }
                         }
                     }
-                    return new ReflectionValue(voices);
+                    return Value.FromReflection(voices, bindingFlags);
                 }
                 if (values.Count == 1)
                 {
@@ -537,7 +539,7 @@ namespace EddiSpeechResponder
                             }
                         }
                     }
-                    return new ReflectionValue(result ?? new object());
+                    return Value.FromReflection(result ?? new object(), bindingFlags);
                 }
                 return "The VoiceDetails function is used improperly. Please review the documentation for correct usage.";
             }, 0, 1));
@@ -545,9 +547,9 @@ namespace EddiSpeechResponder
             //
             // Commander-specific functions
             //
-            vars["CommanderName"] = new FunctionValue(Function.Create((state, values, output) => EDDI.Instance.Cmdr.SpokenName(), 0, 0));
+            vars["CommanderName"] = Value.FromFunction(Function.Create((state, values, output) => EDDI.Instance.Cmdr.SpokenName(), 0, 0));
 
-            vars["ShipName"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["ShipName"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
                 string model = (values.Count == 2 ? values[1].AsString : null);
@@ -555,7 +557,7 @@ namespace EddiSpeechResponder
                 return ship.SpokenName();
             }, 0, 2));
 
-            vars["ShipCallsign"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["ShipCallsign"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
                 Ship ship = findShip(localId, null);
@@ -592,15 +594,14 @@ namespace EddiSpeechResponder
             // Obtain definition objects for various items
             //
 
-            vars["SecondsSince"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SecondsSince"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
-                long? date = (long?)values[0].AsNumber;
-                long? now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
-
+                var date = values[0].AsNumber;
+                var now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                 return now - date;
             }, 1));
 
-            vars["ICAO"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["ICAO"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 // Turn a string in to an ICAO definition
                 string value = values[0].AsString;
@@ -618,81 +619,78 @@ namespace EddiSpeechResponder
                 return Translations.ICAO(value);
             }, 1));
 
-            vars["ShipDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["ShipDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Ship result = ShipDefinitions.FromModel(values[0].AsString);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["JumpDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["JumpDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string value = values[0].AsString;
-                if (string.IsNullOrEmpty(value))
-                {
-                    return null;
-                }
+                if (string.IsNullOrEmpty(value)) { return ""; }
                 var result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails(value);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["CombatRatingDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["CombatRatingDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 CombatRating result = CombatRating.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = CombatRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["TradeRatingDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["TradeRatingDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 TradeRating result = TradeRating.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = TradeRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["ExplorationRatingDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["ExplorationRatingDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 ExplorationRating result = ExplorationRating.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = ExplorationRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["EmpireRatingDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["EmpireRatingDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 EmpireRating result = EmpireRating.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = EmpireRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["FederationRatingDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["FederationRatingDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 FederationRating result = FederationRating.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = FederationRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["SystemDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SystemDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 StarSystem result;
                 if (values.Count == 0)
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
+                else if (values[0].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
@@ -701,17 +699,17 @@ namespace EddiSpeechResponder
                     result = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
                 }
                 setSystemDistanceFromHome(result);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["BodyDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["BodyDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 StarSystem system;
                 if (values.Count == 0)
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
+                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
@@ -721,18 +719,18 @@ namespace EddiSpeechResponder
                     system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                 }
                 Body result = system?.bodies?.Find(v => v.bodyname?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 2));
 
-            vars["MissionDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["MissionDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 var missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();
 
                 Mission result = missions?.FirstOrDefault(v => v.missionid == values[0].AsNumber);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["RouteDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["RouteDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
                 MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
@@ -828,7 +826,7 @@ namespace EddiSpeechResponder
                             {
                                 if (values.Count == 2)
                                 {
-                                    result = NavigationService.Instance.GetScoopRoute(values[1].AsNumber);
+                                    result = NavigationService.Instance.GetScoopRoute((decimal)values[1].AsNumber);
                                 }
                                 else
                                 {
@@ -879,20 +877,20 @@ namespace EddiSpeechResponder
                             break;
                     }
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 3));
 
-            vars["StationDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["StationDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Station result;
-                if (values.Count == 0 || values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
+                if (values.Count == 0 || values[0].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStation;
                 }
                 else
                 {
                     StarSystem system;
-                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
+                    if (values.Count == 1 || values[1].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                     {
                         // Current system
                         system = EDDI.Instance.CurrentStarSystem;
@@ -904,10 +902,10 @@ namespace EddiSpeechResponder
                     }
                     result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 2));
 
-            vars["FactionDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["FactionDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Faction result;
                 if (values.Count == 0)
@@ -922,66 +920,66 @@ namespace EddiSpeechResponder
                 {
                     result = bgsService.GetFactionByName(values[0].AsString, values[1].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 2));
 
-            vars["SuperpowerDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SuperpowerDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Superpower result = Superpower.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = Superpower.FromNameOrEdName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["StateDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["StateDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 FactionState result = FactionState.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = FactionState.FromName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["EconomyDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["EconomyDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Economy result = Economy.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = Economy.FromName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["EngineerDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["EngineerDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Engineer result = Engineer.FromName(values[0].AsString);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["GovernmentDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GovernmentDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Government result = Government.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = Government.FromName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["SecurityLevelDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SecurityLevelDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
                 if (result == null)
                 {
                     result = SecurityLevel.FromName(values[0].AsString);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["MaterialDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["MaterialDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Material result = Material.FromName(values[0].AsString);
                 if (result?.edname != null && values.Count == 2)
@@ -994,10 +992,10 @@ namespace EddiSpeechResponder
                         result.bodyshortname = body.shortname;
                     }
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 2));
 
-            vars["CommodityMarketDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["CommodityMarketDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 CommodityMarketQuote result = null;
                 CommodityMarketQuote CommodityDetails(string commodityLocalizedName, Station station)
@@ -1027,10 +1025,10 @@ namespace EddiSpeechResponder
                     Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                     result = CommodityDetails(values[0].AsString, station);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 0, 3));
 
-            vars["CargoDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["CargoDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 Cottle.Value value = values[0];
@@ -1045,24 +1043,24 @@ namespace EddiSpeechResponder
                 {
                     result = cargoMonitor?.GetCargoWithMissionId((long)value.AsNumber);
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["HaulageDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["HaulageDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 var result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["BlueprintDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["BlueprintDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string blueprintName = values[0].AsString;
                 int blueprintGrade = Convert.ToInt32(values[1].AsNumber);
                 Blueprint result = Blueprint.FromNameAndGrade(blueprintName, blueprintGrade);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 2));
 
-            vars["TrafficDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["TrafficDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Traffic result = null;
                 string systemName = values[0].AsString;
@@ -1088,16 +1086,16 @@ namespace EddiSpeechResponder
                         result = dataProviderService.GetSystemTraffic(systemName);
                     }
                 }
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1, 2));
 
-            vars["GalnetNewsArticle"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GalnetNewsArticle"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
-                return new ReflectionValue(result ?? new object());
+                return Value.FromReflection(result ?? new object(), bindingFlags);
             }, 1));
 
-            vars["GalnetNewsArticles"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GalnetNewsArticles"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 List<News> results = null;
                 if (values.Count == 0)
@@ -1115,10 +1113,10 @@ namespace EddiSpeechResponder
                     // Obtain all news of a given category
                     results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, values[1].AsBoolean);
                 }
-                return new ReflectionValue(results ?? new List<News>());
+                return Value.FromReflection(results ?? new List<News>(), bindingFlags);
             }, 0, 2));
 
-            vars["GalnetNewsMarkRead"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GalnetNewsMarkRead"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1128,7 +1126,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1));
 
-            vars["GalnetNewsMarkUnread"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GalnetNewsMarkUnread"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1138,7 +1136,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1));
 
-            vars["GalnetNewsDelete"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["GalnetNewsDelete"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 if (result != null)
@@ -1148,7 +1146,7 @@ namespace EddiSpeechResponder
                 return "";
             }, 1));
 
-            vars["Distance"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Distance"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 double square(double x) => x * x;
                 decimal result = 0;
@@ -1169,12 +1167,12 @@ namespace EddiSpeechResponder
                 }
                 else if (values.Count == 6 && numVal)
                 {
-                    curr.x = values[0].AsNumber;
-                    curr.y = values[1].AsNumber;
-                    curr.z = values[2].AsNumber;
-                    dest.x = values[3].AsNumber;
-                    dest.y = values[4].AsNumber;
-                    dest.z = values[5].AsNumber;
+                    curr.x = (decimal)values[0].AsNumber;
+                    curr.y = (decimal)values[1].AsNumber;
+                    curr.z = (decimal)values[2].AsNumber;
+                    dest.x = (decimal)values[3].AsNumber;
+                    dest.y = (decimal)values[4].AsNumber;
+                    dest.z = (decimal)values[5].AsNumber;
                 }
 
                 if (curr?.x != null && dest?.x != null)
@@ -1184,16 +1182,16 @@ namespace EddiSpeechResponder
                                 + square((double)(curr.z ?? 0 - dest.z ?? 0))), 2);
                 }
 
-                return new ReflectionValue(result);
+                return Value.FromReflection(result, bindingFlags);
             }, 1, 6));
 
-            vars["Log"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["Log"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 Logging.Info(values[0].AsString);
                 return "";
             }, 1));
 
-            vars["SetState"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["SetState"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
                 Cottle.Value value = values[1];
@@ -1216,14 +1214,14 @@ namespace EddiSpeechResponder
                 return "";
             }, 2));
 
-            vars["RefreshProfile"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["RefreshProfile"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 bool stationRefresh = (values.Count == 0 ? false : values[0].AsBoolean);
                 EDDI.Instance.refreshProfile(stationRefresh);
                 return "";
             }, 0, 1));
 
-            vars["InaraDetails"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["InaraDetails"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 if (values[0].AsString is string commanderName)
                 {
@@ -1231,7 +1229,7 @@ namespace EddiSpeechResponder
                     {
                         EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
                         var result = inaraService.GetCommanderProfile(commanderName);
-                        return new ReflectionValue(result ?? new object());
+                        return Value.FromReflection(result ?? new object(), bindingFlags);
                     }
                 }
                 return "";
@@ -1240,14 +1238,14 @@ namespace EddiSpeechResponder
             return context;
         }
 
-        public static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        public static Dictionary<Value, Value> buildState()
         {
             if (EDDI.Instance.State == null)
             {
                 return null;
             }
 
-            Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+            Dictionary<Value, Value> state = new Dictionary<Value, Value>();
             foreach (string key in EDDI.Instance.State.Keys)
             {
                 object value = EDDI.Instance.State[key];
