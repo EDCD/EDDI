@@ -1,28 +1,33 @@
-﻿using Cottle.Documents;
-using Cottle.Functions;
+﻿using Cottle;
+using Cottle.Values;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Cottle;
 
 namespace UnitTests
 {
     [TestClass]
     public class ScriptResolverTest : TestBase
     {
+        DocumentConfiguration setting;
+
         [TestInitialize]
         public void start()
         {
             MakeSafe();
+            setting = new DocumentConfiguration
+            {
+                Trimmer = DocumentConfiguration.TrimRepeatedWhitespaces
+            };
         }
 
         [TestMethod]
         public void TestTemplateSimple()
         {
-            var document = new SimpleDocument(@"Hello {name}!");
+            var document = Document.CreateDefault(@"Hello {name}!", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
             vars["name"] = "world";
             var result = document.Render(Context.CreateBuiltin(vars));
@@ -32,12 +37,12 @@ namespace UnitTests
         [TestMethod]
         public void TestTemplateFunctional()
         {
-            var document = new SimpleDocument(@"You are entering the {System(system)} system.");
+            var document = Document.CreateDefault(@"You are entering the {System(system)} system.", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
-            vars["System"] = new NativeFunction((values) =>
+            vars["System"] = new FunctionValue(Function.Create((state, values, output) =>
             {
                 return Translations.StarSystem(values[0].AsString);
-            }, 1);
+            }, 1));
             vars["system"] = "Alrai";
             var result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("You are entering the <phoneme alphabet=\"ipa\" ph=\"ˈalraɪ\">Alrai</phoneme> system.", result);
@@ -46,7 +51,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTemplateConditional()
         {
-            var document = new SimpleDocument("{if value = 1:foo|else:{if value = 2:bar|else:baz}}");
+            var document = Document.CreateDefault("{if value = 1:foo|else:{if value = 2:bar|else:baz}}", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
             vars["value"] = 1;
             var result = document.Render(Context.CreateBuiltin(vars));
@@ -63,12 +68,12 @@ namespace UnitTests
         public void TestTemplateOneOf()
         {
             Random random = new Random();
-            var document = new SimpleDocument("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.");
+            var document = Document.CreateDefault("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
-            vars["OneOf"] = new NativeFunction((values) =>
+            vars["OneOf"] = new FunctionValue(Function.Create((state, values, output) =>
             {
                 return values[random.Next(values.Count)];
-            });
+            }));
             vars["system"] = "Alrai";
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)
