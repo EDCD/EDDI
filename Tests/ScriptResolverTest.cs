@@ -1,5 +1,4 @@
 ﻿using Cottle;
-using Cottle.Values;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,7 +38,7 @@ namespace UnitTests
         {
             var document = Document.CreateDefault(@"You are entering the {System(system)} system.", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
-            vars["System"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["System"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return Translations.StarSystem(values[0].AsString);
             }, 1));
@@ -70,7 +69,7 @@ namespace UnitTests
             Random random = new Random();
             var document = Document.CreateDefault("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.", setting).DocumentOrThrow;
             var vars = new Dictionary<Value, Value>();
-            vars["OneOf"] = new FunctionValue(Function.Create((state, values, output) =>
+            vars["OneOf"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return values[random.Next(values.Count)];
             }));
