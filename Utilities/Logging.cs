@@ -282,6 +282,10 @@ namespace Utilities
         const string rollbarReadToken = "66e63ff290854a75b8b4c3263f084db6";
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
         private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
+        public static bool TelemetryEnabled {
+            get => RollbarLocator.RollbarInstance.Config.Enabled;
+            set => RollbarLocator.RollbarInstance.Config.Enabled = value;
+        }
 
         public static void configureRollbar(string uniqueId)
         {
@@ -322,11 +326,6 @@ namespace Utilities
 
             Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ":" + exception);
             RollbarLocator.RollbarInstance.Error(exception, trace);
-        }
-
-        public static void EnableDisable(bool enabled)
-        {
-            RollbarLocator.RollbarInstance.Config.Enabled = enabled;
         }
     }
 }
