@@ -21,11 +21,9 @@ namespace Utilities
         /// <summary> If true, skips writing to permanent storage </summary>
         public static bool unitTesting { get; set; } = false;
 
-        /// <summary>
-        /// Read a file, handling exceptions
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
+        /// <summary>Attempt to read a file, handling exceptions, and bailing if too many attempts fail</summary>
+        /// <param name="fileName">the file to read</param>
+        /// <returns>the contents of the file</returns>
         public static string Read(string fileName)
         {
             string result = null;
