@@ -313,6 +313,8 @@ Any values might be missing, depending on EDDI's configuration.
     - `cargocapacity` the total tonnage cargo capacity
     - `name` the name of the ship
     - `phoneticname` the name of the ship, using any phonetic pronunciation that has been set and is supported by the current voice 
+    - `phoneticmodel` the model of the ship, using any phonetic pronunciation that has been set and is supported by the current voice 
+    - `phoneticmanufacturer` the manufacturer of the ship, using any phonetic pronunciation that has been set and is supported by the current voice 
     - `ident` the identifier of the ship
     - `role` the role of the ship 
     - `health` the last reported health of the hull, from 0 to 100

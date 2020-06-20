@@ -3,12 +3,64 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiSpeechService
 {
     /// <summary>Translations for Elite items for text-to-speech</summary>
     public class Translations
     {
+        public static string GetTranslation(string val, bool useICAO = false)
+        {
+            // Translations from fixed dictionaries
+            string translation = val;
+            if (translation == val)
+            {
+                translation = Power(val);
+            }
+            if (translation == val)
+            {
+                translation = StellarClass(val);
+            }
+            if (translation == val)
+            {
+                translation = PlanetClass(val);
+            }
+            if (translation == val)
+            {
+                Ship ship = ShipDefinitions.FromModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
+            }
+            if (translation == val)
+            {
+                string phoneticManufacturer = ShipDefinitions.SpokenManufacturer(val);
+                if (phoneticManufacturer != null)
+                {
+                    translation = phoneticManufacturer;
+                }
+            }
+            if (translation == val)
+            {
+                translation = Body(val, useICAO);
+            }
+            if (translation == val)
+            {
+                translation = StarSystem(val, useICAO);
+            }
+            if (translation == val)
+            {
+                translation = Station(val);
+            }
+            if (translation == val)
+            {
+                translation = Faction(val);
+            }
+            return translation.Trim();
+        }
+
         /// <summary>Fix up power names</summary>
         public static string Power(string power)
         {
@@ -251,7 +303,7 @@ namespace EddiSpeechService
         }
 
         /// <summary>Fix up body names</summary>
-        public static string Body(string body, bool useICAO = false)
+        private static string Body(string body, bool useICAO = false)
         {
             if (body == null)
             {
@@ -359,9 +411,9 @@ namespace EddiSpeechService
             }
 
             // Common star catalogues
-            if (starSystem.StartsWith("HIP "))
+            if (starSystem.StartsWith("HIP"))
             {
-                starSystem = starSystem.Replace("HIP ", "Hip ");
+                starSystem = starSystem.Replace("HIP", "Hip");
             }
             else if (starSystem.StartsWith("L ")
                 || starSystem.StartsWith("LFT ")
@@ -427,7 +479,7 @@ namespace EddiSpeechService
             else if (starSystem.StartsWith("2MASS ")
                 || starSystem.StartsWith("AC ")
                 || starSystem.StartsWith("AG") // Note no space
-                || starSystem.StartsWith("BD")
+                || starSystem.StartsWith("BD") // Note no space
                 || starSystem.StartsWith("CFBDSIR ")
                 || starSystem.StartsWith("CXOONC ")
                 || starSystem.StartsWith("CXOU ")
@@ -481,7 +533,7 @@ namespace EddiSpeechService
         }
 
         /// <summary>Fix up station related pronunciations </summary>
-        public static string Station(string station)
+        private static string Station(string station)
         {
             // Specific fixing of station model pronunciations
             if (STATION_MODEL_FIXES.ContainsKey(station))

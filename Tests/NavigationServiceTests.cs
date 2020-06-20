@@ -48,7 +48,7 @@ namespace IntegrationTests
             PrivateObject eddiInstance = new PrivateObject(EDDI.Instance);
             PrivateObject navInstance = new PrivateObject(NavigationService.Instance);
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
-            eddiInstance.SetFieldOrProperty("CurrentShip", new Ship() { size = LandingPadSize.Medium });
+            eddiInstance.SetFieldOrProperty("CurrentShip", new Ship() { Size = LandingPadSize.Medium });
 
             // Interstellar Factors Contact
             NavigationService.Instance.GetServiceRoute("facilitator", 10000);

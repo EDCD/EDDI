@@ -63,7 +63,7 @@ namespace SpeechTests
         public void TestSagAStar()
         {
             string SagI = "Sagittarius A*";
-            string translated = Translations.StarSystem(SagI);
+            string translated = Translations.GetTranslation(SagI);
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), translated);
         }
 
@@ -89,7 +89,7 @@ namespace SpeechTests
         public void TestSsml4()
         {
             Logging.Verbose = true;
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis") + ".");
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.GetTranslation("i Bootis") + ".");
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
@@ -130,7 +130,7 @@ namespace SpeechTests
         [TestMethod, TestCategory("Speech")]
         public void TestSsml()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.");
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.GetTranslation("Hotas") + " system.");
         }
 
         [TestMethod, TestCategory("Speech")]

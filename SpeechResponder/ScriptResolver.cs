@@ -300,52 +300,7 @@ namespace EddiSpeechResponder
             store["P"] = new NativeFunction((values) =>
             {
                 string val = values[0].AsString;
-                string translation = val;
-                if (translation == val)
-                {
-                    translation = Translations.StellarClass(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.PlanetClass(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.Body(val, useICAO);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.StarSystem(val, useICAO);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.Station(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.Faction(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.Power(val);
-                }
-                if (translation == val)
-                {
-                    Ship ship = ShipDefinitions.FromModel(val);
-                    if (ship != null && ship.EDID > 0)
-                    {
-                        translation = ship.SpokenModel();
-                    }
-                }
-                if (translation == val)
-                {
-                    Ship ship = ShipDefinitions.FromEDModel(val);
-                    if (ship != null && ship.EDID > 0)
-                    {
-                        translation = ship.SpokenModel();
-                    }
-                }
-                return translation;
+                return Translations.GetTranslation(val, useICAO);
             }, 1);
 
             // Boolean constants
@@ -616,17 +571,17 @@ namespace EddiSpeechResponder
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
-                        result = ship.SpokenManufacturer() + " " + Translations.ICAO(chars);
+                        result = ship.phoneticmanufacturer + " " + Translations.ICAO(chars);
                     }
                     else
                     {
-                        if (ship.SpokenManufacturer() == null)
+                        if (string.IsNullOrEmpty(ship.phoneticmanufacturer))
                         {
                             result = "unidentified ship";
                         }
                         else
                         {
-                            result = "unidentified " + ship.SpokenManufacturer() + " " + ship.SpokenModel();
+                            result = "unidentified " + ship.phoneticmanufacturer + " " + ship.phoneticmodel;
                         }
                     }
                 }
