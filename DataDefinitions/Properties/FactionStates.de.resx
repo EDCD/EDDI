@@ -134,7 +134,7 @@
     <comment>Faction state Lockdown</comment>
   </data>
   <data name="CivilUnrest" xml:space="preserve">
-    <value>Zivile Unruhen</value>
+    <value>Unruhen</value>
     <comment>Faction state CivilUnrest</comment>
   </data>
   <data name="CivilWar" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>Faction state Boom</comment>
   </data>
   <data name="Expansion" xml:space="preserve">
-    <value>Erweiterung</value>
+    <value>Expansion</value>
     <comment>Faction state Expansion</comment>
   </data>
   <data name="Bust" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Faction state CivilLiberty</comment>
   </data>
   <data name="Incursion" xml:space="preserve">
-    <value>Einfall</value>
+    <value>Eindringen</value>
     <comment>Faction state Incursion</comment>
   </data>
   <data name="PirateAttack" xml:space="preserve">
@@ -202,7 +202,7 @@
     <comment>Faction state HistoricEvent</comment>
   </data>
   <data name="InfrastructureFailure" xml:space="preserve">
-    <value>Infrastruktur-Ausfall</value>
+    <value>Ausfall der Infrastruktur</value>
     <comment>Faction state InfrastructureFailure</comment>
   </data>
   <data name="NaturalDisaster" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Faction state TechnologicalLeap</comment>
   </data>
   <data name="Terrorism" xml:space="preserve">
-    <value>Terrorismus</value>
+    <value>Terroranschlag</value>
     <comment>Faction state Terrorism</comment>
   </data>
   <data name="TradeWar" xml:space="preserve">
