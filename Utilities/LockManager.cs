@@ -7,10 +7,9 @@ namespace Utilities
     // Code from https://www.codeproject.com/Tips/1190802/File-Locking-in-a-Multi-Threaded-Environment
     // The code maintains a concurrent dictionary of lock objects and keeps track of how many calls are in the queue for
     // accessing each filename. If the count goes down to 0, the key is removed from the dictionary as a cleanup mechanism.
-    public class LockManager
+    public static class LockManager
     {
-        private static readonly ConcurrentDictionary<string, lobj> _locks =
-                new ConcurrentDictionary<string, lobj>();
+        private static readonly ConcurrentDictionary<string, lockCount> _locks = new ConcurrentDictionary<string, lockCount>();
 
         public static void GetLock(string lockName, Action action)
         {
@@ -27,34 +26,34 @@ namespace Utilities
             }
         }
 
-        private static lobj GetLock(string lockName)
+        private static lockCount GetLock(string lockName)
         {
-            if (_locks.TryGetValue(lockName.ToLower(), out var o))
+            if (_locks.TryGetValue(lockName.ToLower(), out lockCount lc))
             {
-                o.count++;
-                return o;
+                lc.count++;
+                return lc;
             }
             else
             {
-                o = new lobj();
-                _locks.TryAdd(lockName.ToLower(), o);
-                o.count++;
-                return o;
+                lc = new lockCount();
+                _locks.TryAdd(lockName.ToLower(), lc);
+                lc.count++;
+                return lc;
             }
         }
 
         private static void Unlock(string lockName)
         {
-            if (_locks.TryGetValue(lockName.ToLower(), out var o))
+            if (_locks.TryGetValue(lockName.ToLower(), out lockCount lc))
             {
-                o.count--;
-                if (o.count != 0) { return; }
-                _locks.TryRemove(lockName.ToLower(), out lobj _);
+                lc.count--;
+                if (lc.count != 0) { return; }
+                _locks.TryRemove(lockName.ToLower(), out lockCount _);
             }
         }
     }
 
-    class lobj
+    internal class lockCount
     {
         public int count = 0;
     }
