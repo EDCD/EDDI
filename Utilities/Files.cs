@@ -4,124 +4,173 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Utilities
 {
     public class Files
     {
+        private const int readAttempts = 10;
+        private const int readIODelayMilliseconds = 25;
+        private const int writeAttempts = 20;
+        private const int writeIODelayMilliseconds = 25;
+
         /// <summary> Ignore missing config files on first launch? </summary>
         public static bool ignoreMissing { get; set; } = false;
 
         /// <summary> If true, skips writing to permanent storage </summary>
         public static bool unitTesting { get; set; } = false;
 
-        /// <summary>
-        /// Read a file, handling exceptions
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static string Read(string name)
+        /// <summary>Attempt to read a file, handling exceptions, and bailing if too many attempts fail</summary>
+        /// <param name="fileName">the file to read</param>
+        /// <returns>the contents of the file</returns>
+        public static string Read(string fileName)
         {
             string result = null;
-            if (name != null)
+            int attempts = readAttempts;
+            if (fileName != null)
             {
-                try
+                while (attempts > 0 && TryRead(fileName, attempts, out result))
                 {
-                    result = File.ReadAllText(name, Encoding.UTF8);
+                    attempts--;
+                    Thread.Sleep(readIODelayMilliseconds);
                 }
-                catch (ArgumentException ex)
+                if (attempts == 0)
                 {
-                    Logging.Error("Failed to read from " + name, ex);
+                    throw new IOException($"IO read failed for {fileName}, too many attempts.");
                 }
-                catch (PathTooLongException ex)
-                {
-                    Logging.Error("Path " + name + " too long", ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    Logging.Error("Directory for " + name + " not found", ex);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    if (!ignoreMissing)
-                    {
-                        Logging.Error("File " + name + " not found", ex);
-                    }
-                }
-                catch (IOException ex)
-                {
-                    if (!ignoreMissing)
-                    {
-                        Logging.Error("IO exception for " + name, ex);
-                    }
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    Logging.Error("Not allowed to read from " + name, ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Logging.Error("Not supported reading from " + name, ex);
-                }
-                catch (SecurityException ex)
-                {
-                    Logging.Error("Security exception reading from " + name, ex);
-                }
-
             }
             return result;
+        }
+
+        private static bool TryRead(string fileName, int attempts, out string result)
+        {
+            result = null;
+            try
+            {
+                result = File.ReadAllText(fileName, Encoding.UTF8);
+            }
+            catch (ArgumentException ex)
+            {
+                Logging.Error("Failed to read from " + fileName, ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                Logging.Error("Path " + fileName + " too long", ex);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Logging.Error("Directory for " + fileName + " not found", ex);
+            }
+            catch (FileNotFoundException ex)
+            {
+                if (!ignoreMissing)
+                {
+                    Logging.Error("File " + fileName + " not found", ex);
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logging.Error("Not allowed to read from " + fileName, ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                Logging.Error("Not supported reading from " + fileName, ex);
+            }
+            catch (SecurityException ex)
+            {
+                Logging.Error("Security exception reading from " + fileName, ex);
+            }
+            catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
+            {
+                if (!ignoreMissing)
+                {
+                    Logging.Debug($"IO read exception for {fileName}, {attempts} attempts left", ex);
+                    return true; // We have failed to read the file and will need to make another attempt
+                }
+            }
+            catch (IOException ex) // Other IO issue 
+            {
+                Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
+            }
+            // We have either successfully read the file or encountered an exception that would not benefit from another attempt
+            return false; 
         }
 
         /// <summary>
         /// Write a file, handling exceptions
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="fileName"></param>
         /// <param name="content"></param>
-        public static void Write(string name, string content)
+        public static async void Write(string fileName, string content)
         {
-            if (name != null && content != null)
+            if (fileName != null && content != null)
             {
                 // Skip writing to storage if we're unit testing
                 if (unitTesting)
                 {
-                    Logging.Debug("Skipping write to " + name + " during unit test");
+                    Logging.Debug("Skipping write to " + fileName + " during unit test");
                     return;
                 }
 
-                // Attempt to write the file
-                try
+                await Task.Run(() =>
                 {
-                    File.WriteAllText(name, content, Encoding.UTF8);
-                }
-                catch (ArgumentException ex)
-                {
-                    Logging.Error("Failed to write to " + name, ex);
-                }
-                catch (PathTooLongException ex)
-                {
-                    Logging.Error("Path " + name + " too long", ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    Logging.Error("Directory for " + name + " not found", ex);
-                }
-                catch (IOException ex)
-                {
-                    Logging.Error("IO exception for " + name, ex);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    Logging.Error("Not allowed to write to " + name, ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Logging.Error("Not supported writing to " + name, ex);
-                }
-                catch (SecurityException ex)
-                {
-                    Logging.Error("Security exception writing to " + name, ex);
-                }
+                    int attempts = writeAttempts;
+                    while (attempts > 0 && TryWrite(fileName, attempts, content))
+                    {
+                        attempts--;
+                        Thread.Sleep(writeIODelayMilliseconds);
+                    }
+                    if (attempts == 0)
+                    {
+                        throw new IOException("IO write failed for " + fileName + ", too many attempts.");
+                    }
+                }).ConfigureAwait(false);
             }
+        }
+
+        private static bool TryWrite(string fileName, int attempts, string content)
+        {
+            // Attempt to write the file
+            try
+            {
+                LockManager.GetLock(fileName, () => File.WriteAllText(fileName, content, Encoding.UTF8));
+            }
+            catch (ArgumentException ex)
+            {
+                Logging.Error("Failed to write to " + fileName, ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                Logging.Error("Path " + fileName + " too long", ex);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Logging.Error("Directory for " + fileName + " not found", ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logging.Error("Not allowed to write to " + fileName, ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                Logging.Error("Not supported writing to " + fileName, ex);
+            }
+            catch (SecurityException ex)
+            {
+                Logging.Error("Security exception writing to " + fileName, ex);
+            }
+            catch (IOException ex) when ((ex.HResult & 0x0000FFFF) == 32) // Sharing violation
+            {
+                Logging.Debug($"IO write exception for {fileName}, {attempts} attempts left", ex);
+                return true; // We have failed to write the file and will need to make another attempt
+            }
+            catch (IOException ex) // Other IO issue 
+            {
+                Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
+            }
+            // We have either successfully written to the file or encountered an exception that would not benefit from another attempt
+            return false;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct

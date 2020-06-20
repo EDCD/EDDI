@@ -20,9 +20,6 @@ namespace EddiStarMapService
         [JsonIgnore]
         private string dataPath;
 
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\edsm.json is used
@@ -88,10 +85,7 @@ namespace EddiStarMapService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }

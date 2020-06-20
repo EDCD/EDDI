@@ -17,9 +17,6 @@ namespace GalnetMonitor
 
         public bool galnetAlwaysOn { get; set; } = false;
 
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\galnetmonitor.json is used
@@ -75,10 +72,7 @@ namespace GalnetMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }

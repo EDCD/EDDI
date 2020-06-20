@@ -19,10 +19,7 @@ namespace EddiShipMonitor
 
         [JsonIgnore]
         private string dataPath;
-
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
+        
         public ShipMonitorConfiguration()
         {
             shipyard = new ObservableCollection<Ship>();
@@ -119,10 +116,7 @@ namespace EddiShipMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            lock (fileLock)
-            {
-                Files.Write(filename, json);
-            }
+            Files.Write(filename, json);
         }
     }
 }
