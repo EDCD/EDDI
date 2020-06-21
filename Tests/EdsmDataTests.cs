@@ -529,5 +529,21 @@ namespace UnitTests
             Assert.AreEqual(31, deaths.week);
             Assert.AreEqual(4, deaths.day);
         }
+
+        [TestMethod]
+        public void TestTrafficUnknown()
+        {
+            // Setup
+            JObject response = new JObject();
+
+            // Act
+            Traffic traffic = fakeEdsmService.ParseStarMapTraffic(response);
+            
+            // Assert
+            Assert.IsNotNull(traffic);
+            Assert.AreEqual(0, traffic.total);
+            Assert.AreEqual(0, traffic.week);
+            Assert.AreEqual(0, traffic.day);
+        }
     }
 }
