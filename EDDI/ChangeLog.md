@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.5.3-b4
   * Core
-    * Implemented `AsteroidCracked` and `ProspectedAsteroid` events. Not that they can help you much.
+    * Implemented new `Asteroid cracked` and `Asteroid prospected` events. 
     * Nanomedicines are now designated as a rare commodity.
     * Disregard bogus "Galactic Mean Price" from Fleet carriers.
     * Reduced filesystem polling when Elite is not active.
