@@ -453,5 +453,13 @@ namespace UnitTests
             Assert.IsTrue(system1.DeepEquals(system3));
             Assert.IsFalse(DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1).Equals(system3));
         }
+
+        [TestMethod]
+        public void TestCommodityMarketQuoteFromCAPIjson()
+        {
+            string line = @" {""id"":128066403,""categoryname"":""NonMarketable"",""name"":""Drones"",""stock"":9999999,""buyPrice"":101,""sellPrice"":101,""demand"":9999999,""legality"":"""",""meanPrice"":101,""demandBracket"":2,""stockBracket"":2,""locName"":""Limpet""} ";
+            var jObject = JObject.Parse(line);
+            var result = CommodityMarketQuote.FromCapiJson(jObject);
+        }
     }
 }
