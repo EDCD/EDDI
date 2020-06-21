@@ -2,6 +2,17 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b4
+  * Core
+    * Implemented `AsteroidCracked` and `ProspectedAsteroid` events. Not that they can help you much.
+    * Nanomedicines are now designated as a rare commodity.
+    * Disregard bogus "Galactic Mean Price" from Fleet carriers.
+    * Reduced filesystem polling when Elite is not active.
+    * Defended against some corner-case IO exceptions.
+  * Speech Responder
+    * When the update server is unreachable, the voice message now says that "EDDI" rather than "I" could not reach it.
+    * Fixed some edge cases around ship model pronounciation, notably Roman numerals.
+
 ### 3.5.3-b3
   * Cargo Monitor
     * Fixed a bug where the `need` property of mission-related cargo did not properly update for `Collect` mission types.
