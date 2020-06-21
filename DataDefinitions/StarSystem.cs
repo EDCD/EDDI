@@ -97,31 +97,43 @@ namespace EddiDataDefinitions
             var newBodyBuilder = newBodies.ToBuilder();
             foreach (Body oldBody in oldBodies)
             {
-                int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
-                if (oldBody.scanned != null)
+                if (newBodyBuilder.Any(b => b.bodyname == oldBody.bodyname))
                 {
-                    if (oldBody.scanned != newBodyBuilder[index].scanned)
+                    int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
+                    if (oldBody.scanned != null)
                     {
-                        newBodyBuilder[index].scanned = oldBody.scanned;
+                        if (oldBody.scanned != newBodyBuilder[index].scanned)
+                        {
+                            newBodyBuilder[index].scanned = oldBody.scanned;
+                        }
+                        if (oldBody.alreadydiscovered != newBodyBuilder[index].alreadydiscovered)
+                        {
+                            newBodyBuilder[index].alreadydiscovered = oldBody.alreadydiscovered;
+                        }
                     }
-                    if (oldBody.alreadydiscovered != newBodyBuilder[index].alreadydiscovered)
+                    if (oldBody.mapped != null)
                     {
-                        newBodyBuilder[index].alreadydiscovered = oldBody.alreadydiscovered;
+                        if (oldBody.mapped != newBodyBuilder[index].mapped)
+                        {
+                            newBodyBuilder[index].mapped = oldBody.mapped;
+                        }
+                        if (oldBody.alreadymapped != newBodyBuilder[index].alreadymapped)
+                        {
+                            newBodyBuilder[index].alreadymapped = oldBody.alreadymapped;
+                        }
+                        if (oldBody.mappedEfficiently != newBodyBuilder[index].mappedEfficiently)
+                        {
+                            newBodyBuilder[index].mappedEfficiently = oldBody.mappedEfficiently;
+                        }
                     }
                 }
-                if (oldBody.mapped != null)
+                else
                 {
-                    if (oldBody.mapped != newBodyBuilder[index].mapped)
+                    // `newBodies` did not contain the `oldBody` so we add it here, provided we've
+                    // scanned the body ourselves so that we're confident that our old data is accurate. 
+                    if (oldBody.scanned != null)
                     {
-                        newBodyBuilder[index].mapped = oldBody.mapped;
-                    }
-                    if (oldBody.alreadymapped != newBodyBuilder[index].alreadymapped)
-                    {
-                        newBodyBuilder[index].alreadymapped = oldBody.alreadymapped;
-                    }
-                    if (oldBody.mappedEfficiently != newBodyBuilder[index].mappedEfficiently)
-                    {
-                        newBodyBuilder[index].mappedEfficiently = oldBody.mappedEfficiently;
+                        newBodyBuilder.Add(oldBody);
                     }
                 }
             }
