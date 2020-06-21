@@ -176,11 +176,14 @@ namespace EddiDataDefinitions
                 };
 
                 List<string> StatusFlags = new List<string>();
-                foreach (string statusFlag in capiJSON["statusFlags"])
+                if (capiJSON["statusFlags"] != null)
                 {
-                    StatusFlags.Add(statusFlag);
+                    foreach (string statusFlag in capiJSON["statusFlags"])
+                    {
+                        StatusFlags.Add(statusFlag);
+                    }
+                    quote.StatusFlags = StatusFlags;
                 }
-                quote.StatusFlags = StatusFlags;
             }
             catch (Exception e)
             {
