@@ -3819,6 +3819,13 @@ namespace EddiJournalMonitor
                                     events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, systemfaction, factions, conflicts, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, docked, carrierName, carrierType, carrierId, stationFaction, stationServices, stationEconomies) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
+                                    if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
+                                    {
+                                        // Cancel any pending cooldown event (to prevent doubling events if the commander is the fleet carrier owner)
+                                        carrierJumpCancellationTokenSources.Remove(carrierId);
+                                        carrierJumpCancellationTS.Cancel();
+                                        carrierJumpCancellationTS.Dispose();
+                                    }
                                     if (!fromLogLoad)
                                     {
                                         Task.Run(async () =>
@@ -3883,6 +3890,14 @@ namespace EddiJournalMonitor
                                             string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
                                             long? originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
                                             EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                        }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
+
+                                        Task.Run(async () =>
+                                        {
+                                            // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds + Constants.carrierJumpSeconds + Constants.carrierPostJumpSeconds) * 1000;
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, null, null, null, carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token).ConfigureAwait(false);
                                     }
                                 }
