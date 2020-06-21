@@ -41,7 +41,7 @@ namespace UnitTests
             vars["P"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return Translations.GetTranslation(values[0].AsString);
-            }, 1);
+            }, 1));
             vars["system"] = "Alrai";
             var result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("You are entering the <phoneme alphabet=\"ipa\" ph=\"ˈalraɪ\">Alrai</phoneme> system.", result);

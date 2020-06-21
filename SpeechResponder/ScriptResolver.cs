@@ -299,7 +299,7 @@ namespace EddiSpeechResponder
             {
                 string val = values[0].AsString;
                 return Translations.GetTranslation(val, useICAO);
-            }, 1);
+            }, 1));
 
             // Boolean constants
             vars["true"] = true;
