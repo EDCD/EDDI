@@ -1088,8 +1088,8 @@ namespace Eddi
                 DisableSsml = disableSsmlCheckbox.IsChecked.Value,
                 EnableIcao = enableIcaoCheckbox.IsChecked.Value
             };
+            SpeechService.Instance.Configuration = speechConfiguration;
             speechConfiguration.ToFile();
-            SpeechService.Instance.ReloadConfiguration();
         }
 
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
