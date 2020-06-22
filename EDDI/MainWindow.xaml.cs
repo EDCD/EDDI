@@ -1008,27 +1008,42 @@ namespace Eddi
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
