@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiStarMapService
 {
@@ -11,13 +12,17 @@ namespace EddiStarMapService
         {
             Traffic traffic = GetStarMapTraffic(systemName, edsmId);
             Traffic deaths = GetStarMapDeaths(systemName, edsmId);
-            Traffic hostility = new Traffic(
-                decimal.Divide((long)deaths.total, (long)traffic.total) * 100,
-                decimal.Divide((long)deaths.week, (long)traffic.week) * 100,
-                decimal.Divide((long)deaths.day, (long)traffic.day) * 100
-            );
 
-            return hostility;
+            if (traffic != null && deaths != null)
+            {
+                Traffic hostility = new Traffic(
+                    decimal.Divide((long)deaths.total, (long)traffic.total) * 100,
+                    decimal.Divide((long)deaths.week, (long)traffic.week) * 100,
+                    decimal.Divide((long)deaths.day, (long)traffic.day) * 100
+                );
+                return hostility;
+            }
+            return new Traffic();
         }
 
         public Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
@@ -37,11 +42,12 @@ namespace EddiStarMapService
                     return ParseStarMapTraffic(response);
                 }
             }
-            return null;
+            return new Traffic();
         }
 
         public Traffic ParseStarMapTraffic(JObject response)
         {
+            if (response.IsNullOrEmpty()) { return new Traffic(); }
             Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>();
             return traffic;
         }
@@ -63,11 +69,12 @@ namespace EddiStarMapService
                     return ParseStarMapDeaths(response);
                 }
             }
-            return null;
+            return new Traffic();
         }
 
         public Traffic ParseStarMapDeaths(JObject response)
         {
+            if (response.IsNullOrEmpty()) { return new Traffic(); }
             Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>();
             return deaths;
         }
