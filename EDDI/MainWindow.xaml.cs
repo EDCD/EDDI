@@ -1009,7 +1009,7 @@ namespace Eddi
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox comboBox && comboBox.IsLoaded)
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
             {
                 ttsUpdated();
             }
@@ -1017,7 +1017,7 @@ namespace Eddi
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is Slider slider && slider.IsLoaded)
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
             {
                 ttsUpdated();
             }
@@ -1025,7 +1025,7 @@ namespace Eddi
 
         private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
         {
-            if (sender is Slider slider && slider.IsLoaded)
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
             {
                 ttsUpdated();
             }
@@ -1033,7 +1033,7 @@ namespace Eddi
 
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is Slider slider && slider.IsLoaded)
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
             {
                 ttsUpdated();
             }
@@ -1041,7 +1041,7 @@ namespace Eddi
 
         private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is Slider slider && slider.IsLoaded)
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
             {
                 ttsUpdated();
             }
