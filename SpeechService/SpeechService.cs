@@ -103,11 +103,6 @@ namespace EddiSpeechService
             }
         }
 
-        public void ReloadConfiguration()
-        {
-            Configuration = SpeechServiceConfiguration.FromFile();
-        }
-
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
         {
             if (message == null)
