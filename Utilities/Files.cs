@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Utilities
 {
@@ -102,7 +101,7 @@ namespace Utilities
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="content"></param>
-        public static async void Write(string fileName, string content)
+        public static void Write(string fileName, string content)
         {
             if (fileName != null && content != null)
             {
@@ -113,19 +112,16 @@ namespace Utilities
                     return;
                 }
 
-                await Task.Run(() =>
+                int attempts = writeAttempts;
+                while (attempts > 0 && TryWrite(fileName, attempts, content))
                 {
-                    int attempts = writeAttempts;
-                    while (attempts > 0 && TryWrite(fileName, attempts, content))
-                    {
-                        attempts--;
-                        Thread.Sleep(writeIODelayMilliseconds);
-                    }
-                    if (attempts == 0)
-                    {
-                        throw new IOException("IO write failed for " + fileName + ", too many attempts.");
-                    }
-                }).ConfigureAwait(false);
+                    attempts--;
+                    Thread.Sleep(writeIODelayMilliseconds);
+                }
+                if (attempts == 0)
+                {
+                    throw new IOException("IO write failed for " + fileName + ", too many attempts.");
+                }
             }
         }
 
