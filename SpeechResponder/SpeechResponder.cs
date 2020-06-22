@@ -199,7 +199,7 @@ namespace EddiSpeechResponder
         // Say something with a custom resolver
         public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
-            Dictionary<string, Cottle.Value> dict = resolver.createVariables(theEvent);
+            Dictionary<Cottle.Value, Cottle.Value> dict = resolver.createVariables(theEvent);
             string speech = resolver.resolveFromName(scriptName, dict);
             if (speech != null)
             {

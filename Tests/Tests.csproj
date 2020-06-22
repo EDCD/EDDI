@@ -60,8 +60,8 @@
     <Reference Include="AsyncIO, Version=0.1.25.0, Culture=neutral, PublicKeyToken=44a94435bd6f33f8, processorArchitecture=MSIL">
       <HintPath>..\packages\AsyncIO.0.1.26.0\lib\net40\AsyncIO.dll</HintPath>
     </Reference>
-    <Reference Include="Cottle, Version=1.4.0.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cottle.1.4.0.4\lib\net40\Cottle.dll</HintPath>
+    <Reference Include="Cottle, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cottle.2.0.2\lib\net472\Cottle.dll</HintPath>
     </Reference>
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>

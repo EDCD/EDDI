@@ -1,6 +1,4 @@
-﻿using Cottle.Documents;
-using Cottle.Functions;
-using Cottle.Stores;
+﻿using Cottle;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,49 +11,55 @@ namespace UnitTests
     [TestClass]
     public class ScriptResolverTest : TestBase
     {
+        DocumentConfiguration setting;
+
         [TestInitialize]
         public void start()
         {
             MakeSafe();
+            setting = new DocumentConfiguration
+            {
+                Trimmer = DocumentConfiguration.TrimRepeatedWhitespaces
+            };
         }
 
         [TestMethod]
         public void TestTemplateSimple()
         {
-            var document = new SimpleDocument(@"Hello {name}!");
-            var store = new BuiltinStore();
-            store["name"] = "world";
-            var result = document.Render(store);
+            var document = Document.CreateDefault(@"Hello {name}!", setting).DocumentOrThrow;
+            var vars = new Dictionary<Value, Value>();
+            vars["name"] = "world";
+            var result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("Hello world!", result);
         }
 
         [TestMethod]
         public void TestTemplateFunctional()
         {
-            var document = new SimpleDocument(@"You are entering the {P(system)} system.");
-            var store = new BuiltinStore();
-            store["P"] = new NativeFunction((values) =>
+            var document = Document.CreateDefault(@"You are entering the {P(system)} system.", setting).DocumentOrThrow;
+            var vars = new Dictionary<Value, Value>();
+            vars["P"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return Translations.GetTranslation(values[0].AsString);
-            }, 1);
-            store["system"] = "Alrai";
-            var result = document.Render(store);
+            }, 1));
+            vars["system"] = "Alrai";
+            var result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("You are entering the <phoneme alphabet=\"ipa\" ph=\"ˈalraɪ\">Alrai</phoneme> system.", result);
         }
 
         [TestMethod]
         public void TestTemplateConditional()
         {
-            var document = new SimpleDocument("{if value = 1:foo|else:{if value = 2:bar|else:baz}}");
-            var store = new BuiltinStore();
-            store["value"] = 1;
-            var result = document.Render(store);
+            var document = Document.CreateDefault("{if value = 1:foo|else:{if value = 2:bar|else:baz}}", setting).DocumentOrThrow;
+            var vars = new Dictionary<Value, Value>();
+            vars["value"] = 1;
+            var result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("foo", result);
-            store["value"] = 2;
-            result = document.Render(store);
+            vars["value"] = 2;
+            result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("bar", result);
-            store["value"] = 3;
-            result = document.Render(store);
+            vars["value"] = 3;
+            result = document.Render(Context.CreateBuiltin(vars));
             Assert.AreEqual("baz", result);
         }
 
@@ -63,17 +67,17 @@ namespace UnitTests
         public void TestTemplateOneOf()
         {
             Random random = new Random();
-            var document = new SimpleDocument("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.");
-            var store = new BuiltinStore();
-            store["OneOf"] = new NativeFunction((values) =>
+            var document = Document.CreateDefault("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.", setting).DocumentOrThrow;
+            var vars = new Dictionary<Value, Value>();
+            vars["OneOf"] = Value.FromFunction(Function.Create((state, values, output) =>
             {
                 return values[random.Next(values.Count)];
-            });
-            store["system"] = "Alrai";
+            }));
+            vars["system"] = "Alrai";
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)
             {
-                results.Add(document.Render(store));
+                results.Add(document.Render(Context.CreateBuiltin(vars)));
             }
             Assert.IsTrue(results.Contains(@"The letter is a."));
             results.RemoveAll(result => result == @"The letter is a.");
@@ -94,7 +98,7 @@ namespace UnitTests
             Dictionary<string, Script> scripts = new Dictionary<string, Script>();
             scripts.Add("test", new Script("test", null, false, "Hello {name}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+            Dictionary<Value, Value> dict = new Dictionary<Value, Value>();
             dict["name"] = "world";
             string result = resolver.resolveFromName("test", dict);
             Assert.AreEqual("Hello world", result);
@@ -109,7 +113,7 @@ namespace UnitTests
             scripts.Add("func", new Script("func", null, false, "Hello {name}"));
             scripts.Add("test", new Script("test", null, false, "Well {F(\"func\")}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+            Dictionary<Value, Value> dict = new Dictionary<Value, Value>();
             dict["name"] = "world";
             string result = resolver.resolveFromName("test", dict);
             Assert.AreEqual("Well Hello world", result);
