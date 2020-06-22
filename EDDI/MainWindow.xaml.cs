@@ -21,6 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Utilities;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace Eddi
 {
@@ -1008,27 +1009,42 @@ namespace Eddi
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            ttsUpdated();
+            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            {
+                ttsUpdated();
+            }
         }
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -1072,8 +1088,8 @@ namespace Eddi
                 DisableSsml = disableSsmlCheckbox.IsChecked.Value,
                 EnableIcao = enableIcaoCheckbox.IsChecked.Value
             };
+            SpeechService.Instance.Configuration = speechConfiguration;
             speechConfiguration.ToFile();
-            SpeechService.Instance.ReloadConfiguration();
         }
 
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
