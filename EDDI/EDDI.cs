@@ -848,27 +848,30 @@ namespace EddiCore
                     CurrentStellarBody.bodyId = @event.bodyId;
                 }
             }
-            else
+            else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.originSystemName);
                 Station carrier = starSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId);
                 starSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
                 // Save the carrier to the updated star system
-                carrier.systemname = @event.systemname;
-                carrier.systemAddress = @event.systemAddress;
-                if (@event.systemname == CurrentStarSystem?.systemname)
+                if (carrier != null)
                 {
-                    CurrentStarSystem.stations.Add(carrier);
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(starSystem);
-                }
-                else
-                {
-                    StarSystem updatedStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.systemname);
-                    if (updatedStarSystem != null)
+                    carrier.systemname = @event.systemname;
+                    carrier.systemAddress = @event.systemAddress;
+                    if (@event.systemname == CurrentStarSystem?.systemname)
                     {
-                        updatedStarSystem.stations.Add(carrier);
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(updatedStarSystem);
+                        CurrentStarSystem?.stations.Add(carrier);
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(starSystem);
+                    }
+                    else
+                    {
+                        StarSystem updatedStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.systemname);
+                        if (updatedStarSystem != null)
+                        {
+                            updatedStarSystem.stations.Add(carrier);
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(updatedStarSystem);
+                        }
                     }
                 }
             }
