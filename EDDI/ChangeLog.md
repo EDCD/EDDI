@@ -2,6 +2,13 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b5
+  * Core
+    * Updated Rollbar telemetry service to reduce web traffic when idle and to add some additional context from preceeding eddi.log entries.
+    * Various bug fixes, including fixing a bug that could cause the UI to become de-coupled from the true speech configuration. 
+  * Speech responder
+    * Updated Cottle speech rendering package to the latest version.
+
 ### 3.5.3-b4
   * Core
     * Implemented new `Asteroid cracked` and `Asteroid prospected` events. 
