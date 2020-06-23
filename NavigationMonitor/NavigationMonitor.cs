@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCore;
 using EddiConfigService;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -204,32 +205,6 @@ namespace EddiNavigationMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
-            }
-        }
-
-        private void handleLocationEvent(LocationEvent @event)
-        {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
-            }
-        }
-        private void handleJumpedEvent(JumpedEvent @event)
-        {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
-            }
-        }
-
-        private void handleNavRouteEvent(NavRouteEvent @event)
-        {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
 
                 // Get up-to-date configuration data
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
@@ -266,49 +241,9 @@ namespace EddiNavigationMonitor
                 }
                 EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
 
-                // Get up-to-date configuration data
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-            List<long> missionids = new List<long>();
-            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-            List<NavRouteInfo> route = @event.navRoute;
-            List<string> routeList = new List<string>();
-            decimal nextSystemDistance = 0;
-            int count = 0;
-
-            navDestination = null;
-            navRouteList = null;
-            navRouteDistance = 0;
-            if (navConfig.searchQuery != "cancel")
-            {
-                count = route.Count;
-                if (count > 1 && route[0].starSystem == curr.systemname)
-                {
-                    routeList.Add(route[0].starSystem);
-                    for (int i = 0; i < count - 1; i++)
-                    {
-                        navRouteDistance += CalculateDistance(route[i], route[i + 1]);
-                        if (i == 0) { nextSystemDistance = navRouteDistance; }
-                        routeList.Add(route[i + 1].starSystem);
-                    }
-                    navDestination = route[count - 1].starSystem;
-                    navRouteList = string.Join("_", routeList);
-                    UpdateDestinationData(navDestination, navRouteDistance);
-
-                        // Get mission IDs for 'set' system
-                        missionids = NavigationService.Instance.GetSystemMissionIds(navDestination);
-                    }
-                }
-                EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
-
                 // Update the navigation configuration 
                 writeBookmarks();
             }
-        }
-    
-        private void handleRouteDetailsEvent(RouteDetailsEvent @event)
-        {
-
         }
     
         private void handleRouteDetailsEvent(RouteDetailsEvent @event)
