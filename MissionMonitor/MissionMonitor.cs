@@ -990,53 +990,6 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public void SetMissionsRouteData(string list, decimal distance)
-        {
-            missionsRouteList = list;
-            missionsRouteDistance = distance;
-            writeMissions();
-        }
-
-        private bool SystemPendingMissions(string system)
-        {
-            foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
-            {
-                string type = mission.typeEDName.ToLowerInvariant();
-                switch (type)
-                {
-                    case "assassinate":
-                    case "courier":
-                    case "delivery":
-                    case "disable":
-                    case "hack":
-                    case "massacre":
-                    case "passengerbulk":
-                    case "passengervip":
-                    case "rescue":
-                    case "salvage":
-                    case "scan":
-                    case "sightseeing":
-                    case "smuggle":
-                        {
-                            // Check if the system is origin system for 'Active' and 'Complete' missions
-                            if (mission.originsystem == system) { return true; }
-
-                            // Check if the system is destination system for 'Active' missions
-                            else if (mission.statusEDName == "Active")
-                            {
-                                if (mission.destinationsystems?.Any() ?? false)
-                                {
-                                    if (mission.destinationsystems.Where(d => d.name == system).Any()) { return true; }
-                                }
-                                else if (mission.destinationsystem == system) { return true; }
-                            }
-                        }
-                        break;
-                }
-            }
-            return false;
-        }
-
         public bool UpdateRedirectStatus(Mission mission)
         {
             if (mission.originreturn && mission.originsystem == mission.destinationsystem
@@ -1080,13 +1033,6 @@ namespace EddiMissionMonitor
 
             }
             return false;
-        }
-
-        public void UpdateDestinationData(string system, string station, decimal distance)
-        {
-            EDDI.Instance.updateDestinationSystem(system);
-            EDDI.Instance.DestinationDistanceLy = distance;
-            EDDI.Instance.updateDestinationStation(station);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
