@@ -113,7 +113,7 @@
       <Name>EddiNavigationMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
+      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
       <Name>EddiShipMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">

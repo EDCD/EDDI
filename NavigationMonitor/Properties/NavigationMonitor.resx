@@ -120,17 +120,32 @@
   <data name="add_button" xml:space="preserve">
     <value>Add Bookmark</value>
   </data>
-  <data name="add_button_tooltip" xml:space="preserve">
-    <value>Allows manual addition of a bookmark.</value>
+  <data name="bm_import_button" xml:space="preserve">
+    <value>Import Bookmarks</value>
   </data>
-  <data name="blank_bookmark" xml:space="preserve">
-    <value>Enter System Name</value>
+  <data name="bm_import_button_tooltip" xml:space="preserve">
+    <value>Import bookmarks from .csv file</value>
+  </data>
+  <data name="bm_location_button" xml:space="preserve">
+    <value>Bookmark Location</value>
+  </data>
+  <data name="bm_location_button_tooltip" xml:space="preserve">
+    <value>Add bookmark for current location</value>
+  </data>
+  <data name="bm_query_button" xml:space="preserve">
+    <value>Bookmark Query</value>
+  </data>
+  <data name="bm_query_button_tooltip" xml:space="preserve">
+    <value>Add bookmark from query results</value>
   </data>
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
   </data>
   <data name="header_body" xml:space="preserve">
     <value>Body</value>
+  </data>
+  <data name="header_comment" xml:space="preserve">
+    <value>Comment</value>
   </data>
   <data name="header_latitude" xml:space="preserve">
     <value>Latitude</value>
@@ -164,6 +179,12 @@
   </data>
   <data name="remove_button_tooltip" xml:space="preserve">
     <value>Allows manual removal of a bookmark.</value>
+  </data>
+  <data name="remove_caption" xml:space="preserve">
+    <value>Remove bookmark</value>
+  </data>
+  <data name="remove_message" xml:space="preserve">
+    <value>Are you sure you want to remove the bookmark?</value>
   </data>
   <data name="search_button" xml:space="preserve">
     <value>Search</value>
@@ -241,10 +262,10 @@
     <value>Select Sytem &amp; Station in the dropdown menus</value>
   </data>
   <data name="set_button" xml:space="preserve">
-    <value>Set Route</value>
+    <value>Set</value>
   </data>
   <data name="set_button_tooltip" xml:space="preserve">
-    <value>Set course to the result of the Navigation query.</value>
+    <value>Set the bookmark as the 'search' system</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Station:</value>
@@ -256,6 +277,6 @@
     <value>Update</value>
   </data>
   <data name="update_button_tooltip" xml:space="preserve">
-    <value>Update the bookmark (system, body, POI name, etc) information.</value>
+    <value>Update the bookmark with latest data</value>
   </data>
 </root>

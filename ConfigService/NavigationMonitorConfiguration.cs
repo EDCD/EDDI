@@ -17,15 +17,26 @@ namespace EddiConfigService
         public int? maxSearchDistanceFromStarLs { get; set; }
         public bool prioritizeOrbitalStations { get; set; }
 
+        // Navigation Route data
         public string navDestination { get; set; }
         public string navRouteList { get; set; }
         public decimal navRouteDistance { get; set; }
+
+        // Missions route data
         public string missionsRouteList { get; set; }
         public decimal missionsRouteDistance { get; set; }
+
+        // Search data
         public string searchQuery { get; set; }
         public string searchSystem { get; set; }
         public string searchStation { get; set; }
         public decimal searchDistance { get; set; }
+
+        // Ship touchdown data
+        public decimal? latitude { get; set; }
+        public decimal? longitude { get; set; }
+        public string poi { get; set; }
+
 
         [JsonIgnore]
         private string dataPath;

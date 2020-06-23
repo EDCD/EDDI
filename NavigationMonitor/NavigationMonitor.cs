@@ -13,6 +13,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using Utilities;
 
@@ -122,6 +124,14 @@ namespace EddiNavigationMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is TouchdownEvent)
+            {
+                handleTouchdownEvent((TouchdownEvent)@event);
+            }
+            if (@event is LiftoffEvent)
+            {
+                handleLiftoffEvent((LiftoffEvent)@event);
+            }
         }
 
         public void PreHandle(Event @event)
@@ -182,52 +192,91 @@ namespace EddiNavigationMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-
-                // Get up-to-date configuration data
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-                List<long> missionids = new List<long>();
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                List<NavRouteInfo> route = @event.navRoute;
-                List<string> routeList = new List<string>();
-                decimal nextSystemDistance = 0;
-                int count = 0;
-
-                navDestination = null;
-                navRouteList = null;
-                navRouteDistance = 0;
-                if (navConfig.searchQuery != "cancel")
-                {
-                    count = route.Count;
-                    if (count > 1 && route[0].starSystem == curr.systemname)
-                    {
-                        routeList.Add(route[0].starSystem);
-                        for (int i = 0; i < count - 1; i++)
-                        {
-                            navRouteDistance += CalculateDistance(route[i], route[i + 1]);
-                            if (i == 0) { nextSystemDistance = navRouteDistance; }
-                            routeList.Add(route[i + 1].starSystem);
-                        }
-                        navDestination = route[count - 1].starSystem;
-                        navRouteList = string.Join("_", routeList);
-                        UpdateDestinationData(navDestination, navRouteDistance);
-
-                        // Get mission IDs for 'set' system
-                        missionids = NavigationService.Instance.GetSystemMissionIds(navDestination);
-                    }
-                }
-                EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
+                _handleNavRouteEvent(@event);
 
                 // Update the navigation configuration 
                 writeBookmarks();
             }
         }
-    
+
+        private void _handleNavRouteEvent(NavRouteEvent @event)
+        {
+            // Get up-to-date configuration data
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+            List<long> missionids = new List<long>();
+            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+            List<NavRouteInfo> route = @event.navRoute;
+            List<string> routeList = new List<string>();
+            decimal nextSystemDistance = 0;
+            int count = 0;
+
+            navDestination = null;
+            navRouteList = null;
+            navRouteDistance = 0;
+            if (navConfig.searchQuery != "cancel")
+            {
+                count = route.Count;
+                if (count > 1 && route[0].starSystem == curr.systemname)
+                {
+                    routeList.Add(route[0].starSystem);
+                    for (int i = 0; i < count - 1; i++)
+                    {
+                        navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                        if (i == 0) { nextSystemDistance = navRouteDistance; }
+                        routeList.Add(route[i + 1].starSystem);
+                    }
+                    navDestination = route[count - 1].starSystem;
+                    navRouteList = string.Join("_", routeList);
+                    UpdateDestinationData(navDestination, navRouteDistance);
+
+                    // Get mission IDs for 'set' system
+                    missionids = NavigationService.Instance.GetSystemMissionIds(navDestination);
+                }
+            }
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
+        }
+
         private void handleRouteDetailsEvent(RouteDetailsEvent @event)
         {
 
         }
 
+        private void handleTouchdownEvent(TouchdownEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+
+                if (@event.playercontrolled)
+                {
+                    navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+                    navConfig.latitude = @event.latitude;
+                    navConfig.longitude = @event.longitude;
+                    navConfig.poi = @event.nearestdestination;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
+            }
+        }
+
+        private void handleLiftoffEvent(LiftoffEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+
+                if (@event.playercontrolled)
+                {
+                    navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+                    navConfig.latitude = null;
+                    navConfig.longitude = null;
+                    navConfig.poi = null;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
+            }
+        }
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
@@ -312,6 +361,92 @@ namespace EddiNavigationMonitor
                             + square((double)(curr.z - dest.z))), 2);
             }
             return distance;
+        }
+
+        public decimal CalculateDistance(Status curr, decimal? latitude = null, decimal? longitude = null)
+        {
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            double distance = 0;
+            
+            if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
+            {
+                if (latitude == null || longitude == null)
+                {
+                    latitude = navConfig?.latitude;
+                }
+
+                if (latitude != null && longitude != null)
+                {
+                    double square(double x) => x * x;
+                    double radius = (double)curr.planetradius / 1000;
+
+                    // Convert latitude & longitude to radians
+                    double lat1 = (double)curr.latitude * Math.PI / 180;
+                    double lat2 = (double)latitude * Math.PI / 180;
+                    double deltaLat = lat2 - lat1;
+                    double deltaLong = (double)(longitude - curr.longitude) * Math.PI / 180;
+
+                    // Calculate distance traveled using Law of Haversines
+                    double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(lat2) * Math.Cos(lat1) * square(Math.Sin(deltaLong / 2));
+                    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                    distance = c * radius;
+                }
+            }
+            return (decimal)distance;
+        }
+
+        public decimal CalculateHeading(Status curr)
+        {
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            double heading = 0;
+
+            if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
+            {
+                if (navConfig?.latitude != null && navConfig?.longitude != null)
+                {
+                    // Convert latitude & longitude to radians
+                    double lat1 = (double)curr.latitude * Math.PI / 180;
+                    double lat2 = (double)navConfig.latitude * Math.PI / 180;
+                    double deltaLong = (double)(navConfig.longitude - curr.longitude) * Math.PI / 180;
+
+                    // Calculate heading using Law of Haversines
+                    double x = Math.Sin(deltaLong) * Math.Cos(lat2);
+                    double y = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(deltaLong);
+                    heading = Math.Atan2(y, x) * 180 / Math.PI;
+                }
+            }
+            return (decimal)heading;
+        }
+
+        public void CalculateCoordinates(Status curr, ref decimal? latitude, ref decimal? longitude)
+        {
+            if (curr?.slope != null)
+            {
+                // Convert latitude, longitude & slope to radians
+                double currLat = (double)curr.latitude * Math.PI / 180;
+                double currLong = (double)curr.longitude * Math.PI / 180;
+                double slope = -(double)curr.slope * Math.PI / 180;
+                double altitude = (double)curr.altitude / 1000;
+
+                // Determine minimum slope
+                double radius = (double)curr.planetradius / 1000;
+                double minSlope = Math.Acos(radius / (altitude + radius));
+                if (slope > minSlope)
+                {
+                    // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
+                    double a = Math.PI / 2 - slope;
+                    double path = altitude / Math.Sin(a);
+                    double c = Math.Asin(path * Math.Sin(a) / radius);
+                    double heading = (double)curr.heading * Math.PI / 180;
+                    double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
+                    double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
+                        Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
+
+                    // Convert position to degrees
+                    latitude = (decimal)Math.Round(Lat * 180 / Math.PI, 2);
+                    longitude = (decimal)Math.Round(Lon * 180 / Math.PI, 2);
+                }
+            }
         }
 
         public void UpdateDestinationData(string system, decimal distance)
