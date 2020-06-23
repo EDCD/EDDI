@@ -33,6 +33,7 @@ namespace EddiSpeechResponder
         private readonly DataProviderService dataProviderService;
         private readonly BgsService bgsService;
         private readonly BindingFlags bindingFlags;
+        public static EventHandler ScriptErrorEventHandler;
 
         public static object Instance { get; set; }
 
@@ -143,6 +144,7 @@ namespace EddiSpeechResponder
             {
                 // Report the failing the script name, if it is available
                 string scriptName;
+                ScriptError scriptError = new ScriptError(e.Message, script, e.LocationStart, e.LocationLength);
                 if (scriptObject != null)
                 {
                     scriptName = "the script \"" + scriptObject.Name + "\"";
@@ -151,9 +153,9 @@ namespace EddiSpeechResponder
                 {
                     scriptName = "this script";
                 }
-
-                Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
-                return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
+                Logging.Warn($"Failed to resolve {scriptName} at line {scriptError.line}. {e}");
+                ScriptErrorEventHandler?.Invoke(scriptError, new EventArgs());
+                return $"There is a problem with {scriptName} at line {scriptError.line}. {errorTranslation(e.Message)}";
             }
         }
 
