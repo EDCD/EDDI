@@ -76,6 +76,7 @@ namespace EddiSpeechResponder
 
         public EditScriptWindow(Dictionary<string, Script> scripts, string name)
         {
+            ScriptResolver.ScriptErrorEventHandler += ScriptErrorEventHandler;
             InitializeComponent();
             DataContext = this;
             SearchPanel.Install(scriptView);
@@ -116,6 +117,14 @@ namespace EddiSpeechResponder
             ScriptRecoveryService = new ScriptRecoveryService(this);
             ScriptRecoveryService.BeginScriptRecovery();
             scriptView.TextChanged += ScriptView_TextChanged;
+        }
+
+        private void ScriptErrorEventHandler(object sender, EventArgs e) 
+        {
+            if (sender is ScriptError error)
+            {
+                GoToError(error);
+            }
         }
 
         private void ScriptView_TextChanged(object sender, System.EventArgs e)
@@ -243,6 +252,12 @@ namespace EddiSpeechResponder
             {
                 new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();
             }
+        }
+
+        public void GoToError(ScriptError error)
+        {
+            scriptView.ScrollToLine(error.line);
+            scriptView.Select(error.startPosition, error.length);
         }
     }
 }
