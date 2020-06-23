@@ -72,39 +72,15 @@
             <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
             <Button HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4" Margin="10, 0" VerticalContentAlignment="Center" Click="executeSelect" Content="{x:Static resx:NavigationMonitor.select_button}" ToolTip="{x:Static resx:NavigationMonitor.select_button_tooltip}" />
         </Grid>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="2" Margin="0,5">
-            <Button HorizontalAlignment="Center" Click="addBookmark" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}" />
-            <Button HorizontalAlignment="Center" Click="setCourse" Content="{x:Static resx:NavigationMonitor.set_button}" ToolTip="{x:Static resx:NavigationMonitor.set_button_tooltip}" />
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+            <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="bookmarkQuery" Content="{x:Static resx:NavigationMonitor.bm_query_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_query_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
         </UniformGrid>
-        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarksUpdated">
+        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="*" Binding="{Binding Path=system, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="120" Binding="{Binding Path=body, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="150" IsReadOnly="True" Binding="{Binding Path=poi}">
+
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=system}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -117,7 +93,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_latitude}" Width="80" Binding="{Binding Path=latitude, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=body}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -130,7 +106,46 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_longitude}" Width="80" Binding="{Binding Path=longitude, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_latitude}" Width="80" IsReadOnly="True" Binding="{Binding Path=latitude}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_longitude}" Width="80" IsReadOnly="True" Binding="{Binding Path=longitude}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -154,6 +169,13 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="setBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.set_button}" ToolTip="{x:Static resx:NavigationMonitor.set_button_tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

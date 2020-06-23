@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
+using EddiStatusMonitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,22 +64,37 @@ namespace EddiNavigationService
         private CargoMonitorConfiguration cargoConfig = new CargoMonitorConfiguration();
         private MissionMonitorConfiguration missionsConfig = new MissionMonitorConfiguration();
         private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
-
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
         private static NavigationService instance;
         private static readonly object instanceLock = new object();
+        private static readonly object statusLock = new object();
 
         // Search variables
         public StarSystem SearchStarSystem { get; private set; }
         public Station SearchStation { get; private set; }
         public decimal SearchDistanceLy { get; set; }
 
+
+        public Status currentStatus = new Status();
+
         public NavigationService(IEdsmService edsmService)
         {
             this.edsmService = edsmService;
             dataProviderService = new DataProviderService(edsmService);
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+            StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
+            if (statusMonitor != null)
+            {
+                statusMonitor.StatusUpdatedEvent += (s, e) =>
+                {
+                    lock (statusLock)
+                    {
+                        currentStatus = statusMonitor.currentStatus;
+                    }
+                };
+            }
         }
 
         public static NavigationService Instance

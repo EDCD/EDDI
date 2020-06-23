@@ -70,20 +70,56 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows manual addition of a bookmark..
+        ///   Looks up a localized string similar to Import Bookmarks.
         /// </summary>
-        public static string add_button_tooltip {
+        public static string bm_import_button {
             get {
-                return ResourceManager.GetString("add_button_tooltip", resourceCulture);
+                return ResourceManager.GetString("bm_import_button", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter System Name.
+        ///   Looks up a localized string similar to Import bookmarks from .csv file.
         /// </summary>
-        public static string blank_bookmark {
+        public static string bm_import_button_tooltip {
             get {
-                return ResourceManager.GetString("blank_bookmark", resourceCulture);
+                return ResourceManager.GetString("bm_import_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmark Location.
+        /// </summary>
+        public static string bm_location_button {
+            get {
+                return ResourceManager.GetString("bm_location_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add bookmark for current location.
+        /// </summary>
+        public static string bm_location_button_tooltip {
+            get {
+                return ResourceManager.GetString("bm_location_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmark Query.
+        /// </summary>
+        public static string bm_query_button {
+            get {
+                return ResourceManager.GetString("bm_query_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add bookmark from query results.
+        /// </summary>
+        public static string bm_query_button_tooltip {
+            get {
+                return ResourceManager.GetString("bm_query_button_tooltip", resourceCulture);
             }
         }
         
@@ -102,6 +138,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string header_body {
             get {
                 return ResourceManager.GetString("header_body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string header_comment {
+            get {
+                return ResourceManager.GetString("header_comment", resourceCulture);
             }
         }
         
@@ -201,6 +246,24 @@ namespace EddiNavigationMonitor.Properties {
         public static string remove_button_tooltip {
             get {
                 return ResourceManager.GetString("remove_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove bookmark.
+        /// </summary>
+        public static string remove_caption {
+            get {
+                return ResourceManager.GetString("remove_caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the bookmark?.
+        /// </summary>
+        public static string remove_message {
+            get {
+                return ResourceManager.GetString("remove_message", resourceCulture);
             }
         }
         
@@ -430,7 +493,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set Route.
+        ///   Looks up a localized string similar to Set.
         /// </summary>
         public static string set_button {
             get {
@@ -439,7 +502,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set course to the result of the Navigation query..
+        ///   Looks up a localized string similar to Set the bookmark as the &apos;search&apos; system.
         /// </summary>
         public static string set_button_tooltip {
             get {
@@ -475,7 +538,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the bookmark (system, body, POI name, etc) information..
+        ///   Looks up a localized string similar to Update the bookmark with latest data.
         /// </summary>
         public static string update_button_tooltip {
             get {
