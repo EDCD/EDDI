@@ -81,6 +81,10 @@
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj">
+      <Project>{fec7ba2b-23c3-4f4f-96ef-bf1f1909eb03}</Project>
+      <Name>EddiStatusMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>
