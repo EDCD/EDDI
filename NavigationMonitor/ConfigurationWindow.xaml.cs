@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiEvents;
 using EddiConfigService;
 using EddiDataDefinitions;
