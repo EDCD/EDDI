@@ -109,13 +109,49 @@ namespace UnitTests
             scripts.Add("func", new Script("func", null, false, "Hello {name}"));
             scripts.Add("test", new Script("test", null, false, "Well {F(\"func\")}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+            var dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
             string result = resolver.resolveFromName("test", dict);
             Assert.AreEqual("Well Hello world", result);
             string result2 = resolver.resolveFromValue(scripts["test"].Value, dict);
             Assert.AreEqual("Well Hello world", result2);
         }
+
+        [TestMethod]
+        public void TestResolverNativeSetCustomFunction()
+        {
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+            scripts.Add("test", new Script("test", null, false, "{set x to \"Hello\"} {OneOf(\"{x} world\")}"));
+            ScriptResolver resolver = new ScriptResolver(scripts);
+            var dict = new Dictionary<string, Cottle.Value>();
+            string result = resolver.resolveFromName("test", dict);
+            Assert.AreEqual("Hello world", result);
+        }
+
+        [TestMethod]
+        public void TestResolverLayeredCustomFunction()
+        {
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+            scripts.Add("test", new Script("test", null, false, "The letter is {OneOf(\"a\", F(\"func\"), \"{c}\")}."));
+            scripts.Add("func", new Script("func", null, false, "b"));
+            ScriptResolver resolver = new ScriptResolver(scripts);
+            var dict = new Dictionary<string, Cottle.Value>();
+            dict["c"] = "c";
+
+            List<string> results = new List<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                results.Add(resolver.resolveFromName("test", dict));
+            }
+            Assert.IsTrue(results.Contains(@"The letter is a."));
+            results.RemoveAll(result => result == @"The letter is a.");
+            Assert.IsTrue(results.Contains(@"The letter is b."));
+            results.RemoveAll(result => result == @"The letter is b.");
+            Assert.IsTrue(results.Contains(@"The letter is c."));
+            results.RemoveAll(result => result == @"The letter is c.");
+            Assert.IsTrue(results.Count == 0);
+        }
+
 
         [TestMethod]
         public void TestResolverCallsign()
