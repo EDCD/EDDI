@@ -122,7 +122,7 @@ namespace Eddi
             // Catch and send unhandled exceptions from Windows forms
             System.Windows.Forms.Application.ThreadException += (sender, args) =>
             {
-                Exception exception = args.Exception as Exception;
+                Exception exception = args.Exception;
                 _Rollbar.ExceptionHandler(exception);
                 ReloadAndRecover(exception);
             };
@@ -136,7 +136,7 @@ namespace Eddi
             // Catch and send unhandled exceptions from the task scheduler
             TaskScheduler.UnobservedTaskException += (sender, args) =>
             {
-                Exception exception = args.Exception as Exception;
+                Exception exception = args.Exception;
                 _Rollbar.ExceptionHandler(exception);
                 ReloadAndRecover(exception);
             };

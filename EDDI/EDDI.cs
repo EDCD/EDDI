@@ -175,8 +175,8 @@ namespace EddiCore
                     {
                         essentialAsyncTasks.AddRange(new List<Task>()
                         {
-                            Task.Run((Action)ActionUpdateHomeSystemStation),
-                            Task.Run((Action)ActionUpdateSquadronSystem)
+                            Task.Run(ActionUpdateHomeSystemStation),
+                            Task.Run(ActionUpdateSquadronSystem)
                         });
                     }
                 }
