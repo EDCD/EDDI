@@ -1,9 +1,9 @@
-﻿using System;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiShipMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace UnitTests

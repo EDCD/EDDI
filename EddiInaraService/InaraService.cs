@@ -215,21 +215,21 @@ namespace EddiInaraService
 
         private bool checkAPIcredentialsOk(InaraConfiguration inaraConfiguration)
         {
-            if (!inaraConfiguration.isAPIkeyValid) 
-            { 
-                Logging.Warn("Background sync skipped: API key is invalid."); 
-                invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs()); 
-                return false; 
+            if (!inaraConfiguration.isAPIkeyValid)
+            {
+                Logging.Warn("Background sync skipped: API key is invalid.");
+                invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                return false;
             }
-            if (string.IsNullOrEmpty(inaraConfiguration.apiKey)) 
-            { 
-                Logging.Info("Background sync skipped: API key not set."); 
-                return false; 
+            if (string.IsNullOrEmpty(inaraConfiguration.apiKey))
+            {
+                Logging.Info("Background sync skipped: API key not set.");
+                return false;
             }
-            if (string.IsNullOrEmpty(inaraConfiguration.commanderName)) 
-            { 
-                Logging.Debug("Background sync skipped: Commander name not set."); 
-                return false; 
+            if (string.IsNullOrEmpty(inaraConfiguration.commanderName))
+            {
+                Logging.Debug("Background sync skipped: Commander name not set.");
+                return false;
             }
             return true;
         }
@@ -272,7 +272,7 @@ namespace EddiInaraService
             foreach (var inaraAPIEvent in inaraAPIEvents)
             {
                 // Do not re-enqueue 'get' Inara API events
-                if (inaraAPIEvent.eventName.StartsWith("get")) {continue; }
+                if (inaraAPIEvent.eventName.StartsWith("get")) { continue; }
                 // Clear any ID / index value assigned to the data
                 inaraAPIEvent.eventCustomID = null;
                 EnqueueAPIEvent(inaraAPIEvent);

@@ -53,7 +53,7 @@ namespace UnitTests
             Assert.IsTrue(invalidAPIkeyTestPassed);
         }
         private bool invalidAPIkeyTestPassed;
-        private void OnInvalidAPIkey(object sender, EventArgs e) 
+        private void OnInvalidAPIkey(object sender, EventArgs e)
         {
             invalidAPIkeyTestPassed = true;
         }
@@ -61,10 +61,10 @@ namespace UnitTests
         [TestMethod]
         public void TestCmdrProfiles()
         {
-            try 
+            try
             {
                 var expectedCmdrs = new List<InaraCmdr>()
-                { 
+                {
                     new InaraCmdr()
                     {
                         id = 1,
@@ -82,7 +82,7 @@ namespace UnitTests
                         preferredallegiance = "Independent",
                         preferredpower = null,
                         squadron = new InaraCmdrSquadron()
-                        { 
+                        {
                             id = 5,
                             name = "Inara Dojo",
                             memberscount = 9,

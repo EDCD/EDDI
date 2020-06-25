@@ -1,4 +1,5 @@
-﻿using Cottle.Builtins;
+﻿using Cottle;
+using Cottle.Builtins;
 using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Settings;
@@ -8,6 +9,7 @@ using Eddi;
 using EddiBgsService;
 using EddiCargoMonitor;
 using EddiCompanionAppService;
+using EddiCore;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -24,8 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Cottle;
-using EddiCore;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -450,7 +450,7 @@ namespace EddiSpeechResponder
                 if (values.Count == 1)
                 {
                     return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
-                } 
+                }
                 return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1);
 

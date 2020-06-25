@@ -1,12 +1,10 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EddiEdsmResponder
@@ -34,7 +32,7 @@ namespace EddiEdsmResponder
         }
 
         public EDSMResponder() : this(new StarMapService())
-        {}
+        { }
 
         public EDSMResponder(IEdsmService edsmService)
         {

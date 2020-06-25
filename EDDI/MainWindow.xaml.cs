@@ -154,7 +154,7 @@ namespace Eddi
         }
 
         private bool runBetaCheck = false;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -236,7 +236,7 @@ namespace Eddi
 
             LoadAndSortTabs(eddiConfiguration);
 
-                RestoreWindowState();
+            RestoreWindowState();
             EDDI.Instance.Start();
         }
 
@@ -897,7 +897,7 @@ namespace Eddi
         {
             // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.
             System.Windows.Application.Current?.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
-            
+
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {

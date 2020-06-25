@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;
@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using EddiCore;
 
 namespace EddiEdsmResponder
 {

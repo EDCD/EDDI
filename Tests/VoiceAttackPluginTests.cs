@@ -1,13 +1,11 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
-using EddiSpeechService;
+using EddiEvents;
+using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using EddiEvents;
-using EddiJournalMonitor;
-using Tests.Properties;
 using System.Linq;
 
 namespace UnitTests
@@ -136,7 +134,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestVADiscoveryScanEvent() 
+        public void TestVADiscoveryScanEvent()
         {
             string line = @"{ ""timestamp"":""2019-10-26T02:15:49Z"", ""event"":""FSSDiscoveryScan"", ""Progress"":0.439435, ""BodyCount"":7, ""NonBodyCount"":3, ""SystemName"":""Outotz WO-A d1"", ""SystemAddress"":44870715523 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);

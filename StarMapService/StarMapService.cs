@@ -29,7 +29,7 @@ namespace EddiStarMapService
 
         // The timeout for journal events is lengthened to 30 seconds (as recommended by Anthor in private message)
         private const int JournalTimeoutMilliseconds = 30000;
-        
+
         // Pause a short time to allow any initial events to build in the queue before our first EDSM responder event sync
         private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
 
@@ -42,7 +42,7 @@ namespace EddiStarMapService
         private readonly IEdsmRestClient restClient;
         private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
         public static bool bgJournalSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
-        
+
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";

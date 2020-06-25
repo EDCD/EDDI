@@ -123,7 +123,7 @@ namespace EddiDataDefinitions
         public static CommodityMarketQuote FromCapiJson(JObject capiJSON)
         {
             CommodityMarketQuote quote = null;
-            try 
+            try
             {
                 long eliteId = (long)capiJSON["id"];
                 string edName = (string)capiJSON["name"];
@@ -200,7 +200,7 @@ namespace EddiDataDefinitions
         public static CommodityMarketQuote FromMarketInfo(MarketInfo item)
         {
             CommodityMarketQuote quote = null;
-            try 
+            try
             {
                 long eliteId = item.id;
                 string edName = item.name?.ToLowerInvariant()
@@ -232,7 +232,7 @@ namespace EddiDataDefinitions
                     fromFDev = true,
                     buyprice = item.buyprice,
                     // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
-                    avgprice = item.meanprice > 0 ? item.meanprice : commodityDef?.avgprice ?? 0, 
+                    avgprice = item.meanprice > 0 ? item.meanprice : commodityDef?.avgprice ?? 0,
                     stock = item.stock,
                     stockbracket = item.stockbracket,
                     sellprice = item.sellprice,

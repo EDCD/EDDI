@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EDDNResponder
@@ -48,7 +47,7 @@ namespace EDDNResponder
         };
 
         // We will strip these personal keys (plus any localized properties) before sending data to EDDN
-        private static readonly string[] personalKeys = 
+        private static readonly string[] personalKeys =
         {
             "ActiveFine",
             "CockpitBreach",

@@ -1,8 +1,7 @@
-﻿using Eddi;
-using EddiCargoMonitor;
+﻿using EddiCargoMonitor;
 using EddiCompanionAppService;
+using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiSpeechService;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using EddiCore;
 using Utilities;
 
 namespace EddiVoiceAttackResponder

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities;
 
 namespace EddiSpeechService
 {
@@ -274,7 +273,7 @@ namespace EddiSpeechService
         private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
         private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
-        
+
         /// <summary>Fix up faction names</summary>
         public static string Faction(string faction)
         {
@@ -341,7 +340,7 @@ namespace EddiSpeechService
                             // The part is a number; turn it in to ICAO if required
                             results.Add(useICAO ? ICAO(part, true) : part);
                         }
-                        else if (PLANET.IsMatch(part) || lastPart == "Cluster" || nextPart == "Ring" || nextPart == "Belt" )
+                        else if (PLANET.IsMatch(part) || lastPart == "Cluster" || nextPart == "Ring" || nextPart == "Belt")
                         {
                             // The part represents a body, possibly part of the name of a moon, ring, (stellar) belt, or belt cluster; 
                             // e.g. "Pru Aescs NC-M d7-192 A A Belt", "Prai Flyou JQ-F b30-3 B Belt Cluster 9", "Oopailks NV-X c17-1 AB 6 A Ring"

@@ -93,7 +93,7 @@ namespace Utilities
                 Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
             }
             // We have either successfully read the file or encountered an exception that would not benefit from another attempt
-            return false; 
+            return false;
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Utilities
         internal class NativeMethods
         {
             [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
         }
 
         public static bool IsFileLocked(FileInfo file)

@@ -27,7 +27,7 @@ namespace UnitTests
         {
             // this will throw if given a resource not in the canned dictionaries: that's OK
             string content = CannedContent[request.Resource];
-            T data = (T) CannedData[request.Resource];
+            T data = (T)CannedData[request.Resource];
             IRestResponse<T> restResponse = new RestResponse<T>
             {
                 Content = content,
@@ -430,7 +430,7 @@ namespace UnitTests
             // Setup
             string resource = "api-v1/systems";
             string json = Encoding.UTF8.GetString(Resources.CapitalSystems);
-            List<JObject> data = new List<JObject> {new JObject(), new JObject(), new JObject()};
+            List<JObject> data = new List<JObject> { new JObject(), new JObject(), new JObject() };
             fakeEdsmRestClient.Expect(resource, json, data);
 
             // Act
@@ -538,7 +538,7 @@ namespace UnitTests
 
             // Act
             Traffic traffic = fakeEdsmService.ParseStarMapTraffic(response);
-            
+
             // Assert
             Assert.IsNotNull(traffic);
             Assert.AreEqual(0, traffic.total);

@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using EddiStarMapService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EddiStarMapService;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -234,7 +234,7 @@ namespace EddiDataProviderService
                             needToUpdate = true;
                         }
                     }
-                    
+
                     if (needToUpdate)
                     {
                         // We want to update this star system (don't deserialize the old result at this time)
@@ -283,7 +283,7 @@ namespace EddiDataProviderService
 
                 // Update properties that aren't synced from the server and that we want to preserve
                 updatedSystems = PreserveUnsyncedProperties(updatedSystems, systemsToUpdate);
-                
+
                 // Update the `lastupdated` timestamps for the systems we have updated
                 foreach (StarSystem starSystem in updatedSystems) { starSystem.lastupdated = DateTime.UtcNow; }
 
@@ -298,7 +298,7 @@ namespace EddiDataProviderService
 
         private static List<StarSystem> PreserveUnsyncedProperties(List<StarSystem> updatedSystems, List<DatabaseStarSystem> systemsToUpdate)
         {
-            if (updatedSystems is null) {return new List<StarSystem>(); }
+            if (updatedSystems is null) { return new List<StarSystem>(); }
             foreach (StarSystem updatedSystem in updatedSystems)
             {
                 foreach (DatabaseStarSystem systemToUpdate in systemsToUpdate)
@@ -484,7 +484,7 @@ namespace EddiDataProviderService
             DateTime lastUpdated = DateTime.MinValue;
             DateTime? lastVisit = null;
             int totalVisits = 0;
-            
+
             using (SQLiteDataReader rdr = cmd.ExecuteReader())
             {
                 if (rdr.Read())
@@ -590,7 +590,7 @@ namespace EddiDataProviderService
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
             if (!starSystems.Any()) { return; }
-            
+
             // Update any star systems in our short term star system cache to minimize repeat deserialization
             foreach (var starSystem in starSystems)
             {
@@ -607,8 +607,8 @@ namespace EddiDataProviderService
             foreach (StarSystem system in starSystems)
             {
                 DatabaseStarSystem dbSystem = dbSystems.FirstOrDefault(s =>
-                    s.systemAddress != null && s.systemAddress == system.systemAddress || 
-                    s.edsmId != null && s.edsmId == system.EDSMID || 
+                    s.systemAddress != null && s.systemAddress == system.systemAddress ||
+                    s.edsmId != null && s.edsmId == system.EDSMID ||
                     s.systemName == system.systemname);
 
                 if (dbSystem?.systemJson is null ||

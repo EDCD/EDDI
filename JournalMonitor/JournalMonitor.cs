@@ -1,5 +1,5 @@
-﻿using Eddi;
-using EddiCargoMonitor;
+﻿using EddiCargoMonitor;
+using EddiCore;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -16,7 +16,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EddiJournalMonitor
@@ -53,7 +52,7 @@ namespace EddiJournalMonitor
                         do
                         {
                             await Task.Delay(1500);
-                            timeout =+ 1;
+                            timeout = +1;
                         }
                         while (EDDI.Instance.CurrentStarSystem.bodies.Count == 0 && timeout < 3);
                         callback(@event);
@@ -185,7 +184,7 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
-                                    
+
                                     // The nearest destination may be a specific destination name or a generic signal source.
                                     string nearestdestination = JsonParsing.getString(data, "NearestDestination");
                                     SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
@@ -557,7 +556,7 @@ namespace EddiJournalMonitor
                                             if (modified)
                                             {
                                                 engineeringData.TryGetValue("Modifiers", out object modifiersVal);
-                                                List<object> modifiersData = (List<object>) modifiersVal;
+                                                List<object> modifiersData = (List<object>)modifiersVal;
                                                 foreach (Dictionary<string, object> modifier in modifiersData)
                                                 {
                                                     try
@@ -3157,7 +3156,7 @@ namespace EddiJournalMonitor
                                     {
                                         // Item might be all, wear, hull, paint, or the name of a module
                                         string item = JsonParsing.getString(data, "Item");
-                                        
+
                                         // We have a single "item"
                                         if (!string.IsNullOrEmpty(item))
                                         {
@@ -3907,7 +3906,7 @@ namespace EddiJournalMonitor
                                 {
                                     string bodyName = JsonParsing.getString(data, "Body");
                                     events.Add(new AsteroidCrackedEvent(timestamp, bodyName) { raw = line, fromLoad = fromLogLoad });
-                                }       
+                                }
                                 handled = true;
                                 break;
                             case "ProspectedAsteroid":
@@ -3917,7 +3916,7 @@ namespace EddiJournalMonitor
                                     if (val is List<object> listVal)
                                     {
                                         foreach (var commodityVal in listVal)
-                                        {   
+                                        {
                                             if (commodityVal is Dictionary<string, object> commodityData)
                                             {
                                                 string commodityEdName = JsonParsing.getString(commodityData, "Name");
@@ -3938,14 +3937,14 @@ namespace EddiJournalMonitor
 
                                     // If a motherlode commodity is present
                                     CommodityDefinition motherlodeCommodityDefinition = null;
-                                    string motherlodeEDName = JsonParsing.getString(data, "MotherlodeMaterial"); 
+                                    string motherlodeEDName = JsonParsing.getString(data, "MotherlodeMaterial");
                                     if (!string.IsNullOrEmpty(motherlodeEDName))
                                     {
                                         motherlodeCommodityDefinition = CommodityDefinition.FromEDName(motherlodeEDName);
                                     }
 
                                     events.Add(new AsteroidProspectedEvent(timestamp, commodities, materialContent, remaining, motherlodeCommodityDefinition) { raw = line, fromLoad = fromLogLoad });
-                                }   
+                                }
                                 handled = true;
                                 break;
                             case "CarrierBuy":
@@ -4423,7 +4422,7 @@ namespace EddiJournalMonitor
         internal class NativeMethods
         {
             [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
         }
 
         public void PreHandle(Event @event)

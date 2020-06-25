@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace EddiEvents
 {
@@ -30,8 +29,8 @@ namespace EddiEvents
 
         public string bodyname { get; private set; }
 
-        public string shortname => (string.IsNullOrEmpty(systemname) || string.IsNullOrEmpty(bodyname) || bodyname == systemname) 
-            ? bodyname 
+        public string shortname => (string.IsNullOrEmpty(systemname) || string.IsNullOrEmpty(bodyname) || bodyname == systemname)
+            ? bodyname
             : bodyname.Replace(systemname, "").Trim();
 
         // These properties are not intended to be user facing

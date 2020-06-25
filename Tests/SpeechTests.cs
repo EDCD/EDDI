@@ -2,7 +2,7 @@
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
-using Eddi;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder;
 using EddiSpeechService;
@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Threading;
-using EddiCore;
 using Utilities;
 
 namespace SpeechTests

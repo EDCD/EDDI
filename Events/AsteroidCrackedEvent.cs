@@ -12,7 +12,7 @@ namespace EddiEvents
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static AsteroidCrackedEvent()
-        { 
+        {
             VARIABLES.Add("bodyname", "The name of the nearest body (normally the ring where the asteroid was found)");
         }
 

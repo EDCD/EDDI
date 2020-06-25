@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
-using EddiDataDefinitions;
 
 namespace EddiEvents
 {
@@ -13,15 +13,15 @@ namespace EddiEvents
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static AsteroidProspectedEvent()
-        { 
+        {
             VARIABLES.Add("commodities", "A list of `CommodityPresence` objects describing the contents of the asteroid (each with properties of `commodity` and `percentage`)");
             VARIABLES.Add("materialcontent", "The material content of the asteroid (high, medium, or low)");
             VARIABLES.Add("remaining", "The percentage of the asteroid's contents which remain available for surface mining");
             VARIABLES.Add("motherlode", "The asteroid's motherlode (if any)");
         }
 
-        public List<CommodityPresence> commodities { get; private set; }    
-        
+        public List<CommodityPresence> commodities { get; private set; }
+
         public string materialcontent => materialContent.localizedName;
 
         public decimal remaining { get; private set; }

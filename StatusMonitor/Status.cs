@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
         [Flags]
         public enum Flags : uint
         {
-            None = 0,                               
+            None = 0,
             Docked = 0x00000001,                    // Docked, (on a landing pad)
             Landed = 0x00000002,                    // Landed, (on planet surface)
             LandingGearDown = 0x00000004,           // Landing Gear Down

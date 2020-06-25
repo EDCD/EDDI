@@ -173,7 +173,7 @@ namespace EddiCore
 
         [JsonIgnore]
         private string dataPath;
-        
+
         public EDDIConfiguration()
         {
             Debug = false;

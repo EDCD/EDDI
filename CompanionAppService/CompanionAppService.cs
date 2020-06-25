@@ -554,10 +554,10 @@ namespace EddiCompanionAppService
             Logging.Debug("Reading response");
             using (var stream = response.GetResponseStream())
             {
-                if (stream == null) 
+                if (stream == null)
                 {
                     Logging.Warn("No response stream");
-                    return null; 
+                    return null;
                 }
                 var reader = new StreamReader(stream, encoding);
                 string data = reader.ReadToEnd();
@@ -685,7 +685,7 @@ namespace EddiCompanionAppService
             {
                 foreach (var jToken in json["lastStarport"]["modules"])
                 {
-                    var moduleJsonProperty = (JProperty) jToken;
+                    var moduleJsonProperty = (JProperty)jToken;
                     JObject moduleJson = (JObject)moduleJsonProperty.Value;
                     // Not interested in paintjobs, decals, ...
                     string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
@@ -767,7 +767,7 @@ namespace EddiCompanionAppService
             {
                 foreach (var jToken in json["lastStarport"]["commodities"])
                 {
-                    var commodityJSON = (JObject) jToken;
+                    var commodityJSON = (JObject)jToken;
                     CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(commodityJSON);
                     if (quote != null)
                     {
@@ -801,7 +801,7 @@ namespace EddiCompanionAppService
                 {
                     foreach (var jToken in unavailableList)
                     {
-                        var shipJson = (JObject) jToken;
+                        var shipJson = (JObject)jToken;
                         Ship Ship = ShipyardShipFromProfile(shipJson);
                         Ships.Add(Ship);
                     }

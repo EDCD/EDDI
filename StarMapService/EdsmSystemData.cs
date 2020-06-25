@@ -83,7 +83,7 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
             }
-            return new List<StarSystem>(); 
+            return new List<StarSystem>();
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>

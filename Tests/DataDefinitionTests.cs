@@ -1,7 +1,7 @@
-using System;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Properties;
@@ -375,7 +375,7 @@ namespace UnitTests
             DateTime journalDateTime = DateTime.UtcNow.AddHours(1);
 
             Commander test1 = Commander.FromFrontierApiCmdr(commander, frontierApiCommander, apiDateTime, journalDateTime, out bool cmdr1Matches);
-            
+
             Assert.IsTrue(cmdr1Matches);
             Assert.AreEqual("Marty McFly", test1.name);
             Assert.AreEqual("Serf", test1.title);

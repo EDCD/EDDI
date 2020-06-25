@@ -1,6 +1,6 @@
-﻿using System;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace EddiCompanionAppService
 {

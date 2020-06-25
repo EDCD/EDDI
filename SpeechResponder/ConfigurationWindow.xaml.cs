@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiCore;
 using Utilities;
 
 namespace EddiSpeechResponder

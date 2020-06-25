@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using System;
@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using EddiCore;
 using Utilities;
 
 namespace EddiCrimeMonitor

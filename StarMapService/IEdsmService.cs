@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
-using EddiDataDefinitions;
 
 namespace EddiStarMapService
 {

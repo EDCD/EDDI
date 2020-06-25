@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary> Asteroid material content </summary>
     public class AsteroidMaterialContent : ResourceBasedLocalizedEDName<AsteroidMaterialContent>
     {
         static AsteroidMaterialContent()
         {
-            resourceManager = Properties.AsteroidMaterialContent.ResourceManager;   
+            resourceManager = Properties.AsteroidMaterialContent.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new AsteroidMaterialContent(edname); 
+            missingEDNameHandler = (edname) => new AsteroidMaterialContent(edname);
 
             var High = new AsteroidMaterialContent("$AsteroidMaterialContent_High;");
             var Medium = new AsteroidMaterialContent("$AsteroidMaterialContent_Medium;");

@@ -24,7 +24,7 @@ namespace EddiCrimeMonitor
 
         [JsonIgnore]
         private string dataPath;
-        
+
         public CrimeMonitorConfiguration()
         {
             criminalrecord = new ObservableCollection<FactionRecord>();

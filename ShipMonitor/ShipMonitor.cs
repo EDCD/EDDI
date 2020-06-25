@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCore;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -18,7 +19,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiCore;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -395,7 +395,7 @@ namespace EddiShipMonitor
 
                 // Set ship hull and module health with a profile refresh before we write the stored ship.
                 EDDI.Instance?.refreshProfile();
-                
+
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
 

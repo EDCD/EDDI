@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 using SimpleFeedReader;
@@ -12,7 +12,6 @@ using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace GalnetMonitor
@@ -59,7 +58,7 @@ namespace GalnetMonitor
         {
             return EddiGalnetMonitor.Properties.GalnetMonitor.name;
         }
-        
+
         /// <summary>
         /// The description of the monitor; shows up in EDDI's configuration window
         /// </summary>

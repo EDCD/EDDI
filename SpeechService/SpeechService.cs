@@ -487,7 +487,7 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "<(audio.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
-            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");   
+            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(prosody.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/prosody)>", "XXXXX$1YYYYY");

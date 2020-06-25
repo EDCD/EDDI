@@ -33,12 +33,12 @@ namespace EddiSpeechResponder
 
             public void Draw(TextView textView, DrawingContext drawingContext)
             {
-                if (textView == null) {throw new ArgumentNullException(nameof(textView));}
-                if (drawingContext == null) {throw new ArgumentNullException(nameof(drawingContext));}
-                if (diffSegments == null || !textView.VisualLinesValid) {return;}
+                if (textView == null) { throw new ArgumentNullException(nameof(textView)); }
+                if (drawingContext == null) { throw new ArgumentNullException(nameof(drawingContext)); }
+                if (diffSegments == null || !textView.VisualLinesValid) { return; }
 
                 var visualLines = textView.VisualLines;
-                if (visualLines.Count == 0) {return;}
+                if (visualLines.Count == 0) { return; }
 
                 int viewStart = visualLines.First().FirstDocumentLine.Offset;
                 int viewEnd = visualLines.Last().LastDocumentLine.EndOffset;
@@ -61,17 +61,17 @@ namespace EddiSpeechResponder
                 Brush markerBrush;
                 switch (segment.type)
                 {
-                case DiffItem.DiffType.Deleted:
-                    markerBrush = deletedBrush;
-                    geoBuilder.AddSegment(textView, segment);
-                    break;
-                case DiffItem.DiffType.Inserted:
-                    markerBrush = addedBrush;
-                    geoBuilder.AddSegment(textView, segment);
-                    break;
-                default:
-                    markerBrush = null;
-                    break;
+                    case DiffItem.DiffType.Deleted:
+                        markerBrush = deletedBrush;
+                        geoBuilder.AddSegment(textView, segment);
+                        break;
+                    case DiffItem.DiffType.Inserted:
+                        markerBrush = addedBrush;
+                        geoBuilder.AddSegment(textView, segment);
+                        break;
+                    default:
+                        markerBrush = null;
+                        break;
                 }
 
                 Geometry geometry = geoBuilder.CreateGeometry();
@@ -100,16 +100,16 @@ namespace EddiSpeechResponder
             {
                 switch (diffItem.type)
                 {
-                case DiffItem.DiffType.Deleted:
-                case DiffItem.DiffType.Inserted:
-                    DiffSegment segment = new DiffSegment()
-                    {
-                        StartOffset = textBuilder.Length,
-                        Length = diffItem.data.Length,
-                        type = diffItem.type
-                    };
-                    diffHighlighter.AddSegment(segment);
-                    break;
+                    case DiffItem.DiffType.Deleted:
+                    case DiffItem.DiffType.Inserted:
+                        DiffSegment segment = new DiffSegment()
+                        {
+                            StartOffset = textBuilder.Length,
+                            Length = diffItem.data.Length,
+                            type = diffItem.type
+                        };
+                        diffHighlighter.AddSegment(segment);
+                        break;
                 }
                 textBuilder.AppendLine(diffItem.data);
             }
@@ -119,7 +119,7 @@ namespace EddiSpeechResponder
                 string newline = Environment.NewLine;
                 textBuilder.Remove(textBuilder.Length - newline.Length, newline.Length);
             }
-            catch (ArgumentOutOfRangeException) {} // pass
+            catch (ArgumentOutOfRangeException) { } // pass
 
             scriptView.Text = textBuilder.ToString();
         }

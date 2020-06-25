@@ -1,8 +1,9 @@
 using Eddi;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
-using EddiStarMapService;
 using EddiEvents;
+using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiCore;
 using Utilities;
 
 namespace EddiMissionMonitor

@@ -1,6 +1,4 @@
-﻿using ICSharpCode.AvalonEdit;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 
 namespace EddiSpeechResponder
 {

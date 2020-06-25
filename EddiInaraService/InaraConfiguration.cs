@@ -25,7 +25,7 @@ namespace EddiInaraService
 
         [JsonIgnore]
         private string dataPath;
-        
+
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\inara.json is used

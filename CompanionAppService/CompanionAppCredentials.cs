@@ -22,7 +22,7 @@ namespace EddiCompanionAppService
 
         [JsonIgnore]
         private string dataPath = defaultPath;
-        
+
         /// <summary>
         /// Obtain credentials from a file. If filepath is not supplied then defaultPath is used.
         /// </summary>

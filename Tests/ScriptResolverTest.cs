@@ -96,7 +96,7 @@ namespace UnitTests
                 {"test", new Script("test", null, false, "Hello {name}")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value> {["name"] = "world"};
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value> { ["name"] = "world" };
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -110,7 +110,7 @@ namespace UnitTests
                 {"test", new Script("test", null, false, "Well {F(\"func\")}")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Cottle.Value> {["name"] = "world"};
+            var dict = new Dictionary<string, Cottle.Value> { ["name"] = "world" };
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
         }
@@ -137,7 +137,7 @@ namespace UnitTests
                 {"func", new Script("func", null, false, "b")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Cottle.Value> {["c"] = "c"};
+            var dict = new Dictionary<string, Cottle.Value> { ["c"] = "c" };
 
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)

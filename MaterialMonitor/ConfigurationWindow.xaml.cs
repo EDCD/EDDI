@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiNavigationService;
 using System;
 using System.Globalization;
@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using EddiCore;
 using Utilities;
 
 namespace EddiMaterialMonitor

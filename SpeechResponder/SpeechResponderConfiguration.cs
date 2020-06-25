@@ -19,7 +19,7 @@ namespace EddiSpeechResponder
 
         [JsonIgnore]
         private string dataPath;
-        
+
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\speechresponder.json is used

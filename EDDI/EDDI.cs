@@ -169,7 +169,7 @@ namespace EddiCore
                     }
                     if (configuration.HomeSystem == configuration.SquadronSystem)
                     {
-                        essentialAsyncTasks.Add(Task.Run((Action) ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
+                        essentialAsyncTasks.Add(Task.Run((Action)ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
                     }
                     else
                     {
@@ -807,7 +807,7 @@ namespace EddiCore
             }
         }
 
-        private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event) 
+        private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)
         {
             // Only update our information if we are still docked at the carrier
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
@@ -878,7 +878,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCarrierPadsLocked(CarrierPadsLockedEvent @event) 
+        private bool eventCarrierPadsLocked(CarrierPadsLockedEvent @event)
         {
             // Only trigger this event when we are still at the carrier
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
@@ -888,7 +888,7 @@ namespace EddiCore
             return false;
         }
 
-        private bool eventCarrierJumped(CarrierJumpedEvent @event) 
+        private bool eventCarrierJumped(CarrierJumpedEvent @event)
         {
             if (@event.docked)
             {
@@ -1964,7 +1964,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCommanderLoading(CommanderLoadingEvent theEvent) 
+        private bool eventCommanderLoading(CommanderLoadingEvent theEvent)
         {
             // Set our commander name and ID
             if (Cmdr.name != theEvent.name)
@@ -2426,7 +2426,7 @@ namespace EddiCore
                             };
                             updateThread.Start();
                         }
-                        
+
                         if (updatedCurrentStarSystem)
                         {
                             Logging.Debug("Star system information updated from remote server; updating local copy");

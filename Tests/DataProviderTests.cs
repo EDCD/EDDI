@@ -1,14 +1,13 @@
-﻿using EddiBgsService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 using Tests.Properties;
 
 namespace UnitTests

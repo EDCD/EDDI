@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
@@ -11,7 +11,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EddiStatusMonitor
@@ -455,7 +454,7 @@ namespace EddiStatusMonitor
                     if (!gliding && lastEnteredNormalSpaceEvent != null)
                     {
                         // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                        if (currentStatus.fsd_status == "ready" 
+                        if (currentStatus.fsd_status == "ready"
                             && currentStatus.slope >= -60 && currentStatus.slope <= -5
                             && currentStatus.altitude < 100000
                             && currentStatus.altitude < lastStatus.altitude)
@@ -499,7 +498,7 @@ namespace EddiStatusMonitor
         internal class NativeMethods
         {
             [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
         }
 
         public void PreHandle(Event @event)

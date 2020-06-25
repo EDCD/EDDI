@@ -19,7 +19,7 @@ namespace EddiShipMonitor
 
         [JsonIgnore]
         private string dataPath;
-        
+
         public ShipMonitorConfiguration()
         {
             shipyard = new ObservableCollection<Ship>();

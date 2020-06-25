@@ -1,7 +1,7 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
-using EddiDataDefinitions;
 using System.Linq;
 
 namespace EddiShipMonitor

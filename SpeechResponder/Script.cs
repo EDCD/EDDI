@@ -1,9 +1,9 @@
 ﻿using EddiSpeechService;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Newtonsoft.Json.Linq;
 
 namespace EddiSpeechResponder
 {
@@ -47,8 +47,8 @@ namespace EddiSpeechResponder
 
         [JsonProperty("default")]
         // Determine whether the script matches the default, treating empty strings and null values as equal
-        public bool Default => string.IsNullOrWhiteSpace(Value) 
-            ? string.IsNullOrWhiteSpace(defaultValue) 
+        public bool Default => string.IsNullOrWhiteSpace(Value)
+            ? string.IsNullOrWhiteSpace(defaultValue)
             : string.Equals(Value, defaultValue);
 
         [JsonIgnore]

@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCore;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -22,7 +23,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiCore;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -294,7 +294,7 @@ namespace EddiVoiceAttackResponder
         public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
-            
+
             // Stop the updater thread.
             updaterThread?.Abort();
 
@@ -316,7 +316,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void OnExit(object sender, ExitEventArgs e) 
+        private static void OnExit(object sender, ExitEventArgs e)
         {
             if (!App.eddiMutex.SafeWaitHandle.IsClosed)
             {
@@ -453,8 +453,8 @@ namespace EddiVoiceAttackResponder
         {
             string config = (string)vaProxy.Context;
 
-            if (Application.Current?.Dispatcher != null 
-                && (bool)Application.Current?.Dispatcher?.Invoke(() => Application.Current.MainWindow == null) 
+            if (Application.Current?.Dispatcher != null
+                && (bool)Application.Current?.Dispatcher?.Invoke(() => Application.Current.MainWindow == null)
                 && config != "configuration")
             {
                 vaProxy.WriteToLog("The EDDI configuration window is not open.", "orange");
@@ -477,8 +477,8 @@ namespace EddiVoiceAttackResponder
                                 }
                                 else
                                 {
-                                        // Tell the configuration UI to restore its window if minimized
-                                        setWindowState(ref App.vaProxy, WindowState.Minimized, true, false);
+                                    // Tell the configuration UI to restore its window if minimized
+                                    setWindowState(ref App.vaProxy, WindowState.Minimized, true, false);
                                     App.vaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
                                 }
                             }

@@ -123,7 +123,7 @@ namespace EddiJournalMonitor
                     }
                     lastSize = thisSize;
                 }
-                Thread.Sleep(activePolling ? pollingIntervalActiveMs : pollingIntervalRelaxedMs); 
+                Thread.Sleep(activePolling ? pollingIntervalActiveMs : pollingIntervalRelaxedMs);
             }
         }
 

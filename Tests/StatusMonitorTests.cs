@@ -1,9 +1,8 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiStatusMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using EddiCore;
 
 namespace UnitTests
 {

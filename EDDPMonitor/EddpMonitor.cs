@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using EddiCore;
 using Utilities;
 
 namespace EddiEddpMonitor

@@ -1,14 +1,13 @@
-﻿using System;
-using Eddi;
+﻿using EddiCore;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using EddiSpeechResponder.Service;
 using ICSharpCode.AvalonEdit.Search;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using EddiCore;
-using EddiSpeechResponder.Service;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -135,11 +134,11 @@ namespace EddiSpeechResponder
             string newScriptText = string.IsNullOrWhiteSpace(scriptView.Text) ? null : scriptView.Text;
             if (_script != null)
             {
-                Script newScript = new Script(scriptName, 
-                    scriptDescription, 
+                Script newScript = new Script(scriptName,
+                    scriptDescription,
                     _script?.Responder ?? false,
-                    newScriptText, 
-                    Priority, 
+                    newScriptText,
+                    Priority,
                     _script.defaultValue);
                 _script = newScript;
             }
@@ -186,11 +185,11 @@ namespace EddiSpeechResponder
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
-            ScriptRecoveryService.SaveRecoveryScript(ScriptValue, 
-                ScriptName, 
-                ScriptDescription, 
+            ScriptRecoveryService.SaveRecoveryScript(ScriptValue,
+                ScriptName,
+                ScriptDescription,
                 Responder,
-                Priority, 
+                Priority,
                 _script.defaultValue);
             // Splice the new script in to the existing scripts
             ScriptValue = scriptView.Text;

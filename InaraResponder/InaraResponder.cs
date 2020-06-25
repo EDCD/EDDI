@@ -1,5 +1,5 @@
-﻿using Eddi;
-using EddiCargoMonitor;
+﻿using EddiCargoMonitor;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EddiInaraResponder
@@ -48,7 +47,7 @@ namespace EddiInaraResponder
             return true;
         }
 
-        private void OnInvalidAPIkey(object sender, EventArgs e) 
+        private void OnInvalidAPIkey(object sender, EventArgs e)
         {
             // Alert the user that there is a problem with the Inara API key
             Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
@@ -315,7 +314,7 @@ namespace EddiInaraResponder
             }
         }
 
-        private void handleCarrierJumpedEvent(CarrierJumpedEvent @event) 
+        private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
             var eventData = new Dictionary<string, object>()
             {

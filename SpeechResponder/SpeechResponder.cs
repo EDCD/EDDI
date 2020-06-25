@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
-using EddiCore;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -127,7 +126,7 @@ namespace EddiSpeechResponder
             subtitles = configuration.Subtitles;
             subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Debug($"Reloaded {ResponderName()}");
-    }
+        }
 
         public void Handle(Event @event)
         {
@@ -218,7 +217,7 @@ namespace EddiSpeechResponder
                 }
             }
         }
-        
+
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();

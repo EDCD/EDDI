@@ -1,9 +1,8 @@
-﻿using Eddi;
+﻿using EddiCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Rollbar;
 using System.IO;
-using EddiCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
@@ -19,7 +18,7 @@ namespace UnitTests
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            privateObject.SetFieldOrProperty("gameIsBeta", true );
+            privateObject.SetFieldOrProperty("gameIsBeta", true);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]

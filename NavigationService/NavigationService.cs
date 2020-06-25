@@ -1,5 +1,5 @@
-﻿using Eddi;
-using EddiCargoMonitor;
+﻿using EddiCargoMonitor;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -8,7 +8,6 @@ using EddiStarMapService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EddiCore;
 using Utilities;
 
 namespace EddiNavigationService

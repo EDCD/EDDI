@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EddiDataDefinitions;
+using System;
 using System.Runtime.Caching;
-using EddiDataDefinitions;
 
 namespace EddiDataProviderService
 {

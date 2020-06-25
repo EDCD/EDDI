@@ -72,7 +72,7 @@ namespace EddiSpeechResponder
             Close();
         }
 
-#region DataErrorInfo
+        #region DataErrorInfo
         public string Error
         {
             get
@@ -113,7 +113,7 @@ namespace EddiSpeechResponder
 
             return string.Empty;
         }
-#endregion
+        #endregion
 
     }
 }

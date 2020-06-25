@@ -1,9 +1,9 @@
-﻿using System;
+﻿using EddiInaraService;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using EddiInaraService;
 using System.Timers;
 using System.Windows.Controls;
 
@@ -122,9 +122,9 @@ namespace EddiInaraResponder
         // Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null) 
-        { 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

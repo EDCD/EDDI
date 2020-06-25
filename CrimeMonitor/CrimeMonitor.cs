@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiBgsService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -16,8 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiCore;
-using EddiStarMapService;
 using Utilities;
 
 namespace EddiCrimeMonitor
@@ -249,8 +248,8 @@ namespace EddiCrimeMonitor
                     target.Power = @event.Power ?? Power.None;
 
                     // Prioritize power allegiance (when present) over faction
-                    target.Allegiance = @event.Power != Power.None 
-                        ? @event.Power?.Allegiance 
+                    target.Allegiance = @event.Power != Power.None
+                        ? @event.Power?.Allegiance
                         : faction?.Allegiance;
 
                     target.LegalStatus = @event.LegalStatus;

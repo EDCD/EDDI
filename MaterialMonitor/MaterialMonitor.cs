@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiMissionMonitor;
@@ -14,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiCore;
 using Utilities;
 
 namespace EddiMaterialMonitor

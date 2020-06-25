@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace EddiSpeechResponder.Service
 {
@@ -81,11 +81,11 @@ namespace EddiSpeechResponder.Service
                 try
                 {
                     await Task.Delay(TimeSpan.FromSeconds(3));
-                    SaveRecoveryScript(window.ScriptValue, 
-                        window.ScriptName, 
-                        window.ScriptDescription, 
-                        window.Responder, 
-                        window.Priority, 
+                    SaveRecoveryScript(window.ScriptValue,
+                        window.ScriptName,
+                        window.ScriptDescription,
+                        window.Responder,
+                        window.Priority,
                         window.ScriptDefaultValue);
                 }
                 finally
@@ -101,8 +101,8 @@ namespace EddiSpeechResponder.Service
         public void SaveRecoveryScript(string scriptValue,
             string scriptName,
             string scriptDescription,
-            bool isResponder, 
-            int priority, 
+            bool isResponder,
+            int priority,
             string defaultScript)
         {
             lock (_lockRoot)

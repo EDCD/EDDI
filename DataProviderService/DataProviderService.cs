@@ -1,5 +1,4 @@
-﻿using EddiBgsService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
