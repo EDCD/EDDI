@@ -96,9 +96,9 @@ namespace UnitTests
             ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
-            string result = resolver.resolveFromName("test", dict);
+            string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
-            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict);
+            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict, true);
             Assert.AreEqual("Hello world", result2);
         }
 
@@ -111,9 +111,9 @@ namespace UnitTests
             ScriptResolver resolver = new ScriptResolver(scripts);
             var dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
-            string result = resolver.resolveFromName("test", dict);
+            string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
-            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict);
+            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict, true);
             Assert.AreEqual("Well Hello world", result2);
         }
 
@@ -124,7 +124,7 @@ namespace UnitTests
             scripts.Add("test", new Script("test", null, false, "{set x to \"Hello\"} {OneOf(\"{x} world\")}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
             var dict = new Dictionary<string, Cottle.Value>();
-            string result = resolver.resolveFromName("test", dict);
+            string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
 
@@ -141,7 +141,7 @@ namespace UnitTests
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)
             {
-                results.Add(resolver.resolveFromName("test", dict));
+                results.Add(resolver.resolveFromName("test", dict, true));
             }
             Assert.IsTrue(results.Contains(@"The letter is a."));
             results.RemoveAll(result => result == @"The letter is a.");

@@ -59,13 +59,13 @@ namespace EddiSpeechResponder
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
+        public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
         {
-            return resolveFromName(name, buildStore(vars), master);
+            return resolveFromName(name, buildStore(vars), isTopLevelScript);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromName(string name, BuiltinStore store, bool master = true)
+        public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript)
         {
             Logging.Debug("Resolving script " + name);
             scripts.TryGetValue(name, out Script script);
@@ -81,29 +81,29 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveFromValue(script.Value, store, master, script);
+            return resolveFromValue(script.Value, store, isTopLevelScript, script);
         }
 
         /// <summary> From the default dictionary of variable values in the default store </summary>
-        public string resolveFromValue(string scriptValue, bool master = true)
+        public string resolveFromValue(string scriptValue, bool isTopLevelScript)
         {
-            return resolveFromValue(scriptValue, createVariables(), master);
+            return resolveFromValue(scriptValue, createVariables(), isTopLevelScript);
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool master = true)
+        public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
         {
-            return resolveFromValue(scriptValue, buildStore(vars), master);
+            return resolveFromValue(scriptValue, buildStore(vars), isTopLevelScript);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromValue(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
+        public string resolveFromValue(string script, BuiltinStore store, bool isTopLevelScript, Script scriptObject = null)
         {
             try
             {
-                // Before we start, we remove the context for master scripts.
+                // Before we start, we remove the context for isTopLevelScript scripts.
                 // This means that scripts without context still work as expected
-                if (master)
+                if (isTopLevelScript)
                 {
                     EDDI.Instance.State["eddi_context_last_subject"] = null;
                     EDDI.Instance.State["eddi_context_last_action"] = null;
@@ -116,7 +116,7 @@ namespace EddiSpeechResponder
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 result = result.Trim() == "" ? null : result.Trim();
 
-                if (master && result != null)
+                if (isTopLevelScript && result != null)
                 {
                     string stored = result;
                     // Remove any leading pause

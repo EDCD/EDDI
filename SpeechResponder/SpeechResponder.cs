@@ -200,7 +200,7 @@ namespace EddiSpeechResponder
         public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             Dictionary<string, Cottle.Value> dict = resolver.createVariables(theEvent);
-            string speech = resolver.resolveFromName(scriptName, dict);
+            string speech = resolver.resolveFromName(scriptName, dict, true);
             if (speech != null)
             {
                 if (subtitles)
