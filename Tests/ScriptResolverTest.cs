@@ -98,8 +98,6 @@ namespace UnitTests
             dict["name"] = "world";
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
-            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict, true);
-            Assert.AreEqual("Hello world", result2);
         }
 
         [TestMethod]
@@ -113,8 +111,6 @@ namespace UnitTests
             dict["name"] = "world";
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
-            string result2 = resolver.resolveFromValue(scripts["test"].Value, dict, true);
-            Assert.AreEqual("Well Hello world", result2);
         }
 
         [TestMethod]

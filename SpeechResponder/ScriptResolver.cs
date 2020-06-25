@@ -94,13 +94,6 @@ namespace EddiSpeechResponder
             return resolveFromValue(scriptValue, store, isTopLevelScript);
         }
 
-        /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
-        {
-            BuiltinStore store = buildStore(vars);
-            return resolveFromValue(scriptValue, store, isTopLevelScript);
-        }
-
         /// <summary> From a custom store </summary>
         public string resolveFromValue(string script, BuiltinStore store, bool isTopLevelScript, Script scriptObject = null)
         {
