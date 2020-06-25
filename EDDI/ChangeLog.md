@@ -2,6 +2,24 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b7
+  * Speech responder
+    * Fixed text-to-speech errors introduced in b5 and b6 by reverting the Cottle text rendering package to the old version..
+
+### 3.5.3-b6
+  * Frontier API
+    * Fixed missing client ID in 3.5.3-b5
+  * Speech responder
+    * ~~Fixed Speech Responder always reporting that script errors are at line zero.~~
+    * Fixed a typo in the `Mission check galaxy` script.
+
+### 3.5.3-b5
+  * Core
+    * ~~Updated Rollbar telemetry service to reduce web traffic when idle and to add some additional context from preceeding eddi.log entries.~~
+    * Various bug fixes, including fixing a bug that could cause the UI to become de-coupled from the true speech configuration. 
+  * Speech responder
+    * ~~Updated Cottle text rendering package to the latest version.~~
+
 ### 3.5.3-b4
   * Core
     * Implemented new `Asteroid cracked` and `Asteroid prospected` events. 
