@@ -1220,7 +1220,7 @@ namespace EddiSpeechResponder
 
             store["RefreshProfile"] = new NativeFunction((values) =>
             {
-                bool stationRefresh = (values.Count == 0 ? false : values[0].AsBoolean);
+                bool stationRefresh = (values.Count != 0 && values[0].AsBoolean);
                 EDDI.Instance.refreshProfile(stationRefresh);
                 return "";
             }, 0, 1);
@@ -1287,7 +1287,7 @@ namespace EddiSpeechResponder
         private static Ship findShip(int? localId, string model)
         {
             ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-            Ship ship = null;
+            Ship ship;
             if (localId == null)
             {
                 // No local ID so take the current ship

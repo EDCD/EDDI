@@ -91,11 +91,12 @@ namespace UnitTests
         [TestMethod]
         public void TestResolverSimple()
         {
-            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("test", new Script("test", null, false, "Hello {name}"));
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>
+            {
+                {"test", new Script("test", null, false, "Hello {name}")}
+            };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-            dict["name"] = "world";
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value> {["name"] = "world"};
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -103,12 +104,13 @@ namespace UnitTests
         [TestMethod]
         public void TestResolverFunctions()
         {
-            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("func", new Script("func", null, false, "Hello {name}"));
-            scripts.Add("test", new Script("test", null, false, "Well {F(\"func\")}"));
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>
+            {
+                {"func", new Script("func", null, false, "Hello {name}")},
+                {"test", new Script("test", null, false, "Well {F(\"func\")}")}
+            };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Cottle.Value>();
-            dict["name"] = "world";
+            var dict = new Dictionary<string, Cottle.Value> {["name"] = "world"};
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
         }
@@ -116,8 +118,10 @@ namespace UnitTests
         [TestMethod]
         public void TestResolverNativeSetCustomFunction()
         {
-            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("test", new Script("test", null, false, "{set x to \"Hello\"} {OneOf(\"{x} world\")}"));
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>
+            {
+                {"test", new Script("test", null, false, "{set x to \"Hello\"} {OneOf(\"{x} world\")}")}
+            };
             ScriptResolver resolver = new ScriptResolver(scripts);
             var dict = new Dictionary<string, Cottle.Value>();
             string result = resolver.resolveFromName("test", dict, true);
@@ -127,12 +131,13 @@ namespace UnitTests
         [TestMethod]
         public void TestResolverLayeredCustomFunction()
         {
-            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("test", new Script("test", null, false, "The letter is {OneOf(\"a\", F(\"func\"), \"{c}\")}."));
-            scripts.Add("func", new Script("func", null, false, "b"));
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>
+            {
+                {"test", new Script("test", null, false, "The letter is {OneOf(\"a\", F(\"func\"), \"{c}\")}.")},
+                {"func", new Script("func", null, false, "b")}
+            };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Cottle.Value>();
-            dict["c"] = "c";
+            var dict = new Dictionary<string, Cottle.Value> {["c"] = "c"};
 
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)

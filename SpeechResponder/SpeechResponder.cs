@@ -182,9 +182,9 @@ namespace EddiSpeechResponder
             bool sayOutLoud = true;
             if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
             {
-                if (tmp is bool)
+                if (tmp is bool b)
                 {
-                    sayOutLoud = !(bool)tmp;
+                    sayOutLoud = !b;
                 }
             }
             return sayOutLoud;
