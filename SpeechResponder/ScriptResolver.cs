@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cottle;
 using EddiCore;
 using Utilities;
 
@@ -61,7 +62,8 @@ namespace EddiSpeechResponder
         /// <summary> From a custom dictionary of variable values in the default store </summary>
         public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
         {
-            return resolveFromName(name, buildStore(vars), isTopLevelScript);
+            BuiltinStore store = buildStore(vars);
+            return resolveFromName(name, store, isTopLevelScript);
         }
 
         /// <summary> From a custom store </summary>
@@ -87,13 +89,16 @@ namespace EddiSpeechResponder
         /// <summary> From the default dictionary of variable values in the default store </summary>
         public string resolveFromValue(string scriptValue, bool isTopLevelScript)
         {
-            return resolveFromValue(scriptValue, createVariables(), isTopLevelScript);
+            Dictionary<string, Value> vars = createVariables();
+            BuiltinStore store = buildStore(vars);
+            return resolveFromValue(scriptValue, store, isTopLevelScript);
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
         public string resolveFromValue(string scriptValue, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
         {
-            return resolveFromValue(scriptValue, buildStore(vars), isTopLevelScript);
+            BuiltinStore store = buildStore(vars);
+            return resolveFromValue(scriptValue, store, isTopLevelScript);
         }
 
         /// <summary> From a custom store </summary>
