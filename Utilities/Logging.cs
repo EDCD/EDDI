@@ -263,11 +263,11 @@ namespace Utilities
             set => RollbarLocator.RollbarInstance.Config.Enabled = value;
         }
 
-        public static void configureRollbar(string uniqueId)
+        public static void configureRollbar(string uniqueId, bool fromVA = false)
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
-                Environment = Constants.EDDI_VERSION.ToString(),
+                Environment = Constants.EDDI_VERSION + (fromVA ? " VA" : ""),
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
