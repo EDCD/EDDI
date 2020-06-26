@@ -31,7 +31,7 @@ namespace UnitTests
         {
             Event data = new UnhandledEvent(DateTime.UtcNow, "testEvent");
             Dictionary<string, object> result = PrepRollbarData(data);
-            Assert.IsFalse(result.TryGetValue("timestamp", out object timestamp));
+            Assert.IsFalse(result.TryGetValue("timestamp", out object timestamp), "'timestamp' property should have been removed");
             Assert.IsTrue(result.TryGetValue("type", out object type));
         }
 
@@ -75,6 +75,18 @@ namespace UnitTests
             result.TryGetValue("exception", out object theException);
             ((JObject)theException).TryGetValue("Message", out JToken theExceptionMessage);
             Assert.AreEqual(exception.Message, theExceptionMessage?.ToString());
+        }
+
+        [TestMethod]
+        public void TestArray()
+        {
+            string[] data = { "a", "b", "c" };
+            Dictionary<string, object> result = PrepRollbarData(data);
+            Assert.IsTrue(result.TryGetValue("data", out object package));
+            for (int i = 0; i < data.Length; i++)
+            {
+                Assert.AreEqual(data[i], ((JArray)package)[i]);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace Utilities
 {
@@ -19,6 +20,8 @@ namespace Utilities
 
     public partial class Logging : _Rollbar
     {
+        private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
+
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; }
 
@@ -126,68 +129,64 @@ namespace Utilities
             if (data is null) { return null; }
             try
             {
-                // Serialize the data to a string 
-                var serialized = JsonConvert.SerializeObject(data);
-                // Redact all environment variables we find
-                serialized = Redaction.RedactEnvironmentVariables(serialized);
-                // Remove undesirable properties
-                serialized = FilterProperties(serialized);
-
-                try
+                if (data is string str && !JsonRegex.IsMatch(str))
                 {
-                    data = JsonConvert.DeserializeObject<Dictionary<string, object>>(serialized);
+                    return Wrap("message", Redaction.RedactEnvironmentVariables(str));
                 }
-                catch (Exception)
+                else
                 {
-                    // something went wrong with deserialization: we will need to redact manually
-                    if (data is Exception ex)
+                    // Serialize the data to a string 
+                    string serialized = JsonConvert.SerializeObject(data);
+                    serialized = FilterPropertiesFromJsonString(serialized);
+                    serialized = Redaction.RedactEnvironmentVariables(serialized);
+                    if (data is Exception)
                     {
-                        data = new Dictionary<string, object>()
-                        {
-                            {"message", Redaction.RedactEnvironmentVariables(ex.Message)},
-                            {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
-                        };
+                        return JsonConvert.DeserializeObject<Dictionary<string, object>>(serialized);
                     }
-                    else if (data is string)
+                    else
                     {
-                        data = new Dictionary<string, object>()
+                        var jToken = JToken.Parse(serialized);
+                        if (jToken is JArray jArray)
                         {
-                            {"message", Redaction.RedactEnvironmentVariables((string)data)}
-                        };
-                    }
-                    else if (!(data is Dictionary<string, object>))
-                    {
-                        var wrappedData = new Dictionary<string, object>()
+                            return Wrap("data", jArray);
+                        }
+                        if (jToken is JObject jObject)
                         {
-                            {"data", Redaction.RedactEnvironmentVariables(data.ToString())}
-                        };
-                        data = wrappedData;
+                            return jObject.ToObject<Dictionary<string, object>>();
+                        }
                     }
                 }
-
-                return (Dictionary<string, object>)data;
             }
             catch (Exception)
             {
-                // Return null and don't send data to Rollbar
-                return null;
+                // Something went wrong. Return null and don't send data to Rollbar
             }
+            return null;
         }
 
-        private static string FilterProperties(string json)
+        private static Dictionary<string, object> Wrap(string key, object data)
         {
-            if (json == null) {return null;}
+            var wrappedData = new Dictionary<string, object>()
+            {
+                {key, data}
+            };
+            return wrappedData;
+        }
+
+        private static string FilterPropertiesFromJsonString(string json)
+        {
+            if (string.IsNullOrEmpty(json)) { return null; }
+
             try
             {
-                var data = JObject.Parse(json);
-
-                if (data != null)
+                var jToken = JToken.Parse(json);
+                if (jToken is JObject data)
                 {
                     // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
                     // Strip module data that is not useful to report for more consistent matching
                     // Strip commodity data that is not useful to report for more consistent matching
                     // Strip other sensitive data like "apiKey" or "frontierID"
-                    string[] filterProperties = new string[]
+                    string[] filterProperties =
                     {
                         "timestamp",
                         "on",
@@ -201,7 +200,8 @@ namespace Utilities
                         "demandbracket",
                         "StatusFlags",
                         "apiKey",
-                        "frontierID"
+                        "frontierID",
+                        "FID"
                     };
 
                     foreach (string property in filterProperties)
@@ -212,12 +212,13 @@ namespace Utilities
                             .ToList()
                             .ForEach(attr => attr.Remove());
                     }
+
                     json = data.ToString();
                 }
             }
             catch (Exception)
             {
-                // Not parseable.
+                // Not parseable json.
             }
             return json;
         }
