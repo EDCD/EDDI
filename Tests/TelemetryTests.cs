@@ -29,9 +29,9 @@ namespace UnitTests
         [TestMethod]
         public void TestOther()
         {
-            Event data = new UnhandledEvent(DateTime.UtcNow, "testEvent");
+            Event data = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
             Dictionary<string, object> result = PrepRollbarData(data);
-            Assert.IsFalse(result.TryGetValue("timestamp", out object timestamp), "'timestamp' property should have been removed");
+            Assert.IsFalse(result.TryGetValue("frontierID", out object frontierID), "'frontierID' property should have been removed");
             Assert.IsTrue(result.TryGetValue("type", out object type));
         }
 
@@ -52,7 +52,7 @@ namespace UnitTests
         public void TestDictionary()
         {
             string str = "This is a Dictionary payload";
-            Event @event = new UnhandledEvent(DateTime.UtcNow, "testEvent");
+            Event @event = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
             Exception exception = new InvalidCastException();
 
             Dictionary<string, object> data = new Dictionary<string, object>();
@@ -66,8 +66,8 @@ namespace UnitTests
             Assert.AreEqual(str, message?.ToString());
 
             result.TryGetValue("event", out object theEvent);
-            ((JObject)theEvent).TryGetValue("timestamp", out JToken timestamp);
-            Assert.IsNull(timestamp?.ToString());
+            ((JObject)theEvent).TryGetValue("frontierID", out JToken frontierID);
+            Assert.IsNull(frontierID?.ToString());
             ((JObject)theEvent).TryGetValue("type", out JToken type);
             Assert.IsNotNull(type);
             Assert.AreEqual(@event.type, type?.ToString());

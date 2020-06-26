@@ -188,7 +188,7 @@ namespace Utilities
                     // Strip other sensitive data like "apiKey" or "frontierID"
                     string[] filterProperties =
                     {
-                        "timestamp",
+                        "name",
                         "on",
                         "priority",
                         "health",
