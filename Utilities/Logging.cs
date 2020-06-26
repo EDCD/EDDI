@@ -258,7 +258,6 @@ namespace Utilities
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
-        private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
         public static bool TelemetryEnabled {
             get => RollbarLocator.RollbarInstance.Config.Enabled;
             set => RollbarLocator.RollbarInstance.Config.Enabled = value;
