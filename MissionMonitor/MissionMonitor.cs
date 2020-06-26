@@ -990,13 +990,6 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public void SetMissionsRouteData(string list, decimal distance)
-        {
-            missionsRouteList = list;
-            missionsRouteDistance = distance;
-            writeMissions();
-        }
-
         private bool SystemPendingMissions(string system)
         {
             foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
