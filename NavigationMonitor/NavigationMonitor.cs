@@ -23,6 +23,9 @@ namespace EddiNavigationMonitor
 {
     public class NavigationMonitor : EDDIMonitor
     {
+        // Engage guidance system
+        private bool running;
+
         // Observable collection for us to handle changes
         public ObservableCollection<Bookmark> bookmarks { get; private set; }
 
@@ -86,22 +89,85 @@ namespace EddiNavigationMonitor
         }
         public bool NeedsStart()
         {
-            // We don't actively do anything, just listen to events
-            return false;
+            return true;
         }
 
         public void Start()
         {
+            _start();
         }
 
         public void Stop()
         {
+            running = false;
         }
 
         public void Reload()
         {
             readBookmarks();
             Logging.Info($"Reloaded {MonitorName()}");
+        }
+
+        public void _start()
+        {
+            running = true;
+
+            while (running)
+            {
+                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                if (navConfig.guidanceSystem)
+                {
+                    decimal distance = 0;
+                    decimal heading = 0;
+                    decimal headingError = 0;
+                    decimal slope = 0;
+                    decimal slopeError = 0;
+
+                    Bookmark bookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+                    if (bookmark?.isset ?? false)
+                    {
+                        StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
+                        if (currentSystem?.systemname == bookmark.system)
+                        {
+                            
+                            Status currentStatus = NavigationService.Instance.currentStatus;
+
+                            // Activate guidance system when near surface of the bookmark body
+                            if (currentStatus?.near_surface ?? false)
+                            {
+                                Body currentBody = EDDI.Instance.CurrentStellarBody;
+                                if (currentBody != null && currentBody.shortname == bookmark.body)
+                                {
+                                    heading = CalculateHeading(currentStatus, bookmark.latitude, bookmark.longitude);
+                                    headingError = heading - (decimal)currentStatus.heading;
+                                    distance = CalculateDistance(currentStatus, bookmark.latitude, bookmark.longitude);
+
+                                    if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
+                                    {
+                                        if (currentStatus?.slope != null)
+                                        {
+                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude, (double)distance) * 180 / Math.PI, 4);
+                                            slopeError = slope - (decimal)currentStatus.slope;
+                                        }
+                                    }
+
+                                    // Guidance system inactive when destination reached
+                                    if (distance < 0.5M)
+                                    {
+                                        bookmark.isset = false;
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, "complete", null, null, null, null, null));
+                                    }
+                                    else
+                                    {
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, "update", heading, headingError, slope, slopeError, distance));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Thread.Sleep(3000);
+            }
         }
 
         public UserControl ConfigurationTabItem()
@@ -164,6 +230,10 @@ namespace EddiNavigationMonitor
             {
                 handleJumpedEvent((JumpedEvent)@event);
             }
+            else if (@event is EnteredNormalSpaceEvent)
+            {
+                handleEnteredNormalSpaceEvent((EnteredNormalSpaceEvent)@event);
+            }
             else if (@event is NavRouteEvent)
             {
                 handleNavRouteEvent((NavRouteEvent)@event);
@@ -180,6 +250,7 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                UpdateBookmarkSetStatus(@event.systemname);
             }
         }
 
@@ -189,6 +260,7 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                UpdateBookmarkSetStatus(@event.systemname);
             }
         }
         private void handleJumpedEvent(JumpedEvent @event)
@@ -197,6 +269,36 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
+                UpdateBookmarkSetStatus(@event.system);
+            }
+        }
+
+        private void handleEnteredNormalSpaceEvent(EnteredNormalSpaceEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                if (@event.bodytype == "Station")
+                {
+                    UpdateBookmarkSetStatus(@event.systemname, @event.bodyname);
+                }
+            }
+        }
+
+        private void UpdateBookmarkSetStatus (string system, string station = null)
+        {
+            // Update bookmark 'set' status
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            Bookmark bookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            if (bookmark?.system == system)
+            {
+                if (bookmark.body is null && !bookmark.isstation || !string.IsNullOrEmpty(station) && bookmark.poi == station)
+                {
+                    bookmark.isset = false;
+                }
+
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
 
@@ -261,9 +363,9 @@ namespace EddiNavigationMonitor
                 {
                     navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-                    navConfig.latitude = @event.latitude;
-                    navConfig.longitude = @event.longitude;
-                    navConfig.poi = @event.nearestdestination;
+                    navConfig.tdLat = @event.latitude;
+                    navConfig.tdLong = @event.longitude;
+                    navConfig.tdPOI = @event.nearestdestination;
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 }
             }
@@ -279,9 +381,9 @@ namespace EddiNavigationMonitor
                 {
                     navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-                    navConfig.latitude = null;
-                    navConfig.longitude = null;
-                    navConfig.poi = null;
+                    navConfig.tdLat = null;
+                    navConfig.tdLong = null;
+                    navConfig.tdPOI = null;
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 }
             }
@@ -359,6 +461,37 @@ namespace EddiNavigationMonitor
             }
         }
 
+        public void CalculateCoordinates(Status curr, ref decimal? latitude, ref decimal? longitude)
+        {
+            if (curr?.slope != null)
+            {
+                // Convert latitude, longitude & slope to radians
+                double currLat = (double)curr.latitude * Math.PI / 180;
+                double currLong = (double)curr.longitude * Math.PI / 180;
+                double slope = -(double)curr.slope * Math.PI / 180;
+                double altitude = (double)curr.altitude / 1000;
+
+                // Determine minimum slope
+                double radius = (double)curr.planetradius / 1000;
+                double minSlope = Math.Acos(radius / (altitude + radius));
+                if (slope > minSlope)
+                {
+                    // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
+                    double a = Math.PI / 2 - slope;
+                    double path = altitude / Math.Cos(a);
+                    double c = Math.Asin(path * Math.Sin(a) / radius);
+                    double heading = (double)curr.heading * Math.PI / 180;
+                    double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
+                    double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
+                        Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
+
+                    // Convert position to degrees
+                    latitude = (decimal)Math.Round(Lat * 180 / Math.PI, 4);
+                    longitude = (decimal)Math.Round(Lon * 180 / Math.PI, 4);
+                }
+            }
+        }
+
         public decimal CalculateDistance(NavRouteInfo curr, NavRouteInfo dest)
         {
             double square(double x) => x * x;
@@ -381,7 +514,8 @@ namespace EddiNavigationMonitor
             {
                 if (latitude == null || longitude == null)
                 {
-                    latitude = navConfig?.latitude;
+                    latitude = navConfig?.tdLat;
+                    longitude = navConfig?.tdLong;
                 }
 
                 if (latitude != null && longitude != null)
@@ -404,19 +538,18 @@ namespace EddiNavigationMonitor
             return (decimal)distance;
         }
 
-        public decimal CalculateHeading(Status curr)
+        public decimal CalculateHeading(Status curr, decimal? latitude, decimal? longitude)
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             double heading = 0;
 
             if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
             {
-                if (navConfig?.latitude != null && navConfig?.longitude != null)
+                if (latitude != null && longitude != null)
                 {
                     // Convert latitude & longitude to radians
                     double lat1 = (double)curr.latitude * Math.PI / 180;
-                    double lat2 = (double)navConfig.latitude * Math.PI / 180;
-                    double deltaLong = (double)(navConfig.longitude - curr.longitude) * Math.PI / 180;
+                    double lat2 = (double)latitude * Math.PI / 180;
+                    double deltaLong = (double)(longitude - curr.longitude) * Math.PI / 180;
 
                     // Calculate heading using Law of Haversines
                     double x = Math.Sin(deltaLong) * Math.Cos(lat2);
@@ -425,37 +558,6 @@ namespace EddiNavigationMonitor
                 }
             }
             return (decimal)heading;
-        }
-
-        public void CalculateCoordinates(Status curr, ref decimal? latitude, ref decimal? longitude)
-        {
-            if (curr?.slope != null)
-            {
-                // Convert latitude, longitude & slope to radians
-                double currLat = (double)curr.latitude * Math.PI / 180;
-                double currLong = (double)curr.longitude * Math.PI / 180;
-                double slope = -(double)curr.slope * Math.PI / 180;
-                double altitude = (double)curr.altitude / 1000;
-
-                // Determine minimum slope
-                double radius = (double)curr.planetradius / 1000;
-                double minSlope = Math.Acos(radius / (altitude + radius));
-                if (slope > minSlope)
-                {
-                    // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
-                    double a = Math.PI / 2 - slope;
-                    double path = altitude / Math.Sin(a);
-                    double c = Math.Asin(path * Math.Sin(a) / radius);
-                    double heading = (double)curr.heading * Math.PI / 180;
-                    double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
-                    double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
-                        Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
-
-                    // Convert position to degrees
-                    latitude = (decimal)Math.Round(Lat * 180 / Math.PI, 2);
-                    longitude = (decimal)Math.Round(Lon * 180 / Math.PI, 2);
-                }
-            }
         }
 
         public void UpdateDestinationData(string system, decimal distance)

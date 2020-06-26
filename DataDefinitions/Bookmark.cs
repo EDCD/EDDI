@@ -60,6 +60,8 @@ namespace EddiDataDefinitions
 
         public bool landable { get; set; }
 
+        public bool isset { get; set; }
+
         // Default Constructor
         public Bookmark() { }
 
@@ -77,6 +79,7 @@ namespace EddiDataDefinitions
             this.latitude = latitude;
             this.longitude = longitude;
             this.landable = landable;
+            this.isset = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -146,6 +146,15 @@
       "name": "Bond redeemed",
       "description": "Triggered when you redeem a combat bond"
     },
+    "Bookmark details": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Bookmark details",
+      "description": "Triggered when a bookmark has been added or updated"
+    },
     "Bounty awarded": {
       "enabled": true,
       "priority": 3,
@@ -963,6 +972,15 @@
       "default": true,
       "name": "Glide",
       "description": "Triggered when your ship enters or exits glide"
+    },
+    "Guidance system": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Guidance system",
+      "description": "Triggered when the guidance system parameters have been updated"
     },
     "Hardpoints": {
       "enabled": true,

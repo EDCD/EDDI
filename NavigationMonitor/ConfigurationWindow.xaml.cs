@@ -74,6 +74,8 @@ namespace EddiNavigationMonitor
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
 
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
+            guidanceSystem.IsChecked = navConfig.guidanceSystem;
             maxSearchDistanceInt.Text = navConfig.maxSearchDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -87,31 +89,31 @@ namespace EddiNavigationMonitor
 
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            StarSystem system = EDDI.Instance.CurrentStarSystem;
-            Body body = EDDI.Instance.CurrentStellarBody;
-            Station station = EDDI.Instance.CurrentStation;
-            Status status = NavigationService.Instance.currentStatus;
+            StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
+            Body currentBody = EDDI.Instance.CurrentStellarBody;
+            Station currentStation = EDDI.Instance.CurrentStation;
+            Status currentStatus = NavigationService.Instance.currentStatus;
 
             if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
             {
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    latitude = (decimal)Math.Round((double)navConfig.latitude, 2);
-                    longitude = (decimal)Math.Round((double)navConfig.longitude, 2);
-                    poi = navConfig.poi;
+                    latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
+                    longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
+                    poi = navConfig.tdPOI;
                 }
                 else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
                 {
-                    latitude = status.latitude;
-                    longitude = status.longitude;
+                    latitude = currentStatus.latitude;
+                    longitude = currentStatus.longitude;
 
-                    if (navConfig.poi != null)
+                    if (navConfig.tdPOI != null)
                     {
                         // Get current distance from `Touchdown` POI
-                        decimal distance = navigationMonitor().CalculateDistance(status);
+                        decimal distance = navigationMonitor().CalculateDistance(currentStatus);
                         if (distance < 5)
                         {
-                            poi = navConfig.poi;
+                            poi = navConfig.tdPOI;
                         }
                     }
                 }
@@ -119,25 +121,26 @@ namespace EddiNavigationMonitor
             }
             else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
             {
-                if (station != null)
+                if (currentStation != null)
                 {
                     isStation = true;
-                    poi = station.name;
+                    poi = currentStation.name;
                 }
             }
             else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
             {
-                if (status.near_surface)
+                if (currentStatus.near_surface && currentBody != null)
                 {
-                    navigationMonitor().CalculateCoordinates(status, ref latitude, ref longitude);
-                    landable = body?.landable ?? false;
+                    navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
+                    landable = currentBody?.landable ?? false;
                 }
             }
 
-            Bookmark bookmark = new Bookmark(system.systemname, system.x, system.y, system.z, body?.shortname, body?.radius, poi, isStation, latitude, longitude, landable);
+            Bookmark bookmark = new Bookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
+                currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
             navConfig.bookmarks.Add(bookmark);
             ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", system.systemname, body?.shortname, poi, isStation, latitude, longitude, landable));
+            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
         }
 
         private void bookmarkQuery(object sender, RoutedEventArgs e)
@@ -287,9 +290,19 @@ namespace EddiNavigationMonitor
 
         private void setBookmark(object sender, RoutedEventArgs e)
         {
+            // Clear all previously 'set' bookmarks
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            Bookmark bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            while (bm?.isset?? false)
+            {
+                bm.isset = false;
+                bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            }
+            
             string station = null;
             Bookmark bookmark = (Bookmark)((Button)e.Source).DataContext;
             if (bookmark.isstation) { station = bookmark.poi; }
+            bookmark.isset = true;
 
             NavigationService.Instance.SetRoute(bookmark.system, station);
         }
@@ -301,41 +314,41 @@ namespace EddiNavigationMonitor
 
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            StarSystem system = EDDI.Instance.CurrentStarSystem;
-            Body body = EDDI.Instance.CurrentStellarBody;
-            Station station = EDDI.Instance.CurrentStation;
-            Status status = NavigationService.Instance.currentStatus;
+            StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
+            Body currentBody = EDDI.Instance.CurrentStellarBody;
+            Station currentStation = EDDI.Instance.CurrentStation;
+            Status currentStatus = NavigationService.Instance.currentStatus;
 
             if (e.Source is DataGrid)
             {
                 Bookmark bookmark = (Bookmark)((DataGrid)e.Source).CurrentItem;
 
                 // Update only if current system matches the bookmarked system
-                if (bookmark?.system == system.systemname)
+                if (bookmark?.system == currentSystem.systemname)
                 {
                     // Update latitude & longitude if current body matches the bookmarked body
-                    if (body != null && body.shortname == bookmark.body)
+                    if (currentBody != null && currentBody.shortname == bookmark.body)
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                         {
                             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                             {
-                                latitude = (decimal)Math.Round((double)navConfig.latitude, 2);
-                                longitude = (decimal)Math.Round((double)navConfig.longitude, 2);
-                                if (bookmark.poi is null) { bookmark.poi = navConfig.poi; }
+                                latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
+                                longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
+                                if (bookmark.poi is null) { bookmark.poi = navConfig.tdPOI; }
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
                             {
-                                latitude = status.latitude;
-                                longitude = status.longitude;
+                                latitude = currentStatus.latitude;
+                                longitude = currentStatus.longitude;
 
-                                if (navConfig.poi != null)
+                                if (navConfig.tdPOI != null)
                                 {
                                     // Get current distance from `Touchdown` POI
-                                    decimal distance = navigationMonitor().CalculateDistance(status);
+                                    decimal distance = navigationMonitor().CalculateDistance(currentStatus);
                                     if (distance < 5)
                                     {
-                                        bookmark.poi = navConfig.poi;
+                                        bookmark.poi = navConfig.tdPOI;
                                     }
                                 }
                             }
@@ -343,42 +356,42 @@ namespace EddiNavigationMonitor
                         }
                         else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                         {
-                            if (status.near_surface)
+                            if (currentStatus.near_surface)
                             {
-                                navigationMonitor().CalculateCoordinates(status, ref latitude, ref longitude);
-                                bookmark.landable = body.landable ?? false;
+                                navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
+                                bookmark.landable = currentBody.landable ?? false;
                             }
                         }
                     }
 
                     // Update if a station is instanced and a body was not previously bookmarked
-                    else if (station != null && bookmark.body is null)
+                    else if (currentStation != null && bookmark.body is null)
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
                         {
                             bookmark.isstation = true;
-                            bookmark.poi = station.name;
+                            bookmark.poi = currentStation.name;
                         }
                     }
 
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "update", system.systemname, body?.shortname, bookmark.poi,
-                        bookmark.isstation, latitude, longitude, bookmark.landable));
+                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "update", currentSystem.systemname, currentBody?.shortname,
+                        bookmark.poi, bookmark.isstation, latitude, longitude, bookmark.landable));
                 }
             }
         }
 
         private void prioritizeOrbitalStationsEnabled(object sender, RoutedEventArgs e)
         {
-            updateCheckbox();
+            updateOrbitalStationsCheckbox();
         }
 
         private void prioritizeOrbitalStationsDisabled(object sender, RoutedEventArgs e)
         {
-            updateCheckbox();
+            updateOrbitalStationsCheckbox();
         }
 
-        private void updateCheckbox()
+        private void updateOrbitalStationsCheckbox()
         {
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
@@ -387,6 +400,31 @@ namespace EddiNavigationMonitor
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+            }
+        }
+
+        private void guidanceSystemEngaged(object sender, RoutedEventArgs e)
+        {
+            updateGuidanceSystemCheckbox();
+        }
+
+        private void guidanceSystemDisengaged(object sender, RoutedEventArgs e)
+        {
+            updateGuidanceSystemCheckbox();
+        }
+
+        private void updateGuidanceSystemCheckbox()
+        {
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+            bool isChecked = guidanceSystem.IsChecked.Value;
+            if (navConfig.guidanceSystem != isChecked)
+            {
+                navConfig.guidanceSystem = isChecked;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+
+                string status = isChecked ? "engaged" : "disengaged";
+                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, status, null, null, null, null, null));
             }
         }
 
@@ -615,16 +653,6 @@ namespace EddiNavigationMonitor
         private void executeSelect(object sender, RoutedEventArgs e)
         {
             NavigationService.Instance.SetRoute(dropdownSearchSystem, dropdownSearchStation);
-        }
-
-        private void executeSet(object sender, RoutedEventArgs e)
-        {
-            string station = null;
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-            Bookmark bookmark = (Bookmark)((Button)e.Source).DataContext;
-            if (bookmark.isstation) { station = bookmark.poi; }
-            NavigationService.Instance.SetRoute(bookmark.system, station);
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)

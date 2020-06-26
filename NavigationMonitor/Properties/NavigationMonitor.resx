@@ -141,6 +141,9 @@
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
   </data>
+  <data name="guidance_system_checkbox" xml:space="preserve">
+    <value>Guidance System Engaged:</value>
+  </data>
   <data name="header_body" xml:space="preserve">
     <value>Body</value>
   </data>

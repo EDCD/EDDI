@@ -936,15 +936,14 @@ namespace EddiNavigationService
             {
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
-                if (curr?.x != null && dest?.x != null && system != curr.systemname)
+                if (curr?.x != null && dest?.x != null)
                 {
-                    distance = CalculateDistance(curr, dest);
+                    if (system != curr.systemname) { distance = CalculateDistance(curr, dest); }
                 }
                 else
                 {
                     system = null;
                     station = null;
-                    distance = 0;
                 }
 
                 // Update the search data to the configuration

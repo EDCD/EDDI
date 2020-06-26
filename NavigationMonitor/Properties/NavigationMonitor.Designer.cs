@@ -133,6 +133,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guidance System Engaged:.
+        /// </summary>
+        public static string guidance_system_checkbox {
+            get {
+                return ResourceManager.GetString("guidance_system_checkbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Body.
         /// </summary>
         public static string header_body {
