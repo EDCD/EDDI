@@ -175,6 +175,7 @@ namespace EddiSpeechResponder
             {
                 ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
+                ["searchdistance"] = NavigationService.Instance.SearchDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,
                 ["va_active"] = App.FromVA,
@@ -221,6 +222,16 @@ namespace EddiSpeechResponder
             if (EDDI.Instance.DestinationStarSystem != null)
             {
                 dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+            }
+
+            if (NavigationService.Instance.SearchStarSystem != null)
+            {
+                dict["searchsystem"] = new ReflectionValue(NavigationService.Instance.SearchStarSystem);
+            }
+            
+            if (NavigationService.Instance.SearchStation != null)
+            {
+                dict["searchstation"] = new ReflectionValue(NavigationService.Instance.SearchStation);
             }
 
             if (EDDI.Instance.DestinationStation != null)
@@ -843,10 +854,6 @@ namespace EddiSpeechResponder
                                 else if (values.Count == 2)
                                 {
                                     result = NavigationService.Instance.SetRoute(values[1].AsString);
-                                }
-                                else
-                                {
-                                    result = NavigationService.Instance.SetRoute();
                                 }
                             }
                             break;

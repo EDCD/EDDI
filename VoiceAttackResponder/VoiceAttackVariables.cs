@@ -2,6 +2,8 @@
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiDataProviderService;
+using EddiNavigationService;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiSpeechService;
@@ -24,14 +26,16 @@ namespace EddiVoiceAttackResponder
         private static StarSystem LastStarSystem { get; set; }
         private static StarSystem NextStarSystem { get; set; }
         private static StarSystem DestinationStarSystem { get; set; }
+        private static StarSystem SearchStarSystem { get; set; }
         private static StarSystem SquadronStarSystem { get; set; }
         private static Body CurrentStellarBody { get; set; }
         private static Station CurrentStation { get; set; }
         private static Station HomeStation { get; set; }
-        private static Station DestinationStation { get; set; }
+        private static Station SearchStation { get; set; }
         private static Commander Commander { get; set; }
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
         private static decimal DestinationDistanceLy { get; set; }
+        private static decimal SearchDistanceLy { get; set; }
 
         public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
         {
@@ -306,15 +310,41 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.DestinationStation.DeepEquals(DestinationStation))
+                if (!NavigationService.Instance.SearchStarSystem.DeepEquals(SearchStarSystem))
                 {
-                    setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref vaProxy);
-                    DestinationStation = EDDI.Instance.DestinationStation.Copy();
+                    setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref vaProxy);
+                    SearchStarSystem = NavigationService.Instance.SearchStarSystem.Copy();
                 }
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to set destination station", ex);
+                Logging.Error("Failed to set search system", ex);
+            }
+
+            try
+            {
+                if (NavigationService.Instance.SearchDistanceLy != SearchDistanceLy)
+                {
+                    vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
+                    SearchDistanceLy = NavigationService.Instance.SearchDistanceLy.Copy();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set search distance", ex);
+            }
+
+            try
+            {
+                if (!NavigationService.Instance.SearchStation.DeepEquals(SearchStation))
+                {
+                    setStationValues(NavigationService.Instance.SearchStation, "Search station", ref vaProxy);
+                    SearchStation = NavigationService.Instance.SearchStation.Copy();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set search station", ex);
             }
 
             try

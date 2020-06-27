@@ -291,6 +291,7 @@ namespace EddiSpeechResponder
                 "Cargo",
                 "Market",
                 "Missions",
+                "Nav route",
                 "Outfitting",
                 "Shipyard",
                 "Squadron startup",

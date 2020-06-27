@@ -2,6 +2,7 @@
 using EddiConfigService;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiNavigationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -128,7 +129,19 @@ namespace EddiNavigationMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is NavRouteEvent)
+            if (@event is CarrierJumpedEvent)
+            {
+                handleCarrierJumpedEvent((CarrierJumpedEvent)@event);
+            }
+            else if (@event is LocationEvent)
+            {
+                handleLocationEvent((LocationEvent)@event);
+            }
+            else if (@event is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)@event);
+            }
+            else if (@event is NavRouteEvent)
             {
                 handleNavRouteEvent((NavRouteEvent)@event);
             }
@@ -137,44 +150,79 @@ namespace EddiNavigationMonitor
                 handleRouteDetailsEvent((RouteDetailsEvent)@event);
             }
         }
+
+        private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+            }
+        }
+
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+            }
+        }
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
+            }
+        }
+
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            updateDat = @event.timestamp;
-            if (_handleNavRouteEvent(@event))
+            if (@event.timestamp > updateDat)
             {
+                updateDat = @event.timestamp;
+
+                // Get up-to-date configuration data
+                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
+                List<long> missionids = new List<long>();
+                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+                List<NavRouteInfo> route = @event.navRoute;
+                List<string> routeList = new List<string>();
+                decimal nextSystemDistance = 0;
+                int count = 0;
+
+                navDestination = null;
+                navRouteList = null;
+                navRouteDistance = 0;
+                if (navConfig.searchQuery != "cancel")
+                {
+                    count = route.Count;
+                    if (count > 1 && route[0].starSystem == curr.systemname)
+                    {
+                        routeList.Add(route[0].starSystem);
+                        for (int i = 0; i < count - 1; i++)
+                        {
+                            navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                            if (i == 0) { nextSystemDistance = navRouteDistance; }
+                            routeList.Add(route[i + 1].starSystem);
+                        }
+                        navDestination = route[count - 1].starSystem;
+                        navRouteList = string.Join("_", routeList);
+                        UpdateDestinationData(navDestination, navRouteDistance);
+
+                        // Get mission IDs for 'set' system
+                        missionids = NavigationService.Instance.GetSystemMissionIds(navDestination);
+                    }
+                }
+                EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
+
+                // Update the navigation configuration 
                 writeBookmarks();
             }
         }
-
-        private bool _handleNavRouteEvent(NavRouteEvent @event)
-        {
-            navDestination = null;
-            navRouteList = null;
-            navRouteDistance = 0;
-            string station = null;
-            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-            List<NavRouteInfo> route = @event.navRoute;
-            List<string> routeList = new List<string>();
-
-            if (route.Count > 1 && route[0].starSystem == curr.systemname)
-            {
-                routeList.Add(route[0].starSystem);
-                for (int i = 0; i < route.Count - 1; i++)
-                {
-                    navRouteDistance += CalculateDistance(route[i], route[i + 1]);
-                    routeList.Add(route[i + 1].starSystem);
-                }
-                navDestination = route[route.Count - 1].starSystem;
-                navRouteList = string.Join("_", routeList);
-
-                if (navDestination == navConfig.searchSystem) { station = navConfig.searchStation; }
-                UpdateDestinationData(navDestination, station, navRouteDistance);
-
-                return true;
-            }
-            return false;
-        }
-
+    
         private void handleRouteDetailsEvent(RouteDetailsEvent @event)
         {
 
@@ -200,6 +248,7 @@ namespace EddiNavigationMonitor
                 navConfig.navDestination = navDestination;
                 navConfig.navRouteDistance = navRouteDistance;
                 navConfig.navRouteList = navRouteList;
+                if (navConfig.searchQuery == "cancel") { navConfig.searchQuery = null; }
                 navConfig.updatedat = updateDat;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
@@ -265,11 +314,10 @@ namespace EddiNavigationMonitor
             return distance;
         }
 
-        public void UpdateDestinationData(string system, string station, decimal distance)
+        public void UpdateDestinationData(string system, decimal distance)
         {
             EDDI.Instance.updateDestinationSystem(system);
             EDDI.Instance.DestinationDistanceLy = distance;
-            EDDI.Instance.updateDestinationStation(station);
         }
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
