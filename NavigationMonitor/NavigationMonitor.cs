@@ -179,9 +179,36 @@ namespace EddiNavigationMonitor
 
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            updateDat = @event.timestamp;
+            if (_handleNavRouteEvent(@event))
             {
-                updateDat = @event.timestamp;
+                writeBookmarks();
+            }
+        }
+
+        private bool _handleNavRouteEvent(NavRouteEvent @event)
+        {
+            navDestination = null;
+            navRouteList = null;
+            navRouteDistance = 0;
+            string station = null;
+            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+            List<NavRouteInfo> route = @event.navRoute;
+            List<string> routeList = new List<string>();
+
+            if (route.Count > 1 && route[0].starSystem == curr.systemname)
+            {
+                routeList.Add(route[0].starSystem);
+                for (int i = 0; i < route.Count - 1; i++)
+                {
+                    navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                    routeList.Add(route[i + 1].starSystem);
+                }
+                navDestination = route[route.Count - 1].starSystem;
+                navRouteList = string.Join("_", routeList);
+
+                if (navDestination == navConfig.searchSystem) { station = navConfig.searchStation; }
+                UpdateDestinationData(navDestination, station, navRouteDistance);
 
                 // Get up-to-date configuration data
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
