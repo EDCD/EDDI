@@ -132,7 +132,10 @@ namespace EddiNavigationMonitor
             {
                 handleNavRouteEvent((NavRouteEvent)@event);
             }
-
+            else if (@event is RouteDetailsEvent)
+            {
+                handleRouteDetailsEvent((RouteDetailsEvent)@event);
+            }
         }
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
@@ -172,11 +175,17 @@ namespace EddiNavigationMonitor
             return false;
         }
 
+        private void handleRouteDetailsEvent(RouteDetailsEvent @event)
+        {
+
+        }
+
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["bookmarks"] = new List<Bookmark>(bookmarks),
+                ["navRouteList"] = navRouteList
             };
             return variables;
         }
@@ -204,6 +213,9 @@ namespace EddiNavigationMonitor
             {
                 // Obtain current bookmarks list from configuration
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                navDestination = navConfig.navDestination;
+                navRouteDistance = navConfig.navRouteDistance;
+                navRouteList = navConfig.navRouteList;
                 updateDat = navConfig.updatedat;
 
                 // Build a new bookmark list
