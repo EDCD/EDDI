@@ -149,6 +149,9 @@ namespace EddiCore
         [JsonProperty("beta")]
         public bool Beta { get; set; }
 
+        [JsonProperty("DisableTelemetry")]
+        public bool DisableTelemetry { get; set; }
+
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
 
@@ -181,6 +184,7 @@ namespace EddiCore
             Plugins = new Dictionary<string, bool>();
             exporttarget = "Coriolis";
             Gender = "Male";
+            DisableTelemetry = false;
 
             // Default the galnet monitor to 'off'
             Plugins.Add("Galnet monitor", false);

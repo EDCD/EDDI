@@ -28,10 +28,11 @@ namespace Eddi
             App app = new App();
             app.Exit += OnExit;
 
-            // Start the application
+            // Prepare to start the application
             Logging.incrementLogs(); // Increment to a new log file.
-            StartRollbar(); // do immediately to initialize error reporting
-            ApplyAnyOverrideCulture(); // this must be done before any UI is generated
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            StartRollbar(configuration); // do immediately to initialize error reporting
+            ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately
             EddiUpgrader.CheckUpgrade();
@@ -108,49 +109,51 @@ namespace Eddi
             return false;
         }
 
-        public static void StartRollbar()
+        public static void StartRollbar(EDDIConfiguration configuration)
         {
             // Configure Rollbar error reporting
+            _Rollbar.TelemetryEnabled = !configuration.DisableTelemetry;
+            if (_Rollbar.TelemetryEnabled)
+            {
+                // Generate an id unique to this app run for bug tracking
+                if (!string.IsNullOrEmpty(Eddi.Properties.Settings.Default.uniqueID)) { Eddi.Properties.Settings.Default.uniqueID = null; }
+                _Rollbar.configureRollbar(Guid.NewGuid().ToString(), FromVA);
 
-            // Generate an id unique to this app run for bug tracking
-            if (!string.IsNullOrEmpty(Eddi.Properties.Settings.Default.uniqueID)) { Eddi.Properties.Settings.Default.uniqueID = null; }
-            _Rollbar.configureRollbar(Guid.NewGuid().ToString(), FromVA);
-
-            // Catch and send unhandled exceptions from Windows forms
-            System.Windows.Forms.Application.ThreadException += (sender, args) =>
-            {
-                Exception exception = args.Exception;
-                _Rollbar.ExceptionHandler(exception);
-                ReloadAndRecover(exception);
-            };
-            // Catch and send unhandled exceptions from non-UI threads
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                Exception exception = args.ExceptionObject as Exception;
-                _Rollbar.ExceptionHandler(exception);
-                ReloadAndRecover(exception);
-            };
-            // Catch and send unhandled exceptions from the task scheduler
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
-            {
-                Exception exception = args.Exception;
-                _Rollbar.ExceptionHandler(exception);
-                ReloadAndRecover(exception);
-            };
-            // Catch and write managed exceptions to the local debug console (but do not send)
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-            {
-                Debug.WriteLine(eventArgs.Exception.ToString());
-            };
+                // Catch and send unhandled exceptions from Windows forms
+                System.Windows.Forms.Application.ThreadException += (sender, args) =>
+                {
+                    Exception exception = args.Exception;
+                    _Rollbar.ExceptionHandler(exception);
+                    ReloadAndRecover(exception);
+                };
+                // Catch and send unhandled exceptions from non-UI threads
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    Exception exception = args.ExceptionObject as Exception;
+                    _Rollbar.ExceptionHandler(exception);
+                    ReloadAndRecover(exception);
+                };
+                // Catch and send unhandled exceptions from the task scheduler
+                TaskScheduler.UnobservedTaskException += (sender, args) =>
+                {
+                    Exception exception = args.Exception;
+                    _Rollbar.ExceptionHandler(exception);
+                    ReloadAndRecover(exception);
+                };
+                // Catch and write managed exceptions to the local debug console (but do not send)
+                AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+                {
+                    Debug.WriteLine(eventArgs.Exception.ToString());
+                };
+            }
         }
 
-        public static void ApplyAnyOverrideCulture()
+        public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration)
         {
             string overrideCultureName = null;
             try
             {
                 // Use Eddi.Properties.Settings if an override culture isn't set in our configuration
-                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 if (configuration.OverrideCulture is null && !string.IsNullOrEmpty(Eddi.Properties.Settings.Default.OverrideCulture))
                 {
                     configuration.OverrideCulture = Eddi.Properties.Settings.Default.OverrideCulture;
