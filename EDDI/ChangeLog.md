@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.5.3-b8
+  * Core
+    * `Carrier cooldown` event is now sent to the carrier's owner even if they were not aboard for the jump.
+    * Corrected the timing of the `Carrier cooldown` event.
+    * `Carrier pads locked` and `Carrier jump engaged` events are now correctly cancelled if the carrier's jump is cancelled.
+
 ### 3.5.3-b7
   * Speech responder
     * Fixed text-to-speech errors introduced in b5 and b6 by reverting the Cottle text rendering package to the old version..
