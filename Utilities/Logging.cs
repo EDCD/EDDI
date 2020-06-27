@@ -198,7 +198,20 @@ namespace Utilities
                         "StatusFlags",
                         "apiKey",
                         "frontierID",
-                        "FID"
+                        "FID",
+                        "ActiveFine",
+                        "CockpitBreach",
+                        "BoostUsed",
+                        "FuelLevel",
+                        "FuelUsed",
+                        "JumpDist",
+                        "Wanted",
+                        "Latitude",
+                        "Longitude",
+                        "MyReputation",
+                        "SquadronFaction",
+                        "HappiestSystem",
+                        "HomeSystem"
                     };
 
                     foreach (string property in filterProperties)
