@@ -7,7 +7,7 @@ namespace EddiEvents
     public class CarrierCooldownEvent : Event
     {
         public const string NAME = "Carrier cooldown";
-        public const string DESCRIPTION = "Triggered when you were docked at a fleet carrier during a jump and it completes its cooldown";
+        public const string DESCRIPTION = "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown";
         public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Aparctias", 0, BodyType.FromEDName("Star"), "G53-K3Q", StationModel.FromEDName("FleetCarrier"), 3700571136);
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
@@ -19,11 +19,11 @@ namespace EddiEvents
 
             // Body variables
             VARIABLES.Add("bodyname", "The nearest body to the carrier, if any");
-            VARIABLES.Add("bodytype", "The type of the body nearest to the carrier, if any (Star, Planet. etc.)");
+            VARIABLES.Add("bodytype", "The type of the body nearest to the carrier, if any (Star, Planet. etc.) (only available if docked during the jump)");
             VARIABLES.Add("shortname", "The short name of the nearest body, if any");
 
             // Carrier variables
-            VARIABLES.Add("carriername", "The name of the carrier");
+            VARIABLES.Add("carriername", "The name of the carrier (only available if docked during the jump)");
         }
 
         // System variables

@@ -231,10 +231,10 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "Resfriamento do Porta Frótas completado.",
+			"script": "Fleet carrier cooldown completed.",
+			"default": true,
 			"name": "Carrier cooldown",
-			"description": "Triggered when you were docked at a fleet carrier during a jump and it completes its cooldown",
-			"default": false
+			"description": "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown"
 		},
 		"Carrier jump cancelled": {
 			"enabled": true,
