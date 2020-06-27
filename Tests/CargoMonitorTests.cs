@@ -230,7 +230,7 @@ namespace UnitTests
             Assert.AreEqual(7, cargo.need);
             Assert.AreEqual(2, cargo.haulageData.Count);
 
-            // CargoEvent - Collected 2 Structural Regulators for mission ID 375682327. Verify haulage & need changed
+            // CargoEvent - Collected 2 Structural Regulators for mission ID 375682327. Verify haulage changed but not need
             line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":34, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"MissionID\":375682327, \"Count\":2, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
@@ -238,7 +238,7 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
             Assert.AreEqual(2, cargo.total);
             Assert.AreEqual(2, cargo.haulage);
-            Assert.AreEqual(5, cargo.need);
+            Assert.AreEqual(7, cargo.need);
             Assert.AreEqual(0, cargo.stolen + cargo.owned);
 
             // Cargo MissionAbandonedEvent - Verify haulage data for for mission ID 375682327 has been removed
@@ -327,7 +327,7 @@ namespace UnitTests
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
             Assert.AreEqual(60, cargo.total);
             Assert.AreEqual(60, cargo.haulage);
-            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(60, cargo.need);
             Assert.AreEqual(60, haulage.remaining);
             Assert.AreEqual(3225297216, haulage.startmarketid);
             Assert.AreEqual(3224777216, haulage.endmarketid);
@@ -336,6 +336,8 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoDepotEvent", new object[] { events[0] });
             Assert.AreEqual(0, haulage.remaining);
+            Assert.AreEqual(0, haulage.need);
+            Assert.AreEqual(0, cargo.need);
 
             // Restore original data
             data.ToFile();
