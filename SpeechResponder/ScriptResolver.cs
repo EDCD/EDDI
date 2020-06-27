@@ -155,6 +155,17 @@ namespace EddiSpeechResponder
                 Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
                 return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
             }
+            catch (Exception e)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "exception", e },
+                    { "script", script },
+                    { "store", JsonConvert.SerializeObject(store) }
+                };
+                Logging.Error(e.Message, data);
+                return $"{e.Message}";
+            }
         }
 
         private string errorTranslation(string msg)

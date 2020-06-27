@@ -1252,7 +1252,14 @@ namespace EddiCore
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error(responder.ResponderName() + " failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                            Dictionary<string, object> data = new Dictionary<string, object>
+                            {
+                                { "event", JsonConvert.SerializeObject(@event) },
+                                { "exception", ex.Message },
+                                { "stacktrace", ex.StackTrace }
+                            };
+
+                            Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, data);
                         }
                     });
                     responderTasks.Add(responderTask);
