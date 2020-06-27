@@ -778,11 +778,7 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped((CarrierJumpedEvent)@event);
                     }
-                    else if (@event is CarrierPadsLockedEvent)
-                    {
-                        passEvent = eventCarrierPadsLocked((CarrierPadsLockedEvent)@event);
-                    }
-
+                    
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -876,16 +872,6 @@ namespace EddiCore
                 }
             }
             return true;
-        }
-
-        private bool eventCarrierPadsLocked(CarrierPadsLockedEvent @event)
-        {
-            // Only trigger this event when we are still at the carrier
-            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation.marketId)
-            {
-                return true;
-            }
-            return false;
         }
 
         private bool eventCarrierJumped(CarrierJumpedEvent @event)
