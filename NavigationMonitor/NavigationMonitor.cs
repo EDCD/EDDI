@@ -255,6 +255,11 @@ namespace EddiNavigationMonitor
 
         }
 
+        private void handleRouteDetailsEvent(RouteDetailsEvent @event)
+        {
+
+        }
+
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
