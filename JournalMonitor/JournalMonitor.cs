@@ -3319,9 +3319,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavRoute":
                                 {
-                                    List<RouteInfo> route = new List<RouteInfo>();
-                                    route = RouteInfoReader.FromFile().Route;
-                                    events.Add(new NavRouteEvent(timestamp, route) { raw = line, fromLoad = fromLogLoad });
+                                    List<NavRouteInfo> navRoute = new List<NavRouteInfo>();
+                                    navRoute = NavRouteInfoReader.FromFile().Route;
+                                    events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

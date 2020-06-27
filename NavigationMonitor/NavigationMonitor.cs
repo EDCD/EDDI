@@ -130,17 +130,46 @@ namespace EddiNavigationMonitor
             // Handle the events that we care about
             if (@event is NavRouteEvent)
             {
-                handleRouteEvent((NavRouteEvent)@event);
+                handleNavRouteEvent((NavRouteEvent)@event);
             }
 
         }
-        private void handleRouteEvent(NavRouteEvent @event)
+        private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            updateDat = @event.timestamp;
+            if (_handleNavRouteEvent(@event))
             {
-                updateDat = @event.timestamp;
-
+                writeBookmarks();
             }
+        }
+
+        private bool _handleNavRouteEvent(NavRouteEvent @event)
+        {
+            navDestination = null;
+            navRouteList = null;
+            navRouteDistance = 0;
+            string station = null;
+            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+            List<NavRouteInfo> route = @event.navRoute;
+            List<string> routeList = new List<string>();
+
+            if (route.Count > 1 && route[0].starSystem == curr.systemname)
+            {
+                routeList.Add(route[0].starSystem);
+                for (int i = 0; i < route.Count - 1; i++)
+                {
+                    navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                    routeList.Add(route[i + 1].starSystem);
+                }
+                navDestination = route[route.Count - 1].starSystem;
+                navRouteList = string.Join("_", routeList);
+
+                if (navDestination == navConfig.searchSystem) { station = navConfig.searchStation; }
+                UpdateDestinationData(navDestination, station, navRouteDistance);
+
+                return true;
+            }
+            return false;
         }
 
         public IDictionary<string, object> GetVariables()
@@ -159,6 +188,9 @@ namespace EddiNavigationMonitor
                 // Write bookmarks configuration with current list
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.bookmarks = bookmarks;
+                navConfig.navDestination = navDestination;
+                navConfig.navRouteDistance = navRouteDistance;
+                navConfig.navRouteList = navRouteList;
                 navConfig.updatedat = updateDat;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
@@ -206,6 +238,26 @@ namespace EddiNavigationMonitor
                     }
                 }
             }
+        }
+
+        public decimal CalculateDistance(NavRouteInfo curr, NavRouteInfo dest)
+        {
+            double square(double x) => x * x;
+            decimal distance = 0;
+            if (curr?.x != null && dest?.x != null)
+            {
+                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
+                            + square((double)(curr.y - dest.y))
+                            + square((double)(curr.z - dest.z))), 2);
+            }
+            return distance;
+        }
+
+        public void UpdateDestinationData(string system, string station, decimal distance)
+        {
+            EDDI.Instance.updateDestinationSystem(system);
+            EDDI.Instance.DestinationDistanceLy = distance;
+            EDDI.Instance.updateDestinationStation(station);
         }
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
