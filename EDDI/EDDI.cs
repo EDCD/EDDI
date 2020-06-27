@@ -169,14 +169,19 @@ namespace EddiCore
                     }
                     if (configuration.HomeSystem == configuration.SquadronSystem)
                     {
+                        // Run both actions on the same thread
                         essentialAsyncTasks.Add(Task.Run((Action)ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
                     }
                     else
                     {
+                        // Run both actions on distinct threads
                         essentialAsyncTasks.AddRange(new List<Task>()
                         {
-                            Task.Run(ActionUpdateHomeSystemStation),
-                            Task.Run(ActionUpdateSquadronSystem)
+                            // Method groups are considered by AppVeyor to be an ambiguous call.
+                            // ReSharper disable ConvertClosureToMethodGroup
+                            Task.Run(() => ActionUpdateHomeSystemStation()),
+                            Task.Run(() => ActionUpdateSquadronSystem())
+                            // ReSharper restore ConvertClosureToMethodGroup
                         });
                     }
                 }
