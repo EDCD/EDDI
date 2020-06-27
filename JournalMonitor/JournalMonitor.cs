@@ -3828,7 +3828,7 @@ namespace EddiJournalMonitor
                                     {
                                         Task.Run(async () =>
                                         {
-                                            int timeMs = Constants.carrierPostJumpSeconds * 1000;
+                                            int timeMs = (Constants.carrierPostJumpSeconds - Constants.carrierJumpSeconds) * 1000; // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                             await Task.Delay(timeMs);
                                             EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType, carrierId) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
@@ -3892,7 +3892,7 @@ namespace EddiJournalMonitor
                                         tasks.Add(Task.Run(async () =>
                                         {
                                             // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
-                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds + Constants.carrierJumpSeconds + Constants.carrierPostJumpSeconds) * 1000;
+                                            int timeMs = (Constants.carrierPreJumpSeconds - varSeconds + Constants.carrierPostJumpSeconds) * 1000; // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                             await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
                                             EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, null, null, null, carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token));
