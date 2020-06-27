@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Rollbar.Telemetry;
 using Rollbar;
+using Rollbar.Telemetry;
+using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using Exception = System.Exception;
 
 namespace Utilities
 {
@@ -53,14 +55,14 @@ namespace Utilities
                     case ErrorLevel.Debug:
                         {
                             if (Verbose) { log(timestamp, errorlevel, message, preppedData); }
-                            if (TelemetryEnabled) { RecordTelemetryInfo(message, preppedData); }
+                            if (TelemetryEnabled) { RecordTelemetryInfo(errorlevel, message, preppedData); }
                         }
                         break;
                     case ErrorLevel.Info:
                     case ErrorLevel.Warning:
                         {
                             log(timestamp, errorlevel, message, preppedData);
-                            if (TelemetryEnabled) { RecordTelemetryInfo(message, preppedData); }
+                            if (TelemetryEnabled) { RecordTelemetryInfo(errorlevel, message, preppedData); }
                         }
                         break;
                     case ErrorLevel.Error:
@@ -95,15 +97,13 @@ namespace Utilities
             }
         }
 
-        private static void RecordTelemetryInfo(string message, Dictionary<string, object> preppedData = null)
+        private static void RecordTelemetryInfo(ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
         {
-            TelemetryCollector.Instance.Capture(
-                new Rollbar.DTOs.Telemetry(
-                    Rollbar.DTOs.TelemetrySource.Client,
-                    Rollbar.DTOs.TelemetryLevel.Debug,
-                    new Rollbar.DTOs.LogTelemetry($"{message}", preppedData)
-                    )
-                );
+            if (Enum.TryParse(errorLevel.ToString(), out TelemetryLevel telemetryLevel))
+            {
+                var telemetry = new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
+                TelemetryCollector.Instance.Capture(telemetry);
+            }
         }
 
         private static void ReportTelemetryEvent(string timestamp, ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
