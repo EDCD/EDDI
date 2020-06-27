@@ -1,6 +1,6 @@
 ﻿using Eddi;
-using EddiCore;
 using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
@@ -14,8 +14,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using Utilities;
 
@@ -129,7 +127,7 @@ namespace EddiNavigationMonitor
                         StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
                         if (currentSystem?.systemname == bookmark.system)
                         {
-                            
+
                             Status currentStatus = NavigationService.Instance.currentStatus;
 
                             // Activate guidance system when near surface of the bookmark body
@@ -286,7 +284,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void UpdateBookmarkSetStatus (string system, string station = null)
+        private void UpdateBookmarkSetStatus(string system, string station = null)
         {
             // Update bookmark 'set' status
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
@@ -347,7 +345,7 @@ namespace EddiNavigationMonitor
                 writeBookmarks();
             }
         }
-    
+
         private void handleRouteDetailsEvent(RouteDetailsEvent @event)
         {
 
@@ -509,7 +507,7 @@ namespace EddiNavigationMonitor
         {
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             double distance = 0;
-            
+
             if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
             {
                 if (latitude == null || longitude == null)

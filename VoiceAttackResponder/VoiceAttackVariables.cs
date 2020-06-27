@@ -2,9 +2,8 @@
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
-using EddiNavigationService;
 using EddiEvents;
+using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;

@@ -1,8 +1,6 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
-using EddiNavigationService;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -11,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using Utilities;
 
 namespace EddiCrimeMonitor
 {

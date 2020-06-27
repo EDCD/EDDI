@@ -1,8 +1,8 @@
-﻿using EddiCore;
-using EddiEvents;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEvents;
 using EddiNavigationService;
 using EddiShipMonitor;
 using Microsoft.VisualBasic.FileIO;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -17,7 +18,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -293,12 +293,12 @@ namespace EddiNavigationMonitor
             // Clear all previously 'set' bookmarks
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             Bookmark bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-            while (bm?.isset?? false)
+            while (bm?.isset ?? false)
             {
                 bm.isset = false;
                 bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
             }
-            
+
             string station = null;
             Bookmark bookmark = (Bookmark)((Button)e.Source).DataContext;
             if (bookmark.isstation) { station = bookmark.poi; }
@@ -513,7 +513,7 @@ namespace EddiNavigationMonitor
 
         private void ConfigureSearchQueryOptions(string type)
         {
-            List<string> SearchQueryOptions = new List<string> {};
+            List<string> SearchQueryOptions = new List<string> { };
 
             foreach (string query in searchQuery)
             {
@@ -550,7 +550,7 @@ namespace EddiNavigationMonitor
             searchButton.Foreground = Brushes.Red;
             searchButton.FontWeight = FontWeights.Bold;
             string searchSystem = null;
-            
+
             Thread searchThread = new Thread(() =>
             {
                 if (searchTypeSelection == "crime")

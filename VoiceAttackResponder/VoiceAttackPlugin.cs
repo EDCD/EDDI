@@ -1,11 +1,9 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiMaterialMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder;
