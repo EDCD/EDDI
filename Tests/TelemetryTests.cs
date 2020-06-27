@@ -13,7 +13,7 @@ namespace UnitTests
         private Dictionary<string, object> PrepRollbarData(object data)
         {
             PrivateType privateType = new PrivateType(typeof(Logging));
-            Dictionary<string, object> result = (Dictionary<string, object>)privateType.InvokeStatic("PrepRollbarData", new object[] { data });
+            Dictionary<string, object> result = (Dictionary<string, object>)privateType.InvokeStatic("FilterAndRedactData", new object[] { data });
             return result;
         }
 
