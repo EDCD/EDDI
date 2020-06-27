@@ -14,6 +14,8 @@ namespace EddiConfigService
         public ObservableCollection<Bookmark> bookmarks { get; set; }
 
         public DateTime updatedat { get; set; }
+
+        // Search parameters
         public int? maxSearchDistanceFromStarLs { get; set; }
         public bool prioritizeOrbitalStations { get; set; }
 
@@ -33,9 +35,12 @@ namespace EddiConfigService
         public decimal searchDistance { get; set; }
 
         // Ship touchdown data
-        public decimal? latitude { get; set; }
-        public decimal? longitude { get; set; }
-        public string poi { get; set; }
+        public decimal? tdLat { get; set; }
+        public decimal? tdLong { get; set; }
+        public string tdPOI { get; set; }
+
+        // Guidance system
+        public bool guidanceSystem { get; set; }
 
 
         [JsonIgnore]

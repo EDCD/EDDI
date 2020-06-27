@@ -72,6 +72,17 @@
             <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
             <Button HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4" Margin="10, 0" VerticalContentAlignment="Center" Click="executeSelect" Content="{x:Static resx:NavigationMonitor.select_button}" ToolTip="{x:Static resx:NavigationMonitor.select_button_tooltip}" />
         </Grid>
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.guidance_system_checkbox}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="guidanceSystem" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Checked="guidanceSystemEngaged" Unchecked="guidanceSystemDisengaged"/>
+        </Grid>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
             <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
             <Button HorizontalAlignment="Center" Click="bookmarkQuery" Content="{x:Static resx:NavigationMonitor.bm_query_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_query_button_tooltip}" />
