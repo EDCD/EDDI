@@ -11,15 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Utilities
 {
-    public partial class Logging // convenience methods
-    {
-        // For Logging.Error, do not convert data to strings until we've prepared it first.
-        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(message, ex.ToString(), memberName, filePath);
-        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(message, ex.ToString(), memberName, filePath);
-        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
-    }
-
-    public partial class Logging : _Rollbar
+    public class Logging : _Rollbar
     {
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
@@ -28,43 +20,72 @@ namespace Utilities
 
         public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(ErrorLevel.Error, message + " " + JsonConvert.SerializeObject(data), memberName, filePath);
-            Report(ErrorLevel.Error, message, data, memberName, filePath);
+            handleError(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
-        public static void Warn(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Warn(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(ErrorLevel.Warning, message + " " + data, memberName, filePath);
+            handleError(ErrorLevel.Warning, message, data, memberName, filePath);
         }
 
-        public static void Info(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Info(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(ErrorLevel.Info, message + " " + data, memberName, filePath);
+            handleError(ErrorLevel.Info, message, data, memberName, filePath);
         }
 
-        public static void Debug(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Debug(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            if (Verbose)
+            handleError(ErrorLevel.Debug, message, data, memberName, filePath);
+        }
+
+        private static void handleError(ErrorLevel errorlevel, string message, object data, string memberName, string filePath)
+        {
+            System.Threading.Tasks.Task.Run(() =>
             {
-                log(ErrorLevel.Debug, message + " " + data, memberName, filePath);
-            }
+                string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+                var shortPath = Redaction.RedactEnvironmentVariables(Path.GetFileNameWithoutExtension(filePath));
+                var method = Redaction.RedactEnvironmentVariables(memberName);
+                message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables(message)}";
+                var preppedData = FilterAndRedactData(data);
+
+                switch (errorlevel)
+                {
+                    case ErrorLevel.Debug:
+                        {
+                            if (Verbose) { log(timestamp, errorlevel, message, preppedData); }
+                            if (TelemetryEnabled) { RecordTelemetryInfo(message, preppedData); }
+                        }
+                        break;
+                    case ErrorLevel.Info:
+                    case ErrorLevel.Warning:
+                        {
+                            log(timestamp, errorlevel, message, preppedData);
+                            if (TelemetryEnabled) { RecordTelemetryInfo(message, preppedData); }
+                        }
+                        break;
+                    case ErrorLevel.Error:
+                    case ErrorLevel.Critical:
+                        {
+                            log(timestamp, errorlevel, message, preppedData);
+                            if (TelemetryEnabled) { ReportTelemetryEvent(timestamp, errorlevel, message, preppedData); }
+                        }
+                        break;
+                }
+            }).ConfigureAwait(false);
         }
 
         private static readonly object logLock = new object();
-        private static void log(ErrorLevel errorlevel, string data, string method, string path)
+        private static void log(string timestamp, ErrorLevel errorlevel, string message, object data = null)
         {
-            data = Redaction.RedactEnvironmentVariables(data);
-            method = Redaction.RedactEnvironmentVariables(method);
             lock (logLock)
             {
                 try
                 {
                     using (StreamWriter file = new StreamWriter(LogFile, true))
                     {
-                        string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
-                        string shortPath = Path.GetFileNameWithoutExtension(path);
-                        shortPath = Redaction.RedactEnvironmentVariables(shortPath);
-                        file.WriteLine($"{timestamp} [{errorlevel}] {shortPath}:{method} {data}");
+                        file.WriteLine($"{timestamp} [{errorlevel}] {message}" + (data != null 
+                            ? $": {Redaction.RedactEnvironmentVariables(JsonConvert.SerializeObject(data))}" 
+                            : null));
                     }
                 }
                 catch (Exception)
@@ -74,58 +95,35 @@ namespace Utilities
             }
         }
 
-        public static void incrementLogs()
+        private static void RecordTelemetryInfo(string message, Dictionary<string, object> preppedData = null)
         {
-            // Ensure dir exists
-            DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
-            if (!directoryInfo.Exists)
-            {
-                Directory.CreateDirectory(Constants.DATA_DIR);
-            }
+            TelemetryCollector.Instance.Capture(
+                new Rollbar.DTOs.Telemetry(
+                    Rollbar.DTOs.TelemetrySource.Client,
+                    Rollbar.DTOs.TelemetryLevel.Debug,
+                    new Rollbar.DTOs.LogTelemetry($"{message}", preppedData)
+                    )
+                );
+        }
 
-            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
-            foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
+        private static void ReportTelemetryEvent(string timestamp, ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
+        {
+            string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
+            if (!string.IsNullOrEmpty(personID))
             {
-                string filePath = file.FullName;
-                if (filePath.EndsWith(".log"))
+                try
                 {
-                    try
-                    {
-                        bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
-                        ++i; // Increment our index number
-
-                        if (i >= 10)
-                        {
-                            File.Delete(filePath);
-                        }
-                        else
-                        {
-                            // This might be our primary log file, so we lock it prior to doing anything with it
-                            lock (logLock)
-                            {
-                                File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
-                    }
+                    RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                    log(timestamp, errorLevel, $"Reporting error to Rollbar telemetry service, anonymous ID {personID}: {message}");
+                }
+                catch
+                {
+                    // Nothing to do here. Just continue gracefully.
                 }
             }
         }
 
-        private static async void Report(ErrorLevel errorLevel, string message, object originalData = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            message = Redaction.RedactEnvironmentVariables(message);
-            Dictionary<string, object> preppedData = PrepRollbarData(ref originalData);
-            if (originalData is null || preppedData != null)
-            {
-                await System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, preppedData, memberName, filePath)).ConfigureAwait(false); 
-            }
-        }
-
-        private static Dictionary<string, object> PrepRollbarData(ref object data)
+        private static Dictionary<string, object> FilterAndRedactData(object data)
         {
             if (data is null) { return null; }
             try
@@ -183,13 +181,11 @@ namespace Utilities
                 var jToken = JToken.Parse(json);
                 if (jToken is JObject data)
                 {
-                    // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
                     // Strip module data that is not useful to report for more consistent matching
                     // Strip commodity data that is not useful to report for more consistent matching
-                    // Strip other sensitive data like "apiKey" or "frontierID"
+                    // Strip sensitive or personal data like "apiKey" or "frontierID"
                     string[] filterProperties =
                     {
-                        "name",
                         "on",
                         "priority",
                         "health",
@@ -224,30 +220,43 @@ namespace Utilities
             return json;
         }
 
-        private static void SendToRollbar(ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void incrementLogs()
         {
-            if (RollbarLocator.RollbarInstance.Config.Enabled == false) { return; }
-            string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
-            if (!string.IsNullOrEmpty(personID))
+            // Ensure dir exists
+            DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
+            if (!directoryInfo.Exists)
             {
-                try
+                Directory.CreateDirectory(Constants.DATA_DIR);
+            }
+
+            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
+            foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
+            {
+                string filePath = file.FullName;
+                if (filePath.EndsWith(".log"))
                 {
-                    switch (errorLevel)
+                    try
                     {
-                        case ErrorLevel.Error:
-                            RollbarLocator.RollbarInstance.Error(message, preppedData);
-                            log(errorLevel, $"Reporting error, anonymous ID {personID}: {message} {JsonConvert.SerializeObject(preppedData)}", memberName, filePath);
-                            break;
-                        default:
-                            // If this is an Info Report, report only unique messages and data
-                            RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
-                            log(errorLevel, $"Reporting unique data, anonymous ID {personID}: {message} {JsonConvert.SerializeObject(preppedData)}", memberName, filePath);
-                            break;
+                        bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
+                        ++i; // Increment our index number
+
+                        if (i >= 10)
+                        {
+                            File.Delete(filePath);
+                        }
+                        else
+                        {
+                            // This might be our primary log file, so we lock it prior to doing anything with it
+                            lock (logLock)
+                            {
+                                File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
+                            }
+                        }
                     }
-                }
-                catch
-                {
-                    // Nothing to do here. Just continue gracefully.
+                    catch (Exception)
+                    {
+                        // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
+                    }
                 }
             }
         }
@@ -291,7 +300,7 @@ namespace Utilities
 #endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
-            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 3));
+            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 10));
         }
 
         public static void ExceptionHandler(Exception exception)
