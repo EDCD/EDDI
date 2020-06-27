@@ -23,7 +23,7 @@ namespace IntegrationTests
             eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
 
             // Set a route to a known star system and verify detination details
-            NavigationService.Instance.SetDestination("Merope");
+            NavigationService.Instance.SetRoute("Merope");
             StarSystem destinationSystem = (StarSystem)eddiInstance.GetFieldOrProperty("DestinationStarSystem");
             decimal destinationDistanceLY = (decimal)eddiInstance.GetFieldOrProperty("DestinationDistanceLy");
             Assert.IsNotNull(destinationSystem);
@@ -35,7 +35,7 @@ namespace IntegrationTests
 
             // Set a route to an unknown star system and verify detination details
             // Result should be a null system at zero distance to clear, clearing the route.
-            NavigationService.Instance.SetDestination("No Such System");
+            NavigationService.Instance.SetRoute("No Such System");
             StarSystem destinationSystem2 = (StarSystem)eddiInstance.GetFieldOrProperty("DestinationStarSystem");
             decimal destinationDistanceLY2 = (decimal)eddiInstance.GetFieldOrProperty("DestinationDistanceLy");
             Assert.IsNull(destinationSystem2);
