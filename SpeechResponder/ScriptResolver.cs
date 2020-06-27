@@ -226,12 +226,12 @@ namespace EddiSpeechResponder
 
             if (NavigationService.Instance.SearchStarSystem != null)
             {
-                dict["searchsystem"] = Value.FromReflection(NavigationService.Instance.SearchStarSystem, bindingFlags);
+                dict["searchsystem"] = new ReflectionValue(NavigationService.Instance.SearchStarSystem);
             }
-            
+
             if (NavigationService.Instance.SearchStation != null)
             {
-                dict["searchstation"] = Value.FromReflection(NavigationService.Instance.SearchStation, bindingFlags);
+                dict["searchstation"] = new ReflectionValue(NavigationService.Instance.SearchStation);
             }
 
             if (EDDI.Instance.DestinationStation != null)

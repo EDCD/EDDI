@@ -1,5 +1,4 @@
-﻿using EddiCargoMonitor;
-using EddiCore;
+﻿using EddiCore;
 using EddiConfigService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
