@@ -63,11 +63,11 @@ namespace EddiSpeechResponder
         public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
         {
             BuiltinStore store = buildStore(vars);
-            return resolveFromName(name, store, isTopLevelScript);
+            return resolveFromName(name, store, isTopLevelScript, vars);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript)
+        public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript, Dictionary<string, Value> vars = null)
         {
             Logging.Debug("Resolving script " + name);
             scripts.TryGetValue(name, out Script script);
@@ -83,7 +83,7 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveFromValue(script.Value, store, isTopLevelScript, script);
+            return resolveFromValue(script.Value, store, isTopLevelScript, script, vars);
         }
 
         /// <summary> From the default dictionary of variable values in the default store </summary>
@@ -91,11 +91,11 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Value> vars = createVariables();
             BuiltinStore store = buildStore(vars);
-            return resolveFromValue(scriptValue, store, isTopLevelScript);
+            return resolveFromValue(scriptValue, store, isTopLevelScript, null, vars);
         }
 
         /// <summary> From a custom store </summary>
-        public string resolveFromValue(string script, BuiltinStore store, bool isTopLevelScript, Script scriptObject = null)
+        public string resolveFromValue(string script, BuiltinStore store, bool isTopLevelScript, Script scriptObject = null, Dictionary<string, Value> vars = null)
         {
             try
             {
@@ -161,8 +161,11 @@ namespace EddiSpeechResponder
                 {
                     { "exception", e },
                     { "script", script },
-                    { "store", JsonConvert.SerializeObject(store) }
                 };
+                if (vars != null)
+                {
+                    data.Add("variables", JsonConvert.SerializeObject(vars));
+                }
                 Logging.Error(e.Message, data);
                 return $"{e.Message}";
             }
@@ -319,14 +322,14 @@ namespace EddiSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, store, false);
+                return new ScriptResolver(scripts).resolveFromValue(values[random.Next(values.Count)].AsString, store, false, null, vars);
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveFromValue(values[1].AsString, store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(values[1].AsString, store, false, null, vars);
                 }
                 else
                 {
@@ -460,7 +463,7 @@ namespace EddiSpeechResponder
             {
                 if (values.Count == 1)
                 {
-                    return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", store, false);
+                    return new ScriptResolver(scripts).resolveFromValue(@"<transmit>" + values[0].AsString + "</transmit>", store, false, null, vars);
                 }
                 return "The Transmit function is used improperly. Please review the documentation for correct usage.";
             }, 1);
