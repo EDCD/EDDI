@@ -157,13 +157,7 @@ namespace EddiSpeechResponder
             }
             catch (Exception e)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>
-                {
-                    { "exception", e },
-                    { "script", script },
-                    { "store", JsonConvert.SerializeObject(store) }
-                };
-                Logging.Error(e.Message, data);
+                Logging.Warn(e.Message, e);
                 return $"{e.Message}";
             }
         }
