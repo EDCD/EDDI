@@ -157,6 +157,12 @@ namespace Eddi
 
         public MainWindow()
         {
+            if (!App.FromVA)
+            {
+                SplashScreen splashScreen = new SplashScreen("logo.png");
+                splashScreen.Show(true);
+            }
+
             InitializeComponent();
             DataContext = EDDI.Instance;
 
