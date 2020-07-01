@@ -155,6 +155,11 @@ namespace EddiSpeechResponder
                 Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
                 return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
             }
+            catch (Exception e)
+            {
+                Logging.Warn(e.Message, e);
+                return $"Error with {scriptObject?.Name ?? "this"} script: {e.Message}";
+            }
         }
 
         private string errorTranslation(string msg)
