@@ -12,7 +12,7 @@ namespace EddiVoiceAttackResponder
     public partial class VoiceAttackVariables
     {
         // Event keys that shall not be written to VoiceAttack
-        private static readonly string[] ignoredKeys = { "type", "raw", "fromLoad" };
+        private static readonly string[] ignoredKeys = { "type", "raw", "fromLoad", "edName" };
 
         /// <summary> Set keys for values that we describe within the Event Sub-Class </summary>
         /// <param name="prefix">The prefix to add in front of the property name</param>
@@ -83,7 +83,7 @@ namespace EddiVoiceAttackResponder
             foreach (JProperty child in json)
             {
                 // We ignore some keys that are maintained for internal use only
-                if (ignoredKeys.Contains(child.Name))
+                if (ignoredKeys.Contains(child.Name, StringComparer.InvariantCultureIgnoreCase))
                 {
                     Logging.Debug("Ignoring key " + child.Name);
                     continue;
