@@ -783,7 +783,7 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped((CarrierJumpedEvent)@event);
                     }
-                    
+
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
