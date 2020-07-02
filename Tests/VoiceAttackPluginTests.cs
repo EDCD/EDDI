@@ -6,7 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using EddiVoiceAttackResponder;
+using Utilities;
 
 namespace UnitTests
 {
@@ -70,13 +73,58 @@ namespace UnitTests
             Assert.AreEqual(3, ev.nonbodies);
             Assert.AreEqual(44, ev.progress);
 
-            List<string> setKeys = new List<string>();
-            EddiVoiceAttackResponder.VoiceAttackVariables.setEventValues(vaProxy, ev, setKeys);
-            EddiVoiceAttackResponder.VoiceAttackVariables.setEventExtendedValues(vaProxy, "EDDI " + ev.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), setKeys);
+            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
+            VoiceAttackVariables.PrepareEventVariables($"EDDI {ev.type.ToLowerInvariant()}", ev, ref setVars);
+            VoiceAttackVariables.PrepareExtendedEventVariables($"EDDI {ev.type.ToLowerInvariant()}", JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), ref setVars);
+            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
 
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
             Assert.AreEqual(3, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan nonbodies").Value);
             Assert.AreEqual(44M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
+
+            Assert.AreEqual(5, setVars.Count);
+            Assert.AreEqual(setVars.Count, vaProxy.vaVars.Count, "The 'setVars' list should match the keys set in the 'vaProxy.vaVars' list");
+            foreach (VoiceAttackVariable variable in setVars)
+            {
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
+            }
+        }
+
+        [TestMethod]
+        public void TestVAAsteroidProspectedEvent()
+        {
+            string line = "{ \"timestamp\":\"2020-04-10T02:32:21Z\", \"event\":\"ProspectedAsteroid\", \"Materials\":[ { \"Name\":\"LowTemperatureDiamond\", \"Name_Localised\":\"Low Temperature Diamonds\", \"Proportion\":26.078022 }, { \"Name\":\"HydrogenPeroxide\", \"Name_Localised\":\"Hydrogen Peroxide\", \"Proportion\":10.189009 } ], \"MotherlodeMaterial\":\"Alexandrite\", \"Content\":\"$AsteroidMaterialContent_Low;\", \"Content_Localised\":\"Material Content: Low\", \"Remaining\":90.000000 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            Assert.IsInstanceOfType(events[0], typeof(AsteroidProspectedEvent));
+            AsteroidProspectedEvent ev = events[0] as AsteroidProspectedEvent;
+
+            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
+            VoiceAttackVariables.PrepareEventVariables($"EDDI {ev.type.ToLowerInvariant()}", ev, ref setVars);
+            VoiceAttackVariables.PrepareExtendedEventVariables($"EDDI {ev.type.ToLowerInvariant()}", JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), ref setVars);
+            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+
+            Assert.AreEqual(15, setVars.Count);
+            Assert.AreEqual(DateTime.Parse("2020-04-10T02:32:21Z").ToUniversalTime(), vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected timestamp").Value);
+            Assert.AreEqual(90M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected remaining").Value);
+            Assert.AreEqual("Alexandrite", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected motherlode").Value);
+            Assert.AreEqual("Alexandrite", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected motherlode commodity definition edname").Value);
+            Assert.AreEqual("LowTemperatureDiamond", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition edname").Value);
+            Assert.AreEqual("Low Temperature Diamonds", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity").Value);
+            Assert.AreEqual("LowTemperatureDiamond", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 edname").Value);
+            Assert.AreEqual(26.078022M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 percentage").Value);
+            Assert.AreEqual("HydrogenPeroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 commodity definition edname").Value);
+            Assert.AreEqual("Hydrogen Peroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 commodity").Value);
+            Assert.AreEqual("HydrogenPeroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 edname").Value);
+            Assert.AreEqual(10.189009M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 percentage").Value);
+            Assert.AreEqual(2, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities entries").Value);
+            Assert.AreEqual("Low", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected materialcontent").Value);
+            Assert.AreEqual("$AsteroidMaterialContent_Low;", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected material content edname").Value);
+
+            foreach (VoiceAttackVariable variable in setVars)
+            {
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
+            }
         }
     }
 }

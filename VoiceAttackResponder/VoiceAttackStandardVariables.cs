@@ -2,21 +2,18 @@
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiEvents;
 using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
-    public class VoiceAttackVariables
+    public partial class VoiceAttackVariables
     {
         // These are reference values for nullable items we monitor to determine whether VoiceAttack values need to be updated
         private static StarSystem CurrentStarSystem { get; set; }
@@ -32,207 +29,6 @@ namespace EddiVoiceAttackResponder
         private static Commander Commander { get; set; }
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
         private static decimal DestinationDistanceLy { get; set; }
-
-        public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
-        {
-            foreach (string key in Events.VARIABLES[theEvent.type].Keys)
-            {
-                // Obtain the value by name.  Actually looking for a method get_<name>
-                System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
-                if (method != null)
-                {
-                    Type returnType = method.ReturnType;
-                    if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        returnType = Nullable.GetUnderlyingType(returnType);
-                    }
-
-                    string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
-                    Logging.Debug("Setting values for " + varname);
-
-                    if (returnType == typeof(string))
-                    {
-                        vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                    else if (returnType == typeof(int))
-                    {
-                        vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                    else if (returnType == typeof(bool))
-                    {
-                        vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                    else if (returnType == typeof(decimal))
-                    {
-                        vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                    else if (returnType == typeof(double))
-                    {
-                        // Doubles are stored as decimals
-                        vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                    else if (returnType == typeof(long))
-                    {
-                        vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
-                        setKeys.Add(key);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Walk a JSON object and write out all of the possible fields
-        /// </summary>
-        public static void setEventExtendedValues(dynamic vaProxy, string prefix, dynamic json, List<string> setKeys)
-        {
-            foreach (JProperty child in json)
-            {
-                // We ignore the raw key (as it's the raw journal event)
-                if (child.Name == "raw")
-                {
-                    Logging.Debug("Ignoring key " + child.Name);
-                    continue;
-                }
-                // We also ignore any keys that we have already set elsewhere
-                if (setKeys.Contains(child.Name))
-                {
-                    Logging.Debug("Skipping already-set key " + child.Name);
-                    continue;
-                }
-
-                // Only append the child name to the current prefix if if does not repeat the prior word
-                string childName = AddSpacesToTitleCasedName(child.Name).Replace("_", " ").ToLowerInvariant();
-                string name;
-                if (Regex.Match(prefix, @"(\w+)$").Value == childName)
-                {
-                    name = prefix;
-                }
-                else
-                {
-                    name = prefix + " " + childName;
-                }
-
-                if (child.Value == null)
-                {
-                    // No idea what it might have been so reset everything
-                    Logging.Debug(prefix + " " + child.Name + " is null; need to reset all values");
-                    vaProxy.SetText(name, null);
-                    vaProxy.SetInt(name, null);
-                    vaProxy.SetDecimal(name, null);
-                    vaProxy.SetBoolean(name, null);
-                    vaProxy.SetDate(name, null);
-                    continue;
-                }
-                if (child.Value.Type == JTokenType.Boolean)
-                {
-                    Logging.Debug("Setting boolean value " + name + " to " + (bool?)child.Value);
-                    vaProxy.SetBoolean(name, (bool?)child.Value);
-                    setKeys.Add(name);
-                }
-                else if (child.Value.Type == JTokenType.String)
-                {
-                    Logging.Debug("Setting string value " + name + " to " + (string)child.Value);
-                    vaProxy.SetText(name, (string)child.Value);
-                    setKeys.Add(name);
-                }
-                else if (child.Value.Type == JTokenType.Float)
-                {
-                    Logging.Debug("Setting decimal value " + name + " to " + (decimal?)(double?)child.Value);
-                    vaProxy.SetDecimal(name, (decimal?)(double?)child.Value);
-                    setKeys.Add(name);
-                }
-                else if (child.Value.Type == JTokenType.Integer)
-                {
-                    // We set integers as decimals
-                    Logging.Debug("Setting decimal value " + name + " to " + (decimal?)(long?)child.Value);
-                    vaProxy.SetDecimal(name, (decimal?)(long?)child.Value);
-                    setKeys.Add(name);
-                }
-                else if (child.Value.Type == JTokenType.Date)
-                {
-                    Logging.Debug("Setting date value " + name + " to " + (DateTime?)child.Value);
-                    vaProxy.SetDate(name, (DateTime?)child.Value);
-                    setKeys.Add(name);
-                }
-                else if (child.Value.Type == JTokenType.Array)
-                {
-                    int i = 0;
-                    foreach (JToken arrayChild in child.Value.Children())
-                    {
-                        Logging.Debug("Handling element " + i);
-                        childName = name + " " + i;
-                        if (arrayChild.Type == JTokenType.Boolean)
-                        {
-                            Logging.Debug("Setting boolean value " + childName + " to " + arrayChild.Value<bool?>());
-                            vaProxy.SetBoolean(childName, arrayChild.Value<bool?>());
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.String)
-                        {
-                            Logging.Debug("Setting string value " + childName + " to " + arrayChild.Value<string>());
-                            vaProxy.SetText(childName, arrayChild.Value<string>());
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.Float)
-                        {
-                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
-                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.Integer)
-                        {
-                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
-                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.Date)
-                        {
-                            Logging.Debug("Setting date value " + childName + " to " + arrayChild.Value<DateTime?>());
-                            vaProxy.SetDate(childName, arrayChild.Value<DateTime?>());
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.Null)
-                        {
-                            Logging.Debug("Setting null value " + childName);
-                            vaProxy.SetText(childName, null);
-                            vaProxy.SetInt(childName, null);
-                            vaProxy.SetDecimal(childName, null);
-                            vaProxy.SetBoolean(childName, null);
-                            vaProxy.SetDate(childName, null);
-                            setKeys.Add(childName);
-                        }
-                        else if (arrayChild.Type == JTokenType.Object)
-                        {
-                            setEventExtendedValues(vaProxy, childName, arrayChild, new List<string>());
-                        }
-                        i++;
-                    }
-                    vaProxy.SetInt(name + " entries", i);
-                }
-                else if (child.Value.Type == JTokenType.Object)
-                {
-                    Logging.Debug("Found object");
-                    setEventExtendedValues(vaProxy, name, child.Value, new List<string>());
-                }
-                else if (child.Value.Type == JTokenType.Null)
-                {
-                    // Because the type is NULL we don't know which VA item it was; empty all of them
-                    vaProxy.SetBoolean(prefix + " " + child.Name, null);
-                    vaProxy.SetText(prefix + " " + child.Name, null);
-                    vaProxy.SetDecimal(prefix + " " + child.Name, null);
-                    vaProxy.SetDate(prefix + " " + child.Name, null);
-                }
-                else
-                {
-                    Logging.Warn(child.Value.Type + ": " + child.Name + "=" + child.Value);
-                }
-            }
-        }
 
         /// <summary>Set all values</summary>
         public static void setStandardValues(ref dynamic vaProxy)
@@ -993,27 +789,6 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Error("Failed to set ship cargo values", ex);
             }
-        }
-
-        private static string AddSpacesToTitleCasedName(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return "";
-            }
-
-            StringBuilder newText = new StringBuilder(text.Length * 2);
-            newText.Append(text[0]);
-            for (int i = 1; i < text.Length; i++)
-            {
-                if (char.IsUpper(text[i]) && text[i - 1] != ' ')
-                {
-                    newText.Append(' ');
-                }
-
-                newText.Append(text[i]);
-            }
-            return newText.ToString();
         }
     }
 }
