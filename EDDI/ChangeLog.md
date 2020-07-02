@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.5.3-b8
+### 3.7.0-rc1
   * Core
     * `Carrier cooldown` event is now sent to the carrier's owner even if they were not aboard for the jump.
     * Corrected the timing of the `Carrier cooldown` event.
