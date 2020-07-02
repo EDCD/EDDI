@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.0-rc1
   * Core
+    * EDDI standalone now displays a splash screen while bringing up the full UI, to give users immediate feedback that it is launching.
     * `Carrier cooldown` event is now sent to the carrier's owner even if they were not aboard for the jump.
     * Corrected the timing of the `Carrier cooldown` event.
     * `Carrier pads locked` and `Carrier jump engaged` events are now correctly cancelled if the carrier's jump is cancelled.
