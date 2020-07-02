@@ -244,20 +244,9 @@ namespace EddiVoiceAttackResponder
                         Logging.Debug($"Setting boolean value '{variable.key}' to: {(bool?)variable.value}");
                         vaProxy.SetBoolean(variable.key, (bool?)variable.value);
                     }
-                    else if (variable.type == typeof(decimal))
+                    else if (variable.type == typeof(decimal) || variable.type == typeof(double) || variable.type == typeof(long))
                     {
-                        Logging.Debug($"Setting decimal value '{variable.key}' to: {(decimal?)variable.value}");
-                        vaProxy.SetDecimal(variable.key, (decimal?)variable.value);
-                    }
-                    else if (variable.type == typeof(double))
-                    {
-                        // Doubles are stored as decimals
-                        Logging.Debug($"Setting decimal value '{variable.key}' to: {(decimal?)variable.value}");
-                        vaProxy.SetDecimal(variable.key, (decimal?)variable.value);
-                    }
-                    else if (variable.type == typeof(long))
-                    {
-                        // Longs are stored as decimals
+                        // Doubles and longs are stored as decimals
                         Logging.Debug($"Setting decimal value '{variable.key}' to: {(decimal?)variable.value}");
                         vaProxy.SetDecimal(variable.key, (decimal?)variable.value);
                     }
