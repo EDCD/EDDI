@@ -1482,7 +1482,10 @@
     <value>Buckyball Sör alátét</value>
     <comment>Commodity BuckyballBeerMats</comment>
   </data>
-  
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Forradalmár készletek</value>
+    <comment>Commodity CounterCultureSupport</comment>
+  </data>
   
   
   
@@ -1654,8 +1657,14 @@
   </data>
   
   
-  
-  
+  <data name="Advert1" xml:space="preserve">
+    <value>Ultra-Kompakt Processzor Prototípusok</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Ezüst Crom Fesh</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
   <data name="Tritium" xml:space="preserve">
     <value>Tricium</value>
     <comment>Commodity Tritium</comment>
