@@ -1,4 +1,4 @@
-version: 3.4-{build}
+version: build-{build}
 branches:
   except:
   - l10n_develop
@@ -28,18 +28,19 @@ test_script:
       $openCoverConsole = '.\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe'
       $openCoverReg = '-register:user'
       $openCoverArgs = '-mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*"'
+      
       $target = '-target:"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"'
       $targetArgs = '-targetargs:"bin\Release\Tests.dll' + $(If ($APPVEYOR) {' /logger:Appveyor'}) + ' /tests:UnitTests /Parallel /InIsolation /Blame"'
+ 
       New-Item -ItemType directory -Path '.\TestResults' -Force
-      $resultsPath = '.\TestResults\coverage.xml'
-      $output = '-output:' + $resultsPath
+      $output = '-output:".\TestResults\coverage.xml"'
+      
       $runCoverageCmd = "$openCoverConsole $openCoverArgs $openCoverReg $target $targetArgs $output"
+      
       ECHO $runCoverageCmd
       IEX $runCoverageCmd
 after_test:
- # Our CodeCov token is "c0cc9048-1cdc-464b-b2fa-dac79464e1c4" 
  - ps: |
-      cd TestResults
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-      bash codecov.sh -f coverage.xml -t c0cc9048-1cdc-464b-b2fa-dac79464e1c4
+      bash codecov.sh -f '.\TestResults\coverage.xml'
