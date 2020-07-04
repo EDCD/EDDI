@@ -4529,9 +4529,16 @@ namespace EddiJournalMonitor
             }
             else if (slot.Contains("Military"))
             {
-                compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
+                var slotSize = ShipDefinitions.FromEDModel(ship)?.militarysize;
+                if (slotSize is null)
+                {
+                    // We didn't expect to have a military slot on this ship.
+                    var data = new Dictionary<string, object>() { { "ShipEDName", ship }, { "Slot", slot }, { "Exception", new ArgumentException() } };
+                    Logging.Error($"Unexpected military slot found in ship edName {ship}.", data);
+                    return compartment;
+                }
+                compartment.size = (int)slotSize;
             }
-
             return compartment;
         }
 

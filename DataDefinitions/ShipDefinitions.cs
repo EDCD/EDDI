@@ -18,7 +18,7 @@ namespace EddiDataDefinitions
             { 128671831, new Ship(128671831, "DiamondbackXL", "Lakon Spaceways", "Diamondback Explorer", null, "Small", null, 0.52M) },
             { 128671217, new Ship(128671217, "Diamondback", "Lakon Spaceways", "Diamondback Scout", null, "Small", null, 0.49M) },
             { 128049291, new Ship(128049291, "Dolphin", "Saud Kruger", "Dolphin", null, "Small", null, 0.50M) },
-            { 128049255, new Ship(128049255, "Eagle", "Core Dynamics", "Eagle", null, "Small", null, 0.34M) },
+            { 128049255, new Ship(128049255, "Eagle", "Core Dynamics", "Eagle", null, "Small", 2, 0.34M) },
             { 128672145, new Ship(128672145, "Federation_Dropship_MkII", "Core Dynamics", "Federal Assault Ship", null, "Medium", 4, 0.72M) },
             { 128049369, new Ship(128049369, "Federation_Corvette", "Core Dynamics", "Federal Corvette", null, "Large", 5, 1.13M) },
             { 128049321, new Ship(128049321, "Federation_Dropship", "Core Dynamics", "Federal Dropship", null, "Medium", 4, 0.83M) },
