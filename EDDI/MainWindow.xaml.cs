@@ -159,7 +159,7 @@ namespace Eddi
         {
             if (!App.FromVA)
             {
-                SplashScreen splashScreen = new SplashScreen("logo.png");
+                SplashScreen splashScreen = new SplashScreen("logo-with-alpha.png");
                 splashScreen.Show(true);
             }
 

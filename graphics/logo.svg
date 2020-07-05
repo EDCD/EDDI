@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1.00067,0,0,1.00067,-0.862643,-2.60928)">
+        <circle cx="128.776" cy="130.521" r="127.914" style="fill:rgb(213,211,255);"/>
+    </g>
+    <g transform="matrix(0.868059,0,0,0.868059,29.4832,17.2005)">
+        <g transform="matrix(1,0,0,1,2.32727,39.3697)">
+            <text x="12.8px" y="67.685px" style="font-family:'Dosis-Bold', 'Dosis';font-weight:700;font-size:133.333px;">E</text>
+            <text x="9.4px" y="201.018px" style="font-family:'Dosis-Bold', 'Dosis';font-weight:700;font-size:133.333px;">D</text>
+        </g>
+        <g transform="matrix(1,0,0,1,4.65455,57.2121)">
+            <text x="133.133px" y="50.036px" style="font-family:'Dosis-Bold', 'Dosis';font-weight:700;font-size:133.333px;">D</text>
+            <text x="155.133px" y="183.37px" style="font-family:'Dosis-Bold', 'Dosis';font-weight:700;font-size:133.333px;">I</text>
+        </g>
+    </g>
+</svg>
