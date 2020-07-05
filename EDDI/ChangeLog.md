@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.0-rc2
+  * Standalone app
+    * The splash screen now has the alpha channel that was originally intended.
+	* Reverted the preference introduced in rc1 for running 64-bit, because it was preventing 32-bit-only TSS voices from loading.
+
 ### 3.7.0-rc1
   * Core
     * EDDI standalone now displays a splash screen while bringing up the full UI, to give users immediate feedback that it is launching.
