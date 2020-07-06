@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
-  * Fixed a bug that could cause the Ship loadout` event not to fire if piloting an Eagle with a module slotted in the military slot
+  * Fixed a bug that could cause the `Ship loadout` event not to fire if piloting an Eagle with a module slotted in the military slot
   * Added an alpha channel to the splash screen
 
 ### 3.7.0-rc1
