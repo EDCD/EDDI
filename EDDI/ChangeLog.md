@@ -2,10 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.7.0-rc2
-  * Standalone app
-    * The splash screen now has the alpha channel that was originally intended.
-	* Reverted the preference introduced in rc1 for running 64-bit, because it was preventing 32-bit-only TSS voices from loading.
+### 3.7.0
+  * Promote 3.7.0-rc1 to final
+  * Fixed a bug that could cause the Ship loadout` event not to fire if piloting an Eagle with a module slotted in the military slot
+  * Added an alpha channel to the splash screen
 
 ### 3.7.0-rc1
   * Core
