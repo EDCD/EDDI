@@ -479,7 +479,8 @@ namespace EDDNResponder
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
                         { "ships", eddnShips },
-                        { "horizons", theEvent.inHorizons}
+                        { "horizons", theEvent.inHorizons},
+                        { "allowCobraMkIV", theEvent.allowCobraMkIV }
                     };
 
                     SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);

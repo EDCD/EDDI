@@ -29,5 +29,17 @@ namespace EddiCompanionAppService
 
         /// <summary>Whether this profile describes a currently living commander</summary>
         public bool alive { get; set; }
+
+        /// <summary>The contexts (i.e. "capabilities") associated with this profile </summary>
+        public ProfileContexts contexts { get; set; }
+    }
+
+    public class ProfileContexts
+    {
+        /// <summary>Whether this profile describes a commander with access to the Cobra Mk IV</summary>
+        public bool allowCobraMkIV { get; set; }
+
+        /// <summary>Whether this profile describes a commander with the Horizons expanion running</summary>
+        public bool inHorizons { get; set; }
     }
 }
