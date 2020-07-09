@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.1-b1
+
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
   * Fixed a bug that could cause the `Ship loadout` event not to fire if piloting an Eagle with a module slotted in the military slot
