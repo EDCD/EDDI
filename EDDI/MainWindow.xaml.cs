@@ -1249,7 +1249,14 @@ namespace Eddi
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/EDCD/EDDI/blob/master/README.md");
+            if (EDDI.Instance.EddiIsBeta())
+            {
+                Process.Start("https://github.com/EDCD/EDDI/blob/develop/README.md");
+            }
+            else
+            {
+                Process.Start("https://github.com/EDCD/EDDI/blob/stable/README.md");
+            }
         }
 
         private void WikiClicked(object sender, RoutedEventArgs e)
@@ -1259,7 +1266,14 @@ namespace Eddi
 
         private void TroubleshootClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md");
+            if (EDDI.Instance.EddiIsBeta())
+            {
+                Process.Start("https://github.com/EDCD/EDDI/blob/develop/TROUBLESHOOTING.md");
+            }
+            else
+            {
+                Process.Start("https://github.com/EDCD/EDDI/blob/stable/TROUBLESHOOTING.md");
+            }
         }
     }
 }
