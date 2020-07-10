@@ -1186,13 +1186,11 @@ namespace EddiSpeechResponder
 
                 if (curr?.x != null && dest?.x != null)
                 {
-                    result = (decimal)Math.Round(
-                        Math.Sqrt(
-                                square((double)(curr.x - dest.x)) +
-                                square((double)((curr.y ?? 0) - (dest.y ?? 0))) +
-                                square((double)((curr.z ?? 0) - (dest.z ?? 0)))
-                                ), 
-                        2);
+                    var diffX = (double)(curr.x - dest.x);
+                    var diffY = (double)((curr.y ?? 0) - (dest.y ?? 0));
+                    var diffZ = (double)((curr.z ?? 0) - (dest.z ?? 0));
+                    var distance = Math.Sqrt(square(diffX) + square(diffY) + square(diffZ));
+                    result = (decimal)Math.Round(distance, 2);
                 }
 
                 return new ReflectionValue(result);
