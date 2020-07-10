@@ -651,8 +651,8 @@ namespace EddiCompanionAppService
                 {
                     var contexts = new ProfileContexts 
                     { 
-                        allowCobraMkIV = (bool) json["commander"]["capabilities"]["AllowCobraMkIV"], 
-                        inHorizons = (bool) json["commander"]["capabilities"]["Horizons"] 
+                        allowCobraMkIV = (bool)json["commander"]["capabilities"]["AllowCobraMkIV"], 
+                        inHorizons = (bool)json["commander"]["capabilities"]["Horizons"] 
                     };
                     Profile.contexts = contexts;
                 }
