@@ -450,7 +450,7 @@ namespace EddiDataDefinitions
             // Work out the distance to the system where the ship is stored if we can
             if (x != null && y != null && z != null && fromX != null && fromY != null && fromZ != null) 
             { 
-                return Functions.DistanceFromCoordinates((decimal) x, (decimal) y, (decimal) z, (decimal) fromX, (decimal) fromY, (decimal) fromZ); 
+                return Functions.DistanceFromCoordinates((decimal)x, (decimal)y, (decimal)z, (decimal)fromX, (decimal)fromY, (decimal)fromZ); 
             }
             // We don't know how far away the ship is
             return null;

@@ -1185,9 +1185,9 @@ namespace EddiSpeechResponder
                     var distance = curr.DistanceFromStarSystem(dest);
                     if (distance is null)
                     {
-                        Logging.Warn($"Unable to calculate distance between {curr.systemname} and {dest.systemname}. Could not obtain system coordinates.");
+                        return $"Unable to calculate distance between {curr.systemname} and {dest.systemname}. Could not obtain system coordinates.";
                     }
-                    result = distance ?? 0;
+                    result = (decimal)distance;
                 }
                 else if (values.Count == 6 && numVal)
                 {
@@ -1198,6 +1198,10 @@ namespace EddiSpeechResponder
                     var y2 = values[4].AsNumber;
                     var z2 = values[5].AsNumber;
                     result = Functions.DistanceFromCoordinates(x1, y1, z1, x2, y2, z2);
+                }
+                else
+                {
+                    return "The Distance function is used improperly. Please review the documentation for correct usage.";
                 }
                 return new ReflectionValue(result);
             }, 1, 6);
