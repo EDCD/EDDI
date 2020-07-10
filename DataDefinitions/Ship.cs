@@ -448,15 +448,12 @@ namespace EddiDataDefinitions
         public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
         {
             // Work out the distance to the system where the ship is stored if we can
-            if (x is null || y is null || z is null || fromX is null || fromY is null || fromZ is null)
-            {
-                // We don't know how far away the ship is
-                return null;
+            if (x != null && y != null && z != null && fromX != null && fromY != null && fromZ != null) 
+            { 
+                return Functions.DistanceFromCoordinates((decimal) x, (decimal) y, (decimal) z, (decimal) fromX, (decimal) fromY, (decimal) fromZ); 
             }
-            decimal dx = (fromX - x) ?? 0M;
-            decimal dy = (fromY - y) ?? 0M;
-            decimal dz = (fromZ - z) ?? 0M;
-            return (decimal)(Math.Sqrt((double)((dx * dx) + (dy * dy) + (dz * dz))));
+            // We don't know how far away the ship is
+            return null;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    

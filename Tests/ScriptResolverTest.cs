@@ -161,29 +161,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestResolverDistance()
-        {
-            // Colonia
-            decimal? x1 = -9530.5M;
-            decimal? y1 = -910.28125M;
-            decimal? z1 = 19808.125M;
-
-            // Hephaestus
-            decimal? x2 = -9521.40625M;
-            decimal? y2 = -907.3125M;
-            decimal? z2 = 19801.65625M;
-
-            Dictionary<string, Script> scripts = new Dictionary<string, Script>
-            {
-                {"test", new Script("test", null, false, "{Distance(" + $"{x1}, {y1}, {z1}, {x2}, {y2}, {z2}" + ")}")}
-            };
-            ScriptResolver resolver = new ScriptResolver(scripts);
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-            string result = resolver.resolveFromName("test", dict, true);
-            Assert.AreEqual("11.55", result);
-        }
-
-        [TestMethod]
         public void TestUpgradeScript_FromDefault()
         {
             Script script = new Script("testScript", "Test script", false, "Test script", 3, "Test script");

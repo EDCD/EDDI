@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -366,6 +367,15 @@ namespace EddiDataDefinitions
             }
 
             return value;
+        }
+
+        public decimal? DistanceFromStarSystem(StarSystem other)
+        {
+            if (x != null && y != null && z != null && other?.x != null && other.y != null && other.z != null)
+            {
+                return Functions.DistanceFromCoordinates((decimal)x, (decimal)y, (decimal)z, (decimal)other.x, (decimal)other.y, (decimal)other.z);
+            }
+            return null;
         }
     }
 }
