@@ -225,98 +225,266 @@
     <value>アロウカ修道院の甘味</value>
     <comment>Commodity AroucaConventualSweets</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ArticulationMotors" xml:space="preserve">
+    <value>関節モーター</value>
+    <comment>Commodity ArticulationMotors</comment>
+  </data>
+  <data name="AssaultPlans" xml:space="preserve">
+    <value>攻撃計画</value>
+    <comment>Commodity AssaultPlans</comment>
+  </data>
+  <data name="AtmosphericExtractors" xml:space="preserve">
+    <value>大気調整システム</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+  </data>
+  <data name="AutoFabricators" xml:space="preserve">
+    <value>全自動加工ロボット</value>
+    <comment>Commodity AutoFabricators</comment>
+  </data>
+  <data name="AzCancriFormula42" xml:space="preserve">
+    <value>かに座AZ星公式42</value>
+    <comment>Commodity AzCancriFormula42</comment>
+  </data>
+  <data name="BaltahSineVacuumKrill" xml:space="preserve">
+    <value>バルター・シネ真空オキアミ</value>
+    <comment>Commodity BaltahSineVacuumKrill</comment>
+  </data>
+  <data name="BankiAmphibiousLeather" xml:space="preserve">
+    <value>バンキ両生類の革</value>
+    <comment>Commodity BankiAmphibiousLeather</comment>
+  </data>
+  <data name="BasicMedicines" xml:space="preserve">
+    <value>基礎的な医薬品</value>
+    <comment>Commodity BasicMedicines</comment>
+  </data>
+  <data name="BasicNarcotics" xml:space="preserve">
+    <value>麻薬</value>
+    <comment>Commodity BasicNarcotics</comment>
+  </data>
+  <data name="BastSnakeGin" xml:space="preserve">
+    <value>バスト・スネーク・ジン</value>
+    <comment>Commodity BastSnakeGin</comment>
+  </data>
+  <data name="BattleWeapons" xml:space="preserve">
+    <value>戦闘兵器</value>
+    <comment>Commodity BattleWeapons</comment>
+  </data>
+  <data name="Bauxite" xml:space="preserve">
+    <value>ボーキサイト</value>
+    <comment>Commodity Bauxite</comment>
+  </data>
+  <data name="Beer" xml:space="preserve">
+    <value>ビール</value>
+    <comment>Commodity Beer</comment>
+  </data>
+  <data name="BelalansRayLeather" xml:space="preserve">
+    <value>ベラランスエイの革</value>
+    <comment>Commodity BelalansRayLeather</comment>
+  </data>
+  <data name="Bertrandite" xml:space="preserve">
+    <value>ベルトラン石</value>
+    <comment>Commodity Bertrandite</comment>
+  </data>
+  <data name="Beryllium" xml:space="preserve">
+    <value>ベリリウム</value>
+    <comment>Commodity Beryllium</comment>
+  </data>
+  <data name="BioReducingLichen" xml:space="preserve">
+    <value>有機還元性地衣類</value>
+    <comment>Commodity BioReducingLichen</comment>
+  </data>
+  <data name="Biowaste" xml:space="preserve">
+    <value>有機廃棄物</value>
+    <comment>Commodity Biowaste</comment>
+  </data>
+  <data name="Bismuth" xml:space="preserve">
+    <value>ビスマス</value>
+    <comment>Commodity Bismuth</comment>
+  </data>
+  <data name="BlueMilk" xml:space="preserve">
+    <value>蒼乳</value>
+    <comment>Commodity BlueMilk</comment>
+  </data>
+  <data name="BootlegLiquor" xml:space="preserve">
+    <value>密造酒</value>
+    <comment>Commodity BootlegLiquor</comment>
+  </data>
+  <data name="BorasetaniPathogenetics" xml:space="preserve">
+    <value>ボラセタニ病原体</value>
+    <comment>Commodity BorasetaniPathogenetics</comment>
+  </data>
+  <data name="Bromellite" xml:space="preserve">
+    <value>ブロメル石</value>
+    <comment>Commodity Bromellite</comment>
+  </data>
+  <data name="BuildingFabricators" xml:space="preserve">
+    <value>全自動建設ロボット</value>
+    <comment>Commodity BuildingFabricators</comment>
+  </data>
+  <data name="BurnhamBileDistillate" xml:space="preserve">
+    <value>バーンハム・ビレ蒸留酒</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+  </data>
+  <data name="CD_75KittenBrandCoffee" xml:space="preserve">
+    <value>CD-75子猫ブランドのコーヒー</value>
+    <comment>Commodity CD_75KittenBrandCoffee</comment>
+  </data>
+  <data name="CentauriMegaGin" xml:space="preserve">
+    <value>大射手座ジン</value>
+    <comment>Commodity CentauriMegaGin</comment>
+  </data>
+  <data name="CeramicComposites" xml:space="preserve">
+    <value>セラミック複合材</value>
+    <comment>Commodity CeramicComposites</comment>
+  </data>
+  <data name="CeremonialHeikeTea" xml:space="preserve">
+    <value>儀礼用ヘイケ茶</value>
+    <comment>Commodity CeremonialHeikeTea</comment>
+  </data>
+  <data name="CetiAepyornisEgg" xml:space="preserve">
+    <value>エピオルニスの卵</value>
+    <comment>Commodity CetiAepyornisEgg</comment>
+  </data>
+  <data name="CetiRabbits" xml:space="preserve">
+    <value>セティウサギ</value>
+    <comment>Commodity CetiRabbits</comment>
+  </data>
+  <data name="ChameleonCloth" xml:space="preserve">
+    <value>カメレオン布</value>
+    <comment>Commodity ChameleonCloth</comment>
+  </data>
+  <data name="ChateauDeAegaeon" xml:space="preserve">
+    <value>シャトー・ド・アイガイオーン</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+  </data>
+  <data name="ChemicalWaste" xml:space="preserve">
+    <value>化学廃棄物</value>
+    <comment>Commodity ChemicalWaste</comment>
+  </data>
+  <data name="CherbonesBloodCrystals" xml:space="preserve">
+    <value>チェルボネス血結晶</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+  </data>
+  <data name="ChiEridaniMarinePaste" xml:space="preserve">
+    <value>チ・エリダニすり身</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+  </data>
+  <data name="Clothing" xml:space="preserve">
+    <value>被服</value>
+    <comment>Commodity Clothing</comment>
+  </data>
+  <data name="CMMComposite" xml:space="preserve">
+    <value>CMM複合材</value>
+    <comment>Commodity CMMComposite</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ExhaustManifold" xml:space="preserve">
+    <value>全自動建設ロボット</value>
+    <comment>Commodity ExhaustManifold</comment>
+  </data>
+  <data name="Explosives" xml:space="preserve">
+    <value>バーンハム・ビレ蒸留酒</value>
+    <comment>Commodity Explosives</comment>
+  </data>
+  <data name="Fish" xml:space="preserve">
+    <value>魚</value>
+    <comment>Commodity Fish</comment>
+  </data>
+  <data name="FoodCartridges" xml:space="preserve">
+    <value>フードカートリッジ</value>
+    <comment>Commodity FoodCartridges</comment>
+  </data>
+  
+  <data name="FruitAndVegetables" xml:space="preserve">
+    <value>野菜と果物</value>
+    <comment>Commodity FruitAndVegetables</comment>
+  </data>
+  <data name="FujinTea" xml:space="preserve">
+    <value>フージン茶</value>
+    <comment>Commodity FujinTea</comment>
+  </data>
+  <data name="GalacticTravelGuide" xml:space="preserve">
+    <value>銀河旅行ガイド</value>
+    <comment>Commodity GalacticTravelGuide</comment>
+  </data>
+  <data name="Gallite" xml:space="preserve">
+    <value>ガリウム銅鉱</value>
+    <comment>Commodity Gallite</comment>
+  </data>
+  <data name="Gallium" xml:space="preserve">
+    <value>ガリウム</value>
+    <comment>Commodity Gallium</comment>
+  </data>
+  <data name="GeawenDanceDust" xml:space="preserve">
+    <value>ゲーウェン・ダンス・ダスト</value>
+    <comment>Commodity GeawenDanceDust</comment>
+  </data>
+  <data name="GeneBank" xml:space="preserve">
+    <value>遺伝子バンク</value>
+    <comment>Commodity GeneBank</comment>
+  </data>
+  <data name="GeologicalEquipment" xml:space="preserve">
+    <value>地質学的装備</value>
+    <comment>Commodity GeologicalEquipment</comment>
+  </data>
+  <data name="GeologicalSamples" xml:space="preserve">
+    <value>地質学的標本</value>
+    <comment>Commodity GeologicalSamples</comment>
+  </data>
+  <data name="GerasianGueuzeBeer" xml:space="preserve">
+    <value>ゲラス・ギェーゼビール</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+  </data>
+  <data name="GiantIrukamaSnails" xml:space="preserve">
+    <value>ジャイアントイルカマカタツムリ</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+  </data>
+  <data name="GiantVerrix" xml:space="preserve">
+    <value>ジャイアント・ヴェリックス</value>
+    <comment>Commodity GiantVerrix</comment>
+  </data>
+  <data name="GilyaSignatureWeapons" xml:space="preserve">
+    <value>ギリャのトレードマーク武器</value>
+    <comment>Commodity GilyaSignatureWeapons</comment>
+  </data>
+  <data name="Gold" xml:space="preserve">
+    <value>金</value>
+    <comment>Commodity Gold</comment>
+  </data>
   
   
   
