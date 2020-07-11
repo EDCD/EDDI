@@ -377,41 +377,146 @@
     <value>CMM複合材</value>
     <comment>Commodity CMMComposite</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Cobalt" xml:space="preserve">
+    <value>コバルト</value>
+    <comment>Commodity Cobalt</comment>
+  </data>
+  <data name="Coffee" xml:space="preserve">
+    <value>コーヒー</value>
+    <comment>Commodity Coffee</comment>
+  </data>
+  <data name="Coltan" xml:space="preserve">
+    <value>コルタン</value>
+    <comment>Commodity Coltan</comment>
+  </data>
+  <data name="CombatStabilisers" xml:space="preserve">
+    <value>戦闘用精神安定剤</value>
+    <comment>Commodity CombatStabilisers</comment>
+  </data>
+  <data name="ComercialSamples" xml:space="preserve">
+    <value>商品見本</value>
+    <comment>Commodity ComercialSamples</comment>
+  </data>
+  <data name="ComputerComponents" xml:space="preserve">
+    <value>コンピューター部品</value>
+    <comment>Commodity ComputerComponents</comment>
+  </data>
+  <data name="ConductiveFabrics" xml:space="preserve">
+    <value>導電性繊維</value>
+    <comment>Commodity ConductiveFabrics</comment>
+  </data>
+  <data name="ConsumerTechnology" xml:space="preserve">
+    <value>消費者技術</value>
+    <comment>Commodity ConsumerTechnology</comment>
+  </data>
+  <data name="CoolingHoses" xml:space="preserve">
+    <value>マイクロ波冷却ホース</value>
+    <comment>Commodity CoolingHoses</comment>
+  </data>
+  <data name="Copper" xml:space="preserve">
+    <value>銅</value>
+    <comment>Commodity Copper</comment>
+  </data>
+  <data name="CoquimSpongiformVictuals" xml:space="preserve">
+    <value>コクィム海綿状備蓄食</value>
+    <comment>Commodity CoquimSpongiformVictuals</comment>
+  </data>
+  <data name="CropHarvesters" xml:space="preserve">
+    <value>作物収穫機</value>
+    <comment>Commodity CropHarvesters</comment>
+  </data>
+  <data name="Cryolite" xml:space="preserve">
+    <value>氷晶石</value>
+    <comment>Commodity Cryolite</comment>
+  </data>
+  <data name="CrystallineSpheres" xml:space="preserve">
+    <value>球状結晶</value>
+    <comment>Commodity CrystallineSpheres</comment>
+  </data>
+  <data name="DamagedEscapePod" xml:space="preserve">
+    <value>壊れた脱出ポッド</value>
+    <comment>Commodity DamagedEscapePod</comment>
+  </data>
+  <data name="DamnaCarapaces" xml:space="preserve">
+    <value>ダンマの甲羅</value>
+    <comment>Commodity DamnaCarapaces</comment>
+  </data>
+  <data name="DataCore" xml:space="preserve">
+    <value>データコア</value>
+    <comment>Commodity DataCore</comment>
+  </data>
+  <data name="DeltaPhoenicisPalms" xml:space="preserve">
+    <value>デルタフォエニキスヤシ</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+  </data>
+  <data name="DeuringasTruffles" xml:space="preserve">
+    <value>デウリンガストリュフ</value>
+    <comment>Commodity DeuringasTruffles</comment>
+  </data>
+  <data name="DiagnosticSensor" xml:space="preserve">
+    <value>ハードウェア診断センサー</value>
+    <comment>Commodity DiagnosticSensor</comment>
+  </data>
+  <data name="DiplomaticBag" xml:space="preserve">
+    <value>外交用郵便袋</value>
+    <comment>Commodity DiplomaticBag</comment>
+  </data>
+  <data name="DisoMaCorn" xml:space="preserve">
+    <value>ディソ・マ・コーン</value>
+    <comment>Commodity DisoMaCorn</comment>
+  </data>
+  <data name="DomesticAppliances" xml:space="preserve">
+    <value>家電</value>
+    <comment>Commodity DomesticAppliances</comment>
+  </data>
+  <data name="Drones" xml:space="preserve">
+    <value>リンペット</value>
+    <comment>Commodity Drones</comment>
+  </data>
+  <data name="EarthRelics" xml:space="preserve">
+    <value>大地の遺物</value>
+    <comment>Commodity EarthRelics</comment>
+  </data>
+  <data name="EdenApplesOfAerial" xml:space="preserve">
+    <value>アエリアルのエデンの林檎</value>
+    <comment>Commodity EdenApplesOfAerial</comment>
+  </data>
+  <data name="EleuThermals" xml:space="preserve">
+    <value>エレウの防寒具</value>
+    <comment>Commodity EleuThermals</comment>
+  </data>
+  <data name="EmergencyPowerCells" xml:space="preserve">
+    <value>非常用電池</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+  </data>
+  <data name="EncriptedDataStorage" xml:space="preserve">
+    <value>暗号化済みデータストレージ</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+  </data>
+  <data name="EncryptedCorrespondence" xml:space="preserve">
+    <value>暗号化済み通信</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+  </data>
+  <data name="EraninPearlWhisky" xml:space="preserve">
+    <value>エラニン・パール・ウィスキー</value>
+    <comment>Commodity EraninPearlWhisky</comment>
+  </data>
+  <data name="EshuUmbrellas" xml:space="preserve">
+    <value>エシュの傘</value>
+    <comment>Commodity EshuUmbrellas</comment>
+  </data>
+  <data name="EsusekuCaviar" xml:space="preserve">
+    <value>エスセクキャビア</value>
+    <comment>Commodity EsusekuCaviar</comment>
+  </data>
+  <data name="EthgrezeTeaBuds" xml:space="preserve">
+    <value>エスグリーゼ茶の蕾</value>
+    <comment>Commodity EthgrezeTeaBuds</comment>
+  </data>
+  <data name="EvacuationShelter" xml:space="preserve">
+    <value>脱出用シェルター</value>
+    <comment>Commodity EvacuationShelter</comment>
+  </data>
   <data name="ExhaustManifold" xml:space="preserve">
     <value>全自動建設ロボット</value>
     <comment>Commodity ExhaustManifold</comment>
@@ -485,15 +590,42 @@
     <value>金</value>
     <comment>Commodity Gold</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="GomanYauponCoffee" xml:space="preserve">
+    <value>ゴマン・ヤポンノキコーヒー</value>
+    <comment>Commodity GomanYauponCoffee</comment>
+  </data>
+  <data name="Goslarite" xml:space="preserve">
+    <value>ゴスラー石</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
+  <data name="Grain" xml:space="preserve">
+    <value>穀物</value>
+    <comment>Commodity Grain</comment>
+  </data>
+  <data name="Hafnium178" xml:space="preserve">
+    <value>ハフニウム178</value>
+    <comment>Commodity Hafnium178</comment>
+  </data>
+  <data name="HaidneBlackBrew" xml:space="preserve">
+    <value>ハイドネ黒ビール</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+  </data>
+  <data name="HavasupaiDreamCatcher" xml:space="preserve">
+    <value>ハヴァスパイ夢見機</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+  </data>
+  <data name="HazardousEnvironmentSuits" xml:space="preserve">
+    <value>H.E.スーツ</value>
+    <comment>Commodity HazardousEnvironmentSuits</comment>
+  </data>
+  <data name="HeatsinkInterlink" xml:space="preserve">
+    <value>放熱板相互リンク</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+  </data>
+  <data name="HeliostaticFurnaces" xml:space="preserve">
+    <value>微生物窯</value>
+    <comment>Commodity HeliostaticFurnaces</comment>
+  </data>
   
   
   
