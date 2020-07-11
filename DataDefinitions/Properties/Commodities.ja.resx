@@ -117,33 +117,114 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AdvancedCatalysers" xml:space="preserve">
+    <value>高性能触媒</value>
+    <comment>Commodity AdvancedCatalysers</comment>
+  </data>
+  <data name="AdvancedMedicines" xml:space="preserve">
+    <value>高性能医薬品</value>
+    <comment>Commodity AdvancedMedicines</comment>
+  </data>
+  <data name="AganippeRush" xml:space="preserve">
+    <value>アガニッペ・ラッシュ</value>
+    <comment>Commodity AganippeRush</comment>
+  </data>
+  <data name="AgriculturalMedicines" xml:space="preserve">
+    <value>農業用薬品</value>
+    <comment>Commodity AgriculturalMedicines</comment>
+  </data>
+  <data name="AiRelics" xml:space="preserve">
+    <value>AIの遺物</value>
+    <comment>Commodity AiRelics</comment>
+  </data>
+  <data name="AlacarakmoSkinArt" xml:space="preserve">
+    <value>アラカラクモの入れ墨</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+  </data>
+  <data name="AlbinoQuechuaMammoth" xml:space="preserve">
+    <value>アルビノ・ケチュア・マンモス</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+  </data>
+  <data name="Algae" xml:space="preserve">
+    <value>藻類</value>
+    <comment>Commodity Algae</comment>
+  </data>
+  <data name="alieneggs" xml:space="preserve">
+    <value>柔らかい殻の卵</value>
+    <comment>Commodity alieneggs</comment>
+  </data>
+  <data name="AltairianSkin" xml:space="preserve">
+    <value>アルタイル革</value>
+    <comment>Commodity AltairianSkin</comment>
+  </data>
+  <data name="Aluminium" xml:space="preserve">
+    <value>アルミニウム</value>
+    <comment>Commodity Aluminium</comment>
+  </data>
+  <data name="AlyaBodilySoap" xml:space="preserve">
+    <value>アリャ・ボディーソープ</value>
+    <comment>Commodity AlyaBodySoap</comment>
+  </data>
+  <data name="AncientCasket" xml:space="preserve">
+    <value>古代の棺</value>
+    <comment>Commodity AncientCasket</comment>
+  </data>
+  <data name="AncientOrb" xml:space="preserve">
+    <value>古代の玉</value>
+    <comment>Commodity AncientOrb</comment>
+  </data>
+  <data name="AncientRelic" xml:space="preserve">
+    <value>古代の遺物</value>
+    <comment>Commodity AncientRelic</comment>
+  </data>
+  <data name="AncientTablet" xml:space="preserve">
+    <value>古代の石版</value>
+    <comment>Commodity AncientTablet</comment>
+  </data>
+  <data name="AncientTotem" xml:space="preserve">
+    <value>古代のトーテム</value>
+    <comment>Commodity AncientTotem</comment>
+  </data>
+  <data name="AncientUrn" xml:space="preserve">
+    <value>古代の骨壷</value>
+    <comment>Commodity AncientUrn</comment>
+  </data>
+  <data name="AnduligaFireWorks" xml:space="preserve">
+    <value>アンドゥリガ花火</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+  </data>
+  <data name="Animalmeat" xml:space="preserve">
+    <value>畜肉</value>
+    <comment>Commodity Animalmeat</comment>
+  </data>
+  <data name="AnimalMonitors" xml:space="preserve">
+    <value>畜産用モニタリングシステム</value>
+    <comment>Commodity AnimalMonitors</comment>
+  </data>
+  <data name="AntimatterContainmentUnit" xml:space="preserve">
+    <value>反物質格納容器</value>
+    <comment>Commodity AntimatterContainmentUnit</comment>
+  </data>
+  <data name="AntiqueJewellery" xml:space="preserve">
+    <value>古代の宝飾品</value>
+    <comment>Commodity AntiqueJewellery</comment>
+  </data>
+  <data name="Antiquities" xml:space="preserve">
+    <value>骨董品</value>
+    <comment>Commodity Antiquities</comment>
+  </data>
+  <data name="AnyNaCoffee" xml:space="preserve">
+    <value>アニュ・ナ・コーヒー</value>
+    <comment>Commodity AnyNaCoffee</comment>
+  </data>
+  <data name="AquaponicSystems" xml:space="preserve">
+    <value>循環式水産養殖・水耕栽培統合システム</value>
+    <comment>Commodity AquaponicSystems</comment>
+  </data>
+  <data name="AroucaConventualSweets" xml:space="preserve">
+    <value>アロウカ修道院の甘味</value>
+    <comment>Commodity AroucaConventualSweets</comment>
+  </data>
   
   
   
