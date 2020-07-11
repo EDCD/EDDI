@@ -626,7 +626,10 @@
     <value>微生物窯</value>
     <comment>Commodity HeliostaticFurnaces</comment>
   </data>
-  
+  <data name="HelvetitjPearls" xml:space="preserve">
+    <value>ヘルヴェティティ真珠</value>
+    <comment>Commodity HelvetitjPearls</comment>
+  </data>
   
   
   
