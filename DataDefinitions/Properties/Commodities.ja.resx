@@ -1221,58 +1221,211 @@
     <value>熱冷却ユニット</value>
     <comment>Commodity ThermalCoolingUnits</comment>
   </data>
+  <data name="Thorium" xml:space="preserve">
+    <value>トリウム</value>
+    <comment>Commodity Thorium</comment>
+  </data>
+  <data name="ThrutisCream" xml:space="preserve">
+    <value>トゥルティス・クリーム</value>
+    <comment>Commodity ThrutisCream</comment>
+  </data>
+  <data name="TiegfriesSynthSilk" xml:space="preserve">
+    <value>ティーグフリース合成絹</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+  </data>
+  <data name="TimeCapsule" xml:space="preserve">
+    <value>タイムカプセル</value>
+    <comment>Commodity TimeCapsule</comment>
+  </data>
+  <data name="TiolceWaste2PasteUnits" xml:space="preserve">
+    <value>ティオルスの「ゴミをペーストに」ユニット</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+  </data>
+  <data name="Titanium" xml:space="preserve">
+    <value>チタン</value>
+    <comment>Commodity Titanium</comment>
+  </data>
+  <data name="Tobacco" xml:space="preserve">
+    <value>タバコ</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
+  <data name="ToxandjiVirocide" xml:space="preserve">
+    <value>トクサンディー抗ウィルス薬</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+  </data>
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>有毒廃棄物</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>ルーカン玉ねぎ頭</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
+  <data name="TrinketsOfFortune" xml:space="preserve">
+    <value>秘密の強運の装身具</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+  </data>
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>サーゴイドのセンサー</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>サーゴイドの探査機</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>サーゴイドのリンク</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>サーゴイドのレジン</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>サーゴイドの技術試料</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>不安定なデータコア</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
+  <data name="Uraninite" xml:space="preserve">
+    <value>閃ウラン鉱</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
+  <data name="Uranium" xml:space="preserve">
+    <value>ウラン</value>
+    <comment>Commodity Uranium</comment>
+  </data>
+  <data name="USSCargoAncientArtefact" xml:space="preserve">
+    <value>古代の遺物</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+  </data>
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>ブラックボックス</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>実験用化学物質</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>軍事計画</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
+  <data name="USSCargoPrototypeTech" xml:space="preserve">
+    <value>実験用モデルの技術</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+  </data>
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>貴重な芸術作品</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>反乱軍のメッセージ</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>工業用青写真</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>交易データ</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
+  <data name="UszaianTreeGrub" xml:space="preserve">
+    <value>ウスザー芋虫</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+  </data>
+  <data name="UtgaroarMillenialEggs" xml:space="preserve">
+    <value>ウトガロア千年卵</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+  </data>
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>ウズモク低G羽根</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
+  <data name="VegaSlimweed" xml:space="preserve">
+    <value>ベガ針状葉</value>
+    <comment>Commodity VegaSlimweed</comment>
+  </data>
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>ヘラクレスV星マッサージ</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>ヴィダヴァンタのレース織物</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>真空抽出コーヒー</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
+  <data name="VolkhabBeeDrones" xml:space="preserve">
+    <value>ヴォルハブハチ型ドローン</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>水</value>
+    <comment>Commodity Water</comment>
+  </data>
+  <data name="WaterPurifiers" xml:space="preserve">
+    <value>浄水器</value>
+    <comment>Commodity WaterPurifiers</comment>
+  </data>
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>シンターラの水</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
+  <data name="WheemeteWheatCakes" xml:space="preserve">
+    <value>ウィーメート小麦ケーキ</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+  </data>
+  <data name="Wine" xml:space="preserve">
+    <value>ワイン</value>
+    <comment>Commodity Wine</comment>
+  </data>
+  <data name="WitchhaulKobeBeef" xml:space="preserve">
+    <value>ウィッチホールのコーベ牛</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>サルベージ可能な残骸</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>ウティエロ・クーの泡</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>クシヘのバイオモルフペット</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
+  <data name="YasoKondiLeaf" xml:space="preserve">
+    <value>ヤソ・コンディの葉</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+  </data>
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>ラジュクルの多目的ストーブ</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>キナゴヴァイオリン</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>カチリジン生体濾過ヒル</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>ヴァナイェクィのサイの仲間の毛皮</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
+  <data name="ZeesszeAntGlue" xml:space="preserve">
+    <value>ズィーッスゼアリ虫ノリ</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+  </data>
   
   
   
