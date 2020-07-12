@@ -646,51 +646,186 @@
     <value>HIP原始イカ</value>
     <comment>Commodity HIPProto_Squid</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="HNShockMount" xml:space="preserve">
+    <value>高ニュートン衝撃吸収台座</value>
+    <comment>Commodity HNShockMount</comment>
+  </data>
+  <data name="HolvaDuellingBlades" xml:space="preserve">
+    <value>ホルヴァ決闘用剣</value>
+    <comment>Commodity HolvaDuellingBlades</comment>
+  </data>
+  <data name="HonestyPills" xml:space="preserve">
+    <value>正直薬</value>
+    <comment>Commodity HonestyPills</comment>
+  </data>
+  <data name="Hostage" xml:space="preserve">
+    <value>捕虜</value>
+    <comment>Commodity Hostage</comment>
+  </data>
+  <data name="HR7221Wheat" xml:space="preserve">
+    <value>HR 7221小麦</value>
+    <comment>Commodity HR7221Wheat</comment>
+  </data>
+  <data name="HydrogenFuel" xml:space="preserve">
+    <value>水素燃料</value>
+    <comment>Commodity HydrogenFuel</comment>
+  </data>
+  <data name="HydrogenPeroxide" xml:space="preserve">
+    <value>過酸化水素</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+  </data>
+  <data name="ImperialSlaves" xml:space="preserve">
+    <value>帝国登録奴隷</value>
+    <comment>Commodity ImperialSlaves</comment>
+  </data>
+  <data name="IndiBourbon" xml:space="preserve">
+    <value>インディ・バーボン</value>
+    <comment>Commodity IndiBourbon</comment>
+  </data>
+  <data name="Indite" xml:space="preserve">
+    <value>インダイト</value>
+    <comment>Commodity Indite</comment>
+  </data>
+  <data name="Indium" xml:space="preserve">
+    <value>インジウム</value>
+    <comment>Commodity Indium</comment>
+  </data>
+  <data name="InsulatingMembrane" xml:space="preserve">
+    <value>断熱薄膜</value>
+    <comment>Commodity InsulatingMembrane</comment>
+  </data>
+  <data name="IonDistributor" xml:space="preserve">
+    <value>荷電粒子分配器</value>
+    <comment>Commodity IonDistributor</comment>
+  </data>
+  <data name="Jadeite" xml:space="preserve">
+    <value>ヒスイ輝石</value>
+    <comment>Commodity Jadeite</comment>
+  </data>
+  <data name="JaquesQuinentianStill" xml:space="preserve">
+    <value>ジェイクス・クィネンティス蒸溜所</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+  </data>
+  <data name="JaradharrePuzzleBox" xml:space="preserve">
+    <value>ジャラダッレのパズルボックス</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+  </data>
+  <data name="JarouaRice" xml:space="preserve">
+    <value>ジャロウア米</value>
+    <comment>Commodity JarouaRice</comment>
+  </data>
+  <data name="JotunMookah" xml:space="preserve">
+    <value>ジョトゥン・ムーカー布</value>
+    <comment>Commodity JotunMookah</comment>
+  </data>
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>カミトラ煙草</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
+  <data name="KamorinHistoricWeapons" xml:space="preserve">
+    <value>カモリンの歴史的武器</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+  </data>
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>カレティー高級婦人服</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
+  <data name="KarsukiLocusts" xml:space="preserve">
+    <value>カルスキ蝗</value>
+    <comment>Commodity KarsukiLocusts</comment>
+  </data>
+  <data name="KonggaAle" xml:space="preserve">
+    <value>コンッガ・エール</value>
+    <comment>Commodity KonggaAle</comment>
+  </data>
+  <data name="KoroKungPellets" xml:space="preserve">
+    <value>コロクン弾</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
+  <data name="Landmines" xml:space="preserve">
+    <value>地雷</value>
+    <comment>Commodity Landmines</comment>
+  </data>
+  <data name="Lanthanum" xml:space="preserve">
+    <value>ランタン</value>
+    <comment>Commodity Lanthanum</comment>
+  </data>
+  <data name="LargeExplorationDataCash" xml:space="preserve">
+    <value>大規模調査データ貯蔵所</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+  </data>
+  <data name="LavianBrandy" xml:space="preserve">
+    <value>レイヴ・ブランデー</value>
+    <comment>Commodity LavianBrandy</comment>
+  </data>
+  <data name="Leather" xml:space="preserve">
+    <value>革</value>
+    <comment>Commodity Leather</comment>
+  </data>
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>リースティの邪悪な汁</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
+  <data name="Lepidolite" xml:space="preserve">
+    <value>リチア雲母</value>
+    <comment>Commodity Lepidolite</comment>
+  </data>
+  <data name="LiquidOxygen" xml:space="preserve">
+    <value>液体酸素</value>
+    <comment>Commodity LiquidOxygen</comment>
+  </data>
+  <data name="Liquor" xml:space="preserve">
+    <value>蒸留酒</value>
+    <comment>Commodity Liquor</comment>
+  </data>
+  <data name="Lithium" xml:space="preserve">
+    <value>リチウム</value>
+    <comment>Commodity Lithium</comment>
+  </data>
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>水酸化リチウム</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
+  <data name="LiveHecateSeaWorms" xml:space="preserve">
+    <value>活きヘカテゴカイ</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+  </data>
+  <data name="LowTemperatureDiamond" xml:space="preserve">
+    <value>低温ダイヤモンド</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
+  <data name="LTTHypersweet" xml:space="preserve">
+    <value>LTT超甘味</value>
+    <comment>Commodity LTTHypersweet</comment>
+  </data>
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>リュラエの葉っぱ</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
+  <data name="MagneticEmitterCoil" xml:space="preserve">
+    <value>磁力放出コイル</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+  </data>
+  <data name="MarineSupplies" xml:space="preserve">
+    <value>漁業設備</value>
+    <comment>Commodity MarineSupplies</comment>
+  </data>
+  <data name="MasterChefs" xml:space="preserve">
+    <value>マスターシェフ</value>
+    <comment>Commodity MasterChefs</comment>
+  </data>
+  <data name="MechucosHighTea" xml:space="preserve">
+    <value>メチュコス高茶</value>
+    <comment>Commodity MechucosHighTea</comment>
+  </data>
+  <data name="MedbStarlube" xml:space="preserve">
+    <value>メドブ星印の潤滑油</value>
+    <comment>Commodity MedbStarlube</comment>
+  </data>
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>医療診断設備</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+  </data>
   
   
   
