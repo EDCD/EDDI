@@ -630,10 +630,22 @@
     <value>ヘルヴェティティ真珠</value>
     <comment>Commodity HelvetitjPearls</comment>
   </data>
-  
-  
-  
-  
+  <data name="HIP10175BushMeat" xml:space="preserve">
+    <value>HIP 10175のジビエ肉</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+  </data>
+  <data name="HIP118311Swarm" xml:space="preserve">
+    <value>HIP 118311の群れ</value>
+    <comment>Commodity HIP118311Swarm</comment>
+  </data>
+  <data name="HIPOrganophosphates" xml:space="preserve">
+    <value>HIP有機リン剤</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+  </data>
+  <data name="HIP41181Squid" xml:space="preserve">
+    <value>HIP原始イカ</value>
+    <comment>Commodity HIPProto_Squid</comment>
+  </data>
   
   
   
