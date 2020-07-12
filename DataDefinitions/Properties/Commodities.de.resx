@@ -1685,68 +1685,35 @@
     <value>Ultrakompakte Prozessorprototypen</value>
     <comment>Commodity Ultra-Compact Processor Prototypes</comment>
   </data>
-  <data name="AnimalEffigies" xml:space="preserve">
-    <value>Crom Silver Fesh</value>
-    <comment>Commodity Crom Silver Fesh</comment>
-  </data>
+  
   <data name="Tritium" xml:space="preserve">
     <value>Tritium</value>
     <comment>Commodity Tritium</comment>
   </data>
-  <data name="M_TissueSample_Fluid" xml:space="preserve">
-    <value>Molluskenflüssigkeit</value>
-    <comment>Commodity M_TissueSample_Fluid</comment>
-  </data>
-  <data name="M_TissueSample_Soft" xml:space="preserve">
-    <value>Molluskenweichgewebe</value>
-    <comment>Commodity M_TissueSample_Soft</comment>
-  </data>
-  <data name="M_TissueSample_Nerves" xml:space="preserve">
-    <value>Molluskengehirngewebe</value>
-    <comment>Commodity M_TissueSample_Nerves</comment>
-  </data>
+  
+  
+  
   <data name="S_TissueSample_Cells" xml:space="preserve">
     <value>Schalenkerngewebeprobe</value>
     <comment>Commodity S_TissueSample_Cells</comment>
   </data>
-  <data name="S_TissueSample_Surface" xml:space="preserve">
-    <value>Schalenaussengewebeprobe</value>
-    <comment>Commodity S_TissueSample_Surface</comment>
-  </data>
+  
   <data name="S_TissueSample_Core" xml:space="preserve">
     <value>Schalenoberflächengewebeprobe</value>
     <comment>Commodity S_TissueSample_Core</comment>
   </data>
-  <data name="P_ParticulateSample" xml:space="preserve">
-    <value>Anomalie-Partikel</value>
-    <comment>Commodity P_ParticulateSample</comment>
-  </data>
+  
   <data name="S9_TissueSample_Shell" xml:space="preserve">
     <value>Schalengewebeprobe</value>
     <comment>Commodity S9_TissueSample_Shell</comment>
   </data>
-  <data name="M3_TissueSample_Membrane" xml:space="preserve">
-    <value>Molluskenmembran</value>
-    <comment>Commodity M3_TissueSample_Membrane</comment>
-  </data>
-  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
-    <value>Molluskenmyzel</value>
-    <comment>Commodity M3_TissueSample_Mycelium</comment>
-  </data>
-  <data name="M3_TissueSample_Spores" xml:space="preserve">
-    <value>Molluskensporen</value>
-    <comment>Commodity M3_TissueSample_Spores</comment>
-  </data>
-  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
-    <value>Mesogleaprobe</value>
-    <comment>Commodity S6_TissueSample_Mesoglea</comment>
-  </data>
+  
+  
+  
+  
   <data name="S6_TissueSample_Cells" xml:space="preserve">
     <value>Schalenaussengewebeprobe</value>
     <comment>Commodity S6_TissueSample_Cells</comment>
   </data>
-  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
-    <value>Korallengewebeprobe</value>
-    <comment>Commodity S6_TissueSample_Coenosarc</comment>
-  </data>
+  
 </root>
