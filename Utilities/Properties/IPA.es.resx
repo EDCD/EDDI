@@ -129,12 +129,8 @@
   <data name="ipa_resource1" xml:space="preserve">
     <value>https://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
   </data>
-  <data name="ipa_resource2" xml:space="preserve">
-    <value>https://tophonetics.com/</value>
-  </data>
-  <data name="ipa_resource3" xml:space="preserve">
-    <value>https://easypronunciation.com/en/english-phonetic-transcription-converter</value>
-  </data>
+  
+  
   <data name="ipa_page_p1" xml:space="preserve">
     <value>El</value>
   </data>
@@ -153,7 +149,5 @@
   <data name="ipa_page_p2" xml:space="preserve">
     <value>es un sistema alfabético de notación fonética basado principalmente en el alfabeto latino. Fue ideado por la Asociación Internacional de Fonética a finales del siglo XIX como una representación estandarizada de los sonidos del lenguaje hablado.</value>
   </data>
-  <data name="ipa_page" xml:space="preserve">
-    <value>https://en.wikipedia.org/wiki/International_Phonetic_Alphabet</value>
-  </data>
+  
 </root>
