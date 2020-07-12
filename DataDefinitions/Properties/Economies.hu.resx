@@ -157,8 +157,5 @@
     <value>Sérült</value>
     <comment>Economy type Damaged</comment>
   </data>
-  <data name="Carrier" xml:space="preserve">
-    <value>Magánvállalkozás</value>
-    <comment>Economy Type Carrier</comment>
-  </data>
+  
 </root>
