@@ -150,9 +150,7 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Nemzetközi fonetikus ábécé</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Hajó monitor</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
   </data>
@@ -168,19 +166,8 @@
   <data name="ship_ready" xml:space="preserve">
     <value>{0} készen áll.</value>
   </data>
-  <data name="header_hot" xml:space="preserve">
-    <value>Státusz</value>
-    <comment>Header for column showing whether ship is Hot or Clean</comment>
-  </data>
-  <data name="ship_clean" xml:space="preserve">
-    <value>Tiszta</value>
-    <comment>Ship is Clean</comment>
-  </data>
-  <data name="ship_hot" xml:space="preserve">
-    <value>Forró</value>
-    <comment>Ship is Hot</comment>
-  </data>
-  <data name="p5" xml:space="preserve">
-    <value>Az EDDI exportálni tudja hajóid adatait a Coriolis vagy EDShipyard oldalára (harmadik fél általi alkalmazások). Válaszd ki a számodra megfelelőt.</value>
-  </data>
+  
+  
+  
+  
 </root>
