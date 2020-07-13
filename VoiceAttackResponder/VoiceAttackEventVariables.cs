@@ -153,7 +153,7 @@ namespace EddiVoiceAttackResponder
                         if (i == 0)
                         {
                             // Handle empty collections (for when we're generating wiki documentation)
-                            PrepareEventVariable(ref setVars, name, i.ToString(), underlyingType, null, false);
+                            PrepareEventVariable(ref setVars, name, "*\\<index\\>*", underlyingType, null, false);
                             // Set i to null so that no value is written to the wiki documentation when i is zero
                             i = null;
                         }
