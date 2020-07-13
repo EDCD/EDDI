@@ -20,7 +20,7 @@ namespace EddiVoiceAttackResponder
         /// <param name="prefix">The prefix to add in front of the property name</param>
         /// <param name="reflectionObjectType">The Type property of the object that we're walking, specified independent from the actual object in case the actual object value is null</param>
         /// <param name="setVars">The list of values that we're preparing to set within VoiceAttack</param>
-        /// <param name="isTopLevel">(Optional) Whether we're looking at the top level of the object that we're walking to obtain values/param>
+        /// <param name="isTopLevel">(Optional) Whether we're looking at the top level of the object that we're walking to obtain values</param>
         /// <param name="reflectionObject">(Optional) The object that we're walking to obtain values. At the top level, this should be an `Event` class object</param>
         public static void PrepareEventVariables(string prefix, Type reflectionObjectType, ref List<VoiceAttackVariable> setVars, bool isTopLevel = true, object reflectionObject = null)
         {
@@ -122,22 +122,22 @@ namespace EddiVoiceAttackResponder
                 else
                 {
                     if (undecomposedTypes.Contains(type)) { return; }
-                    else if (type.GetInterfaces().Contains(typeof(IDictionary)))
+                    else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) || type.GetInterfaces().Contains(typeof(IDictionary)))
                     {
                         if (value != null)
                         {
                             foreach (DictionaryEntry kvp in (IDictionary)value)
                             {
-                                PrepareEventVariables(name + " " + kvp.Key, kvp.Value.GetType(), ref setVars, false, kvp.Value);
+                                PrepareEventVariable(ref setVars, prefix, kvp.Key.ToString(), kvp.Value.GetType(), kvp.Value, false);
                             }
                         }
                     }
-                    else if (type.GetInterfaces().Contains(typeof(IEnumerable)))
+                    else if (type == typeof(IEnumerable) || type.GetInterfaces().Contains(typeof(IEnumerable)))
                     {
                         // The object is an enumerable collection. A list, array, or similar.
 
-                        // Get the underlying type
-                        var underlyingType = type.GetGenericArguments()[0];
+                        // Get the underlying type. If there is more than one, the last will correspond to the value type.
+                        var underlyingType = type.GetGenericArguments().Last();
 
                         int? i = 0;
                         if (value != null)
@@ -146,14 +146,14 @@ namespace EddiVoiceAttackResponder
                             {
                                 // Handle filled collections
                                 Logging.Debug("Handling element " + i);
-                                PrepareEventVariables(name + " " + i, underlyingType, ref setVars, false, item);
+                                PrepareEventVariable(ref setVars, name, i.ToString(), underlyingType, item, false);
                                 i++;
                             }
                         }
                         if (i == 0)
                         {
                             // Handle empty collections (for when we're generating wiki documentation)
-                            PrepareEventVariables(name + " n", underlyingType, ref setVars, false, null);
+                            PrepareEventVariable(ref setVars, name, i.ToString(), underlyingType, null, false);
                             // Set i to null so that no value is written to the wiki documentation when i is zero
                             i = null;
                         }
