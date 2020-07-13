@@ -231,7 +231,7 @@ namespace EddiVoiceAttackResponder
                     // Event-specific values  
                     List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
                     // We start off preparing the variables
-                    PrepareEventVariables($"EDDI {@event.type.ToLowerInvariant()}", @event, ref setVars);
+                    PrepareEventVariables($"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref setVars, true, @event);
                     // We update the event variable values
                     SetEventVariables(vaProxy, setVars);
                     // We update all standard values  
