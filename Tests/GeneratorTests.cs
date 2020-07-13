@@ -1,12 +1,13 @@
-﻿using EddiEvents;
+﻿using Cottle.Stores;
+using EddiEvents;
 using EddiSpeechResponder.Service;
+using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Cottle.Stores;
 
 namespace GeneratorTests
 {
@@ -60,34 +61,56 @@ namespace GeneratorTests
                         output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). The event information can be accessed using the following VoiceAttack variables");
                         output.Add("");
                         output.Add("");
-                        foreach (KeyValuePair<string, string> variable in variables.OrderBy(i => i.Key))
+                        List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
+                        VoiceAttackVariables.PrepareEventVariables($"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
+                        foreach (var variable in setVars)
                         {
-                            System.Reflection.MethodInfo method = entry.Value.GetMethod("get_" + variable.Key);
-                            if (method != null)
+                            // Get descriptions for our top level variables
+                            if (variable.IsTopLevel)
                             {
-                                Type returnType = method.ReturnType;
-                                if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                string lastWord = variable.Key.Split(' ').Last();
+                                foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[entry.Key])
                                 {
-                                    returnType = Nullable.GetUnderlyingType(returnType);
-                                }
-
-                                if (returnType == typeof(string))
-                                {
-                                    output.Add("  * `{TXT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
-                                }
-                                else if (returnType == typeof(int))
-                                {
-                                    output.Add("  * `{INT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
-                                }
-                                else if (returnType == typeof(bool))
-                                {
-                                    output.Add("  * `{BOOL:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
-                                }
-                                else if (returnType == typeof(decimal) || returnType == typeof(double) || returnType == typeof(long))
-                                {
-                                    output.Add("  * `{DEC:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                    if (variableDescription.Key == lastWord)
+                                    {
+                                        variable.Value = variableDescription.Value;
+                                        break;
+                                    }
                                 }
                             }
+                        }
+                        void WriteToOutput(VoiceAttackVariable variable)
+                        {
+                            if (variable.Type == typeof(string))
+                            {
+                                output.Add("  * `{TXT:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                            }
+                            else if (variable.Type == typeof(int))
+                            {
+                                output.Add("  * `{INT:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                            }
+                            else if (variable.Type == typeof(bool))
+                            {
+                                output.Add("  * `{BOOL:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                            }
+                            else if (variable.Type == typeof(decimal))
+                            {
+                                output.Add("  * `{DEC:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                            }
+                            else if (variable.Type == typeof(DateTime))
+                            {
+                                output.Add("  * `{DATE:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                            }
+                        }
+                        foreach (var variable in setVars.Where(v => v.Value != null).OrderBy(i => i.Key))
+                        {
+                            // Write variables with descriptions first
+                            WriteToOutput(variable);
+                        }
+                        foreach (var variable in setVars.Where(v => v.Value == null).OrderBy(i => i.Key))
+                        {
+                            // Write variables without descriptions second
+                            WriteToOutput(variable);
                         }
                         output.Add("");
                         output.Add("");                    }
