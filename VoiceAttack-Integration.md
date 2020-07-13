@@ -24,6 +24,8 @@ The profile is available in the EDDI installation directory as EDDI.vap.
 
 EDDI makes a large number of values available to augment your existing scripts.  These variables are available at all times.
 
+Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\<index\>*' and a value ending in 'entries' will identify the total number of entries in that index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.
+
 ## Commander Variables
 
   * {TXT:Name}: the name of the commander
@@ -181,24 +183,24 @@ Note: "Tiny" hardpoints are utility slots.
   * {DEC:Ship fuel tank discount}: the percentage discount of the purchased main fuel tank against the undiscounted cost
   * {DEC:Ship fuel tank capacity}: the capacity of the main fuel tank
   * {DEC:Ship total fuel tank capacity}: the capacity of the main fuel tank plus all additional fuel tanks
-  * {BOOL:Ship tiny/small/medium/large/huge hardpoint *n* occupied}: true if there is a module in this slot, otherwise false
-  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module}: the name of the module in this slot
-  * {INT:Ship tiny/small/medium/large/huge hardpoint *n* module class}: the class of the module in this slot
-  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module grade}: the grade of the module in this slot
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module health}: the last reported percentage health of the module in this slot
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module cost}: the purchase cost of the module in this slot
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module value}: the undiscounted cost of the module in this slot
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module discount}: the percentage discount of the purchased module against the undiscounted cost
+  * {BOOL:Ship tiny/small/medium/large/huge hardpoint *\<index\>* occupied}: true if there is a module in this slot, otherwise false
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module}: the name of the module in this slot
+  * {INT:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module class}: the class of the module in this slot
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module grade}: the grade of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module health}: the last reported percentage health of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module cost}: the purchase cost of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module value}: the undiscounted cost of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module discount}: the percentage discount of the purchased module against the undiscounted cost
   * {INT:Ship hardpoints} the total number of filled hardpoints slots (to use when looping through hardpoint data)
-  * {INT:Ship Compartment *n* size}: the size of this slot
-  * {BOOL:Ship Compartment *n* occupied}: true if there is a module in this slot, otherwise false
-  * {TXT:Ship compartment *n* module}: the name of the module in this slot
-  * {INT:Ship compartment *n* module class}: the class of the module in this slot
-  * {TXT:Ship compartment *n* module grade}: the grade of the module in this slot
-  * {DEC:Ship compartment *n* module health}: the last reported percentage health of the module in this slot
-  * {DEC:Ship compartment *n* module cost}: the purchase cost of the module in this slot
-  * {DEC:Ship compartment *n* module value}: the undiscounted cost of the module in this slot
-  * {DEC:Ship compartment *n* module station cost}: the purchase cost of the module at this station
+  * {INT:Ship Compartment *\<index\>* size}: the size of this slot
+  * {BOOL:Ship Compartment *\<index\>* occupied}: true if there is a module in this slot, otherwise false
+  * {TXT:Ship compartment *\<index\>* module}: the name of the module in this slot
+  * {INT:Ship compartment *\<index\>* module class}: the class of the module in this slot
+  * {TXT:Ship compartment *\<index\>* module grade}: the grade of the module in this slot
+  * {DEC:Ship compartment *\<index\>* module health}: the last reported percentage health of the module in this slot
+  * {DEC:Ship compartment *\<index\>* module cost}: the purchase cost of the module in this slot
+  * {DEC:Ship compartment *\<index\>* module value}: the undiscounted cost of the module in this slot
+  * {DEC:Ship compartment *\<index\>* module station cost}: the purchase cost of the module at this station
   * {INT:Ship compartments} the total number of filled compartment slots (to use when looping through compartment data)
 
 ### Stored ship variables
@@ -286,12 +288,12 @@ Note: "Tiny" hardpoints are utility slots.
   * {DEC:Ship sensors station cost}: the purchase cost of the sensors at the station (not set if not for sale at the station)
   * {DEC:Ship sensors station discount}: the number of credits discount of the sensors over those currently fitted (not set if no additional discount)
   * {TXT:Ship sensors station discount (spoken)}: the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
-  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
-  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
-  * {DEC:Ship compartment *n* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
-  * {DEC:Ship compartment *n* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
-  * {TXT:Ship compartment *n* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *\<index\>* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship compartment *\<index\>* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
+  * {DEC:Ship compartment *\<index\>* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * {TXT:Ship compartment *\<index\>* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
   * {TXT:Last station name}: the name of the last station the commander docked at
   * {TXT:Last station faction}: the name of the controlling faction of the last station
   * {TXT:Last station government}: the name of the government of the last station
@@ -314,14 +316,14 @@ Note: "Tiny" hardpoints are utility slots.
 ## Shipyard Variables
 
   * {INT:Stored ship entries}: the number of ships in storage
-  * {TXT:Stored ship *n* model}: the model of the *n*th stored ship
-  * {TXT:Stored ship *n* name}: the name of the *n*th stored ship as set in EDDI configuration
-  * {TXT:Stored ship *n* callsign}: the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
-  * {TXT:Stored ship *n* callsign (spoken)}: the callsign of the *n*th stored ship as shown in EDDI configuration as would be spoken
-  * {TXT:{TXT:Stored ship *n* role}: the role of the *n*th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
-  * {TXT:{TXT:Stored ship *n* station}: the station in which the *n*th stored ship resides
-  * {TXT:Stored ship *n* system}: the system in which the *n*th stored ship resides
-  * {DEC:Stored ship *n* distance}: the number of light years between the current system and that where the *n*th ship resides, to two decimal places
+  * {TXT:Stored ship *\<index\>* model}: the model of the *\<index\>*th stored ship
+  * {TXT:Stored ship *\<index\>* name}: the name of the *\<index\>*th stored ship as set in EDDI configuration
+  * {TXT:Stored ship *\<index\>* callsign}: the callsign of the *\<index\>*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * {TXT:Stored ship *\<index\>* callsign (spoken)}: the callsign of the *\<index\>*th stored ship as shown in EDDI configuration as would be spoken
+  * {TXT:{TXT:Stored ship *\<index\>* role}: the role of the *\<index\>*th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
+  * {TXT:{TXT:Stored ship *\<index\>* station}: the station in which the *\<index\>*th stored ship resides
+  * {TXT:Stored ship *\<index\>* system}: the system in which the *\<index\>*th stored ship resides
+  * {DEC:Stored ship *\<index\>* distance}: the number of light years between the current system and that where the *\<index\>*th ship resides, to two decimal places
 
 ## Miscellaneous Variables
 

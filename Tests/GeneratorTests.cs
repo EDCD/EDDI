@@ -49,7 +49,7 @@ namespace GeneratorTests
                     }
                     else
                     {
-                        output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows");
+                        output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
                         output.Add("");
                         output.Add("");
                         foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
@@ -58,7 +58,9 @@ namespace GeneratorTests
                             output.Add("");
                         }
 
-                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). The event information can be accessed using the following VoiceAttack variables");
+                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
+                        output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*' and a value ending in 'entries' will identify the total number of entries in that index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
+                        output.Add("The following VoiceAttack variables are available for this event:");
                         output.Add("");
                         output.Add("");
                         List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
@@ -83,23 +85,23 @@ namespace GeneratorTests
                         {
                             if (variable.Type == typeof(string))
                             {
-                                output.Add("  * `{TXT:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                output.Add("  * {TXT:" + variable.Key + "} " + variable.Value);
                             }
                             else if (variable.Type == typeof(int))
                             {
-                                output.Add("  * `{INT:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                output.Add("  * {INT:" + variable.Key + "} " + variable.Value);
                             }
                             else if (variable.Type == typeof(bool))
                             {
-                                output.Add("  * `{BOOL:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                output.Add("  * {BOOL:" + variable.Key + "} " + variable.Value);
                             }
                             else if (variable.Type == typeof(decimal))
                             {
-                                output.Add("  * `{DEC:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                output.Add("  * {DEC:" + variable.Key + "} " + variable.Value);
                             }
                             else if (variable.Type == typeof(DateTime))
                             {
-                                output.Add("  * `{DATE:" + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                output.Add("  * {DATE:" + variable.Key + "} " + variable.Value);
                             }
                         }
                         foreach (var variable in setVars.Where(v => v.Value != null).OrderBy(i => i.Key))
