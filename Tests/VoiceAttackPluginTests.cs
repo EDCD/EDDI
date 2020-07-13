@@ -6,10 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using EddiVoiceAttackResponder;
-using Utilities;
 
 namespace UnitTests
 {
@@ -75,12 +73,11 @@ namespace UnitTests
 
             List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
             VoiceAttackVariables.PrepareEventVariables($"EDDI {ev.type.ToLowerInvariant()}", ev, ref setVars);
-            VoiceAttackVariables.PrepareExtendedEventVariables($"EDDI {ev.type.ToLowerInvariant()}", JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), ref setVars);
             VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
 
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
             Assert.AreEqual(3, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan nonbodies").Value);
-            Assert.AreEqual(44M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
+            Assert.AreEqual(44, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan progress").Value);
 
             Assert.AreEqual(5, setVars.Count);
             Assert.AreEqual(setVars.Count, vaProxy.vaVars.Count, "The 'setVars' list should match the keys set in the 'vaProxy.vaVars' list");
@@ -101,7 +98,6 @@ namespace UnitTests
 
             List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
             VoiceAttackVariables.PrepareEventVariables($"EDDI {ev.type.ToLowerInvariant()}", ev, ref setVars);
-            VoiceAttackVariables.PrepareExtendedEventVariables($"EDDI {ev.type.ToLowerInvariant()}", JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ev)), ref setVars);
             VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
 
             Assert.AreEqual(9, setVars.Count);
