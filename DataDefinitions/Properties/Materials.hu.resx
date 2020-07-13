@@ -223,7 +223,10 @@
   
   
   
-  
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Gamma Obeliszk adat Történelmi</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Rendhagyó FSD telemetria</value>
     <comment>Material fsdtelemetry</comment>
