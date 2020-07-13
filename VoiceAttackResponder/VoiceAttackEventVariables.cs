@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,36 +13,39 @@ namespace EddiVoiceAttackResponder
     {
         // Event keys that shall not be written to VoiceAttack
         private static readonly string[] ignoredKeys = { "type", "raw", "fromLoad", "edName", "baseName" };
+        // Some types don't need to be decomposed further
+        private static readonly Type[] undecomposedTypes = { typeof(string), typeof(DateTime), typeof(TimeSpan) };
 
         /// <summary> Walk an object and write out all of the possible fields </summary>
         /// <param name="prefix">The prefix to add in front of the property name</param>
-        /// <param name="reflectionObject">The object that we're walking. At the top level, this should be an `Event` class object</param>
+        /// <param name="reflectionObjectType">The Type property of the object that we're walking, specified independent from the actual object in case the actual object value is null</param>
         /// <param name="setVars">The list of values that we're preparing to set within VoiceAttack</param>
-        /// <param name="isTopLevel">Whether we're looking at the top level of the event or at some deeper level</param>
-        public static void PrepareEventVariables(string prefix, object reflectionObject, ref List<VoiceAttackVariable> setVars, bool isTopLevel = true)
+        /// <param name="isTopLevel">(Optional) Whether we're looking at the top level of the object that we're walking to obtain values/param>
+        /// <param name="reflectionObject">(Optional) The object that we're walking to obtain values. At the top level, this should be an `Event` class object</param>
+        public static void PrepareEventVariables(string prefix, Type reflectionObjectType, ref List<VoiceAttackVariable> setVars, bool isTopLevel = true, object reflectionObject = null)
         {
-            var objectType = reflectionObject.GetType();
-            var objectProperties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var objectFields = objectType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            // Some types don't need to be decomposed further.
+            if (undecomposedTypes.Contains(reflectionObjectType)) 
+            {
+                PrepareEventVariable(ref setVars, prefix, "", reflectionObjectType, reflectionObject, isTopLevel);
+                return; 
+            }
+
+            var objectProperties = reflectionObjectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var objectFields = reflectionObjectType.GetFields(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var eventProperty in objectProperties)
             {
-                PrepareEventVariable(ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead ? eventProperty.GetValue(reflectionObject) : null);
+                PrepareEventVariable(ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
             }
 
             foreach (var eventField in objectFields)
             {
-                PrepareEventVariable(ref setVars, prefix, eventField.Name, eventField.FieldType, eventField.GetValue(reflectionObject));
-            }
-
-            if (isTopLevel)
-            {
-                // Sort the final output
-                setVars = setVars.OrderBy(v => v.key).ToList();
+                PrepareEventVariable(ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
             }
         }
 
-        private static void PrepareEventVariable(ref List<VoiceAttackVariable> setVars, string prefix, string key, Type type, object value)
+        private static void PrepareEventVariable(ref List<VoiceAttackVariable> setVars, string prefix, string key, Type type, object value, bool isTopLevel = true)
         {
             try
             {
@@ -67,7 +69,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // We also ignore any keys that we have already set elsewhere
-                if (setVars.FirstOrDefault(v => v.key == name) != null)
+                if (setVars.FirstOrDefault(v => v.Key == name) != null)
                 {
                     Logging.Debug("Skipping already-set key " + name);
                     return;
@@ -89,69 +91,82 @@ namespace EddiVoiceAttackResponder
 
                 if (type == typeof(bool))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(bool), (bool?)value));
+                    setVars.Add(new VoiceAttackVariable(name, typeof(bool), (bool?)value, isTopLevel));
                 }
                 else if (type == typeof(string))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(string), (string)value));
+                    setVars.Add(new VoiceAttackVariable(name, typeof(string), (string)value, isTopLevel));
                 }
                 else if (type == typeof(int))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(int), (int?)value));
+                    setVars.Add(new VoiceAttackVariable(name, typeof(int), (int?)value, isTopLevel));
                 }
                 else if (type == typeof(decimal))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(decimal), value is null ? null : (decimal?)Convert.ToDecimal(value)));
+                    setVars.Add(new VoiceAttackVariable(name, typeof(decimal), value is null ? null : (decimal?)Convert.ToDecimal(value), isTopLevel));
                 }
                 else if (type == typeof(DateTime))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(DateTime), (DateTime?)value));
+                    setVars.Add(new VoiceAttackVariable(name, typeof(DateTime), (DateTime?)value, isTopLevel));
                 }
                 else if (type is null)
                 {
-                    setVars.Add(new VoiceAttackVariable(name, null, null));
+                    setVars.Add(new VoiceAttackVariable(name, null, null, isTopLevel));
+                }
+                else if (!type.IsGenericType && type.IsEnum)
+                {
+                    var fieldsArray = type?.GetFields(BindingFlags.Public | BindingFlags.Static);
+                    var enumName = value != null ? fieldsArray[(int)value].Name : null;
+                    setVars.Add(new VoiceAttackVariable(name, typeof(string), enumName, isTopLevel));
                 }
                 else
                 {
-                    if (type.GetInterfaces().Contains(typeof(ICollection)))
+                    if (undecomposedTypes.Contains(type)) { return; }
+                    else if (type.GetInterfaces().Contains(typeof(IDictionary)))
                     {
-                        // The object is a collection. A list, array, or similar.
-                        var collection = (ICollection)value;
-                        if (collection.Count > 0)
+                        if (value != null)
                         {
-                            // Handle lists with values
-                            int i = 0;
-                            foreach (object item in collection)
+                            foreach (DictionaryEntry kvp in (IDictionary)value)
                             {
+                                PrepareEventVariables(name + " " + kvp.Key, kvp.Value.GetType(), ref setVars, false, kvp.Value);
+                            }
+                        }
+                    }
+                    else if (type.GetInterfaces().Contains(typeof(IEnumerable)))
+                    {
+                        // The object is an enumerable collection. A list, array, or similar.
+
+                        // Get the underlying type
+                        var underlyingType = type.GetGenericArguments()[0];
+
+                        int? i = 0;
+                        if (value != null)
+                        {
+                            foreach (object item in (IEnumerable)value)
+                            {
+                                // Handle filled collections
                                 Logging.Debug("Handling element " + i);
-                                PrepareEventVariables(name + " " + i, item, ref setVars, false);
+                                PrepareEventVariables(name + " " + i, underlyingType, ref setVars, false, item);
                                 i++;
                             }
                         }
-                        else
+                        if (i == 0)
                         {
-                            // TODO: Handle empty lists and arrays
-                            var T = typeof(object);
-                            var typeProperties = type.GetProperties();
-                            foreach (var typeProperty in typeProperties)
-                            {
-                                if (typeProperty.Name == "Item")
-                                {
-                                    T = typeProperty.PropertyType;
-                                }
-                            }
-                            var reflectionObject = T;
+                            // Handle empty collections (for when we're generating wiki documentation)
+                            PrepareEventVariables(name + " n", underlyingType, ref setVars, false, null);
+                            // Set i to null so that no value is written to the wiki documentation when i is zero
+                            i = null;
                         }
-                        setVars.Add(new VoiceAttackVariable(name + " entries", typeof(int), collection.Count));
+                        setVars.Add(new VoiceAttackVariable(name + " entries", typeof(int), i, isTopLevel));
                     }
-                    else if (type.IsClass && !type.IsGenericType)
+                    else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
                         Logging.Debug($"Found object '{type.Name}'");
-                        PrepareEventVariables(name, value, ref setVars, false);
+                        PrepareEventVariables(name, type, ref setVars, false, value);
                     }
                     else
                     {
-                        throw new InvalidDataException($"Unexpected type '{type.FullName}' cannot be set as a VoiceAttack variable.");
+                        throw new ArgumentException($"Unexpected type '{type.FullName}' cannot be set as a VoiceAttack variable.");
                     }
                 }
             }
@@ -195,40 +210,40 @@ namespace EddiVoiceAttackResponder
             {
                 try
                 {
-                    if (variable.type is null)
+                    if (variable.Type is null)
                     {
                         // No idea what it might have been so reset everything
-                        Logging.Debug($"'{variable.key}' type is null; Unset all possible values");
-                        vaProxy.SetText(variable.key, null);
-                        vaProxy.SetInt(variable.key, null);
-                        vaProxy.SetDecimal(variable.key, null);
-                        vaProxy.SetBoolean(variable.key, null);
-                        vaProxy.SetDate(variable.key, null);
+                        Logging.Debug($"'{variable.Key}' type is null; Unset all possible values");
+                        vaProxy.SetText(variable.Key, null);
+                        vaProxy.SetInt(variable.Key, null);
+                        vaProxy.SetDecimal(variable.Key, null);
+                        vaProxy.SetBoolean(variable.Key, null);
+                        vaProxy.SetDate(variable.Key, null);
                     }
-                    else if (variable.type == typeof(string))
+                    else if (variable.Type == typeof(string))
                     {
-                        Logging.Debug($"Setting string value '{variable.key}' to: {(string)variable.value}");
-                        vaProxy.SetText(variable.key, (string)variable.value);
+                        Logging.Debug($"Setting string value '{variable.Key}' to: {(string)variable.Value}");
+                        vaProxy.SetText(variable.Key, (string)variable.Value);
                     }
-                    else if (variable.type == typeof(int))
+                    else if (variable.Type == typeof(int))
                     {
-                        Logging.Debug($"Setting integer value '{variable.key}' to: {(int?)variable.value}");
-                        vaProxy.SetInt(variable.key, (int?)variable.value);
+                        Logging.Debug($"Setting integer value '{variable.Key}' to: {(int?)variable.Value}");
+                        vaProxy.SetInt(variable.Key, (int?)variable.Value);
                     }
-                    else if (variable.type == typeof(bool))
+                    else if (variable.Type == typeof(bool))
                     {
-                        Logging.Debug($"Setting boolean value '{variable.key}' to: {(bool?)variable.value}");
-                        vaProxy.SetBoolean(variable.key, (bool?)variable.value);
+                        Logging.Debug($"Setting boolean value '{variable.Key}' to: {(bool?)variable.Value}");
+                        vaProxy.SetBoolean(variable.Key, (bool?)variable.Value);
                     }
-                    else if (variable.type == typeof(decimal))
+                    else if (variable.Type == typeof(decimal))
                     {
-                        Logging.Debug($"Setting decimal value '{variable.key}' to: {(decimal?)variable.value}");
-                        vaProxy.SetDecimal(variable.key, (decimal?)variable.value);
+                        Logging.Debug($"Setting decimal value '{variable.Key}' to: {(decimal?)variable.Value}");
+                        vaProxy.SetDecimal(variable.Key, (decimal?)variable.Value);
                     }
-                    else if (variable.type == typeof(DateTime))
+                    else if (variable.Type == typeof(DateTime))
                     {
-                        Logging.Debug($"Setting date value '{variable.key} to {(DateTime?)variable.value}");
-                        vaProxy.SetDate(variable.key, (DateTime?)variable.value);
+                        Logging.Debug($"Setting date value '{variable.Key} to {(DateTime?)variable.Value}");
+                        vaProxy.SetDate(variable.Key, (DateTime?)variable.Value);
                     }
                     else
                     {
@@ -242,7 +257,7 @@ namespace EddiVoiceAttackResponder
                         { "Value", variable },
                         { "Exception", ex }
                     };
-                    Logging.Error($"Failed to write VoiceAttack value for key '{variable.key}'", data);
+                    Logging.Error($"Failed to write VoiceAttack value for key '{variable.Key}'", data);
                 }
             }
         }
@@ -251,19 +266,23 @@ namespace EddiVoiceAttackResponder
     public class VoiceAttackVariable
     {
         /// <summary> The full key used to access the variable in VoiceAttack, including any applicable prefix </summary>
-        public string key { get; private set; }
+        public string Key { get; private set; }
 
         /// <summary> One of "string", "int", "bool", "decimal", "double", "long", or "DateTime" </summary>
-        public Type type { get; private set; }
+        public Type Type { get; private set; }
 
         /// <summary> The value to write (if any) </summary>
-        public object value { get; private set; }
+        public object Value { get; set; }
 
-        public VoiceAttackVariable(string key, Type type, object value = null)
+        /// <summary> Whether this is a top level variable which might have a description </summary>
+        public bool IsTopLevel { get; private set; }
+
+        public VoiceAttackVariable(string key, Type type, object value = null, bool isTopLevel = true)
         {
-            this.key = key;
-            this.type = type;
-            this.value = value;
+            this.Key = key;
+            this.Type = type;
+            this.Value = value;
+            this.IsTopLevel = isTopLevel;
         }
     }
 }
