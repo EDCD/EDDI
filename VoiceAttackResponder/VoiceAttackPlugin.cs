@@ -228,17 +228,13 @@ namespace EddiVoiceAttackResponder
                 lock (vaProxyLock)
                 {
                     vaProxy.SetText("EDDI event", @event.type);
-
                     // Event-specific values  
                     List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-                    // We start off preparing the variables which are official and known  
+                    // We start off preparing the variables
                     PrepareEventVariables($"EDDI {@event.type.ToLowerInvariant()}", @event, ref setVars);
-                    // Now we carry out a generic walk through the event object to prepare variables for whatever we find  
-                    PrepareExtendedEventVariables($"EDDI {@event.type.ToLowerInvariant()}", JsonConvert.DeserializeObject(JsonConvert.SerializeObject(@event)), ref setVars);
-                    // Finally, we write the event variable values
+                    // We update the event variable values
                     SetEventVariables(vaProxy, setVars);
-
-                    // Update all standard values  
+                    // We update all standard values  
                     setStandardValues(ref vaProxy);
                 }
             }
