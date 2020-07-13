@@ -3138,16 +3138,25 @@ namespace EddiJournalMonitor
                                     {
                                         List<string> items = new List<string>();
                                         List<Module> modules = new List<Module>();
-                                        if (itemsVal is List<object> moduleEdNames)
+                                        if (itemsVal is List<object> itemEDNames)
                                         {
-                                            foreach (string moduleEdName in moduleEdNames)
+                                            foreach (string itemEDName in itemEDNames)
                                             {
-                                                items.Add(moduleEdName);
-                                                var module = Module.FromEDName(moduleEdName);
-                                                if (module != null)
+                                                var item = itemEDName;
+                                                if (item == "Wear")
                                                 {
-                                                    modules.Add(module);
+                                                    items.Add(EddiDataDefinitions.Properties.Modules.ShipIntegrity);
                                                 }
+                                                else if (itemEDName != "All" && itemEDName != "Paint")
+                                                {
+                                                    // Item might be a module
+                                                    var module = Module.FromEDName(itemEDName);
+                                                    if (module != null)
+                                                    {
+                                                        modules.Add(module);
+                                                    }
+                                                }
+                                                items.Add(item);
                                             }
                                             events.Add(new ShipRepairedEvent(timestamp, items, modules, price) { raw = line, fromLoad = fromLogLoad });
                                         }
