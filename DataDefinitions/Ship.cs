@@ -448,12 +448,7 @@ namespace EddiDataDefinitions
         public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
         {
             // Work out the distance to the system where the ship is stored if we can
-            if (x != null && y != null && z != null && fromX != null && fromY != null && fromZ != null) 
-            { 
-                return Functions.DistanceFromCoordinates((decimal)x, (decimal)y, (decimal)z, (decimal)fromX, (decimal)fromY, (decimal)fromZ); 
-            }
-            // We don't know how far away the ship is
-            return null;
+            return Functions.DistanceFromCoordinates(x, y, z, fromX, fromY, fromZ);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    

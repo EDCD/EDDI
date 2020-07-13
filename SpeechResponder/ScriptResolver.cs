@@ -1166,7 +1166,6 @@ namespace EddiSpeechResponder
             {
                 bool numVal = values[0].Type == Cottle.ValueContent.Number;
                 bool stringVal = values[0].Type == Cottle.ValueContent.String;
-                decimal result = 0;
 
                 StarSystem curr = null;
                 StarSystem dest = null;
@@ -1182,12 +1181,12 @@ namespace EddiSpeechResponder
                 }
                 if (curr != null && dest != null)
                 {
-                    var distance = curr.DistanceFromStarSystem(dest);
-                    if (distance is null)
+                    var result = curr.DistanceFromStarSystem(dest);
+                    if (result is null)
                     {
                         return $"Unable to calculate distance between {curr.systemname} and {dest.systemname}. Could not obtain system coordinates.";
                     }
-                    result = (decimal)distance;
+                    return new ReflectionValue(result);
                 }
                 else if (values.Count == 6 && numVal)
                 {
@@ -1197,13 +1196,13 @@ namespace EddiSpeechResponder
                     var x2 = values[3].AsNumber;
                     var y2 = values[4].AsNumber;
                     var z2 = values[5].AsNumber;
-                    result = Functions.DistanceFromCoordinates(x1, y1, z1, x2, y2, z2);
+                    var result = Functions.DistanceFromCoordinates(x1, y1, z1, x2, y2, z2);
+                    return new ReflectionValue(result);
                 }
                 else
                 {
                     return "The Distance function is used improperly. Please review the documentation for correct usage.";
                 }
-                return new ReflectionValue(result);
             }, 1, 6);
 
             store["Log"] = new NativeFunction((values) =>

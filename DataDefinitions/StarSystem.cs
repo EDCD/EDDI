@@ -371,13 +371,7 @@ namespace EddiDataDefinitions
 
         public decimal? DistanceFromStarSystem(StarSystem other)
         {
-            // Work out the distance to the other star system if we can 
-            if (x != null && y != null && z != null && other?.x != null && other.y != null && other.z != null)
-            {
-                return Functions.DistanceFromCoordinates((decimal)x, (decimal)y, (decimal)z, (decimal)other.x, (decimal)other.y, (decimal)other.z);
-            }
-            // We don't know how far way the other star system is
-            return null;
+            return Functions.DistanceFromCoordinates(x, y, z, other.x, other.y, other.z);
         }
     }
 }

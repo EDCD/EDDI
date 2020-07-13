@@ -31,6 +31,18 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestDistanceFunctionFromNullCoordinates()
+        {
+            // Colonia
+            const decimal x1 = -9530.5M;
+            const decimal y1 = -910.28125M;
+            const decimal z1 = 19808.125M;
+
+            var result = Functions.DistanceFromCoordinates(x1, y1, z1, null, null, null);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void TestDistanceFunctionFromStarSystems()
         {
             var curr = new StarSystem() { systemname = "Sol", x = 0, y = 0, z = 0 };
