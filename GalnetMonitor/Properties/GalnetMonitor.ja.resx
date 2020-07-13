@@ -132,12 +132,30 @@
   <data name="p2" xml:space="preserve">
     <value>ログアウト中もGalnetの記事を取得する</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Powerplay: Incoming Update</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>Community Goal: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
+  <data name="titleFilterStarportStatus" xml:space="preserve">
+    <value>Starport Status Update</value>
+    <comment>Title filter for determining whether an item is a Starport Status Update</comment>
+  </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>Week in Review</value>
+    <comment>Title filter for determining whether an item is a "Week in Review</comment>
+  </data>
+  <data name="sourceURL" xml:space="preserve">
+    <value>https://community.elitedangerous.com/en/galnet-rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
+  </data>
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(promised to reward pilots)|(campaign.+will run for one week)|(organisations have set out week-long operations)|(collect.+rewards)|(If.+final target is met earlier than planned, the campaign will end immediately)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
   <data name="categoryArticle" xml:space="preserve">
     <value>記事</value>
     <comment>Category (as seen by the user): Article</comment>
@@ -158,5 +176,8 @@
     <value>今週のニュースハイライト</value>
     <comment>Category (as seen by the user): Week in Review</comment>
   </data>
-  
+  <data name="alternateURL" xml:space="preserve">
+    <value>https://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items, should sourceURL be unavailable.</comment>
+  </data>
 </root>
