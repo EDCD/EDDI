@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -24,6 +25,8 @@ namespace EddiEvents
         public string package { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
         public CommanderStartedEvent(DateTime timestamp, string name, string frontierID, string package) : base(timestamp, NAME)

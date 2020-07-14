@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -120,6 +121,8 @@ namespace EddiEvents
         public CQCstats cqc => statistics.cqc;
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         private Statistics statistics { get; set; }
 
         public StatisticsEvent(DateTime timestamp, Statistics statistics) : base(timestamp, NAME)

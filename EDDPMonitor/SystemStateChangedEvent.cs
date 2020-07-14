@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEddpMonitor
 {
@@ -24,13 +25,17 @@ namespace EddiEddpMonitor
 
         public string system { get; private set; }
 
-        public FactionState oldSystemState { get; private set; }
-        public FactionState newSystemState { get; private set; }
-
-        [Obsolete("Please use oldSystemState instead")]
         public string oldstate => oldSystemState.localizedName;
-        [Obsolete("Please use newSystemState instead")]
+       
         public string newstate => newSystemState.localizedName;
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
+        public FactionState oldSystemState { get; private set; }
+
+        [VoiceAttackIgnore]
+        public FactionState newSystemState { get; private set; }
 
         public SystemStateChangedEvent(DateTime timestamp, string match, string system, FactionState oldSystemState, FactionState newSystemState) : base(timestamp, NAME)
         {

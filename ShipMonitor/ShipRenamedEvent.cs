@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -21,20 +22,19 @@ namespace EddiShipMonitor
             VARIABLES.Add("ident", "The new ident of the ship");
         }
 
-        [JsonProperty("ship")]
         public string ship => shipDefinition?.model;
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("ident")]
         public string ident { get; private set; }
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+
+        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipRenamedEvent(DateTime timestamp, string ship, int shipid, string name, string ident) : base(timestamp, NAME)

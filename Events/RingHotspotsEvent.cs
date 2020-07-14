@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,7 +22,11 @@ namespace EddiEvents
         public List<CommodityAmount> hotspots { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public long bodyId { get; private set; }
 
         public RingHotspotsEvent(DateTime timestamp, long? systemAddress, string bodyName, long bodyId, List<CommodityAmount> hotspots) : base(timestamp, NAME)

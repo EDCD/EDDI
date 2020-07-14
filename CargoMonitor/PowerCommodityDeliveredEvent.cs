@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -28,8 +29,10 @@ namespace EddiCargoMonitor
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public PowerCommodityDeliveredEvent(DateTime timestamp, Power Power, CommodityDefinition commodity, int amount) : base(timestamp, NAME)

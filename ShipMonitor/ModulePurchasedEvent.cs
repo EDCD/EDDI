@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -49,8 +50,12 @@ namespace EddiShipMonitor
         [JsonProperty("storedmodule")]
         public Module storedmodule { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Ship shipDefinition { get; private set; }
 
         public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule, long marketId) : base(timestamp, NAME)

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -30,7 +31,9 @@ namespace EddiEvents
 
         public List<MaterialAmount> materials { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketid { get; private set; }
 
         public TechnologyBrokerEvent(DateTime timestamp, string brokerType, long marketId, List<Module> items, List<CommodityAmount> commodities, List<MaterialAmount> materials) : base(timestamp, NAME)

@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -24,34 +25,40 @@ namespace EddiShipMonitor
             VARIABLES.Add("storedshipid", "The ID of the ship that was stored as part of the purchase");
         }
 
-        [JsonProperty("ship")]
         public string ship => shipDefinition?.model;
 
-        [JsonProperty("price")]
         public long price { get; private set; }
 
-        [JsonProperty("soldship")]
         public string soldship => soldShipDefinition?.model;
 
-        [JsonProperty("soldshipid")]
         public int? soldshipid { get; private set; }
 
-        [JsonProperty("soldprice")]
         public long? soldprice { get; private set; }
 
-        [JsonProperty("storedship")]
         public string storedship => storedShipDefinition?.model;
 
-        [JsonProperty("storedshipid")]
         public int? storedshipid { get; private set; }
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        
+        [VoiceAttackIgnore]
         public Ship storedShipDefinition => string.IsNullOrEmpty(storedEdModel) ? null : ShipDefinitions.FromEDModel(storedEdModel);
+
+        [VoiceAttackIgnore]
         public Ship soldShipDefinition => string.IsNullOrEmpty(soldEdModel) ? null : ShipDefinitions.FromEDModel(soldEdModel);
+
+        [VoiceAttackIgnore]
         public string edModel { get; private set; }
+
+        [VoiceAttackIgnore]
         public string storedEdModel { get; private set; }
+
+        [VoiceAttackIgnore]
         public string soldEdModel { get; private set; }
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public ShipPurchasedEvent(DateTime timestamp, string ship, long price, string soldShip, int? soldShipId, long? soldPrice, string storedShip, int? storedShipId, long marketId) : base(timestamp, NAME)

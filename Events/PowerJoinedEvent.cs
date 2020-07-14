@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,6 +22,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerJoinedEvent(DateTime timestamp, Power Power) : base(timestamp, NAME)

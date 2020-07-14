@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,7 +18,12 @@ namespace EddiEvents
         }
 
         public string name { get; private set; }
+
         public string status { get; private set; }
+
+        // Not intended to be user facing
+
+        [Obsolete("Use 'name' instead"), VoiceAttackIgnore]
         public string friend { get; private set; } // Deprecated but preserved for backwards compatibility
 
         public FriendsEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)

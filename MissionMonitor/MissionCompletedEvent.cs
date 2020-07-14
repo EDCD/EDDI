@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -41,9 +42,7 @@ namespace EddiMissionMonitor
         public string faction { get; }
 
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
-
-        public CommodityDefinition commodityDefinition { get; }
-
+        
         public int? amount { get; }
 
         public bool communal { get; }
@@ -67,6 +66,11 @@ namespace EddiMissionMonitor
         public string rewardMaterial { get; }
 
         public int rewardMaterialAmount { get; }
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
+        public CommodityDefinition commodityDefinition { get; }
 
         public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, CommodityDefinition commodity, int? amount, bool communal, long reward, List<string> permitsawarded, List<CommodityAmount> commodityrewards, List<MaterialAmount> materialsrewards, long donation) : base(timestamp, NAME)
         {

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -25,14 +26,17 @@ namespace EddiEvents
 
         public int? rank => Engineer?.rank;
 
-        public int? rankprogress => Engineer?.rankprogress;
-
         public string stage => Engineer?.stage;
 
         public string progresstype { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public Engineer Engineer { get; private set; }
+
+        [VoiceAttackIgnore]
+        public int? rankprogress => Engineer?.rankprogress;
 
         public EngineerProgressedEvent(DateTime timestamp, Engineer Engineer, string type) : base(timestamp, NAME)
         {

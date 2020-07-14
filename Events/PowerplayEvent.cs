@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("power", "The name of the power to whom you are pledged");
             VARIABLES.Add("rank", "Your rank with the power");
             VARIABLES.Add("merits", "Your merits with the power");
+            VARIABLES.Add("votes", "Your votes with the power");
             VARIABLES.Add("timepledgeddays", "The amount of time that you've been pledged, in days");
             VARIABLES.Add("timepledgedweeks", "The amount of time that you've been pledged, in weeks");
         }
@@ -28,7 +30,11 @@ namespace EddiEvents
         public decimal timepledgedweeks => (decimal)Math.Round((double)timepledgeddays / 7, 1);
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
+        
+        [VoiceAttackIgnore]
         public TimeSpan timePledged { get; private set; }
 
         public PowerplayEvent(DateTime timestamp, Power Power, int rank, int merits, int votes, TimeSpan timePledged) : base(timestamp, NAME)

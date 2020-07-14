@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -22,6 +23,7 @@ namespace EddiEvents
             VARIABLES.Add("faction", "The faction of the pilot");
             VARIABLES.Add("power", "The aligned power of the pilot (if player is pledged)");
             VARIABLES.Add("legalstatus", "The legal status of the pilot");
+            VARIABLES.Add("bounty", "The bounty being offered by system authorities for destruction of the ship");
             VARIABLES.Add("shieldhealth", "The health of the shields");
             VARIABLES.Add("hullhealth", "The health of the hull");
             VARIABLES.Add("subsystem", "The subsystem targeted");
@@ -67,8 +69,15 @@ namespace EddiEvents
         [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CombatRating CombatRank { get; }
+
+        [VoiceAttackIgnore]
         public LegalStatus LegalStatus { get; }
+
+        [VoiceAttackIgnore]
         public Power Power { get; }
 
         public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, Power power, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)

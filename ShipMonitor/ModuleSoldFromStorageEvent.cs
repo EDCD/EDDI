@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -24,10 +25,17 @@ namespace EddiShipMonitor
 
         public string ship { get; private set; }
         public int? shipid { get; private set; }
-        public int storageslot { get; private set; }
-        public long serverid { get; private set; }
+
         public Module module { get; private set; }
         public long price { get; private set; }
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
+        public int storageslot { get; private set; }
+
+        [VoiceAttackIgnore]
+        public long serverid { get; private set; }
 
         public ModuleSoldFromStorageEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long price) : base(timestamp, NAME)
         {

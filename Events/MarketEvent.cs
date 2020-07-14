@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,15 @@ namespace EddiEvents
         {
         }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public string station { get; private set; }
+
+        [VoiceAttackIgnore]
         public string system { get; private set; }
         public MarketInfo info { get; private set; }
 

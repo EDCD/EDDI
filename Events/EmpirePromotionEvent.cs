@@ -19,6 +19,7 @@ namespace EddiEvents
         }
 
         public string rank { get; private set; }
+
         public string femininerank { get; private set; }
 
         public int rating { get; private set; }

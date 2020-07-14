@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EddiEvents
 {
-    class FlightAssistEvent : Event
+    public class FlightAssistEvent : Event
     {
         public const string NAME = "Flight assist";
         public const string DESCRIPTION = "Triggered when flight assist is toggled";

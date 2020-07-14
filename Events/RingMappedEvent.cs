@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -39,8 +40,14 @@ namespace EddiEvents
         public int efficiencytarget { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public Ring ring { get; private set; }
+
+        [VoiceAttackIgnore]
         public Body body { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
         public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, long? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)

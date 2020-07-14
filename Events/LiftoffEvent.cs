@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -34,6 +35,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public SignalSource nearestDestination { get; private set; }
 
         public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)

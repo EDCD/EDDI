@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -17,9 +18,18 @@ namespace EddiShipMonitor
         {
         }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public string station { get; private set; }
+
+        [VoiceAttackIgnore]
         public string system { get; private set; }
+
+        [VoiceAttackIgnore]
         public List<Ship> shipyard { get; set; }
 
         public StoredShipsEvent(DateTime timestamp, long marketId, string station, string system, List<Ship> shipyard) : base(timestamp, NAME)

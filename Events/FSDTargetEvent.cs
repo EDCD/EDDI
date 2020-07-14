@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,14 +22,16 @@ namespace EddiEvents
         [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("systemaddress")]
-        public long systemAddress { get; private set; }
-
         [JsonProperty("remainingjumpsinroute")]
         public int remainingjumpsinroute { get; private set; }
 
         [JsonProperty("starclass")]
         public string starclass { get; private set; }
+
+        // Not intended to be user facing
+
+        [JsonProperty("systemaddress"), VoiceAttackIgnore]
+        public long systemAddress { get; private set; }
 
         public FSDTargetEvent(DateTime timestamp, string system, long systemAddress, int remainingjumpsinroute, string starclass) : base(timestamp, NAME)
         {

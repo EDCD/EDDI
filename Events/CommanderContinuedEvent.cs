@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -71,6 +72,8 @@ namespace EddiEvents
         public decimal? fuelcapacity { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
         public string shipEDModel { get; private set; }
 

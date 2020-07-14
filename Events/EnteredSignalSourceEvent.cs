@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -26,6 +27,8 @@ namespace EddiEvents
         public int threat { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public SignalSource signalSource { get; private set; }
 
         public EnteredSignalSourceEvent(DateTime timestamp, SignalSource source, int threat) : base(timestamp, NAME)

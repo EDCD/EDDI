@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -19,6 +20,9 @@ namespace EddiEvents
         [JsonProperty("numbodies")]
         public int numbodies { get; private set; }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public NavBeaconScanEvent(DateTime timestamp, long systemAddress, int numbodies) : base(timestamp, NAME)

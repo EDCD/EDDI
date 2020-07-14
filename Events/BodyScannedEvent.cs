@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -161,27 +162,44 @@ namespace EddiEvents
         public bool? alreadymapped => body.alreadymapped;
 
         // Variables below are not intended to be user facing
+        [VoiceAttackIgnore]
         public Body body { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? bodyId => body.bodyId;
+        
+        [VoiceAttackIgnore]
         public List<IDictionary<string, object>> parents => body.parents;
+
+        [VoiceAttackIgnore]
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
+        
+        [VoiceAttackIgnore] 
         public PlanetClass planetClass => body.planetClass;
+        
+        [VoiceAttackIgnore] 
         public TerraformState terraformState => body.terraformState;
 
+        [VoiceAttackIgnore] 
         public long? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use bodyname instead")]
+        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string name => bodyname;
-        [JsonIgnore, Obsolete("Use planetClass instead")]
+
+        [JsonIgnore, Obsolete("Use planetClass instead"), VoiceAttackIgnore]
         public string bodyclass => (body.planetClass ?? PlanetClass.None).localizedName;
-        [JsonIgnore, Obsolete("Use distance instead")]
+        
+        [JsonIgnore, Obsolete("Use distance instead"), VoiceAttackIgnore]
         public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
-        [JsonIgnore, Obsolete("Use inclination instead")]
+
+        [JsonIgnore, Obsolete("Use inclination instead"), VoiceAttackIgnore]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
-        [JsonIgnore, Obsolete("Use rotationalperiod instead")]
+
+        [JsonIgnore, Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
         public decimal? rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
-        [JsonIgnore, Obsolete("Use tilt instead")]
+
+        [JsonIgnore, Obsolete("Use tilt instead"), VoiceAttackIgnore]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
         public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)

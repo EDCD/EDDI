@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -21,21 +22,22 @@ namespace EddiShipMonitor
             VARIABLES.Add("system", "The system where the ship was sold");
         }
 
-        [JsonProperty("ship")]
         public string ship => shipDefinition?.model;
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("price")]
         public long price { get; private set; }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system, long marketId) : base(timestamp, NAME)

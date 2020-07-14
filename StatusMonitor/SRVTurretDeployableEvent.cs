@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace EddiEvents
 {
-    public class SRVTurretDeployableEvent
-        : Event
+    public class SRVTurretDeployableEvent : Event
     {
         public const string NAME = "SRV turret deployable";
         public const string DESCRIPTION = "Triggered when your SRV enters or leaves the restriction zone around a ship.";

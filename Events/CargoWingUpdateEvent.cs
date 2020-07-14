@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-
+using Utilities;
 
 namespace EddiEvents
 {
@@ -27,8 +27,6 @@ namespace EddiEvents
 
         public string updatetype { get; private set; }
 
-        public CommodityDefinition commodityDefinition { get; private set; }
-
         public string commodity => commodityDefinition?.localizedName ?? "Unknown commodity";
 
         public int? amount { get; private set; }
@@ -38,6 +36,11 @@ namespace EddiEvents
         public int delivered { get; private set; }
 
         public int totaltodeliver { get; private set; }
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
+        public CommodityDefinition commodityDefinition { get; private set; }
 
         public CargoWingUpdateEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
         {

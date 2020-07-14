@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -64,6 +65,9 @@ namespace EddiMissionMonitor
 
         public bool communal { get; private set; }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string localisedname, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)

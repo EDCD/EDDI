@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,8 @@ namespace EddiEvents
         { }
 
         // These properties are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long carrierId { get; private set; }
 
         public CarrierPadsLockedEvent(DateTime timestamp, long carrierId) : base(timestamp, NAME)

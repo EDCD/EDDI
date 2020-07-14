@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -20,12 +21,17 @@ namespace EddiEvents
             VARIABLES.Add("nonbodies", "The number of non-body signals");
         }
 
-        public int progress { get; private set; }
         public int totalbodies { get; private set; }
+        
         public int nonbodies { get; private set; }
 
-        [Obsolete("Please use `totalbodies` instead")]
+        // Not intended to be user facing
+
+        [Obsolete("Please use `totalbodies` instead"), VoiceAttackIgnore]
         public int bodies => totalbodies;
+
+        [VoiceAttackIgnore]
+        public int progress { get; private set; }
 
         public DiscoveryScanEvent(DateTime timestamp, decimal progress, int totalbodies, int nonbodies) : base(timestamp, NAME)
         {

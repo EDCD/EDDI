@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -25,6 +26,7 @@ namespace EddiCargoMonitor
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerCommodityFastTrackedEvent(DateTime timestamp, Power Power, int amount) : base(timestamp, NAME)

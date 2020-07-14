@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -41,7 +42,9 @@ namespace EddiShipMonitor
         [JsonProperty("tomodule")]
         public Module tomodule { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public ModuleSwappedEvent(DateTime timestamp, string ship, int? shipid, string fromslot, Module frommodule, string toslot, Module tomodule, long marketId) : base(timestamp, NAME)

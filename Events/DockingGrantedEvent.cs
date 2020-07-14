@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -32,6 +33,8 @@ namespace EddiEvents
         public int landingpad { get; private set; }
 
         // Admin
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public DockingGrantedEvent(DateTime timestamp, string station, string stationType, long marketId, int landingpad) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -84,6 +85,8 @@ namespace EddiEvents
         public string toptierreward => goal.toptierreward;
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommunityGoal goal { get; private set; }
 
         public CommunityGoalEvent(DateTime timestamp, List<CGUpdate> cgupdates, CommunityGoal goal) : base(timestamp, NAME)

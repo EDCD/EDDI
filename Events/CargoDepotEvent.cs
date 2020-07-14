@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,7 +16,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("updatetype", "The update type. One of: 'Collect', 'Deliver', 'WingUpdate'");
-            VARIABLES.Add("cargotype", "The type of cargo (commodity)");
+            VARIABLES.Add("commodity", "The type of cargo (commodity)");
             VARIABLES.Add("startmarketid", "The Market ID of the 'collection' mission depot, 0 if not applicable");
             VARIABLES.Add("endmarketid", "The Market ID of the 'delivery' mission depot");
             VARIABLES.Add("amount", "The amount of cargo collected or delivered for this event");
@@ -28,23 +28,26 @@ namespace EddiEvents
         public long? missionid { get; private set; }
 
         public string updatetype { get; private set; }
-
-        public CommodityDefinition commodityDefinition { get; private set; }
-
+        
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
-
-        public int? amount { get; private set; }
 
         public long startmarketid { get; private set; }
 
         public long endmarketid { get; private set; }
 
+        public int? amount { get; private set; }
+        
         public int collected { get; private set; }
 
         public int delivered { get; private set; }
 
         public int totaltodeliver { get; private set; }
 
+        // Not intended to be user facing
+        
+        [VoiceAttackIgnore]
+        public CommodityDefinition commodityDefinition { get; private set; }
+        
         public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, long startmarketid, long endmarketid, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
         {
             this.missionid = missionid;

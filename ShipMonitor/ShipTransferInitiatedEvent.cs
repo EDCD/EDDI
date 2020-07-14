@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -24,29 +25,28 @@ namespace EddiShipMonitor
             VARIABLES.Add("time", "The time in seconds to complete transferring the ship");
         }
 
-        [JsonProperty("shipid")]
         public int? shipid => Ship.LocalId;
 
-        [JsonProperty("ship")]
         public string ship => Ship.model;
 
         public string phoneticname => Ship.phoneticname;
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("distance")]
         public decimal distance { get; private set; }
 
-        [JsonProperty("price")]
         public long? price { get; private set; }
 
-        [JsonProperty("time")]
         public long? time { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+        [VoiceAttackIgnore]
         public long fromMarketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public long toMarketId { get; private set; }
+        
+        [VoiceAttackIgnore]
         public Ship Ship { get; private set; }
 
         public ShipTransferInitiatedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)

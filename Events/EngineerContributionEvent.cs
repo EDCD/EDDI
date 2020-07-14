@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -35,8 +36,14 @@ namespace EddiEvents
         public int total { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public Engineer Engineer { get; private set; }
+
+        [VoiceAttackIgnore]
         public MaterialAmount materialAmount { get; private set; }
+
+        [VoiceAttackIgnore]
         public CommodityAmount commodityAmount { get; private set; }
 
         public EngineerContributedEvent(DateTime timestamp, Engineer Engineer, CommodityAmount commodityAmount, MaterialAmount materialAmount, string contributionType, int amount, int total) : base(timestamp, NAME)

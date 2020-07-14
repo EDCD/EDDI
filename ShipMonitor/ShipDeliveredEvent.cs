@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -26,7 +27,10 @@ namespace EddiShipMonitor
         public string ship => shipDefinition?.model;
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+
+        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipDeliveredEvent(DateTime timestamp, string ship, int? shipId) : base(timestamp, NAME)

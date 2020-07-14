@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -40,8 +41,14 @@ namespace EddiEvents
         public List<CommodityAmount> commodities { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long engineerId { get; private set; }
+
+        [VoiceAttackIgnore]
         public long blueprintId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Compartment compartment { get; private set; }
 
         public ModificationCraftedEvent(DateTime timestamp, string engineer, long engineerId, string blueprint, long blueprintId, int level, decimal? quality, string experimentalEffect, List<MaterialAmount> materials, List<CommodityAmount> commodities, Compartment compartment) : base(timestamp, NAME)

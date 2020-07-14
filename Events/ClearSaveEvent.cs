@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -20,6 +21,8 @@ namespace EddiEvents
         public string name { get; private set; }
 
         // Not intended to be user facing
+        
+        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
         public ClearedSaveEvent(DateTime timestamp, string name, string frontierID) : base(timestamp, NAME)

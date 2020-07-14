@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -27,9 +28,17 @@ namespace EddiEvents
         public decimal? longitude { get; private set; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long? marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
+
+        [VoiceAttackIgnore]
         public SignalSource settlementName { get; private set; }
 
         public SettlementApproachedEvent(DateTime timestamp, SignalSource settlementName, long? marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
