@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAttributes.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="LockManager.cs" />
     <Compile Include="Processes.cs" />

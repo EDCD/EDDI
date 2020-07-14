@@ -11,8 +11,6 @@ namespace EddiVoiceAttackResponder
 {
     public partial class VoiceAttackVariables
     {
-        // Event keys that shall not be written to VoiceAttack
-        private static readonly string[] ignoredKeys = { "type", "raw", "fromLoad", "edName", "baseName" };
         // Some types don't need to be decomposed further
         private static readonly Type[] undecomposedTypes = { typeof(string), typeof(DateTime), typeof(TimeSpan) };
 
@@ -36,12 +34,40 @@ namespace EddiVoiceAttackResponder
 
             foreach (var eventProperty in objectProperties)
             {
-                PrepareEventVariable(ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
+                // We ignore some keys which we've marked in advance
+                bool passProperty = true;
+                foreach (var attribute in eventProperty.GetCustomAttributes())
+                {
+                    if (attribute is VoiceAttackIgnoreAttribute)
+                    {
+                        Logging.Debug("Ignoring key " + eventProperty.Name);
+                        passProperty = false;
+                        break;
+                    }
+                }
+                if (passProperty)
+                {
+                    PrepareEventVariable(ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
+                }
             }
 
             foreach (var eventField in objectFields)
             {
-                PrepareEventVariable(ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
+                // We ignore some keys which we've marked in advance
+                bool passField = true;
+                foreach (var attribute in eventField.GetCustomAttributes())
+                {
+                    if (attribute is VoiceAttackIgnoreAttribute)
+                    {
+                        Logging.Debug("Ignoring key " + eventField.Name);
+                        passField = false;
+                        break;
+                    }
+                }
+                if (passField)
+                {
+                    PrepareEventVariable(ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
+                }
             }
         }
 
@@ -49,13 +75,6 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                // We ignore some keys that are maintained for internal use only
-                if (ignoredKeys.Contains(key, StringComparer.InvariantCultureIgnoreCase))
-                {
-                    Logging.Debug("Ignoring key " + key);
-                    return;
-                }
-
                 // Only append the child name to the current prefix if if does not repeat the prior word
                 string childKey = AddSpacesToTitleCasedName(key).Replace("_", " ").ToLowerInvariant();
                 string name;

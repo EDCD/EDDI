@@ -81,7 +81,7 @@ namespace GeneratorTests
                                 }
                             }
                         }
-                        void WriteToOutput(VoiceAttackVariable variable)
+                        void WriteVariableToOutput(VoiceAttackVariable variable)
                         {
                             if (variable.Type == typeof(string))
                             {
@@ -107,12 +107,12 @@ namespace GeneratorTests
                         foreach (var variable in setVars.Where(v => v.Value != null).OrderBy(i => i.Key))
                         {
                             // Write variables with descriptions first
-                            WriteToOutput(variable);
+                            WriteVariableToOutput(variable);
                         }
                         foreach (var variable in setVars.Where(v => v.Value == null).OrderBy(i => i.Key))
                         {
                             // Write variables without descriptions second
-                            WriteToOutput(variable);
+                            WriteVariableToOutput(variable);
                         }
                         output.Add("");
                         output.Add("");                    }
