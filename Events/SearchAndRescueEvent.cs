@@ -2,6 +2,7 @@ using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -29,7 +30,9 @@ namespace EddiEvents
         [JsonProperty("commodity")]
         public CommodityDefinition commodity { get; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward, long marketId) : base(timestamp, NAME)

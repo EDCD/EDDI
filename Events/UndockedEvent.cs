@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -20,7 +21,6 @@ namespace EddiEvents
         [JsonProperty("station")]
         public string station { get; private set; }
 
-        // Admin
         [JsonProperty("marketId")]
         public long? marketId { get; private set; }
 

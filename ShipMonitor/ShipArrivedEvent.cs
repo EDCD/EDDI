@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -47,8 +48,12 @@ namespace EddiShipMonitor
         [JsonProperty("time")]
         public long? time { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long fromMarketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public long toMarketId { get; private set; }
         public Ship Ship { get; private set; }
 

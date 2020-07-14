@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,15 @@ namespace EddiEvents
         }
 
         public string bodyname { get; private set; }
+        
         public List<SignalAmount> surfacesignals { get; private set; }
 
         // Not intended to be user facing
+        
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+        
+        [VoiceAttackIgnore]
         public long bodyId { get; private set; }
 
         public SurfaceSignalsEvent(DateTime timestamp, long? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals) : base(timestamp, NAME)

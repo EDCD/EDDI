@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -27,6 +28,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerPreparationVoteCast(DateTime timestamp, Power Power, string system, int amount) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -23,7 +24,9 @@ namespace EddiEvents
         [JsonProperty("count")]
         public int count { get; private set; }
 
-        [JsonProperty("systemaddress")]
+        // Not intended to be user facing
+
+        [JsonProperty("systemaddress"), VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public SystemScanComplete(DateTime timestamp, string systemname, long systemAddress, int count) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -43,10 +44,20 @@ namespace EddiEvents
         public string carriername { get; private set; }
 
         // These properties are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? carrierId { get; private set; }
+
+        [VoiceAttackIgnore]
         public StationModel carrierType { get; private set; }
 
         public CarrierCooldownEvent(DateTime timestamp, string systemName, long? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)

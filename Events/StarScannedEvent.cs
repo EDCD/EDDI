@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -147,21 +148,37 @@ namespace EddiEvents
         public decimal? tiltprobability => star.tiltprobability;
 
         // Variables below are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public bool? alreadymapped => star.alreadymapped;
+
+        [VoiceAttackIgnore]
         public long? bodyId => star.bodyId;
+
+        [VoiceAttackIgnore]
         public DateTime? mapped => star.mapped;
+
+        [VoiceAttackIgnore]
         public List<IDictionary<string, object>> parents => star.parents;
+
+        [VoiceAttackIgnore]
         public DateTime? scanned => star.scanned;
+
+        [VoiceAttackIgnore]
         public Body star { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use distance instead")]
+
+        [JsonIgnore, Obsolete("Use distance instead"), VoiceAttackIgnore]
         public decimal? distancefromarrival => distance;
-        [JsonIgnore, Obsolete("Use bodyname instead")]
+
+        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string name => bodyname;
-        [JsonIgnore, Obsolete("Use inclination instead")]
+
+        [JsonIgnore, Obsolete("Use inclination instead"), VoiceAttackIgnore]
         public decimal? orbitalinclination => inclination;
-        [JsonIgnore, Obsolete("Use rotationalperiod instead")]
+
+        [JsonIgnore, Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
         public decimal? rotationperiod => rotationalperiod;
 
         public StarScannedEvent(DateTime timestamp, string scantype, Body star) : base(timestamp, NAME)

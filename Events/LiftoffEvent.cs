@@ -51,6 +51,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public SignalSource nearestDestination { get; private set; }
 
         public long? systemAddress { get; private set; }

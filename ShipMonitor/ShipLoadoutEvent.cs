@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -28,8 +29,8 @@ namespace EddiShipMonitor
             VARIABLES.Add("rebuy", "The rebuy value of the ship");
             VARIABLES.Add("hot", "True if the ship is `hot`");
             VARIABLES.Add("paintjob", "The paintjob of the ship");
-            VARIABLES.Add("compartments", "The compartments of the ship");
-            VARIABLES.Add("hardpoints", "The hardpoints of the ship");
+            VARIABLES.Add("compartments", "The compartments (objects) of the ship");
+            VARIABLES.Add("hardpoints", "The hardpoints (objects) of the ship");
         }
 
         public int? shipid { get; private set; }
@@ -50,7 +51,10 @@ namespace EddiShipMonitor
         public List<Compartment> compartments { get; private set; }
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+
+        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, decimal unladenmass, decimal maxjumprange, decimal optimalmass, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)

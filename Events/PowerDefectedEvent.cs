@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -24,7 +25,10 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public Power fromPower { get; private set; }
+
+        [VoiceAttackIgnore]
         public Power toPower { get; private set; }
 
         public PowerDefectedEvent(DateTime timestamp, Power fromPower, Power toPower) : base(timestamp, NAME)

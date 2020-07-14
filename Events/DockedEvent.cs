@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -74,12 +75,23 @@ namespace EddiEvents
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // These properties are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public StationModel stationModel { get; private set; } = StationModel.None;
+
+        [VoiceAttackIgnore]
         public Faction controllingfaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public List<StationService> stationServices { get; private set; } = new List<StationService>();
+
+        [VoiceAttackIgnore]
         public FactionState factionState { get; private set; } = FactionState.None;
 
+        [VoiceAttackIgnore]
         public List<EconomyShare> economyShares { get; private set; } = new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };
 
         public DockedEvent(DateTime timestamp, string system, long? systemAddress, long? marketId, string station, string state, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)

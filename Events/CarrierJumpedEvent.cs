@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -91,20 +92,49 @@ namespace EddiEvents
         public string carriername { get; private set; }
 
         // These properties are not intended to be user facing
+        [VoiceAttackIgnore]
         public bool docked { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? carrierId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Economy systemEconomy { get; private set; }
+
+        [VoiceAttackIgnore]
         public Economy systemEconomy2 { get; private set; }
+
+        [VoiceAttackIgnore]
         public Faction controllingsystemfaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; }
+
+        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
+
+        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
+
+        [VoiceAttackIgnore]
         public Faction carrierFaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public StationModel carrierType { get; private set; }
+
+        [VoiceAttackIgnore]
         public List<StationService> carrierServices { get; private set; }
+
+        [VoiceAttackIgnore]
         public List<EconomyShare> carrierEconomies { get; private set; }
 
         public CarrierJumpedEvent(DateTime timestamp, string systemName, long systemAddress, decimal x, decimal y, decimal z,

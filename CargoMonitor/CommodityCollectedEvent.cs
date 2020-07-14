@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -29,6 +30,9 @@ namespace EddiCargoMonitor
         [JsonProperty("stolen")]
         public bool stolen { get; }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, long? missionid, bool stolen) : base(timestamp, NAME)

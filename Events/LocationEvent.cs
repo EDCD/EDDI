@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,10 +17,10 @@ namespace EddiEvents
 
         static LocationEvent()
         {
-            VARIABLES.Add("systemname", "The name of the system in which the commander resides");
-            VARIABLES.Add("x", "The X co-ordinate of the system in which the commander resides");
-            VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");
-            VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander resides");
+            VARIABLES.Add("systemname", "The name of the system in which the commander is located");
+            VARIABLES.Add("x", "The X co-ordinate of the system in which the commander is located");
+            VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander is located");
+            VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander is located");
             VARIABLES.Add("distancefromstar", "The distance of the nearest body (when close) from the main star");
             VARIABLES.Add("bodyname", "The nearest body to the commander");
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
@@ -29,13 +30,14 @@ namespace EddiEvents
             VARIABLES.Add("stationtype", "The type of the station at which the commander is docked");
 
             // Post-3.3.03 faction variables
-            VARIABLES.Add("systemfaction", "The faction controlling the system in which the commander resides");
-            VARIABLES.Add("systemstate", "The state of the faction controlling the system in which the commander resides");
-            VARIABLES.Add("systemgovernment", "The government of the system in which the commander resides");
+            VARIABLES.Add("systemfaction", "The faction controlling the system in which the commander is located");
+            VARIABLES.Add("systemstate", "The state of the faction controlling the system in which the commander is located");
+            VARIABLES.Add("systemgovernment", "The government of the system in which the commander is located");
+            VARIABLES.Add("systemallegiance", "The super power allegiance of the star system in which the commander is located");
             VARIABLES.Add("stationfaction", "The faction controlling the station, if the commander is docked");
             VARIABLES.Add("stationstate", "The state of the faction controlling the station, if the commander is docked");
             VARIABLES.Add("stationgovernment", "The government of the station, if the commander is docked");
-            VARIABLES.Add("stationallegiance", "The government of the station, if the commander is docked");
+            VARIABLES.Add("stationallegiance", "The super power allegiance of the station, if the commander is docked");
 
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
             VARIABLES.Add("economy2", "The secondary economy of the system in which the commander resides, if any");
@@ -95,32 +97,63 @@ namespace EddiEvents
         public string powerstate => powerState.localizedName;
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use systemname instead")]
+        [JsonIgnore, Obsolete("Use systemname instead"), VoiceAttackIgnore]
         public string system => systemname;
-        [JsonIgnore, Obsolete("Use bodyname instead")]
+
+        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string body => bodyname;
-        [JsonIgnore, Obsolete("Use systemfaction instead")]
+
+        [JsonIgnore, Obsolete("Use systemfaction instead"), VoiceAttackIgnore]
         public string faction => controllingsystemfaction?.name;
-        [JsonIgnore, Obsolete("Use systemstate instead")]
+
+        [JsonIgnore, Obsolete("Use systemstate instead"), VoiceAttackIgnore]
         public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
-        [JsonIgnore, Obsolete("Use systemgovernment instead")]
+
+        [JsonIgnore, Obsolete("Use systemgovernment instead"), VoiceAttackIgnore]
         public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
-        [JsonIgnore, Obsolete("Use systemallegiance instead")]
+
+        [JsonIgnore, Obsolete("Use systemallegiance instead"), VoiceAttackIgnore]
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // These properties are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? marketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Economy Economy { get; private set; } = Economy.None;
+
+        [VoiceAttackIgnore]
         public Economy Economy2 { get; private set; } = Economy.None;
+
+        [VoiceAttackIgnore]
         public Faction controllingsystemfaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public Faction controllingstationfaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public List<Faction> factions { get; private set; }
+
+        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
+
+        [VoiceAttackIgnore]
         public StationModel stationModel { get; private set; } = StationModel.None;
+
+        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; } = BodyType.None;
+
+        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
+
+        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
         public bool taxi { get; private set; }
         public bool multicrew { get; private set; }

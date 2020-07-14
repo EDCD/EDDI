@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -83,13 +84,29 @@ namespace EddiEvents
         public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
         // These properties are not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
+
+        [VoiceAttackIgnore]
         public Economy Economy { get; private set; } = Economy.None;
+
+        [VoiceAttackIgnore]
         public Economy Economy2 { get; private set; } = Economy.None;
+
+        [VoiceAttackIgnore]
         public Faction controllingfaction { get; private set; }
+
+        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
+
+        [VoiceAttackIgnore]
         public FactionState factionState { get; private set; } = FactionState.None;
+
+        [VoiceAttackIgnore]
         public Power Power { get; private set; }
+
+        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)

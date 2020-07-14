@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -29,8 +30,10 @@ namespace EddiEvents
         public string motherlode => motherlodeCommodityDefinition != null ? motherlodeCommodityDefinition.localizedName : "";
 
         // Not intended to be public facing
+        [VoiceAttackIgnore]
         public AsteroidMaterialContent materialContent { get; private set; }
 
+        [VoiceAttackIgnore]
         public CommodityDefinition motherlodeCommodityDefinition { get; private set; }
 
         public AsteroidProspectedEvent(DateTime timestamp, List<CommodityPresence> commodities, AsteroidMaterialContent materialContent, decimal remaining, CommodityDefinition motherlodeCommodityDefinition) : base(timestamp, NAME)

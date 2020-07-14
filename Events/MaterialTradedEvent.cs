@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -36,13 +37,15 @@ namespace EddiEvents
         [JsonProperty("received_quantity")]
         public int received_quantity { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public long marketid { get; private set; }
 
-        [JsonProperty("paid_edname")]
+        [JsonProperty("paid_edname"), VoiceAttackIgnore]
         public string paid_edname { get; private set; }
 
-        [JsonProperty("received_edname")]
+        [JsonProperty("received_edname"), VoiceAttackIgnore]
         public string received_edname { get; private set; }
 
         public MaterialTradedEvent(DateTime timestamp, long marketId, string traderType, Material materialPaid, int materialPaidQty, Material materialReceived, int materialReceivedQty) : base(timestamp, NAME)

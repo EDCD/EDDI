@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {

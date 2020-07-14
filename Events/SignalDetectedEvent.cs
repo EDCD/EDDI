@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -31,7 +32,11 @@ namespace EddiEvents
         public bool unique { get; }
 
         // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public SignalSource signalSource { get; private set; }
+
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
 
         public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, bool unique) : base(timestamp, NAME)

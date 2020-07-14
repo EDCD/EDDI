@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -68,6 +69,7 @@ namespace EddiMissionMonitor
 
         // Not intended to be user facing
 
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public MicroResource microResource { get; }

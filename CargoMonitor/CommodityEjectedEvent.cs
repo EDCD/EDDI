@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -34,6 +35,9 @@ namespace EddiCargoMonitor
         [JsonProperty("abandoned")]
         public bool abandoned { get; }
 
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity, int amount, long? missionid, bool abandoned) : base(timestamp, NAME)

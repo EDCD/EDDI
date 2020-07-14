@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -28,6 +29,8 @@ namespace EddiEvents
         public string stationtype => stationDefinition?.localizedName;
 
         // Admin
+
+        [VoiceAttackIgnore]
         public long? marketId { get; private set; }
 
         public DockingCancelledEvent(DateTime timestamp, string station, string stationType, long? marketId) : base(timestamp, NAME)

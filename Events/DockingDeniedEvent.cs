@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -32,6 +33,8 @@ namespace EddiEvents
         public string reason { get; private set; }
 
         // Admin
+
+        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public DockingDeniedEvent(DateTime timestamp, string station, string stationType, long marketId, string reason) : base(timestamp, NAME)

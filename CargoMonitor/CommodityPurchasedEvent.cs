@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -24,6 +25,10 @@ namespace EddiCargoMonitor
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
         public int amount { get; }
         public int price { get; }
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityPurchasedEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, int price) : base(timestamp, NAME)

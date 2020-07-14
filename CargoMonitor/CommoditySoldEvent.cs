@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -32,6 +33,10 @@ namespace EddiCargoMonitor
         public bool illegal { get; }
         public bool stolen { get; }
         public bool blackmarket { get; }
+
+        // Not intended to be user facing
+
+        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommoditySoldEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
