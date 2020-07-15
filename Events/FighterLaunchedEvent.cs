@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -19,13 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("playercontrolled", "True if the fighter is controlled by the player");
         }
 
-        [JsonProperty("loadout")]
         public string loadout { get; private set; }
 
-        [JsonProperty("id")]
         public int id { get; private set; }
 
-        [JsonProperty("playercontrolled")]
         public bool playercontrolled { get; private set; }
 
         public FighterLaunchedEvent(DateTime timestamp, string loadout, int id, bool playercontrolled) : base(timestamp, NAME)

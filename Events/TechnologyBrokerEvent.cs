@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,10 +20,8 @@ namespace EddiEvents
             VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object with keys \"commodity\" and \"amount\", consisting of a commodity object and an amount)");
         }
 
-        [JsonProperty("brokertype")]
         public string brokertype { get; private set; }
 
-        [JsonProperty("items")]
         public List<Module> items { get; private set; }
 
         public List<CommodityAmount> commodities { get; private set; }

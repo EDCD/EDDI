@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("commander", "The commander's name");
         }
 
-        [JsonProperty("commander")]
         public string commander { get; private set; }
 
         public EnteredCQCEvent(DateTime timestamp, string commander) : base(timestamp, NAME)

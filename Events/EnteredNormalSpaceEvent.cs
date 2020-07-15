@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -24,14 +23,12 @@ namespace EddiEvents
             VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
-        [JsonProperty("system")]
         public string systemname { get; private set; }
 
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         public string bodytype_invariant => (bodyType ?? BodyType.None).localizedName;
 
-        [JsonProperty("body")]
         public string bodyname { get; private set; }
 
         [JsonProperty("taxi")]
@@ -42,10 +39,10 @@ namespace EddiEvents
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [JsonIgnore, Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
         public string system => systemname;
 
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing

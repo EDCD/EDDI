@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -23,22 +22,16 @@ namespace EddiEvents
             VARIABLES.Add("exobiologist", "The percentage progress of the commander's exobiologist rating");
         }
 
-        [JsonProperty("combat")]
         public decimal combat { get; private set; }
 
-        [JsonProperty("trade")]
         public decimal trade { get; private set; }
 
-        [JsonProperty("exploration")]
         public decimal exploration { get; private set; }
 
-        [JsonProperty("cqc")]
         public decimal cqc { get; private set; }
 
-        [JsonProperty("empire")]
         public decimal empire { get; private set; }
 
-        [JsonProperty("federation")]
         public decimal federation { get; private set; }
 
         [JsonProperty("mercenary")]

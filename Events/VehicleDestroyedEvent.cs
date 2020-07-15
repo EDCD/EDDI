@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,11 +16,9 @@ namespace EddiEvents
             VARIABLES.Add("id", "The vehicle's id");
         }
 
-        [JsonProperty("vehicle")]
-        public string vehicle;
+        public string vehicle { get; private set; }
 
-        [JsonProperty("id")]
-        public int id;
+        public int id { get; private set; }
 
         public VehicleDestroyedEvent(DateTime timestamp, string vehicle, int id) : base(timestamp, NAME)
         {

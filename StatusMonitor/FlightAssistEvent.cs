@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("off", "A boolean value. True if flight assist is off.");
         }
 
-        [JsonProperty("off")]
         public bool off { get; private set; }
 
         public FlightAssistEvent(DateTime timestamp, bool flight_assist_off) : base(timestamp, NAME)

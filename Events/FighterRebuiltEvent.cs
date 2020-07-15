@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,15 +16,14 @@ namespace EddiEvents
             VARIABLES.Add("id", "The fighter's id");
         }
 
-        [JsonProperty("loadout")]
         public string loadout { get; private set; }
 
-        [JsonProperty("id")]
         public int id { get; private set; }
 
         public FighterRebuiltEvent(DateTime timestamp, string loadout, int id) : base(timestamp, NAME)
         {
             this.loadout = loadout;
+            this.id = id;
         }
     }
 }

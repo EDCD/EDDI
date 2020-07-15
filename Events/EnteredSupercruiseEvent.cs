@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -18,7 +17,6 @@ namespace EddiEvents
             VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
         [JsonProperty("taxi")]

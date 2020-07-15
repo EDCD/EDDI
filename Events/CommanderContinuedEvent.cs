@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using MathNet.Numerics;
@@ -31,59 +30,45 @@ namespace EddiEvents
             VARIABLES.Add("startdead", "True if the commander is starting dead / at the rebuy screen");
         }
 
-        [JsonProperty("commander")]
         public string commander { get; private set; }
 
-        [JsonProperty("horizons")]
         public bool horizons { get; private set; }
 
-        [JsonProperty("odyssey")]
         public bool odyssey { get; private set; }
 
-        [JsonProperty("ship")]
         public string ship => shipEDModel == "TestBuggy" ? Utilities.Constants.VEHICLE_SRV
             : shipEDModel.ToLowerInvariant().Contains("fighter") ? Utilities.Constants.VEHICLE_FIGHTER
             : shipEDModel.ToLowerInvariant().Contains("suit") ? Utilities.Constants.VEHICLE_LEGS
             : shipEDModel.ToLowerInvariant().Contains("taxi") ? Utilities.Constants.VEHICLE_TAXI
             : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;
 
-        [JsonProperty("shipid")]
         public long? shipid { get; private set; } // shipid serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
 
-        [JsonProperty("shipname")]
         public string shipname { get; private set; }
 
-        [JsonProperty("shipident")]
         public string shipident { get; private set; }
 
-        [JsonProperty("startlanded")]
         public bool? startlanded { get; private set; }
 
-        [JsonProperty("startdead")]
         public bool? startdead { get; private set; }
 
-        [JsonProperty("mode")]
         public string mode { get; private set; }
 
-        [JsonProperty("group")]
         public string group { get; private set; }
 
-        [JsonProperty("credits")]
         public long credits { get; private set; }
 
-        [JsonProperty("loan")]
         public long loan { get; private set; }
 
-        [JsonProperty("fuel")]
         public decimal? fuel { get; private set; }
 
-        [JsonProperty("fuelcapacity")]
         public decimal? fuelcapacity { get; private set; }
 
         // Not intended to be user facing
-
         [VoiceAttackIgnore]
         public string frontierID { get; private set; }
+
+        [VoiceAttackIgnore]
         public string shipEDModel { get; private set; }
 
         public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)

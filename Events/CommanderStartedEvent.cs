@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -18,10 +17,8 @@ namespace EddiEvents
             VARIABLES.Add("package", "The starting package of the new commander");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("package")]
         public string package { get; private set; }
 
         // Not intended to be user facing

@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,23 +20,20 @@ namespace EddiEvents
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
         }
 
-        [JsonProperty("status")]
         public bool gliding { get; private set; }
 
-        [JsonProperty("system")]
         public string systemname { get; private set; }
 
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
-        [JsonProperty("body")]
         public string bodyname { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [JsonIgnore, Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
         public string system => systemname;
 
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing

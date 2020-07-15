@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -19,10 +18,8 @@ namespace EddiEvents
             VARIABLES.Add("stationDefinition", "The model / type of the station at which docking has timed out (this is an object)");
         }
 
-        [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition?.localizedName;

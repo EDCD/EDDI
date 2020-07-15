@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -18,13 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("newrank", "The new rank");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("oldrank")]
         public int oldrank { get; private set; }
 
-        [JsonProperty("newrank")]
         public int newrank { get; private set; }
 
         public SquadronRankEvent(DateTime timestamp, string name, int oldrank, int newrank) : base(timestamp, NAME)

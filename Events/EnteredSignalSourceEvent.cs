@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -23,7 +22,6 @@ namespace EddiEvents
         public string source => signalSource.edname;
         public string localizedsource => signalSource.localizedName ?? signalSource.fallbackLocalizedName ?? signalSource.edname;
 
-        [JsonProperty("threat")]
         public int threat { get; private set; }
 
         // Not intended to be user facing

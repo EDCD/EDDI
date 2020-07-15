@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -22,9 +21,12 @@ namespace EddiEvents
             VARIABLES.Add("latitude", "The latitude coordinate of the settlement (if given)");
         }
 
-        [JsonProperty("name")] public string name => settlementName.localizedName;
+        public string name => settlementName.localizedName;
+
         public string bodyname { get; private set; }
+
         public decimal? latitude { get; private set; }
+
         public decimal? longitude { get; private set; }
 
         // Not intended to be user facing

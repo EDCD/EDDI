@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -19,13 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The amount paid to the crewmember");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("crewid")]
         public long crewid { get; private set; }
 
-        [JsonProperty("amount")]
         public long amount { get; private set; }
 
         public CrewPaidWageEvent(DateTime timestamp, string name, long crewid, long amount) : base(timestamp, NAME)

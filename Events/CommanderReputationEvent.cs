@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -19,16 +18,12 @@ namespace EddiEvents
             VARIABLES.Add("alliance", "The percentage progress of the commander's alliance superpower reputation");
         }
 
-        [JsonProperty("empire")]
         public decimal empire { get; private set; }
 
-        [JsonProperty("federation")]
         public decimal federation { get; private set; }
 
-        [JsonProperty("independent")]
         public decimal independent { get; private set; }
 
-        [JsonProperty("alliance")]
         public decimal alliance { get; private set; }
 
         public CommanderReputationEvent(DateTime timestamp, decimal empire, decimal federation, decimal independent, decimal alliance) : base(timestamp, NAME)

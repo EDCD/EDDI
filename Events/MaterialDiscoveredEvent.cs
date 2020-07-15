@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the discovered material");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
         public MaterialDiscoveredEvent(DateTime timestamp, Material material) : base(timestamp, NAME)

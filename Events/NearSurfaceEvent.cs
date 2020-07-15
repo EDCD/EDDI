@@ -28,9 +28,10 @@ namespace EddiEvents
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
         public string system => systemname;
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing

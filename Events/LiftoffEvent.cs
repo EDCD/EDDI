@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -25,28 +24,20 @@ namespace EddiEvents
             VARIABLES.Add("nearestdestination", "The nearest location from where the ship has lifted off");
         }
 
-        [JsonProperty("systemname")]
         public string systemname { get; private set; }
 
-        [JsonProperty("bodyname")]
         public string bodyname { get; private set; }
 
-        [JsonProperty("longitude")]
         public decimal? longitude { get; private set; }
         
-        [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }
 
-        [JsonProperty("taxi")]
         public bool? taxi { get; private set; }
 
-        [JsonProperty("multicrew")]
         public bool? multicrew { get; private set; }
 
-        [JsonProperty("playercontrolled")]
         public bool playercontrolled { get; private set; }
 
-        [JsonProperty("nearestdestination")]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing
@@ -54,12 +45,16 @@ namespace EddiEvents
         [VoiceAttackIgnore]
         public SignalSource nearestDestination { get; private set; }
 
+        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
+        [VoiceAttackIgnore]
         public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
 
+        [VoiceAttackIgnore]
         public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
 
+        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
         public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, long? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)

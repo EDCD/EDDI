@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,10 +16,8 @@ namespace EddiEvents
             VARIABLES.Add("message", "The message");
         }
 
-        [JsonProperty("to")]
         public string to { get; private set; }
 
-        [JsonProperty("message")]
         public string message { get; private set; }
 
         public MessageSentEvent(DateTime timestamp, string to, string message) : base(timestamp, NAME)

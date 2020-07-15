@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -22,18 +21,14 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("fine", "The number of credits issued as the fine");
         }
 
-        [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
 
         public string crime { get; private set; }
 
-        [JsonProperty("victim")]
         public string victim { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("fine")]
         public long fine { get; private set; }
 
         public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)

@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -19,13 +18,10 @@ namespace EddiMissionMonitor
             VARIABLES.Add("fine", "The fine levied");
         }
 
-        [JsonProperty("missionid")]
         public long? missionid { get; private set; }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("fine")]
         public long fine { get; private set; }
 
         public MissionFailedEvent(DateTime timestamp, long? missionid, string name, long fine) : base(timestamp, NAME)

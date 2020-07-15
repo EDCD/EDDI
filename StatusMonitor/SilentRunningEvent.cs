@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("silentrunning", "A boolean value. True if silent running is active.");
         }
 
-        [JsonProperty("silentrunning")]
         public bool silentrunning { get; private set; }
 
         public SilentRunningEvent(DateTime timestamp, bool silentRunning) : base(timestamp, NAME)

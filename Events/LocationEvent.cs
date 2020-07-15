@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,22 +96,22 @@ namespace EddiEvents
         public string powerstate => powerState.localizedName;
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
         public string system => systemname;
 
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string body => bodyname;
 
-        [JsonIgnore, Obsolete("Use systemfaction instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemfaction instead"), VoiceAttackIgnore]
         public string faction => controllingsystemfaction?.name;
 
-        [JsonIgnore, Obsolete("Use systemstate instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemstate instead"), VoiceAttackIgnore]
         public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
-        [JsonIgnore, Obsolete("Use systemgovernment instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemgovernment instead"), VoiceAttackIgnore]
         public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
 
-        [JsonIgnore, Obsolete("Use systemallegiance instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemallegiance instead"), VoiceAttackIgnore]
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // These properties are not intended to be user facing

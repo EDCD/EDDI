@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -19,13 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("payeefaction", "The name of the faction awarding the voucher");
         }
 
-        [JsonProperty("reward")]
         public long reward { get; private set; }
 
-        [JsonProperty("victimfaction")]
         public string victimfaction { get; private set; }
 
-        [JsonProperty("payeefaction")]
         public string payeefaction { get; private set; }
 
         public DataVoucherAwardedEvent(DateTime timestamp, string payeefaction, string victimfaction, long reward) : base(timestamp, NAME)

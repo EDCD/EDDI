@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -30,43 +29,30 @@ namespace EddiEvents
             VARIABLES.Add("subsystemhealth", "The health of the subsystem targeted");
         }
 
-        [JsonProperty("targetlocked")]
         public bool targetlocked { get; private set; }
 
-        [JsonProperty("ship")]
         public string ship { get; private set; }
 
-        [JsonProperty("scanstage")]
         public int? scanstage { get; private set; }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("rank")]
         public string rank => CombatRank?.localizedName ?? "unknown combat rank";
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("power")]
         public string power => (Power ?? Power.None).localizedName;
 
-        [JsonProperty("legalstatus")]
         public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
-        [JsonProperty("bounty")]
         public int? bounty { get; private set; }
 
-        [JsonProperty("shieldhealth")]
         public decimal? shieldhealth { get; private set; }
 
-        [JsonProperty("hullhealth")]
         public decimal? hullhealth { get; private set; }
 
-        [JsonProperty("subsystem")]
         public string subsystem { get; private set; }
 
-        [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
         // Not intended to be user facing

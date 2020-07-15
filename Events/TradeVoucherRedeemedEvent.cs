@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -14,18 +13,15 @@ namespace EddiEvents
 
         static TradeVoucherRedeemedEvent()
         {
-            VARIABLES.Add("rewards", "The rewards obtained broken down by faction");
+            VARIABLES.Add("rewards", "The rewards obtained broken down by faction (as a list of Rewards objects)");
             VARIABLES.Add("amount", "The amount rewarded (after any broker fees)");
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }
 
-        [JsonProperty("rewards")]
         public List<Reward> rewards { get; private set; }
 
-        [JsonProperty("amount")]
         public long amount { get; private set; }
 
-        [JsonProperty("brokerpercentage")]
         public decimal? brokerpercentage { get; private set; }
 
         public TradeVoucherRedeemedEvent(DateTime timestamp, List<Reward> rewards, long amount, decimal? brokerpercentage) : base(timestamp, NAME)

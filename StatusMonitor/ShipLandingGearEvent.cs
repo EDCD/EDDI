@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("deployed", "A boolean value. True if your landing gear is deployed.");
         }
 
-        [JsonProperty("deployed")]
         public bool deployed { get; private set; }
 
         public ShipLandingGearEvent(DateTime timestamp, bool deployed) : base(timestamp, NAME)

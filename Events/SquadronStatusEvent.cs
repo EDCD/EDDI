@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,10 +16,8 @@ namespace EddiEvents
             VARIABLES.Add("status", "The squadron status (`applied`, `created`, `disbanded`, `invited`, `joined`, `kicked`, `left`)");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("status")]
         public string status { get; private set; }
 
         public SquadronStatusEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)

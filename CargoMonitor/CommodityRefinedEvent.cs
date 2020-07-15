@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -19,7 +18,6 @@ namespace EddiCargoMonitor
             VARIABLES.Add("commodity", "The name of the commodity refined");
         }
 
-        [JsonProperty("commodity")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
         // Not intended to be user facing

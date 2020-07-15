@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -15,13 +14,11 @@ namespace EddiEvents
         static SynthesisedEvent()
         {
             VARIABLES.Add("synthesis", "The thing that has been synthesised");
-            VARIABLES.Add("materials", "Types and amounts of materials used in the synthesis");
+            VARIABLES.Add("materials", "Types and amounts of materials used in the synthesis (as an object)");
         }
 
-        [JsonProperty("synthesis")]
         public string synthesis { get; private set; }
 
-        [JsonProperty("materials")]
         public List<MaterialAmount> materials { get; private set; }
 
         public SynthesisedEvent(DateTime timestamp, string synthesis, List<MaterialAmount> materials) : base(timestamp, NAME)

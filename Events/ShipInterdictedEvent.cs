@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -23,27 +22,19 @@ namespace EddiEvents
             VARIABLES.Add("power", "The power of the NPC carrying out the interdiction");
         }
 
-        [JsonProperty("succeeded")]
         public bool succeeded { get; private set; }
 
-        [JsonProperty("submitted")]
         public bool submitted { get; private set; }
 
-        [JsonProperty("iscommander")]
         public bool iscommander { get; private set; }
 
-        [JsonProperty("interdictor")]
         public string interdictor { get; private set; }
 
-        [JsonProperty("rating")]
         public string rating { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("power")]
         public string power { get; private set; }
-
 
         public ShipInterdictedEvent(DateTime timestamp, bool succeeded, bool submitted, bool iscommander, string interdictor, CombatRating rating, string faction, string power) : base(timestamp, NAME)
         {

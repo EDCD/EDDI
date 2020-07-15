@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,7 +20,7 @@ namespace EddiMissionMonitor
 
         // Not intended to be user facing
 
-        [JsonProperty("missions"), VoiceAttackIgnore]
+        [VoiceAttackIgnore]
         public List<Mission> missions { get; private set; }
 
         public MissionsEvent(DateTime timestamp, List<Mission> missions) : base(timestamp, NAME)

@@ -1,5 +1,4 @@
 using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -27,7 +26,6 @@ namespace EddiEvents
 
         public string localizedcommodityname => commodity.localizedName;
 
-        [JsonProperty("commodity")]
         public CommodityDefinition commodity { get; }
 
         // Not intended to be user facing
