@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -20,15 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The amount of the donated material");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("amount")]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [JsonProperty("edname"), VoiceAttackIgnore]
+        [VoiceAttackIgnore]
         public string edname { get; private set; }
 
         [VoiceAttackIgnore]

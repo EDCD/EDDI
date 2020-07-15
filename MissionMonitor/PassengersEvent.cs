@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +17,6 @@ namespace EddiMissionMonitor
             VARIABLES.Add("passengers", "The manifest of passengers on your ship (as a list of objects)");
         }
 
-        [JsonProperty("passengers")]
         public List<Passenger> passengers { get; private set; }
 
         public PassengersEvent(DateTime timestamp, List<Passenger> passengers) : base(timestamp, NAME)

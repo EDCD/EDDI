@@ -24,13 +24,12 @@ namespace EddiEvents
         // Not intended to be user facing
 
         [Obsolete("Use 'name' instead"), VoiceAttackIgnore]
-        public string friend { get; private set; } // Deprecated but preserved for backwards compatibility
+        public string friend => name; // Deprecated but preserved for backwards compatibility
 
         public FriendsEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)
         {
             this.name = name;
             this.status = status;
-            this.friend = name;
         }
     }
 }

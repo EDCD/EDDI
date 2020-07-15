@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("rating", "The commander's new trade rating");
         }
 
-        [JsonProperty("rating")]
         public string rating { get; private set; }
 
         public TradePromotionEvent(DateTime timestamp, TradeRating rating) : base(timestamp, NAME)

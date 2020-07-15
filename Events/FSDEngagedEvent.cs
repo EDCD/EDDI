@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -18,13 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("stellarclass", "The class of the destination primary star (only if type is Hyperspace)");
         }
 
-        [JsonProperty("target")]
         public string target { get; private set; }
 
-        [JsonProperty("stellarclass")]
         public string stellarclass { get; private set; }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
         public FSDEngagedEvent(DateTime timestamp, string jumptype, string system, string stellarclass) : base(timestamp, NAME)

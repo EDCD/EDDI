@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -184,22 +183,22 @@ namespace EddiEvents
         public long? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string name => bodyname;
 
-        [JsonIgnore, Obsolete("Use planetClass instead"), VoiceAttackIgnore]
+        [Obsolete("Use planetClass instead"), VoiceAttackIgnore]
         public string bodyclass => (body.planetClass ?? PlanetClass.None).localizedName;
         
-        [JsonIgnore, Obsolete("Use distance instead"), VoiceAttackIgnore]
+        [Obsolete("Use distance instead"), VoiceAttackIgnore]
         public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
 
-        [JsonIgnore, Obsolete("Use inclination instead"), VoiceAttackIgnore]
+        [Obsolete("Use inclination instead"), VoiceAttackIgnore]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
 
-        [JsonIgnore, Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
+        [Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
         public decimal? rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
 
-        [JsonIgnore, Obsolete("Use tilt instead"), VoiceAttackIgnore]
+        [Obsolete("Use tilt instead"), VoiceAttackIgnore]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
         public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)

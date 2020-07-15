@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -21,19 +20,14 @@ namespace EddiEvents
             VARIABLES.Add("combatrating", "The combat rating of the crewmember being hired");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("crewid")]
         public long crewid { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("price")]
         public long price { get; private set; }
 
-        [JsonProperty("combatrating")]
         public string combatrating { get; private set; }
 
         public CrewHiredEvent(DateTime timestamp, string name, long crewid, string faction, long price, CombatRating combatrating) : base(timestamp, NAME)

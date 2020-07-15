@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -18,10 +17,8 @@ namespace EddiEvents
             VARIABLES.Add("rating", "The combat rating of the player killed");
         }
 
-        [JsonProperty("victim")]
         public string victim { get; private set; }
 
-        [JsonProperty("rating")]
         public string rating { get; private set; }
 
         public KilledEvent(DateTime timestamp, string victim, CombatRating rating) : base(timestamp, NAME)

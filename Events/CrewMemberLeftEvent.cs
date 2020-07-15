@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("crew", "The name of the crew member who left");
         }
 
-        [JsonProperty("crew")]
         public string crew { get; private set; }
 
         public CrewMemberLeftEvent(DateTime timestamp, string crew) : base(timestamp, NAME)

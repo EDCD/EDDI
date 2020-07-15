@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -18,15 +17,13 @@ namespace EddiEvents
             VARIABLES.Add("count", "The count of bodies from the scanned system");
         }
 
-        [JsonProperty("systemname")]
         public string systemname { get; private set; }
 
-        [JsonProperty("count")]
         public int count { get; private set; }
 
         // Not intended to be user facing
 
-        [JsonProperty("systemaddress"), VoiceAttackIgnore]
+        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public SystemScanComplete(DateTime timestamp, string systemname, long systemAddress, int count) : base(timestamp, NAME)

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -18,10 +17,8 @@ namespace EddiEvents
 
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("rank")]
         public int rank { get; private set; }
 
         public SquadronStartupEvent(DateTime timestamp, string name, int rank) : base(timestamp, NAME)

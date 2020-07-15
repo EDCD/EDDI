@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -21,19 +20,14 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("shared", "True if the rewards have been shared with wing-mates");
         }
 
-        [JsonProperty("target")]
         public string target { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("reward")]
         public long reward { get; private set; }
 
-        [JsonProperty("rewards")]
         public List<Reward> rewards { get; private set; }
 
-        [JsonProperty("shared")]
         public bool shared { get; private set; }
 
         public BountyAwardedEvent(DateTime timestamp, string target, string faction, long reward, List<Reward> rewards, bool shared) : base(timestamp, NAME)

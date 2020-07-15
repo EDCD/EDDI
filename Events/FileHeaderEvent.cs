@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -18,10 +17,8 @@ namespace EddiEvents
             VARIABLES.Add("build", "The build of the game");
         }
 
-        [JsonProperty("version")]
         public string version { get; private set; }
 
-        [JsonProperty("build")]
         public string build { get; private set; }
 
         // Not intended to be user facing

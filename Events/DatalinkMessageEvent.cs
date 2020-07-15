@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("message", "Datalink message");
         }
 
-        [JsonProperty("message")]
         public string message { get; private set; }
 
         public DatalinkMessageEvent(DateTime timestamp, string message) : base(timestamp, NAME)

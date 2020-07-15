@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -24,22 +23,16 @@ namespace EddiShipMonitor
             VARIABLES.Add("tomodule", "The module (object) to which the swap was finalised");
         }
 
-        [JsonProperty("ship")]
         public string ship { get; private set; }
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("fromslot")]
         public string fromslot { get; private set; }
 
-        [JsonProperty("frommodule")]
         public Module frommodule { get; private set; }
 
-        [JsonProperty("toslot")]
         public string toslot { get; private set; }
 
-        [JsonProperty("tomodule")]
         public Module tomodule { get; private set; }
 
         // Not intended to be user facing

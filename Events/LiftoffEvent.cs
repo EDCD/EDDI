@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,16 +20,12 @@ namespace EddiEvents
             VARIABLES.Add("nearestdestination", "The nearest location from where the ship has lifted off");
         }
 
-        [JsonProperty("longitude")]
         public decimal? longitude { get; private set; }
 
-        [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }
 
-        [JsonProperty("playercontrolled")]
         public bool playercontrolled { get; private set; }
 
-        [JsonProperty("nearestdestination")]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing

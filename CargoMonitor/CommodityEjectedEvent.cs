@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -23,16 +22,12 @@ namespace EddiCargoMonitor
 
         }
 
-        [JsonProperty("commodity")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        [JsonProperty("amount")]
         public int amount { get; }
 
-        [JsonProperty("missionid")]
         public long? missionid { get; }
 
-        [JsonProperty("abandoned")]
         public bool abandoned { get; }
 
         // Not intended to be user facing

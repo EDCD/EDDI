@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -20,10 +19,8 @@ namespace EddiEvents
             VARIABLES.Add("stationDefinition", "The model / type of the station at which the commander has requested docking (this is an object)");
         }
 
-        [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition?.localizedName;

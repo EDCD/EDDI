@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -23,15 +22,17 @@ namespace EddiEvents
         }
 
         public string filename { get; private set; }
+
         public int width { get; private set; }
+
         public int height { get; private set; }
+
         public string system { get; private set; }
+
         public string body { get; private set; }
 
-        [JsonProperty("longitude")]
         public decimal? longitude { get; private set; }
 
-        [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }
 
         public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, decimal? longitude, decimal? latitude) : base(timestamp, NAME)

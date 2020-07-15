@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -22,22 +21,16 @@ namespace EddiEvents
             VARIABLES.Add("power", "The power of the commander being interdicted");
         }
 
-        [JsonProperty("succeeded")]
         public bool succeeded { get; private set; }
 
-        [JsonProperty("iscommander")]
         public bool iscommander { get; private set; }
 
-        [JsonProperty("interdictee")]
         public string interdictee { get; private set; }
 
-        [JsonProperty("rating")]
         public string rating { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("power")]
         public string power { get; private set; }
 
 

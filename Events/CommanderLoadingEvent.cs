@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the player account being loaded");
         }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
         // Not intended to be user facing

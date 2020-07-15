@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -22,19 +21,14 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");
         }
 
-        [JsonProperty("amount")]
         public long amount { get; private set; }
 
-        [JsonProperty("brokerpercentage")]
         public decimal? brokerpercentage { get; private set; }
 
-        [JsonProperty("allbounties")]
         public bool allbounties { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("shipid")]
         public int shipid { get; private set; }
 
         public BountyPaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool allbounties, string faction, int shipId) : base(timestamp, NAME)

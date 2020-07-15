@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -20,13 +19,10 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }
 
-        [JsonProperty("rewards")]
         public List<Reward> rewards { get; private set; }
 
-        [JsonProperty("amount")]
         public long amount { get; private set; }
 
-        [JsonProperty("brokerpercentage")]
         public decimal? brokerpercentage { get; private set; }
 
         public BountyRedeemedEvent(DateTime timestamp, List<Reward> rewards, long amount, decimal? brokerpercentage) : base(timestamp, NAME)

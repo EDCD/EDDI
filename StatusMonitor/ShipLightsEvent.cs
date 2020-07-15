@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("lightson", "A boolean value. True if your lights are on.");
         }
 
-        [JsonProperty("deployed")]
         public bool lightson { get; private set; }
 
         public ShipLightsEvent(DateTime timestamp, bool lightson) : base(timestamp, NAME)

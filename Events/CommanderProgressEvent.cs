@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -21,22 +20,16 @@ namespace EddiEvents
             VARIABLES.Add("federation", "The percentage progress of the commander's federation rating");
         }
 
-        [JsonProperty("combat")]
         public decimal combat { get; private set; }
 
-        [JsonProperty("trade")]
         public decimal trade { get; private set; }
 
-        [JsonProperty("exploration")]
         public decimal exploration { get; private set; }
 
-        [JsonProperty("cqc")]
         public decimal cqc { get; private set; }
 
-        [JsonProperty("empire")]
         public decimal empire { get; private set; }
 
-        [JsonProperty("federation")]
         public decimal federation { get; private set; }
 
         public CommanderProgressEvent(DateTime timestamp, decimal combat, decimal trade, decimal exploration, decimal cqc, decimal empire, decimal federation) : base(timestamp, NAME)

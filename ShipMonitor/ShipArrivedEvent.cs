@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -26,26 +25,20 @@ namespace EddiShipMonitor
             VARIABLES.Add("time", "The time elapsed during the transfer (in seconds)");
         }
 
-        [JsonProperty("shipid")]
         public int? shipid => Ship.LocalId;
 
-        [JsonProperty("ship")]
         public string ship => Ship.model;
 
         public string phoneticname => Ship.phoneticname;
 
         public string station { get; private set; }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("distance")]
         public decimal distance { get; private set; }
 
-        [JsonProperty("price")]
         public long? price { get; private set; }
 
-        [JsonProperty("time")]
         public long? time { get; private set; }
 
         // Not intended to be user facing

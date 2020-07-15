@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("numbodies", "The number of bodies included in the scan dump");
         }
 
-        [JsonProperty("numbodies")]
         public int numbodies { get; private set; }
 
         // Not intended to be user facing

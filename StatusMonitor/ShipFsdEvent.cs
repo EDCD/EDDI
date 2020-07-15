@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("fsd_status", "The status of your ship's fsd ('cooldown', 'cooldown complete', 'charging', 'charging cancelled', 'charging complete', 'masslock', or 'masslock cleared')");
         }
 
-        [JsonProperty("fsd_status")]
         public string fsd_status { get; private set; }
 
         public ShipFsdEvent(DateTime timestamp, string fsdStatus) : base(timestamp, NAME)

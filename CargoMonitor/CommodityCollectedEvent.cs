@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,13 +20,10 @@ namespace EddiCargoMonitor
             VARIABLES.Add("missionid", "ID of the mission-related commodity, if applicable");
         }
 
-        [JsonProperty("commodity")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        [JsonProperty("missionid")]
         public long? missionid { get; }
 
-        [JsonProperty("stolen")]
         public bool stolen { get; }
 
         // Not intended to be user facing

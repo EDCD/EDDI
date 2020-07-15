@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -23,23 +22,18 @@ namespace EddiEvents
             VARIABLES.Add("message", "The message");
         }
 
-        [JsonProperty("from")]
         public string from { get; private set; }
 
-        [JsonProperty("source")]
         public string source => Source.localizedName;
 
         public string source_invariant => Source.invariantName;
 
-        [JsonProperty("player")]
         public bool player { get; private set; }
 
-        [JsonProperty("channel")]
         public string channel => Channel.localizedName;
 
         public string channel_invariant => Channel.invariantName;
 
-        [JsonProperty("message")]
         public string message { get; private set; }
 
         // Not intended to be user facing

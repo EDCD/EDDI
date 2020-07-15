@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -20,10 +19,8 @@ namespace EddiShipMonitor
             VARIABLES.Add("shipid", "The ID of the ship that was delivered");
         }
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("ship")]
         public string ship => shipDefinition?.model;
 
         // Not intended to be user facing

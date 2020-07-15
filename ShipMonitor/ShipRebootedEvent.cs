@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,6 @@ namespace EddiShipMonitor
             VARIABLES.Add("modules", "The modules that have been repaired");
         }
 
-        [JsonProperty("modules")]
         public List<string> modules { get; private set; }
 
         public ShipRebootedEvent(DateTime timestamp, List<string> modules) : base(timestamp, NAME)

@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,15 +20,12 @@ namespace EddiEvents
             VARIABLES.Add("reason", "The reason why commander has been denied docking (too far, fighter deployed etc)");
         }
 
-        [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition?.localizedName;
 
-        [JsonProperty("reason")]
         public string reason { get; private set; }
 
         // Admin

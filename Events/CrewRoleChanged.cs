@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("role", "The crew role you have been assigned (gunner, fighter, idle)");
         }
 
-        [JsonProperty("role")]
         public string role { get; private set; }
 
         public CrewRoleChangedEvent(DateTime timestamp, string role) : base(timestamp, NAME)

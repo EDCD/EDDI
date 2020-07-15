@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -22,22 +21,16 @@ namespace EddiEvents
             VARIABLES.Add("federation", "The commander's federation rating");
         }
 
-        [JsonProperty("combat")]
         public CombatRating combat { get; private set; }
 
-        [JsonProperty("trade")]
         public TradeRating trade { get; private set; }
 
-        [JsonProperty("exploration")]
         public ExplorationRating exploration { get; private set; }
 
-        [JsonProperty("cqc")]
         public CQCRating cqc { get; private set; }
 
-        [JsonProperty("empire")]
         public EmpireRating empire { get; private set; }
 
-        [JsonProperty("federation")]
         public FederationRating federation { get; private set; }
 
         public CommanderRatingsEvent(DateTime timestamp, CombatRating combat, TradeRating trade, ExplorationRating exploration, CQCRating cqc, EmpireRating empire, FederationRating federation) : base(timestamp, NAME)

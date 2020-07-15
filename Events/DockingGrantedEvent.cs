@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -21,15 +20,12 @@ namespace EddiEvents
             VARIABLES.Add("landingpad", "The landing pad at which the commander has been granted docking");
         }
 
-        [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition?.localizedName;
 
-        [JsonProperty("landingpad")]
         public int landingpad { get; private set; }
 
         // Admin

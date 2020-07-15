@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -169,16 +168,16 @@ namespace EddiEvents
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [JsonIgnore, Obsolete("Use distance instead"), VoiceAttackIgnore]
+        [Obsolete("Use distance instead"), VoiceAttackIgnore]
         public decimal? distancefromarrival => distance;
 
-        [JsonIgnore, Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
         public string name => bodyname;
 
-        [JsonIgnore, Obsolete("Use inclination instead"), VoiceAttackIgnore]
+        [Obsolete("Use inclination instead"), VoiceAttackIgnore]
         public decimal? orbitalinclination => inclination;
 
-        [JsonIgnore, Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
+        [Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
         public decimal? rotationperiod => rotationalperiod;
 
         public StarScannedEvent(DateTime timestamp, string scantype, Body star) : base(timestamp, NAME)

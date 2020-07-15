@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("deployed", "A boolean value. True if you hardpoints are deployed.");
         }
 
-        [JsonProperty("deployed")]
         public bool deployed { get; private set; }
 
         public ShipHardpointsEvent(DateTime timestamp, bool deployed) : base(timestamp, NAME)

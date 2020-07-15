@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -29,52 +28,39 @@ namespace EddiEvents
             VARIABLES.Add("startdead", "True if the commander is starting dead / at the rebuy screen");
         }
 
-        [JsonProperty("commander")]
         public string commander { get; private set; }
 
-        [JsonProperty("horizons")]
         public bool horizons { get; private set; }
 
-        [JsonProperty("ship")]
         public string ship => shipEDModel == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(shipEDModel).model;
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("shipname")]
         public string shipname { get; private set; }
 
-        [JsonProperty("shipident")]
         public string shipident { get; private set; }
 
-        [JsonProperty("startlanded")]
         public bool? startlanded { get; private set; }
 
-        [JsonProperty("startdead")]
         public bool? startdead { get; private set; }
 
-        [JsonProperty("mode")]
         public string mode { get; private set; }
 
-        [JsonProperty("group")]
         public string group { get; private set; }
 
-        [JsonProperty("credits")]
         public long credits { get; private set; }
 
-        [JsonProperty("loan")]
         public long loan { get; private set; }
 
-        [JsonProperty("fuel")]
         public decimal? fuel { get; private set; }
 
-        [JsonProperty("fuelcapacity")]
         public decimal? fuelcapacity { get; private set; }
 
         // Not intended to be user facing
-
         [VoiceAttackIgnore]
         public string frontierID { get; private set; }
+
+        [VoiceAttackIgnore]
         public string shipEDModel { get; private set; }
 
         public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)

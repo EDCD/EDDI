@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -20,13 +19,10 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("reward", "The number of credits received");
         }
 
-        [JsonProperty("awardingfaction")]
         public string awardingfaction { get; private set; }
 
-        [JsonProperty("victimfaction")]
         public string victimfaction { get; private set; }
 
-        [JsonProperty("reward")]
         public long reward { get; private set; }
 
         public BondAwardedEvent(DateTime timestamp, string awardingfaction, string victimfaction, long reward) : base(timestamp, NAME)

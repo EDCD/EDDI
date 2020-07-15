@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,6 @@ namespace EddiEvents
             VARIABLES.Add("rating", "The commander's new exploration rating");
         }
 
-        [JsonProperty("rating")]
         public string rating { get; private set; }
 
         public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)

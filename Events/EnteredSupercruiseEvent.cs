@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,7 +15,6 @@ namespace EddiEvents
             VARIABLES.Add("system", "The system at which the commander has entered supercruise");
         }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
         public EnteredSupercruiseEvent(DateTime timestamp, string system) : base(timestamp, NAME)

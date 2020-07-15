@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -19,19 +18,15 @@ namespace EddiShipMonitor
             VARIABLES.Add("ship", "The ship from which the modules were stored");
             VARIABLES.Add("shipid", "The ID of the ship from which the module were stored");
             VARIABLES.Add("slots", "The outfitting slots");
-            VARIABLES.Add("modules", "The stored modules (object)");
+            VARIABLES.Add("modules", "The stored modules (as Module objects)");
         }
 
-        [JsonProperty("ship")]
         public string ship => shipDefinition?.model;
 
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonProperty("slots")]
         public List<string> slots { get; private set; }
 
-        [JsonProperty("modules")]
         public List<Module> modules { get; private set; }
 
         // Not intended to be user facing
