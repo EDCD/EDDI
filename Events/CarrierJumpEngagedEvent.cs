@@ -55,6 +55,8 @@ namespace EddiEvents
             // System
             this.systemname = systemName;
             this.systemAddress = systemAddress;
+            this.originSystemName = originSystemName;
+            this.originSystemAddress = originSystemAddress;
 
             // Body
             this.bodyname = bodyName;
