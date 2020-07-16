@@ -50,8 +50,12 @@ namespace EddiCore
                     }
                 }
             }
-            configuration.dataPath = filename;
+            if (configuration == null)
+            {
+                configuration = new EliteConfiguration();
+            }
 
+            configuration.dataPath = filename;
             return configuration;
         }
 
