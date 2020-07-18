@@ -353,7 +353,7 @@ namespace EddiVoiceAttackResponder
 
         protected static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
-            if (ship != null && ship != vaShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId))
+            if (ship != null && !ship.DeepEquals(vaShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId)))
             {
                 Logging.Debug("Setting ship information (" + prefix + ")");
                 try
@@ -526,7 +526,7 @@ namespace EddiVoiceAttackResponder
 
         protected static void setShipyardValues(List<Ship> shipyard, ref dynamic vaProxy)
         {
-            if (shipyard != null && shipyard != vaShipyard)
+            if (shipyard != null && !shipyard.DeepEquals(vaShipyard))
             {
                 int currentStoredShip = 1;
                 foreach (Ship StoredShip in shipyard)
