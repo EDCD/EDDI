@@ -157,8 +157,5 @@
     <value>Endommagés</value>
     <comment>Economy type Damaged</comment>
   </data>
-  <data name="Carrier" xml:space="preserve">
-    <value>Entreprise privée</value>
-    <comment>Economy Type Carrier</comment>
-  </data>
+  
 </root>

@@ -210,28 +210,16 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Szkript megtekintése</value>
   </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>Prioritás</value>
-  </data>
   
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>itt.</value>
-  </data>
-  <data name="localizedAnd" xml:space="preserve">
-    <value>és</value>
-  </data>
-  <data name="reset_script" xml:space="preserve">
-    <value>Visszaállítás</value>
-  </data>
+  
+  
+  
+  
   <data name="reset_script_message" xml:space="preserve">
     <value>Biztos benne, szeretné visszaállítani a(z) "{0}" szkriptet?</value>
   </data>
   
   
-  <data name="validation_tooltip_name_empty" xml:space="preserve">
-    <value>Adjon meg egy nevet</value>
-  </data>
-  <data name="validation_tooltip_name_taken" xml:space="preserve">
-    <value>Ez a név már foglalt; kérlek válassz egy másikat</value>
-  </data>
+  
+  
 </root>

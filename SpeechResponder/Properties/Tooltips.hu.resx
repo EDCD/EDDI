@@ -117,37 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy" xml:space="preserve">
-    <value>Másolás (CTRL+C)</value>
-  </data>
-  <data name="cut" xml:space="preserve">
-    <value>Kivágás (CTRL+X)</value>
-  </data>
-  <data name="delete" xml:space="preserve">
-    <value>Törlés (Del)</value>
-  </data>
-  <data name="delete_line" xml:space="preserve">
-    <value>Sor törlése (Ctrl+D)</value>
-  </data>
-  <data name="delete_line_no_shortcut" xml:space="preserve">
-    <value>Sor törlése</value>
-  </data>
-  <data name="find" xml:space="preserve">
-    <value>Keres (Ctrl+F)</value>
-  </data>
-  <data name="paste" xml:space="preserve">
-    <value>Beillesztés (CTRL+V)</value>
-  </data>
-  <data name="redo" xml:space="preserve">
-    <value>Újra (Ctrl+Y)</value>
-  </data>
-  <data name="show_line_numbers" xml:space="preserve">
-    <value>Sorok számainak mutatása</value>
-  </data>
-  <data name="undo" xml:space="preserve">
-    <value>Visszavonás (CTRL + Z)</value>
-  </data>
-  <data name="word_wrap" xml:space="preserve">
-    <value>Hosszú sorok tördelése</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

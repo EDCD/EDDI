@@ -161,10 +161,7 @@
     <value>Erőjáték</value>
     <comment>Commodity category Powerplay</comment>
   </data>
-  <data name="Salvage" xml:space="preserve">
-    <value>Zsákmány</value>
-    <comment>Commodity category Salvage</comment>
-  </data>
+  
   <data name="Technology" xml:space="preserve">
     <value>Technológia</value>
     <comment>Commodity category Technology</comment>
