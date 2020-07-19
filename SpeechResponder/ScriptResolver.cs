@@ -99,14 +99,6 @@ namespace EddiSpeechResponder
         {
             try
             {
-                // Before we start, we remove the context for isTopLevelScript scripts.
-                // This means that scripts without context still work as expected
-                if (isTopLevelScript)
-                {
-                    EDDI.Instance.State["eddi_context_last_subject"] = null;
-                    EDDI.Instance.State["eddi_context_last_action"] = null;
-                }
-
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
                 // Tidy up the output script
@@ -125,16 +117,7 @@ namespace EddiSpeechResponder
                         Regex rgx = new Regex(pattern);
                         stored = rgx.Replace(stored, replacement);
                     }
-
                     EDDI.Instance.State["eddi_context_last_speech"] = stored;
-                    if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out object lastSubject))
-                    {
-                        if (lastSubject != null)
-                        {
-                            string csLastSubject = ((string)lastSubject).ToLowerInvariant().Replace(" ", "_");
-                            EDDI.Instance.State["eddi_context_last_speech_" + csLastSubject] = stored;
-                        }
-                    }
                 }
 
                 return result;
