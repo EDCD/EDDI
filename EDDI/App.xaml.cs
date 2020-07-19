@@ -31,7 +31,7 @@ namespace Eddi
             // Prepare to start the application
             Logging.incrementLogs(); // Increment to a new log file.
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-            StartRollbar(configuration); // do immediately to initialize error reporting
+            StartRollbar(configuration.DisableTelemetry); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately
@@ -109,10 +109,10 @@ namespace Eddi
             return false;
         }
 
-        public static void StartRollbar(EDDIConfiguration configuration)
+        public static void StartRollbar(bool disableTelemetry)
         {
             // Configure Rollbar error reporting
-            _Rollbar.TelemetryEnabled = !configuration.DisableTelemetry;
+            _Rollbar.TelemetryEnabled = !disableTelemetry;
             if (_Rollbar.TelemetryEnabled)
             {
                 // Generate an id unique to this app run for bug tracking
