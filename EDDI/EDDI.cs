@@ -2497,15 +2497,7 @@ namespace EddiCore
 
         public decimal getSystemDistance(StarSystem curr, StarSystem dest)
         {
-            double square(double x) => x * x;
-            decimal distance = 0;
-            if (curr?.x != null && dest?.x != null)
-            {
-                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
-                            + square((double)(curr.y - dest.y))
-                            + square((double)(curr.z - dest.z))), 2);
-            }
-            return distance;
+            return curr?.DistanceFromStarSystem(dest) ?? 0;
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
