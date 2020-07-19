@@ -1605,7 +1605,7 @@ namespace EddiCore
 
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1650,7 +1650,7 @@ namespace EddiCore
 
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null, inHorizons);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1695,7 +1695,7 @@ namespace EddiCore
 
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
+                        Event @event = new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships, inHorizons, info.AllowCobraMkIV);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -2711,6 +2711,14 @@ namespace EddiCore
                         Profile profile = CompanionAppService.Instance?.Profile();
                         if (profile != null)
                         {
+                            // Sanity check
+                            if (profile.Cmdr.EDID != Cmdr.EDID)
+                            {
+                                Logging.Warn("Frontier API incorrectly configured: Returning information for Commander " +
+                                    profile.Cmdr.name + " rather than for " + Cmdr.name + ". Disregarding incorrect information.");
+                                return;
+                            }
+
                             // If we're docked, the lastStation information is located within the lastSystem identified by the profile
                             if (profile.docked && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
@@ -2718,7 +2726,7 @@ namespace EddiCore
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
 
                                 // Post an update event
-                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
+                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard, profile.contexts.inHorizons, profile.contexts.allowCobraMkIV);
                                 enqueueEvent(@event);
 
                                 // See if we need to update our current station

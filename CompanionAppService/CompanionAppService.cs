@@ -647,6 +647,16 @@ namespace EddiCompanionAppService
                 Profile.docked = (bool)json["commander"]["docked"];
                 Profile.alive = (bool)json["commander"]["alive"];
 
+                if (json["commander"]["capabilities"] != null)
+                {
+                    var contexts = new ProfileContexts 
+                    { 
+                        allowCobraMkIV = (bool)json["commander"]["capabilities"]["AllowCobraMkIV"], 
+                        inHorizons = (bool)json["commander"]["capabilities"]["Horizons"] 
+                    };
+                    Profile.contexts = contexts;
+                }
+
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
                 if (systemName != null)
                 {
