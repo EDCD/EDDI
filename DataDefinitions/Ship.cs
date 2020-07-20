@@ -33,11 +33,11 @@ namespace EddiDataDefinitions
 
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public LandingPadSize Size { get; set; }
+        public LandingPadSize Size { get; set; } = LandingPadSize.Small;
 
         /// <summary>the spoken size of this ship</summary>
         [JsonIgnore]
-        public string size => Size.localizedName;
+        public string size => (Size ?? LandingPadSize.Small).localizedName;
 
         /// <summary>the size of the military compartment slots</summary>
         [JsonIgnore]
