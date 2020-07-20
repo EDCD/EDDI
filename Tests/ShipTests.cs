@@ -579,5 +579,30 @@ namespace UnitTests
             // Test the result to verify that the distance is calculated relative to the jump coordinates
             Assert.AreEqual(21996.3M, shipMonitor.GetShip(9999)?.distance);
         }
+
+        [TestMethod]
+        public void TestShipCommanderContinuedEventInSRV()
+        {
+            // Set up our `Ship monitor` private object
+            ShipMonitor shipMonitor = new ShipMonitor();
+            PrivateObject privateObject = new PrivateObject(shipMonitor);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
+
+            // Set up our `currentShipId` property with a value of "9999"
+            privateObject.SetFieldOrProperty("currentShipId", 9999);
+
+            // Set up our event (which reports that we are in an SRV with a ship id of "9998")
+            string line = @"{ ""timestamp"":""2020-07-20T15:40:45Z"", ""event"":""LoadGame"", ""FID"":""F0000000"", ""Commander"":""TestCommander"", ""Horizons"":true, ""Ship"":""TestBuggy"", ""Ship_Localised"":""SRV Scarab"", ""ShipID"":9998, ""ShipName"":"""", ""ShipIdent"":"""", ""FuelLevel"":0.000000, ""FuelCapacity"":0.000000, ""GameMode"":""Group"", ""Group"":""Children of Raxxla"", ""Credits"":5065687467, ""Loan"":0 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            CommanderContinuedEvent @event = (CommanderContinuedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(CommanderContinuedEvent));
+
+            // Handle the event
+            shipMonitor.PreHandle(@event);
+
+            // Test the result to verify that the ship monitor's `currentShipId` property remains "9999" rather than changing to "9998"
+            Assert.AreEqual(9999, (int?)privateObject.GetFieldOrProperty("currentShipId"), @"Because the ""ship"" reported by the event is an SRV, the `currentShipId` property of the ship monitor should be unchanged");
+        }
     }
 }
