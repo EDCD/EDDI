@@ -1236,6 +1236,9 @@ namespace EddiShipMonitor
                 List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
                 List<StoredModule> newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
+                // There was a bug (ref. #1894) that added the SRV as a ship. Clean that up here.
+                newShiplist = newShiplist.Where(s => s.model != "SRV").ToList();
+
                 // Update the shipyard
                 shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
