@@ -468,12 +468,14 @@ namespace EddiShipMonitor
         {
             if (@event.timestamp > updatedAt)
             {
+                // If we're in the SRV when we start the game, we'll still get a Loadout event for our parent ship
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.ship) && !inBuggy(@event.ship))
+                if (!inFighter(@event.ship))
                 {
                     Ship ship = ParseShipLoadoutEvent(@event);
 
-                    // Update the global variable
+                    // Update the local and global variables
+                    SetCurrentShip(ship.LocalId, ship.model);
                     EDDI.Instance.CurrentShip = ship;
 
                     AddShip(ship);
