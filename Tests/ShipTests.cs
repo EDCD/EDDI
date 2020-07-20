@@ -577,7 +577,7 @@ namespace UnitTests
             shipMonitor.PreHandle(@event);
 
             // Test the result to verify that the distance is calculated relative to the jump coordinates
-            Assert.AreEqual(21996.2981378135M, shipMonitor.GetShip(9999)?.distance);
+            Assert.AreEqual(21996.3M, shipMonitor.GetShip(9999)?.distance);
         }
     }
 }
