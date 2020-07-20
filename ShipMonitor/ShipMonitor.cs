@@ -1804,7 +1804,7 @@ namespace EddiShipMonitor
         /// <summary> See if we're in a buggy / SRV </summary>
         private bool inBuggy(string model)
         {
-            return model.Contains("Buggy");
+            return model.Contains("Buggy") || model.Contains("SRV");
         }
 
         private Task _refreshProfileDelayed;
