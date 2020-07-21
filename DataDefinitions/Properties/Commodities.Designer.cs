@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eden Apples Of Aerial.
+        /// </summary>
+        public static string AerialEdenApple {
+            get {
+                return ResourceManager.GetString("AerialEdenApple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aganippe Rush.
         /// </summary>
         public static string AganippeRush {
@@ -660,6 +669,15 @@ namespace EddiDataDefinitions.Properties {
         public static string CD_75KittenBrandCoffee {
             get {
                 return ResourceManager.GetString("CD_75KittenBrandCoffee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CD-75 Kitten Brand Coffee.
+        /// </summary>
+        public static string CD75CatCoffee {
+            get {
+                return ResourceManager.GetString("CD75CatCoffee", resourceCulture);
             }
         }
         
@@ -2824,6 +2842,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sanuma Decorative Meat.
+        /// </summary>
+        public static string SanumaMEAT {
+            get {
+                return ResourceManager.GetString("SanumaMEAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sap 8 Core Container.
         /// </summary>
         public static string SAP8CoreContainer {
@@ -3580,6 +3607,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uzumoku Low-G Wings.
+        /// </summary>
+        public static string UzumokuLowGWings {
+            get {
+                return ResourceManager.GetString("UzumokuLowGWings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
         /// </summary>
         public static string VanayequiRhinoFur {
@@ -3675,6 +3711,15 @@ namespace EddiDataDefinitions.Properties {
         public static string WitchhaulKobeBeef {
             get {
                 return ResourceManager.GetString("WitchhaulKobeBeef", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wolf Fesh.
+        /// </summary>
+        public static string Wolf1301Fesh {
+            get {
+                return ResourceManager.GetString("Wolf1301Fesh", resourceCulture);
             }
         }
         
