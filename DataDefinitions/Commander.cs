@@ -17,9 +17,6 @@ namespace EddiDataDefinitions
         /// <summary>The commander's name</summary>
         public string name { get; set; }
 
-        /// <summary>The commander's Frontier ID</summary>
-        public string EDID { get; set; }
-
         /// <summary>The commander's combat rating</summary>
         public CombatRating combatrating { get; set; }
 
@@ -58,6 +55,9 @@ namespace EddiDataDefinitions
     {
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
+
+        /// <summary>The commander's Frontier ID</summary>
+        public string EDID { get; set; }
 
         [JsonIgnore]
         private string _phoneticName;

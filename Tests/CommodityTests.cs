@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using EddiDataDefinitions;
 using EDDNResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -49,19 +50,18 @@ namespace UnitTests
             Assert.AreEqual("Progenitor Cells", commodity.invariantName);
             Assert.AreEqual(7000, commodity.buyprice);
             Assert.AreEqual(5, commodity.stock);
-            Assert.AreEqual("", commodity.stockbracket);
+            Assert.AreEqual(null, commodity.stockbracket);
             Assert.AreEqual(7279, commodity.sellprice);
             Assert.AreEqual(56, commodity.demand);
-            Assert.AreEqual(1, commodity.demandbracket);
+            Assert.AreEqual(CommodityBracket.Low, commodity.demandbracket);
             Assert.AreEqual(128049669, commodity.EliteID);
             Assert.AreEqual(36, commodity.EDDBID);
             Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
-            Assert.IsFalse(commodity.fromFDev);
         }
 
-        private static CommodityMarketQuote CannedCAPIQuote()
+        private static EddnCommodityMarketQuote CannedCAPIQuote()
         {
             string json = @"{
                 ""id"": 128049204,
@@ -79,58 +79,55 @@ namespace UnitTests
                 ""locName"": ""Explosives""
             }";
             JObject jObject = JObject.Parse(json);
-            CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
-            quote.fromFDev = true;
-            return quote;
+            var edQuote = new EddnCommodityMarketQuote(jObject);
+            return edQuote;
         }
 
         [TestMethod]
         public void TestParseCAPICommodityQuote()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            Assert.AreEqual(313, quote.buyprice);
-            Assert.AreEqual(281, quote.sellprice);
-            Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual("", quote.demandbracket);
-            Assert.AreEqual(2, quote.stockbracket);
-            Assert.AreEqual(31881, quote.stock);
-            Assert.AreEqual(1, quote.demand);
-            Assert.AreEqual(0, quote.StatusFlags.Count);
-            Assert.IsTrue(quote.fromFDev);
+            var edQuote = CannedCAPIQuote();
+            Assert.AreEqual(313, edQuote.buyPrice);
+            Assert.AreEqual(281, edQuote.sellPrice);
+            Assert.AreEqual(294, edQuote.meanPrice);
+            Assert.AreEqual(null, edQuote.demandBracket);
+            Assert.AreEqual(CommodityBracket.Medium, edQuote.stockBracket);
+            Assert.AreEqual(31881, edQuote.stock);
+            Assert.AreEqual(1, edQuote.demand);
+            Assert.AreEqual(0, edQuote.statusFlags.Count);
         }
 
         [TestMethod]
         public void TestParseCAPICommodityQuoteNotOverwritten()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition)
-            {
-                avgprice = 99999999
-            };
+            var edQuote = CannedCAPIQuote();
+            var quote = edQuote.ToCommodityMarketQuote();
+            var oldDefinition = quote.definition.Copy();
+            oldDefinition.avgprice = 99999999;
+            var oldQuote = new CommodityMarketQuote(oldDefinition);
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual("", quote.demandbracket);
-            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(null, quote.demandbracket);
+            Assert.AreEqual(CommodityBracket.Medium, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
             Assert.AreEqual(0, quote.StatusFlags.Count);
-            Assert.IsTrue(quote.fromFDev);
         }
 
         [TestMethod]
         public void TestEddnCommodityQuote()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
-            Assert.AreEqual(quote.buyprice, eddnCommodity.buyPrice);
-            Assert.AreEqual(quote.sellprice, eddnCommodity.sellPrice);
-            Assert.AreEqual(quote.avgprice, eddnCommodity.meanPrice);
-            Assert.AreEqual(quote.demandbracket, eddnCommodity.demandBracket);
-            Assert.AreEqual(quote.stockbracket, eddnCommodity.stockBracket);
-            Assert.AreEqual(quote.stock, eddnCommodity.stock);
-            Assert.AreEqual(quote.demand, eddnCommodity.demand);
-            Assert.AreEqual(quote.StatusFlags.Count, eddnCommodity.statusFlags.Count);
+            var edQuote = CannedCAPIQuote();
+            var quote = edQuote.ToCommodityMarketQuote();
+            Assert.AreEqual(quote.buyprice, edQuote.buyPrice);
+            Assert.AreEqual(quote.sellprice, edQuote.sellPrice);
+            Assert.AreEqual(quote.avgprice, edQuote.meanPrice);
+            Assert.AreEqual(quote.demandbracket, edQuote.demandBracket);
+            Assert.AreEqual(quote.stockbracket, edQuote.stockBracket);
+            Assert.AreEqual(quote.stock, edQuote.stock);
+            Assert.AreEqual(quote.demand, edQuote.demand);
+            Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
         }
 
         [TestMethod]

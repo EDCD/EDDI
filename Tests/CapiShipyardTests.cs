@@ -16,7 +16,7 @@ namespace UnitTests
         {
             // Test factions data
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
-            List<Ship> ships = CompanionAppService.ShipyardFromProfile(json);
+            List<ProfileShip> ships = CompanionAppService.ShipyardFromProfile(json);
             Assert.AreEqual(8, ships.Count);
         }
     }

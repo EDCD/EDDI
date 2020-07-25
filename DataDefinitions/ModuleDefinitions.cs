@@ -1173,7 +1173,7 @@ namespace EddiDataDefinitions
 
         private static Dictionary<long, Module> ModulesByEliteID;
 
-        private static HashSet<string> PowerPlayModules = new HashSet<string>()
+        public static HashSet<string> PowerPlayModules = new HashSet<string>()
         {
             "Int_ShieldGenerator_Size1_Class5_Strong",
             "Int_ShieldGenerator_Size2_Class5_Strong",

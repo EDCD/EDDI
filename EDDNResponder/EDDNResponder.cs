@@ -365,12 +365,14 @@ namespace EDDNResponder
 
         private void sendCommodityInformation(MarketInformationUpdatedEvent theEvent)
         {
-            if (theEvent.commodities?.Count > 0)
+            if (theEvent.commodityQuotes?.Count > 0)
             {
-                List<EDDNCommodity> eddnCommodities = prepareCommodityInformation(theEvent.commodities);
+                var commodities = theEvent.commodityQuotes
+                    .Where(c => c.IsMarketable() && c.meanPrice > 0)
+                    .ToList();
 
                 // Only send the message if we have commodities
-                if (eddnCommodities.Count > 0)
+                if (commodities.Count > 0)
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
@@ -380,7 +382,7 @@ namespace EDDNResponder
                         { "marketId", theEvent.marketId },
                         { "horizons", theEvent.inHorizons}
                     };
-                    data.Add("commodities", eddnCommodities);
+                    data.Add("commodities", commodities);
                     if (theEvent.prohibitedCommodities?.Count > 0)
                     {
                         data.Add("prohibited", theEvent.prohibitedCommodities);
@@ -391,49 +393,18 @@ namespace EDDNResponder
             }
         }
 
-        private static List<EDDNCommodity> prepareCommodityInformation(List<CommodityMarketQuote> commodities)
-        {
-            List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-            foreach (CommodityMarketQuote quote in commodities)
-            {
-                if (quote.definition == null)
-                {
-                    continue;
-                }
-                if (!quote.fromFDev)
-                {
-                    // We only want data from the Frontier API (or market.json)
-                    // Data from 3rd parties (EDDB, EDSM, EDDP, etc.) is not acceptable.
-                    continue;
-                }
-                if (quote.avgprice == 0)
-                {
-                    // Check that the average price is greater than zero.
-                    continue;
-                }
-                if (quote.definition.category == CommodityCategory.NonMarketable)
-                {
-                    // Include only marketable commodities.
-                    continue;
-                }
-                EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
-                eddnCommodities.Add(eddnCommodity);
-            }
-            return eddnCommodities;
-        }
-
         private void sendOutfittingInformation(MarketInformationUpdatedEvent theEvent)
         {
-            if (theEvent.outfitting != null)
+            if (theEvent.outfittingModules?.Count > 0)
             {
                 List<string> eddnModules = new List<string>();
-                foreach (Module module in theEvent.outfitting)
+                foreach (string moduleEdName in theEvent.outfittingModules)
                 {
-                    if (!module.IsPowerPlay()
-                        && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
-                        && module.EDName != "Int_PlanetApproachSuite")
+                    if (!Module.PowerPlayModules.Contains(moduleEdName)
+                        && (moduleEdName.StartsWith("Int_") || moduleEdName.StartsWith("Hpt_") || moduleEdName.Contains("_Armour_"))
+                        && moduleEdName != "Int_PlanetApproachSuite")
                     {
-                        eddnModules.Add(module.EDName);
+                        eddnModules.Add(moduleEdName);
                     }
                 }
 
@@ -457,34 +428,21 @@ namespace EDDNResponder
 
         private void sendShipyardInformation(MarketInformationUpdatedEvent theEvent)
         {
-            if (theEvent.shipyard != null)
+            // Only send the message if we have ships
+            if (theEvent.shipyardModels?.Count > 0)
             {
-                List<string> eddnShips = new List<string>();
-                foreach (Ship ship in theEvent.shipyard)
-                {
-                    if (ship?.EDName != null)
-                    {
-                        eddnShips.Add(ship.EDName);
-                    }
-                }
-                eddnShips = eddnShips.Distinct().ToList();
-
-                // Only send the message if we have ships
-                if (eddnShips.Count > 0)
-                {
-                    IDictionary<string, object> data = new Dictionary<string, object>
+                IDictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "timestamp", Dates.FromDateTimeToString(theEvent.timestamp) },
                         { "systemName", theEvent.starSystem },
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
-                        { "ships", eddnShips },
+                        { "ships", theEvent.shipyardModels },
                         { "horizons", theEvent.inHorizons},
                         { "allowCobraMkIV", theEvent.allowCobraMkIV }
                     };
 
-                    SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
-                }
+                SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
             }
         }
 

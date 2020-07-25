@@ -23,13 +23,13 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public int stock { get; set; }
         [JsonProperty]
-        public int stockbracket { get; set; }
+        public CommodityBracket? stockbracket { get; set; }
 
         // Station in-demand parameters
         [JsonProperty]
         public int demand { get; set; }
         [JsonProperty]
-        public int demandbracket { get; set; }
+        public CommodityBracket? demandbracket { get; set; }
 
         [JsonProperty]
         public bool consumer { get; set; }
@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
             this.rare = MarketInfo.rare;
         }
 
-        public MarketInfo(long id, string Name, string Category, int BuyPrice, int SellPrice, int MeanPrice, int StockBracket, int DemandBracket, int Stock, int Demand, bool Consumer, bool Producer, bool Rare)
+        public MarketInfo(long id, string Name, string Category, int BuyPrice, int SellPrice, int MeanPrice, CommodityBracket? StockBracket, CommodityBracket? DemandBracket, int Stock, int Demand, bool Consumer, bool Producer, bool Rare)
         {
             this.id = id;
             this.name = Name;
