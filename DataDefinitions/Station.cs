@@ -227,13 +227,21 @@ namespace EddiDataDefinitions
         public List<CommodityMarketQuote> commodities { get; set; }
 
         /// <summary>Which commodities are imported by the station</summary>
-        public List<String> imported { get; set; }
+        [JsonIgnore]
+        public List<CommodityMarketQuote> imported => commodities
+            ?.Where(c => c.demandbracket > 0)
+            .OrderByDescending(c => c.demand)
+            .ToList();
 
         /// <summary>Which commodities are exported by the station</summary>
-        public List<String> exported { get; set; }
+        [JsonIgnore]
+        public List<CommodityMarketQuote> exported => commodities
+            ?.Where(c => c.stockbracket > 0)
+            .OrderByDescending(c => c.stock)
+            .ToList();
 
         /// <summary>Which commodities are prohibited at the station</summary>
-        public List<String> prohibited { get; set; }
+        public List<CommodityDefinition> prohibited { get; set; }
 
         /// <summary>Which modules are available for outfitting at the station</summary>
         public List<Module> outfitting { get; set; }

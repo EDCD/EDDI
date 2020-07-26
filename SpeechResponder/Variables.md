@@ -643,6 +643,9 @@ An orbital or planetary station.
     - `stationservices` a list of the station services available at this station
     - `largestpad` the largest pad available at this station (None, Small, Medium, Large)
     - `commodities` the commodities that are bought and sold by this station (array of Commodity objects)
+    - `imports` the commodities that are bought by this station (array of Commodity objects)
+    - `exports` the commodities that are sold by this station (array of Commodity objects)
+    - `prohibited` the commodities prohibited by the station (array of Commodity objects, requires Frontier API access)
     - `outfitting` the modules that are available for outfitting at this station (array of Module objects)
     - `updatedat` the timestamp at which the station information was last updated
     - `commoditiesupdatedat` the timestamp at which the station commodities information was last updated

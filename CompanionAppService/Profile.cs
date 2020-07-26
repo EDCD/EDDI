@@ -129,7 +129,7 @@ namespace EddiCompanionAppService
                 try
                 {
                     station.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).ToList();
-                    station.prohibited = prohibitedCommodities.Select(p => p.Value).ToList();
+                    station.prohibited = prohibitedCommodities.Select(p => CommodityDefinition.CommodityDefinitionFromEliteID(p.Key) ?? CommodityDefinition.FromEDName(p.Value)).ToList();
                     station.commoditiesupdatedat = commoditiesupdatedat;
                 }
                 catch (Exception e)
