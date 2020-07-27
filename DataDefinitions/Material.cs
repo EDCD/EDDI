@@ -17,7 +17,7 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new Material(edname, MaterialCategory.Unknown, Rarity.Unknown);
 
             // Grade 1, Very Common
-            var Carbon = new Material("carbon", Element, VeryCommon, "C", 20.4M, 24.6M);
+            var Carbon = new Material("carbon", Element, VeryCommon, "C", 23.5M, 28.2M);
             var Iron = new Material("iron", Element, VeryCommon, "Fe", 36.3M, 48.4M);
             var Lead = new Material("lead", Element, VeryCommon, "Pb", null, null);
             var Nickel = new Material("nickel", Element, VeryCommon, "Ni", 26.6M, 31.9M);
@@ -45,7 +45,7 @@ namespace EddiDataDefinitions
 
             // Grade 4, Rare
             var Ruthenium = new Material("ruthenium", Element, Rare, "Ru", 2.2M, 2.6M);
-            var Selenium = new Material("selenium", Element, Rare, "Se", 3.7M, 4.4M);
+            var Selenium = new Material("selenium", Element, Rare, "Se", 4.4M, 5.2M);
             var Technetium = new Material("technetium", Element, Rare, "Tc", 1.3M, 1.5M);
             var Tellurium = new Material("tellurium", Element, Rare, "Te", 1.3M, 1.5M);
             var Yttrium = new Material("yttrium", Element, Rare, "Y", 2.1M, 2.5M);
@@ -243,8 +243,9 @@ namespace EddiDataDefinitions
             this.category = category;
             this.symbol = symbol;
             this.rarity = rarity;
-            this.goodpctbody = goodpctbody;
-            this.greatpctbody = greatpctbody;
+            // below percentages based on https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4/edit#gid=0
+            this.goodpctbody = goodpctbody; // top 25%
+            this.greatpctbody = greatpctbody; // top 10%
         }
 
         public static Material FromSymbol(string from)
