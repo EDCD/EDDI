@@ -3142,8 +3142,7 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (string itemEDName in itemEDNames)
                                             {
-                                                var item = itemEDName;
-                                                if (item == "Wear")
+                                                if (itemEDName == "Wear")
                                                 {
                                                     items.Add(EddiDataDefinitions.Properties.Modules.ShipIntegrity);
                                                 }
@@ -3156,7 +3155,7 @@ namespace EddiJournalMonitor
                                                         modules.Add(module);
                                                     }
                                                 }
-                                                items.Add(item);
+                                                items.Add(itemEDName);
                                             }
                                             events.Add(new ShipRepairedEvent(timestamp, items, modules, price) { raw = line, fromLoad = fromLogLoad });
                                         }
