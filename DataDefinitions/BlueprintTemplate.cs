@@ -495,7 +495,8 @@ namespace EddiDataDefinitions
                 .Replace("FuelTransferLimpet", "Misc") // FuelTransferLimpet uses the `Misc` template family.
                 .Replace("HatchBreakerLimpet", "Misc") // HatchBreakerLimpet uses the `Misc` template family.
                 .Replace("HeatSinkLauncher", "Misc") // HeatSinkLauncher uses the `Misc` template family.
-                .Replace("KillWarrantScanner", "Sensor") // KillWarrantScanner uses the `Sensor` template family.
+                .Replace("KillWarrantScanner", "Sensor") // KillWarrantScanner uses the `Sensor` template family
+                .Replace("SensorMisc", "Sensor") // SensorMisc uses the `Sensor` template family
                 .Replace("SensorSensor", "Sensor") // SensorSensor uses the `Sensor` template family.
                 .Replace("SensorWakeScanner", "Sensor") // SensorWakeScanner uses the `Sensor` template family.
                 ;
