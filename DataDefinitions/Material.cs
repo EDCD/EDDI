@@ -16,7 +16,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new Material(edname, MaterialCategory.Unknown, Rarity.Unknown);
 
-            // below percentages based on https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
+            // below percentages based on this: https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
 
             // Grade 1, Very Common
             var Carbon = new Material("carbon", Element, VeryCommon, "C", 24.6M, 29.5M, 33.912384M);
