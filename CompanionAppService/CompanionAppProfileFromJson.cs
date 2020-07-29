@@ -14,12 +14,11 @@ namespace EddiCompanionAppService
         /// <summary>Create a  profile given the results from a /profile call</summary>
         public static Profile ProfileFromJson(string data, DateTime timestamp)
         {
-            Profile profile = null;
             if (!string.IsNullOrEmpty(data))
             {
-                profile = ProfileFromJson(JObject.Parse(data), timestamp);
+                return ProfileFromJson(JObject.Parse(data), timestamp);
             }
-            return profile;
+            return null;
         }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
