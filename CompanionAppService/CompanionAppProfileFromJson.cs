@@ -192,7 +192,7 @@ namespace EddiCompanionAppService
         // Obtain the list of station economies from the profile
         public static List<ProfileEconomyShare> EconomiesFromProfile(dynamic json)
         {
-            List<ProfileEconomyShare> Economies = new List<ProfileEconomyShare>();
+            var economyShares = new List<ProfileEconomyShare>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
             {
@@ -201,12 +201,12 @@ namespace EddiCompanionAppService
                     dynamic economy = economyJson.Value;
                     string name = ((string)economy["name"]).Replace("Agri", "Agriculture");
                     decimal proportion = (decimal)economy["proportion"];
-                    Economies.Add(new ProfileEconomyShare(name, proportion));
+                    economyShares.Add(new ProfileEconomyShare(name, proportion));
                 }
             }
-            Economies = Economies.OrderByDescending(x => x.proportion).ToList();
-            Logging.Debug("Economies are " + JsonConvert.SerializeObject(Economies));
-            return Economies;
+            economyShares = economyShares.OrderByDescending(x => x.proportion).ToList();
+            Logging.Debug("Economies are " + JsonConvert.SerializeObject(economyShares));
+            return economyShares;
         }
 
         // Obtain the list of prohibited commodities from the profile
