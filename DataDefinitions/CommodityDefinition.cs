@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -495,11 +496,8 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            // Handle commodities with an edname which has been modified and differs from the original.
-            if (obsoleteCommodityEdName(normalizedName, out string correctedName))
-            {
-                normalizedName = correctedName;
-            }
+            // Correct ednames that we've gotten wrong sometime in the past
+            normalizedName = correctedCommodityEdName(normalizedName);
 
             // Now try to fetch the commodity by either ED or real name
             CommodityDefinition result = null;
@@ -525,35 +523,15 @@ namespace EddiDataDefinitions
             }
         }
 
-        private static bool obsoleteCommodityEdName(string name, out string correctedName)
+        private static string correctedCommodityEdName(string name)
         {
             switch (name)
             {
-                case "sanumadecorativemeat":
-                    {
-                        correctedName = "sanumameat";
-                        return true;
-                    }
-                case "wolffesh":
-                    {
-                        correctedName = "wolf1301fesh";
-                        return true;
-                    }
-                case "edenapplesofaerial":
-                    {
-                        correctedName = "aerialedenapple";
-                        return true;
-                    }
-                case "uzumokulow-gwings":
-                    {
-                        correctedName = "uzumokulowgwings";
-                        return true;
-                    }
-                default:
-                    {
-                        correctedName = name;
-                        return false;
-                    }
+                case "sanumadecorativemeat": { return "sanumameat"; }
+                case "wolffesh": { return "wolf1301fesh"; }
+                case "edenapplesofaerial": { return "aerialedenapple"; }
+                case "uzumokulow-gwings": { return "uzumokulowgwings"; }
+                default: { return name; }
             }
         }
 
