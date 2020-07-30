@@ -1576,6 +1576,7 @@ namespace EddiCore
             if (allowMarketUpdate && !theEvent.fromLoad)
             {
                 MarketInfoReader info = MarketInfoReader.FromFile();
+
                 var quotes = new List<EddnCommodityMarketQuote>();
                 foreach (MarketInfo item in info.Items)
                 {
@@ -1594,15 +1595,15 @@ namespace EddiCore
                     }
                 }
 
+                // Post an update event for new market data
+                enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons));
+
                 if (info.MarketID == theEvent.marketId
                     && info.StarSystem == theEvent.system
                     && info.StationName == theEvent.station)
                 {
                     if (info.Items.Count == quotes.Count) // We've successfully parsed all commodity quote items
                     {
-                        // Post an update event for new market data
-                        enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons));
-
                         // Update the current station commodities
                         if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
                         {
@@ -1636,18 +1637,13 @@ namespace EddiCore
                     // Post an update event for new outfitting data
                     enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, info.Items.Select(i => i.name).ToList(), null, inHorizons));
 
-                    // Update the current station outfitting
-                    List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
-                    foreach (OutfittingInfo item in info.Items)
-                    {
-                        EddiDataDefinitions.Module module = EddiDataDefinitions.Module.FromOutfittingInfo(item);
-                        if (module != null)
-                        {
-                            modules.Add(module);
-                        }
-                    }
+                    var modules = info.Items
+                        .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
+                        .Where(i => i != null)
+                        .ToList();
                     if (info.Items.Count == modules.Count) // We've successfully parsed all module items
                     {
+                        // Update the current station outfitting
                         if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                         {
                             allowOutfittingUpdate = false;
@@ -1676,20 +1672,15 @@ namespace EddiCore
                     && info.StationName == theEvent.station
                     && info.Horizons == Instance.inHorizons)
                 {
-                    List<Ship> ships = new List<Ship>();
-                    foreach (ShipyardInfo item in info.PriceList)
-                    {
-                        Ship ship = Ship.FromShipyardInfo(item);
-                        if (ship != null)
-                        {
-                            ships.Add(ship);
-                        }
-                    }
+                    // Post an update event for new shipyard data
+                    enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, info.PriceList.Select(s => s.shiptype).ToList(), inHorizons, info.AllowCobraMkIV));
+
+                    var ships = info.PriceList
+                        .Select(s => Ship.FromShipyardInfo(s))
+                        .Where(s => s != null)
+                        .ToList();
                     if (info.PriceList.Count == ships.Count) // We've successfully parsed all ship items
                     {
-                        // Post an update event for new shipyard data
-                        enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, info.PriceList.Select(s => s.shiptype).ToList(), inHorizons, info.AllowCobraMkIV));
-
                         // Update the current station shipyard
                         if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                         {
