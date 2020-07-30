@@ -257,31 +257,21 @@ namespace EddiCompanionAppService
         public static List<ProfileShip> ShipyardFromProfile(JObject json)
         {
             List<ProfileShip> edShipyardShips = new List<ProfileShip>();
-
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
                 // shipyard_list is a JObject containing JObjects but let's code defensively because FDev
                 var shipyardList = json["lastStarport"]["ships"]["shipyard_list"].Children();
-                foreach (JToken shipToken in shipyardList.Values())
-                {
-                    JObject shipJson = shipToken as JObject;
-                    var Ship = ShipyardShipFromProfile(shipJson);
-                    edShipyardShips.Add(Ship);
-                }
+                edShipyardShips = shipyardList.Values()
+                    .Select(s => ShipyardShipFromProfile(s as JObject)).ToList();
 
                 // unavailable_list is a JArray containing JObjects
                 JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
                 if (unavailableList != null)
                 {
-                    foreach (var jToken in unavailableList)
-                    {
-                        var shipJson = (JObject)jToken;
-                        var Ship = ShipyardShipFromProfile(shipJson);
-                        edShipyardShips.Add(Ship);
-                    }
+                    edShipyardShips.AddRange(unavailableList
+                        .Select(s => ShipyardShipFromProfile(s as JObject)).ToList());
                 }
             }
-
             return edShipyardShips;
         }
 
