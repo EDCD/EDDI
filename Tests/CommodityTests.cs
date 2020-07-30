@@ -74,7 +74,7 @@ namespace UnitTests
                 ""stockBracket"": 2,
                 ""stock"": 31881,
                 ""demand"": 1,
-                ""statusFlags"": [],
+                ""statusFlags"": [""Producer""],
                 ""categoryname"": ""Chemicals"",
                 ""locName"": ""Explosives""
             }";
@@ -94,7 +94,8 @@ namespace UnitTests
             Assert.AreEqual(CommodityBracket.Medium, edQuote.stockBracket);
             Assert.AreEqual(31881, edQuote.stock);
             Assert.AreEqual(1, edQuote.demand);
-            Assert.AreEqual(0, edQuote.statusFlags.Count);
+            Assert.AreEqual(1, edQuote.statusFlags.Count);
+            Assert.AreEqual("Producer", edQuote.statusFlags[0]);
         }
 
         [TestMethod]
@@ -112,7 +113,8 @@ namespace UnitTests
             Assert.AreEqual(CommodityBracket.Medium, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
-            Assert.AreEqual(0, quote.StatusFlags.Count);
+            Assert.AreEqual(1, quote.StatusFlags.Count);
+            Assert.AreEqual("Producer", quote.StatusFlags[0]);
         }
 
         [TestMethod]
@@ -128,6 +130,7 @@ namespace UnitTests
             Assert.AreEqual(quote.stock, edQuote.stock);
             Assert.AreEqual(quote.demand, edQuote.demand);
             Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
+            Assert.AreEqual(quote.StatusFlags[0], edQuote.statusFlags[0]);
         }
 
         [TestMethod]
