@@ -547,6 +547,18 @@ namespace EddiDataDefinitions
             else { return null; }
         }
 
+        // Orbital Velocity
+
+        public decimal? GetOrbitalVelocityMetersPerSecond(decimal? altitudeMeters)
+        {
+            if (earthmass != null && radius != null && altitudeMeters != null)
+            {
+                var orbitalRadiusMeters = (radius * 1000 + altitudeMeters);
+                return (decimal)Math.Round(Math.Sqrt(Constants.gravitationalConstant * (double)(earthmass * (decimal)Constants.earthMassKg) / (double)orbitalRadiusMeters));
+            }
+            return null;
+        }
+
         // Convert legacy data
 
         [JsonExtensionData]
