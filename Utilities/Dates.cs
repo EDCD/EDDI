@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Utilities
 {
@@ -20,6 +21,11 @@ namespace Utilities
         public static long fromDateTimeToSeconds(DateTime dateTime)
         {
             return (long)(dateTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
+        }
+
+        public static string FromDateTimeToString(DateTime? dateTime)
+        {
+            return dateTime?.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture) ?? string.Empty;
         }
     }
 }

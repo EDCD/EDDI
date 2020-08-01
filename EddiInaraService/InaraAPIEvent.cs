@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiInaraService
 {
@@ -8,7 +9,7 @@ namespace EddiInaraService
     {
         public string eventName { get; private set; }
 
-        public string eventTimestamp => eventTimeStamp.ToString("s") + "Z";
+        public string eventTimestamp => Dates.FromDateTimeToString(eventTimeStamp);
 
         public object eventData { get; private set; }
 

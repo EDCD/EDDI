@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -62,8 +63,6 @@ namespace UnitTests
         [TestMethod]
         public void TestFaction()
         {
-            string dateTimeStringFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fff'Z'";
-
             // Test faction data
             JObject response = DeserializeJsonResource<JObject>(Resources.bgsFaction);
             Faction faction = fakeBgsService.ParseFaction(response);
@@ -75,7 +74,7 @@ namespace UnitTests
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
             Assert.IsNull(faction.isplayer);
-            Assert.AreEqual("2019-04-13T03:37:17.000Z", faction.updatedAt.ToString(dateTimeStringFormat));
+            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(faction.updatedAt));
 
             // Test The Dark Wheel faction presence data
             string systemName = "Shinrarta Dezhra";
@@ -88,7 +87,7 @@ namespace UnitTests
             Assert.AreEqual("Boom", factionPresence.ActiveStates[0].invariantName);
             Assert.AreEqual(0, factionPresence.PendingStates.Count());
             Assert.AreEqual(0, factionPresence.RecoveringStates.Count());
-            Assert.AreEqual("2019-04-13T03:37:17.000Z", factionPresence.updatedAt.ToString(dateTimeStringFormat));
+            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(faction.updatedAt));
 
             systemName = "LFT 926";
             factionPresence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
@@ -101,7 +100,7 @@ namespace UnitTests
             Assert.AreEqual(1, factionPresence.RecoveringStates.Count());
             Assert.AreEqual("War", factionPresence.RecoveringStates[0].factionState.invariantName);
             Assert.AreEqual(0, factionPresence.RecoveringStates[0].trend);
-            Assert.AreEqual("2019-04-13T03:27:28.000Z", factionPresence.updatedAt.ToString(dateTimeStringFormat));
+            Assert.AreEqual("2019-04-13T03:27:28Z", Dates.FromDateTimeToString(faction.updatedAt));
         }
 
         [TestMethod]
