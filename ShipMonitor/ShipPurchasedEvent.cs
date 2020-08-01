@@ -21,7 +21,7 @@ namespace EddiShipMonitor
             VARIABLES.Add("soldshipid", "The ID of the ship that was sold as part of the purchase");
             VARIABLES.Add("soldprice", "The credits obtained by selling the ship");
             VARIABLES.Add("storedship", "The ship that was stored as part of the purchase");
-            VARIABLES.Add("storedid", "The ID of the ship that was stored as part of the purchase");
+            VARIABLES.Add("storedshipid", "The ID of the ship that was stored as part of the purchase");
         }
 
         [JsonProperty("ship")]
@@ -46,16 +46,19 @@ namespace EddiShipMonitor
         public int? storedshipid { get; private set; }
 
         // Not intended to be user facing
-        public Ship shipDefinition { get; private set; }
-        public Ship storedShipDefinition { get; private set; }
-        public Ship soldShipDefinition { get; private set; }
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        public Ship storedShipDefinition => string.IsNullOrEmpty(storedEdModel) ? null : ShipDefinitions.FromEDModel(storedEdModel);
+        public Ship soldShipDefinition => string.IsNullOrEmpty(soldEdModel) ? null : ShipDefinitions.FromEDModel(soldEdModel);
+        public string edModel { get; private set; }
+        public string storedEdModel { get; private set; }
+        public string soldEdModel { get; private set; }
         public long marketId { get; private set; }
 
         public ShipPurchasedEvent(DateTime timestamp, string ship, long price, string soldShip, int? soldShipId, long? soldPrice, string storedShip, int? storedShipId, long marketId) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
-            this.storedShipDefinition = ShipDefinitions.FromEDModel(storedship);
-            this.soldShipDefinition = ShipDefinitions.FromEDModel(soldship);
+            this.edModel = ship;
+            this.storedEdModel = storedShip;
+            this.soldEdModel = soldShip;
             this.price = price;
             this.soldshipid = soldShipId;
             this.soldprice = soldPrice;

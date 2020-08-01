@@ -34,11 +34,12 @@ namespace EddiShipMonitor
         public string ident { get; private set; }
 
         // Not intended to be user facing
-        public Ship shipDefinition { get; private set; }
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        public string edModel { get; private set; }
 
         public ShipRenamedEvent(DateTime timestamp, string ship, int shipid, string name, string ident) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.edModel = ship;
             this.shipid = shipid;
             this.name = name;
             this.ident = ident;

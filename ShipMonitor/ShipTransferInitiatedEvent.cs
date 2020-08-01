@@ -44,11 +44,12 @@ namespace EddiShipMonitor
         // Admin
         public long fromMarketId { get; private set; }
         public long toMarketId { get; private set; }
-        public Ship shipDefinition { get; private set; }
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        public string edModel { get; private set; }
 
         public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.edModel = ship;
             this.shipid = shipid;
             this.system = system;
             this.distance = distance;
