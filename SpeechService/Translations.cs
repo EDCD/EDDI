@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -811,9 +810,6 @@ namespace EddiSpeechService
             // emit exact value
             if (order == "")
             {
-                // we recurse only if we know that there _is_ a nested order (i. e. stuff like "51 hundred thousand")
-                // otherwise we won't be able to round correctly
-                Debug.Assert(recursed == false);
                 return maybeMinus + number;
             }
 
@@ -827,15 +823,6 @@ namespace EddiSpeechService
             // (i. e. say 1..19 as is, but round 21 to "twenty")
             else
             {
-                if (recursed)
-                {
-                    Debug.Assert(number > 0 && number < 10);
-                }
-                else
-                {
-                    Debug.Assert(number > 0 && number < 100);
-                }
-
                 if (number <= 20)
                 {
                     // we can say @number precisely with a single word.
