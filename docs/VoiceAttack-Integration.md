@@ -346,8 +346,10 @@ This function uses EDDI's voice to read a script. It takes one mandatory and two
 - 'Script' (text variable) is a mandatory parameter containing the script to be read. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
+- 'Volume' (integer variable) is an optional parameter defining the percentage of the configured voice volume to use.  Note that when you set this variable it will continue to be used until you unset it or reset it to 100, at which point EDDI will use the voice volume configured in its text-to-speech settings.
 
-To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'say'.
+
+To use this function in your own commands set the 'Script' variable and optionally the 'Priority', 'Volume', and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'say'.
 
 ### speech
 
@@ -366,8 +368,9 @@ This function uses EDDI's voice to read a Speech Responder script with a radio e
 - 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
+- 'Volume' (integer variable) is an optional parameter defining the percentage of the configured voice volume to use.  Note that when you set this variable it will continue to be used until you unset it or reset it to 100, at which point EDDI will use the voice volume configured in its text-to-speech settings.
  
-To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'transmit'.
+To use this function in your own commands set the 'Script' variable and optionally the 'Priority', 'Volume' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'transmit'.
 
 ### shutup
 
