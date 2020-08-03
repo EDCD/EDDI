@@ -38,6 +38,7 @@ namespace EddiSpeechService
             }
         }
         private int activeSpeechPriority;
+        private decimal transmitVolume;
 
         private static readonly object synthLock = new object();
         public SpeechSynthesizer synth { get; private set; } = new SpeechSynthesizer();
@@ -103,7 +104,7 @@ namespace EddiSpeechService
             }
         }
 
-        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
+        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false, int volume = 100)
         {
             if (message == null)
             {
@@ -114,6 +115,16 @@ namespace EddiSpeechService
             {
                 // Provide basic ship definition
                 ship = ShipDefinitions.FromModel("Sidewinder");
+            }
+
+            // Adjust playback volume for VA say/transmit
+            if (volume <= 100)
+            {
+                transmitVolume = volume;
+            }
+            else
+            {
+                transmitVolume = 100;
             }
 
             Thread speechQueueHandler = new Thread(() =>
@@ -352,7 +363,7 @@ namespace EddiSpeechService
                     }
                     Logging.Debug("Configuration is " + Configuration == null ? "<null>" : JsonConvert.SerializeObject(Configuration));
                     synth.Rate = Configuration.Rate;
-                    synth.Volume = Configuration.Volume;
+                    synth.Volume = (int)Math.Round(Configuration.Volume * (transmitVolume / 100));
 
                     synth.SetOutputToWaveStream(stream);
 

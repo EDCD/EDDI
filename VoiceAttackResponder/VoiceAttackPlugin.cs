@@ -675,9 +675,11 @@ namespace EddiVoiceAttackResponder
 
                 string voice = vaProxy.GetText("Voice");
 
+                int? volume = vaProxy.GetInt("Volume") ?? 100;
+
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, false, null, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, false, null, true, (int)volume);
             }
             catch (Exception e)
             {
@@ -700,9 +702,11 @@ namespace EddiVoiceAttackResponder
 
                 string voice = vaProxy.GetText("Voice");
 
+                int? volume = vaProxy.GetInt("Volume") ?? 100;
+
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true, null, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true, null, true, (int)volume);
             }
             catch (Exception e)
             {
