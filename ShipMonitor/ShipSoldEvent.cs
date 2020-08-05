@@ -34,12 +34,13 @@ namespace EddiShipMonitor
         public string system { get; private set; }
 
         // Not intended to be user facing
-        public Ship shipDefinition { get; private set; }
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
         public long marketId { get; private set; }
+        public string edModel { get; private set; }
 
         public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system, long marketId) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.edModel = ship;
             this.shipid = shipId;
             this.price = price;
             this.system = system;
