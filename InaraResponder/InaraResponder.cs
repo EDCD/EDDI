@@ -321,9 +321,9 @@ namespace EddiInaraResponder
                 { "starsystemName", @event.systemname },
             };
             Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
-            if (!string.IsNullOrEmpty(currentShip?.model))
+            if (!string.IsNullOrEmpty(currentShip?.EDName))
             {
-                eventData.Add("shipType", currentShip.model);
+                eventData.Add("shipType", currentShip.EDName);
                 eventData.Add("shipGameID", currentShip.LocalId);
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelCarrierJump", eventData));
@@ -509,9 +509,9 @@ namespace EddiInaraResponder
                     { "marketID", @event.marketId }
                 };
                 Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
-                if (!string.IsNullOrEmpty(currentShip?.model))
+                if (!string.IsNullOrEmpty(currentShip?.EDName))
                 {
-                    eventData.Add("shipType", currentShip.model);
+                    eventData.Add("shipType", currentShip.EDName);
                     eventData.Add("shipGameID", currentShip.LocalId);
                 }
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelDock", eventData));
@@ -1095,9 +1095,9 @@ namespace EddiInaraResponder
                     { "jumpDistance", @event.distance }
                 };
             Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
-            if (!string.IsNullOrEmpty(currentShip?.model))
+            if (!string.IsNullOrEmpty(currentShip?.EDName))
             {
-                eventData.Add("shipType", currentShip.model);
+                eventData.Add("shipType", currentShip.EDName);
                 eventData.Add("shipGameID", currentShip.LocalId);
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelFSDJump", eventData));
