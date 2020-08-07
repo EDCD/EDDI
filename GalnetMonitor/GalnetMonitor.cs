@@ -160,17 +160,19 @@ namespace GalnetMonitor
                     }
                     catch (WebException wex)
                     {
+                        // FDev has in the past made available an alternate Galnet feed. We'll try the alternate feed.
+                        // If the alternate feed fails, the page may not currently be available without an FDev login.
                         Logging.Warn("Exception contacting primary Galnet feed: ", wex);
                         url = GetGalnetResource("alternateURL");
                         altURL = true;
-                        Logging.Warn("Trying alternate Galnet feed " + url);
+                        Logging.Warn("Trying alternate Galnet feed (may not work)" + url);
                         try
                         {
                             items = feedReader.RetrieveFeed(url);
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Galnet feed exception (alternate url unsuccessful): ", ex);
+                            Logging.Warn("Galnet feed exception (alternate url unsuccessful): ", ex);
                         }
                     }
                     catch (System.Xml.XmlException xex)
