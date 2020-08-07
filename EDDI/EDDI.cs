@@ -1575,10 +1575,8 @@ namespace EddiCore
             // Don't proceed if we've already viewed the market while docked or when loading pre-existing logs
             if (!allowMarketUpdate || theEvent.fromLoad) { return false; }
 
-            MarketInfoReader info = MarketInfoReader.FromFile();
-
             var quotes = new List<EddnCommodityMarketQuote>();
-            foreach (MarketInfo item in info.Items)
+            foreach (MarketInfo item in theEvent.info.Items)
             {
                 try
                 {
@@ -1596,27 +1594,21 @@ namespace EddiCore
             }
 
             // Post an update event for new market data
-            enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons));
 
-            if (info.MarketID == theEvent.marketId
-                && info.StarSystem == theEvent.system
-                && info.StationName == theEvent.station)
+            if (theEvent.info.Items.Count == quotes.Count) // We've successfully parsed all commodity quote items
             {
-                if (info.Items.Count == quotes.Count) // We've successfully parsed all commodity quote items
+                // Update the current station commodities
+                if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    // Update the current station commodities
-                    if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
-                    {
-                        allowMarketUpdate = false;
-                        CurrentStation.commodities = quotes.Select(q => q.ToCommodityMarketQuote()).ToList();
-                        CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
+                    allowMarketUpdate = false;
+                    CurrentStation.commodities = quotes.Select(q => q.ToCommodityMarketQuote()).ToList();
+                    CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    }
+                    // Update the current station information in our backend DB
+                    Logging.Debug("Star system information updated from remote server; updating local copy");
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 }
-
                 return true;
             }
             return false;
@@ -1627,32 +1619,25 @@ namespace EddiCore
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
             if (!allowOutfittingUpdate || theEvent.fromLoad) { return false; }
 
-            OutfittingInfoReader info = OutfittingInfoReader.FromFile();
-            if (info.Items != null && info.MarketID == theEvent.marketId
-                && info.StarSystem == theEvent.system
-                && info.StationName == theEvent.station
-                && info.Horizons == Instance.inHorizons)
+            // Post an update event for new outfitting data
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.name).ToList(), null, inHorizons));
+
+            var modules = theEvent.info.Items
+                .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
+                .Where(i => i != null)
+                .ToList();
+            if (theEvent.info.Items.Count == modules.Count) // We've successfully parsed all module items
             {
-                // Post an update event for new outfitting data
-                enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, info.Items.Select(i => i.name).ToList(), null, inHorizons));
-
-                var modules = info.Items
-                    .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
-                    .Where(i => i != null)
-                    .ToList();
-                if (info.Items.Count == modules.Count) // We've successfully parsed all module items
+                // Update the current station outfitting
+                if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    // Update the current station outfitting
-                    if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
-                    {
-                        allowOutfittingUpdate = false;
-                        CurrentStation.outfitting = modules;
-                        CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(info.timestamp);
+                    allowOutfittingUpdate = false;
+                    CurrentStation.outfitting = modules;
+                    CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(theEvent.info.timestamp);
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    }
+                    // Update the current station information in our backend DB
+                    Logging.Debug("Star system information updated from remote server; updating local copy");
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 }
                 return true;
             }
@@ -1664,32 +1649,25 @@ namespace EddiCore
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
             if (!allowShipyardUpdate || theEvent.fromLoad) { return false; }
 
-            ShipyardInfoReader info = ShipyardInfoReader.FromFile();
-            if (info.PriceList != null && info.MarketID == theEvent.marketId
-                && info.StarSystem == theEvent.system
-                && info.StationName == theEvent.station
-                && info.Horizons == Instance.inHorizons)
+            // Post an update event for new shipyard data
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.shiptype).ToList(), inHorizons, theEvent.info.AllowCobraMkIV));
+
+            var ships = theEvent.info.PriceList
+                .Select(s => Ship.FromShipyardInfo(s))
+                .Where(s => s != null)
+                .ToList();
+            if (theEvent.info.PriceList.Count == ships.Count) // We've successfully parsed all ship items
             {
-                // Post an update event for new shipyard data
-                enqueueEvent(new MarketInformationUpdatedEvent(info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, info.PriceList.Select(s => s.shiptype).ToList(), inHorizons, info.AllowCobraMkIV));
-
-                var ships = info.PriceList
-                    .Select(s => Ship.FromShipyardInfo(s))
-                    .Where(s => s != null)
-                    .ToList();
-                if (info.PriceList.Count == ships.Count) // We've successfully parsed all ship items
+                // Update the current station shipyard
+                if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    // Update the current station shipyard
-                    if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
-                    {
-                        allowShipyardUpdate = false;
-                        CurrentStation.shipyard = ships;
-                        CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(info.timestamp);
+                    allowShipyardUpdate = false;
+                    CurrentStation.shipyard = ships;
+                    CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(theEvent.info.timestamp);
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    }
+                    // Update the current station information in our backend DB
+                    Logging.Debug("Star system information updated from remote server; updating local copy");
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 }
                 return true;
             }

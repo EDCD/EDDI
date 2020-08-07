@@ -78,6 +78,8 @@
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="EddnCommodityMarketQuote.cs" />
     <Compile Include="CommodityPresence.cs" />
+    <Compile Include="MarketInfoReader.cs" />
+    <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -94,6 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="ShipyardInfoReader.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />

@@ -1,10 +1,9 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiCore
+namespace EddiDataDefinitions
 {
     public class MarketInfoReader
     {

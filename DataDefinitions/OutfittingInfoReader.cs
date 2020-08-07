@@ -1,35 +1,33 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiCore
+namespace EddiDataDefinitions
 {
-    public class ShipyardInfoReader
+    public class OutfittingInfoReader
     {
         public DateTime timestamp { get; set; }
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }
         public bool Horizons { get; set; }
-        public bool AllowCobraMkIV { get; set; }
-        public List<ShipyardInfo> PriceList { get; set; }
+        public List<OutfittingInfo> Items { get; set; }
 
-        public ShipyardInfoReader()
+        public OutfittingInfoReader()
         {
-            PriceList = new List<ShipyardInfo>();
+            Items = new List<OutfittingInfo>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static ShipyardInfoReader FromFile(string filename = null)
+        public static OutfittingInfoReader FromFile(string filename = null)
         {
-            ShipyardInfoReader info = new ShipyardInfoReader();
+            OutfittingInfoReader info = new OutfittingInfoReader();
 
-            string data = Files.FromSavedGames("Shipyard.json");
+            string data = Files.FromSavedGames("Outfitting.json");
             if (data != null)
             {
-                info = JsonConvert.DeserializeObject<ShipyardInfoReader>(data);
+                info = JsonConvert.DeserializeObject<OutfittingInfoReader>(data);
             }
             return info;
         }

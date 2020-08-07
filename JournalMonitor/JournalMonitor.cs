@@ -1007,7 +1007,14 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
+                                    var info = ShipyardInfoReader.FromFile();
+                                    if (info.PriceList != null && info.MarketID == marketId
+                                        && info.StarSystem == system
+                                        && info.StationName == station
+                                        && info.Horizons == EDDI.Instance.inHorizons)
+                                    {
+                                        events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                    }
                                 }
                                 handled = true;
                                 break;
@@ -1516,7 +1523,14 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
+                                    var info = OutfittingInfoReader.FromFile();
+                                    if (info.Items != null && info.MarketID == marketId
+                                        && info.StarSystem == system
+                                        && info.StationName == station
+                                        && info.Horizons == EDDI.Instance.inHorizons)
+                                    {
+                                        events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                    }
                                 }
                                 handled = true;
                                 break;
@@ -2162,7 +2176,13 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new MarketEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
+                                    var info = MarketInfoReader.FromFile();
+                                    if (info != null && info.MarketID == marketId
+                                        && info.StarSystem == system
+                                        && info.StationName == station)
+                                    {
+                                        events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                    }
                                 }
                                 handled = true;
                                 break;
