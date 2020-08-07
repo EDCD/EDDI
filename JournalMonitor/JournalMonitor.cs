@@ -2679,10 +2679,10 @@ namespace EddiJournalMonitor
                                     Module module = Module.FromEDName(modulename);
                                     if (module != null)
                                     {
-                                        if (module.mount != null)
+                                        if (module.Mount != null)
                                         {
                                             // This is a weapon so provide a bit more information
-                                            string mount = module.LocalizedMountName();
+                                            string mount = module.mount;
                                             modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
                                         }
                                         else
@@ -3095,15 +3095,15 @@ namespace EddiJournalMonitor
                                     Module module = Module.FromEDName(item);
                                     if (module != null)
                                     {
-                                        if (module.mount != null)
+                                        if (module.Mount != null)
                                         {
                                             // This is a weapon so provide a bit more information
                                             string mount;
-                                            if (module.mount == Module.ModuleMount.Fixed)
+                                            if (module.Mount == Module.ModuleMount.Fixed)
                                             {
                                                 mount = "fixed";
                                             }
-                                            else if (module.mount == Module.ModuleMount.Gimballed)
+                                            else if (module.Mount == Module.ModuleMount.Gimballed)
                                             {
                                                 mount = "gimballed";
                                             }
@@ -3132,53 +3132,22 @@ namespace EddiJournalMonitor
                                     long price = (long)val;
 
                                     // Starting with version 3.7, the "Repair" event may contain one item or multiple items
-                                    // (With multiple items being a list of module names)
+                                    // Each item is either a description (e.g. all, wear, hull, paint) or the name of a module
                                     data.TryGetValue("Items", out object itemsVal);
                                     if (itemsVal != null)
                                     {
-                                        List<string> items = new List<string>();
-                                        List<Module> modules = new List<Module>();
                                         if (itemsVal is List<object> itemEDNames)
                                         {
-                                            foreach (string itemEDName in itemEDNames)
-                                            {
-                                                if (itemEDName == "Wear")
-                                                {
-                                                    items.Add(EddiDataDefinitions.Properties.Modules.ShipIntegrity);
-                                                }
-                                                else if (itemEDName != "All" && itemEDName != "Paint")
-                                                {
-                                                    // Item might be a module
-                                                    var module = Module.FromEDName(itemEDName);
-                                                    if (module != null)
-                                                    {
-                                                        modules.Add(module);
-                                                    }
-                                                }
-                                                items.Add(itemEDName);
-                                            }
-                                            events.Add(new ShipRepairedEvent(timestamp, items, modules, price) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new ShipRepairedEvent(timestamp, itemEDNames.ConvertAll(o => o.ToString()).ToList(), price) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                     else
                                     {
-                                        // Item might be all, wear, hull, paint, or the name of a module
-                                        string itemEDName = JsonParsing.getString(data, "Item");
-
                                         // We have a single "item"
+                                        string itemEDName = JsonParsing.getString(data, "Item");
                                         if (!string.IsNullOrEmpty(itemEDName))
                                         {
-                                            Module module = null;
-                                            if (itemEDName == "Wear")
-                                            {
-                                                itemEDName = EddiDataDefinitions.Properties.Modules.ShipIntegrity;
-                                            }
-                                            else if (itemEDName != "All" && itemEDName != "Paint")
-                                            {
-                                                // Item might be a module
-                                                module = Module.FromEDName(itemEDName);
-                                            }
-                                            events.Add(new ShipRepairedEvent(timestamp, itemEDName, module, price) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new ShipRepairedEvent(timestamp, itemEDName, price) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
@@ -3198,7 +3167,7 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Cost", out object val);
                                     long price = (long)val;
-                                    events.Add(new ShipRepairedEvent(timestamp, "All", null, price) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ShipRepairedEvent(timestamp, "All", price) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

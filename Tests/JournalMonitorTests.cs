@@ -1288,8 +1288,9 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2016-09-25T12:31:38Z\", \"event\":\"Repair\", \"Item\":\"Wear\", \"Cost\":2824 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
-            Assert.AreEqual("Ship Integrity", @event.item);
-            Assert.IsNull(@event.module);
+            Assert.IsInstanceOfType(@event.items, typeof(List<string>));
+            Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
+            Assert.AreEqual(EddiDataDefinitions.Properties.Modules.ShipIntegrity, @event.items?[0]);
             Assert.AreEqual(0, @event.modules.Count);
             Assert.AreEqual(2824, @event.price);
         }
@@ -1301,9 +1302,10 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
-            Assert.AreEqual(5, @event.items.Count);
+            Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
+            Assert.AreEqual(0, @event.items.Count);
+            Assert.AreEqual(5, @event.modules.Count);
             Assert.AreEqual(34590, @event.price);
-            Assert.IsNull(@event.item);
         }
 
         [TestMethod]
@@ -1312,8 +1314,9 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2020-05-13T08:45:03Z\", \"event\":\"RepairAll\", \"Cost\":104817 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
-            Assert.AreEqual("All", @event.item);
-            Assert.IsNull(@event.module);
+            Assert.IsInstanceOfType(@event.items, typeof(List<string>));
+            Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
+            Assert.AreEqual("All", @event.items[0]);
             Assert.AreEqual(0, @event.modules.Count);
             Assert.AreEqual(104817, @event.price);
         }
@@ -1321,14 +1324,14 @@ namespace UnitTests
         [TestMethod]
         public void TestShipRepairedEvent4()
         {
-            string line = "{ \"timestamp\":\"2020-03-31T13:39:42Z\", \"event\":\"Repair\", \"Items\":[ \"Wear\" ], \"Cost\":34590 }";
+            string line = "{ \"timestamp\":\"2020-03-31T13:39:42Z\", \"event\":\"Repair\", \"Items\":[ \"Wear\" ], \"Cost\":2824 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
+            Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
             Assert.AreEqual(EddiDataDefinitions.Properties.Modules.ShipIntegrity, @event.items?[0]);
             Assert.AreEqual(0, @event.modules.Count);
-            Assert.AreEqual(34590, @event.price);
-            Assert.IsNull(@event.item);
+            Assert.AreEqual(2824, @event.price);
         }
 
         [TestMethod]
