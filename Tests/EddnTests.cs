@@ -340,7 +340,7 @@ namespace UnitTests
             }";
 
             string line2 = @"{
-                ""timestamp"": ""2018-07-30T06: 07: 47Z"",
+                ""timestamp"": ""2018-07-30T06:07:47Z"",
                 ""event"": ""Docked"",
                 ""StationName"": ""Ray Gateway"",
                 ""StationType"": ""Coriolis"",

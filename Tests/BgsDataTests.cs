@@ -87,7 +87,7 @@ namespace UnitTests
             Assert.AreEqual("Boom", factionPresence.ActiveStates[0].invariantName);
             Assert.AreEqual(0, factionPresence.PendingStates.Count());
             Assert.AreEqual(0, factionPresence.RecoveringStates.Count());
-            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(faction.updatedAt));
+            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(factionPresence.updatedAt));
 
             systemName = "LFT 926";
             factionPresence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
@@ -100,7 +100,7 @@ namespace UnitTests
             Assert.AreEqual(1, factionPresence.RecoveringStates.Count());
             Assert.AreEqual("War", factionPresence.RecoveringStates[0].factionState.invariantName);
             Assert.AreEqual(0, factionPresence.RecoveringStates[0].trend);
-            Assert.AreEqual("2019-04-13T03:27:28Z", Dates.FromDateTimeToString(faction.updatedAt));
+            Assert.AreEqual("2019-04-13T03:27:28Z", Dates.FromDateTimeToString(factionPresence.updatedAt));
         }
 
         [TestMethod]
