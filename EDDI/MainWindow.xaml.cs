@@ -21,6 +21,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Utilities;
+using Application = System.Windows.Application;
 
 namespace Eddi
 {
@@ -902,7 +903,11 @@ namespace Eddi
         private void companionApiStatusChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
         {
             // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.
-            System.Windows.Application.Current?.MainWindow?.Dispatcher?.Invoke(setStatusInfo);
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                MainWindow mainwindow = (MainWindow)Application.Current?.MainWindow;
+                mainwindow?.Dispatcher?.Invoke(setStatusInfo);
+            });
 
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
