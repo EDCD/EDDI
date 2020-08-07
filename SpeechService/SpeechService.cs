@@ -276,7 +276,7 @@ namespace EddiSpeechService
                     }
                     catch (System.Runtime.InteropServices.COMException ce)
                     {
-                        Logging.Error("Failed to speak; missing media pack?", ce);
+                        Logging.Warn($"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible.", ce);
                         return;
                     }
                     soundOut.Stopped += (s, e) => waitHandle.Set();
