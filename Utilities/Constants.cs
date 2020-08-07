@@ -69,7 +69,7 @@ namespace Utilities
         };
 
         // Fleet Carrier Constants
-        public const int carrierPreJumpSeconds = 960; // 16 minutes to spool up before jumping (minus the absolute value of the difference from 10 seconds after the minute)
+        public const int carrierPreJumpSeconds = 900; // 15 minutes to spool up before jumping (plus the difference to tne next 10 seconds after the minute)
         public const int carrierJumpSeconds = 72; // 72 seconds from when the jump is engaged to when it completes.
         public const int carrierPostJumpSeconds = 290; // 4 minutes 50 seconds cool down
         public const int carrierLandingPadLockdownSeconds = 180; // Landing pads are locked down 3 minutes prior to jumping
