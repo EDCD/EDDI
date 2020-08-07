@@ -374,7 +374,7 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
-                        { "timestamp", theEvent.timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "timestamp", Dates.FromDateTimeToString(theEvent.timestamp) },
                         { "systemName", theEvent.starSystem },
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
@@ -442,7 +442,7 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
-                        { "timestamp", theEvent.timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "timestamp", Dates.FromDateTimeToString(theEvent.timestamp) },
                         { "systemName", theEvent.starSystem },
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
@@ -474,7 +474,7 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
-                        { "timestamp", theEvent.timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "timestamp", Dates.FromDateTimeToString(theEvent.timestamp) },
                         { "systemName", theEvent.starSystem },
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },

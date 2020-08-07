@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -204,7 +205,7 @@ namespace UnitTests
             Assert.AreEqual(20, result.totalbodies);
             Assert.AreEqual(8557, result.bodies?.FirstOrDefault(b => b?.bodyId == 0)?.EDSMID);
             Assert.AreEqual(17, result.visits);
-            Assert.AreEqual("2017-12-11T06:17:06", result.lastvisit?.ToString("s"));
+            Assert.AreEqual("2017-12-11T06:17:06Z", Dates.FromDateTimeToString(result.lastvisit));
         }
     }
 }

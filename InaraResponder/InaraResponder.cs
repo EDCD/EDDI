@@ -341,7 +341,7 @@ namespace EddiInaraResponder
                     { "communitygoalName", @event.name[i] },
                     { "starsystemName", @event.system[i] },
                     { "stationName", @event.station[i] },
-                    { "goalExpiry", @event.expiryDateTime[i].ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                    { "goalExpiry", Dates.FromDateTimeToString(@event.expiryDateTime[i])},
                     { "tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")) },
                     { "isCompleted", @event.iscomplete[i] },
                     { "contributorsNum", @event.contributors[i] },

@@ -1,4 +1,6 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using System.Globalization;
+using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utilities;
 
@@ -60,6 +62,22 @@ namespace UnitTests
 
             var result = dest.DistanceFromStarSystem(curr);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void TestDateTimeToString()
+        {
+            // Parse the DateTime value and test 
+            if (DateTime.TryParseExact("2020-07-30T19:16:42Z", "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var date))
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("fi");
+                Assert.AreEqual("2020-07-30T19.16.42Z", date.ToString("yyyy-MM-ddTHH:mm:ssZ"), @"Should yield ""."" rather than "":"" as a time separator, which is invalid for EDDN and other 3rd party services");
+                Assert.AreEqual("2020-07-30T19:16:42Z", Dates.FromDateTimeToString(date), @"Should yield a string using the invariant culture, including the invariant "":"" time separator");
+            }
+            else
+            {
+                Assert.Fail("Failed to parse our DateTime string");
+            }
         }
     }
 }

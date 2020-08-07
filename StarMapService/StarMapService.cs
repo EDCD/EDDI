@@ -312,7 +312,7 @@ namespace EddiStarMapService
             {
                 if (since.HasValue)
                 {
-                    request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                    request.AddParameter("startdatetime", Dates.FromDateTimeToString(since.Value));
                 }
                 else
                 {
