@@ -3,6 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.1-b1
+  * Core
+    * Various bug fixes
+  * Speech responder
+    * Fixed a typo in the `Signal detected` script
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
