@@ -418,7 +418,7 @@ namespace UnitTests
         public void TestMyReputationDataStripping()
         {
             string line = @"{
-                ""timestamp"": ""2018-11-19T01: 06: 17Z"",
+                ""timestamp"": ""2018-11-19T01:06:17Z"",
                 ""event"": ""Location"",
                 ""Docked"": false,
                 ""StarSystem"": ""BD+48738"",
