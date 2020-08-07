@@ -70,7 +70,7 @@ namespace EddiDataDefinitions
             raw = JsonConvert.SerializeObject(capiJSON);
         }
 
-        public EddnCommodityMarketQuote(MarketInfo item)
+        public EddnCommodityMarketQuote(MarketInfoItem item)
         {
             eliteId = item.id;
             edName = item.name

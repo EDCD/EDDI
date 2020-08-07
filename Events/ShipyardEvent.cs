@@ -20,9 +20,9 @@ namespace EddiEvents
         public long marketId { get; private set; }
         public string station { get; private set; }
         public string system { get; private set; }
-        public ShipyardInfoReader info { get; private set; }
+        public ShipyardInfo info { get; private set; }
 
-        public ShipyardEvent(DateTime timestamp, long marketId, string station, string system, ShipyardInfoReader info) : base(timestamp, NAME)
+        public ShipyardEvent(DateTime timestamp, long marketId, string station, string system, ShipyardInfo info) : base(timestamp, NAME)
         {
             this.marketId = marketId;
             this.station = station;

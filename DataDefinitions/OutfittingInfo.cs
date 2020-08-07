@@ -1,33 +1,36 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class OutfittingInfo
     {
-        [JsonProperty]
-        public long id { get; set; }
-        [JsonProperty]
-        public string name { get; set; }
-
-        // Station prices
-        [JsonProperty]
-        public int buyprice { get; set; }
+        public DateTime timestamp { get; set; }
+        public long MarketID { get; set; }
+        public string StationName { get; set; }
+        public string StarSystem { get; set; }
+        public bool Horizons { get; set; }
+        public List<OutfittingInfoItem> Items { get; set; }
 
         public OutfittingInfo()
-        { }
-
-        public OutfittingInfo(OutfittingInfo OutfittingInfo)
         {
-            this.id = OutfittingInfo.id;
-            this.name = OutfittingInfo.name;
-            this.buyprice = OutfittingInfo.buyprice;
+            Items = new List<OutfittingInfoItem>();
         }
 
-        public OutfittingInfo(long id, string Name, int BuyPrice)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
+        public static OutfittingInfo FromFile(string filename = null)
         {
-            this.id = id;
-            this.name = Name;
-            this.buyprice = BuyPrice;
+            OutfittingInfo info = new OutfittingInfo();
+
+            string data = Files.FromSavedGames("Outfitting.json");
+            if (data != null)
+            {
+                info = JsonConvert.DeserializeObject<OutfittingInfo>(data);
+            }
+            return info;
         }
     }
 }
+

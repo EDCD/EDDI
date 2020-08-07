@@ -1240,7 +1240,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public static Module FromOutfittingInfo(OutfittingInfo item)
+        public static Module FromOutfittingInfo(OutfittingInfoItem item)
         {
             Module module = new Module(FromEliteID(item.id, item) ?? FromEDName(item.name, item) ?? new Module());
             if (module.invariantName == null)

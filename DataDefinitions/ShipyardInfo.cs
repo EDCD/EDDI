@@ -1,33 +1,37 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class ShipyardInfo
     {
-        [JsonProperty]
-        public long id { get; set; }
-        [JsonProperty]
-        public string shiptype { get; set; }
-
-        // Station prices
-        [JsonProperty]
-        public long shipprice { get; set; }
+        public DateTime timestamp { get; set; }
+        public long MarketID { get; set; }
+        public string StationName { get; set; }
+        public string StarSystem { get; set; }
+        public bool Horizons { get; set; }
+        public bool AllowCobraMkIV { get; set; }
+        public List<ShipyardInfoItem> PriceList { get; set; }
 
         public ShipyardInfo()
-        { }
-
-        public ShipyardInfo(ShipyardInfo ShipyardInfo)
         {
-            this.id = ShipyardInfo.id;
-            this.shiptype = ShipyardInfo.shiptype;
-            this.shipprice = ShipyardInfo.shipprice;
+            PriceList = new List<ShipyardInfoItem>();
         }
 
-        public ShipyardInfo(long id, string ShipType, long ShipPrice)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
+        public static ShipyardInfo FromFile(string filename = null)
         {
-            this.id = id;
-            this.shiptype = ShipType;
-            this.shipprice = ShipPrice;
+            ShipyardInfo info = new ShipyardInfo();
+
+            string data = Files.FromSavedGames("Shipyard.json");
+            if (data != null)
+            {
+                info = JsonConvert.DeserializeObject<ShipyardInfo>(data);
+            }
+            return info;
         }
     }
 }
+

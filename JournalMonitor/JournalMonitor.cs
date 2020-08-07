@@ -1007,7 +1007,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = ShipyardInfoReader.FromFile();
+                                    var info = ShipyardInfo.FromFile();
                                     if (info.PriceList != null && info.MarketID == marketId
                                         && info.StarSystem == system
                                         && info.StationName == station
@@ -1523,7 +1523,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = OutfittingInfoReader.FromFile();
+                                    var info = OutfittingInfo.FromFile();
                                     if (info.Items != null && info.MarketID == marketId
                                         && info.StarSystem == system
                                         && info.StationName == station
@@ -2176,7 +2176,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = MarketInfoReader.FromFile();
+                                    var info = MarketInfo.FromFile();
                                     if (info != null && info.MarketID == marketId
                                         && info.StarSystem == system
                                         && info.StationName == station)

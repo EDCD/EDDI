@@ -541,7 +541,7 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public static Ship FromShipyardInfo(ShipyardInfo item)
+        public static Ship FromShipyardInfo(ShipyardInfoItem item)
         {
             Ship ship = ShipDefinitions.FromEliteID(item.id) ?? ShipDefinitions.FromEDModel(item.shiptype);
             if (ship == null)

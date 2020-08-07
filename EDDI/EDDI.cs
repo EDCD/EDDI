@@ -1576,7 +1576,7 @@ namespace EddiCore
             if (!allowMarketUpdate || theEvent.fromLoad) { return false; }
 
             var quotes = new List<EddnCommodityMarketQuote>();
-            foreach (MarketInfo item in theEvent.info.Items)
+            foreach (MarketInfoItem item in theEvent.info.Items)
             {
                 try
                 {
