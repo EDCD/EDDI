@@ -1319,6 +1319,19 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestShipRepairedEvent4()
+        {
+            string line = "{ \"timestamp\":\"2020-03-31T13:39:42Z\", \"event\":\"Repair\", \"Items\":[ \"Wear\" ], \"Cost\":34590 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ShipRepairedEvent @event = (ShipRepairedEvent)events[0];
+            Assert.IsInstanceOfType(@event.items, typeof(List<string>));
+            Assert.AreEqual(EddiDataDefinitions.Properties.Modules.ShipIntegrity, @event.items?[0]);
+            Assert.AreEqual(0, @event.modules.Count);
+            Assert.AreEqual(34590, @event.price);
+            Assert.IsNull(@event.item);
+        }
+
+        [TestMethod]
         public void TestCarrierJumpRequestMissingBody()
         {
             // There is an FDev bug which caused the `Body` property not to be written for a `CarrierJumpRequest` event.
