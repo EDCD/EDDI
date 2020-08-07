@@ -3163,22 +3163,22 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // Item might be all, wear, hull, paint, or the name of a module
-                                        string item = JsonParsing.getString(data, "Item");
+                                        string itemEDName = JsonParsing.getString(data, "Item");
 
                                         // We have a single "item"
-                                        if (!string.IsNullOrEmpty(item))
+                                        if (!string.IsNullOrEmpty(itemEDName))
                                         {
                                             Module module = null;
-                                            if (item == "Wear")
+                                            if (itemEDName == "Wear")
                                             {
-                                                item = EddiDataDefinitions.Properties.Modules.ShipIntegrity;
+                                                itemEDName = EddiDataDefinitions.Properties.Modules.ShipIntegrity;
                                             }
-                                            else if (item != "All" && item != "Paint")
+                                            else if (itemEDName != "All" && itemEDName != "Paint")
                                             {
                                                 // Item might be a module
-                                                module = Module.FromEDName(item);
+                                                module = Module.FromEDName(itemEDName);
                                             }
-                                            events.Add(new ShipRepairedEvent(timestamp, item, module, price) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new ShipRepairedEvent(timestamp, itemEDName, module, price) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
