@@ -73,10 +73,10 @@ namespace EddiDataDefinitions
         public EddnCommodityMarketQuote(MarketInfoItem item)
         {
             eliteId = item.id;
-            edName = item.name
+            edName = item.name.ToLowerInvariant()
                 ?.Replace("$", "")
                 ?.Replace("_name;", "");
-            category = item.category
+            category = item.category.ToLowerInvariant()
                 ?.Replace("$market_category", "")
                 ?.Replace("_", "")
                 ?.Replace(";", "");
@@ -94,6 +94,10 @@ namespace EddiDataDefinitions
             if (item.consumer)
             {
                 statusFlags.Add("Consumer");
+            }
+            if (item.rare)
+            {
+                statusFlags.Add("Rare");
             }
             raw = JsonConvert.SerializeObject(item);
         }
