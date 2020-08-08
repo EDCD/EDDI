@@ -159,9 +159,9 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of outfitting modules from the profile
-        public static List<ProfileModule> OutfittingFromProfile(JObject json)
+        public static List<OutfittingInfoItem> OutfittingFromProfile(JObject json)
         {
-            var edModules = new List<ProfileModule>();
+            var edModules = new List<OutfittingInfoItem>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
@@ -177,10 +177,7 @@ namespace EddiCompanionAppService
                         case "module":
                         case "utility":
                             {
-                                long id = (long)moduleJson["id"];
-                                string edName = (string)moduleJson["name"];
-                                long cost = (long)moduleJson["cost"];
-                                edModules.Add(new ProfileModule(id, edName, moduleCategory, cost, JsonConvert.SerializeObject(jToken)));
+                                edModules.Add(JsonConvert.DeserializeObject<OutfittingInfoItem>(moduleJson.ToString()));
                             }
                             break;
                     }
@@ -238,33 +235,21 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of ships available at the station from the profile
-        public static List<ProfileShip> ShipyardFromProfile(JObject json)
+        public static List<ShipyardInfoItem> ShipyardFromProfile(JObject json)
         {
-            List<ProfileShip> edShipyardShips = new List<ProfileShip>();
-            if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
+            List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
+            if (json["lastStarport"]?["ships"] != null)
             {
-                // shipyard_list is a JObject containing JObjects but let's code defensively because FDev
-                var shipyardList = json["lastStarport"]["ships"]["shipyard_list"].Children();
-                edShipyardShips = shipyardList.Values()
-                    .Select(s => ShipyardShipFromProfile(s as JObject)).ToList();
+                edShipyardShips = json["lastStarport"]?["ships"]
+                    .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList();
 
-                // unavailable_list is a JArray containing JObjects
-                JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
-                if (unavailableList != null)
+                if (json["lastStarport"]["ships"]["unavailable_list"] != null)
                 {
-                    edShipyardShips.AddRange(unavailableList
-                        .Select(s => ShipyardShipFromProfile(s as JObject)).ToList());
+                    edShipyardShips.AddRange(json["lastStarport"]["ships"]["unavailable_list"]
+                        .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList());
                 }
             }
             return edShipyardShips;
-        }
-
-        private static ProfileShip ShipyardShipFromProfile(JObject shipJson)
-        {
-            long id = (long)shipJson["id"];
-            string edName = (string)shipJson["name"];
-            long baseValue = (long)shipJson["basevalue"];
-            return new ProfileShip(id, edName, baseValue, JsonConvert.SerializeObject(shipJson));
         }
     }
 }

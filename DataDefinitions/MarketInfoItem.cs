@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
         
         // The Frontier API uses `categoryName` rather than `category`, we normalize that here.
         [JsonProperty] // As a private property, it shall not be serialized to EDDN.
-        protected virtual string categoryName { set => category = value; }
+        private protected string categoryName { set => category = value; }
 
         // Station prices
         [JsonProperty]

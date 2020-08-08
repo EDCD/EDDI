@@ -543,19 +543,19 @@ namespace EddiDataDefinitions
 
         public static Ship FromShipyardInfo(ShipyardInfoItem item)
         {
-            Ship ship = ShipDefinitions.FromEliteID(item.id) ?? ShipDefinitions.FromEDModel(item.shiptype);
+            Ship ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel);
             if (ship == null)
             {
                 // Unknown ship; report the full object so that we can update the definitions 
-                Logging.Info("Ship definition error: " + item.shiptype);
+                Logging.Info("Ship definition error: " + item.edModel);
 
                 // Create a basic ship definition & supplement from the info available 
                 ship = new Ship
                 {
-                    EDName = item.shiptype
+                    EDName = item.edModel
                 };
             }
-            ship.value = item.shipprice;
+            ship.value = item.shipPrice;
 
             return ship;
         }

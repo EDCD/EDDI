@@ -1,33 +1,55 @@
 ﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
+    /// <summary> This class is designed to be deserialized from either shipyard.json or the Frontier API. </summary>
     public class ShipyardInfoItem
     {
-        [JsonProperty]
-        public long id { get; set; }
-        [JsonProperty]
-        public string shiptype { get; set; }
+        [JsonProperty("id")]
+        public long EliteID { get; set; }
+
+        [JsonProperty("ShipType")]
+        public string edModel { get; set; }
+
+        // The Frontier API uses `name` rather than `ShipType`, we normalize that here.
+        [JsonProperty] // As a private property, it shall not be serialized.
+        protected string name { set => edModel = value; }
 
         // Station prices
-        [JsonProperty]
-        public long shipprice { get; set; }
+        [JsonProperty("ShipPrice")]
+        public long shipPrice { get; set; }
+
+        // The Frontier API uses `basevalue` rather than `ShipPrice`, we normalize that here.
+        [JsonProperty] // As a private property, it shall not be serialized.
+        private protected long basevalue { set => shipPrice = value; }
 
         public ShipyardInfoItem()
         { }
 
-        public ShipyardInfoItem(ShipyardInfoItem ShipyardInfo)
+        public ShipyardInfoItem(long eliteId, string ShipType, long ShipPrice)
         {
-            this.id = ShipyardInfo.id;
-            this.shiptype = ShipyardInfo.shiptype;
-            this.shipprice = ShipyardInfo.shipprice;
+            this.EliteID = eliteId;
+            this.edModel = ShipType;
+            this.shipPrice = ShipPrice;
         }
 
-        public ShipyardInfoItem(long id, string ShipType, long ShipPrice)
+        public Ship ToShip()
         {
-            this.id = id;
-            this.shiptype = ShipType;
-            this.shipprice = ShipPrice;
+            Ship ship = ShipDefinitions.FromEliteID(EliteID) ?? ShipDefinitions.FromEDModel(edModel);
+            if (ship == null)
+            {
+                // Unknown ship; report the full object so that we can update the definitions 
+                Logging.Info("Ship definition error: " + edModel, JsonConvert.SerializeObject(this));
+
+                // Create a basic ship definition & supplement from the info available 
+                ship = new Ship
+                {
+                    EDName = edModel
+                };
+            }
+            ship.value = shipPrice;
+            return ship;
         }
     }
 }

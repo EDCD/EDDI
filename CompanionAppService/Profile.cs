@@ -79,10 +79,10 @@ namespace EddiCompanionAppService
         public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; }
 
         /// <summary>Outfitting modules as-received from the profile</summary>
-        public List<ProfileModule> outfitting { get; set; }
+        public List<OutfittingInfoItem> outfitting { get; set; }
 
         /// <summary>Ship models as-received from the profile</summary>
-        public List<ProfileShip> ships { get; set; }
+        public List<ShipyardInfoItem> ships { get; set; }
 
         /// <summary>The market JSON object</summary>
         public JObject json { get; set; }
@@ -200,87 +200,6 @@ namespace EddiCompanionAppService
         public EconomyShare ToEconomyShare()
         {
             return new EconomyShare(edName, proportion);
-        }
-    }
-
-    public class ProfileModule
-    {
-        public long id { get; }
-
-        public string edName { get; }
-
-        public string category { get; }
-
-        public long cost { get; }
-
-        public string raw { get; }
-
-        public ProfileModule(long eliteId, string edName, string edCategory, long cost, string raw = null)
-        {
-            this.id = eliteId;
-            this.edName = edName;
-            this.category = edCategory;
-            this.cost = cost;
-            this.raw = raw;
-        }
-
-        public Module ToModule()
-        {
-            var module = new Module(Module.FromEliteID(id, this)
-                ?? Module.FromEDName(edName, this)
-                ?? new Module());
-            if (module.invariantName == null)
-            {
-                // Unknown module; report the full object so that we can update the definitions
-                Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(this));
-
-                // Create a basic module & supplement from the info available
-                module = new Module(id, edName, -1, edName, -1, "", cost);
-            }
-            else
-            {
-                module.price = cost;
-            }
-            return module;
-        }
-    }
-
-    public class ProfileShip
-    {
-        // Parameters obtained from the Frontier API (not exlusively, though these are all that we handle from the Frontier API)
-
-        public long id { get; }
-
-        public string edName { get; }
-
-        public long basevalue { get; }
-
-        public string raw { get; }
-
-        public ProfileShip(long eliteId, string edModelName, long basevalue, string raw = null)
-        {
-            this.id = eliteId;
-            this.edName = edModelName;
-            this.basevalue = basevalue;
-            this.raw = raw;
-        }
-
-        public Ship ToShip()
-        {
-            Ship ship = ShipDefinitions.FromEliteID(id) ?? ShipDefinitions.FromEDModel(edName);
-            if (ship == null)
-            {
-                // Unknown ship; report the full object so that we can update the definitions 
-                Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(this));
-
-                // Create a basic ship definition & supplement from the info available 
-                ship = new Ship
-                {
-                    EDName = edName
-                };
-            }
-            ship.value = basevalue;
-            return ship;
         }
     }
 }

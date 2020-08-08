@@ -1242,13 +1242,13 @@ namespace EddiDataDefinitions
 
         public static Module FromOutfittingInfo(OutfittingInfoItem item)
         {
-            Module module = new Module(FromEliteID(item.id, item) ?? FromEDName(item.name, item) ?? new Module());
+            Module module = new Module(FromEliteID(item.EliteID, item) ?? FromEDName(item.edName, item) ?? new Module());
             if (module.invariantName == null)
             {
                 // Create a basic module & supplement from the info available
-                module = new Module(item.id, item.name, -1, item.name, -1, "", item.buyprice);
+                module = new Module(item.EliteID, item.edName, -1, item.edName, -1, "", item.buyPrice);
             }
-            module.price = item.buyprice;
+            module.price = item.buyPrice;
 
             return module;
         }
