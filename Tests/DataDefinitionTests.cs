@@ -474,7 +474,7 @@ namespace UnitTests
             Assert.AreEqual(9999999, eddnQuote.stock);
             Assert.AreEqual(9999999, eddnQuote.demand);
 
-            // Test that EddnCommodityMarketQuotes can be sucessfully converted to definition based CommodityMarketQuotes
+            // Test that EddnCommodityMarketQuote can be sucessfully converted to definition based CommodityMarketQuote
             var quote = eddnQuote.ToCommodityMarketQuote();
             Assert.AreEqual(128066403, quote.definition.EliteID);
             Assert.AreEqual("Drones", quote.definition.edname);

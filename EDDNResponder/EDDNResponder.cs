@@ -368,7 +368,7 @@ namespace EDDNResponder
             if (theEvent.commodityQuotes?.Count > 0)
             {
                 var commodities = theEvent.commodityQuotes
-                    .Where(c => c.IsMarketable() && c.meanPrice > 0)
+                    .Where(c => c.IsMarketable())
                     .ToList();
 
                 // Only send the message if we have commodities
