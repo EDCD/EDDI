@@ -290,14 +290,14 @@ namespace EddiShipMonitor
             if (@event.timestamp > updatedAt)
             {
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.ship) && !inBuggy(@event.ship))
+                if (!inFighter(@event.shipEDModel) && !inBuggy(@event.shipEDModel))
                 {
-                    SetCurrentShip(@event.shipid, @event.ship);
+                    SetCurrentShip(@event.shipid, @event.shipEDModel);
                     Ship ship = GetCurrentShip();
                     if (ship == null)
                     {
                         // We don't know of this ship so need to create it
-                        ship = ShipDefinitions.FromEDModel(@event.ship);
+                        ship = ShipDefinitions.FromEDModel(@event.shipEDModel);
                         ship.LocalId = (int)@event.shipid;
                         ship.Role = Role.MultiPurpose;
                         AddShip(ship);
@@ -379,7 +379,7 @@ namespace EddiShipMonitor
             {
                 updatedAt = @event.timestamp;
                 // Set this as our current ship
-                SetCurrentShip(@event.shipid, @event.ship);
+                SetCurrentShip(@event.shipid, @event.edModel);
                 if (!@event.fromLoad) { writeShips(); }
             }
         }
@@ -397,7 +397,7 @@ namespace EddiShipMonitor
                 EDDI.Instance?.refreshProfile();
 
                 // Update our current ship
-                SetCurrentShip(@event.shipid, @event.ship);
+                SetCurrentShip(@event.shipid, @event.edModel);
 
                 if (@event.storedshipid != null)
                 {
@@ -470,7 +470,7 @@ namespace EddiShipMonitor
             {
                 // If we're in the SRV when we start the game, we'll still get a Loadout event for our parent ship
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.ship))
+                if (!inFighter(@event.edModel))
                 {
                     Ship ship = ParseShipLoadoutEvent(@event);
 
@@ -503,7 +503,7 @@ namespace EddiShipMonitor
             ship.raw = @event.raw;
 
             // Update model (in case it was solely from the edname), name, ident & paintjob if required
-            ship.model = @event.ship;
+            ship.model = @event.edModel;
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
@@ -1805,9 +1805,9 @@ namespace EddiShipMonitor
         }
 
         /// <summary> See if we're in a buggy / SRV </summary>
-        private bool inBuggy(string model)
+        private bool inBuggy(string edModel)
         {
-            return model.Contains("Buggy") || model.Contains("SRV");
+            return edModel.Contains("Buggy") || edModel.Contains("SRV");
         }
 
         private Task _refreshProfileDelayed;

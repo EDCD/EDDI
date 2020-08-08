@@ -50,11 +50,12 @@ namespace EddiShipMonitor
         public List<Compartment> compartments { get; private set; }
 
         // Not intended to be user facing
-        public Ship shipDefinition;
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        public string edModel { get; private set; }
 
         public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, decimal unladenmass, decimal maxjumprange, decimal optimalmass, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.edModel = ship;
             this.shipid = shipId;
             this.shipname = shipName;
             this.shipident = shipIdent;

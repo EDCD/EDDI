@@ -35,7 +35,7 @@ namespace EddiEvents
         public bool horizons { get; private set; }
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => shipEDModel == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(shipEDModel).model;
 
         [JsonProperty("shipid")]
         public int? shipid { get; private set; }
@@ -72,14 +72,15 @@ namespace EddiEvents
 
         // Not intended to be user facing
         public string frontierID { get; private set; }
+        public string shipEDModel { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string ship, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.frontierID = frontierID;
             this.horizons = horizons;
             this.shipid = shipId;
-            this.ship = ship == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(ship).model;
+            this.shipEDModel = shipEdModel;
             this.shipname = shipName;
             this.shipident = shipIdent;
             this.startlanded = startedLanded;
