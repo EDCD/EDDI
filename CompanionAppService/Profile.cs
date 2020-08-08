@@ -73,7 +73,7 @@ namespace EddiCompanionAppService
         public List<ProfileEconomyShare> economyShares { get; set; }
 
         /// <summary>Commodity market quotes as-received from the profile</summary>
-        public List<EddnCommodityMarketQuote> eddnCommodityMarketQuotes { get; set; }
+        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; }
 
         /// <summary>Prohibited commodities as-received from the profile</summary>
         public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; }

@@ -76,7 +76,6 @@
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="CommodityBracket.cs" />
-    <Compile Include="EddnCommodityMarketQuote.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
     <Compile Include="OutfittingInfo.cs" />

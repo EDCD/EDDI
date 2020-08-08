@@ -461,20 +461,9 @@ namespace UnitTests
         public void TestCommodityMarketQuoteFromCAPIjson()
         {
             string line = @" {""id"":128066403,""categoryname"":""NonMarketable"",""name"":""Drones"",""stock"":9999999,""buyPrice"":101,""sellPrice"":101,""demand"":9999999,""legality"":"""",""meanPrice"":101,""demandBracket"":2,""stockBracket"":2,""locName"":""Limpet""} ";
-            var jObject = JObject.Parse(line);
-            var eddnQuote = new EddnCommodityMarketQuote(jObject);
-            Assert.AreEqual(128066403, eddnQuote.eliteId);
-            Assert.AreEqual("Drones", eddnQuote.edName);
-            Assert.AreEqual("NonMarketable", eddnQuote.category);
-            Assert.AreEqual(101, eddnQuote.buyPrice);
-            Assert.AreEqual(101, eddnQuote.sellPrice);
-            Assert.AreEqual(101, eddnQuote.meanPrice);
-            Assert.AreEqual(CommodityBracket.Medium, eddnQuote.stockBracket);
-            Assert.AreEqual(CommodityBracket.Medium, eddnQuote.demandBracket);
-            Assert.AreEqual(9999999, eddnQuote.stock);
-            Assert.AreEqual(9999999, eddnQuote.demand);
+            var eddnQuote = JsonConvert.DeserializeObject<MarketInfoItem>(line);
 
-            // Test that EddnCommodityMarketQuote can be sucessfully converted to definition based CommodityMarketQuote
+            // Test that the MarketInfoItem can be sucessfully converted to a definition based CommodityMarketQuote
             var quote = eddnQuote.ToCommodityMarketQuote();
             Assert.AreEqual(128066403, quote.definition.EliteID);
             Assert.AreEqual("Drones", quote.definition.edname);
@@ -516,22 +505,8 @@ namespace UnitTests
                 }
             }
 
-            // Test that items can be sucessfully converted to EddnCommodityMarketQuotes
-            var eddnQuote = new EddnCommodityMarketQuote(info.Items[0]);
-            Assert.AreEqual(128668550, eddnQuote.eliteId);
-            Assert.AreEqual("painite", eddnQuote.edName);
-            Assert.AreEqual("minerals", eddnQuote.category);
-            Assert.AreEqual(0, eddnQuote.buyPrice);
-            Assert.AreEqual(500096, eddnQuote.sellPrice);
-            Assert.AreEqual(0, eddnQuote.meanPrice);
-            Assert.AreEqual(CommodityBracket.None, eddnQuote.stockBracket);
-            Assert.AreEqual(CommodityBracket.Medium, eddnQuote.demandBracket);
-            Assert.AreEqual(0, eddnQuote.stock);
-            Assert.AreEqual(200, eddnQuote.demand);
-            Assert.AreEqual("Consumer", eddnQuote.statusFlags[0]);
-
-            // Test that EddnCommodityMarketQuotes can be sucessfully converted to definition based CommodityMarketQuotes
-            var quote = eddnQuote.ToCommodityMarketQuote();
+            // Test that the MarketInfoItem can be sucessfully converted to a definition based CommodityMarketQuote
+            var quote = info.Items[0].ToCommodityMarketQuote();
             Assert.AreEqual(128668550, quote.definition.EliteID);
             Assert.AreEqual("Painite", quote.definition.edname);
             Assert.AreEqual("Minerals", quote.definition.category.invariantName);
@@ -542,7 +517,7 @@ namespace UnitTests
             Assert.AreEqual(CommodityBracket.Medium, quote.demandbracket);
             Assert.AreEqual(0, quote.stock);
             Assert.AreEqual(200, quote.demand);
-            Assert.AreEqual("Consumer", quote.StatusFlags[0]);
+            Assert.AreEqual("Consumer", quote.StatusFlags.First());
         }
 
         [TestMethod]

@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using EddiDataDefinitions;
-using EDDNResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace UnitTests
 {
@@ -61,7 +60,7 @@ namespace UnitTests
             Assert.IsFalse(commodity.rare);
         }
 
-        private static EddnCommodityMarketQuote CannedCAPIQuote()
+        private static MarketInfoItem CannedCAPIQuote()
         {
             string json = @"{
                 ""id"": 128049204,
@@ -78,9 +77,7 @@ namespace UnitTests
                 ""categoryname"": ""Chemicals"",
                 ""locName"": ""Explosives""
             }";
-            JObject jObject = JObject.Parse(json);
-            var edQuote = new EddnCommodityMarketQuote(jObject);
-            return edQuote;
+            return JsonConvert.DeserializeObject<MarketInfoItem>(json);
         }
 
         [TestMethod]
@@ -95,7 +92,7 @@ namespace UnitTests
             Assert.AreEqual(31881, edQuote.stock);
             Assert.AreEqual(1, edQuote.demand);
             Assert.AreEqual(1, edQuote.statusFlags.Count);
-            Assert.AreEqual("Producer", edQuote.statusFlags[0]);
+            Assert.AreEqual("Producer", edQuote.statusFlags.First());
         }
 
         [TestMethod]
@@ -114,7 +111,7 @@ namespace UnitTests
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
             Assert.AreEqual(1, quote.StatusFlags.Count);
-            Assert.AreEqual("Producer", quote.StatusFlags[0]);
+            Assert.AreEqual("Producer", quote.StatusFlags.First());
         }
 
         [TestMethod]
@@ -130,7 +127,7 @@ namespace UnitTests
             Assert.AreEqual(quote.stock, edQuote.stock);
             Assert.AreEqual(quote.demand, edQuote.demand);
             Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
-            Assert.AreEqual(quote.StatusFlags[0], edQuote.statusFlags[0]);
+            Assert.AreEqual(quote.StatusFlags.First(), edQuote.statusFlags.First());
         }
 
         [TestMethod]

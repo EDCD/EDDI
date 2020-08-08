@@ -23,7 +23,7 @@ namespace EddiEvents
         public long? marketId { get; private set; }
 
         // The properties below must be easily convertible to the EDDN commodities schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
-        public List<EddnCommodityMarketQuote> commodityQuotes { get; private set; }
+        public List<MarketInfoItem> commodityQuotes { get; private set; }
 
         public List<string> prohibitedCommodities { get; private set; }
 
@@ -35,7 +35,7 @@ namespace EddiEvents
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.
         /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>
-        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<EddnCommodityMarketQuote> commodityQuotes, List<string> prohibitedCommodities, List<string> outfittingModules, List<string> shipyardModels, bool inHorizons, bool? allowCobraMkIV = null) : base(timestamp, NAME)
+        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<MarketInfoItem> commodityQuotes, List<string> prohibitedCommodities, List<string> outfittingModules, List<string> shipyardModels, bool inHorizons, bool? allowCobraMkIV = null) : base(timestamp, NAME)
         {
             this.inHorizons = inHorizons;
             this.allowCobraMkIV = allowCobraMkIV;

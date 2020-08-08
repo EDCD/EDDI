@@ -1575,43 +1575,21 @@ namespace EddiCore
             // Don't proceed if we've already viewed the market while docked or when loading pre-existing logs
             if (!allowMarketUpdate || theEvent.fromLoad) { return false; }
 
-            var quotes = new List<EddnCommodityMarketQuote>();
-            foreach (MarketInfoItem item in theEvent.info.Items)
-            {
-                try
-                {
-                    quotes.Add(new EddnCommodityMarketQuote(item));
-                }
-                catch (Exception e)
-                {
-                    Dictionary<string, object> data = new Dictionary<string, object>()
-                    {
-                        { "item", JsonConvert.SerializeObject(item) },
-                        { "Exception", e }
-                    };
-                    Logging.Error($"Failed to handle market.json commodity item {item.name}", data);
-                }
-            }
-
             // Post an update event for new market data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null, inHorizons));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons));
 
-            if (theEvent.info.Items.Count == quotes.Count) // We've successfully parsed all commodity quote items
+            // Update the current station commodities
+            if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
             {
-                // Update the current station commodities
-                if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
-                {
-                    allowMarketUpdate = false;
-                    CurrentStation.commodities = quotes.Select(q => q.ToCommodityMarketQuote()).ToList();
-                    CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
+                allowMarketUpdate = false;
+                CurrentStation.commodities = theEvent.info.Items.Select(q => q.ToCommodityMarketQuote()).ToList();
+                CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
 
-                    // Update the current station information in our backend DB
-                    Logging.Debug("Star system information updated from remote server; updating local copy");
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                }
-                return true;
+                // Update the current station information in our backend DB
+                Logging.Debug("Star system information updated from remote server; updating local copy");
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
-            return false;
+            return true;
         }
 
         private bool eventOutfitting(OutfittingEvent theEvent)

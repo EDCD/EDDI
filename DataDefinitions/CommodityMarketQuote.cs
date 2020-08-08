@@ -85,7 +85,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public int avgprice => definition?.avgprice ?? 0;
         public bool rare => definition?.rare ?? false;
-        public List<string> StatusFlags { get; set; }
+        public HashSet<string> StatusFlags { get; set; }
 
         [JsonConstructor]
         public CommodityMarketQuote(CommodityDefinition definition)

@@ -226,30 +226,14 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of commodities from the profile
-        private static List<EddnCommodityMarketQuote> CommodityQuotesFromProfile(JObject json)
+        private static List<MarketInfoItem> CommodityQuotesFromProfile(JObject json)
         {
-            var eddnCommodityMarketQuotes = new List<EddnCommodityMarketQuote>();
-            if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
+            var eddnCommodityMarketQuotes = new List<MarketInfoItem>();
+            if (json["lastStarport"]?["commodities"] != null)
             {
-                foreach (var jToken in json["lastStarport"]["commodities"])
-                {
-                    var commodityJSON = (JObject)jToken;
-                    try
-                    {
-                        eddnCommodityMarketQuotes.Add(new EddnCommodityMarketQuote(commodityJSON));
-                    }
-                    catch (Exception e)
-                    {
-                        Dictionary<string, object> data = new Dictionary<string, object>()
-                        {
-                            { "capiJson", JsonConvert.SerializeObject(commodityJSON) },
-                            { "Exception", e }
-                        };
-                        Logging.Error("Failed to handle Frontier API commodity json", data);
-                    }
-                }
+                eddnCommodityMarketQuotes = json["lastStarport"]["commodities"]
+                    .Select(c => JsonConvert.DeserializeObject<MarketInfoItem>(c.ToString())).ToList();
             }
-
             return eddnCommodityMarketQuotes;
         }
 
