@@ -475,7 +475,7 @@ namespace EddiShipMonitor
                     Ship ship = ParseShipLoadoutEvent(@event);
 
                     // Update the local and global variables
-                    SetCurrentShip(ship.LocalId, ship.model);
+                    SetCurrentShip(ship.LocalId, ship.EDName);
                     EDDI.Instance.CurrentShip = ship;
 
                     AddShip(ship);
@@ -1237,7 +1237,7 @@ namespace EddiShipMonitor
                 List<StoredModule> newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
                 // There was a bug (ref. #1894) that added the SRV as a ship. Clean that up here.
-                newShiplist = newShiplist.Where(s => s.model != "SRV").ToList();
+                newShiplist = newShiplist.Where(s => s.EDName != "SRV").ToList();
 
                 // Update the shipyard
                 shipyard = new ObservableCollection<Ship>(newShiplist);
@@ -1361,7 +1361,7 @@ namespace EddiShipMonitor
             return ship;
         }
 
-        public void SetCurrentShip(int? localId, string model = null)
+        public void SetCurrentShip(int? localId, string EDName = null)
         {
             lock (shipyardLock)
             {
@@ -1371,10 +1371,10 @@ namespace EddiShipMonitor
                 {
                     // We don't know about this ship yet
                     Logging.Debug("Unknown ship ID " + localId);
-                    if (localId.HasValue && model != null)
+                    if (localId.HasValue && EDName != null)
                     {
                         // We can make one though
-                        ship = ShipDefinitions.FromEDModel(model);
+                        ship = ShipDefinitions.FromEDModel(EDName);
                         ship.LocalId = (int)localId;
                         ship.Role = Role.MultiPurpose;
                         AddShip(ship);
