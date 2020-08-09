@@ -73,6 +73,7 @@ namespace UnitTests
                 System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("fi");
                 Assert.AreEqual("2020-07-30T19.16.42Z", date.ToString("yyyy-MM-ddTHH:mm:ssZ"), @"Should yield ""."" rather than "":"" as a time separator, which is invalid for EDDN and other 3rd party services");
                 Assert.AreEqual("2020-07-30T19:16:42Z", Dates.FromDateTimeToString(date), @"Should yield a string using the invariant culture, including the invariant "":"" time separator");
+                System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             }
             else
             {
