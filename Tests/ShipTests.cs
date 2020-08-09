@@ -600,15 +600,15 @@ namespace UnitTests
 
             // Test the result to verify that the ship monitor's `currentShipId` property remains "9999" rather than changing to "9998"
             shipMonitor.PreHandle(@event);
-            Assert.AreEqual("SRV", @event.ship);
+            Assert.AreEqual("TestBuggy", @event.shipEDModel);
             Assert.AreEqual(9999, (int?)privateObject.GetFieldOrProperty("currentShipId"), @"Because the ""ship"" reported by the event is an SRV, the `currentShipId` property of the ship monitor should be unchanged");
 
-            // Re-test the event, except exchange "SRV" for "TestBuggy" in the `ship` property
+            // Re-test the event, except exchange "TestBuggy" for "SRV" in the `shipEDModel` property
             // Verify once again that the ship monitor's `currentShipId` property remains "9999" rather than changing to "9998"
             var privateEvent = new PrivateObject(@event);
-            privateEvent.SetFieldOrProperty("ship", "TestBuggy");
+            privateEvent.SetFieldOrProperty("shipEDModel", "SRV");
             shipMonitor.PreHandle(@event);
-            Assert.AreEqual("TestBuggy", @event.ship);
+            Assert.AreEqual("SRV", @event.shipEDModel);
             Assert.AreEqual(9999, (int?)privateObject.GetFieldOrProperty("currentShipId"), @"Because the ""ship"" reported by the event is an SRV, the `currentShipId` property of the ship monitor should be unchanged");
         }
     }
