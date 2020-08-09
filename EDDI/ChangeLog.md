@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Various bug fixes
   * Speech responder
+    * Fixed a typo in the `Asteroid prospected` event
     * Fixed a typo in the `Signal detected` script
 
 ### 3.7.0
