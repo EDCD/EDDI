@@ -1977,7 +1977,7 @@ namespace EddiCore
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // Set Vehicle state for commander from ship model
-            if (theEvent.ship == "SRV")
+            if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel == "SRV")
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }

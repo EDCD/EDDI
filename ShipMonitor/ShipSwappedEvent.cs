@@ -42,17 +42,19 @@ namespace EddiShipMonitor
         public string storedship => storedShipDefinition?.model;
 
         // Not intended to be user facing
-        public Ship shipDefinition { get; private set; }
-        public Ship storedShipDefinition { get; private set; }
-        public Ship soldShipDefinition { get; private set; }
-
+        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
+        public Ship storedShipDefinition => string.IsNullOrEmpty(storedEdModel) ? null : ShipDefinitions.FromEDModel(storedEdModel);
+        public Ship soldShipDefinition => string.IsNullOrEmpty(soldEdModel) ? null : ShipDefinitions.FromEDModel(soldEdModel);
+        public string edModel { get; private set; }
+        public string storedEdModel { get; private set; }
+        public string soldEdModel { get; private set; }
         public long marketId { get; private set; }
 
         public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid, long marketId) : base(timestamp, NAME)
         {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
-            this.storedShipDefinition = ShipDefinitions.FromEDModel(storedship);
-            this.soldShipDefinition = ShipDefinitions.FromEDModel(soldship);
+            this.edModel = ship;
+            this.storedEdModel = storedship;
+            this.soldEdModel = soldship;
             this.shipid = shipId;
             this.soldshipid = soldshipid;
             this.storedshipid = storedshipid;
