@@ -503,7 +503,7 @@ namespace EddiShipMonitor
             ship.raw = @event.raw;
 
             // Update model (in case it was solely from the edname), name, ident & paintjob if required
-            ship.model = @event.edModel;
+            ship.model = ship.model.ToLowerInvariant() == ship.EDName.ToLowerInvariant() ? @event.ship : ship.model;
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
