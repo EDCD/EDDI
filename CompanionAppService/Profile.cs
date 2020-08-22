@@ -106,6 +106,11 @@ namespace EddiCompanionAppService
                 // The current station is already more up to date
                 return station;
             }
+            if (station.marketId != marketId)
+            {
+                // The market IDs do not match, the stations are not the same
+                return station;
+            }
 
             try 
             {
@@ -124,7 +129,7 @@ namespace EddiCompanionAppService
                 Logging.Error("Failed to update station economy and services from profile.", data);
             }
 
-            if (station.commoditiesupdatedat < commoditiesupdatedat)
+            if (commoditiesupdatedat != null && (station.commoditiesupdatedat ?? 0) < commoditiesupdatedat)
             {
                 try
                 {
@@ -144,7 +149,7 @@ namespace EddiCompanionAppService
                     Logging.Error("Failed to update station market from profile.", data);
                 }
             }
-            if (station.outfittingupdatedat < outfittingupdatedat)
+            if (outfittingupdatedat != null && (station.outfittingupdatedat ?? 0) < outfittingupdatedat)
             {
                 try 
                 {
@@ -163,7 +168,7 @@ namespace EddiCompanionAppService
                 }
 
             }
-            if (station.shipyardupdatedat < shipyardupdatedat)
+            if (shipyardupdatedat != null && (station.shipyardupdatedat ?? 0) < shipyardupdatedat)
             {
                 try 
                 {

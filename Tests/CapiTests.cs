@@ -1,10 +1,11 @@
-﻿using System;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tests.Properties;
 using Utilities;
 
@@ -176,6 +177,65 @@ namespace UnitTests
             var actual = JsonConvert.SerializeObject(actualStation);
 
             Assert.IsTrue(expectedStation.DeepEquals(actualStation));
+        }
+
+        [TestMethod]
+        public void TestProfileUpdateStation()
+        {
+            // Set up our original station
+            var originalStation = new Station()
+            {
+                name = "Libby Horizons",
+                marketId = 3228854528,
+                updatedat = 0
+            };
+
+            // Set up our profile station
+            var profile = new Profile();
+            var marketTimestamp = DateTime.UtcNow;
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
+            profile.LastStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+
+            var updatedStation = profile.LastStation.UpdateStation(DateTime.UtcNow, originalStation);
+            Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 
+            { 
+                new EconomyShare("Refinery", 0.88M), 
+                new EconomyShare("Industrial", 0.12M) 
+            }));
+            Assert.IsTrue(updatedStation.stationServices.DeepEquals(new List<StationService>() 
+            { 
+                StationService.FromEDName("dock"),
+                StationService.FromEDName("contacts"),
+                StationService.FromEDName("exploration"),
+                StationService.FromEDName("commodities"),
+                StationService.FromEDName("refuel"),
+                StationService.FromEDName("repair"),
+                StationService.FromEDName("rearm"),
+                StationService.FromEDName("outfitting"),
+                StationService.FromEDName("shipyard"),
+                StationService.FromEDName("crewlounge"),
+                StationService.FromEDName("powerplay"),
+                StationService.FromEDName("searchrescue"),
+                StationService.FromEDName("materialtrader"),
+                StationService.FromEDName("stationmenu"),
+                StationService.FromEDName("shop"),
+                StationService.FromEDName("engineer"),
+            }));
+            Assert.AreEqual(116, updatedStation.commodities.Count);
+            Assert.IsTrue(new CommodityMarketQuote(CommodityDefinition.FromEDName("Tritium")) 
+            { 
+                buyprice = 41179, 
+                sellprice = 40693, 
+                demand = 1, 
+                demandbracket = CommodityBracket.None, 
+                stock = 10464, 
+                stockbracket = CommodityBracket.Medium, 
+                StatusFlags = new HashSet<string>()
+            }.DeepEquals(updatedStation.commodities.FirstOrDefault(c => c.EliteID == 128961249)));
+            Assert.AreEqual(42558, CommodityDefinition.FromEDName("Tritium").avgprice); 
+            Assert.AreEqual(6, updatedStation.prohibited.Count);
+            Assert.IsTrue(CommodityDefinition.FromEDName("Tobacco").DeepEquals(updatedStation.prohibited.FirstOrDefault(p => p.EliteID == 128049213)));
+            Assert.AreEqual(Dates.fromDateTimeToSeconds(marketTimestamp), updatedStation.commoditiesupdatedat);
         }
     }
 }
