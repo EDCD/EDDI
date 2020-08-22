@@ -1,8 +1,10 @@
-﻿using EddiCompanionAppService;
+﻿using System;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Tests.Properties;
 using Utilities;
 
@@ -12,81 +14,6 @@ namespace UnitTests
     // this class is pure and doesn't need TestBase.MakeSafe()
     public class CapiTests : TestBase
     {
-        [TestMethod]
-        public void TestCommoditiesFromProfile()
-        {
-            // Test commodities data
-            var incompleteExpectedCommodities = new List<MarketInfoItem>()
-            {
-                new MarketInfoItem(128924334, "AgronomicTreatment", "Chemicals", 0, 3336, 3155, CommodityBracket.None, CommodityBracket.Medium, 0, 43, new HashSet<string>() ),
-                new MarketInfoItem(128049204, "Explosives", "Chemicals", 224, 203, 419, CommodityBracket.High, CommodityBracket.None, 52135, 1, new HashSet<string>() ),
-                new MarketInfoItem(128049202, "HydrogenFuel", "Chemicals", 84, 80, 108, CommodityBracket.High, CommodityBracket.None, 90728, 1, new HashSet<string>() ),
-                new MarketInfoItem(128673850, "HydrogenPeroxide", "Chemicals", 0, 1198, 1209, CommodityBracket.None, CommodityBracket.High, 0, 116055, new HashSet<string>() ),
-                new MarketInfoItem(128673851, "LiquidOxygen", "Chemicals", 0, 467, 434, CommodityBracket.None, CommodityBracket.Medium, 0, 18513, new HashSet<string>() ),
-            };
-
-            JObject json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            var actualCommodities = CompanionAppService.CommodityQuotesFromProfile(json);
-
-            Assert.AreEqual(116, actualCommodities.Count);
-            foreach (var expectedCommodity in incompleteExpectedCommodities)
-            {
-                foreach (var actualCommodity in actualCommodities)
-                {
-                    if (expectedCommodity.EliteID == actualCommodity.EliteID)
-                    {
-                        Assert.IsTrue(expectedCommodity.DeepEquals(actualCommodity));
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void TestProhibitedCommoditiesFromProfile()
-        {
-            // Test commodities data
-            var expectedProhibitedCommodities = new List<KeyValuePair<long, string>>()
-            {
-                new KeyValuePair<long, string>(128049670, "CombatStabilisers"),
-                new KeyValuePair<long, string>(128049212, "BasicNarcotics"),
-                new KeyValuePair<long, string>(128049213, "Tobacco"),
-                new KeyValuePair<long, string>(128049234, "BattleWeapons"),
-                new KeyValuePair<long, string>(128667728, "ImperialSlaves"),
-                new KeyValuePair<long, string>(128049243, "Slaves")
-            };
-
-            JObject json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            var actualProhibitedCommodities = CompanionAppService.ProhibitedCommoditiesFromProfile(json);
-
-            Assert.AreEqual(6, actualProhibitedCommodities.Count);
-            foreach (var expectedCommodity in expectedProhibitedCommodities)
-            {
-                foreach (var actualCommodity in actualProhibitedCommodities)
-                {
-                    if (expectedCommodity.Key == actualCommodity.Key)
-                    {
-                        Assert.IsTrue(expectedCommodity.Value == actualCommodity.Value);
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void TestEconomiesFromProfile()
-        {
-            // Test economies data
-            var expectedEconomies = new List<ProfileEconomyShare>()
-            {
-                new ProfileEconomyShare("Military", 1)
-            };
-
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
-            var actualEconomies = CompanionAppService.EconomiesFromProfile(json);
-
-            Assert.AreEqual(1, actualEconomies.Count);
-            Assert.IsTrue(expectedEconomies[0].DeepEquals(actualEconomies[0]));
-        }
-
         [TestMethod]
         public void TestOutfittingModules()
         {
@@ -146,6 +73,109 @@ namespace UnitTests
                     }
                 }
             }
+        }
+
+        [TestMethod]
+        public void TestProfileStation()
+        {
+            var marketTimestamp = DateTime.UtcNow;
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
+
+            var expectedStation = new ProfileStation()
+            {
+                name = "Libby Horizons",
+                marketId = 3228854528,
+                economyShares = new List<ProfileEconomyShare>() 
+                {
+                    new ProfileEconomyShare("Refinery", 0.88M),
+                    new ProfileEconomyShare("Industrial", 0.12M),
+                },
+                eddnCommodityMarketQuotes = new List<MarketInfoItem>()
+                {
+                    new MarketInfoItem(128924334, "AgronomicTreatment", "Chemicals", 0, 3336, 3155, CommodityBracket.None, CommodityBracket.Medium, 0, 43, new HashSet<string>() ),
+                    new MarketInfoItem(128049204, "Explosives", "Chemicals", 224, 203, 419, CommodityBracket.High, CommodityBracket.None, 52135, 1, new HashSet<string>() ),
+                    new MarketInfoItem(128049202, "HydrogenFuel", "Chemicals", 84, 80, 108, CommodityBracket.High, CommodityBracket.None, 90728, 1, new HashSet<string>() ),
+                    new MarketInfoItem(128673850, "HydrogenPeroxide", "Chemicals", 0, 1198, 1209, CommodityBracket.None, CommodityBracket.High, 0, 116055, new HashSet<string>() ),
+                    new MarketInfoItem(128673851, "LiquidOxygen", "Chemicals", 0, 467, 434, CommodityBracket.None, CommodityBracket.Medium, 0, 18513, new HashSet<string>() ),
+                    new MarketInfoItem(128049203, "MineralOil", "Chemicals", 0, 687, 395, CommodityBracket.None, CommodityBracket.Medium, 0, 249414, new HashSet<string>() ),
+                    new MarketInfoItem(128672305, "SurfaceStabilisers", "Chemicals", 416, 390, 663, CommodityBracket.High, CommodityBracket.None, 44411, 1, new HashSet<string>() ),
+                    new MarketInfoItem(128961249, "Tritium", "Chemicals", 41179, 40693, 42558, CommodityBracket.Medium, CommodityBracket.None, 10464, 1, new HashSet<string>() ),
+                    new MarketInfoItem(128049166, "Water", "Chemicals", 0, 457, 267, CommodityBracket.None, CommodityBracket.Medium, 0, 36527, new HashSet<string>() ),
+                    new MarketInfoItem(128049241, "Clothing", "Consumer Items", 0, 902, 459, CommodityBracket.None, CommodityBracket.Medium, 0, 38689, new HashSet<string>() ),
+                    new MarketInfoItem(128049240, "ConsumerTechnology", "Consumer Items", 0, 7658, 6809, CommodityBracket.None, CommodityBracket.High, 0, 5598, new HashSet<string>() ),
+                    new MarketInfoItem(128049238, "DomesticAppliances", "Consumer Items", 0, 1117, 659, CommodityBracket.None, CommodityBracket.Medium, 0, 14440, new HashSet<string>() ),
+                    new MarketInfoItem(128682048, "SurvivalEquipment", "Consumer Items", 500, 467, 647, CommodityBracket.High, CommodityBracket.None, 116, 1, new HashSet<string>() ),
+                    new MarketInfoItem(128049177, "Algae", "Foods", 0, 464, 321, CommodityBracket.None, CommodityBracket.Medium, 0, 7417, new HashSet<string>() ),
+                    new MarketInfoItem(128049182, "Animalmeat", "Foods", 0, 2181, 1524, CommodityBracket.None, CommodityBracket.High, 0, 14121, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128049189, "Coffee", "Foods", 0, 2181, 1504, CommodityBracket.None, CommodityBracket.High, 0, 5194, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128049183, "Fish", "Foods", 0, 1083, 640, CommodityBracket.None, CommodityBracket.High, 0, 45149, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128049184, "FoodCartridges", "Foods", 0, 334, 225, CommodityBracket.None, CommodityBracket.Medium, 0, 1887, new HashSet<string>() ),
+                    new MarketInfoItem(128049178, "FruitAndVegetables", "Foods", 0, 970, 528, CommodityBracket.None, CommodityBracket.High, 0, 18707, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128049180, "Grain", "Foods", 0, 836, 432, CommodityBracket.None, CommodityBracket.High, 0, 99831, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128049185, "SyntheticMeat", "Foods", 0, 810, 487, CommodityBracket.None, CommodityBracket.High, 0, 6223, new HashSet<string>() ),
+                    new MarketInfoItem(128049188, "Tea", "Foods", 0, 2392, 1691, CommodityBracket.None, CommodityBracket.High, 0, 13184, new HashSet<string>() { "powerplay" } ),
+                    new MarketInfoItem(128673856, "CMMComposite", "Industrial Materials", 0, 6779, 5984, CommodityBracket.None, CommodityBracket.High, 0, 2287, new HashSet<string>() ),
+                    new MarketInfoItem(128672302, "CeramicComposites", "Industrial Materials", 0, 712, 393, CommodityBracket.None, CommodityBracket.High, 0, 35686, new HashSet<string>() ),
+                    new MarketInfoItem(128673857, "CoolingHoses", "Industrial Materials", 0, 1896, 1886, CommodityBracket.None, CommodityBracket.High, 0, 7839, new HashSet<string>() ),
+                    new MarketInfoItem(128673855, "InsulatingMembrane", "Industrial Materials", 0, 11386, 10691, CommodityBracket.None, CommodityBracket.Medium, 0, 1461, new HashSet<string>() ),
+                },
+                prohibitedCommodities = new List<KeyValuePair<long, string>>()
+                {
+                    new KeyValuePair<long, string>(128049670, "CombatStabilisers"),
+                    new KeyValuePair<long, string>(128049212, "BasicNarcotics"),
+                    new KeyValuePair<long, string>(128049213, "Tobacco"),
+                    new KeyValuePair<long, string>(128049234, "BattleWeapons"),
+                    new KeyValuePair<long, string>(128667728, "ImperialSlaves"),
+                    new KeyValuePair<long, string>(128049243, "Slaves")
+                },
+                commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp),
+                json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons),
+                stationServices = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("dock", "ok"),
+                    new KeyValuePair<string, string>("contacts", "ok"),
+                    new KeyValuePair<string, string>("exploration", "ok"),
+                    new KeyValuePair<string, string>("commodities", "ok"),
+                    new KeyValuePair<string, string>("refuel", "ok"),
+                    new KeyValuePair<string, string>("repair", "ok"),
+                    new KeyValuePair<string, string>("rearm", "ok"),
+                    new KeyValuePair<string, string>("outfitting", "ok"),
+                    new KeyValuePair<string, string>("shipyard", "ok"),
+                    new KeyValuePair<string, string>("crewlounge", "ok"),
+                    new KeyValuePair<string, string>("powerplay", "ok"),
+                    new KeyValuePair<string, string>("searchrescue", "ok"),
+                    new KeyValuePair<string, string>("materialtrader", "ok"),
+                    new KeyValuePair<string, string>("stationmenu", "ok"),
+                    new KeyValuePair<string, string>("shop", "ok"),
+                    new KeyValuePair<string, string>("engineer", "ok")
+                }
+            };
+
+            var actualStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+
+            // Test commodities separately to minimize redundant data entry
+            var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
+            var actualCommodities = actualStation.eddnCommodityMarketQuotes;
+            Assert.AreEqual(116, actualCommodities.Count);
+            foreach (var expectedCommodity in incompleteExpectedCommodities)
+            {
+                foreach (var actualCommodity in actualCommodities)
+                {
+                    if (expectedCommodity.EliteID == actualCommodity.EliteID)
+                    {
+                        Assert.IsTrue(expectedCommodity.DeepEquals(actualCommodity));
+                    }
+                }
+            }
+
+            // Compare actual and expected stations, less the commodities we already tested above
+            expectedStation.eddnCommodityMarketQuotes = null;
+            actualStation.eddnCommodityMarketQuotes = null;
+
+            var expected = JsonConvert.SerializeObject(expectedStation);
+            var actual = JsonConvert.SerializeObject(actualStation);
+
+            Assert.IsTrue(expectedStation.DeepEquals(actualStation));
         }
     }
 }

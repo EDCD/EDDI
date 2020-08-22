@@ -93,20 +93,37 @@ namespace EddiCompanionAppService
 
         public Profile Station(long? systemAddress, string systemName)
         {
-            try
+            try 
             {
                 Logging.Debug("Getting station market data");
                 string market = obtainProfile(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
                 market = "{\"lastStarport\":" + market + "}";
                 JObject marketJson = JObject.Parse(market);
+                var lastStation = ProfileStation(marketTimestamp, marketJson);
+                lastStation.systemAddress = systemAddress;
+                lastStation.systemname = systemName;
+                lastStation = ProfileStationOutfittingAndShipyard(lastStation);
+                cachedProfile.LastStation = lastStation;
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
+            }
+            return cachedProfile;
+        }
+
+        public static ProfileStation ProfileStation(DateTime marketTimestamp, JObject marketJson)
+        {
+            ProfileStation lastStation = null;
+            try
+            {
                 string lastStarport = (string)marketJson["lastStarport"]["name"];
                 long? marketId = (long?)marketJson["lastStarport"]["id"];
-                cachedProfile.LastStation = new ProfileStation
+                lastStation = new ProfileStation
                 {
                     name = lastStarport,
                     marketId = marketId,
-                    systemAddress = systemAddress,
-                    systemname = systemName,
                     economyShares = EconomiesFromProfile(marketJson),
                     eddnCommodityMarketQuotes = CommodityQuotesFromProfile(marketJson),
                     prohibitedCommodities = ProhibitedCommoditiesFromProfile(marketJson),
@@ -117,45 +134,43 @@ namespace EddiCompanionAppService
                 List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
                 foreach (var jToken in marketJson["lastStarport"]["services"])
                 {
+                    // These are key value pairs. The Key is the name of the service, the Value is its state.
                     var serviceJSON = (JProperty)jToken;
                     var service = new KeyValuePair<string, string>(serviceJSON.Name, serviceJSON.Value.ToString());
                     stationServices.Add(service);
                 }
-                cachedProfile.LastStation.stationServices = stationServices;
-
-                if (stationServices.Exists(s => s.Key.ToLowerInvariant() == "outfitting"))
-                {
-                    Logging.Debug("Getting station outfitting data");
-                    string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
-                    outfitting = "{\"lastStarport\":" + outfitting + "}";
-                    JObject outfittingJson = JObject.Parse(outfitting);
-                    cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
-                    cachedProfile.LastStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingTimestamp);
-                }
-
-                if (stationServices.Exists(s => s.Key.ToLowerInvariant() == "shipyard"))
-                {
-                    Logging.Debug("Getting station shipyard data");
-                    Thread.Sleep(5000);
-                    string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
-                    shipyard = "{\"lastStarport\":" + shipyard + "}";
-                    JObject shipyardJson = JObject.Parse(shipyard);
-                    cachedProfile.LastStation.ships = ShipyardFromProfile(shipyardJson);
-                    cachedProfile.LastStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardTimestamp);
-                }
+                lastStation.stationServices = stationServices;
             }
             catch (JsonException ex)
             {
                 Logging.Error("Failed to parse companion station data", ex);
             }
-            catch (EliteDangerousCompanionAppException ex)
-            {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
-                Logging.Info(ex.Message);
-            }
+            Logging.Debug("Station is " + JsonConvert.SerializeObject(lastStation));
+            return lastStation;
+        }
 
-            Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
-            return cachedProfile;
+        private ProfileStation ProfileStationOutfittingAndShipyard(ProfileStation lastStation)
+        {
+            if (lastStation.stationServices.Exists(s => s.Key.ToLowerInvariant() == "outfitting"))
+            {
+                Logging.Debug("Getting station outfitting data");
+                string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
+                outfitting = "{\"lastStarport\":" + outfitting + "}";
+                JObject outfittingJson = JObject.Parse(outfitting);
+                lastStation.outfitting = OutfittingFromProfile(outfittingJson);
+                lastStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingTimestamp);
+            }
+            if (lastStation.stationServices.Exists(s => s.Key.ToLowerInvariant() == "shipyard"))
+            {
+                Logging.Debug("Getting station shipyard data");
+                Thread.Sleep(5000);
+                string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
+                shipyard = "{\"lastStarport\":" + shipyard + "}";
+                JObject shipyardJson = JObject.Parse(shipyard);
+                lastStation.ships = ShipyardFromProfile(shipyardJson);
+                lastStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardTimestamp);
+            }
+            return lastStation;
         }
 
         // Obtain the list of outfitting modules from the profile
