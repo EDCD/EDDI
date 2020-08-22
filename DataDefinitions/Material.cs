@@ -16,39 +16,43 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new Material(edname, MaterialCategory.Unknown, Rarity.Unknown);
 
+            // The below percentages are calculated by finding the top percentage ever found on a body for a given material, 
+            // then taking 90% of that value as a definition for a `great` percentage and by taking 75% of that value as a `good` percentage.
+            // The data used to generate the current values are located at https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
+
             // Grade 1, Very Common
-            var Carbon = new Material("carbon", Element, VeryCommon, "C", 20.4M, 24.6M);
-            var Iron = new Material("iron", Element, VeryCommon, "Fe", 36.3M, 48.4M);
+            var Carbon = new Material("carbon", Element, VeryCommon, "C", 24.6M, 29.5M);
+            var Iron = new Material("iron", Element, VeryCommon, "Fe", 36.4M, 43.6M);
             var Lead = new Material("lead", Element, VeryCommon, "Pb", null, null);
-            var Nickel = new Material("nickel", Element, VeryCommon, "Ni", 26.6M, 31.9M);
-            var Phosphorus = new Material("phosphorus", Element, VeryCommon, "P", 15.1M, 18.1M);
+            var Nickel = new Material("nickel", Element, VeryCommon, "Ni", 27.6M, 33.2M);
+            var Phosphorus = new Material("phosphorus", Element, VeryCommon, "P", 15.7M, 18.9M);
             var Rhenium = new Material("rhenium", Element, VeryCommon, "Re", null, null);
-            var Sulphur = new Material("sulphur", Element, VeryCommon, "S", 27.9M, 33.5M);
+            var Sulphur = new Material("sulphur", Element, VeryCommon, "S", 29.2M, 35.1M);
 
             // Grade 2, Common
             var Arsenic = new Material("arsenic", Element, Common, "As", 2.3M, 2.7M);
-            var Chromium = new Material("chromium", Element, Common, "Cr", 13.8M, 16.6M);
-            var Germanium = new Material("germanium", Element, Common, "Ge", 5.6M, 6.8M);
-            var Manganese = new Material("manganese", Element, Common, "Mn", 12.9M, 15.5M);
-            var Vanadium = new Material("vanadium", Element, Common, "V", 8.3M, 9.9M);
-            var Zinc = new Material("zinc", Element, Common, "Zn", 9.1M, 10.9M);
-            var Zirconium = new Material("zirconium", Element, Common, "Zr", 4.1M, 5.0M);
+            var Chromium = new Material("chromium", Element, Common, "Cr", 14.0M, 16.8M);
+            var Germanium = new Material("germanium", Element, Common, "Ge", 4.9M, 5.9M);
+            var Manganese = new Material("manganese", Element, Common, "Mn", 13.0M, 15.6M);
+            var Vanadium = new Material("vanadium", Element, Common, "V", 8.3M, 10M);
+            var Zinc = new Material("zinc", Element, Common, "Zn", 9.2M, 11.1M);
+            var Zirconium = new Material("zirconium", Element, Common, "Zr", 4.2M, 5.0M);
 
             // Grade 3, Standard
             var Boron = new Material("boron", Element, Standard, "B", null, null);
-            var Cadmium = new Material("cadmium", Element, Standard, "Cd", 2.8M, 3.3M);
+            var Cadmium = new Material("cadmium", Element, Standard, "Cd", 2.8M, 3.4M);
             var Mercury = new Material("mercury", Element, Standard, "Hg", 1.6M, 1.9M);
-            var Molybdenum = new Material("molybdenum", Element, Standard, "Mo", 2.3M, 2.8M);
-            var Niobium = new Material("niobium", Element, Standard, "Nb", 2.4M, 2.9M);
+            var Molybdenum = new Material("molybdenum", Element, Standard, "Mo", 2.4M, 2.9M);
+            var Niobium = new Material("niobium", Element, Standard, "Nb", 2.5M, 3.0M);
             var Tin = new Material("tin", Element, Standard, "Sn", 2.4M, 2.9M);
-            var Tungsten = new Material("tungsten", Element, Standard, "W", 2.0M, 2.3M);
+            var Tungsten = new Material("tungsten", Element, Standard, "W", 2.0M, 2.4M);
 
             // Grade 4, Rare
-            var Ruthenium = new Material("ruthenium", Element, Rare, "Ru", 2.2M, 2.6M);
-            var Selenium = new Material("selenium", Element, Rare, "Se", 3.7M, 4.4M);
-            var Technetium = new Material("technetium", Element, Rare, "Tc", 1.3M, 1.5M);
-            var Tellurium = new Material("tellurium", Element, Rare, "Te", 1.3M, 1.5M);
-            var Yttrium = new Material("yttrium", Element, Rare, "Y", 2.1M, 2.5M);
+            var Ruthenium = new Material("ruthenium", Element, Rare, "Ru", 2.2M, 2.7M);
+            var Selenium = new Material("selenium", Element, Rare, "Se", 4.5M, 5.4M);
+            var Technetium = new Material("technetium", Element, Rare, "Tc", 1.3M, 1.6M);
+            var Tellurium = new Material("tellurium", Element, Rare, "Te", 1.3M, 1.6M);
+            var Yttrium = new Material("yttrium", Element, Rare, "Y", 2.2M, 2.6M);
             var Antimony = new Material("antimony", Element, Rare, "Sb", 1.4M, 1.6M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
             var Polonium = new Material("polonium", Element, Rare, "Po", 1.1M, 1.3M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
 
@@ -243,8 +247,8 @@ namespace EddiDataDefinitions
             this.category = category;
             this.symbol = symbol;
             this.rarity = rarity;
-            this.goodpctbody = goodpctbody;
-            this.greatpctbody = greatpctbody;
+            this.goodpctbody = goodpctbody; // top 25% from top value ever recorded
+            this.greatpctbody = greatpctbody; // top 10% from top value ever recorded
         }
 
         public static Material FromSymbol(string from)
