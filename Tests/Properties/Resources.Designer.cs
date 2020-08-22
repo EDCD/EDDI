@@ -193,6 +193,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] Libby_Horizons {
+            get {
+                object obj = ResourceManager.GetObject("Libby_Horizons", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] loadout {
             get {
                 object obj = ResourceManager.GetObject("loadout", resourceCulture);

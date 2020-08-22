@@ -223,7 +223,7 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of commodities from the profile
-        private static List<MarketInfoItem> CommodityQuotesFromProfile(JObject json)
+        public static List<MarketInfoItem> CommodityQuotesFromProfile(JObject json)
         {
             var eddnCommodityMarketQuotes = new List<MarketInfoItem>();
             if (json["lastStarport"]?["commodities"] != null)
@@ -240,7 +240,7 @@ namespace EddiCompanionAppService
             List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
             if (json["lastStarport"]?["ships"] != null)
             {
-                edShipyardShips = json["lastStarport"]?["ships"]
+                edShipyardShips = json["lastStarport"]?["ships"]["shipyard_list"].Children().Values()
                     .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList();
 
                 if (json["lastStarport"]["ships"]["unavailable_list"] != null)

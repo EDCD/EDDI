@@ -33,6 +33,14 @@ namespace EddiDataDefinitions
             this.buyPrice = BuyPrice;
         }
 
+        public OutfittingInfoItem(long eliteId, string edName, string edCategory, int BuyPrice)
+        {
+            this.EliteID = eliteId;
+            this.edName = edName;
+            this.edCategory = edCategory;
+            this.buyPrice = BuyPrice;
+        }
+
         public Module ToModule()
         {
             var module = new Module(Module.FromEliteID(EliteID, this)
