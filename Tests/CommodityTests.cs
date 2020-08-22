@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -163,6 +167,37 @@ namespace UnitTests
             catch
             {
                 // passed
+            }
+        }
+
+        [TestMethod]
+        public void TestDeserializeMarketJson()
+        {
+            var info = TestBase.DeserializeJsonResource<MarketInfo>(Resources.market);
+            Assert.AreEqual(3702012928, info.MarketID);
+            Assert.AreEqual("X9K-WTW", info.StationName);
+            Assert.AreEqual("Gateway", info.StarSystem);
+
+            var expectedItems = new List<MarketInfoItem>()
+            {
+                new MarketInfoItem(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200, true, false, false),
+                new MarketInfoItem(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
+                new MarketInfoItem(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150, true, false, false),
+                new MarketInfoItem(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
+                new MarketInfoItem(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97, true, false, false),
+                new MarketInfoItem(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300, true, false, false)
+            };
+
+            Assert.AreEqual(expectedItems.Count, info.Items.Count);
+            foreach (var actualItem in info.Items)
+            {
+                foreach (var expectedItem in expectedItems)
+                {
+                    if (actualItem.EliteID == expectedItem.EliteID)
+                    {
+                        Assert.IsTrue(actualItem.DeepEquals(expectedItem));
+                    }
+                }
             }
         }
     }
