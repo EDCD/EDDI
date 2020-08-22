@@ -10,7 +10,7 @@ Building this project requires:
 Locally running EDDI:
 
 * Start Visual Studio and choose "Open a project/solution" then select the "EDDI.sln" solution file
-* In the top toolbar change "Debug" to "Release"
+* In the top toolbar select the desired build configuration (e.g. "Debug" or "Release")
 * In the Solution Explorer, right-click "Eddi" and choose "Set as Startup Project"
 * In the "Build" menu choose "Build Solution" (or use the keyboard shortcut Ctrl-Shift-B)
 * In the top toolbar press the "Start" button
