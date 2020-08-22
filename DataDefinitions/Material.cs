@@ -16,7 +16,9 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new Material(edname, MaterialCategory.Unknown, Rarity.Unknown);
 
-            // below percentages based on https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
+            // The below percentages are calculated by finding the top percentage ever found on a body for a given material, 
+            // then taking 90% of that value as a definition for a `great` percentage and by taking 75% of that value as a `good` percentage.
+            // The data used to generate the current values are located at https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
 
             // Grade 1, Very Common
             var Carbon = new Material("carbon", Element, VeryCommon, "C", 24.6M, 29.5M);
@@ -245,8 +247,8 @@ namespace EddiDataDefinitions
             this.category = category;
             this.symbol = symbol;
             this.rarity = rarity;
-            this.goodpctbody = goodpctbody; // top 25%
-            this.greatpctbody = greatpctbody; // top 10%
+            this.goodpctbody = goodpctbody; // top 25% from top value ever recorded
+            this.greatpctbody = greatpctbody; // top 10% from top value ever recorded
         }
 
         public static Material FromSymbol(string from)
