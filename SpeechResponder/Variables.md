@@ -445,6 +445,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `allegiance` the superpower allegiance of this starsystem (Federation, Empire etc)
     - `government` the type of government in this starsystem (Democracy, Confederacy etc)
     - `faction` the dominant faction in this starsystem
+    - `factions` the starsystem's factions (array of Faction objects)
     - `primaryeconomy` the primary economy in this starsystem (High Technology, Agriculture, etc)
     - `state` the state of the starsystem (Boom, War, etc)
     - `security` the level of security in the starsystem (Low, Medium, High)
