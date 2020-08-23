@@ -378,14 +378,14 @@ namespace EddiDataDefinitions
             cargohatch = new Module();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
+        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, LandingPadSize Size, int? MilitarySize, decimal reservoirFuelTankSize)
         {
             this.EDID = EDID;
             this.EDName = EDName;
             manufacturer = Manufacturer;
             model = Model;
             phoneticModel = PhoneticModel;
-            this.Size = LandingPadSize.FromEDName(Size);
+            this.Size = Size;
             militarysize = MilitarySize;
             health = 100M;
             hardpoints = new List<Hardpoint>();
