@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiSpeechService;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -147,40 +148,16 @@ namespace EddiSpeechResponder
 
         private void testScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            SpeechResponder responder = new SpeechResponder();
-            responder.Start();
-            // See if we have a sample
-            List<Event> sampleEvents;
-            object sample = Events.SampleByName(script.Name);
-            if (sample == null)
+            if (!SpeechService.Instance.eddiSpeaking)
             {
-                sampleEvents = new List<Event>();
-            }
-            else if (sample is string)
-            {
-                // It's as tring so a journal entry.  Parse it
-                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
-            }
-            else if (sample is Event)
-            {
-                // It's a direct event
-                sampleEvents = new List<Event>() { (Event)sample };
+                Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+                SpeechResponder responder = new SpeechResponder();
+                responder.Start();
+                responder.TestScript(script.Name, Personality.Scripts);
             }
             else
             {
-                Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvents = new List<Event>();
-            }
-
-            ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
-            if (sampleEvents.Count == 0)
-            {
-                sampleEvents.Add(null);
-            }
-            foreach (Event sampleEvent in sampleEvents)
-            {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), script.Name, sampleEvent, scriptResolver.priority(script.Name));
+                SpeechService.Instance.ShutUp();
             }
         }
 
