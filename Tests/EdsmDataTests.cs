@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -364,34 +365,48 @@ namespace UnitTests
             Assert.IsNotNull(factions);
 
             // Test The Dark Wheel
-            Faction faction = factions.Find(s => s.name == "The Dark Wheel");
+            var faction = factions.Find(s => s.name == "The Dark Wheel");
+            var presence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
             Assert.AreEqual(702, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(49.8M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
-            Assert.AreEqual("Boom", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.AreEqual(49.8M, presence?.influence);
+            Assert.AreEqual("Boom", presence?.FactionState?.invariantName);
+            Assert.AreEqual(3, presence?.ActiveStates.Count);
+            Assert.AreEqual(0, presence?.RecoveringStates.Count);
+            Assert.AreEqual(0, presence?.PendingStates.Count);
+            Assert.IsTrue(new List<FactionState>() { FactionState.FromEDName("Boom"), FactionState.FromEDName("Civil liberty"), FactionState.FromEDName("Election") }.DeepEquals(presence?.ActiveStates));
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928089, faction.updatedat);
 
             // Test The Pilots Federation
             faction = factions.Find(s => s.name == "The Pilots Federation");
+            presence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
             Assert.AreEqual(61, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(0M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
-            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.AreEqual(0M, presence?.influence);
+            Assert.AreEqual("None", presence?.FactionState?.invariantName);
+            Assert.AreEqual(0, presence?.ActiveStates.Count);
+            Assert.AreEqual(0, presence?.RecoveringStates.Count);
+            Assert.AreEqual(0, presence?.PendingStates.Count);
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539923616, faction.updatedat);
 
             // Test LTT 4487 Industry
             faction = factions.Find(s => s.name == "LTT 4487 Industry");
+            presence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
             Assert.AreEqual(434, faction.EDSMID);
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Corporate", faction.Government.invariantName);
-            Assert.AreEqual(26.1M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
-            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.AreEqual(26.1M, presence?.influence);
+            Assert.AreEqual("None", presence?.FactionState?.invariantName);
+            Assert.AreEqual(0, presence?.ActiveStates.Count);
+            Assert.AreEqual(0, presence?.RecoveringStates.Count);
+            Assert.AreEqual(1, presence?.PendingStates.Count);
+            Assert.IsTrue(new List<FactionTrendingState>() { new FactionTrendingState(FactionState.FromEDName("Boom"), 1) }.DeepEquals(presence?.PendingStates));
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928985, faction.updatedat);

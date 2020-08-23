@@ -75,27 +75,29 @@ namespace EddiStarMapService
                 IDictionary<string, object> factionDetail = faction.ToObject<IDictionary<string, object>>();
 
                 // Active states
-                factionDetail.TryGetValue("ActiveStates", out object activeStatesVal);
+                factionDetail.TryGetValue("activeStates", out object activeStatesVal);
                 if (activeStatesVal != null)
                 {
-                    var activeStatesList = (List<object>)activeStatesVal;
-                    foreach (IDictionary<string, object> activeState in activeStatesList)
+                    var activeStatesList = (JArray)activeStatesVal;
+                    foreach (var activeStateToken in activeStatesList)
                     {
+                        var activeState = activeStateToken.ToObject<IDictionary<string, object>>();
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
-                            .ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State") ?? "None"));
+                            .ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state") ?? "None"));
                     }
                 }
 
                 // Pending states
-                factionDetail.TryGetValue("PendingStates", out object pendingStatesVal);
+                factionDetail.TryGetValue("pendingStates", out object pendingStatesVal);
                 if (pendingStatesVal != null)
                 {
-                    var pendingStatesList = (List<object>)pendingStatesVal;
-                    foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                    var pendingStatesList = ((JArray)pendingStatesVal).ToList();
+                    foreach (var pendingStateToken in pendingStatesList)
                     {
+                        var pendingState = pendingStateToken.ToObject<IDictionary<string, object>>();
                         FactionTrendingState pTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(pendingState, "State") ?? "None"),
-                            JsonParsing.getInt(pendingState, "Trend")
+                            FactionState.FromEDName(JsonParsing.getString(pendingState, "state") ?? "None"),
+                            JsonParsing.getInt(pendingState, "trend")
                         );
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
                             .PendingStates.Add(pTrendingState);
@@ -103,15 +105,16 @@ namespace EddiStarMapService
                 }
 
                 // Recovering states
-                factionDetail.TryGetValue("RecoveringStates", out object recoveringStatesVal);
+                factionDetail.TryGetValue("recoveringStates", out object recoveringStatesVal);
                 if (recoveringStatesVal != null)
                 {
-                    var recoveringStatesList = (List<object>)recoveringStatesVal;
-                    foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                    var recoveringStatesList = (JArray)recoveringStatesVal;
+                    foreach (var recoveringStateToken in recoveringStatesList)
                     {
+                        var recoveringState = recoveringStateToken.ToObject<IDictionary<string, object>>();
                         FactionTrendingState rTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "State") ?? "None"),
-                            JsonParsing.getInt(recoveringState, "Trend")
+                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "state") ?? "None"),
+                            JsonParsing.getInt(recoveringState, "trend")
                         );
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
                             .RecoveringStates.Add(rTrendingState);
