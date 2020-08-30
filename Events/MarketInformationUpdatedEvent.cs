@@ -12,6 +12,13 @@ namespace EddiEvents
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
+        static MarketInformationUpdatedEvent()
+        {
+            VARIABLES.Add("updates", "A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'");
+        }
+
+        public HashSet<string> updates { get; private set; } = new HashSet<string>();
+
         public bool inHorizons { get; private set; }
 
         public bool? allowCobraMkIV { get; private set; }
@@ -46,6 +53,19 @@ namespace EddiEvents
             this.prohibitedCommodities = prohibitedCommodities;
             this.outfittingModules = outfittingModules;
             this.shipyardModels = shipyardModels;
+
+            if (commodityQuotes != null)
+            {
+                updates.Add("market");
+            }
+            if (outfittingModules != null)
+            {
+                updates.Add("outfitting");
+            }
+            if (shipyardModels != null)
+            {
+                updates.Add("shipyard");
+            }
         }
     }
 }
