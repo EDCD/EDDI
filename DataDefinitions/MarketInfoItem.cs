@@ -145,7 +145,7 @@ namespace EddiDataDefinitions
         public CommodityMarketQuote ToCommodityMarketQuote()
         {
             var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
-            if (edName != definition?.edname)
+            if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
             {
                 // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
                 Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
