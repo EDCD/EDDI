@@ -172,10 +172,6 @@ namespace UnitTests
             // Compare actual and expected stations, less the commodities we already tested above
             expectedStation.eddnCommodityMarketQuotes = null;
             actualStation.eddnCommodityMarketQuotes = null;
-
-            var expected = JsonConvert.SerializeObject(expectedStation);
-            var actual = JsonConvert.SerializeObject(actualStation);
-
             Assert.IsTrue(expectedStation.DeepEquals(actualStation));
         }
 
