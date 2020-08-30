@@ -4,10 +4,12 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
@@ -400,7 +402,7 @@ namespace EDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (string moduleEdName in theEvent.outfittingModules)
                 {
-                    if (!Module.PowerPlayModules.Contains(moduleEdName)
+                    if (!EddiDataDefinitions.Module.PowerPlayModules.Contains(moduleEdName)
                         && (moduleEdName.StartsWith("Int_") || moduleEdName.StartsWith("Hpt_") || moduleEdName.Contains("_Armour_"))
                         && moduleEdName != "Int_PlanetApproachSuite")
                     {
@@ -477,9 +479,10 @@ namespace EDDNResponder
         {
             var client = new RestClient("https://eddn.edcd.io:4430/");
             var request = new RestRequest("upload/", Method.POST);
-            request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+            var msgBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() });
+            request.AddParameter("application/json", msgBody, ParameterType.RequestBody);
 
-            Logging.Debug("Sending " + JsonConvert.SerializeObject(body));
+            Logging.Debug("Sending " + msgBody);
 
             Thread thread = new Thread(() =>
             {
@@ -599,6 +602,42 @@ namespace EDDNResponder
                 return true;
             }
             return false;
+        }
+    }
+
+    public sealed class EDDNContractResolver : DefaultContractResolver
+    {
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+            if (property.PropertyType == typeof(CommodityBracket?))
+            {
+                // The EDDN schema requires a value of "" rather than null for commodity brackets
+                property.ValueProvider = new NullToEmptyStringValueProvider(property.ValueProvider);
+            }
+
+            return property;
+        }
+
+        sealed class NullToEmptyStringValueProvider : IValueProvider
+        {
+            private readonly IValueProvider Provider;
+
+            public NullToEmptyStringValueProvider(IValueProvider provider)
+            {
+                Provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            }
+
+            public object GetValue(object target)
+            {
+                return Provider.GetValue(target) ?? "";
+            }
+
+            public void SetValue(object target, object value)
+            {
+                Provider.SetValue(target, value);
+            }
         }
     }
 }

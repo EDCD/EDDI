@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -21,40 +22,30 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private string _edName;
 
-        [JsonProperty]
-        public string category 
-        { 
-            get => _category; 
-            set => _category = value.ToLowerInvariant()
-                .Replace("$market_category", "")
-                .Replace("_", "")
-                .Replace(";", ""); 
-        }
-        [JsonIgnore]
-        private string _category;
-        
-        // The Frontier API uses `categoryName` rather than `category`, we normalize that here.
-        [JsonProperty] // As a private property, it shall not be serialized to EDDN.
-        private protected string categoryName { set => category = value; }
-
         // Station prices
         [JsonProperty]
         public int buyPrice { get; set; }
+
         [JsonProperty]
         public int meanPrice { get; set; }
+
         [JsonProperty]
         public int sellPrice { get; set; }
 
         // Station in-stock parameter
         [JsonProperty]
         public int stock { get; set; }
-        [JsonProperty]
+
+        [JsonConverter(typeof(NullableCommodityBracketConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Include)]
         public CommodityBracket? stockBracket { get; set; } // Possible values are 0, 1, 2, 3, or "" so we use an optional enum
 
         // Station in-demand parameters
         [JsonProperty]
         public int demand { get; set; }
-        [JsonProperty]
+
+        [JsonConverter(typeof(NullableCommodityBracketConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Include)]
         public CommodityBracket? demandBracket { get; set; } // Possible values are 0, 1, 2, 3, or "" so we use an optional enum
 
         // Implement conditional property serialization for select properties (ref. https://www.newtonsoft.com/json/help/html/ConditionalProperties.htm)
@@ -62,6 +53,23 @@ namespace EddiDataDefinitions
         [JsonProperty("id")]
         public long EliteID { get; set; }
         public bool ShouldSerializeEliteID() { return false; }
+
+        // The EDDN schema does not currently permit category.
+        [JsonProperty]
+        public string category
+        {
+            get => _category;
+            set => _category = value.ToLowerInvariant()
+                .Replace("$market_category", "")
+                .Replace("_", "")
+                .Replace(";", "");
+        }
+        [JsonIgnore]
+        private string _category;
+        // The Frontier API uses `categoryName` rather than `category`, we normalize that here.
+        [JsonProperty] // As a private property, it can be deserialized but shall not be serialized to EDDN.
+        private protected string categoryName { set => category = value; }
+        public bool ShouldSerializecategory() { return false; }
 
         [JsonProperty]
         public bool consumer { get => _consumer; set { statusFlags.Add("Consumer"); _consumer = value; } }
@@ -166,6 +174,37 @@ namespace EddiDataDefinitions
             };
 
             return quote;
+        }
+    }
+
+    public class NullableCommodityBracketConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(CommodityBracket?);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanRead => false;
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                serializer.Serialize(writer, "");
+            }
+            else if (value is string s)
+            {
+                serializer.Serialize(writer, s);
+            }
+            else if (value is CommodityBracket bracket)
+            {
+                serializer.Serialize(writer, bracket);
+            }
         }
     }
 }
