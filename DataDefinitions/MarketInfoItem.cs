@@ -145,25 +145,18 @@ namespace EddiDataDefinitions
         public CommodityMarketQuote ToCommodityMarketQuote()
         {
             var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
-
-            // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
-            // The average pricing data is the only data which may reference our internal definition, and even then only to obtain an average price.
-            if (definition != null)
-            {
-                definition.avgprice = meanPrice > 0 ? meanPrice : definition.avgprice;
-            }
             if (edName != definition?.edname)
             {
                 // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
                 Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
             }
-
             if (definition is null)
             {
                 definition = new CommodityDefinition(EliteID, -1, edName, CommodityCategory.FromEDName(category), meanPrice);
             }
             var quote = new CommodityMarketQuote(definition)
             {
+                avgprice = meanPrice,
                 buyprice = buyPrice,
                 stock = stock,
                 stockbracket = stockBracket,
@@ -172,7 +165,6 @@ namespace EddiDataDefinitions
                 demandbracket = demandBracket,
                 StatusFlags = statusFlags
             };
-
             return quote;
         }
     }

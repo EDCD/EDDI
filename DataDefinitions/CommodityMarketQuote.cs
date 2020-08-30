@@ -82,8 +82,22 @@ namespace EddiDataDefinitions
         [Obsolete("Please use localizedName or InvariantName")]
         public string category => definition?.category.localizedName;
 
-        [JsonIgnore]
-        public int avgprice => definition?.avgprice ?? 0;
+        // Update the definition with the new galactic average price whenever this is set.
+        // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
+        // The average pricing data is the only data which may reference our internal definition, and even then only to obtain an average price.
+        public int avgprice
+        {
+            get => definition?.avgprice ?? 0;
+            set
+            {
+                if (definition is null)
+                {
+                    return;
+                }
+                definition.avgprice = value;
+            }
+        }
+
         public bool rare => definition?.rare ?? false;
         public HashSet<string> StatusFlags { get; set; }
 
