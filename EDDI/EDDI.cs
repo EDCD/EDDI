@@ -2698,9 +2698,9 @@ namespace EddiCore
                                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                                     profileUpdateNeeded = false;
-                                    allowMarketUpdate = false;
-                                    allowOutfittingUpdate = false;
-                                    allowShipyardUpdate = false;
+                                    allowMarketUpdate = !(stationProfile.LastStation.eddnCommodityMarketQuotes?.Count > 0);
+                                    allowOutfittingUpdate = !(stationProfile.LastStation.outfitting?.Count > 0);
+                                    allowShipyardUpdate = !(stationProfile.LastStation.ships?.Count > 0);
 
                                     break;
                                 }
