@@ -134,6 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EddiUpgrader.cs" />
+    <Compile Include="MainWindowResponder.cs" />
+    <Compile Include="MarketInfoReader.cs" />
+    <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StarSystemComboBox.cs" />
     <Page Include="App.xaml">
