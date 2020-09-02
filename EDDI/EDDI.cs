@@ -2148,16 +2148,6 @@ namespace EddiCore
             configuration.SquadronRank = rank;
             configuration.ToFile();
 
-            // Update the squadron UI data
-            Application.Current?.Dispatcher?.Invoke(() =>
-            {
-                if (Application.Current?.MainWindow != null)
-                {
-                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                }
-            });
-
             // Update the commander object, if it exists
             if (Cmdr != null)
             {
@@ -2556,10 +2546,14 @@ namespace EddiCore
         private IEnumerable<Assembly> getResponderAssemblies(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);
-            return dir.GetFiles("*Responder.dll", SearchOption.AllDirectories).ToList()
+            var responders = dir.GetFiles("*Responder.dll", SearchOption.AllDirectories)
+                .ToList();
+            //responders.AddRange(dir.GetFiles("Eddi.exe"));
+
+            return responders
                 .Select(safeLoadAssembly)
                 .Where(a => a != null)
-                .Append(Assembly.GetEntryAssembly());
+                .Append(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
