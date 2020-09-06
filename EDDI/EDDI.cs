@@ -2548,7 +2548,6 @@ namespace EddiCore
             DirectoryInfo dir = new DirectoryInfo(path);
             var responders = dir.GetFiles("*Responder.dll", SearchOption.AllDirectories)
                 .ToList();
-            //responders.AddRange(dir.GetFiles("Eddi.exe"));
 
             return responders
                 .Select(safeLoadAssembly)

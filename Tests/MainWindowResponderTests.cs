@@ -1,7 +1,10 @@
-﻿using Eddi;
+﻿using System.IO;
+using System.Reflection;
+using Eddi;
 using EddiCore;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Utilities;
 
 namespace Tests
 {
@@ -11,6 +14,8 @@ namespace Tests
         [TestMethod]
         public void WhenEDDIIsInitialized_MainWindowResponderSHOULDBePresent()
         {
+            Constants.BASE_DIR = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
             var responders = EDDI.Instance.responders;
 
             responders.Should()
