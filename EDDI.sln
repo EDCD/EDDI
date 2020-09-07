@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		images\MainProfile.jpg = images\MainProfile.jpg
 		images\OptionsPluginSupport.jpg = images\OptionsPluginSupport.jpg
 		images\OptionsVersion.jpg = images\OptionsVersion.jpg
+		postBuildTests.bat = postBuildTests.bat
 		images\ProfileOptions.jpg = images\ProfileOptions.jpg
 		images\ProfileOptionsOnLoad.jpg = images\ProfileOptionsOnLoad.jpg
 		README.md = README.md
@@ -237,9 +238,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal
