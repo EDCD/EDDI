@@ -17,7 +17,6 @@ namespace EddiDataDefinitions
         [JsonProperty("name"), JsonRequired]
         public string systemname { get; set; }
 
-        public long? EDDBID { get; set; } // The ID in EDDB
         public long? EDSMID { get; set; } // The ID in EDSM
 
         /// <summary>X co-ordinate for this system</summary>

@@ -534,7 +534,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("No information on current system");
                     return;
                 }
-                string systemUri = "https://eddb.io/system/" + EDDI.Instance.CurrentStarSystem.EDDBID;
+                string systemUri = "https://eddb.io/system/ed-address/" + EDDI.Instance.CurrentStarSystem.systemAddress;
                 OpenOrStoreURI(ref vaProxy, systemUri);
                 setStatus(ref vaProxy, "Operational");
             }
@@ -562,7 +562,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("No information on current station");
                     return;
                 }
-                string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
+                string stationUri = "https://eddb.io/station/market-id/" + thisStation.marketId;
                 OpenOrStoreURI(ref vaProxy, stationUri);
                 setStatus(ref vaProxy, "Operational");
             }

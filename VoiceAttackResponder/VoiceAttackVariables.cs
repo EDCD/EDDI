@@ -824,7 +824,6 @@ namespace EddiVoiceAttackResponder
         private static void setDetailedBodyValues(Body body, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting current stellar body information");
-            vaProxy.SetDecimal(prefix + " EDDB id", body?.EDDBID);
             vaProxy.SetText(prefix + " type", (body?.bodyType ?? BodyType.None).localizedName);
             vaProxy.SetText(prefix + " name", body?.bodyname);
             vaProxy.SetText(prefix + " short name", body?.shortname);

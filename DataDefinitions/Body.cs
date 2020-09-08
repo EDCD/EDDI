@@ -17,10 +17,7 @@ namespace EddiDataDefinitions
         public long? bodyId { get; set; }
 
         public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);
-
-        /// <summary>The ID of this body in EDDB</summary>
-        public long? EDDBID { get; set; }
-
+        
         /// <summary>The ID of this body in EDSM</summary>
         public long? EDSMID { get; set; }
 
@@ -45,10 +42,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
-
-        /// <summary>The ID of the system associated with this body in EDDB</summary>
-        public long? systemEDDBID { get; set; }
-
+        
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
         public decimal? distance { get; set; }
 

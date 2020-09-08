@@ -11,9 +11,6 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Station
     {
-        /// <summary>The ID of this station in EDDB</summary>
-        public long? EDDBID { get; set; }
-
         /// <summary>The ID of this station in EDSM</summary>
         public long? EDSMID { get; set; }
 
