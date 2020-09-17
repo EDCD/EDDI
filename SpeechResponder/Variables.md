@@ -531,8 +531,8 @@ All bodies have the following data:
 	- `rings` (when applicable) (an array of ring objects)
     - `scanned` a DateTime value that is set when the body is scanned and unset otherwise.
     - `mapped` a DateTime value that is set when the body is mapped and unset otherwise.
-    - `alreadydiscovered` whether another commander has already submitted a scan of the body to Universal Cartographics
-    - `alreadymapped` whether another commander has already submitted mapping data for the body to Universal Cartographics
+    - `alreadydiscovered` whether another commander has already submitted a scan of the body to Universal Cartographics (scan required to fill this value)
+    - `alreadymapped` whether another commander has already submitted mapping data for the body to Universal Cartographics (scan required to fill this value)
     - `estimatedvalue` the current estimated value of the body, taking into account scans and mapping.
     - `periapsis` the argument of periapsis of the body, in degrees (as applicable)
     - `tilt` the axial tilt of the body, in degrees  (as applicable)

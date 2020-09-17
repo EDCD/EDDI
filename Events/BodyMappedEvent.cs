@@ -155,9 +155,9 @@ namespace EddiEvents
 
         public DateTime? mapped => body?.mapped;
 
-        public bool alreadydiscovered => body?.alreadydiscovered ?? false;
+        public bool? alreadydiscovered => body?.alreadydiscovered;
 
-        public bool alreadymapped => body?.alreadymapped ?? false;
+        public bool? alreadymapped => body?.alreadymapped;
 
         public int probesused { get; private set; }
 

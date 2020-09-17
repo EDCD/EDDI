@@ -69,7 +69,7 @@ namespace EddiEvents
 
         public decimal? ageprobability => star.ageprobability;
 
-        public bool alreadydiscovered => star.alreadydiscovered;
+        public bool? alreadydiscovered => star.alreadydiscovered;
 
         public string bodyname => star.bodyname;
 
@@ -147,7 +147,7 @@ namespace EddiEvents
         public decimal? tiltprobability => star.tiltprobability;
 
         // Variables below are not intended to be user facing
-        public bool alreadymapped => star.alreadymapped;
+        public bool? alreadymapped => star.alreadymapped;
         public long? bodyId => star.bodyId;
         public DateTime? mapped => star.mapped;
         public List<IDictionary<string, object>> parents => star.parents;
