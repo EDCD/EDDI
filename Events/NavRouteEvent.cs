@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using System.Collections.Generic;
 
-namespace EddiNavigationMonitor
+namespace EddiEvents
 {
     public class NavRouteEvent : Event
     {

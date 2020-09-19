@@ -84,6 +84,7 @@
     <Compile Include="CommanderReputationEvent.cs" />
     <Compile Include="CarrierJumpedEvent.cs" />
     <Compile Include="GuidanceSystemEvent.cs" />
+    <Compile Include="NavRouteEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
     <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />

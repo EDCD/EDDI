@@ -57,7 +57,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NavigationMonitor.resx</DependentUpon>
     </Compile>
-    <Compile Include="NavRouteEvent.cs" />
     <Compile Include="NavRouteInfoReader.cs" />
     <Compile Include="SearchSystemComboBox.cs" />
   </ItemGroup>
