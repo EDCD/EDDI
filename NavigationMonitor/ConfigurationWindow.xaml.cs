@@ -157,7 +157,7 @@ namespace EddiNavigationMonitor
                     currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
                 navConfig.bookmarks.Add(navBookmark);
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-                EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
+                EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
             }
         }
 
@@ -180,7 +180,7 @@ namespace EddiNavigationMonitor
             NavBookmark navBookmark = new NavBookmark(systemName, system.x, system.y, system.z, null, null, stationName, isStation, null, null, landable);
             navConfig.bookmarks.Add(navBookmark);
             ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "query", systemName, null, stationName, isStation, null, null, landable));
+            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "query", systemName, null, stationName, isStation, null, null, landable));
         }
 
         private void bookmarkUpdated(object sender, DataTransferEventArgs e)
@@ -391,7 +391,7 @@ namespace EddiNavigationMonitor
                     }
 
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "update", currentSystem.systemname, currentBody?.shortname,
+                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "update", currentSystem.systemname, currentBody?.shortname,
                         navBookmark.poi, navBookmark.isstation, latitude, longitude, navBookmark.landable));
                 }
             }
@@ -440,7 +440,7 @@ namespace EddiNavigationMonitor
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
 
                 string status = isChecked ? "engaged" : "disengaged";
-                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, status, null, null, null, null, null));
+                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, status, null, null, null, null, null));
             }
         }
 

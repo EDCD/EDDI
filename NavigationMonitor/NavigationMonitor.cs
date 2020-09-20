@@ -153,11 +153,11 @@ namespace EddiNavigationMonitor
                                     if (distance < 0.5M)
                                     {
                                         navBookmark.isset = false;
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, "complete", null, null, null, null, null));
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
                                     }
                                     else
                                     {
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, "update", heading, headingError, slope, slopeError, distance));
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, distance));
                                     }
                                 }
                             }
