@@ -119,6 +119,16 @@ namespace EddiNavigationMonitor
                 }
                 landable = true;
             }
+            else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
+            {
+                if (currentStation != null)
+                {
+                    isStation = true;
+                    poi = currentStation.name;
+                    latitude = currentStatus.latitude;
+                    longitude = currentStatus.longitude;
+                }
+            }
             else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
             {
                 if (currentStation != null)
