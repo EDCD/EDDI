@@ -415,26 +415,17 @@ namespace EddiNavigationMonitor
 
         private void RemoveBookmark(NavBookmark navBookmark)
         {
-            _RemoveBookmark(navBookmark);
-        }
-
-        public void _RemoveBookmark(NavBookmark navBookmark)
-        {
-            string system = navBookmark.system.ToLowerInvariant();
-            string body = navBookmark.body?.ToLowerInvariant();
-            string poi = navBookmark.poi?.ToLowerInvariant();
             lock (bookmarksLock)
             {
-                for (int i = 0; i < bookmarks.Count; i++)
-                {
-                    if (bookmarks[i].system.ToLowerInvariant() == system
-                        && bookmarks[i].body?.ToLowerInvariant() == body
-                        && bookmarks[i].poi?.ToLowerInvariant() == poi)
-                    {
-                        bookmarks.RemoveAt(i);
-                        break;
-                    }
-                }
+                bookmarks.Remove(navBookmark);
+            }
+        }
+
+        public void _RemoveBookmark(int index)
+        {
+            lock (bookmarksLock)
+            {
+                bookmarks.RemoveAt(index);
             }
         }
 

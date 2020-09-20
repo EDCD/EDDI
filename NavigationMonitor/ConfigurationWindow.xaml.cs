@@ -284,9 +284,7 @@ namespace EddiNavigationMonitor
         private void removeBookmark(object sender, RoutedEventArgs e)
         {
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-            NavBookmark navBookmark = (NavBookmark)((Button)e.Source).DataContext;
-
+            var index = bookmarksData.SelectedIndex;
             string messageBoxText = Properties.NavigationMonitor.remove_message;
             string caption = Properties.NavigationMonitor.remove_caption;
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -295,7 +293,7 @@ namespace EddiNavigationMonitor
                 case MessageBoxResult.Yes:
                     {
                         // Remove the bookmark from the list
-                        navigationMonitor()._RemoveBookmark(navBookmark);
+                        navigationMonitor()._RemoveBookmark(index);
                         navConfig.bookmarks = navigationMonitor()?.bookmarks;
                         ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                     }
