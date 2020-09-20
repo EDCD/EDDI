@@ -136,6 +136,11 @@ namespace EddiNavigationMonitor
                     isStation = true;
                     poi = currentStation.name;
                 }
+                if (currentStatus.near_surface && currentBody != null)
+                {
+                    navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
+                    landable = currentBody?.landable ?? false;
+                }
             }
             else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
             {
