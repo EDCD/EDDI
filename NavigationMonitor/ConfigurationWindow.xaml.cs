@@ -245,9 +245,9 @@ namespace EddiNavigationMonitor
                                                 navBookmark.comment = fields[i];
                                             }
                                             break;
-                                        case "catagory":
+                                        case "category":
                                             {
-                                                navBookmark.catagory = fields[i];
+                                                navBookmark.category = fields[i];
                                             }
                                             break;
                                         case "radius":

@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
 
         public bool isstation { get; set; }
 
-        public string catagory { get; set; }
+        public string category { get; set; }
 
         public string comment { get; set; }
 
