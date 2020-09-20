@@ -334,9 +334,9 @@ namespace EddiNavigationMonitor
             Station currentStation = EDDI.Instance.CurrentStation;
             Status currentStatus = NavigationService.Instance.currentStatus;
 
-            if (e.Source is DataGrid)
+            if (e.Source is Button button)
             {
-                NavBookmark navBookmark = (NavBookmark)((DataGrid)e.Source).CurrentItem;
+                var navBookmark = (NavBookmark)button.DataContext;
 
                 // Update only if current system matches the bookmarked system
                 if (navBookmark?.system == currentSystem.systemname)
