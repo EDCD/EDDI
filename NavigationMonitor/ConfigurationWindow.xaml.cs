@@ -89,73 +89,76 @@ namespace EddiNavigationMonitor
 
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-            Body currentBody = EDDI.Instance.CurrentStellarBody;
-            Station currentStation = EDDI.Instance.CurrentStation;
-            Status currentStatus = NavigationService.Instance.currentStatus;
-
-            if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
+            if (EDDI.Instance.CurrentStarSystem != null)
             {
-                if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
-                {
-                    latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
-                    longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                    poi = navConfig.tdPOI;
-                }
-                else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
-                {
-                    latitude = currentStatus.latitude;
-                    longitude = currentStatus.longitude;
+                StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
+                Body currentBody = EDDI.Instance.CurrentStellarBody;
+                Station currentStation = EDDI.Instance.CurrentStation;
+                Status currentStatus = NavigationService.Instance.currentStatus;
 
-                    if (navConfig.tdPOI != null)
+                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
+                {
+                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                     {
-                        // Get current distance from `Touchdown` POI
-                        decimal distance = navigationMonitor().CalculateDistance(currentStatus);
-                        if (distance < 5)
+                        latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
+                        longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
+                        poi = navConfig.tdPOI;
+                    }
+                    else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
+                    {
+                        latitude = currentStatus.latitude;
+                        longitude = currentStatus.longitude;
+
+                        if (navConfig.tdPOI != null)
                         {
-                            poi = navConfig.tdPOI;
+                            // Get current distance from `Touchdown` POI
+                            decimal distance = navigationMonitor().CalculateDistance(currentStatus);
+                            if (distance < 5)
+                            {
+                                poi = navConfig.tdPOI;
+                            }
                         }
                     }
+                    landable = true;
                 }
-                landable = true;
-            }
-            else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
-            {
-                if (currentStation != null)
+                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
-                    isStation = true;
-                    poi = currentStation.name;
-                    latitude = currentStatus.latitude;
-                    longitude = currentStatus.longitude;
+                    if (currentStation != null)
+                    {
+                        isStation = true;
+                        poi = currentStation.name;
+                        latitude = currentStatus.latitude;
+                        longitude = currentStatus.longitude;
+                    }
                 }
-            }
-            else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
-            {
-                if (currentStation != null)
+                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
                 {
-                    isStation = true;
-                    poi = currentStation.name;
+                    if (currentStation != null)
+                    {
+                        isStation = true;
+                        poi = currentStation.name;
+                    }
+                    if (currentStatus.near_surface && currentBody != null)
+                    {
+                        navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
+                        landable = currentBody?.landable ?? false;
+                    }
                 }
-                if (currentStatus.near_surface && currentBody != null)
+                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                 {
-                    navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
-                    landable = currentBody?.landable ?? false;
+                    if (currentStatus.near_surface && currentBody != null)
+                    {
+                        navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
+                        landable = currentBody?.landable ?? false;
+                    }
                 }
-            }
-            else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
-            {
-                if (currentStatus.near_surface && currentBody != null)
-                {
-                    navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
-                    landable = currentBody?.landable ?? false;
-                }
-            }
 
-            NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
-                currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
-            navConfig.bookmarks.Add(navBookmark);
-            ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
+                NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
+                    currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
+                navConfig.bookmarks.Add(navBookmark);
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
+            }
         }
 
         private void bookmarkQuery(object sender, RoutedEventArgs e)
