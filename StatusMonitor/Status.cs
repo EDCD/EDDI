@@ -226,10 +226,20 @@ namespace EddiDataDefinitions
 
         [PublicAPI]
         public decimal? planetradius;
+
+        [PublicAPI]
         public decimal? oxygen; // 0..100, when on foot
+
+        [PublicAPI]
         public decimal? health; // 0..100, when on foot
+
+        [PublicAPI]
         public decimal? temperature; // kelvin, when on foot
+
+        [PublicAPI]
         public string selected_weapon; // name, when on foot
+
+        [PublicAPI]
         public decimal? gravity; // relative to 1G, when on foot
         
         // Variables calculated from event data
@@ -244,6 +254,7 @@ namespace EddiDataDefinitions
 
         [PublicAPI]
         public int? fuel_seconds { get; set; }
+        public bool gliding { get; set; }
 
         // Not intended to be user facing
 

@@ -28,7 +28,6 @@ namespace EddiStatusMonitor
         private const int pollingIntervalRelaxedMs = 5000;
 
         // Miscellaneous tracking
-        private bool gliding;
         private bool jumping;
         private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
 
@@ -314,6 +313,7 @@ namespace EddiStatusMonitor
                     // Calculated data
                     SetFuelExtras(status);
                     SetSlope(status);
+                    SetGliding(status); // Must be set after setting the slope
 
                     return status;
                 }
@@ -616,6 +616,35 @@ namespace EddiStatusMonitor
             return; // At present, fighters do not appear to consume fuel.
         }
 
+        /// <summary> Depends on slope calculations, which must be performed before this method is run </summary>
+        private void SetGliding(Status status)
+        {
+            // We are exiting supercruise
+            if (!status.gliding && lastEnteredNormalSpaceEvent != null)
+            {
+                // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
+                if (status.fsd_status == "ready"
+                    && status.slope >= -60 && currentStatus.slope <= -5
+                    && status.altitude < 100000
+                    && status.altitude < lastStatus.altitude)
+                {
+                    // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
+                    status.gliding = true;
+                }
+            }
+            if (status.gliding && status.fsd_status == "cooldown"
+                || status.hyperspace 
+                || status.supercruise 
+                || status.docked 
+                || status.landed)
+            {
+                status.gliding = false;
+            }
+        }
+
+        ///<summary> Our calculated slope may be inaccurate if we are in normal space and thrusting
+        /// in a direction other than the direction we are oriented (e.g. if pointing down towards a
+        /// planet and applying reverse thrust to raise our altitude) </summary> 
         private void SetSlope(Status status)
         {
             status.slope = null;
@@ -625,8 +654,8 @@ namespace EddiStatusMonitor
                 {
                     double square(double x) => x * x;
 
-                    double radius = (double)status.planetradius / 1000;
-                    double deltaAlt = (double)(status.altitude - lastStatus.altitude) / 1000;
+                    double radiusKm = (double)status.planetradius / 1000;
+                    double deltaAltKm = (double)(status.altitude - lastStatus.altitude) / 1000;
 
                     // Convert latitude & longitude to radians
                     double currentLat = (double)status.latitude * Math.PI / 180;
@@ -637,11 +666,12 @@ namespace EddiStatusMonitor
                     // Calculate distance traveled using Law of Haversines
                     double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
                     double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    double distance = c * radius;
+                    double distanceKm = c * radiusKm;
 
                     // Calculate the slope angle
-                    double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
-                    status.slope = Math.Round((decimal)slope, 1);
+                    var slopeRadians = Math.Atan2(deltaAltKm, distanceKm);
+                    var slopeDegrees = slopeRadians * 180 / Math.PI;
+                    status.slope = Math.Round((decimal)slopeDegrees, 1);
                 }
             }
         }
