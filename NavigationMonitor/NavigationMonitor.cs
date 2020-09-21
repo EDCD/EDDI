@@ -282,7 +282,7 @@ namespace EddiNavigationMonitor
             // Update bookmark 'set' status
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-            if (navBookmark?.system == system)
+            if (navBookmark != null && navBookmark.system == system)
             {
                 if (navBookmark.body is null && !navBookmark.isstation || !string.IsNullOrEmpty(station) && navBookmark.poi == station)
                 {
@@ -428,7 +428,7 @@ namespace EddiNavigationMonitor
 
         public void CalculatePointedToCoordinates(Status curr, ref decimal? bookmarkLatitude, ref decimal? bookmarkLongitude)
         {
-            if (curr?.slope != null)
+            if (curr?.slope != null && curr.heading != null && curr.latitude != null && curr.longitude != null && curr.altitude != null && curr.planetradius != null)
             {
                 // Convert latitude, longitude & slope to radians
                 double currLat = (double)curr.latitude * Math.PI / 180;
@@ -467,7 +467,7 @@ namespace EddiNavigationMonitor
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             double distanceKm = 0;
             
-            if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
+            if (curr?.altitude != null && curr.planetradius != null && curr.latitude != null && curr.longitude != null)
             {
                 if (latitude == null || longitude == null)
                 {
@@ -499,7 +499,7 @@ namespace EddiNavigationMonitor
         {
             double headingDegrees = 0;
 
-            if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
+            if (curr?.altitude != null && curr.latitude != null && curr.longitude != null)
             {
                 if (latitude != null && longitude != null)
                 {
