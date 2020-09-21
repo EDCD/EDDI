@@ -314,7 +314,7 @@ namespace EddiNavigationMonitor
                     routeList.Add(route[0].systemname);
                     for (int i = 0; i < route.Count - 1; i++)
                     {
-                        navRouteDistance += CalculateDistanceLy(route[i], route[i + 1]);
+                        navRouteDistance += Functions.DistanceFromStellarCoordinatesLy(route[i].x, route[i].y, route[i].z, route[i + 1].x, route[i + 1].y, route[i + 1].z) ?? 0;
                         routeList.Add(route[i + 1].systemname);
                     }
                     navDestination = route[route.Count - 1].systemname;
@@ -455,11 +455,6 @@ namespace EddiNavigationMonitor
                     bookmarkLongitude = (decimal)Math.Round(Lon * 180 / Math.PI, 4);
                 }
             }
-        }
-
-        public decimal CalculateDistanceLy(NavWaypoint curr, NavWaypoint dest)
-        {
-            return Functions.DistanceFromCoordinates(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
         }
 
         public decimal CalculateDistanceKm(Status curr, decimal? latitude = null, decimal? longitude = null)

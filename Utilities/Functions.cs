@@ -5,7 +5,7 @@ namespace Utilities
     // A collection of common functions used in code
     public class Functions
     {
-        public static decimal? DistanceFromCoordinates(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
+        public static decimal? DistanceFromStellarCoordinatesLy(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
         {
             var diffX = x1 - x2;
             var diffY = y1 - y2;

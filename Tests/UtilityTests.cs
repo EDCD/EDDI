@@ -28,7 +28,7 @@ namespace UnitTests
             const decimal y2 = -907.3125M;
             const decimal z2 = 19801.65625M;
 
-            var result = Functions.DistanceFromCoordinates(x1, y1, z1, x2, y2, z2);
+            var result = Functions.DistanceFromStellarCoordinatesLy(x1, y1, z1, x2, y2, z2);
             Assert.AreEqual(11.55M, result);
         }
 
@@ -40,7 +40,7 @@ namespace UnitTests
             const decimal y1 = -910.28125M;
             const decimal z1 = 19808.125M;
 
-            var result = Functions.DistanceFromCoordinates(x1, y1, z1, null, null, null);
+            var result = Functions.DistanceFromStellarCoordinatesLy(x1, y1, z1, null, null, null);
             Assert.IsNull(result);
         }
 

@@ -528,7 +528,7 @@ namespace EddiDataDefinitions
         public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
         {
             // Work out the distance to the system where the ship is stored if we can
-            return Functions.DistanceFromCoordinates(x, y, z, fromX, fromY, fromZ);
+            return Functions.DistanceFromStellarCoordinatesLy(x, y, z, fromX, fromY, fromZ);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
