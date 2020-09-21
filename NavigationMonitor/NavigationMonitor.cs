@@ -115,56 +115,53 @@ namespace EddiNavigationMonitor
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 if (navConfig.guidanceSystem)
                 {
-                    decimal distance = 0;
-                    decimal heading = 0;
-                    decimal headingError = 0;
-                    decimal slope = 0;
-                    decimal slopeError = 0;
-
                     NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
                     if (navBookmark?.isset ?? false)
                     {
                         StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
                         if (currentSystem?.systemname == navBookmark.system)
                         {
-
                             Status currentStatus = NavigationService.Instance.currentStatus;
 
                             // Activate guidance system when near surface of the bookmark body
-                            if (currentStatus?.near_surface ?? false)
+                            if (currentStatus != null && currentStatus.near_surface)
                             {
                                 Body currentBody = EDDI.Instance.CurrentStellarBody;
                                 if (currentBody != null && currentBody.shortname == navBookmark.body)
                                 {
-                                    heading = CalculateHeading(currentStatus, navBookmark.latitude, navBookmark.longitude);
-                                    headingError = heading - (decimal)currentStatus.heading;
-                                    distance = CalculateDistance(currentStatus, navBookmark.latitude, navBookmark.longitude);
+                                    decimal? heading = CalculateHeading(currentStatus, navBookmark.latitude, navBookmark.longitude);
+                                    decimal? headingError = heading - currentStatus.heading;
+                                    decimal? distanceKm = CalculateDistanceKm(currentStatus, navBookmark.latitude, navBookmark.longitude);
+                                    decimal? slope = null;
+                                    decimal? slopeError = null;
 
-                                    if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
+                                    // Our calculated slope from the status object is not guaranteed to be accurate if we're in normal space and not gliding
+                                    // (since we may be moving in a direction other than where we are pointing) so we disregard slope unless we're gliding.
+                                    if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE || (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE && currentStatus.gliding))
                                     {
-                                        if (currentStatus?.slope != null)
+                                        if (currentStatus?.slope != null && currentStatus.altitude != null)
                                         {
-                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude, (double)distance) * 180 / Math.PI, 4);
-                                            slopeError = slope - (decimal)currentStatus.slope;
+                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude, (double)distanceKm) * 180 / Math.PI, 4) * -1;
+                                            slopeError = slope - currentStatus.slope;
                                         }
                                     }
 
                                     // Guidance system inactive when destination reached
-                                    if (distance < 0.5M)
+                                    if (distanceKm < 0.5M)
                                     {
                                         navBookmark.isset = false;
                                         EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
                                     }
                                     else
                                     {
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, distance));
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, distanceKm));
                                     }
                                 }
                             }
                         }
                     }
                 }
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
             }
         }
 
@@ -317,7 +314,7 @@ namespace EddiNavigationMonitor
                     routeList.Add(route[0].systemname);
                     for (int i = 0; i < route.Count - 1; i++)
                     {
-                        navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                        navRouteDistance += CalculateDistanceLy(route[i], route[i + 1]);
                         routeList.Add(route[i + 1].systemname);
                     }
                     navDestination = route[route.Count - 1].systemname;
@@ -429,7 +426,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public void CalculateCoordinates(Status curr, ref decimal? latitude, ref decimal? longitude)
+        public void CalculatePointedToCoordinates(Status curr, ref decimal? bookmarkLatitude, ref decimal? bookmarkLongitude)
         {
             if (curr?.slope != null)
             {
@@ -437,39 +434,39 @@ namespace EddiNavigationMonitor
                 double currLat = (double)curr.latitude * Math.PI / 180;
                 double currLong = (double)curr.longitude * Math.PI / 180;
                 double slope = -(double)curr.slope * Math.PI / 180;
-                double altitude = (double)curr.altitude / 1000;
+                double altitudeKm = (double)curr.altitude / 1000;
 
                 // Determine minimum slope
-                double radius = (double)curr.planetradius / 1000;
-                double minSlope = Math.Acos(radius / (altitude + radius));
+                double radiusKm = (double)curr.planetradius / 1000;
+                double minSlope = Math.Acos(radiusKm / (altitudeKm + radiusKm));
                 if (slope > minSlope)
                 {
                     // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
                     double a = Math.PI / 2 - slope;
-                    double path = altitude / Math.Cos(a);
-                    double c = Math.Asin(path * Math.Sin(a) / radius);
+                    double path = altitudeKm / Math.Cos(a);
+                    double c = Math.Asin(path * Math.Sin(a) / radiusKm);
                     double heading = (double)curr.heading * Math.PI / 180;
                     double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
                     double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
                         Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
 
                     // Convert position to degrees
-                    latitude = (decimal)Math.Round(Lat * 180 / Math.PI, 4);
-                    longitude = (decimal)Math.Round(Lon * 180 / Math.PI, 4);
+                    bookmarkLatitude = (decimal)Math.Round(Lat * 180 / Math.PI, 4);
+                    bookmarkLongitude = (decimal)Math.Round(Lon * 180 / Math.PI, 4);
                 }
             }
         }
 
-        public decimal CalculateDistance(NavWaypoint curr, NavWaypoint dest)
+        public decimal CalculateDistanceLy(NavWaypoint curr, NavWaypoint dest)
         {
             return Functions.DistanceFromCoordinates(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
         }
 
-        public decimal CalculateDistance(Status curr, decimal? latitude = null, decimal? longitude = null)
+        public decimal CalculateDistanceKm(Status curr, decimal? latitude = null, decimal? longitude = null)
         {
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            double distance = 0;
-
+            double distanceKm = 0;
+            
             if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
             {
                 if (latitude == null || longitude == null)
@@ -481,7 +478,7 @@ namespace EddiNavigationMonitor
                 if (latitude != null && longitude != null)
                 {
                     double square(double x) => x * x;
-                    double radius = (double)curr.planetradius / 1000;
+                    double radiusKm = (double)curr.planetradius / 1000;
 
                     // Convert latitude & longitude to radians
                     double lat1 = (double)curr.latitude * Math.PI / 180;
@@ -492,15 +489,15 @@ namespace EddiNavigationMonitor
                     // Calculate distance traveled using Law of Haversines
                     double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(lat2) * Math.Cos(lat1) * square(Math.Sin(deltaLong / 2));
                     double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    distance = c * radius;
+                    distanceKm = c * radiusKm;
                 }
             }
-            return (decimal)distance;
+            return (decimal)distanceKm;
         }
 
         public decimal CalculateHeading(Status curr, decimal? latitude, decimal? longitude)
         {
-            double heading = 0;
+            double headingDegrees = 0;
 
             if (curr?.altitude != null && curr?.latitude != null && curr?.longitude != null)
             {
@@ -514,10 +511,11 @@ namespace EddiNavigationMonitor
                     // Calculate heading using Law of Haversines
                     double x = Math.Sin(deltaLong) * Math.Cos(lat2);
                     double y = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(deltaLong);
-                    heading = Math.Atan2(y, x) * 180 / Math.PI;
+                    var headingRadians = Math.Atan2(y, x);
+                    headingDegrees = headingRadians * 180 / Math.PI;
                 }
             }
-            return (decimal)heading;
+            return (decimal)headingDegrees;
         }
 
         public void UpdateDestinationData(string system, decimal distance)
