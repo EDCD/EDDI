@@ -112,8 +112,8 @@ namespace EddiNavigationMonitor
                         if (navConfig.tdPOI != null)
                         {
                             // Get current distance from `Touchdown` POI
-                            decimal distance = navigationMonitor().CalculateDistanceKm(currentStatus);
-                            if (distance < 5)
+                            decimal? distanceKm = NavigationMonitor.SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                            if (distanceKm < 5)
                             {
                                 poi = navConfig.tdPOI;
                             }
@@ -140,7 +140,7 @@ namespace EddiNavigationMonitor
                     }
                     if (currentStatus.near_surface && currentBody != null)
                     {
-                        navigationMonitor().CalculatePointedToCoordinates(currentStatus, ref latitude, ref longitude);
+                        NavigationMonitor.SurfaceCoordinates(currentStatus, out latitude, out longitude);
                         landable = currentBody?.landable ?? false;
                     }
                 }
@@ -148,7 +148,7 @@ namespace EddiNavigationMonitor
                 {
                     if (currentStatus.near_surface && currentBody != null)
                     {
-                        navigationMonitor().CalculatePointedToCoordinates(currentStatus, ref latitude, ref longitude);
+                        NavigationMonitor.SurfaceCoordinates(currentStatus, out latitude, out longitude);
                         landable = currentBody?.landable ?? false;
                     }
                 }
@@ -361,8 +361,8 @@ namespace EddiNavigationMonitor
                                 if (navConfig.tdPOI != null)
                                 {
                                     // Get current distance from `Touchdown` POI
-                                    decimal distance = navigationMonitor().CalculateDistanceKm(currentStatus);
-                                    if (distance < 5)
+                                    decimal? distanceKm = NavigationMonitor.SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                    if (distanceKm < 5)
                                     {
                                         navBookmark.poi = navConfig.tdPOI;
                                     }
@@ -374,7 +374,7 @@ namespace EddiNavigationMonitor
                         {
                             if (currentStatus.near_surface)
                             {
-                                navigationMonitor().CalculatePointedToCoordinates(currentStatus, ref latitude, ref longitude);
+                                NavigationMonitor.SurfaceCoordinates(currentStatus, out latitude, out longitude);
                                 navBookmark.landable = currentBody.landable ?? false;
                             }
                         }

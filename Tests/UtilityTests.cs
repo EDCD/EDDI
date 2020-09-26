@@ -9,6 +9,12 @@ namespace UnitTests
     [TestClass]
     public class UtilityTests : TestBase
     {
+        const decimal latitudeNewYork = 40.7128M;
+        const decimal longitudeNewYork = -74.0060M;
+        const decimal latitudeLondon = 51.5074M;
+        const decimal longitudeLondon = -0.1278M;
+        const decimal radiusEarthMeters = 6.371009E6M;
+
         [TestInitialize]
         public void start()
         {
@@ -28,7 +34,7 @@ namespace UnitTests
             const decimal y2 = -907.3125M;
             const decimal z2 = 19801.65625M;
 
-            var result = Functions.DistanceFromStellarCoordinatesLy(x1, y1, z1, x2, y2, z2);
+            var result = Functions.StellarDistanceLy(x1, y1, z1, x2, y2, z2);
             Assert.AreEqual(11.55M, result);
         }
 
@@ -40,7 +46,7 @@ namespace UnitTests
             const decimal y1 = -910.28125M;
             const decimal z1 = 19808.125M;
 
-            var result = Functions.DistanceFromStellarCoordinatesLy(x1, y1, z1, null, null, null);
+            var result = Functions.StellarDistanceLy(x1, y1, z1, null, null, null);
             Assert.IsNull(result);
         }
 
@@ -72,6 +78,44 @@ namespace UnitTests
 
             var result = dest?.DistanceFromStarSystem(curr);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void TestSurfaceCoordinatesFunction()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void TestSurfaceDistanceFunction()
+        { 
+            // Result from https://www.movable-type.co.uk/scripts/latlong.html: 5570 km
+            var surfaceDistanceKm = Functions.SurfaceDistanceKm(radiusEarthMeters, latitudeNewYork, longitudeNewYork, latitudeLondon, longitudeLondon);
+            Assert.AreEqual(5570.23004851831M, surfaceDistanceKm);
+        }
+
+        [TestMethod]
+        public void TestSurfaceConstantHeadingDistanceFunction()
+        {
+            // Result from https://www.movable-type.co.uk/scripts/latlong.html: 5794 km
+            var surfaceDistanceKm = Functions.SurfaceConstantHeadingDistanceKm(radiusEarthMeters, latitudeNewYork, longitudeNewYork, latitudeLondon, longitudeLondon);
+            Assert.AreEqual(5794.128935806150181553M, surfaceDistanceKm);
+        }
+
+        [TestMethod]
+        public void TestSurfaceHeadingFunction()
+        {
+            // Result from https://www.movable-type.co.uk/scripts/latlong.html: 51.2125 degrees
+            var headingDegrees = Functions.SurfaceHeadingDegrees(latitudeNewYork, longitudeNewYork, latitudeLondon, longitudeLondon);
+            Assert.AreEqual(51.2126168241972M, headingDegrees);
+        }
+
+        [TestMethod]
+        public void TestSurfaceConstantHeadingFunction()
+        {
+            // Result from https://www.movable-type.co.uk/scripts/latlong.html: 78.0441 degrees
+            var headingDegrees = Functions.SurfaceConstantHeadingDegrees(radiusEarthMeters, latitudeNewYork, longitudeNewYork, latitudeLondon, longitudeLondon);
+            Assert.AreEqual(78.0440808681045M, headingDegrees);
         }
 
         [TestMethod]

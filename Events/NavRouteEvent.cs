@@ -46,14 +46,14 @@ namespace EddiEvents
             {
                 var curr = route[i];
                 var dest = route[i + 1];
-                dist += Functions.DistanceFromStellarCoordinatesLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
+                dist += Functions.StellarDistanceLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
             }
             return dist;
         }
 
         private decimal? CalculateDirectDistance()
         {
-            return Functions.DistanceFromStellarCoordinatesLy(route[0].x, route[0].y, route[0].z, route[jumps - 1].x, route[jumps - 1].y, route[jumps - 1].z) ?? 0;
+            return Functions.StellarDistanceLy(route[0].x, route[0].y, route[0].z, route[jumps - 1].x, route[jumps - 1].y, route[jumps - 1].z) ?? 0;
         }
     }
 }

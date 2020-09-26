@@ -129,9 +129,9 @@ namespace EddiNavigationMonitor
                                 Body currentBody = EDDI.Instance.CurrentStellarBody;
                                 if (currentBody != null && currentBody.shortname == navBookmark.body)
                                 {
-                                    decimal? heading = CalculateHeading(currentStatus, navBookmark.latitude, navBookmark.longitude);
+                                    decimal? heading = SurfaceHeadingDegrees(currentStatus, navBookmark.latitude, navBookmark.longitude);
                                     decimal? headingError = heading - currentStatus.heading;
-                                    decimal? distanceKm = CalculateDistanceKm(currentStatus, navBookmark.latitude, navBookmark.longitude);
+                                    decimal? surfaceDistanceKm = SurfaceDistanceKm(currentStatus, navBookmark.latitude, navBookmark.longitude);
                                     decimal? slope = null;
                                     decimal? slopeError = null;
 
@@ -141,27 +141,27 @@ namespace EddiNavigationMonitor
                                     {
                                         if (currentStatus?.slope != null && currentStatus.altitude != null)
                                         {
-                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude, (double)distanceKm) * 180 / Math.PI, 4) * -1;
+                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude/1000, (double)surfaceDistanceKm) * 180 / Math.PI, 4) * -1;
                                             slopeError = slope - currentStatus.slope;
                                         }
                                     }
 
                                     // Guidance system inactive when destination reached
-                                    if (distanceKm < 0.5M)
+                                    if (surfaceDistanceKm < 0.5M)
                                     {
                                         navBookmark.isset = false;
                                         EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
                                     }
                                     else
                                     {
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, distanceKm));
+                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, surfaceDistanceKm));
                                     }
                                 }
                             }
                         }
                     }
                 }
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
             }
         }
 
@@ -314,7 +314,7 @@ namespace EddiNavigationMonitor
                     routeList.Add(route[0].systemname);
                     for (int i = 0; i < route.Count - 1; i++)
                     {
-                        navRouteDistance += Functions.DistanceFromStellarCoordinatesLy(route[i].x, route[i].y, route[i].z, route[i + 1].x, route[i + 1].y, route[i + 1].z) ?? 0;
+                        navRouteDistance += Functions.StellarDistanceLy(route[i].x, route[i].y, route[i].z, route[i + 1].x, route[i + 1].y, route[i + 1].z) ?? 0;
                         routeList.Add(route[i + 1].systemname);
                     }
                     navDestination = route[route.Count - 1].systemname;
@@ -426,91 +426,19 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public void CalculatePointedToCoordinates(Status curr, ref decimal? bookmarkLatitude, ref decimal? bookmarkLongitude)
+        public static void SurfaceCoordinates(Status curr, out decimal? destinationLatitude, out decimal? destinationLongitude)
         {
-            if (curr?.slope != null && curr.heading != null && curr.latitude != null && curr.longitude != null && curr.altitude != null && curr.planetradius != null)
-            {
-                // Convert latitude, longitude & slope to radians
-                double currLat = (double)curr.latitude * Math.PI / 180;
-                double currLong = (double)curr.longitude * Math.PI / 180;
-                double slope = -(double)curr.slope * Math.PI / 180;
-                double altitudeKm = (double)curr.altitude / 1000;
-
-                // Determine minimum slope
-                double radiusKm = (double)curr.planetradius / 1000;
-                double minSlope = Math.Acos(radiusKm / (altitudeKm + radiusKm));
-                if (slope > minSlope)
-                {
-                    // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
-                    double a = Math.PI / 2 - slope;
-                    double path = altitudeKm / Math.Cos(a);
-                    double c = Math.Asin(path * Math.Sin(a) / radiusKm);
-                    double heading = (double)curr.heading * Math.PI / 180;
-                    double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
-                    double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
-                        Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
-
-                    // Convert position to degrees
-                    bookmarkLatitude = (decimal)Math.Round(Lat * 180 / Math.PI, 4);
-                    bookmarkLongitude = (decimal)Math.Round(Lon * 180 / Math.PI, 4);
-                }
-            }
+            Functions.SurfaceCoordinates(curr.altitude, curr.planetradius, curr.slope, curr.heading, curr.latitude, curr.longitude, out destinationLatitude, out destinationLongitude);
         }
 
-        public decimal CalculateDistanceKm(Status curr, decimal? latitude = null, decimal? longitude = null)
+        public static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            double distanceKm = 0;
-            
-            if (curr?.altitude != null && curr.planetradius != null && curr.latitude != null && curr.longitude != null)
-            {
-                if (latitude == null || longitude == null)
-                {
-                    latitude = navConfig?.tdLat;
-                    longitude = navConfig?.tdLong;
-                }
-
-                if (latitude != null && longitude != null)
-                {
-                    double square(double x) => x * x;
-                    double radiusKm = (double)curr.planetradius / 1000;
-
-                    // Convert latitude & longitude to radians
-                    double lat1 = (double)curr.latitude * Math.PI / 180;
-                    double lat2 = (double)latitude * Math.PI / 180;
-                    double deltaLat = lat2 - lat1;
-                    double deltaLong = (double)(longitude - curr.longitude) * Math.PI / 180;
-
-                    // Calculate distance traveled using Law of Haversines
-                    double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(lat2) * Math.Cos(lat1) * square(Math.Sin(deltaLong / 2));
-                    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    distanceKm = c * radiusKm;
-                }
-            }
-            return (decimal)distanceKm;
+            return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
 
-        public decimal CalculateHeading(Status curr, decimal? latitude, decimal? longitude)
+        public static decimal? SurfaceHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            double headingDegrees = 0;
-
-            if (curr?.altitude != null && curr.latitude != null && curr.longitude != null)
-            {
-                if (latitude != null && longitude != null)
-                {
-                    // Convert latitude & longitude to radians
-                    double lat1 = (double)curr.latitude * Math.PI / 180;
-                    double lat2 = (double)latitude * Math.PI / 180;
-                    double deltaLong = (double)(longitude - curr.longitude) * Math.PI / 180;
-
-                    // Calculate heading using Law of Haversines
-                    double x = Math.Sin(deltaLong) * Math.Cos(lat2);
-                    double y = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(deltaLong);
-                    var headingRadians = Math.Atan2(y, x);
-                    headingDegrees = headingRadians * 180 / Math.PI;
-                }
-            }
-            return (decimal)headingDegrees;
+            return Functions.SurfaceHeadingDegrees(curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
 
         public void UpdateDestinationData(string system, decimal distance)

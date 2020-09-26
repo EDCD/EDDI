@@ -1035,7 +1035,7 @@ namespace EddiNavigationService
 
         private decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
-            return Functions.DistanceFromCoordinates(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
+            return Functions.StellarDistanceLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
         }
 
         private decimal CalculateRouteDistance(string missionsRouteList)
