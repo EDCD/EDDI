@@ -120,7 +120,9 @@
   <data name="clear_route_button" xml:space="preserve">
     <value>Effacer la destination</value>
   </data>
-  
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Efface l'itinéraire des missions et le système de destination.</value>
+  </data>
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Effacer la destination:</value>
   </data>
