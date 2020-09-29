@@ -1670,22 +1670,49 @@
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
   
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Traitement agronomique</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
   
   
   
+  <data name="Tritium" xml:space="preserve">
+    <value>Tritium</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Fluide de mollusque</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Tissu mou de mollusque</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Tissu cérébral de mollusque</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
   
   
   
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Particules d'anomalie</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Membrane de mollusque</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Mycélium de mollusque</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Spores de mollusque</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
   
   
   
