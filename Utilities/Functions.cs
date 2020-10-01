@@ -94,19 +94,23 @@ namespace Utilities
             outputLongitude = null;
             if (altitudeMeters != null && planetRadiusMeters != null && slopeDegrees != null && headingDegrees != null && currentLatitude != null && currentLongitude != null)
             {
+                // Normalize slope to between 0 and 360°
+                while (slopeDegrees < 0) { slopeDegrees += 360; }
+                while (slopeDegrees > 360) { slopeDegrees -= 360; }
+                
                 // Convert latitude, longitude & slope to radians
                 double currLat = (double)currentLatitude * Math.PI / 180;
                 double currLong = (double)currentLongitude * Math.PI / 180;
-                double slope = (double)slopeDegrees * Math.PI / 180;
+                double slopeRadians = (double)slopeDegrees * Math.PI / 180;
                 double altitudeKm = (double)altitudeMeters / 1000;
 
                 // Determine minimum slope
                 double radiusKm = (double)planetRadiusMeters / 1000;
-                double minSlope = Math.Acos(radiusKm / (altitudeKm + radiusKm));
-                if (slope > minSlope)
+                double minSlopeRadians = Math.Acos(radiusKm / (altitudeKm + radiusKm));
+                if (slopeRadians > minSlopeRadians)
                 {
                     // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
-                    double a = Math.PI / 2 - slope;
+                    double a = Math.PI / 2 - slopeRadians;
                     double path = altitudeKm / Math.Cos(a);
                     double c = Math.Asin(path * Math.Sin(a) / radiusKm);
                     double heading = (double)headingDegrees * Math.PI / 180;

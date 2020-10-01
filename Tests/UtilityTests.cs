@@ -83,7 +83,16 @@ namespace UnitTests
         [TestMethod]
         public void TestSurfaceCoordinatesFunction()
         {
-            throw new NotImplementedException();
+            var altitudeMeters = 41113M;
+            var planetRadiusMeters = 2379606M;
+            var slopeDegrees = 322.3M;
+            var headingDegrees = 110M;
+            var currentLatitude = 51.999325M;
+            var currentLongitude = -65.398773M;
+
+            Functions.SurfaceCoordinates(altitudeMeters, planetRadiusMeters, slopeDegrees, headingDegrees, currentLatitude, currentLongitude, out decimal? outputLatitude, out decimal? outputLongitude);
+            Assert.AreEqual(52.421M, outputLatitude);
+            Assert.AreEqual(-67.354M, outputLongitude);
         }
 
         [TestMethod]
