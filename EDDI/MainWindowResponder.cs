@@ -41,6 +41,7 @@ namespace Eddi
         public void Stop() { }
 
         public void Reload() { }
+        public System.Windows.Controls.UserControl ConfigurationTabItem() => null;
 
         public void Handle(Event theEvent)
         {
@@ -49,22 +50,94 @@ namespace Eddi
 
             switch (theEvent)
             {
-                case SquadronStatusEvent statusEvent:
-                    eventSquadronStatus(statusEvent);
+                case SquadronStatusEvent squadronStatus:
+                    eventSquadronStatus(squadronStatus);
                     break;
-                case SquadronRankEvent rankEvent:
-                    eventSquadronRank(rankEvent);
+                case SquadronRankEvent squadronRank:
+                    eventSquadronRank(squadronRank);
+                    break;
+                case CarrierJumpedEvent carrierJumped:
+                    updateSquadronFactionDropDown(carrierJumped.factions);
+                    break;
+                case LocationEvent location:
+                    updateSquadronFactionDropDown(location.factions);
+                    break;
+                case JumpedEvent jumped:
+                    updateSquadronFactionDropDown(jumped.factions);
                     break;
                 default:
                     break;
             }
         }
 
-        public System.Windows.Controls.UserControl ConfigurationTabItem() => null;
+        private void updateSquadronFactionDropDown(IEnumerable<Faction> factions)
+        {
+            //Update the squadron faction
+            var configuration = EDDIConfiguration.FromFile();
+            MainWindow.squadronFactionDropDown.SelectedItem = configuration.SquadronFaction;
+
+            // Update system, allegiance, & power when in squadron home system
+            var currentSystem = EDDI.Instance.CurrentStarSystem;
+
+            var squadronFaction = factions.FirstOrDefault(f =>
+                (bool)f.presences.
+                    FirstOrDefault(p => p.systemName == currentSystem.systemname)?.squadronhomesystem || f.squadronfaction);
+
+            if (squadronFaction != null)
+            {
+                MainWindow.squadronSystemDropDown.Text = currentSystem.systemname;
+                MainWindow.ConfigureSquadronFactionOptions(configuration);
+            }
+
+            // Update the squadron power, if changed
+            var power = Power.FromName(currentSystem?.power);
+            if (power == null || power == configuration.SquadronPower)
+            {
+                return;
+            }
+
+            MainWindow.squadronPowerDropDown.SelectedItem = power.localizedName;
+            MainWindow.ConfigureSquadronPowerOptions(configuration);
+        }
+
+        //private void updateSquadronFactionDropDown()
+        //{
+        //    EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+        //    MainWindow.squadronFactionDropDown.SelectedItem = configuration.SquadronFaction;
+
+        //    var currentSystem = EDDI.Instance.CurrentStarSystem;
+
+        //    // Check if current system is inhabited by or HQ for squadron faction
+        //    var squadronFaction = factions.FirstOrDefault(f =>
+        //        (bool)f.presences.
+        //            FirstOrDefault(p => p.systemName == currentSystem.systemname)?.squadronhomesystem || f.squadronfaction);
+        //    if (squadronFaction != null)
+        //    {
+        //        MainWindow.squadronFactionDropDown.SelectedItem = squadronFaction.name;
+        //    }
+        //}
 
         private void eventSquadronStatus(SquadronStatusEvent theEvent)
         {
-
+            var configuration = EDDIConfiguration.FromFile();
+            switch (theEvent.status)
+            {
+                case "created":
+                    MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                    MainWindow.squadronRankDropDown.SelectedItem = configuration.SquadronRank.localizedName;
+                    configuration = MainWindow.resetSquadronRank(configuration);
+                    break;
+                case "joined":
+                    MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                    break;
+                case "disbanded":
+                case "kicked":
+                case "left":
+                    MainWindow.eddiSquadronNameText.Text = string.Empty;
+                    MainWindow.eddiSquadronIDText.Text = string.Empty;
+                    configuration = MainWindow.resetSquadronRank(configuration);
+                    break;
+            }
         }
 
         private void eventSquadronRank(SquadronRankEvent theEvent)
