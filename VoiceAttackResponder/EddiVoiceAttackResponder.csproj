@@ -98,6 +98,10 @@
       <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
       <Name>EddiCrimeMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj">
+      <Project>{28dc25d7-4dfd-4a77-b4ff-b9badb711ecb}</Project>
+      <Name>EddiCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
       <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
       <Name>EddiInaraService</Name>

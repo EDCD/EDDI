@@ -1,10 +1,4 @@
-﻿using EddiCompanionAppService;
-using EddiDataDefinitions;
-using EddiDataProviderService;
-using EddiEvents;
-using EddiSpeechService;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +8,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using EddiCompanionAppService;
+using EddiDataDefinitions;
+using EddiDataProviderService;
+using EddiEvents;
+using EddiSpeechService;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiCore
@@ -2491,13 +2490,13 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format((string) Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format((string) Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }

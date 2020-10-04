@@ -32,8 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AddIn.Contract" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,7 +50,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EDDI.cs" />
+    <Compile Include="EDDIConfiguration.cs" />
+    <Compile Include="EDDIMonitor.cs" />
+    <Compile Include="EDDIResponder.cs" />
+    <Compile Include="EliteConfiguration.cs" />
+    <Compile Include="MarketInfoReader.cs" />
+    <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShipyardInfoReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
+      <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
+      <Name>EddiCompanionAppService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
+      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Name>EddiDataDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
+      <Project>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</Project>
+      <Name>EddiDataProviderService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Events\EddiEvents.csproj">
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Name>EddiEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
+      <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
+      <Name>EddiSpeechService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

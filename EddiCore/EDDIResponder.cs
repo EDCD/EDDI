@@ -1,6 +1,6 @@
-﻿using EddiEvents;
-using System.AddIn.Pipeline;
-using System.Windows.Controls;
+﻿using System.AddIn.Pipeline;
+using System.Web.UI;
+using EddiEvents;
 
 namespace EddiCore
 {

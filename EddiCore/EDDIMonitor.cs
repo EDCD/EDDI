@@ -1,7 +1,7 @@
-﻿using EddiEvents;
+﻿using System.Collections.Generic;
+using System.Web.UI;
+using EddiEvents;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Windows.Controls;
 
 namespace EddiCore
 {
