@@ -938,7 +938,7 @@ namespace Eddi
             {
                 upgradeButton.Visibility = Visibility.Collapsed;
                 var capiState = CompanionAppService.Instance.CurrentState;
-                if (!EDDI.running)
+                if (!EDDI.IsRunning)
                 {
                     statusText.Text = Properties.EddiResources.safe_mode;
                 }
