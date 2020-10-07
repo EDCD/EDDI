@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Web.UI;
+using System.Windows.Controls;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 

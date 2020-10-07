@@ -1,5 +1,5 @@
 ﻿using System.AddIn.Pipeline;
-using System.Web.UI;
+using System.Windows.Controls;
 using EddiEvents;
 
 namespace EddiCore
