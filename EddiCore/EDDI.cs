@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -29,6 +30,7 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
+ 
         private static bool running = true;
         public static bool IsRunning => running;
 
@@ -2405,7 +2407,8 @@ namespace EddiCore
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Eddi.Properties.EddiResources.Commander;
+                var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+                Cmdr.title = rm.GetString("Commander");
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -2491,13 +2494,16 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format((string) Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+
+                    string msg = string.Format(rm.GetString("problem_load_monitor_file"), dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format((string) Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+                    string msg = string.Format(rm.GetString("problem_load_monitor"), $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
