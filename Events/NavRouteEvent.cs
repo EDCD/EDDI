@@ -28,7 +28,9 @@ namespace EddiEvents
 
         public List<NavWaypoint> route { get; }
 
-        public int jumps => route.Count;
+        // The route includes the originating star system - we need this to calculate 
+        // distances but it should not be included in the jump count.
+        public int jumps => route.Count - 1;
 
         public decimal? distance => CalculateTotalDistance();
 
@@ -42,7 +44,7 @@ namespace EddiEvents
         private decimal? CalculateTotalDistance()
         {
             decimal? dist = 0M;
-            for (int i = 0; i < jumps - 1; i++)
+            for (int i = 0; i < jumps; i++)
             {
                 var curr = route[i];
                 var dest = route[i + 1];
@@ -53,7 +55,7 @@ namespace EddiEvents
 
         private decimal? CalculateDirectDistance()
         {
-            return Functions.StellarDistanceLy(route[0].x, route[0].y, route[0].z, route[jumps - 1].x, route[jumps - 1].y, route[jumps - 1].z) ?? 0;
+            return Functions.StellarDistanceLy(route[0].x, route[0].y, route[0].z, route[jumps].x, route[jumps].y, route[jumps].z) ?? 0;
         }
     }
 }
