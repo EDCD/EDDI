@@ -4,7 +4,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
-using EddiStatusMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,27 +21,20 @@ namespace EddiNavigationMonitor
 {
     public class NavigationMonitor : EDDIMonitor
     {
-        // A token source so that we can cancel the guidance system when desired
-        private CancellationTokenSource guidanceCancellationTokenSource = new CancellationTokenSource();
-
         // Observable collection for us to handle changes
-        public ObservableCollection<NavBookmark> bookmarks { get; private set; }
+        public ObservableCollection<NavBookmark> bookmarks;
         private static readonly object bookmarksLock = new object();
 
-        private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
+        private NavigationMonitorConfiguration navConfig;
+        private PlanetaryGuidance planetaryGuidance;
 
         // Navigation route data
         public string navDestination;
         public string navRouteList;
         public decimal navRouteDistance;
         private DateTime updateDat;
-        private bool guidanceEngaged;
 
         public static event EventHandler BookmarksUpdatedEvent;
-
-        private static readonly object statusLock = new object();
-        public Status currentStatus { get; private set; }
-        private Status lastStatus { get; set; }
 
         public string MonitorName()
         {
@@ -68,44 +59,15 @@ namespace EddiNavigationMonitor
         public NavigationMonitor()
         {
             bookmarks = new ObservableCollection<NavBookmark>();
+            navConfig = new NavigationMonitorConfiguration();
             BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
-
-            StatusMonitor.StatusUpdatedEvent += (s, e) =>
-            {
-                if (s is Status status)
-                {
-                    lock (statusLock)
-                    {
-                        OnStatusUpdated(status);
-                    }
-                }
-            };
             initializeNavigationMonitor();
-        }
-
-        private void OnStatusUpdated(Status status)
-        {
-            lastStatus = currentStatus;
-            currentStatus = status;
-
-            if (lastStatus != null && currentStatus != null)
-            {
-                if (currentStatus.near_surface && !lastStatus.near_surface)
-                {
-                    updateDat = status.timestamp;
-                    EngageGuidanceSystem(EDDI.Instance.CurrentStarSystem?.systemname, status.bodyname);
-                }
-                else if (lastStatus.near_surface && !currentStatus.near_surface)
-                {
-                    updateDat = status.timestamp;
-                    DisengageGuidanceSystem();
-                }
-            }
         }
 
         public void initializeNavigationMonitor()
         {
             readBookmarks();
+            planetaryGuidance = new PlanetaryGuidance(ref navConfig, ref bookmarks);
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -133,7 +95,7 @@ namespace EddiNavigationMonitor
 
         public void Stop()
         {
-            guidanceCancellationTokenSource.Cancel();
+            planetaryGuidance.StopGuidance();
         }
 
         public void Reload()
@@ -190,10 +152,6 @@ namespace EddiNavigationMonitor
             {
                 handleNavRouteEvent(navRouteEvent);
             }
-            else if(@event is SRVTurretDeployableEvent srvTurretDeployableEvent)
-            {
-                handleSRVTurretDeployableEvent(srvTurretDeployableEvent);
-            }
         }
 
         public void PostHandle(Event @event)
@@ -208,18 +166,18 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event) 
+        private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
         {
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
                 if (@event.isset)
                 {
-                    EngageGuidanceSystem(@event.system, @event.body);
+                    planetaryGuidance.TryEngageGuidanceSystem(@event.system, @event.body);
                 }
                 else
                 {
-                    DisengageGuidanceSystem();
+                    planetaryGuidance.DisengageGuidanceSystem();
                 }
             }
         }
@@ -337,109 +295,6 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void handleSRVTurretDeployableEvent(SRVTurretDeployableEvent @event) 
-        {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                if (@event.deployable)
-                {
-                    EngageGuidanceSystem(EDDI.Instance.CurrentStarSystem?.systemname, EDDI.Instance.CurrentStellarBody.bodyname);
-                }
-                else
-                {
-                    DisengageGuidanceSystem();
-                }
-            }
-        }
-
-        private void DisengageGuidanceSystem()
-        {
-            if (guidanceEngaged)
-            {
-                guidanceEngaged = false;
-                guidanceCancellationTokenSource.Cancel();
-                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "disengaged", null, null, null, null, null));
-            }
-        }
-
-        private void EngageGuidanceSystem(string systemname, string bodyname)
-        {
-            // Find a guidance-eligible bookmark that matches a given systemname and bodyname, if any
-            var navBookmark = bookmarks.FirstOrDefault(b =>
-                b.isset &&
-                string.Equals(b.systemname, systemname, StringComparison.InvariantCultureIgnoreCase) &&
-                string.Equals(b.bodyname, bodyname, StringComparison.InvariantCultureIgnoreCase) &&
-                b.latitude != null &&
-                b.longitude != null);
-            if (navBookmark != null)
-            {
-                // Activate guidance system when near an eligible bookmark
-                EngageGuidanceSystem(navBookmark);
-            }
-        }
-
-        private void EngageGuidanceSystem(NavBookmark navBookmark)
-        {
-            guidanceCancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => GuidanceSystem(navBookmark), guidanceCancellationTokenSource.Token);
-        }
-
-        private void GuidanceSystem(NavBookmark navBookmark)
-        {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            if (navBookmark is null || !navConfig.guidanceSystemEnabled) { return; }
-
-            // Wait as needed until our status also shows us near the surface of the body
-            while (currentStatus == null || !currentStatus.near_surface || navBookmark.bodyname != currentStatus.bodyname)
-            {
-                Thread.Sleep(250);
-            }
-
-            while (navConfig.guidanceSystemEnabled && navBookmark.isset && navBookmark.bodyname == currentStatus.bodyname)
-            {
-                // Guidance system is active and tracking a bookmark.
-                if (!guidanceEngaged)
-                {
-                    guidanceEngaged = true;
-                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "engaged", null, null, null, null, null));
-                }
-
-                // Determine our distance
-                decimal? surfaceDistanceKm = SurfaceDistanceKm(currentStatus, navBookmark?.latitude, navBookmark?.longitude);
-                if (surfaceDistanceKm < 3.0M)
-                {
-                    // We've arrived - guidance system deactivated
-                    guidanceEngaged = false;
-                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
-                    return;
-                }
-
-                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE || (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE && currentStatus.gliding))
-                {
-                    // Determine our heading
-                    decimal? heading = SurfaceHeadingDegrees(currentStatus, navBookmark?.latitude, navBookmark?.longitude);
-                    decimal? headingError = heading - currentStatus?.heading;
-
-                    // Determine our slope
-                    // Our calculated slope from the status object is not guaranteed to be accurate if we're in normal space and not gliding
-                    // (since we may be moving in a direction other than where we are pointing) so we disregard slope unless we're gliding.
-                    decimal? slope = null;
-                    decimal? slopeError = null;
-                    if (currentStatus.near_surface && currentStatus?.slope != null && currentStatus.altitude != null && surfaceDistanceKm != null)
-                    {
-                        var altitudeKm = (double)currentStatus.altitude / 1000;
-                        slope = (decimal)Math.Round(Math.Atan2(altitudeKm, (double)surfaceDistanceKm) * 180 / Math.PI, 4) * -1;
-                        slopeError = slope - currentStatus.slope;
-                    }
-
-                    // We're already navigating to this bookmark, send an update event
-                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, surfaceDistanceKm));
-                    Thread.Sleep(3000);
-                }
-            }
-        }
-
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
@@ -510,21 +365,6 @@ namespace EddiNavigationMonitor
             {
                 bookmarks.RemoveAt(index);
             }
-        }
-
-        public static void SurfaceCoordinates(Status curr, out decimal? destinationLatitude, out decimal? destinationLongitude)
-        {
-            Functions.SurfaceCoordinates(curr.altitude, curr.planetradius, curr.slope, curr.heading, curr.latitude, curr.longitude, out destinationLatitude, out destinationLongitude);
-        }
-
-        public static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
-        {
-            return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
-        }
-
-        public static decimal? SurfaceHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
-        {
-            return Functions.SurfaceHeadingDegrees(curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
 
         public void UpdateDestinationData(string system, decimal distance)
