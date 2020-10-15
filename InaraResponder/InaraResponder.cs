@@ -1354,7 +1354,7 @@ namespace EddiInaraResponder
             // Adds star system permit for the commander. You do not need to handle permits granted for the 
             // Pilots Federation or Navy rank promotion, but you should handle any other ways (like mission 
             // rewards).
-            if (@event.permitsawarded.Count > 0)
+            if (@event.permitsawarded?.Count > 0)
             {
                 foreach (string systemName in @event.permitsawarded)
                 {
