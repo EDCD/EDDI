@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EddiDataDefinitions;
 
 namespace EddiEvents
 {
@@ -13,34 +14,50 @@ namespace EddiEvents
 
         static GuidanceSystemEvent()
         {
-            VARIABLES.Add("status", "The status of the guidance system ('engaged', disengaged', 'update')");
-            VARIABLES.Add("heading", "The required heading to the POI");
-            VARIABLES.Add("headingError", "The error in actual heading to required POI heading");
-            VARIABLES.Add("slope", "The required slope to the POI");
-            VARIABLES.Add("slopeError", "The error in actual slope to required POI slope");
-            VARIABLES.Add("distance", "The distance to the POI");
+            VARIABLES.Add("poi", "The POI name of the destination, if set");
+            VARIABLES.Add("shortbodyname", "The short body name of the destination");
+            VARIABLES.Add("status", "The status of the guidance system ('engaged', disengaged', 'update', 'complete')");
+            VARIABLES.Add("heading", "The required heading to the POI in degrees");
+            VARIABLES.Add("headingerror", "The error in actual heading to required POI heading");
+            VARIABLES.Add("slope", "The required slope to the POI in degrees");
+            VARIABLES.Add("slopeerror", "The error in actual slope to required POI slope");
+            VARIABLES.Add("distance", "The distance to the POI in kilometers");
         }
+
+        public string poi { get; private set; }
+
+        public string shortbodyname { get; private set; }
 
         public string status { get; private set; }
 
         public decimal? heading { get; private set; }
 
-        public decimal? headingError { get; private set; }
+        public decimal? headingerror { get; private set; }
 
         public decimal? slope { get; private set; }
 
-        public decimal? slopeError { get; private set; }
+        public decimal? slopeerror { get; private set; }
 
         public decimal? distance { get; private set; }
 
-        public GuidanceSystemEvent(DateTime timestamp, string status, decimal? heading, decimal? headingError, decimal? slope, decimal? slopeError, decimal? distance) : base(timestamp, NAME)
+        public GuidanceSystemEvent(DateTime timestamp, GuidanceStatus status, NavBookmark bookmark = null, decimal? heading = null, decimal? headingError = null, decimal? slope = null, decimal? slopeError = null, decimal? distance = null) : base(timestamp, NAME)
         {
-            this.status = status;
+            this.poi = bookmark?.poi;
+            this.shortbodyname = bookmark?.bodyshortname;
+            this.status = status.ToString();
             this.heading = heading;
-            this.headingError = headingError;
+            this.headingerror = headingError;
             this.slope = slope;
-            this.slopeError = slopeError;
+            this.slopeerror = slopeError;
             this.distance = distance;
         }
+    }
+
+    public enum GuidanceStatus
+    {
+        complete,
+        disengaged,
+        engaged,
+        update
     }
 }

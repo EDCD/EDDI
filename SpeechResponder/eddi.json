@@ -1027,7 +1027,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{set yawError to 10}\r\n{set pitchError to 10}\r\n\r\n{if event.status = \"update\":\r\n    {if event.headingerror && abs(event.headingerror) > yawError:\r\n        Turn to {round(event.heading)} degrees.\r\n    |elif event.slopeerror && abs(event.slopeerror) > pitchError && event.slope < -15:\r\n        Pitch to {round(event.slope)} degrees.\r\n    }\r\n|elif event.status = \"engaged\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    {if event.poi:\r\n        Guidance to {event.poi} engaged.\r\n    |else:\r\n        Guidance to body {event.shortbodyname} engaged.\r\n    }\r\n|elif event.status = \"disengaged\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    Guidance disengaged.\r\n|elif event.status = \"complete\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    Guidance complete.\r\n}",
       "default": true,
       "name": "Guidance system",
       "description": "Triggered when the guidance system parameters have been updated"
@@ -1621,7 +1621,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Set to 0 to disable or set to 1 to enable optional parameters }\r\n{set reportDestination to 1}\r\n{set reportDistance to 0}\r\n{set reportJumps to 1}\r\n\r\n{_ Set optional details text from optional parameter values }\r\n{set details to []}\r\n{if reportJumps:\r\n   {set jumpDesc to: {event.jumps} jumps}\r\n   {set details to cat(details, [jumpDesc])}\r\n}\r\n{if reportDistance:\r\n   {set distanceDesc to: {round(event.distance)} light years}\r\n   {set details to cat(details, [distanceDesc])}\r\n}\r\n\r\n{_ Begin speaking }\r\nCourse {OneOf(\"laid in\", \"set\")}\r\n{if reportDestination:\r\n    for {P(event.route[event.jumps - 1].systemname)}{if len(details) > 0:,}\r\n}\r\n{if len(details) > 0:\r\n    {List(details)} {OneOf(\"to go\", \"remain\")}\r\n}.",
+      "script": "{_ Set to 0 to disable or set to 1 to enable optional parameters }\r\n{set reportDestination to 1}\r\n{set reportDistance to 0}\r\n{set reportJumps to 1}\r\n\r\n{_ Set optional details text from optional parameter values }\r\n{set details to []}\r\n{if reportJumps:\r\n   {set jumpDesc to: {event.jumps} jumps}\r\n   {set details to cat(details, [jumpDesc])}\r\n}\r\n{if reportDistance:\r\n   {set distanceDesc to: {round(event.distance)} light years}\r\n   {set details to cat(details, [distanceDesc])}\r\n}\r\n\r\n{_ Begin speaking }\r\nCourse {OneOf(\"laid in\", \"set\")}\r\n{if reportDestination:\r\n    for {P(event.route[event.jumps].systemname)}{if len(details) > 0:,}\r\n}\r\n{if len(details) > 0:\r\n    {List(details)} {OneOf(\"to go\", \"remain\")}\r\n}.",
       "default": true,
       "name": "Nav route",
       "description": "Triggered when the navigation route is updated"

@@ -73,7 +73,7 @@ namespace EddiNavigationService
             {
                 StopGuidance();
                 guidanceStatus = completed ? GuidanceStatus.complete : GuidanceStatus.disengaged;
-                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus, null, null, null, null, null));
+                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus));
             }
         }
 
@@ -137,7 +137,7 @@ namespace EddiNavigationService
                         {
                             // Guidance system is active and tracking a bookmark where it wasn't before.
                             guidanceStatus = GuidanceStatus.engaged;
-                            EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus, null, null, null, null, null));
+                            EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus, navBookmark));
                         }
 
                         // Update guidance
@@ -178,7 +178,7 @@ namespace EddiNavigationService
             if (headingVariation < 2 && headingError > slopeError) { return; }
 
             var trueDistanceKm = (decimal?)Math.Sqrt((double)(surfaceDistanceKm * surfaceDistanceKm + altitudeKm * altitudeKm));
-            EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus, heading, headingError, slope, slopeError, trueDistanceKm));
+            EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, guidanceStatus, navBookmark, heading, headingError, slope, slopeError, trueDistanceKm));
         }
 
         private static decimal? HeadingError(decimal? heading1, decimal? heading2)
