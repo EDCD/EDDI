@@ -2553,11 +2553,18 @@ namespace EddiCore
                         {
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
-                                Logging.Debug("Instantiating monitor plugin at " + file.FullName);
-                                EDDIMonitor monitor = type.InvokeMember(null,
-                                                           BindingFlags.CreateInstance,
-                                                           null, null, null) as EDDIMonitor;
-                                monitors.Add(monitor);
+                                try
+                                {
+                                    Logging.Debug("Instantiating monitor plugin at " + file.FullName);
+                                    EDDIMonitor monitor = type.InvokeMember(null,
+                                                               BindingFlags.CreateInstance,
+                                                               null, null, null) as EDDIMonitor;
+                                    monitors.Add(monitor);
+                                }
+                                catch (TargetInvocationException)
+                                {
+                                    Logging.Warn($"Error loading {file.Name}. Failed to load {type.Name} from {type.Assembly}.");
+                                }
                             }
                         }
                     }
