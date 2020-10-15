@@ -325,4 +325,8 @@
     <value>Debris Field</value>
     <comment>Debris field</comment>
   </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Other Surface Signal</value>
+    <comment>Other Surface Signal</comment>
+  </data>
 </root>

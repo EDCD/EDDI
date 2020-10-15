@@ -54,6 +54,7 @@
             var Guardian = new SignalSource("SAA_SignalType_Guardian");
             var Human = new SignalSource("SAA_SignalType_Human");
             var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
+            var Other = new SignalSource("SAA_SignalType_Other");
 
             var AncientGuardianRuins = new SignalSource("Ancient");
             var GuardianStructureT1 = new SignalSource("Ancient_Tiny_001");
