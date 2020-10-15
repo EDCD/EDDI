@@ -325,5 +325,8 @@
     <value>Ammasso di Detriti</value>
     <comment>Debris field</comment>
   </data>
-  
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Segnali di superficie di altro tipo</value>
+    <comment>Other Surface Signal</comment>
+  </data>
 </root>
