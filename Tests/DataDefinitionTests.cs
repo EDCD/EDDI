@@ -4,7 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rollbar.DTOs;
+using EddiEvents;
+using EddiJournalMonitor;
 using Tests.Properties;
 using Utilities;
 using Body = EddiDataDefinitions.Body;
@@ -469,6 +470,32 @@ namespace UnitTests
         {
             DataScan dataScan = DataScan.FromEDName("$Datascan_DataPoint;");
             Assert.AreEqual("Data Point", dataScan.invariantName);
+        }
+
+        [TestMethod]
+        public void TestSystemFactionParsing()
+        {
+            string line = @"{ ""timestamp"":""2020-05-05T06:02:31Z"", ""event"":""FSDJump"", ""StarSystem"":""HIP 19072"", ""SystemAddress"":525873416523, ""StarPos"":[-54.28125,-121.03125,-323.06250], ""SystemAllegiance"":""Alliance"", ""SystemEconomy"":""$economy_Service;"", ""SystemEconomy_Localised"":""Service"", ""SystemSecondEconomy"":""$economy_Undefined;"", ""SystemSecondEconomy_Localised"":""Unknown"", ""SystemGovernment"":""$government_Democracy;"", ""SystemGovernment_Localised"":""Democracy"", ""SystemSecurity"":""$SYSTEM_SECURITY_medium;"", ""SystemSecurity_Localised"":""Medium Security"", ""Population"":25000, ""Body"":""HIP 19072"", ""BodyID"":0, ""BodyType"":""Star"", ""JumpDist"":20.477, ""FuelUsed"":10.372852, ""FuelLevel"":19.971060, ""Factions"":[ { ""Name"":""The Ant Hill Mob"", ""FactionState"":""None"", ""Government"":""Anarchy"", ""Influence"":0.294000, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":100.000000 }, { ""Name"":""Cooper Research Associates"", ""FactionState"":""Boom"", ""Government"":""Democracy"", ""Influence"":0.706000, ""Allegiance"":""Alliance"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":100.000000, ""ActiveStates"":[ { ""State"":""Boom"" } ] }, { ""Name"":""Pilots' Federation Local Branch"", ""FactionState"":""None"", ""Government"":""Democracy"", ""Influence"":0.000000, ""Allegiance"":""PilotsFederation"", ""Happiness"":"""", ""MyReputation"":100.000000 } ], ""SystemFaction"":{ ""Name"":""Cooper Research Associates"", ""FactionState"":""Boom"" } }";
+
+            var expectedSystemFaction = new Faction()
+            {
+                name = "Cooper Research Associates",
+                Allegiance = Superpower.Alliance,
+                Government = Government.FromEDName("$government_Democracy;"),
+                presences = new List<FactionPresence> 
+                { 
+                    new FactionPresence 
+                    { 
+                        systemName = "HIP 19072", 
+                        FactionState = FactionState.FromEDName("Boom")
+                    } 
+                },
+            };
+
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (JumpedEvent)events[0];
+            Assert.IsTrue(@event.controllingfaction.DeepEquals(expectedSystemFaction));
         }
     }
 }
