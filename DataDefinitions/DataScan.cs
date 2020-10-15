@@ -29,7 +29,19 @@ namespace EddiDataDefinitions
         public DataScan() : this("")
         { }
 
-        private DataScan(string edname) : base(edname, edname.Replace("$Datascan_", "").Replace(";", ""))
+        private DataScan(string edname) : base(edname, normalizeEDName(edname))
         { }
+
+        public new static DataScan FromEDName(string edname)
+        {
+            string normalizedEDName = normalizeEDName(edname);
+            DataScan result = ResourceBasedLocalizedEDName<DataScan>.FromEDName(normalizedEDName);
+            return result;
+        }
+
+        private static string normalizeEDName(string edname)
+        {
+            return edname?.Replace("$Datascan_", "").Replace(";", "");
+        }
     }
 }

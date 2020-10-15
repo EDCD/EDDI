@@ -4,8 +4,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rollbar.DTOs;
 using Tests.Properties;
 using Utilities;
+using Body = EddiDataDefinitions.Body;
 
 namespace UnitTests
 {
@@ -460,6 +462,13 @@ namespace UnitTests
             string line = @" {""id"":128066403,""categoryname"":""NonMarketable"",""name"":""Drones"",""stock"":9999999,""buyPrice"":101,""sellPrice"":101,""demand"":9999999,""legality"":"""",""meanPrice"":101,""demandBracket"":2,""stockBracket"":2,""locName"":""Limpet""} ";
             var jObject = JObject.Parse(line);
             var result = CommodityMarketQuote.FromCapiJson(jObject);
+        }
+
+        [TestMethod]
+        public void TestDataScanFromEDName()
+        {
+            DataScan dataScan = DataScan.FromEDName("$Datascan_DataPoint;");
+            Assert.AreEqual("Data Point", dataScan.invariantName);
         }
     }
 }
