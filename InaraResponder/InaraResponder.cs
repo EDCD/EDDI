@@ -342,14 +342,20 @@ namespace EddiInaraResponder
                     { "starsystemName", @event.system[i] },
                     { "stationName", @event.station[i] },
                     { "goalExpiry", Dates.FromDateTimeToString(@event.expiryDateTime[i])},
-                    { "tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")) },
                     { "isCompleted", @event.iscomplete[i] },
                     { "contributorsNum", @event.contributors[i] },
                     { "contributionsTotal", @event.total[i] }
                 };
-                if (@event.topranksize != null)
+                if (!string.IsNullOrEmpty(@event.tier[i]))
                 {
-                    cgEventData.Add("topRankSize", @event.topranksize);
+                    // If you didn't contribute to the goal, your tier may be null
+                    cgEventData.Add("tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")));
+                   
+                }
+                if (@event.topranksize[i] != null)
+                {
+                    // If there is a top rank
+                    cgEventData.Add("topRankSize", @event.topranksize[i]);
                 }
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommunityGoal", cgEventData));
 
