@@ -284,11 +284,8 @@ namespace EddiCrimeMonitor
                 victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
 
-            FactionRecord record = GetRecordWithFaction(@event.awardingfaction);
-            if (record == null)
-            {
-                record = AddRecord(@event.awardingfaction);
-            }
+            FactionRecord record = GetRecordWithFaction(@event.awardingfaction) 
+                ?? AddRecord(@event.awardingfaction);
             record.factionReports.Add(report);
             record.claims += @event.reward;
         }
@@ -400,11 +397,8 @@ namespace EddiCrimeMonitor
                     victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
                 };
 
-                FactionRecord record = GetRecordWithFaction(reward.faction);
-                if (record == null)
-                {
-                    record = AddRecord(reward.faction);
-                }
+                FactionRecord record = GetRecordWithFaction(reward.faction) 
+                    ?? AddRecord(reward.faction);
                 record.factionReports.Add(report);
                 record.claims += amount;
             }
@@ -506,11 +500,8 @@ namespace EddiCrimeMonitor
                 victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
 
-            FactionRecord record = GetRecordWithFaction(@event.faction);
-            if (record == null)
-            {
-                record = AddRecord(@event.faction);
-            }
+            FactionRecord record = GetRecordWithFaction(@event.faction) 
+                ?? AddRecord(@event.faction);
             AddCrimeToRecord(record, report);
         }
 
@@ -590,11 +581,7 @@ namespace EddiCrimeMonitor
                 victim = @event.victim
             };
 
-            FactionRecord record = GetRecordWithFaction(@event.faction);
-            if (record == null)
-            {
-                record = AddRecord(@event.faction);
-            }
+            FactionRecord record = GetRecordWithFaction(@event.faction) ?? AddRecord(@event.faction);
             AddCrimeToRecord(record, report);
         }
 
@@ -841,11 +828,13 @@ namespace EddiCrimeMonitor
 
         private void AddCrimeToRecord(FactionRecord record, FactionReport report)
         {
+            if (record is null || report is null) { return; }
+
             long total = record.fines + record.bounties + report.amount;
             FactionRecord powerRecord = GetRecordWithFaction(record.allegiance);
 
             // Minor faction crimes are converted to an interstellar bounty, owned by the faction's aligned
-            /// superpower, when total fines & bounties incurred exceed 2 million credits
+            // superpower, when total fines & bounties incurred exceed 2 million credits
             if (powerRecord != null || total > 2000000)
             {
                 // Check if an interstellar bounty is active for the minor faction
@@ -940,7 +929,8 @@ namespace EddiCrimeMonitor
             {
                 return null;
             }
-            return criminalrecord.FirstOrDefault(c => c.faction.ToLowerInvariant() == faction.ToLowerInvariant());
+            return criminalrecord.FirstOrDefault(c => 
+                string.Equals(c.faction, faction, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void GetFactionData(FactionRecord record, string homeSystem = null)

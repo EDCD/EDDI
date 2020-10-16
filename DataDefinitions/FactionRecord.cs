@@ -167,6 +167,8 @@ namespace EddiDataDefinitions
         public FactionRecord(string faction)
         {
             this.faction = faction;
+            factionSystems = new List<string>();
+            interstellarBountyFactions = new List<string>();
             factionReports = new List<FactionReport>();
         }
 
