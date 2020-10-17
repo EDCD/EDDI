@@ -2823,7 +2823,7 @@ namespace EddiJournalMonitor
                                 {
                                     long cgid = JsonParsing.getLong(data, "CGID");
 
-                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0));
+                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
