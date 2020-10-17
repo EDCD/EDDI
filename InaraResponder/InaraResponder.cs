@@ -306,8 +306,7 @@ namespace EddiInaraResponder
             {
                 Dictionary<string, object> data = new Dictionary<string, object>
                 {
-                    { "exception", ex.Message },
-                    { "stacktrace", ex.StackTrace },
+                    { "exception", ex },
                     { "event", JsonConvert.SerializeObject(theEvent) }
                 };
                 Logging.Error("Failed to handle event " + theEvent.type, data);
