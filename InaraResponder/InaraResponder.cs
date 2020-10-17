@@ -1277,10 +1277,12 @@ namespace EddiInaraResponder
                 foreach (IDictionary<string, object> engineerData in engineers)
                 {
                     Dictionary<string, object> engineer = parseEngineerInara(engineerData);
-
                     eventData.Add(engineer);
                 }
-                inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankEngineer", eventData));
+                if (eventData.Count > 0)
+                {
+                    inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankEngineer", eventData));
+                }
             }
             else
             {
