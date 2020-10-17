@@ -187,7 +187,7 @@ Details of an individual mission in the commander's mission log.
     - `localisedname` localised name of the mission
     - `type` localized type (altruism, delivery, massacre, etc) of the mission
     - `status` localized status (active, complete, failed) of the mission
-    - `faction` faction issuing the mission
+    - `faction` name of the faction issuing the mission
     - `originsystem` origin system of the mission
     - `originstation` origin station of the mission
     - `originreturn` true if the commander must return to origin to complete the mission
@@ -207,7 +207,7 @@ Details of an individual mission in the commander's mission log.
     - `passengerwanted` true if the passengers are wanted
     - `target` name of the target of the mission (if applicable)
     - `targettype` localized type of the target (civilian, pirate, etc) of the mission (if applicable)
-    - `targetfaction` faction of the target of the mission (if applicable)
+    - `targetfaction` name of the faction of the target of the mission (if applicable)
     - `amount` amount of the commodity,  passengers or targets involved in the mission (if applicable)
     - `expiry` expiry date and time of the mission
     - `expiryseconds` amount of seconds remaining before mission expiration
@@ -444,7 +444,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `population` the population of the starsystem
     - `allegiance` the superpower allegiance of this starsystem (Federation, Empire etc)
     - `government` the type of government in this starsystem (Democracy, Confederacy etc)
-    - `faction` the dominant faction in this starsystem
+    - `faction` the name of the dominant faction in this starsystem
     - `factions` the starsystem's factions (array of Faction objects)
     - `primaryeconomy` the primary economy in this starsystem (High Technology, Agriculture, etc)
     - `state` the state of the starsystem (Boom, War, etc)
@@ -628,7 +628,7 @@ An orbital or planetary station.
     - `systemname` the name of the system in which this station resides
     - `model` the model of the sation (Orbis, Coriolis, etc)
     - `government` the type of government in this station (Democracy, Confederacy etc)
-    - `faction` the faction that controls this station
+    - `faction` the name  of the faction that controls this station
     - `allegiance` the superpower allegiance of the faction that controls this station (Federation, Empire etc)
     - `state` the state of the station (Boom, War, etc)
     - `primaryeconomy` the primary economy in this station (High Technology, Agriculture, etc)
