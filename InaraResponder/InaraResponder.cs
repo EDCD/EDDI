@@ -96,6 +96,12 @@ namespace EddiInaraResponder
                 return;
             }
 
+            if ((DateTime.UtcNow - theEvent.timestamp).TotalDays > 30)
+            {
+                // We don't try to send any data with a timestamp that is more than a month old
+                return;
+            }
+
             try
             {
                 Logging.Debug("Handling event " + JsonConvert.SerializeObject(theEvent));
