@@ -178,12 +178,7 @@ namespace EddiVoiceAttackResponder
                 setStatus(ref vaProxy, "Operational");
 
                 // Fire an event once the VA plugin is initialized
-                Event @event = new VAInitializedEvent(DateTime.UtcNow);
-
-                if (initEventEnabled(@event.type))
-                {
-                    EDDI.Instance.enqueueEvent(@event);
-                }
+                EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
 
                 // Set a variable indicating the version of VoiceAttack in use
                 System.Version v = vaProxy.VAVersion;
@@ -273,21 +268,6 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to trigger local VoiceAttack command " + commandName, ex);
             }
         }
-
-        private static bool initEventEnabled(string name)
-        {
-            Script script = null;
-            SpeechResponderConfiguration config = SpeechResponderConfiguration.FromFile();
-
-            if (config != null)
-            {
-                Personality personality = Personality.FromName(config.Personality);
-                personality.Scripts.TryGetValue(name, out script);
-            }
-
-            return script?.Enabled ?? false;
-        }
-
 
         // ReSharper disable once UnusedMember.Global
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "VA API")]
