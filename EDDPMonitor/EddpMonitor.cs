@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
 using Utilities;
 
@@ -119,9 +120,13 @@ namespace EddiEddpMonitor
                             }
                         }
                     }
+                    catch (SocketException ex)
+                    {
+                        Logging.Warn("EDDP Monitor connection exception: ", ex);
+                    }
                     catch (Exception ex)
                     {
-                        Logging.Error("Caught exception", ex);
+                        Logging.Error("EDDP Monitor exception: " + ex.Message, ex);
                     }
                     finally
                     {
