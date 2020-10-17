@@ -12,6 +12,13 @@ namespace EddiEvents
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
+        static MarketInformationUpdatedEvent()
+        {
+            VARIABLES.Add("updates", "A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'");
+        }
+
+        public HashSet<string> updates { get; private set; } = new HashSet<string>();
+
         public bool inHorizons { get; private set; }
 
         public bool? allowCobraMkIV { get; private set; }
@@ -22,27 +29,43 @@ namespace EddiEvents
 
         public long? marketId { get; private set; }
 
-        public List<CommodityMarketQuote> commodities { get; private set; }
+        // The properties below must be easily convertible to the EDDN commodities schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
+        public List<MarketInfoItem> commodityQuotes { get; private set; }
 
         public List<string> prohibitedCommodities { get; private set; }
 
-        public List<Module> outfitting { get; private set; }
+        // The property below must be easily convertible to the EDDN outfitting schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
+        public List<string> outfittingModules { get; private set; }
 
-        public List<Ship> shipyard { get; private set; }
+        // The property below must be easily convertible to the EDDN shipyard schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
+        public List<string> shipyardModels { get; private set; }
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.
         /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>
-        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<CommodityMarketQuote> commodities, List<string> prohibitedCommodities, List<Module> outfitting, List<Ship> shipyard, bool inHorizons, bool? allowCobraMkIV = null) : base(timestamp, NAME)
+        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<MarketInfoItem> commodityQuotes, List<string> prohibitedCommodities, List<string> outfittingModules, List<string> shipyardModels, bool inHorizons, bool? allowCobraMkIV = null) : base(timestamp, NAME)
         {
             this.inHorizons = inHorizons;
             this.allowCobraMkIV = allowCobraMkIV;
             this.starSystem = starSystem;
             this.stationName = stationName;
             this.marketId = marketId;
-            this.commodities = commodities;
+            this.commodityQuotes = commodityQuotes;
             this.prohibitedCommodities = prohibitedCommodities;
-            this.outfitting = outfitting;
-            this.shipyard = shipyard;
+            this.outfittingModules = outfittingModules;
+            this.shipyardModels = shipyardModels;
+
+            if (commodityQuotes != null)
+            {
+                updates.Add("market");
+            }
+            if (outfittingModules != null)
+            {
+                updates.Add("outfitting");
+            }
+            if (shipyardModels != null)
+            {
+                updates.Add("shipyard");
+            }
         }
     }
 }

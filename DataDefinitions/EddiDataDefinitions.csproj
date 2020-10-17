@@ -75,7 +75,10 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
+    <Compile Include="MarketInfo.cs" />
+    <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,6 +95,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="ShipyardInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
@@ -110,8 +114,8 @@
     <Compile Include="FactionRecord.cs" />
     <Compile Include="FactionReport.cs" />
     <Compile Include="Happiness.cs" />
-    <Compile Include="MarketInfo.cs" />
-    <Compile Include="OutfittingInfo.cs" />
+    <Compile Include="MarketInfoItem.cs" />
+    <Compile Include="OutfittingInfoItem.cs" />
     <Compile Include="Properties\Happiness.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,7 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Modifications.resx</DependentUpon>
     </Compile>
-    <Compile Include="ShipyardInfo.cs" />
+    <Compile Include="ShipyardInfoItem.cs" />
     <Compile Include="SignalSource.cs" />
     <Compile Include="Properties\SignalSource.Designer.cs">
       <AutoGen>True</AutoGen>

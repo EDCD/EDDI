@@ -1,14 +1,14 @@
 using EddiDataDefinitions;
+using EddiEvents;
+using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EddiEvents;
-using EddiJournalMonitor;
 using Tests.Properties;
 using Utilities;
-using Body = EddiDataDefinitions.Body;
 
 namespace UnitTests
 {
@@ -461,8 +461,63 @@ namespace UnitTests
         public void TestCommodityMarketQuoteFromCAPIjson()
         {
             string line = @" {""id"":128066403,""categoryname"":""NonMarketable"",""name"":""Drones"",""stock"":9999999,""buyPrice"":101,""sellPrice"":101,""demand"":9999999,""legality"":"""",""meanPrice"":101,""demandBracket"":2,""stockBracket"":2,""locName"":""Limpet""} ";
-            var jObject = JObject.Parse(line);
-            var result = CommodityMarketQuote.FromCapiJson(jObject);
+            var eddnQuote = JsonConvert.DeserializeObject<MarketInfoItem>(line);
+
+            // Test that the MarketInfoItem can be sucessfully converted to a definition based CommodityMarketQuote
+            var quote = eddnQuote.ToCommodityMarketQuote();
+            Assert.AreEqual(128066403, quote.definition.EliteID);
+            Assert.AreEqual("Drones", quote.definition.edname);
+            Assert.AreEqual("Non-marketable", quote.definition.category.invariantName);
+            Assert.AreEqual(101, quote.buyprice);
+            Assert.AreEqual(101, quote.sellprice);
+            Assert.AreEqual(101, quote.avgprice);
+            Assert.AreEqual(CommodityBracket.Medium, quote.stockbracket);
+            Assert.AreEqual(CommodityBracket.Medium, quote.demandbracket);
+            Assert.AreEqual(9999999, quote.stock);
+            Assert.AreEqual(9999999, quote.demand);
+        }
+
+        [TestMethod]
+        public void TestCommodityMarketQuoteFromMarketJson()
+        {
+            var info = DeserializeJsonResource<MarketInfo>(Resources.market);
+            var expectedMarketInfoItems = new List<MarketInfoItem>()
+            { 
+                new MarketInfoItem(128668550, "$painite_name;", "$MARKET_category_minerals;", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200, true, false, false),
+                new MarketInfoItem(128673846, "$bromellite_name;", "$MARKET_category_minerals;", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false ),
+                new MarketInfoItem(128673848, "$lowtemperaturediamond_name;", "$MARKET_category_minerals;", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150, true, false, false ),
+                new MarketInfoItem(128924330, "$grandidierite_name;", "$MARKET_category_minerals;", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
+                new MarketInfoItem(128924331, "$alexandrite_name;", "$MARKET_category_minerals;", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97, true, false, false),
+                new MarketInfoItem(128924332, "$opal_name;", "$MARKET_category_minerals;", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300, true, false, false)
+            };
+
+            Assert.AreEqual(3702012928, info.MarketID);
+            Assert.AreEqual("X9K-WTW", info.StationName);
+            Assert.AreEqual("Gateway", info.StarSystem);
+            Assert.AreEqual(expectedMarketInfoItems.Count, info.Items.Count);
+
+            foreach (var item in info.Items)
+            {
+                // Test that all items match expected definitions
+                if (!expectedMarketInfoItems.Exists(i => i.DeepEquals(item)))
+                {
+                    Assert.Fail();
+                }
+            }
+
+            // Test that the MarketInfoItem can be sucessfully converted to a definition based CommodityMarketQuote
+            var quote = info.Items[0].ToCommodityMarketQuote();
+            Assert.AreEqual(128668550, quote.definition.EliteID);
+            Assert.AreEqual("Painite", quote.definition.edname);
+            Assert.AreEqual("Minerals", quote.definition.category.invariantName);
+            Assert.AreEqual(0, quote.buyprice);
+            Assert.AreEqual(500096, quote.sellprice);
+            Assert.AreEqual(CommodityDefinition.FromEDName("painite")?.avgprice, quote.avgprice); // Carriers always return an average price of zero. Verify this marches our commodity definition instead. 
+            Assert.AreEqual(CommodityBracket.None, quote.stockbracket);
+            Assert.AreEqual(CommodityBracket.Medium, quote.demandbracket);
+            Assert.AreEqual(0, quote.stock);
+            Assert.AreEqual(200, quote.demand);
+            Assert.AreEqual("Consumer", quote.StatusFlags.First());
         }
 
         [TestMethod]

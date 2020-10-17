@@ -1,6 +1,4 @@
-﻿using EddiDataDefinitions;
-using EddiDataProviderService;
-using EddiSpeechService;
+﻿using EddiSpeechService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,12 +9,11 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using Utilities;
 
 namespace EddiCompanionAppService
 {
-    public class CompanionAppService : IDisposable
+    public partial class CompanionAppService : IDisposable
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
@@ -401,7 +398,6 @@ namespace EddiCompanionAppService
 
                 try
                 {
-                    JObject json = JObject.Parse(data);
                     cachedProfile = ProfileFromJson(data, timestamp);
                 }
                 catch (JsonException ex)
@@ -422,67 +418,6 @@ namespace EddiCompanionAppService
                 Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
             }
 
-            return cachedProfile;
-        }
-
-        public Profile Station(string systemName)
-        {
-            try
-            {
-                Logging.Debug("Getting station market data");
-                string market = obtainProfile(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
-                market = "{\"lastStarport\":" + market + "}";
-                JObject marketJson = JObject.Parse(market);
-                string lastStarport = (string)marketJson["lastStarport"]["name"];
-                long? marketId = (long?)marketJson["lastStarport"]["id"];
-
-                cachedProfile.CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName);
-                cachedProfile.LastStation = cachedProfile.CurrentStarSystem?.stations?.Find(s => s.name == lastStarport);
-                if (cachedProfile.LastStation == null)
-                {
-                    // Don't have a station so make one up
-                    cachedProfile.LastStation = new Station { name = lastStarport, marketId = marketId };
-                }
-                if (cachedProfile.CurrentStarSystem != null) { cachedProfile.CurrentStarSystem.systemname = systemName; }
-
-                if (cachedProfile.LastStation.hasmarket ?? false)
-                {
-                    cachedProfile.LastStation.economyShares = EconomiesFromProfile(marketJson);
-                    cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
-                    cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
-                    cachedProfile.LastStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp);
-                }
-
-                if (cachedProfile.LastStation.hasoutfitting ?? false)
-                {
-                    Logging.Debug("Getting station outfitting data");
-                    string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
-                    outfitting = "{\"lastStarport\":" + outfitting + "}";
-                    JObject outfittingJson = JObject.Parse(outfitting);
-                    cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
-                }
-
-                if (cachedProfile.LastStation.hasshipyard ?? false)
-                {
-                    Logging.Debug("Getting station shipyard data");
-                    Thread.Sleep(5000);
-                    string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
-                    shipyard = "{\"lastStarport\":" + shipyard + "}";
-                    JObject shipyardJson = JObject.Parse(shipyard);
-                    cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
-                }
-            }
-            catch (JsonException ex)
-            {
-                Logging.Error("Failed to parse companion station data", ex);
-            }
-            catch (EliteDangerousCompanionAppException ex)
-            {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
-                Logging.Info(ex.Message);
-            }
-
-            Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
             return cachedProfile;
         }
 
@@ -602,244 +537,6 @@ namespace EddiCompanionAppService
             }
             Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
             return response;
-        }
-
-        /// <summary>Create a  profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(string data, DateTime timestamp)
-        {
-            Profile profile = null;
-            if (!string.IsNullOrEmpty(data))
-            {
-                profile = ProfileFromJson(JObject.Parse(data), timestamp);
-            }
-            return profile;
-        }
-
-        /// <summary>Create a profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(JObject json, DateTime timestamp)
-        {
-            Profile Profile = new Profile
-            {
-                json = json,
-                timestamp = timestamp
-            };
-
-            if (json["commander"] != null)
-            {
-                FrontierApiCommander Commander = new FrontierApiCommander
-                {
-                    name = (string)json["commander"]["name"],
-
-                    combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]),
-                    traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]),
-                    explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]),
-                    cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]),
-                    empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]),
-                    federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]),
-                    crimerating = (int)json["commander"]["rank"]["crime"],
-                    servicerating = (int)json["commander"]["rank"]["service"],
-                    powerrating = (int)json["commander"]["rank"]["power"],
-
-                    credits = (long)json["commander"]["credits"],
-                    debt = (long)json["commander"]["debt"]
-                };
-                Profile.Cmdr = Commander;
-                Profile.docked = (bool)json["commander"]["docked"];
-                Profile.alive = (bool)json["commander"]["alive"];
-
-                if (json["commander"]["capabilities"] != null)
-                {
-                    var contexts = new ProfileContexts 
-                    { 
-                        allowCobraMkIV = (bool)json["commander"]["capabilities"]["AllowCobraMkIV"], 
-                        inHorizons = (bool)json["commander"]["capabilities"]["Horizons"] 
-                    };
-                    Profile.contexts = contexts;
-                }
-
-                string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
-                if (systemName != null)
-                {
-                    Profile.CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName);
-                }
-
-                if (json["lastStarport"] != null)
-                {
-                    Profile.LastStation = Profile.CurrentStarSystem.stations.Find(s => s.name == (string)json["lastStarport"]["name"]);
-                    if (Profile.LastStation == null)
-                    {
-                        // Don't have a station so make one up
-                        Profile.LastStation = new Station
-                        {
-                            name = (string)json["lastStarport"]["name"],
-                            marketId = (long?)json["lastStarport"]["id"]
-                        };
-                    }
-                    if ((bool)json["commander"]["docked"])
-                    {
-                        Profile.LastStation.systemname = Profile.CurrentStarSystem.systemname;
-                        Profile.LastStation.systemAddress = Profile.CurrentStarSystem.systemAddress;
-                    }
-                }
-            }
-
-            return Profile;
-        }
-
-        // Obtain the list of outfitting modules from the profile
-        public static List<Module> OutfittingFromProfile(JObject json)
-        {
-            List<Module> Modules = new List<Module>();
-
-            if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
-            {
-                foreach (var jToken in json["lastStarport"]["modules"])
-                {
-                    var moduleJsonProperty = (JProperty)jToken;
-                    JObject moduleJson = (JObject)moduleJsonProperty.Value;
-                    // Not interested in paintjobs, decals, ...
-                    string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
-                    switch (moduleCategory)
-                    {
-                        case "weapon":
-                        case "module":
-                        case "utility":
-                            {
-                                long id = (long)moduleJson["id"];
-                                string edName = (string)moduleJson["name"];
-
-                                Module Module = new Module(Module.FromEliteID(id, moduleJson) ?? Module.FromEDName(edName, moduleJson) ?? new Module());
-                                if (Module.invariantName == null)
-                                {
-                                    // Unknown module; report the full object so that we can update the definitions
-                                    Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(moduleJson));
-
-                                    // Create a basic module & supplement from the info available
-                                    Module = new Module(id, edName, -1, edName, -1, "", (long)moduleJson["cost"]);
-                                }
-                                Module.price = (long)moduleJson["cost"];
-                                Modules.Add(Module);
-                            }
-                            break;
-                    }
-                }
-            }
-            return Modules;
-        }
-
-        // Obtain the list of station economies from the profile
-        public static List<EconomyShare> EconomiesFromProfile(dynamic json)
-        {
-            List<EconomyShare> Economies = new List<EconomyShare>();
-
-            if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
-            {
-                foreach (dynamic economyJson in json["lastStarport"]["economies"])
-                {
-                    dynamic economy = economyJson.Value;
-                    string name = ((string)economy["name"]).Replace("Agri", "Agriculture");
-                    decimal proportion = (decimal)economy["proportion"];
-                    EconomyShare Economy = new EconomyShare(name, proportion);
-                    Economies.Add(Economy);
-                }
-            }
-            Economies = Economies.OrderByDescending(x => x.proportion).ToList();
-            Logging.Debug("Economies are " + JsonConvert.SerializeObject(Economies));
-            return Economies;
-        }
-
-        // Obtain the list of prohibited commodities from the profile
-        public static List<String> ProhibitedCommoditiesFromProfile(dynamic json)
-        {
-            List<String> ProhibitedCommodities = new List<String>();
-
-            if (json["lastStarport"] != null && json["lastStarport"]["prohibited"] != null)
-            {
-                foreach (dynamic prohibitedcommodity in json["lastStarport"]["prohibited"])
-                {
-                    String pc = (string)prohibitedcommodity.Value;
-                    if (pc != null)
-                    {
-                        ProhibitedCommodities.Add(pc);
-                    }
-                }
-            }
-
-            Logging.Debug("Prohibited Commodities are " + JsonConvert.SerializeObject(ProhibitedCommodities));
-            return ProhibitedCommodities;
-        }
-
-        // Obtain the list of commodities from the profile
-        private static List<CommodityMarketQuote> CommodityQuotesFromProfile(JObject json)
-        {
-            List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
-            if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
-            {
-                foreach (var jToken in json["lastStarport"]["commodities"])
-                {
-                    var commodityJSON = (JObject)jToken;
-                    CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(commodityJSON);
-                    if (quote != null)
-                    {
-                        quotes.Add(quote);
-                    }
-                }
-            }
-
-            return quotes;
-        }
-
-        // Obtain the list of ships available at the station from the profile
-        public static List<Ship> ShipyardFromProfile(JObject json)
-        {
-            List<Ship> Ships = new List<Ship>();
-
-            if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
-            {
-                // shipyard_list is a JObject containing JObjects but let's code defensively because FDev
-                var shipyardList = json["lastStarport"]["ships"]["shipyard_list"].Children();
-                foreach (JToken shipToken in shipyardList.Values())
-                {
-                    JObject shipJson = shipToken as JObject;
-                    Ship Ship = ShipyardShipFromProfile(shipJson);
-                    Ships.Add(Ship);
-                }
-
-                // unavailable_list is a JArray containing JObjects
-                JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
-                if (unavailableList != null)
-                {
-                    foreach (var jToken in unavailableList)
-                    {
-                        var shipJson = (JObject)jToken;
-                        Ship Ship = ShipyardShipFromProfile(shipJson);
-                        Ships.Add(Ship);
-                    }
-                }
-            }
-
-            return Ships;
-        }
-
-        private static Ship ShipyardShipFromProfile(JObject shipJson)
-        {
-            long id = (long)shipJson["id"];
-            string edName = (string)shipJson["name"];
-
-            Ship Ship = ShipDefinitions.FromEliteID(id) ?? ShipDefinitions.FromEDModel(edName);
-            if (Ship == null)
-            {
-                // Unknown ship; report the full object so that we can update the definitions 
-                Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(shipJson));
-
-                // Create a basic ship definition & supplement from the info available 
-                Ship = new Ship
-                {
-                    EDName = edName
-                };
-            }
-            Ship.value = (long)shipJson["basevalue"];
-            return Ship;
         }
     }
 }

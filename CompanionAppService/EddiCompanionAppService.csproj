@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompanionAppProfileFromJson.cs" />
     <Compile Include="ClientId.cs" />
     <Compile Include="CompanionIllegalStateException.cs" />
     <Compile Include="CustomURLResponder.cs" />

@@ -1,8 +1,12 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EddiDataDefinitions;
 using EDDNResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -49,19 +53,18 @@ namespace UnitTests
             Assert.AreEqual("Progenitor Cells", commodity.invariantName);
             Assert.AreEqual(7000, commodity.buyprice);
             Assert.AreEqual(5, commodity.stock);
-            Assert.AreEqual("", commodity.stockbracket);
+            Assert.AreEqual(null, commodity.stockbracket);
             Assert.AreEqual(7279, commodity.sellprice);
             Assert.AreEqual(56, commodity.demand);
-            Assert.AreEqual(1, commodity.demandbracket);
+            Assert.AreEqual(CommodityBracket.Low, commodity.demandbracket);
             Assert.AreEqual(128049669, commodity.EliteID);
             Assert.AreEqual(36, commodity.EDDBID);
             Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
-            Assert.IsFalse(commodity.fromFDev);
         }
 
-        private static CommodityMarketQuote CannedCAPIQuote()
+        private static MarketInfoItem CannedCAPIQuote()
         {
             string json = @"{
                 ""id"": 128049204,
@@ -74,63 +77,62 @@ namespace UnitTests
                 ""stockBracket"": 2,
                 ""stock"": 31881,
                 ""demand"": 1,
-                ""statusFlags"": [],
+                ""statusFlags"": [""Producer""],
                 ""categoryname"": ""Chemicals"",
                 ""locName"": ""Explosives""
             }";
-            JObject jObject = JObject.Parse(json);
-            CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
-            quote.fromFDev = true;
-            return quote;
+            return JsonConvert.DeserializeObject<MarketInfoItem>(json);
         }
 
         [TestMethod]
         public void TestParseCAPICommodityQuote()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            Assert.AreEqual(313, quote.buyprice);
-            Assert.AreEqual(281, quote.sellprice);
-            Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual("", quote.demandbracket);
-            Assert.AreEqual(2, quote.stockbracket);
-            Assert.AreEqual(31881, quote.stock);
-            Assert.AreEqual(1, quote.demand);
-            Assert.AreEqual(0, quote.StatusFlags.Count);
-            Assert.IsTrue(quote.fromFDev);
+            var edQuote = CannedCAPIQuote();
+            Assert.AreEqual(313, edQuote.buyPrice);
+            Assert.AreEqual(281, edQuote.sellPrice);
+            Assert.AreEqual(294, edQuote.meanPrice);
+            Assert.AreEqual(null, edQuote.demandBracket);
+            Assert.AreEqual(CommodityBracket.Medium, edQuote.stockBracket);
+            Assert.AreEqual(31881, edQuote.stock);
+            Assert.AreEqual(1, edQuote.demand);
+            Assert.AreEqual(1, edQuote.statusFlags.Count);
+            Assert.AreEqual("Producer", edQuote.statusFlags.First());
         }
 
         [TestMethod]
         public void TestParseCAPICommodityQuoteNotOverwritten()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition)
-            {
-                avgprice = 99999999
-            };
+            var edQuote = CannedCAPIQuote();
+            var quote = edQuote.ToCommodityMarketQuote();
+            var oldDefinition = quote.definition.Copy();
+            oldDefinition.avgprice = 99999999;
+            var oldQuote = new CommodityMarketQuote(oldDefinition);
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual("", quote.demandbracket);
-            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(null, quote.demandbracket);
+            Assert.AreEqual(CommodityBracket.Medium, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
-            Assert.AreEqual(0, quote.StatusFlags.Count);
-            Assert.IsTrue(quote.fromFDev);
+            Assert.AreEqual(1, quote.StatusFlags.Count);
+            Assert.AreEqual("Producer", quote.StatusFlags.First());
         }
 
         [TestMethod]
         public void TestEddnCommodityQuote()
         {
-            CommodityMarketQuote quote = CannedCAPIQuote();
-            EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
-            Assert.AreEqual(quote.buyprice, eddnCommodity.buyPrice);
-            Assert.AreEqual(quote.sellprice, eddnCommodity.sellPrice);
-            Assert.AreEqual(quote.avgprice, eddnCommodity.meanPrice);
-            Assert.AreEqual(quote.demandbracket, eddnCommodity.demandBracket);
-            Assert.AreEqual(quote.stockbracket, eddnCommodity.stockBracket);
-            Assert.AreEqual(quote.stock, eddnCommodity.stock);
-            Assert.AreEqual(quote.demand, eddnCommodity.demand);
-            Assert.AreEqual(quote.StatusFlags.Count, eddnCommodity.statusFlags.Count);
+            var edQuote = CannedCAPIQuote();
+            var quote = edQuote.ToCommodityMarketQuote();
+            Assert.AreEqual(quote.buyprice, edQuote.buyPrice);
+            Assert.AreEqual(quote.sellprice, edQuote.sellPrice);
+            Assert.AreEqual(quote.avgprice, edQuote.meanPrice);
+            Assert.AreEqual(quote.demandbracket, edQuote.demandBracket);
+            Assert.AreEqual(quote.stockbracket, edQuote.stockBracket);
+            Assert.AreEqual(quote.stock, edQuote.stock);
+            Assert.AreEqual(quote.demand, edQuote.demand);
+            Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
+            Assert.AreEqual(quote.StatusFlags.First(), edQuote.statusFlags.First());
+            Assert.AreEqual("{\"name\":\"explosives\",\"buyPrice\":313,\"meanPrice\":294,\"sellPrice\":281,\"stock\":31881,\"stockBracket\":2,\"demand\":1,\"demandBracket\":\"\",\"statusFlags\":[\"Producer\"]}", JsonConvert.SerializeObject(edQuote, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() }));
         }
 
         [TestMethod]
@@ -166,6 +168,37 @@ namespace UnitTests
             catch
             {
                 // passed
+            }
+        }
+
+        [TestMethod]
+        public void TestDeserializeMarketJson()
+        {
+            var info = TestBase.DeserializeJsonResource<MarketInfo>(Resources.market);
+            Assert.AreEqual(3702012928, info.MarketID);
+            Assert.AreEqual("X9K-WTW", info.StationName);
+            Assert.AreEqual("Gateway", info.StarSystem);
+
+            var expectedItems = new List<MarketInfoItem>()
+            {
+                new MarketInfoItem(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200, true, false, false),
+                new MarketInfoItem(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
+                new MarketInfoItem(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150, true, false, false),
+                new MarketInfoItem(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
+                new MarketInfoItem(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97, true, false, false),
+                new MarketInfoItem(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300, true, false, false)
+            };
+
+            Assert.AreEqual(expectedItems.Count, info.Items.Count);
+            foreach (var actualItem in info.Items)
+            {
+                foreach (var expectedItem in expectedItems)
+                {
+                    if (actualItem.EliteID == expectedItem.EliteID)
+                    {
+                        Assert.IsTrue(actualItem.DeepEquals(expectedItem));
+                    }
+                }
             }
         }
     }
