@@ -325,4 +325,8 @@
     <value>Campo de Detritos</value>
     <comment>Debris field</comment>
   </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Outro Sinal de Superfície</value>
+    <comment>Other Surface Signal</comment>
+  </data>
 </root>
