@@ -22,25 +22,25 @@ namespace Utilities
 
         public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleError(ErrorLevel.Error, message, data, memberName, filePath);
+            handleLogging(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
         public static void Warn(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleError(ErrorLevel.Warning, message, data, memberName, filePath);
+            handleLogging(ErrorLevel.Warning, message, data, memberName, filePath);
         }
 
         public static void Info(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleError(ErrorLevel.Info, message, data, memberName, filePath);
+            handleLogging(ErrorLevel.Info, message, data, memberName, filePath);
         }
 
         public static void Debug(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleError(ErrorLevel.Debug, message, data, memberName, filePath);
+            handleLogging(ErrorLevel.Debug, message, data, memberName, filePath);
         }
 
-        private static void handleError(ErrorLevel errorlevel, string message, object data, string memberName, string filePath)
+        private static void handleLogging(ErrorLevel errorlevel, string message, object data, string memberName, string filePath)
         {
             System.Threading.Tasks.Task.Run(() =>
             {
@@ -283,7 +283,13 @@ namespace Utilities
         const string rollbarWriteToken = "e20e7fa8ca53430aa97c5f2c77d3482a";
         public static bool TelemetryEnabled {
             get => RollbarLocator.RollbarInstance.Config.Enabled;
-            set => RollbarLocator.RollbarInstance.Config.Enabled = value;
+            // ReSharper disable once ValueParameterNotUsed
+            set => RollbarLocator.RollbarInstance.Config.Enabled =
+#if DEBUG
+                false;
+#else
+                value;
+#endif
         }
 
         public static void configureRollbar(string uniqueId, bool fromVA = false)
@@ -296,9 +302,9 @@ namespace Utilities
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
                 },
                 // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
-                Person = new Rollbar.DTOs.Person(uniqueId),
+                Person = new Person(uniqueId),
                 // Set server info
-                Server = new Rollbar.DTOs.Server
+                Server = new Server
                 {
                     CodeVersion = ThisAssembly.Git.Sha,
                     Root = "/"
@@ -306,11 +312,6 @@ namespace Utilities
                 MaxReportsPerMinute = 1,
                 IpAddressCollectionPolicy = IpAddressCollectionPolicy.DoNotCollect,
                 PayloadPostTimeout = TimeSpan.FromSeconds(10), 
-#if DEBUG
-                Enabled = false,
-#else
-                Enabled = true,
-#endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
             TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 10));
