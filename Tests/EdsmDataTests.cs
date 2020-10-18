@@ -375,7 +375,7 @@ namespace UnitTests
             Assert.AreEqual(3, presence?.ActiveStates.Count);
             Assert.AreEqual(0, presence?.RecoveringStates.Count);
             Assert.AreEqual(0, presence?.PendingStates.Count);
-            Assert.IsTrue(new List<FactionState>() { FactionState.FromEDName("Boom"), FactionState.FromEDName("Civil liberty"), FactionState.FromEDName("Election") }.DeepEquals(presence?.ActiveStates));
+            Assert.IsTrue(new List<FactionState>() { FactionState.FromEDName("Boom"), FactionState.FromName("Civil liberty"), FactionState.FromName("Election") }.DeepEquals(presence?.ActiveStates));
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928089, faction.updatedat);
@@ -403,10 +403,11 @@ namespace UnitTests
             Assert.AreEqual("Corporate", faction.Government.invariantName);
             Assert.AreEqual(26.1M, presence?.influence);
             Assert.AreEqual("None", presence?.FactionState?.invariantName);
-            Assert.AreEqual(0, presence?.ActiveStates.Count);
+            Assert.AreEqual(1, presence?.ActiveStates.Count);
+            Assert.IsTrue(new List<FactionState>() { FactionState.FromName("Civil war") }.DeepEquals(presence?.ActiveStates));
             Assert.AreEqual(0, presence?.RecoveringStates.Count);
             Assert.AreEqual(1, presence?.PendingStates.Count);
-            Assert.IsTrue(new List<FactionTrendingState>() { new FactionTrendingState(FactionState.FromEDName("Boom"), 1) }.DeepEquals(presence?.PendingStates));
+            Assert.IsTrue(new List<FactionTrendingState>() { new FactionTrendingState(FactionState.FromName("Boom"), 1) }.DeepEquals(presence?.PendingStates));
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928985, faction.updatedat);

@@ -29,7 +29,7 @@
 		"government": "Corporate",
 		"influence": 0.261,
 		"state": "None",
-		"activeStates": [],
+		"activeStates": [ { "state":  "Civil war" } ],
 		"recoveringStates": [],
 		"pendingStates": [{ "state": "Boom", "trend": 1 }],
 		"isPlayer": false,

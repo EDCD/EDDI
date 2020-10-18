@@ -5,9 +5,17 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.7.1-b1
   * Core
     * Various bug fixes
+  * EDDN Responder
+    * Various changes 
   * Speech responder
+    * Add `factions` (faction objects) to the documented properties for the `system` object.
+    * Add `imports` (array of Commodity objects) to the `station` object
+    * Add `exports` (array of Commodity objects) to the `station` object
+    * Add `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
     * Fixed a typo in the `Asteroid prospected` event
     * Fixed a typo in the `Signal detected` script
+    * Updates the `Cargo report` script (to use commodity objects for the station prohibited list)
+    * Updates the `Market information` script to restore purchase, sales, and swapout checks when appropriate
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final

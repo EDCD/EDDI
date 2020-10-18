@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blight.
+        ///   Looks up a localized string similar to Drought.
         /// </summary>
         public static string Drought {
             get {

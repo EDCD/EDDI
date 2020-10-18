@@ -83,7 +83,7 @@ namespace EddiStarMapService
                     {
                         var activeState = activeStateToken.ToObject<IDictionary<string, object>>();
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
-                            .ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state")) ?? FactionState.None);
+                            .ActiveStates.Add(FactionState.FromName(JsonParsing.getString(activeState, "state")) ?? FactionState.None);
                     }
                 }
 
@@ -96,7 +96,7 @@ namespace EddiStarMapService
                     {
                         var pendingState = pendingStateToken.ToObject<IDictionary<string, object>>();
                         FactionTrendingState pTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(pendingState, "state")) ?? FactionState.None,
+                            FactionState.FromName(JsonParsing.getString(pendingState, "state")) ?? FactionState.None,
                             JsonParsing.getInt(pendingState, "trend")
                         );
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
@@ -113,7 +113,7 @@ namespace EddiStarMapService
                     {
                         var recoveringState = recoveringStateToken.ToObject<IDictionary<string, object>>();
                         FactionTrendingState rTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "state")) ?? FactionState.None,
+                            FactionState.FromName(JsonParsing.getString(recoveringState, "state")) ?? FactionState.None,
                             JsonParsing.getInt(recoveringState, "trend")
                         );
                         Faction.presences.FirstOrDefault(p => p.systemName == systemName)?

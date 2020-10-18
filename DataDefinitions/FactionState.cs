@@ -8,7 +8,7 @@
         static FactionState()
         {
             resourceManager = Properties.FactionStates.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new FactionState(edname);
 
             // Faction states have been broken out into the following categories:
@@ -63,5 +63,14 @@
 
         private FactionState(string edname) : base(edname, edname)
         { }
+
+        public new static FactionState FromName(string from)
+        {
+            if (string.IsNullOrEmpty(from)) { return None; }
+            // EDSM uses "Terrorist Attack" rather than "Terrorism"
+            var tidiedFrom = from
+                .Replace("Terrorist Attack", "Terrorism");
+            return ResourceBasedLocalizedEDName<FactionState>.FromName(tidiedFrom);
+        }
     }
 }

@@ -182,7 +182,7 @@
     <comment>Faction state PirateAttack</comment>
   </data>
   <data name="Drought" xml:space="preserve">
-    <value>Blight</value>
+    <value>Drought</value>
     <comment>Faction state Drought, but translated as Blight</comment>
   </data>
   <data name="Blight" xml:space="preserve">
