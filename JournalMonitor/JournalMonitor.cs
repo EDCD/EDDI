@@ -4123,10 +4123,11 @@ namespace EddiJournalMonitor
 
         private static Faction getFaction(IDictionary<string, object> data, string type, string systemName)
         {
+            Faction faction = new Faction();
+
             // Get the faction name and state
             if (data.TryGetValue(type + "Faction", out object factionVal))
             {
-                Faction faction = new Faction();
                 if (factionVal is Dictionary<string, object> factionData) // 3.3.03 or later journal
                 {
                     faction.name = JsonParsing.getString(factionData, "Name");
@@ -4143,33 +4144,32 @@ namespace EddiJournalMonitor
                 {
                     faction.name = factionVal as string;
                 }
+            }
 
-                // Get the faction allegiance
-                if (data.TryGetValue(type + "Allegiance", out _))
+            // Get the faction allegiance
+            if (data.TryGetValue(type + "Allegiance", out _))
+            {
+                faction.Allegiance = getAllegiance(data, type + "Allegiance");
+            }
+            else if (data.TryGetValue("Factions", out object val))
+            {
+                // Station controlling faction government not discretely available in 'Location' event
+                var factionsList = val as List<object>;
+                foreach (IDictionary<string, object> factionDetail in factionsList)
                 {
-                    faction.Allegiance = getAllegiance(data, type + "Allegiance");
-                }
-                else if (data.TryGetValue("Factions", out object val))
-                {
-                    // Station controlling faction government not discretely available in 'Location' event
-                    var factionsList = val as List<object>;
-                    foreach (IDictionary<string, object> factionDetail in factionsList)
+                    string fName = JsonParsing.getString(factionDetail, "Name");
+                    if (fName == faction.name)
                     {
-                        string fName = JsonParsing.getString(factionDetail, "Name");
-                        if (fName == faction.name)
-                        {
-                            faction.Allegiance = getAllegiance(factionDetail, "Allegiance");
-                            break;
-                        }
+                        faction.Allegiance = getAllegiance(factionDetail, "Allegiance");
+                        break;
                     }
                 }
-
-                // Get the controlling faction (system or station) government
-                faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government")) ?? Government.None;
-
-                return faction;
             }
-            return null;
+
+            // Get the controlling faction (system or station) government
+            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government")) ?? Government.None;
+
+            return faction;
         }
 
         private static List<Faction> getFactions(object factionsVal, string systemName)
