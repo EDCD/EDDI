@@ -24,8 +24,11 @@ namespace EddiDataDefinitions
         // Additional definition for some items
         [JsonProperty]
         public int? ShipId { get; set; } // Only for bulkheads
-        [JsonProperty]
-        public ModuleMount? mount { get; set; } // Only for weapons
+        [JsonProperty("mount")]
+        public ModuleMount? Mount { get; set; } // Only for weapons
+        ///<summary>The localized name of the weapon mount</summary>
+        [JsonIgnore]
+        public string mount => Mount != null ? Properties.Modules.ResourceManager.GetString(Mount.ToString()) : "";
         [JsonProperty]
         public int? clipcapacity { get; set; } // Only for weapons
         [JsonProperty]
@@ -98,10 +101,6 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string EDName { get => edname; }
 
-        public string LocalizedMountName()
-        {
-            return (mount != null) ? Properties.Modules.ResourceManager.GetString(mount.ToString()) : "";
-        }
 
         public Module() : base("", "")
         { }
@@ -112,7 +111,7 @@ namespace EddiDataDefinitions
             this.grade = Module.grade;
             this.value = Module.value;
             this.ShipId = Module.ShipId;
-            this.mount = Module.mount;
+            this.Mount = Module.Mount;
             this.clipcapacity = Module.clipcapacity;
             this.hoppercapacity = Module.hoppercapacity;
             this.ammoinclip = Module.ammoinclip;
@@ -163,7 +162,7 @@ namespace EddiDataDefinitions
             this.@class = Class;
             this.grade = Grade;
             this.value = Value;
-            this.mount = Mount;
+            this.Mount = Mount;
             this.clipcapacity = AmmoClipCapacity;
             this.hoppercapacity = AmmoHopperCapacity;
             this.modified = false;
