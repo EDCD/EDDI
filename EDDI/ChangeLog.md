@@ -6,7 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Various bug fixes
   * EDDN Responder
-    * Various changes 
+    * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
   * Speech responder
     * Add `factions` (faction objects) to the documented properties for the `system` object.
     * Add `imports` (array of Commodity objects) to the `station` object
