@@ -1749,9 +1749,24 @@
     <value>Amostra de Tecido da Couraça de Vagem</value>
     <comment>Commodity S6_TissueSample_Coenosarc</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Carne Decorativa de Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Folêgo de Lobo</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Café da Marca CD-75 Kitten</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Maçãs do Eden de Aerial</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Asas de Baixa Gravidade de Uzumoku</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>
