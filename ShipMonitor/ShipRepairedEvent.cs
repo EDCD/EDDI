@@ -2,7 +2,6 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EddiShipMonitor
 {
@@ -70,6 +69,10 @@ namespace EddiShipMonitor
                     if (currentModule != null)
                     {
                         modules.Add(currentModule);
+                    }
+                    else
+                    {
+                        items.Add(itemEDName);
                     }
                 }
             }
