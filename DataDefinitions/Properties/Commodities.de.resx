@@ -327,7 +327,7 @@
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
     <value>CD-75 Kätzchen-Marke Kaffee</value>
-    <comment>Commodity CD_75KittenBrandCoffee</comment>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Centauri Mega Gin</value>
@@ -479,7 +479,7 @@
   </data>
   <data name="EdenApplesOfAerial" xml:space="preserve">
     <value>Eden Luftäpfel</value>
-    <comment>Commodity EdenApplesOfAerial</comment>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
   </data>
   <data name="EleuThermals" xml:space="preserve">
     <value>Eleu Thermik</value>
@@ -1087,7 +1087,7 @@
   </data>
   <data name="SanumaDecorativeMeat" xml:space="preserve">
     <value>Dekoratives Sanuma Fleisch</value>
-    <comment>Commodity SanumaDecorativeMeat</comment>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
     <value>8 Kern Saft Behälter</value>
@@ -1343,7 +1343,7 @@
   </data>
   <data name="UzumokuLow_GWings" xml:space="preserve">
     <value>Uzumokusanische niedrig-G Flügel</value>
-    <comment>Commodity UzumokuLow_GWings</comment>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
   </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Veganisches Schlankheitskraut</value>
@@ -1391,7 +1391,7 @@
   </data>
   <data name="WolfFesh" xml:space="preserve">
     <value>Wolf Fesh</value>
-    <comment>Commodity WolfFesh</comment>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
   </data>
   <data name="WreckageComponents" xml:space="preserve">
     <value>Bergungsfähige Wrackteile</value>
@@ -1715,5 +1715,10 @@
     <value>Schalenaussengewebeprobe</value>
     <comment>Commodity S6_TissueSample_Cells</comment>
   </data>
+  
+  
+  
+  
+  
   
 </root>
