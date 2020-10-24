@@ -181,12 +181,12 @@ namespace UnitTests
 
             var expectedItems = new List<MarketInfoItem>()
             {
-                new MarketInfoItem(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200, true, false, false),
-                new MarketInfoItem(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
-                new MarketInfoItem(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150, true, false, false),
-                new MarketInfoItem(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100, true, false, false),
-                new MarketInfoItem(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97, true, false, false),
-                new MarketInfoItem(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300, true, false, false)
+                new MarketInfoItem(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
+                new MarketInfoItem(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new MarketInfoItem(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150),
+                new MarketInfoItem(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new MarketInfoItem(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
+                new MarketInfoItem(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
             };
 
             Assert.AreEqual(expectedItems.Count, info.Items.Count);

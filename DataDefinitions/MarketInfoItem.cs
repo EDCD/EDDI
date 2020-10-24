@@ -34,7 +34,20 @@ namespace EddiDataDefinitions
 
         // Station in-stock parameter
         [JsonProperty]
-        public int stock { get; set; }
+        public int stock
+        {
+            get => _stock;
+            set
+            {
+                if (value > 0 && !statusFlags.Contains("Producer"))
+                {
+                    statusFlags.Add("Producer");
+                }
+                _stock = value;
+            }
+        }
+        [JsonIgnore]
+        private int _stock;
 
         [JsonConverter(typeof(NullableCommodityBracketConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Include)]
@@ -42,7 +55,20 @@ namespace EddiDataDefinitions
 
         // Station in-demand parameters
         [JsonProperty]
-        public int demand { get; set; }
+        public int demand
+        {
+            get => _demand;
+            set
+            {
+                if (value > 1 && !statusFlags.Contains("Consumer"))
+                {
+                    statusFlags.Add("Consumer");
+                }
+                _demand = value;
+            }
+        }
+        [JsonIgnore]
+        private int _demand;
 
         [JsonConverter(typeof(NullableCommodityBracketConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Include)]
@@ -72,19 +98,18 @@ namespace EddiDataDefinitions
         public bool ShouldSerializecategory() { return false; }
 
         [JsonProperty]
-        public bool consumer { get => _consumer; set { statusFlags.Add("Consumer"); _consumer = value; } }
-        [JsonIgnore]
-        private bool _consumer; 
-        public bool ShouldSerializeconsumer() { return false; }
-
-        [JsonProperty]
-        public bool producer { get => _producer; set { statusFlags.Add("Producer"); _producer = value; } }
-        [JsonIgnore]
-        private bool _producer; 
-        public bool ShouldSerializeproducer() { return false; }
-
-        [JsonProperty]
-        public bool rare { get => _rare; set { statusFlags.Add("Rare"); _rare = value; } }
+        public bool rare
+        {
+            get => _rare;
+            set
+            {
+                if (value && !statusFlags.Contains("Rare"))
+                {
+                    statusFlags.Add("Rare");
+                }
+                _rare = value;
+            }
+        }
         [JsonIgnore]
         private bool _rare;
         public bool ShouldSerializerare() { return false; }
@@ -110,7 +135,7 @@ namespace EddiDataDefinitions
         public MarketInfoItem()
         { }
 
-        public MarketInfoItem(long eliteId, string Name, string Category, int BuyPrice, int SellPrice, int MeanPrice, CommodityBracket? StockBracket, CommodityBracket? DemandBracket, int Stock, int Demand, bool Consumer, bool Producer, bool Rare)
+        public MarketInfoItem(long eliteId, string Name, string Category, int BuyPrice, int SellPrice, int MeanPrice, CommodityBracket? StockBracket, CommodityBracket? DemandBracket, int Stock, int Demand, bool Rare = false, HashSet<string> statusFlags = null)
         {
             this.EliteID = eliteId;
             this.edName = Name;
@@ -122,24 +147,8 @@ namespace EddiDataDefinitions
             this.demandBracket = DemandBracket;
             this.stock = Stock;
             this.demand = Demand;
-            this.consumer = Consumer;
-            this.producer = Producer;
             this.rare = Rare;
-        }
-
-        public MarketInfoItem(long eliteId, string Name, string Category, int BuyPrice, int SellPrice, int MeanPrice, CommodityBracket? StockBracket, CommodityBracket? DemandBracket, int Stock, int Demand, HashSet<string> statusFlags)
-        {
-            this.EliteID = eliteId;
-            this.edName = Name;
-            this.category = Category;
-            this.buyPrice = BuyPrice;
-            this.sellPrice = SellPrice;
-            this.meanPrice = MeanPrice;
-            this.stockBracket = StockBracket;
-            this.demandBracket = DemandBracket;
-            this.stock = Stock;
-            this.demand = Demand;
-            this.statusFlags = statusFlags;
+            this.statusFlags = statusFlags ?? this.statusFlags;
         }
 
         public CommodityMarketQuote ToCommodityMarketQuote()
