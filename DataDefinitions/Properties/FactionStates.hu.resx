@@ -181,7 +181,10 @@
     <value>Kalóz támadás</value>
     <comment>Faction state PirateAttack</comment>
   </data>
-  
+  <data name="Drought" xml:space="preserve">
+    <value>Aszály</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+  </data>
   
   
   
