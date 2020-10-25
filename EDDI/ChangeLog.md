@@ -8,15 +8,29 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * EDDN Responder
     * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
   * Speech responder
-    * Add `factions` (faction objects) to the documented properties for the `system` object.
-    * Add `imports` (array of Commodity objects) to the `station` object
-    * Add `exports` (array of Commodity objects) to the `station` object
-    * Add `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
-    * Fixed a typo in the `Asteroid prospected` event
-    * Fixed a typo in the `Signal detected` script
-    * Updates the `Cargo report` event and script (to use commodity objects for the station prohibited list)
-    * Updates the `ship repaired` event and script to remove hard-coded english strings, standardize, and simplify redundant variables
-    * Updates the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
+    * Added `factions` (faction objects) to the documented properties for the `system` object.
+    * Added `imports` (array of Commodity objects) to the `station` object
+    * Added `exports` (array of Commodity objects) to the `station` object
+    * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
+    * Updated the `Asteroid prospected` script to fix a typo
+    * Updated the `Bond redeemed` script to better utilize the `Humanise()` function
+    * Updated the `Bounty incurred` script to better utilize the `Humanise()` function
+    * Updated the `Bounty redeemed` script to better utilize the `Humanise()` function
+    * Updated the `Cargo report` event and script (to use commodity objects for the station prohibited list)
+    * Updated the `Commodity purchased` script to better utilize the `Humanise()` function
+    * Updated the `Commodity sale check` script to better utilize the `Humanise()` function
+    * Updated the `Commodity sold` script to better utilize the `Humanise()` function
+    * Updated the `Data voucher awarded` script to better utilize the `Humanise()` function
+    * Updated the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
+    * Updated the `Module purchased` script to better utilize the `Humanise()` function
+    * Updated the `Module retrieved` script to better utilize the `Humanise()` function
+    * Updated the `Module sold` script to better utilize the `Humanise()` function
+    * Updated the `Module sold from storage` script to better utilize the `Humanise()` function
+    * Updated the `Module stored` script to better utilize the `Humanise()` function
+    * Updated the `Module transfer` script to better utilize the `Humanise()` function
+    * Updated the `Ship repaired` event and script to remove hard-coded english strings, standardize handling across stations and fleet carriers, and simplify redundant variables
+    * Updated the `Ship transfer initiated` script to better utilize the `Humanise()` function
+    * Updated the `Signal detected` script to fix a typo
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
