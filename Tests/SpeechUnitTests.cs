@@ -384,6 +384,7 @@ namespace UnitTests
             Assert.AreEqual("over 912 quadrillion", Translations.Humanize(9.1235E17M));
         }
 
+        [TestMethod]
         public void TestSpeechHumanize19()
         {
             Assert.AreEqual("nearly 646 thousand", Translations.Humanize(6.459E5M));
