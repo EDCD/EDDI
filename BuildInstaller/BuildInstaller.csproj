@@ -37,10 +37,15 @@
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
-  cd "$(SolutionDir)"
+    <PostBuildEvent>cd "$(SolutionDir)"
+if exist $(SolutionDir)postBuildTests.bat (
+  @echo Post-build script exists at: $(SolutionDir)postBuild.bat - executing...
+  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir)$(OutDir)"
+)
+
+if "$(ConfigurationName)" == "Release" (
   build-installer
-) 
+)
 </PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
