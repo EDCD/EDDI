@@ -2760,7 +2760,7 @@ namespace EddiJournalMonitor
                                     {
                                         events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
                                     }
-                                    else if (type == "settlement" || type == "scannable")
+                                    else if (type == "codex" || type == "settlement" || type == "scannable")
                                     {
                                         events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
                                     }
