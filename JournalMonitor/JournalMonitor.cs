@@ -48,11 +48,11 @@ namespace EddiJournalMonitor
                 {
                     Task.Run(async () =>
                     {
-                        int timeout;
+                        int timeout = 0;
                         do
                         {
                             await Task.Delay(1500);
-                            timeout = +1;
+                            timeout++;
                         }
                         while (EDDI.Instance.CurrentStarSystem.bodies.Count == 0 && timeout < 3);
                         callback(@event);
