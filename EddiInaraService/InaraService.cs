@@ -124,7 +124,7 @@ namespace EddiInaraService
             return inaraResponses;
         }
 
-        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta)
+        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta = false)
         {
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
