@@ -14,8 +14,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
     * Fixed a typo in the `Asteroid prospected` event
     * Fixed a typo in the `Signal detected` script
-    * Updates the `Cargo report` script (to use commodity objects for the station prohibited list)
-    * Updates the `Market information` script to restore purchase, sales, and swapout checks when appropriate
+    * Updates the `Cargo report` event and script (to use commodity objects for the station prohibited list)
+    * Updates the `ship repaired` event and script to remove hard-coded english strings, standardize, and simplify redundant variables
+    * Updates the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
