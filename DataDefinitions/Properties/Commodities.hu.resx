@@ -1335,9 +1335,24 @@
   
   
   
-  
-  
-  
-  
-  
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Sanuma-i díszített hús</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Farkas hús</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Cd-75 Cica márkájú kávé</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Mennyei Alma</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Uzumokui alacsony gravitációs szárnyak</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>
