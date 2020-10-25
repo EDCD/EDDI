@@ -68,7 +68,7 @@ namespace EddiInaraService
             try
             {
                 if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
-                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
+                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration, eddiIsBeta);
                 if (indexedEvents.Count > 0)
                 {
                     var client = new RestClient("https://inara.cz/inapi/v1/");
@@ -124,7 +124,7 @@ namespace EddiInaraService
             return inaraResponses;
         }
 
-        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
+        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta)
         {
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
@@ -138,6 +138,9 @@ namespace EddiInaraService
 
                 // Exclude and discard old / stale events
                 if (inaraConfiguration?.lastSync > indexedEvent.eventTimeStamp) { continue; }
+
+                // Inara will ignore the "setCommunityGoal" event while EDDI is in development mode (i.e. beta).
+                if (indexedEvent.eventName == "setCommunityGoal" && eddiIsBeta) { continue; }
 
                 // Note: the Inara Responder does not queue events while the game is in beta.
 
