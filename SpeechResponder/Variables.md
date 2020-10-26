@@ -73,7 +73,7 @@ A rating, for example a combat rating or empire rating.
 
     - `rank` the numeric rank of the rating, for example 0
     - `name` the name of the rating, for example 'Harmless'
-    - `femininename` the feminine name of the rating, for example 'Baroness' if it differs, otherwise the same as `name`
+    - `femininename` the feminine name of the rating, for example 'Baroness', if it differs. Otherwise null / not set
 
 ---
 
