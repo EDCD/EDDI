@@ -20,6 +20,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `Commodity purchased` script to better utilize the `Humanise()` function
     * Updated the `Commodity sale check` script to better utilize the `Humanise()` function
     * Updated the `Commodity sold` script to better utilize the `Humanise()` function
+    * Updated the `Crime check station` script to resolve an occasional grammar issue.
     * Updated the `Data voucher awarded` script to better utilize the `Humanise()` function
     * Updated the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
     * Updated the `Module purchased` script to better utilize the `Humanise()` function
