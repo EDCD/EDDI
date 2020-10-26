@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using Utilities;
 
 namespace EddiBgsService
 {
+    // This API is high latency - reserve for targeted queries and data not available from any other source.
     public interface IBgsRestClient
     {
         Uri BuildUri(IRestRequest request);
@@ -16,10 +16,11 @@ namespace EddiBgsService
 
     public partial class BgsService : IBgsService
     {
-        private readonly IBgsRestClient restClient;
+        public readonly IBgsRestClient bgsRestClient;
+        public readonly IBgsRestClient eddbRestClient;
 
-        // This API is high latency - reserve for targeted queries and data not available from any other source.
-        private const string baseUrl = "https://elitebgs.app/api/ebgs/";
+        private const string bgsBaseUrl = "https://elitebgs.app/api/ebgs/";
+        private const string eddbBaseUrl = "https://eddbapi.kodeblox.com/api/";
 
         private class BgsRestClient : IBgsRestClient
         {
@@ -34,19 +35,19 @@ namespace EddiBgsService
             IRestResponse<T> IBgsRestClient.Execute<T>(IRestRequest request) => restClient.Execute<T>(request);
         }
 
-        public BgsService(IBgsRestClient restClient = null)
+        public BgsService(IBgsRestClient bgsRestClient = null, IBgsRestClient eddbRestClient = null)
         {
-            this.restClient = restClient ?? new BgsRestClient(baseUrl);
+            this.bgsRestClient = bgsRestClient ?? new BgsRestClient(bgsBaseUrl);
+            this.eddbRestClient = eddbRestClient ?? new BgsRestClient(eddbBaseUrl);
         }
 
         /// <summary> Specify the endpoint (e.g. EddiBgsService.Endpoint.factions) and a list of queries as KeyValuePairs </summary>
-        public List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
+        public List<object> GetData(IBgsRestClient restClient, string endpoint, List<KeyValuePair<string, object>> queries)
         {
             if (queries == null) { return null; }
 
             var docs = new List<object>();
-            int currentPage = 1;
-            int totalPages = 0;
+            var currentPage = 1;
 
             RestRequest request = new RestRequest(endpoint, Method.GET);
             foreach (KeyValuePair<string, object> query in queries)
@@ -55,16 +56,16 @@ namespace EddiBgsService
             }
 
             // Make our initial request
-            PageResponse response = PageRequest(request, currentPage);
+            PageResponse response = PageRequest(restClient, request, currentPage);
             if (response != null)
             {
                 docs.AddRange(response.docs);
-                totalPages = response.pages;
+                var totalPages = response.pages;
 
                 // Make additional requests as needed
                 while (currentPage < totalPages)
                 {
-                    PageResponse pageResponse = PageRequest(request, ++currentPage);
+                    PageResponse pageResponse = PageRequest(restClient, request, ++currentPage);
                     if (pageResponse != null)
                     {
                         docs.AddRange(pageResponse.docs);
@@ -76,11 +77,9 @@ namespace EddiBgsService
             return null;
         }
 
-        private PageResponse PageRequest(RestRequest request, int page)
+        private PageResponse PageRequest(IBgsRestClient restClient, RestRequest request, int page)
         {
             request.AddOrUpdateParameter("page", page);
-
-            DateTime startTime = DateTime.UtcNow;
 
             RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
             if (clientResponse.IsSuccessful)

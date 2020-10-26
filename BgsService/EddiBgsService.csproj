@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BgsEddbData.cs" />
     <Compile Include="BgsFactionData.cs" />
     <Compile Include="BgsService.cs" />
     <Compile Include="IBgsService.cs" />

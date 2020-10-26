@@ -310,6 +310,8 @@
     <None Include="Properties\CapitalSystems.json" />
     <None Include="Properties\cubeSystemsAroundSol.json" />
     <None Include="Properties\inaraCmdrs.json" />
+    <EmbeddedResource Include="Properties\bgsEddbSystemResponse.json" />
+    <EmbeddedResource Include="Properties\bgsEddbSystem.json" />
     <EmbeddedResource Include="Properties\market.json" />
     <None Include="Properties\Libby Horizons.json" />
     <None Include="Properties\Sol.json" />

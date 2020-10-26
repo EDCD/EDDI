@@ -50,12 +50,14 @@ namespace UnitTests
     public class BgsDataTests : TestBase
     {
         FakeBgsRestClient fakeBgsRestClient;
+        FakeBgsRestClient fakeEddbRestClient;
         BgsService fakeBgsService;
 
         [TestInitialize]
         public void start()
         {
             fakeBgsRestClient = new FakeBgsRestClient();
+            fakeEddbRestClient = new FakeBgsRestClient();
             fakeBgsService = new BgsService(fakeBgsRestClient);
             MakeSafe();
         }
@@ -83,11 +85,11 @@ namespace UnitTests
             Assert.AreEqual(28.9M, factionPresence?.influence);
             Assert.AreEqual("Boom", factionPresence?.FactionState?.invariantName);
             Assert.AreEqual("Happy", factionPresence?.Happiness.invariantName);
-            Assert.AreEqual(1, factionPresence.ActiveStates.Count());
-            Assert.AreEqual("Boom", factionPresence.ActiveStates[0].invariantName);
-            Assert.AreEqual(0, factionPresence.PendingStates.Count());
-            Assert.AreEqual(0, factionPresence.RecoveringStates.Count());
-            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(factionPresence.updatedAt));
+            Assert.AreEqual(1, factionPresence?.ActiveStates.Count());
+            Assert.AreEqual("Boom", factionPresence?.ActiveStates[0]?.invariantName);
+            Assert.AreEqual(0, factionPresence?.PendingStates.Count());
+            Assert.AreEqual(0, factionPresence?.RecoveringStates.Count());
+            Assert.AreEqual("2019-04-13T03:37:17Z", Dates.FromDateTimeToString(factionPresence?.updatedAt));
 
             systemName = "LFT 926";
             factionPresence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
@@ -95,12 +97,12 @@ namespace UnitTests
             Assert.AreEqual(11.2983M, factionPresence?.influence);
             Assert.AreEqual("Boom", factionPresence?.FactionState?.invariantName);
             Assert.AreEqual("Happy", factionPresence?.Happiness.invariantName);
-            Assert.AreEqual(0, factionPresence.ActiveStates.Count());
-            Assert.AreEqual(0, factionPresence.PendingStates.Count());
-            Assert.AreEqual(1, factionPresence.RecoveringStates.Count());
-            Assert.AreEqual("War", factionPresence.RecoveringStates[0].factionState.invariantName);
-            Assert.AreEqual(0, factionPresence.RecoveringStates[0].trend);
-            Assert.AreEqual("2019-04-13T03:27:28Z", Dates.FromDateTimeToString(factionPresence.updatedAt));
+            Assert.AreEqual(0, factionPresence?.ActiveStates.Count());
+            Assert.AreEqual(0, factionPresence?.PendingStates.Count());
+            Assert.AreEqual(1, factionPresence?.RecoveringStates.Count());
+            Assert.AreEqual("War", factionPresence?.RecoveringStates[0]?.factionState.invariantName);
+            Assert.AreEqual(0, factionPresence?.RecoveringStates[0]?.trend);
+            Assert.AreEqual("2019-04-13T03:27:28Z", Dates.FromDateTimeToString(factionPresence?.updatedAt));
         }
 
         [TestMethod]
@@ -150,6 +152,80 @@ namespace UnitTests
 
             // Assert
             Assert.IsNull(factions);
+        }
+
+        [TestMethod]
+        public void TestEddbSystem()
+        {
+            // Test faction data
+            JObject response = DeserializeJsonResource<JObject>(Resources.bgsEddbSystem);
+            StarSystem system = fakeBgsService.ParseSystem(response);
+
+            Assert.IsNotNull(system);
+
+            // Test the star system core data
+            Assert.AreEqual(10477373803, system.systemAddress);
+            Assert.AreEqual("Sol", system.systemname);
+            Assert.AreEqual(27, system.EDSMID);
+            Assert.AreEqual(1599446773, system.updatedat);
+
+            // Test powerplay data
+            Assert.AreEqual("Zachary Hudson", system.Power?.invariantName);
+            Assert.AreEqual("Control", system.powerState?.invariantName);
+        }
+
+        [TestMethod]
+        public void TestEddbGetSystem()
+        {
+            // Setup
+            string resource = "v4/populatedsystems?";
+            string json = Encoding.UTF8.GetString(Resources.bgsEddbSystemResponse);
+            RestRequest data = new RestRequest();
+            fakeBgsRestClient.Expect(resource, json, data);
+
+            StarSystem expectedStarSystem = new StarSystem()
+            {
+                systemAddress = 10477373803,
+                systemname = "Sol",
+                EDSMID = 27,
+                Power = Power.FromEDName("ZacharyHudson"),
+                powerState = PowerplayState.FromEDName("Controlled"),
+                updatedat = 1599446773
+            };
+
+            // Act
+            StarSystem system = fakeBgsService.GetSystemByName("Sol");
+            StarSystem system2 = fakeBgsService.GetSystemBySystemAddress(10477373803);
+            StarSystem system3 = fakeBgsService.GetSystemByName("No such system");
+
+            // Assert
+            Assert.IsNotNull(system);
+            Assert.IsTrue(system.DeepEquals(expectedStarSystem));
+
+            Assert.IsNotNull(system2);
+            Assert.IsTrue(system2.DeepEquals(expectedStarSystem));
+
+            Assert.IsNull(system3);
+        }
+
+        [TestMethod]
+        public void TestParseNoSystems()
+        {
+            // Setup
+            string endpoint = "v4/populatedsystems?";
+            string json = "";
+            RestRequest data = new RestRequest();
+            fakeBgsRestClient.Expect(endpoint, json, data);
+            var queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(BgsService.SystemParameters.systemName, "")
+            };
+
+            // Act
+            List<StarSystem> systems = fakeBgsService.GetSystems(endpoint, queryList);
+
+            // Assert
+            Assert.IsNull(systems);
         }
     }
 }

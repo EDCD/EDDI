@@ -8,7 +8,7 @@ namespace EddiBgsService
 {
     partial class BgsService
     {
-        /// <summary> The endpoint we will use for faction queries </summary>
+        /// <summary> The endpoint we will use for faction queries (using the BGS rest client) </summary>
         public const string factionEndpoint = "v4/factions?";
 
         public static class FactionParameters
@@ -62,7 +62,7 @@ namespace EddiBgsService
         {
             if (queryList.Count > 0)
             {
-                List<object> responses = GetData(endpoint, queryList);
+                List<object> responses = GetData(bgsRestClient, endpoint, queryList);
 
                 if (responses?.Count > 0)
                 {

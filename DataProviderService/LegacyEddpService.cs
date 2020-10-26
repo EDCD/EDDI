@@ -27,7 +27,6 @@ namespace EddiDataProviderService
             JObject response = GetData(system.systemname);
             if (response != null)
             {
-                SetStarSystemLegacyData(system, response, setPowerplayData);
                 if (setStationData) { SetStationLegacyData(system, response); }
             }
             return system;
@@ -44,24 +43,6 @@ namespace EddiDataProviderService
             {
                 Logging.Debug("Failed to obtain data from " + BASE + "systems/" + Uri.EscapeDataString(system));
                 return null;
-            }
-        }
-
-        private static void SetStarSystemLegacyData(StarSystem system, JObject json, bool setPowerplayData)
-        {
-            // Set data not currently available from EDSM: Powerplay data and EDDBID
-            // Note: EDDB does not report the following powerplay state ednames: 
-            // `HomeSystem`, `InPrepareRadius`, `Prepared`, `Turmoil`
-            // We can identify `HomeSystem` from static data, but  `InPrepareRadius`, `Prepared`, and `Turmoil`
-            // are only available from the `Jumped` and `Location` events:
-            // When in conflict, EDDB does not report the names of the conflicting powers.
-            if (setPowerplayData)
-            {
-                system.Power = Power.FromName((string)json["power"]) ?? Power.None;
-                system.powerState = (string)json["power_state"] == "None" ? PowerplayState.None
-                    : system.systemname == system.Power?.headquarters ? PowerplayState.HomeSystem
-                    : PowerplayState.FromName((string)json["power_state"]);
-
             }
         }
 
