@@ -183,6 +183,11 @@ namespace EddiDataDefinitions
             NotifyPropertyChanged("price");
         }
 
+        /// <summary> </summary>
+        /// <param name="cargoType">The type of cargo to add</param>
+        /// <param name="amount">The amount of cargo to add</param>
+        /// <param name="cargoHaulageData">Add or update haulage instance</param>
+        /// <param name="_price">The acquisition price per unit (if not zero)</param>
         public void AddDetailedQty(CargoType cargoType, int amount, Haulage cargoHaulageData = null, int _price = 0)
         {
             CalculateWeightedPrice(_price, amount);
@@ -191,7 +196,18 @@ namespace EddiDataDefinitions
                 case CargoType.haulage:
                     {
                         haulage += amount;
-                        if (cargoHaulageData != null) { haulageData.Add(cargoHaulageData); }
+                        if (cargoHaulageData != null) 
+                        {
+                            for (int i = 0; i < haulageData.Count; i++)
+                            {
+                                if (haulageData[i].missionid == cargoHaulageData.missionid)
+                                {
+                                    haulageData[i] = cargoHaulageData;
+                                    return;
+                                }
+                            }
+                            haulageData.Add(cargoHaulageData); 
+                        }
                         break;
                     }
                 case CargoType.stolen:
@@ -207,12 +223,18 @@ namespace EddiDataDefinitions
             }
         }
 
+        /// <param name="cargoType">The type of cargo to remove</param>
+        /// <param name="amount">The amount of cargo to remove</param>
+        /// <param name="missionId">Remove haulage instance by mission ID</param>
         public void RemoveDetailedQty(CargoType cargoType, int amount, long? missionId)
         {
             var thisHaulageData = haulageData.FirstOrDefault(h => h.missionid == missionId);
             RemoveDetailedQty(cargoType, amount, thisHaulageData);
         }
 
+        /// <param name="cargoType">The type of cargo to remove</param>
+        /// <param name="amount">The amount of cargo to remove</param>
+        /// <param name="cargoHaulageData">Remove haulage instance</param>
         public void RemoveDetailedQty(CargoType cargoType, int amount, Haulage cargoHaulageData = null)
         {
             switch (cargoType)
