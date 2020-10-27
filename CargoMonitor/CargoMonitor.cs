@@ -305,7 +305,7 @@ namespace EddiCargoMonitor
                 {
                     if (haulage != null)
                     {
-                        cargo.AddDetailedQty(CargoType.haulage, 1, haulage);
+                        cargo.AddDetailedQty(CargoType.haulage, 1);
                     }
                     else if (@event.stolen)
                     {
