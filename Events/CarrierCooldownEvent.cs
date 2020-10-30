@@ -36,7 +36,7 @@ namespace EddiEvents
 
         public string bodytype => bodyType?.localizedName;
 
-        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
+        public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Carrier variables
 

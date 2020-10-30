@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,11 +18,13 @@ namespace EddiEvents
             VARIABLES.Add("approaching_surface", "A boolean value. True if you are entering the gravity well and and false if you are leaving");
             VARIABLES.Add("systemname", "The name of the starsystem");
             VARIABLES.Add("bodyname", "The name of the body");
+            VARIABLES.Add("shortname", "The short name of the body, less the system name");
         }
 
         public bool approaching_surface { get; private set; }
         public string systemname { get; private set; }
         public string bodyname { get; private set; }
+        public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use systemname instead")]

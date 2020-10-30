@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -29,7 +30,7 @@ namespace EddiEvents
 
         public string bodyname { get; private set; }
 
-        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
+        public string shortname => Body.GetShortName(bodyname, systemname);
 
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }

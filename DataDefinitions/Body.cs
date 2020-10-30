@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The short name of the body</summary>
         [JsonIgnore]
-        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
+        public string shortname => GetShortName(bodyname, systemname);
 
         /// <summary>The name of the system in which the body resides</summary>
         public string systemname { get; set; }
@@ -582,6 +582,11 @@ namespace EddiDataDefinitions
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public static string GetShortName(string bodyname, string systemname)
+        {
+            return (systemname == null || bodyname == systemname) ? bodyname : bodyname?.Replace(systemname, "").Trim();
         }
     }
 }
