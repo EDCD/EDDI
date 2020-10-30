@@ -1,6 +1,7 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiJournalMonitor;
 using EddiShipMonitor;
 using EddiSpeechService;
 using EddiStatusMonitor;
@@ -97,6 +98,42 @@ namespace EddiSpeechResponder
             {
                 // No it does not; ignore it
                 return false;
+            }
+        }
+
+        public void TestScript(string scriptName, Dictionary<string, Script> scripts)
+        {
+            // See if we have a sample
+            List<Event> sampleEvents;
+            object sample = Events.SampleByName(scriptName);
+            if (sample == null)
+            {
+                sampleEvents = new List<Event>();
+            }
+            else if (sample is string)
+            {
+                // It's a string so a journal entry.  Parse it
+                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
+            }
+            else if (sample is Event)
+            {
+                // It's a direct event
+                sampleEvents = new List<Event>() { (Event)sample };
+            }
+            else
+            {
+                Logging.Warn("Unknown sample type " + sample.GetType());
+                sampleEvents = new List<Event>();
+            }
+
+            ScriptResolver testScriptResolver = new ScriptResolver(scripts);
+            if (sampleEvents.Count == 0)
+            {
+                sampleEvents.Add(null);
+            }
+            foreach (Event sampleEvent in sampleEvents)
+            {
+                Say(testScriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), scriptName, sampleEvent, testScriptResolver.priority(scriptName));
             }
         }
 

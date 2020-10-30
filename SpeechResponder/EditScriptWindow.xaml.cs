@@ -7,7 +7,10 @@ using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using EddiSpeechService;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -20,6 +23,8 @@ namespace EddiSpeechResponder
         private readonly Dictionary<string, Script> _scripts;
         private Script _script;
         private readonly string originalName;
+        private Task lastTest;
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         private string scriptName;
         public string ScriptName
@@ -185,53 +190,29 @@ namespace EddiSpeechResponder
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
-            ScriptRecoveryService.SaveRecoveryScript(ScriptValue,
-                ScriptName,
-                ScriptDescription,
-                Responder,
-                Priority,
-                _script.defaultValue);
-            // Splice the new script in to the existing scripts
-            ScriptValue = scriptView.Text;
-            Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
-            Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
-            newScripts.Remove(ScriptName);
-            newScripts.Add(ScriptName, testScript);
+            if (!SpeechService.Instance.eddiSpeaking)
+            {
+                ScriptRecoveryService.SaveRecoveryScript(ScriptValue,
+                    ScriptName,
+                    ScriptDescription,
+                    Responder,
+                    Priority,
+                    _script.defaultValue);
 
-            SpeechResponder speechResponder = new SpeechResponder();
-            speechResponder.Start();
+                // Splice the new script in to the existing scripts
+                ScriptValue = scriptView.Text;
+                Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
+                Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
+                newScripts.Remove(ScriptName);
+                newScripts.Add(ScriptName, testScript);
 
-            // See if we have a sample
-            List<Event> sampleEvents;
-            object sample = Events.SampleByName(_script.Name);
-            if (sample == null)
-            {
-                sampleEvents = new List<Event>();
-            }
-            else if (sample is string)
-            {
-                // It's a string so a journal entry.  Parse it
-                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
-            }
-            else if (sample is Event)
-            {
-                // It's a direct event
-                sampleEvents = new List<Event>() { (Event)sample };
+                SpeechResponder speechResponder = new SpeechResponder();
+                speechResponder.Start();
+                speechResponder.TestScript(ScriptName, newScripts);
             }
             else
             {
-                Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvents = new List<Event>();
-            }
-
-            ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            if (sampleEvents.Count == 0)
-            {
-                sampleEvents.Add(null);
-            }
-            foreach (Event sampleEvent in sampleEvents)
-            {
-                speechResponder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, scriptResolver.priority(_script.Name));
+                SpeechService.Instance.ShutUp();
             }
         }
 
