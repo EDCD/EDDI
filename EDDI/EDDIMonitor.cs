@@ -26,7 +26,7 @@ namespace EddiCore
         string MonitorDescription();
 
         /// <summary>
-        /// If the monitor is required to be running
+        /// If the monitor is required to be running. This must be true unless the monitor does not consume events (e.g. the event and profile handler methods are empty).
         /// </summary>
         bool IsRequired();
 

@@ -260,7 +260,7 @@ namespace EddiCore
                         enabled = true;
                     }
 
-                    if (!enabled)
+                    if (!enabled && !monitor.IsRequired())
                     {
                         Logging.Debug(monitor.MonitorName() + " is disabled; not starting");
                     }

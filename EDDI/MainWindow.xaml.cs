@@ -339,7 +339,7 @@ namespace Eddi
                 // Only show a tab if this can be turned off or has configuration elements
                 if (monitorConfiguration != null || !monitor.IsRequired())
                 {
-                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
+                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName(), !monitor.IsRequired());
                     skeleton.plugindescription.Text = monitor.MonitorDescription();
 
                     if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
