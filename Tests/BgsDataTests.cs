@@ -58,7 +58,7 @@ namespace UnitTests
         {
             fakeBgsRestClient = new FakeBgsRestClient();
             fakeEddbRestClient = new FakeBgsRestClient();
-            fakeBgsService = new BgsService(fakeBgsRestClient);
+            fakeBgsService = new BgsService(fakeBgsRestClient, fakeEddbRestClient);
             MakeSafe();
         }
 
@@ -181,7 +181,7 @@ namespace UnitTests
             string resource = "v4/populatedsystems?";
             string json = Encoding.UTF8.GetString(Resources.bgsEddbSystemResponse);
             RestRequest data = new RestRequest();
-            fakeBgsRestClient.Expect(resource, json, data);
+            fakeEddbRestClient.Expect(resource, json, data);
 
             StarSystem expectedStarSystem = new StarSystem()
             {
@@ -196,6 +196,7 @@ namespace UnitTests
             // Act
             StarSystem system = fakeBgsService.GetSystemByName("Sol");
             StarSystem system2 = fakeBgsService.GetSystemBySystemAddress(10477373803);
+            fakeEddbRestClient.Expect(resource, null, data);
             StarSystem system3 = fakeBgsService.GetSystemByName("No such system");
 
             // Assert
@@ -215,7 +216,7 @@ namespace UnitTests
             string endpoint = "v4/populatedsystems?";
             string json = "";
             RestRequest data = new RestRequest();
-            fakeBgsRestClient.Expect(endpoint, json, data);
+            fakeEddbRestClient.Expect(endpoint, json, data);
             var queryList = new List<KeyValuePair<string, object>>()
             {
                 new KeyValuePair<string, object>(BgsService.SystemParameters.systemName, "")
