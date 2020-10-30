@@ -314,7 +314,7 @@ namespace Utilities
                 PayloadPostTimeout = TimeSpan.FromSeconds(10), 
             };
             RollbarLocator.RollbarInstance.Configure(config);
-            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 10));
+            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 50));
         }
 
         public static void ExceptionHandler(Exception exception)
