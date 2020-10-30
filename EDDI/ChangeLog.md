@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.7.1-b1
   * Core
     * Various bug fixes
+    * Rollbar telemetry service can now optionally be disabled by editing configuration file at %appdata%/EDDI/eddi.json.
   * EDDN Responder
     * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
   * Speech responder
