@@ -380,7 +380,7 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.enqueueEvent(new SilentRunningEvent(thisStatus.timestamp, thisStatus.silent_running));
                 }
-                if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
+                if (thisStatus.srv_under_ship != lastStatus.srv_under_ship && lastStatus.vehicle == Constants.VEHICLE_SRV)
                 {
                     // If the turret is deployable then we are not under our ship. And vice versa. 
                     bool deployable = !thisStatus.srv_under_ship;
