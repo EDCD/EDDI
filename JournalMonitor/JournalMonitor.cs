@@ -3922,6 +3922,15 @@ namespace EddiJournalMonitor
                                         carrierJumpCancellationTS.Cancel();
                                     }
                                     events.Add(new CarrierJumpCancelledEvent(timestamp, carrierId) { raw = line, fromLoad = fromLogLoad });
+                                    if (!fromLogLoad)
+                                    {
+                                        Task.Run(async () =>
+                                        {
+                                            int timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
+                                            await Task.Delay(timeMs);
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), null, null, null, null, null, null, null, carrierId) { fromLoad = fromLogLoad });
+                                        }).ConfigureAwait(false);
+                                    }
                                 }
                                 handled = true;
                                 break;

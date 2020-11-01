@@ -15,15 +15,15 @@ namespace EddiEvents
         static CarrierCooldownEvent()
         {
             // System variables
-            VARIABLES.Add("systemname", "The name of the system in which the carrier is located");
+            VARIABLES.Add("systemname", "The name of the system in which the carrier is located after a successful jump");
 
             // Body variables
-            VARIABLES.Add("bodyname", "The nearest body to the carrier, if any");
-            VARIABLES.Add("bodytype", "The type of the body nearest to the carrier, if any (Star, Planet. etc.) (only available if docked during the jump)");
-            VARIABLES.Add("shortname", "The short name of the nearest body, if any");
+            VARIABLES.Add("bodyname", "The nearest body to the carrier, if any, after a successful jump");
+            VARIABLES.Add("bodytype", "The type of the body nearest to the carrier, if any (Star, Planet. etc.), after a successful jump  (only available if docked during the jump)");
+            VARIABLES.Add("shortname", "The short name of the nearest body, if any, after a successful jump");
 
             // Carrier variables
-            VARIABLES.Add("carriername", "The name of the carrier (only available if docked during the jump)");
+            VARIABLES.Add("carriername", "The name of the carrier (only available if docked during a successful jump)");
         }
 
         // System variables
@@ -49,7 +49,7 @@ namespace EddiEvents
         public long? carrierId { get; private set; }
         public StationModel carrierType { get; private set; }
 
-        public CarrierCooldownEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)
+        public CarrierCooldownEvent(DateTime timestamp, string systemName, long? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
