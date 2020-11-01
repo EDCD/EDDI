@@ -8,6 +8,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Rollbar telemetry service can now optionally be disabled by editing configuration file at %appdata%/EDDI/eddi.json.
   * EDDN Responder
     * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
+  * EDSM Responder
+    * Fixed an issue with queued messages not being sent when the EDSM Responder was stopped.
+  * Inara Responder
+    * Fixed an issue with queued messages not being sent when the Inara Responder was stopped.
   * Speech responder
     * Test scripts can now be canceled by clicking on the "Test" button a second time while test speech is in progress.
     * Variables
