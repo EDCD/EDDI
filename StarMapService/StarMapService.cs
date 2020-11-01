@@ -41,7 +41,7 @@ namespace EddiStarMapService
         private string apiKey { get; set; }
         private readonly IEdsmRestClient restClient;
         private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
-        public static bool bgJournalSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
+        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
@@ -101,7 +101,7 @@ namespace EddiStarMapService
 
         public void StartJournalSync()
         {
-            if (!bgJournalSyncRunning)
+            if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
             {
                 Logging.Debug("Enabling EDSM Responder event sync.");
                 Task.Run(() => BackgroundJournalSync()).ConfigureAwait(false);
@@ -110,24 +110,36 @@ namespace EddiStarMapService
 
         public void StopJournalSync()
         {
-            if (bgJournalSyncRunning)
+            if (syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested)
             {
                 Logging.Debug("Stopping EDSM Responder event sync.");
-                bgJournalSyncRunning = false;
+                syncCancellationTS.Cancel();
             }
         }
 
         private async void BackgroundJournalSync()
         {
-            // Pause a short time to allow any initial events to build in the queue before our first sync
-            await Task.Delay(startupDelayMilliSeconds).ConfigureAwait(false);
-
-            bgJournalSyncRunning = true;
-            while (bgJournalSyncRunning)
+            try
             {
-                await Task.Run(() => SendQueuedEvents()).ConfigureAwait(false);
-                await Task.Delay(syncIntervalMilliSeconds).ConfigureAwait(false);
+                using (syncCancellationTS = new CancellationTokenSource())
+                {
+                    // Pause a short time to allow any initial events to build in the queue before our first sync
+                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+
+                    while (!syncCancellationTS.IsCancellationRequested)
+                    {
+                        await Task.Run(() => SendQueuedEvents(syncCancellationTS.Token), syncCancellationTS.Token).ConfigureAwait(false);
+                        await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                    }
+                }
             }
+            catch (TaskCanceledException) { } // Tasks were cancelled. Nothing to do here.
+            finally
+            {
+                // Clean up by sending anything left in the queue. Use a new cancellation token which cannot be canceled.
+                SendQueuedEvents(new CancellationToken());
+            }
+
         }
 
         public void EnqueueEvent(IDictionary<string, object> eventObject)
@@ -151,18 +163,29 @@ namespace EddiStarMapService
             }
         }
 
-        private void SendQueuedEvents()
+        private void SendQueuedEvents(CancellationToken cancellationToken)
         {
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             var queue = new List<IDictionary<string, object>>();
-            // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-            // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
-            foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable())
-            {
-                queue.Add(pendingEvent);
-                if (queue.Count > 0 && queuedEvents.Count == 0) { break; }
+            try 
+            { 
+                // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
+                foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(cancellationToken))
+                {
+                    queue.Add(pendingEvent);
+                    if (queue.Count > 0 && queuedEvents.Count == 0) { break; }
+                }
+                StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+                SendEventBatch(queue, starMapConfiguration);
             }
-            SendEventBatch(queue, starMapConfiguration);
+            catch (OperationCanceledException)
+            {
+                // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                foreach (var pendingEvent in queue)
+                {
+                    queuedEvents.Add(pendingEvent);
+                }
+            }
         }
 
         private void SendEventBatch(List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration)

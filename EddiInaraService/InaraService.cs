@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -22,14 +23,14 @@ namespace EddiInaraService
 
         // Variables
         private static bool tooManyRequests;
-        public static bool bgSyncRunning { get; private set; } // This must be static so that it is visible to child threads and tasks
         private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
         private static readonly List<string> invalidAPIEvents = new List<string>();
         public static EventHandler invalidAPIkey;
+        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         public void Start(bool eddiIsBeta = false)
         {
-            if (!bgSyncRunning)
+            if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
             {
                 Logging.Debug("Starting Inara service background sync.");
                 Task.Run(() => BackgroundSync(eddiIsBeta)).ConfigureAwait(false);
@@ -38,24 +39,35 @@ namespace EddiInaraService
 
         public void Stop()
         {
-            if (bgSyncRunning)
+            if (syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested)
             {
                 Logging.Debug("Stopping Inara service background sync.");
-                bgSyncRunning = false;
+                syncCancellationTS.Cancel();
             }
         }
 
         private async void BackgroundSync(bool eddiIsBeta)
         {
-            // Pause a short time to allow any initial events to build in the queue before our first sync
-            await Task.Delay(startupDelayMilliSeconds).ConfigureAwait(false);
-
-            bgSyncRunning = true;
-            while (bgSyncRunning)
+            try
             {
-                await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta)).ConfigureAwait(false);
-                await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds).ConfigureAwait(false);
-                tooManyRequests = false;
+                using (syncCancellationTS = new CancellationTokenSource())
+                {
+                    // Pause a short time to allow any initial events to build in the queue before our first sync
+                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+
+                    while (!syncCancellationTS.IsCancellationRequested)
+                    {
+                        await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta, syncCancellationTS.Token), syncCancellationTS.Token).ConfigureAwait(false);
+                        await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                        tooManyRequests = false;
+                    }
+                }
+            }
+            catch (TaskCanceledException) { } // Tasks were cancelled. Nothing to do here.
+            finally
+            {
+                // Clean up by sending anything left in the queue. Use a new cancellation token which cannot be canceled.
+                SendQueuedAPIEvents(eddiIsBeta, new CancellationToken());
             }
         }
 
@@ -237,24 +249,35 @@ namespace EddiInaraService
             return true;
         }
 
-        public void SendQueuedAPIEvents(bool eddiIsBeta)
+        public void SendQueuedAPIEvents(bool eddiIsBeta, CancellationToken cancellationToken)
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
-            // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-            // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
-            foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable())
+            try
             {
-                queue.Add(pendingEvent);
-                if (queue.Count > 0 && queuedAPIEvents.Count == 0) { break; }
-            }
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            if (checkAPIcredentialsOk(inaraConfiguration))
-            {
-                var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
-                if (responses != null && responses.Count > 0)
+                // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+                foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(cancellationToken))
                 {
-                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
-                    inaraConfiguration.ToFile();
+                    queue.Add(pendingEvent);
+                    if (queue.Count > 0 && queuedAPIEvents.Count == 0) { break; }
+                }
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                if (checkAPIcredentialsOk(inaraConfiguration))
+                {
+                    var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
+                    if (responses != null && responses.Count > 0)
+                    {
+                        inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
+                        inaraConfiguration.ToFile();
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                foreach (var pendingEvent in queue)
+                {
+                    queuedAPIEvents.Add(pendingEvent);
                 }
             }
         }
