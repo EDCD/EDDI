@@ -783,6 +783,10 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped((CarrierJumpedEvent)@event);
                     }
+                    else if (@event is SignalDetectedEvent)
+                    {
+                        passEvent = eventSignalDetected((SignalDetectedEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -806,6 +810,19 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventSignalDetected(SignalDetectedEvent @event) 
+        {
+            if (Instance.CurrentStarSystem != null && !@event.fromLoad)
+            {
+                if (Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
+                {
+                    Instance.CurrentStarSystem.signalSources.Add(@event.signalSource);
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)

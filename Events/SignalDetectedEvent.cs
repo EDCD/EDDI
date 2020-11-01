@@ -19,30 +19,26 @@ namespace EddiEvents
             VARIABLES.Add("secondsremaining", "The time before the signal expires, in seconds");
             VARIABLES.Add("stationsignal", "True if the signal source is a station");
             VARIABLES.Add("threatlevel", "The risk posed by the signal source. Higher numbers are more dangerous.");
+            VARIABLES.Add("unique", "True if this is the first signal of this type detected within the star system");
         }
 
-        public string source => signalSource.localizedName ?? signalSource.fallbackLocalizedName ?? signalSource.edname;
-        public string factionstate => factionState.localizedName ?? factionState.fallbackLocalizedName ?? factionState.edname;
-        public string faction { get; private set; }
-        public decimal? secondsremaining { get; private set; }
-
-        public int threatlevel { get; private set; }
-        public bool stationsignal { get; private set; }
+        public string source => signalSource.localizedName;
+        public string factionstate => signalSource.spawningState.localizedName ?? signalSource.spawningState.fallbackLocalizedName ?? signalSource.spawningState.edname;
+        public string faction => signalSource.spawningFaction;
+        public decimal? secondsremaining => signalSource.expiry is null ? null : (decimal?)((DateTime)signalSource.expiry - timestamp).TotalSeconds;
+        public int threatlevel => Convert.ToInt32(signalSource.threatLevel);
+        public bool stationsignal => Convert.ToBoolean(signalSource.isStation);
+        public bool unique { get; }
 
         // Not intended to be user facing
         public SignalSource signalSource { get; private set; }
-        public FactionState factionState { get; private set; }
         public long? systemAddress { get; private set; }
 
-        public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, FactionState factionState, string faction, decimal? secondsRemaining, int? threatlevel, bool? isStation) : base(timestamp, NAME)
+        public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, bool unique) : base(timestamp, NAME)
         {
             this.systemAddress = systemAddress;
             this.signalSource = source;
-            this.factionState = factionState;
-            this.faction = faction;
-            this.secondsremaining = secondsRemaining;
-            this.threatlevel = Convert.ToInt32(threatlevel);
-            this.stationsignal = Convert.ToBoolean(isStation);
+            this.unique = unique;
         }
     }
 }

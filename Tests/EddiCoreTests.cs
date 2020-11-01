@@ -206,11 +206,13 @@ namespace UnitTests
         public void TestSignalDetectedDeDuplication()
         {
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            JournalMonitor monitor = (JournalMonitor)((List<EDDIMonitor>)privateObject
-                .GetFieldOrProperty("monitors"))
-                .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
             privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem", systemAddress = 6606892846275 });
-            StarSystem currentStarSystem = (StarSystem)privateObject.GetFieldOrProperty("CurrentStarSystem");
+
+            void Handle(SignalDetectedEvent @event) 
+            {
+                privateObject.Invoke("eventSignalDetected", @event);
+            };
+            var currentStarSystem = (StarSystem)privateObject.GetFieldOrProperty("CurrentStarSystem");
 
             string line0 = @"{ ""timestamp"":""2019-02-04T02:20:28Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
             string line1 = @"{ ""timestamp"":""2019-02-04T02:25:03Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
@@ -235,21 +237,21 @@ namespace UnitTests
             Assert.IsNotNull(event0);
             Assert.IsInstanceOfType(event0, typeof(SignalDetectedEvent));
 
-            monitor.PostHandle(event0);
+            Handle(event0);
             Assert.AreEqual(1, currentStarSystem.signalsources.Count());
             Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem.signalsources[0]);
 
-            monitor.PostHandle(event1);
+            Handle(event1);
             Assert.AreEqual(1, currentStarSystem.signalsources.Count());
 
-            monitor.PostHandle(event2);
+            Handle(event2);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
             Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem.signalsources[1]);
 
-            monitor.PostHandle(event3);
+            Handle(event3);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
 
-            monitor.PostHandle(event4);
+            Handle(event4);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
         }
 

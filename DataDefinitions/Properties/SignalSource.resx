@@ -329,4 +329,8 @@
     <value>Other Surface Signal</value>
     <comment>Other Surface Signal</comment>
   </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Crashed Thargoid ship</value>
+    <comment>Thargoid crash site</comment>
+  </data>
 </root>

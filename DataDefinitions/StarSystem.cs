@@ -211,7 +211,22 @@ namespace EddiDataDefinitions
 
         /// <summary>Types of signals detected within the system</summary>
         [JsonIgnore]
-        public List<string> signalsources { get; set; } = new List<string>();
+        public List<SignalSource> signalSources 
+        { 
+            get 
+            {
+                _signalSources.RemoveAll(s => s.expiry != null && s.expiry < DateTime.UtcNow);
+                return _signalSources; 
+            } 
+            set 
+            {
+                _signalSources = value; 
+            } 
+        }
+        [JsonIgnore]
+        private List<SignalSource> _signalSources = new List<SignalSource>();
+        [JsonIgnore]
+        public List<string> signalsources => signalSources.Select(s => s.localizedName).Distinct().ToList();
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
         [JsonIgnore]

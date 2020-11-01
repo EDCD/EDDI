@@ -2056,19 +2056,22 @@ namespace EddiJournalMonitor
                                 {
                                     long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
 
-                                    SignalSource source = GetSignalSource(data);
-                                    string spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
-                                    decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+                                    SignalSource source = GetSignalSourceName(data);
+                                    source.spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));
 
                                     string spawningstate = JsonParsing.getString(data, "SpawningState");
                                     string normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
-                                    FactionState spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
-                                    spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
+                                    source.spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
+                                    source.spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
 
-                                    int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
-                                    bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
+                                    source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
+                                    source.isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
 
-                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line, fromLoad = fromLogLoad });
+                                    bool unique = EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
+                                    
+                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, unique) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2164,7 +2167,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "USSDrop":
                                 {
-                                    SignalSource source = GetSignalSource(data);
+                                    SignalSource source = GetSignalSourceName(data);
                                     data.TryGetValue("USSThreat", out object val);
                                     int threat = (int)(long)val;
                                     events.Add(new EnteredSignalSourceEvent(timestamp, source, threat) { raw = line, fromLoad = fromLogLoad });
@@ -4246,7 +4249,7 @@ namespace EddiJournalMonitor
             return factions;
         }
 
-        private static SignalSource GetSignalSource(IDictionary<string, object> data)
+        private static SignalSource GetSignalSourceName(IDictionary<string, object> data)
         {
             // The source may be a direct source or a USS. If a USS, we want the USS type.
             SignalSource source;
@@ -4463,25 +4466,6 @@ namespace EddiJournalMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is SignalDetectedEvent)
-            {
-                eventSignalDetected((SignalDetectedEvent)@event);
-            }
-        }
-
-        private bool eventSignalDetected(SignalDetectedEvent @event)
-        {
-            if (EDDI.Instance.CurrentStarSystem != null && !@event.fromLoad)
-            {
-                if (EDDI.Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
-                {
-                    if (!EDDI.Instance.CurrentStarSystem.signalsources.Exists(s => s == @event.source))
-                    {
-                        EDDI.Instance.CurrentStarSystem.signalsources.Add(@event.source);
-                    }
-                }
-            }
-            return true;
         }
 
         public void HandleProfile(JObject profile)

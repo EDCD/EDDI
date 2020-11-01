@@ -358,6 +358,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Other {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Surface Signal.
         /// </summary>
         public static string SAA_SignalType_Thargoid {
@@ -372,6 +381,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Settlement_Unflattened_Unknown {
             get {
                 return ResourceManager.GetString("Settlement_Unflattened_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crashed Thargoid ship.
+        /// </summary>
+        public static string Settlement_Unflattened_WreckedUnknown {
+            get {
+                return ResourceManager.GetString("Settlement_Unflattened_WreckedUnknown", resourceCulture);
             }
         }
         
