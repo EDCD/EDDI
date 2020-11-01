@@ -15,6 +15,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Added `imports` (array of Commodity objects) to the `station` object
       * Added `exports` (array of Commodity objects) to the `station` object
       * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
+      * The `alreadymapped` and `alreadydiscovered` properties of the `body` object are now nullable - a null value indicates that the exploration status is not yet known. 
     * Scripts
       * Updated the `Asteroid prospected` script to fix a typo
       * Updated the `Bond redeemed` script to better utilize the `Humanise()` function
