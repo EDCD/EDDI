@@ -418,6 +418,10 @@ namespace EddiDataDefinitions
         public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
         [JsonIgnore]
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
+        [JsonIgnore] // The duration of a solar day on the body, in Earth days
+        public decimal? solardays => (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
+        [JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
+        public decimal? solarsurfacevelocity => (2 * (decimal)Math.PI * radius * 1000) / (solardays * 86400);
 
         private long estimateBodyValue()
         {
@@ -548,6 +552,17 @@ namespace EddiDataDefinitions
                 return (decimal?)(massKg / cubicMeters);
             }
             else { return null; }
+        }
+
+        // Orbital Velocity required to maintain orbit at a given altitude
+        public decimal? GetOrbitalVelocityMetersPerSecond(decimal? altitudeMeters)
+        {
+            if (earthmass != null && radius != null && altitudeMeters != null)
+            {
+                var orbitalRadiusMeters = (radius * 1000 + altitudeMeters);
+                return (decimal)Math.Round(Math.Sqrt(Constants.gravitationalConstant * (double)(earthmass * (decimal)Constants.earthMassKg) / (double)orbitalRadiusMeters));
+            }
+            return null;
         }
 
         // Convert legacy data

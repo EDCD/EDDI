@@ -587,6 +587,8 @@ Planets and moons have the following data:
     - `materials` list of materials and their percentage availability on the planet (list of Material objects)
     - `gravityprobability` the cumulative probability describing the body's gravity, relative to other bodies of the same planet type.
     - `pressureprobability` the cumulative probability describing the body's atmospheric pressure, relative to other bodies of the same planet type.
+    - `solardays` the duration of a solar day on the body, in Earth days
+    - `solarsurfacevelocity` the ground speed of the parent body's shadow on the surface of the body in meters per second
 
 #### Atmosphere composition
 

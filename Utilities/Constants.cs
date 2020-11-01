@@ -41,6 +41,7 @@ namespace Utilities
         public const decimal earthPressurePascals = 101231.65625M;
         public const double earthMassKg = 5.9722e24;
         public const double solMassKg = 1.98847e30;
+        public const double gravitationalConstant = 6.67430e-11; // cubic meters / (kilograms * seconds squared)
 
         // Frame Shift Drive Constants
         public static Dictionary<string, decimal> baseOptimalMass = new Dictionary<string, decimal>()
