@@ -11,10 +11,11 @@ namespace Eddi
     {
         string pluginName;
 
-        public PluginSkeleton(string pluginName)
+        public PluginSkeleton(string pluginName, bool isDisableable = true)
         {
             InitializeComponent();
             this.pluginName = pluginName;
+            PluginSkeletonCheckbox.Visibility = isDisableable ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void pluginenabled_Checked(object sender, RoutedEventArgs e)
