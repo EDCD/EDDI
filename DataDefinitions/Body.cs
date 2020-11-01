@@ -58,13 +58,13 @@ namespace EddiDataDefinitions
         // Scan data
 
         /// <summary>Whether we're the first commander to discover this body</summary>
-        public bool alreadydiscovered { get; set; }
+        public bool? alreadydiscovered { get; set; }
 
         /// <summary>When we scanned this object, if we have (DateTime)</summary>
         public DateTime? scanned { get; set; }
 
         /// <summary>Whether we're the first commander to map this body</summary>
-        public bool alreadymapped { get; set; }
+        public bool? alreadymapped { get; set; }
 
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
         public DateTime? mapped { get; set; }
@@ -218,7 +218,7 @@ namespace EddiDataDefinitions
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool alreadydiscovered, bool alreadymapped, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, long? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
@@ -364,7 +364,7 @@ namespace EddiDataDefinitions
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool alreadydiscovered, bool alreadymapped, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, long? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
@@ -440,6 +440,9 @@ namespace EddiDataDefinitions
             int k_terraformable = 93328;
             double mappingMultiplier = 1;
 
+            var alreadyDiscovered = (alreadydiscovered ?? false);
+            var alreadyMapped = (alreadymapped ?? false);
+
             // Override constants for specific types of bodies
             if (planetClass.edname == "AmmoniaWorld")
             {
@@ -479,11 +482,11 @@ namespace EddiDataDefinitions
 
             if (mapped != null)
             {
-                if (!alreadydiscovered && !alreadymapped) // First to discover and first to map
+                if (!alreadyDiscovered && !alreadyMapped) // First to discover and first to map
                 {
                     mappingMultiplier = 3.699622554;
                 }
-                else if (!alreadymapped) // Not first to discover but first to map
+                else if (!alreadyMapped) // Not first to discover but first to map
                 {
                     mappingMultiplier = 8.0956;
                 }
@@ -496,7 +499,7 @@ namespace EddiDataDefinitions
 
             // Calculate exploration scan values
             double result = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
-            result *= (!alreadydiscovered) ? firstDiscoveryMultiplier : 1;
+            result *= !alreadyDiscovered ? firstDiscoveryMultiplier : 1;
             return (long)Math.Round(result);
         }
 

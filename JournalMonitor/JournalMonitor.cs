@@ -837,8 +837,8 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Scan status
-                                    bool alreadydiscovered = JsonParsing.getOptionalBool(data, "WasDiscovered") ?? true;
-                                    bool alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped") ?? false;
+                                    bool? alreadydiscovered = JsonParsing.getOptionalBool(data, "WasDiscovered");
+                                    bool? alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
 
                                     // Rings
                                     data.TryGetValue("Rings", out object val);
