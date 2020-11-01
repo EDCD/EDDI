@@ -4,9 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.1-b1
   * Core
-    * Various bug and stability fixes
-    * Rollbar telemetry service can now optionally be disabled by editing configuration file at %appdata%/EDDI/eddi.json.
     * If you cancel a jump in your fleet carrier, a one minute cooldown is initiated. A `Carrier cooldown` event is now triggered to signal that this cooldown is complete.
+    * Integrated monitors can no longer be disabled. The EDDP and Galnet monitors operate independently and can still be disabled.
+    * Rollbar telemetry service can now optionally be disabled by editing configuration file at %appdata%/EDDI/eddi.json.
+    * Various bug and stability fixes
   * EDDN Responder
     * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
   * EDSM Responder
