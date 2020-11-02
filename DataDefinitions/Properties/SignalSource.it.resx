@@ -177,10 +177,7 @@
     <value>Obiettivo Missione</value>
     <comment>MissionTarget signal</comment>
   </data>
-  <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Traccie di Convoglio in dispersione rilevate</value>
-    <comment>Convoy signal</comment>
-  </data>
+  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Chiamata di Soccorso</value>
     <comment>Distress signal</comment>
