@@ -18,9 +18,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Test scripts can now be canceled by clicking on the "Test" button a second time while test speech is in progress.
     * Variables
       * Added `factions` (faction objects) to the documented properties for the `system` object.
-      * Added `imports` (array of Commodity objects) to the `station` object.
-      * Added `exports` (array of Commodity objects) to the `station` object.
-      * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`.
+      * Added `imports` (array of Commodity objects) to the `station` object
+      * Added `exports` (array of Commodity objects) to the `station` object
+      * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
+      * Added `planetarystations` and `orbitalstations` to the `system` object
+      * Added `carriersignalsources` to the `system` object
       * Added `solarday` and `solarsurfacevelocity` to the `body` object. 
       * The `alreadymapped` and `alreadydiscovered` properties of the `body` object are now nullable - a null value indicates that the exploration status is not yet known. 
     * Scripts
@@ -44,7 +46,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Updated the `Module transfer` script to better utilize the `Humanise()` function.
       * Updated the `Ship repaired` event and script to remove hard-coded english strings, standardize handling across stations and fleet carriers, and simplify redundant variables.
       * Updated the `Ship transfer initiated` script to better utilize the `Humanise()` function.
-      * Updated the `Signal detected` script to fix a typo.
+      * Updated the `Signal detected` event and script to include a new `unique` property and fix a typo
+      * Updated the `System report` script to separate carriers from stations
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
