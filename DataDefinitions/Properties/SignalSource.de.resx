@@ -177,10 +177,7 @@
     <value>Missionsziel</value>
     <comment>MissionTarget signal</comment>
   </data>
-  <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Konvoi-Auflösungsmuster</value>
-    <comment>Convoy signal</comment>
-  </data>
+  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Notruf</value>
     <comment>Distress signal</comment>
