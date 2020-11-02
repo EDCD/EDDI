@@ -7,7 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * If you cancel a jump in your fleet carrier, a one minute cooldown is initiated. A `Carrier cooldown` event is now triggered to signal that this cooldown is complete.
     * Integrated monitors can no longer be disabled. The EDDP and Galnet monitors operate independently and can still be disabled.
     * Rollbar telemetry service can now optionally be disabled by editing configuration file at %appdata%/EDDI/eddi.json.
-    * Various bug and stability fixes
+    * Various bug and stability fixes.
   * EDDN Responder
     * Fixed a bug that could cause the incorrect commodity symbols to be forwarded to EDDN.
   * EDSM Responder
@@ -18,32 +18,33 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Test scripts can now be canceled by clicking on the "Test" button a second time while test speech is in progress.
     * Variables
       * Added `factions` (faction objects) to the documented properties for the `system` object.
-      * Added `imports` (array of Commodity objects) to the `station` object
-      * Added `exports` (array of Commodity objects) to the `station` object
-      * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`
+      * Added `imports` (array of Commodity objects) to the `station` object.
+      * Added `exports` (array of Commodity objects) to the `station` object.
+      * Added `prohibited` (array of Commodity objects, requires Frontier API access) to the `station object`.
       * Added `solarday` and `solarsurfacevelocity` to the `body` object. 
       * The `alreadymapped` and `alreadydiscovered` properties of the `body` object are now nullable - a null value indicates that the exploration status is not yet known. 
     * Scripts
-      * Updated the `Asteroid prospected` script to fix a typo
-      * Updated the `Bond redeemed` script to better utilize the `Humanise()` function
-      * Updated the `Bounty incurred` script to better utilize the `Humanise()` function
-      * Updated the `Bounty redeemed` script to better utilize the `Humanise()` function
-      * Updated the `Cargo report` event and script (to use commodity objects for the station prohibited list)
-      * Updated the `Commodity purchased` script to better utilize the `Humanise()` function
-      * Updated the `Commodity sale check` script to better utilize the `Humanise()` function
-      * Updated the `Commodity sold` script to better utilize the `Humanise()` function
+      * Updated the `Asteroid prospected` script to fix a typo.
+      * Updated the `Bond redeemed` script to better utilize the `Humanise()` function.
+      * Updated the `Bounty incurred` script to better utilize the `Humanise()` function.
+      * Updated the `Bounty redeemed` script to better utilize the `Humanise()` function.
+      * Updated the `Cargo report` event and script to use commodity objects for the station prohibited list.
+      * Updated the `Commodity purchased` script to better utilize the `Humanise()` function.
+      * Updated the `Commodity sale check` script to better utilize the `Humanise()` function.
+      * Updated the `Commodity sold` script to better utilize the `Humanise()` function.
       * Updated the `Crime check station` script to resolve an occasional grammar issue.
-      * Updated the `Data voucher awarded` script to better utilize the `Humanise()` function
+      * Updated the `Data voucher awarded` script to better utilize the `Humanise()` function.
       * Updated the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
-      * Updated the `Module purchased` script to better utilize the `Humanise()` function
-      * Updated the `Module retrieved` script to better utilize the `Humanise()` function
-      * Updated the `Module sold` script to better utilize the `Humanise()` function
-      * Updated the `Module sold from storage` script to better utilize the `Humanise()` function
-      * Updated the `Module stored` script to better utilize the `Humanise()` function
-      * Updated the `Module transfer` script to better utilize the `Humanise()` function
-      * Updated the `Ship repaired` event and script to remove hard-coded english strings, standardize handling across stations and fleet carriers, and simplify redundant variables
-      * Updated the `Ship transfer initiated` script to better utilize the `Humanise()` function
-      * Updated the `Signal detected` script to fix a typo
+      * Updated the `Mission check galaxy` script to fix a typo.
+      * Updated the `Module purchased` script to better utilize the `Humanise()` function.
+      * Updated the `Module retrieved` script to better utilize the `Humanise()` function.
+      * Updated the `Module sold` script to better utilize the `Humanise()` function.
+      * Updated the `Module sold from storage` script to better utilize the `Humanise()` function.
+      * Updated the `Module stored` script to better utilize the `Humanise()` function.
+      * Updated the `Module transfer` script to better utilize the `Humanise()` function.
+      * Updated the `Ship repaired` event and script to remove hard-coded english strings, standardize handling across stations and fleet carriers, and simplify redundant variables.
+      * Updated the `Ship transfer initiated` script to better utilize the `Humanise()` function.
+      * Updated the `Signal detected` script to fix a typo.
 
 ### 3.7.0
   * Promote 3.7.0-rc1 to final
