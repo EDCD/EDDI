@@ -1792,7 +1792,7 @@ namespace EddiShipMonitor
             }
             Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
             Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
-            decimal maxJumpRange = ship.maxjumprange - boostConstant;
+            decimal maxJumpRange = Math.Max(ship.maxjumprange - boostConstant, 0);
             decimal massRatio = (ship.unladenmass + ship.maxfuelperjump) / ship.optimalmass;
 
             return ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * massRatio), (double)powerConstant) / 1000;
