@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -199,7 +200,10 @@ namespace EddiDataDefinitions
         public List<Station> planetarystations => stations.FindAll(s => s.IsPlanetary());
 
         [JsonIgnore]
-        public List<Station> orbitalstations => stations.FindAll(s => !s.IsPlanetary());
+        public List<Station> orbitalstations => stations.FindAll(s => (s.hasdocking ?? false) 
+            && !s.IsPlanetary() 
+            && !s.IsCarrier() 
+            && !s.IsMegaShip());
 
         /// <summary> Whether this system requires a permit for visiting </summary>
         public bool requirespermit { get; set; }
@@ -211,7 +215,30 @@ namespace EddiDataDefinitions
 
         /// <summary>Types of signals detected within the system</summary>
         [JsonIgnore]
-        public List<string> signalsources { get; set; } = new List<string>();
+        public List<SignalSource> signalSources 
+        { 
+            get 
+            {
+                _signalSources.RemoveAll(s => s.expiry != null && s.expiry < DateTime.UtcNow);
+                return _signalSources; 
+            } 
+            set 
+            {
+                _signalSources = value; 
+            } 
+        }
+        [JsonIgnore]
+        private List<SignalSource> _signalSources = new List<SignalSource>();
+        [JsonIgnore]
+        public List<string> signalsources => signalSources.Select(s => s.localizedName).Distinct().ToList();
+
+        /// <summary> Signals filtered to only return results with a carrier callsign </summary>
+        [JsonIgnore]
+        public List<string> carriersignalsources => signalSources
+            .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.localizedName) 
+                && (s.isStation ?? false))
+            .Select(s => s.localizedName)
+            .ToList();
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
         [JsonIgnore]

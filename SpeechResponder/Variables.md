@@ -455,6 +455,8 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `y` the Y co-ordinate of the starsystem
     - `z` the Z co-ordinate of the starsystem
     - `stations` the starsystem's stations (array of Station objects)
+    - `planetarystations` the starsystem's stations, filtered to only return planetary stations (array of Station objects)
+    - `orbitalstations` the starsystem's stations, filtered to only return orbital stations (array of Station objects)
     - `bodies` the starsystem's bodies (array of Body objects)
     - `visits` the number of visits that the commander has made to this starsystem
     - `lastVisitSeconds` the time that the commander last visited this starsystem, expressed as a Unix timestamp in seconds
@@ -464,6 +466,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `requirespermit` (If using SystemDetails()) Whether this system requires a permit (as a boolean)
     - `permitname` (If using SystemDetails()) The name of the permit required for visiting this system, if any
     - `signalsources` a list of signals detected within the starsystem (for the current starsystem only)
+    - `carriersignalsources` a list of signals detected within the starsystem, filtered  to only return fleet carrier signals (for the current star system only) 
     - `isgreen` true if bodies in this starsystem contain all elements required for FSD synthesis
     - `isgold` true if bodies in this starsystem contain all elements available from surface prospecting
     - `estimatedvalue` the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)
@@ -628,7 +631,7 @@ An orbital or planetary station.
 
     - `name` the name of the station
     - `systemname` the name of the system in which this station resides
-    - `model` the model of the sation (Orbis, Coriolis, etc)
+    - `model` the model of the station (Orbis, Coriolis, etc)
     - `government` the type of government in this station (Democracy, Confederacy etc)
     - `faction` the name  of the faction that controls this station
     - `allegiance` the superpower allegiance of the faction that controls this station (Federation, Empire etc)

@@ -258,14 +258,20 @@ namespace EddiDataDefinitions
         // Admin - the last time the shipyard information present changed
         public long? shipyardupdatedat;
 
+        /// <summary>Is this station a fleet carrier?</summary>
+        public bool IsCarrier() { return Model?.basename == "FleetCarrier"; }
+
+        /// <summary>Is this station a mega ship?</summary>
+        public bool IsMegaShip() { return Model?.basename == "Megaship" || Model?.basename == "MegaShipCivilian"; }
+        
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return Model == null ? false : Model?.basename == "Starport"; }
+        public bool IsStarport() { return !IsPlanetary() && !IsCarrier() && !IsMegaShip() && !IsOutpost(); }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return Model == null ? false : Model?.basename == "Outpost"; }
+        public bool IsOutpost() { return !IsPlanetary() && Model?.basename == "Outpost"; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return Model == null ? false : Model?.basename == "SurfaceStation"; }
+        public bool IsPlanetary() { return Model?.basename == "SurfaceStation" || Model?.basename == "CraterOutpost"; }
 
         /// <summary>Is this station an (undockable) settlement?</summary>
         public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && hasdocking != true; }

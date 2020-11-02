@@ -1115,10 +1115,10 @@ namespace UnitTests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
             Assert.AreEqual("Encoded Emissions", @event.signalSource.invariantName);
-            Assert.AreEqual("War", @event.factionState.invariantName);
+            Assert.AreEqual("War", @event.signalSource.spawningState.invariantName);
             Assert.AreEqual("Colonia Council", @event.faction);
             Assert.AreEqual(0, @event.threatlevel);
-            Assert.AreEqual(2385.815674M, @event.secondsremaining);
+            Assert.AreEqual(2385.816M, @event.secondsremaining);
         }
 
         [TestMethod]
