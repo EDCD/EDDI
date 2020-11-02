@@ -174,10 +174,7 @@
     <value>Objectif de mission</value>
     <comment>MissionTarget signal</comment>
   </data>
-  <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Dispersion de convoi détecté</value>
-    <comment>Convoy signal</comment>
-  </data>
+  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Appel de détresse</value>
     <comment>Distress signal</comment>
