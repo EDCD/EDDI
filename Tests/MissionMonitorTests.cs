@@ -190,7 +190,9 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAbandoned"", ""Name"":""Mission_Courier_Elections_name"", ""Fine"":50000, ""MissionID"":413563499 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
+            missionMonitor.handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
+            Assert.AreEqual("Failed", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413563499)?.statusEDName);
+            missionMonitor._postHandleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
             Assert.AreEqual(2, missionMonitor.missions.Count);
 
             //MissionAcceptedEvent - 'AltruismCredits'
@@ -253,7 +255,9 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2018-08-26T00:40:14Z"", ""event"":""MissionCompleted"", ""Faction"":""HIP 20277 Inc"", ""Name"":""Mission_Salvage_Planet_name"", ""MissionID"":413563829, ""Commodity"":""$Landmines_Name;"", ""Commodity_Localised"":""Landmines"", ""Count"":4, ""DestinationSystem"":""Carthage"", ""Reward"":465824, ""FactionEffects"":[ { ""Faction"":""HIP 20277 Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_civilUnrest_down;"", ""Effect_Localised"":""$#MinorFaction; are happy to report improved civil contentment, making a period of civil unrest unlikely."", ""Trend"":""DownGood"" } ], ""Influence"":[ { ""SystemAddress"":84053791442, ""Trend"":""UpGood"" } ], ""Reputation"":""UpGood"" } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
+            missionMonitor.handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
+            Assert.AreEqual("Complete", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413563829)?.statusEDName);
+            missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
             Assert.AreEqual(5, missionMonitor.missions.Count);
 
             //MissionFailedEvent
@@ -274,7 +278,9 @@ namespace UnitTests
             Assert.AreEqual(50000, report.amount);
             crimeData.ToFile();
 
-            missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
+            missionMonitor.handleMissionFailedEvent((MissionFailedEvent)events[0]);
+            Assert.AreEqual("Failed", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413748324)?.statusEDName); 
+            missionMonitor._postHandleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual(4, missionMonitor.missions.Count);
 
             //MissionCompletedEvent - Donation
@@ -344,7 +350,7 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2020-10-30T01:24:27Z"", ""event"":""CommunityGoalReward"", ""CGID"":619, ""Name"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""System"":""LFT 625"", ""Reward"":10000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
+            missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
             Assert.AreEqual(1, missionMonitor.missions.Count);
 
             // MissionsEvent

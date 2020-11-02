@@ -219,15 +219,18 @@ namespace EddiMissionMonitor
 
         public void PostHandle(Event @event)
         {
+            // Use the post-handler to remove missions from the missions list only after we have reacted to them.
             if (@event is MissionAbandonedEvent)
             {
-                //
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+                postHandleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionCompletedEvent)
+            {
+                postHandleMissionCompletedEvent((MissionCompletedEvent)@event);
             }
             else if (@event is MissionFailedEvent)
             {
-                //
-                handleMissionFailedEvent((MissionFailedEvent)@event);
+                postHandleMissionFailedEvent((MissionFailedEvent)@event);
             }
         }
 
@@ -238,48 +241,50 @@ namespace EddiMissionMonitor
             // Handle the events that we care about
             if (@event is DataScannedEvent)
             {
-                //
                 handleDataScannedEvent((DataScannedEvent)@event);
             }
             else if (@event is PassengersEvent)
             {
-                //
                 handlePassengersEvent((PassengersEvent)@event);
             }
             else if (@event is MissionsEvent)
             {
-                //
                 handleMissionsEvent((MissionsEvent)@event);
             }
             else if (@event is CommunityGoalEvent)
             {
-                //
                 handleCommunityGoalEvent((CommunityGoalEvent)@event);
             }
             else if (@event is CargoDepotEvent)
             {
-                //
                 handleCargoDepotEvent((CargoDepotEvent)@event);
             }
             else if (@event is MissionAcceptedEvent)
             {
-                //
                 handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
-            }
-            else if (@event is MissionCompletedEvent)
-            {
-                //
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
-            }
-            else if (@event is MissionExpiredEvent)
-            {
-                //
-                handleMissionExpiredEvent((MissionExpiredEvent)@event);
             }
             else if (@event is MissionRedirectedEvent)
             {
-                //
                 handleMissionRedirectedEvent((MissionRedirectedEvent)@event);
+            }
+            else if (@event is MissionExpiredEvent)
+            {
+                handleMissionExpiredEvent((MissionExpiredEvent)@event);
+            }
+
+            // Change the mission status here, remove the missions after the events resolve using the post-handler
+            if (@event is MissionAbandonedEvent)
+            {
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionCompletedEvent)
+            {
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+            }
+
+            else if (@event is MissionFailedEvent)
+            {
+                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
         }
 
@@ -605,20 +610,32 @@ namespace EddiMissionMonitor
                 }
             }
         }
+        
+        public void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                }
+            }
+        }
 
-        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        private void postHandleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                if (_handleMissionAbandonedEvent(@event))
+                if (_postHandleMissionAbandonedEvent(@event))
                 {
                     writeMissions();
                 }
             }
         }
 
-        public bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        public bool _postHandleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
             bool update = false;
             if (@event.missionid != null)
@@ -750,19 +767,31 @@ namespace EddiMissionMonitor
             return update;
         }
 
-        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        public void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        {
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    mission.statusDef = MissionStatus.FromEDName("Complete");
+                }
+            }
+        }
+
+        private void postHandleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                if (_handleMissionCompletedEvent(@event))
+                if (_postHandleMissionCompletedEvent(@event))
                 {
                     writeMissions();
                 }
             }
         }
 
-        public bool _handleMissionCompletedEvent(MissionCompletedEvent @event)
+        public bool _postHandleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             bool update = false;
             if (@event.missionid != null)
@@ -802,19 +831,31 @@ namespace EddiMissionMonitor
             return update;
         }
 
-        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        public void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                }
+            }
+        }
+
+        private void postHandleMissionFailedEvent(MissionFailedEvent @event)
         {
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                if (_handleMissionFailedEvent(@event))
+                if (_postHandleMissionFailedEvent(@event))
                 {
                     writeMissions();
                 }
             }
         }
 
-        public bool _handleMissionFailedEvent(MissionFailedEvent @event)
+        public bool _postHandleMissionFailedEvent(MissionFailedEvent @event)
         {
             bool update = false;
             if (@event.missionid != null)
