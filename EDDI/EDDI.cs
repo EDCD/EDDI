@@ -814,13 +814,10 @@ namespace EddiCore
 
         private bool eventSignalDetected(SignalDetectedEvent @event) 
         {
-            if (Instance.CurrentStarSystem != null && !@event.fromLoad)
+            if (Instance.CurrentStarSystem != null && Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
             {
-                if (Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
-                {
-                    Instance.CurrentStarSystem.signalSources.Add(@event.signalSource);
-                    return true;
-                }
+                Instance.CurrentStarSystem.signalSources.Add(@event.signalSource);
+                return true;
             }
             return false;
         }
