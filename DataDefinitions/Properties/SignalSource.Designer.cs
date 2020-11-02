@@ -430,7 +430,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Convoy Dispersal Pattern Detected.
+        ///   Looks up a localized string similar to Convoy Dispersal Pattern.
         /// </summary>
         public static string USS_Type_Convoy {
             get {

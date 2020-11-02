@@ -178,7 +178,7 @@
     <comment>MissionTarget signal</comment>
   </data>
   <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Convoy Dispersal Pattern Detected</value>
+    <value>Convoy Dispersal Pattern</value>
     <comment>Convoy signal</comment>
   </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
