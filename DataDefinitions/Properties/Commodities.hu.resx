@@ -309,7 +309,7 @@
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
     <value>Cd-75 kitten brend kávé</value>
-    <comment>Commodity CD_75KittenBrandCoffee</comment>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Kentauri mega dzsin</value>
@@ -449,7 +449,7 @@
   </data>
   <data name="EdenApplesOfAerial" xml:space="preserve">
     <value>Aerial éden almák</value>
-    <comment>Commodity EdenApplesOfAerial</comment>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
   </data>
   
   <data name="EmergencyPowerCells" xml:space="preserve">
@@ -1139,7 +1139,7 @@
   </data>
   <data name="UzumokuLow_GWings" xml:space="preserve">
     <value>Uzumokui alacsony gravitációs szárnyak</value>
-    <comment>Commodity UzumokuLow_GWings</comment>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
   </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Végai karcsúgyom</value>
@@ -1335,4 +1335,24 @@
   
   
   
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Sanuma-i díszített hús</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Farkas hús</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Cd-75 Cica márkájú kávé</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Mennyei Alma</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Uzumokui alacsony gravitációs szárnyak</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>

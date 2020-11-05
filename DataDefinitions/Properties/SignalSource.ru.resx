@@ -171,10 +171,7 @@
     <value>Цель миссии</value>
     <comment>MissionTarget signal</comment>
   </data>
-  <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Зарегистрировано рассредоточение конвоя</value>
-    <comment>Convoy signal</comment>
-  </data>
+  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Сигнал о помощи</value>
     <comment>Distress signal</comment>
@@ -199,6 +196,7 @@
     <value>Место добычи ресурсов Опасный</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
+  
   
   
   

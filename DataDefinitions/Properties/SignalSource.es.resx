@@ -177,10 +177,7 @@
     <value>Objetivo de la misión</value>
     <comment>MissionTarget signal</comment>
   </data>
-  <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Patrón de convoy</value>
-    <comment>Convoy signal</comment>
-  </data>
+  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Llamada de auxilio</value>
     <comment>Distress signal</comment>
@@ -325,5 +322,6 @@
     <value>Campo de Escombros</value>
     <comment>Debris field</comment>
   </data>
+  
   
 </root>

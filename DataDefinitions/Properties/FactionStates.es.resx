@@ -181,10 +181,7 @@
     <value>Ataque Pirata</value>
     <comment>Faction state PirateAttack</comment>
   </data>
-  <data name="Drought" xml:space="preserve">
-    <value>Plaga</value>
-    <comment>Faction state Drought, but translated as Blight</comment>
-  </data>
+  
   <data name="Blight" xml:space="preserve">
     <value>Plaga</value>
     <comment>Faction state Blight</comment>

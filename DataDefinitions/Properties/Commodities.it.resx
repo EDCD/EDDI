@@ -327,7 +327,7 @@
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
     <value>Caffé di Gatto di C D 75</value>
-    <comment>Commodity CD_75KittenBrandCoffee</comment>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Mega Gin di Centauri</value>
@@ -479,7 +479,7 @@
   </data>
   <data name="EdenApplesOfAerial" xml:space="preserve">
     <value>Mele dell'Eden di Aerial</value>
-    <comment>Commodity EdenApplesOfAerial</comment>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
   </data>
   <data name="EleuThermals" xml:space="preserve">
     <value>Vesti Termiche Eleu</value>
@@ -1087,7 +1087,7 @@
   </data>
   <data name="SanumaDecorativeMeat" xml:space="preserve">
     <value>Carne decorativa Sanumanese</value>
-    <comment>Commodity SanumaDecorativeMeat</comment>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
     <value>Contenitore Nucleico SAP 8</value>
@@ -1343,7 +1343,7 @@
   </data>
   <data name="UzumokuLow_GWings" xml:space="preserve">
     <value>Alianti a bassa gravità Uzumokuensi</value>
-    <comment>Commodity UzumokuLow_GWings</comment>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
   </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Gramigna Dimagrante Vegana</value>
@@ -1391,7 +1391,7 @@
   </data>
   <data name="WolfFesh" xml:space="preserve">
     <value>Polverina di Lupo</value>
-    <comment>Commodity WolfFesh</comment>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
   </data>
   <data name="WreckageComponents" xml:space="preserve">
     <value>Rottami Recuperabili</value>
@@ -1748,5 +1748,25 @@
   <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
     <value>Tessuto di Valva di Baccello</value>
     <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Carne decorativa Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Polverina di Lupo</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Caffè Gatto CD75</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Mele dell'Eden di Aerial</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Alianti a bassa gravità Uzumokuensi</value>
+    <comment>Commodity UzumokuLowGWings</comment>
   </data>
 </root>

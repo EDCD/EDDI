@@ -178,7 +178,7 @@
     <comment>MissionTarget signal</comment>
   </data>
   <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Traccie di Convoglio in dispersione rilevate</value>
+    <value>Traccie di Convoglio Disciolto</value>
     <comment>Convoy signal</comment>
   </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
@@ -329,4 +329,5 @@
     <value>Segnali di superficie di altro tipo</value>
     <comment>Other Surface Signal</comment>
   </data>
+  
 </root>

@@ -327,7 +327,7 @@
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
     <value>Кошачий кофе CD-75</value>
-    <comment>Commodity CD_75KittenBrandCoffee</comment>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Кентаврский мега-джин</value>
@@ -479,7 +479,7 @@
   </data>
   <data name="EdenApplesOfAerial" xml:space="preserve">
     <value>Райские яблоки с Эриала</value>
-    <comment>Commodity EdenApplesOfAerial</comment>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
   </data>
   <data name="EleuThermals" xml:space="preserve">
     <value>Элеусская теплая одежда</value>
@@ -1087,7 +1087,7 @@
   </data>
   <data name="SanumaDecorativeMeat" xml:space="preserve">
     <value>Декоративное мясо с Касанумы</value>
-    <comment>Commodity SanumaDecorativeMeat</comment>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
     <value>Контейнер «SAP 8 Core»</value>
@@ -1343,7 +1343,7 @@
   </data>
   <data name="UzumokuLow_GWings" xml:space="preserve">
     <value>Узумокские крылья для малой гравитации</value>
-    <comment>Commodity UzumokuLow_GWings</comment>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
   </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Водоросли для похудения с Веги</value>
@@ -1391,7 +1391,7 @@
   </data>
   <data name="WolfFesh" xml:space="preserve">
     <value>Wolf Fesh</value>
-    <comment>Commodity WolfFesh</comment>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
   </data>
   <data name="WreckageComponents" xml:space="preserve">
     <value>Обломки кораблекрушения</value>
@@ -1669,6 +1669,11 @@
     <value>Таргоидская биомасса</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
+  
+  
+  
+  
+  
   
   
   
