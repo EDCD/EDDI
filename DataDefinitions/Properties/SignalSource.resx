@@ -333,4 +333,8 @@
     <value>Crashed Thargoid ship</value>
     <comment>Thargoid crash site</comment>
   </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Salvageable Wreckage</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
 </root>

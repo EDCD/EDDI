@@ -313,6 +313,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Salvageable Wreckage.
+        /// </summary>
+        public static string MULTIPLAYER_SCENARIO81_TITLE {
+            get {
+                return ResourceManager.GetString("MULTIPLAYER_SCENARIO81_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unregistered Comms Beacon.
         /// </summary>
         public static string NumberStation {

@@ -19,6 +19,7 @@ namespace EddiDataDefinitions
             var ResourceExtractionLow = new SignalSource("MULTIPLAYER_SCENARIO77_TITLE");
             var ResourceExtractionHigh = new SignalSource("MULTIPLAYER_SCENARIO78_TITLE");
             var ResourceExtractionHazardous = new SignalSource("MULTIPLAYER_SCENARIO79_TITLE");
+            var SalvageableWreckage = new SignalSource("MULTIPLAYER_SCENARIO81_TITLE");
 
             var CombatZoneHigh = new SignalSource("Warzone_PointRace_High");
             var CombatZoneMedium = new SignalSource("Warzone_PointRace_Med");
