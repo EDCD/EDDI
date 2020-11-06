@@ -330,4 +330,8 @@
     <comment>Other Surface Signal</comment>
   </data>
   
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Rottami Recuperabili</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
 </root>
