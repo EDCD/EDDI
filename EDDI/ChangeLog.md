@@ -36,6 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Updated the `Commodity sold` script to better utilize the `Humanise()` function.
       * Updated the `Crime check station` script to resolve an occasional grammar issue.
       * Updated the `Data voucher awarded` script to better utilize the `Humanise()` function.
+      * Updated the `Discovery scan script` script improve grammar around recommending a single body to be scanned.
       * Updated the `Market information` event and script to restore purchase, sales, and swapout checks when appropriate
       * Updated the `Mission check galaxy` script to fix a typo.
       * Updated the `Module purchased` script to better utilize the `Humanise()` function.
