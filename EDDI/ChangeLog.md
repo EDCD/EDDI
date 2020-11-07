@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.1-b2
-
+  * Speech responder
+    * Scripts
+      * Updated the `Location` script to fix reporting station crimes and missions when it should be instead reporting system crimes and missions.
 
 ### 3.7.1-b1
   * Core
