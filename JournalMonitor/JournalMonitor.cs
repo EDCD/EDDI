@@ -595,19 +595,19 @@ namespace EddiJournalMonitor
                                                 {
                                                     hardpoint.size = 0;
                                                 }
-                                                else if (hardpoint.name.StartsWith("Small"))
+                                                else if (hardpoint.name.StartsWith("Small", StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     hardpoint.size = 1;
                                                 }
-                                                else if (hardpoint.name.StartsWith("Medium"))
+                                                else if (hardpoint.name.StartsWith("Medium", StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     hardpoint.size = 2;
                                                 }
-                                                else if (hardpoint.name.StartsWith("Large"))
+                                                else if (hardpoint.name.StartsWith("Large", StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     hardpoint.size = 3;
                                                 }
-                                                else if (hardpoint.name.StartsWith("Huge"))
+                                                else if (hardpoint.name.StartsWith("Huge", StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     hardpoint.size = 4;
                                                 }
@@ -637,52 +637,52 @@ namespace EddiJournalMonitor
                                                     hardpoints.Add(hardpoint);
                                                 }
                                             }
-                                            else if (slot == "PaintJob")
+                                            else if (slot.Equals("PaintJob", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // This is a paintjob
                                                 paintjob = item;
                                             }
-                                            else if (slot == "PlanetaryApproachSuite")
+                                            else if (slot.Equals("PlanetaryApproachSuite", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore planetary approach suite for now
                                             }
-                                            else if (slot.StartsWith("Bobble"))
+                                            else if (slot.StartsWith("Bobble", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore bobbles
                                             }
-                                            else if (slot.StartsWith("Decal"))
+                                            else if (slot.StartsWith("Decal", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore decals
                                             }
-                                            else if (slot.Contains("String_Lights"))
+                                            else if (slot.StartsWith("String_Lights", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore string lights
                                             }
-                                            else if (slot == "WeaponColour")
+                                            else if (slot.Equals("WeaponColour", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore weapon colour
                                             }
-                                            else if (slot == "EngineColour")
+                                            else if (slot.Equals("EngineColour", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore engine colour
                                             }
-                                            else if (slot.StartsWith("ShipKit"))
+                                            else if (slot.StartsWith("ShipKit", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore ship kits
                                             }
-                                            else if (slot.StartsWith("ShipName") || slot.StartsWith("ShipID"))
+                                            else if (slot.StartsWith("ShipName", StringComparison.InvariantCultureIgnoreCase) || slot.StartsWith("ShipID", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore nameplates
                                             }
-                                            else if (slot == "VesselVoice")
+                                            else if (slot.Equals("VesselVoice", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore the chosen voice
                                             }
-                                            else if (slot == "DataLinkScanner")
+                                            else if (slot.Equals("DataLinkScanner", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore the data link scanner
                                             }
-                                            else if (slot == "CodexScanner")
+                                            else if (slot.Equals("CodexScanner", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore the codex scanner
                                             }
@@ -716,7 +716,7 @@ namespace EddiJournalMonitor
                                                 }
 
                                                 // Get the optimal mass for the Frame Shift Drive
-                                                if (slot == "FrameShiftDrive")
+                                                if (slot.Equals("FrameShiftDrive", StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     string fsd = module.@class + module.grade;
                                                     Constants.baseOptimalMass.TryGetValue(fsd, out optimalMass);
@@ -724,7 +724,7 @@ namespace EddiJournalMonitor
                                                     {
                                                         foreach (EngineeringModifier modifier in modifiers)
                                                         {
-                                                            if (modifier.EDName == "FSDOptimalMass")
+                                                            if (modifier.EDName.Equals("FSDOptimalMass", StringComparison.InvariantCultureIgnoreCase))
                                                             {
                                                                 optimalMass = (decimal)modifier.currentValue;
                                                             }
