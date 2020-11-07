@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.1-b2
+
+
 ### 3.7.1-b1
   * Core
     * If you cancel a jump in your fleet carrier, a one minute cooldown is initiated. A `Carrier cooldown` event is now triggered to signal that this cooldown is complete.
