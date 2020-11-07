@@ -138,7 +138,7 @@ EDDI's speech responder uses Cottle for templating.  Cottle has a number of grea
 * Conditionals
 * Subroutines
 
-Information on how to write Cottle templates is available at http://r3c.github.io/cottle/#toc-2, and EDDI's default templates use a lot of the functions available.
+Information on how to write Cottle templates is available at https://cottle.readthedocs.io/en/stable/, and EDDI's default templates use a lot of the functions available.
 
 ## State Variables
 
