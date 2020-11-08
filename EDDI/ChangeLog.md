@@ -6,6 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Scripts
       * Updated the `Location` script to fix reporting station crimes and missions when it should be instead reporting system crimes and missions.
+  * VoiceAttack responder
+    * Updated EDDI.vap to correct an issue with landing pads not being reported correctly.
 
 ### 3.7.1-b1
   * Core
