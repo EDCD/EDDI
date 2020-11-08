@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.1-b2
+  * Core
+    Fixed an exception when calculuating distances if the second system were null (for example if a home star system were not set).
   * Speech responder
     * Scripts
       * Updated the `Location` script to fix reporting station crimes and missions when it should be instead reporting system crimes and missions.

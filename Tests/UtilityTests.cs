@@ -65,6 +65,16 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestDistanceFunctionFromNullStarSystems()
+        {
+            StarSystem curr = null;
+            var dest = new StarSystem() { systemname = "Hephaestus", x = -9521.40625M, y = -907.3125M, z = 19801.65625M };
+
+            var result = dest?.DistanceFromStarSystem(curr);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void TestDateTimeToString()
         {
             // Parse the DateTime value and test 
