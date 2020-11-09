@@ -504,6 +504,8 @@ namespace EddiMissionMonitor
                     mission.localisedname = @event.name[i];
                     mission.originsystem = @event.system[i];
                     mission.originstation = @event.station[i];
+                    mission.destinationsystem = @event.system[i];
+                    mission.destinationstation = @event.station[i];
                     mission.reward = @event.tierreward[i];
                     mission.expiry = @event.expiryDateTime[i];
                     if (@event.iscomplete[i])
