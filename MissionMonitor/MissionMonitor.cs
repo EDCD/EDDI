@@ -365,7 +365,7 @@ namespace EddiMissionMonitor
                     {
                         case "Active":
                             {
-                                if (missionEntry.statusEDName == "Failed")
+                                if (missionEntry.statusEDName == "Failed" || missionEntry.statusEDName == "Claim")
                                 {
                                     if (mission.expiry > missionEntry.expiry)
                                     {
