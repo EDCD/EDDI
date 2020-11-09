@@ -1476,7 +1476,7 @@ namespace EddiMissionMonitor
                     case "massacrethargoid":
                     case "massacrewing":
                         {
-                            if (mission.statusEDName != "Claim")
+                            if (mission.statusEDName != "Claim" && mission.expiry <= DateTime.UtcNow)
                             {
                                 mission.statusDef = MissionStatus.FromEDName("Claim");
                                 return true;
