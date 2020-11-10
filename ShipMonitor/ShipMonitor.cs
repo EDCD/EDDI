@@ -896,13 +896,13 @@ namespace EddiShipMonitor
                     Compartment fromCompartment = ship.compartments.FirstOrDefault(c => c.name == fromSlot);
                     if (fromCompartment is null)
                     {
-                        fromCompartment = new Compartment() { name = fromSlot, size = getHardpointSize(fromSlot) };
+                        fromCompartment = new Compartment() { name = fromSlot, size = getCompartmentSize(fromSlot, ship.militarysize) };
                         ship.compartments.Add(fromCompartment);
                     }
                     Compartment toCompartment = ship.compartments.FirstOrDefault(c => c.name == toSlot);
                     if (toCompartment is null)
                     {
-                        toCompartment = new Compartment() { name = toSlot, size = getHardpointSize(toSlot) };
+                        toCompartment = new Compartment() { name = toSlot, size = getCompartmentSize(toSlot, ship.militarysize) };
                         ship.compartments.Add(toCompartment);
                     }
                     sortCompartments(ship);
@@ -1538,17 +1538,20 @@ namespace EddiShipMonitor
         private static int getCompartmentSize(string slot, int? militarySlotSize)
         {
             // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-            if ((bool)slot?.Contains("Slot"))
+            if (!string.IsNullOrEmpty(slot))
             {
-                Match matches = Regex.Match(slot, @"Size([0-9]+)");
-                if (matches.Success)
+                if (slot.Contains("Slot"))
                 {
-                    return int.Parse(matches.Groups[1].Value);
+                    Match matches = Regex.Match(slot, @"Size([0-9]+)");
+                    if (matches.Success)
+                    {
+                        return int.Parse(matches.Groups[1].Value);
+                    }
                 }
-            }
-            else if ((bool)slot?.Contains("Military") && militarySlotSize != null)
-            {
-                return (int)militarySlotSize;
+                else if (slot.Contains("Military") && militarySlotSize != null)
+                {
+                    return (int)militarySlotSize;
+                }
             }
             // Compartment size could not be determined
             Logging.Error("Ship compartment slot size could not be determined for " + slot);
