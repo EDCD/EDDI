@@ -86,9 +86,6 @@ namespace UnitTests
                 }],
                 ""cargocarried"": 29
             }";
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             CargoMonitorConfiguration config = CargoMonitorConfiguration.FromJsonString(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
@@ -110,17 +107,11 @@ namespace UnitTests
             Assert.AreEqual(4, haulage.amount);
             Assert.AreEqual(4, haulage.remaining);
             Assert.IsFalse(haulage.shared);
-
-            // Restore original data
-            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoEventsScenario()
         {
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -183,17 +174,11 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 426282789);
             Assert.AreEqual("Failed", haulage.status);
-
-            // Restore original data
-            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoMissionScenario()
         {
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -339,17 +324,12 @@ namespace UnitTests
             Assert.AreEqual(0, haulage.remaining);
             Assert.AreEqual(0, haulage.need);
             Assert.AreEqual(0, cargo.need);
-
-            // Restore original data
-            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoPriceScenario()
         {
             // Test that average cargo price dynamically updates based on the aquisition prices and quantities
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             var privateObject = new PrivateObject(cargoMonitor);
 
             // Synthesise 4 drones
@@ -397,14 +377,6 @@ namespace UnitTests
             Assert.AreEqual(0, cargo.stolen);
             Assert.AreEqual(15, cargo.owned);
             Assert.AreEqual(51, cargo.price); // weighted price: 51.13
-
-            // Restore original data
-            data.ToFile();
-        }
-
-        [TestCleanup]
-        private void StopTestCargoMonitor()
-        {
         }
     }
 }
