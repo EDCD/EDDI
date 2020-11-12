@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiMissionMonitor;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -61,10 +62,18 @@ namespace EddiCargoMonitor
         }
 
         /// <summary>
+        /// Create a new CargoMonitor, reading the configuration from the default location on the file system.
+        /// This is required for the DLL to load
+        /// </summary>
+        [PublicAPI]
+        public CargoMonitor() : this(null)
+        {}
+
+        /// <summary>
         /// Create a new CargoMonitor, optionally passing in a non-default configuration
         /// </summary>
         /// <param name="configuration">The configuration to use. If null, it will be read from the file system</param>
-        public CargoMonitor(CargoMonitorConfiguration configuration = null)
+        public CargoMonitor(CargoMonitorConfiguration configuration)
         {
             inventory = new ObservableCollection<Cargo>();
             BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
