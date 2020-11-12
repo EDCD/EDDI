@@ -63,14 +63,14 @@ namespace EddiDataDefinitions
             }
         }
 
-        // Per-station information
-        public int buyprice { get; set; }
+        // Per-station information (prices are usually integers but not always)
+        public decimal buyprice { get; set; }
         public int stock { get; set; }
 
         // StockBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
         public CommodityBracket? stockbracket { get; set; }
 
-        public int sellprice { get; set; }
+        public decimal sellprice { get; set; }
         public int demand { get; set; }
 
         // DemandBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
@@ -85,7 +85,7 @@ namespace EddiDataDefinitions
         // Update the definition with the new galactic average price whenever this is set.
         // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
         // The average pricing data is the only data which may reference our internal definition, and even then only to obtain an average price.
-        public int avgprice
+        public decimal avgprice
         {
             get => definition?.avgprice ?? 0;
             set
