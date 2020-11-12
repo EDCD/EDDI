@@ -1005,15 +1005,21 @@ namespace EddiCargoMonitor
             if (cargo == null) { return; }
             lock (inventoryLock)
             {
+                bool found = false;
                 for (int i = 0; i < inventory.Count; i++)
                 {
                     if (string.Equals(inventory[i].edname, cargo.edname, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        found = true;
                         inventory[i] = cargo;
-                        return;
+                        break;
                     }
                 }
-                inventory.Add(cargo);
+
+                if (!found)
+                {
+                    inventory.Add(cargo);
+                }
             }
         }
 
