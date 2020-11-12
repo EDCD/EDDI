@@ -1,21 +1,20 @@
-﻿using Eddi;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using Utilities;
 
 namespace EddiCore
@@ -31,7 +30,9 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
-        internal static bool running = true;
+ 
+        private static bool running = true;
+        public static bool IsRunning => running;
 
         private static bool allowMarketUpdate = false;
         private static bool allowOutfittingUpdate = false;
@@ -2053,35 +2054,6 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventSquadronStartup(SquadronStartupEvent theEvent)
-        {
-            SquadronRank rank = SquadronRank.FromRank(theEvent.rank + 1);
-
-            // Update the configuration file
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-            configuration.SquadronName = theEvent.name;
-            configuration.SquadronRank = rank;
-            configuration.ToFile();
-
-            // Update the squadron UI data
-            Application.Current?.Dispatcher?.Invoke(() =>
-            {
-                if (Application.Current?.MainWindow != null)
-                {
-                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                }
-            });
-
-            // Update the commander object, if it exists
-            if (Cmdr != null)
-            {
-                Cmdr.squadronname = theEvent.name;
-                Cmdr.squadronrank = rank;
-            }
-            return true;
-        }
-
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -2094,18 +2066,14 @@ namespace EddiCore
 
                         // Update the configuration file
                         configuration.SquadronName = theEvent.name;
-                        configuration.SquadronRank = rank;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.Invoke(() =>
+                        if (configuration.SquadronName == null)
                         {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                                ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
-                            }
-                        });
+                            configuration.SquadronRank = SquadronRank.None;
+                        }
+                        else
+                        {
+                            configuration.SquadronRank = rank;
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2119,15 +2087,6 @@ namespace EddiCore
                     {
                         // Update the configuration file
                         configuration.SquadronName = theEvent.name;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.Invoke(() =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                            }
-                        });
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2143,17 +2102,6 @@ namespace EddiCore
                         // Update the configuration file
                         configuration.SquadronName = null;
                         configuration.SquadronID = null;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.Invoke(() =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = string.Empty;
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronIDText.Text = string.Empty;
-                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
-                            }
-                        });
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2176,16 +2124,6 @@ namespace EddiCore
             configuration.SquadronName = theEvent.name;
             configuration.SquadronRank = rank;
             configuration.ToFile();
-
-            // Update the squadron UI data
-            Application.Current?.Dispatcher?.Invoke(() =>
-            {
-                if (Application.Current?.MainWindow != null)
-                {
-                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                }
-            });
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -2469,7 +2407,8 @@ namespace EddiCore
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Eddi.Properties.EddiResources.Commander;
+                var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+                Cmdr.title = rm.GetString("Commander");
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -2555,18 +2494,46 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+
+                    string msg = string.Format(rm.GetString("problem_load_monitor_file"), dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    var rm = new ResourceManager("Eddi.Properties.EddiResources", Assembly.GetEntryAssembly());
+                    string msg = string.Format(rm.GetString("problem_load_monitor"), $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
             }
             return monitors;
+        }
+
+        private Assembly safeLoadAssembly( FileInfo fi )
+        {
+            try
+            {
+                return Assembly.LoadFrom(fi.FullName);
+            }
+            catch (BadImageFormatException)
+            {
+                // Ignore this; probably due to CPU architecure mismatch
+                return null;
+            }
+        }
+
+        private IEnumerable<Assembly> getResponderAssemblies(string path)
+        {
+            DirectoryInfo dir = new DirectoryInfo(path);
+            var responders = dir.GetFiles("*Responder.dll", SearchOption.AllDirectories)
+                .ToList();
+
+            return responders
+                .Select(safeLoadAssembly)
+                .Where(a => a != null)
+                .Append(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
@@ -2580,15 +2547,15 @@ namespace EddiCore
                 Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
                 return null;
             }
-            DirectoryInfo dir = new DirectoryInfo(path);
+
             List<EDDIResponder> responders = new List<EDDIResponder>();
+            var assemblies = getResponderAssemblies(path);
             Type pluginType = typeof(EDDIResponder);
-            foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
+            foreach (var assembly in assemblies)
             {
-                Logging.Debug("Checking potential plugin at " + file.FullName);
+                Logging.Debug("Checking potential plugin at " + assembly.FullName);
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
                     foreach (Type type in assembly.GetTypes())
                     {
                         if (type.IsInterface || type.IsAbstract)
@@ -2599,7 +2566,7 @@ namespace EddiCore
                         {
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
-                                Logging.Debug("Instantiating responder plugin at " + file.FullName);
+                                Logging.Debug("Instantiating responder plugin at " + assembly.FullName);
                                 EDDIResponder responder = type.InvokeMember(null,
                                                            BindingFlags.CreateInstance,
                                                            null, null, null) as EDDIResponder;
@@ -2607,10 +2574,6 @@ namespace EddiCore
                             }
                         }
                     }
-                }
-                catch (BadImageFormatException)
-                {
-                    // Ignore this; probably due to CPU architecure mismatch
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
@@ -2628,7 +2591,7 @@ namespace EddiCore
                         }
                         sb.AppendLine();
                     }
-                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                    Logging.Warn("Failed to instantiate plugin at " + assembly.FullName + ":\n" + sb.ToString());
                 }
             }
             return responders;
@@ -2743,27 +2706,6 @@ namespace EddiCore
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-        }
-
-        internal static class NativeMethods
-        {
-            // Required to restart app after upgrade
-            [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-            internal static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
-        }
-
-        // Flags for upgrade
-        [Flags]
-        internal enum RestartFlags
-        {
-            NONE = 0,
-            RESTART_CYCLICAL = 1,
-            RESTART_NOTIFY_SOLUTION = 2,
-            RESTART_NOTIFY_FAULT = 4,
-            RESTART_NO_CRASH = 8,
-            RESTART_NO_HANG = 16,
-            RESTART_NO_PATCH = 32,
-            RESTART_NO_REBOOT = 64
         }
 
         public void updateDestinationSystemStation(EDDIConfiguration configuration)
@@ -2912,14 +2854,6 @@ namespace EddiCore
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    Application.Current?.Dispatcher?.Invoke(() =>
-                    {
-                        if (Application.Current?.MainWindow != null)
-                        {
-                            ((MainWindow)Application.Current.MainWindow).squadronFactionDropDown.SelectedItem = faction.name;
-                        }
-                    });
-
                     Cmdr.squadronfaction = faction.name;
                 }
 
@@ -2931,16 +2865,6 @@ namespace EddiCore
                     if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
                     {
                         configuration.SquadronSystem = system;
-
-                        var configurationCopy = configuration;
-                        Application.Current?.Dispatcher?.Invoke(() =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).squadronSystemDropDown.Text = system;
-                                ((MainWindow)Application.Current.MainWindow).ConfigureSquadronFactionOptions(configurationCopy);
-                            }
-                        });
 
                         configuration = updateSquadronSystem(configuration);
                     }
@@ -2967,15 +2891,6 @@ namespace EddiCore
                         if (configuration.SquadronPower == Power.None && configuration.SquadronPower != power)
                         {
                             configuration.SquadronPower = power;
-
-                            Application.Current?.Dispatcher?.Invoke(() =>
-                            {
-                                if (Application.Current?.MainWindow != null)
-                                {
-                                    ((MainWindow)Application.Current.MainWindow).squadronPowerDropDown.SelectedItem = power.localizedName;
-                                    ((MainWindow)Application.Current.MainWindow).ConfigureSquadronPowerOptions(configuration);
-                                }
-                            });
                         }
                     }
                 }

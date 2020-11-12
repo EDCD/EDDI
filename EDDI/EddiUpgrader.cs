@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Utilities;
 
@@ -105,7 +106,7 @@ namespace Eddi
                     else
                     {
                         // Inno setup will attempt to restart this application so register it
-                        EDDI.NativeMethods.RegisterApplicationRestart(null, EDDI.RestartFlags.NONE);
+                        RegisterApplicationRestart(null, RestartFlags.NONE);
 
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
@@ -123,5 +124,25 @@ namespace Eddi
                 Logging.Error("Upgrade failed", ex);
             }
         }
+
+        // Required to restart app after upgrade
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
+
+        // Flags for upgrade
+        [Flags]
+        private enum RestartFlags
+        {
+            NONE = 0,
+            RESTART_CYCLICAL = 1,
+            RESTART_NOTIFY_SOLUTION = 2,
+            RESTART_NOTIFY_FAULT = 4,
+            RESTART_NO_CRASH = 8,
+            RESTART_NO_HANG = 16,
+            RESTART_NO_PATCH = 32,
+            RESTART_NO_REBOOT = 64
+        }
+
     }
+
 }

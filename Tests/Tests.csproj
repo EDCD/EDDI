@@ -72,6 +72,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions, Version=5.10.3.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.5.10.3\lib\net47\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.4.0\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -139,6 +142,7 @@
   <ItemGroup>
     <Compile Include="CapiTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="MainWindowResponderTests.cs" />
     <Compile Include="UtilityTests.cs" />
     <Compile Include="InaraTests.cs" />
     <Compile Include="CrimeMonitorTests.cs" />
@@ -190,6 +194,10 @@
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
       <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
       <Name>EddiCrimeMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj">
+      <Project>{28dc25d7-4dfd-4a77-b4ff-b9badb711ecb}</Project>
+      <Name>EddiCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
       <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>

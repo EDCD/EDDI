@@ -134,16 +134,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EddiUpgrader.cs" />
+    <Compile Include="MainWindowResponder.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StarSystemComboBox.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="EDDI.cs" />
-    <Compile Include="EliteConfiguration.cs" />
-    <Compile Include="EDDIMonitor.cs" />
-    <Compile Include="EDDIResponder.cs" />
     <Page Include="ChangeLog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,7 +153,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EDDIConfiguration.cs" />
     <Compile Include="ChangeLog.xaml.cs">
       <DependentUpon>ChangeLog.xaml</DependentUpon>
     </Compile>
@@ -242,6 +238,10 @@
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EddiDataProviderService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj">
+      <Project>{28dc25d7-4dfd-4a77-b4ff-b9badb711ecb}</Project>
+      <Name>EddiCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
       <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>

@@ -81,6 +81,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj">
+      <Project>{28dc25d7-4dfd-4a77-b4ff-b9badb711ecb}</Project>
+      <Name>EddiCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>
