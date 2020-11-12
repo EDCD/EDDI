@@ -143,7 +143,7 @@ namespace UnitTests
         }";
 
         [TestInitialize]
-        private void StartTestCrimeMonitor()
+        public void StartTestCrimeMonitor()
         {
             MakeSafe();
         }

@@ -11,7 +11,7 @@ namespace IntegrationTests
     public class NavigationServiceTests : TestBase
     {
         [TestInitialize]
-        private void StartTestMissionMonitor()
+        public void StartTestMissionMonitor()
         {
             MakeSafe();
         }

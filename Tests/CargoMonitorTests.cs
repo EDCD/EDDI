@@ -18,7 +18,7 @@ namespace UnitTests
         List<Event> events;
 
         [TestInitialize]
-        private void StartTestCargoMonitor()
+        public void StartTestCargoMonitor()
         {
             MakeSafe();
         }
