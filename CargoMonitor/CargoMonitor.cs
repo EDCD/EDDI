@@ -60,14 +60,18 @@ namespace EddiCargoMonitor
             return true;
         }
 
-        public CargoMonitor()
+        /// <summary>
+        /// Create a new CargoMonitor, optionally passing in a non-default configuration
+        /// </summary>
+        /// <param name="configuration">The configuration to use. If null, it will be read from the file system</param>
+        public CargoMonitor(CargoMonitorConfiguration configuration = null)
         {
             inventory = new ObservableCollection<Cargo>();
             BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
-            initializeCargoMonitor();
+            initializeCargoMonitor(configuration);
         }
 
-        public void initializeCargoMonitor(CargoMonitorConfiguration configuration = null)
+        private void initializeCargoMonitor(CargoMonitorConfiguration configuration = null)
         {
             readInventory(configuration);
             Logging.Info($"Initialized {MonitorName()}");
