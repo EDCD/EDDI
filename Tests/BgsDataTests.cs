@@ -50,14 +50,12 @@ namespace UnitTests
     public class BgsDataTests : TestBase
     {
         FakeBgsRestClient fakeBgsRestClient;
-        FakeBgsRestClient fakeEddbRestClient;
         BgsService fakeBgsService;
 
         [TestInitialize]
         public void start()
         {
             fakeBgsRestClient = new FakeBgsRestClient();
-            fakeEddbRestClient = new FakeBgsRestClient();
             fakeBgsService = new BgsService(fakeBgsRestClient);
             MakeSafe();
         }
@@ -183,29 +181,25 @@ namespace UnitTests
             RestRequest data = new RestRequest();
             fakeBgsRestClient.Expect(resource, json, data);
 
-            StarSystem expectedStarSystem = new StarSystem()
+            StarSystem expectedSol = new StarSystem()
             {
                 systemAddress = 10477373803,
                 systemname = "Sol",
                 EDSMID = 27,
                 Power = Power.FromEDName("ZacharyHudson"),
                 powerState = PowerplayState.FromEDName("Controlled"),
-                updatedat = 1599446773
+                updatedat = 1604805221
             };
 
             // Act
-            StarSystem system = fakeBgsService.GetSystemByName("Sol");
-            StarSystem system2 = fakeBgsService.GetSystemBySystemAddress(10477373803);
-            StarSystem system3 = fakeBgsService.GetSystemByName("No such system");
+            StarSystem solByName = fakeBgsService.GetSystemByName("Sol");
+            StarSystem solByAddress = fakeBgsService.GetSystemBySystemAddress(10477373803);
+            StarSystem nonExistentSystem = fakeBgsService.GetSystemByName("No such system");
 
             // Assert
-            Assert.IsNotNull(system);
-            Assert.IsTrue(system.DeepEquals(expectedStarSystem));
-
-            Assert.IsNotNull(system2);
-            Assert.IsTrue(system2.DeepEquals(expectedStarSystem));
-
-            Assert.IsNull(system3);
+            Assert.IsTrue(solByName.DeepEquals(expectedSol));
+            Assert.IsTrue(solByAddress.DeepEquals(expectedSol));
+            Assert.IsNull(nonExistentSystem);
         }
 
         [TestMethod]
