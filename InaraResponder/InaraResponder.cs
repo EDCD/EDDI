@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Controls;
 using Utilities;
 
@@ -354,7 +355,8 @@ namespace EddiInaraResponder
                 if (!string.IsNullOrEmpty(@event.tier[i]))
                 {
                     // If you didn't contribute to the goal, your tier may be null
-                    cgEventData.Add("tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")));
+                    // This is a localised string like "Tier 1" so we'll use Last() to extract just the numeric value.
+                    cgEventData.Add("tierReached", char.GetNumericValue(@event.tier[i].Last()));
                    
                 }
                 if (@event.topranksize[i] != null)
