@@ -174,85 +174,89 @@ namespace EddiDataDefinitions
             }
         }
 
-        public void CalculateWeightedPrice(int thisPrice, int amount)
+        public void UpdateWeightedPrice(decimal newPrice, int newAmount)
         {
-            if (amount == 0) { return; }
-            var weightedValueSum = (weightedAvgPrice * total) + (thisPrice * amount);
-            var weightedQtySum = total + amount;
-            weightedAvgPrice = weightedValueSum / weightedQtySum;
-            NotifyPropertyChanged("price");
+            if (newAmount == 0) { return; }
+            var weightedValueSum = (weightedAvgPrice * total) + (newPrice * newAmount);
+            var weightedQtySum = total + newAmount;
+
+            if (weightedQtySum > 0)
+            {
+                weightedAvgPrice = weightedValueSum / weightedQtySum;
+                NotifyPropertyChanged("price");
+            }
         }
 
         /// <summary> </summary>
         /// <param name="cargoType">The type of cargo to add</param>
-        /// <param name="amount">The amount of cargo to add</param>
+        /// <param name="acquistionAmount">The amount of cargo to add</param>
         /// <param name="cargoHaulageData">Add or update haulage instance</param>
-        /// <param name="_price">The acquisition price per unit (if not zero)</param>
-        public void AddDetailedQty(CargoType cargoType, int amount, Haulage cargoHaulageData = null, int _price = 0)
+        /// <param name="acquistionPrice">The acquisition price per unit (if not zero)</param>
+        public void AddDetailedQty(CargoType cargoType, int acquistionAmount, decimal acquistionPrice, Haulage cargoHaulageData = null)
         {
-            CalculateWeightedPrice(_price, amount);
+            UpdateWeightedPrice(acquistionPrice, acquistionAmount);
             switch (cargoType)
             {
                 case CargoType.haulage:
                     {
-                        haulage += amount;
+                        haulage += acquistionAmount;
                         if (cargoHaulageData != null) 
                         {
-                            for (int i = 0; i < haulageData.Count; i++)
+                            var haulageIndex = haulageData.FindIndex(h => h.missionid == cargoHaulageData.missionid);
+                            if (haulageIndex > -1)
                             {
-                                if (haulageData[i].missionid == cargoHaulageData.missionid)
-                                {
-                                    haulageData[i] = cargoHaulageData;
-                                    return;
-                                }
+                                haulageData[haulageIndex] = cargoHaulageData;
                             }
-                            haulageData.Add(cargoHaulageData); 
+                            else
+                            {
+                                haulageData.Add(cargoHaulageData);
+                            }
                         }
                         break;
                     }
                 case CargoType.stolen:
                     {
-                        stolen += amount;
+                        stolen += acquistionAmount;
                         break;
                     }
                 default:
                     {
-                        owned += amount;
+                        owned += acquistionAmount;
                         break;
                     }
             }
         }
 
         /// <param name="cargoType">The type of cargo to remove</param>
-        /// <param name="amount">The amount of cargo to remove</param>
+        /// <param name="removedAmount">The amount of cargo to remove</param>
         /// <param name="missionId">Remove haulage instance by mission ID</param>
-        public void RemoveDetailedQty(CargoType cargoType, int amount, long? missionId)
+        public void RemoveDetailedQty(CargoType cargoType, int removedAmount, long? missionId)
         {
             var thisHaulageData = haulageData.FirstOrDefault(h => h.missionid == missionId);
-            RemoveDetailedQty(cargoType, amount, thisHaulageData);
+            RemoveDetailedQty(cargoType, removedAmount, thisHaulageData);
         }
 
         /// <param name="cargoType">The type of cargo to remove</param>
-        /// <param name="amount">The amount of cargo to remove</param>
+        /// <param name="removedAmount">The amount of cargo to remove</param>
         /// <param name="cargoHaulageData">Remove haulage instance</param>
-        public void RemoveDetailedQty(CargoType cargoType, int amount, Haulage cargoHaulageData = null)
+        public void RemoveDetailedQty(CargoType cargoType, int removedAmount, Haulage cargoHaulageData = null)
         {
             switch (cargoType)
             {
                 case CargoType.haulage:
                     {
-                        haulage -= amount;
+                        haulage -= removedAmount;
                         if (cargoHaulageData != null) { haulageData.Remove(cargoHaulageData); }
                         break;
                     }
                 case CargoType.stolen:
                     {
-                        stolen -= amount;
+                        stolen -= removedAmount;
                         break;
                     }
                 default:
                     {
-                        owned -= amount;
+                        owned -= removedAmount;
                         break;
                     }
             }
