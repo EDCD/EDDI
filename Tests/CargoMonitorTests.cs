@@ -12,13 +12,13 @@ namespace UnitTests
     [TestClass]
     public class CargoMonitorTests : TestBase
     {
-        CargoMonitor cargoMonitor = new CargoMonitor();
+        CargoMonitor cargoMonitor = new CargoMonitor(new CargoMonitorConfiguration());
         Cargo cargo;
         string line;
         List<Event> events;
 
         [TestInitialize]
-        private void StartTestCargoMonitor()
+        public void StartTestCargoMonitor()
         {
             MakeSafe();
         }
@@ -86,9 +86,6 @@ namespace UnitTests
                 }],
                 ""cargocarried"": 29
             }";
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             CargoMonitorConfiguration config = CargoMonitorConfiguration.FromJsonString(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
@@ -99,6 +96,7 @@ namespace UnitTests
             Assert.AreEqual(0, cargo.need);
             Assert.AreEqual(0, cargo.stolen);
             Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(11912, cargo.price);
 
             // Verify haulage object 
             Assert.AreEqual(1, cargo.haulageData.Count());
@@ -109,17 +107,11 @@ namespace UnitTests
             Assert.AreEqual(4, haulage.amount);
             Assert.AreEqual(4, haulage.remaining);
             Assert.IsFalse(haulage.shared);
-
-            // Restore original data
-            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoEventsScenario()
         {
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -182,17 +174,11 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 426282789);
             Assert.AreEqual("Failed", haulage.status);
-
-            // Restore original data
-            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoMissionScenario()
         {
-            // Save original data
-            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
-
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -338,14 +324,59 @@ namespace UnitTests
             Assert.AreEqual(0, haulage.remaining);
             Assert.AreEqual(0, haulage.need);
             Assert.AreEqual(0, cargo.need);
-
-            // Restore original data
-            data.ToFile();
         }
 
-        [TestCleanup]
-        private void StopTestCargoMonitor()
+        [TestMethod]
+        public void TestCargoPriceScenario()
         {
+            // Test that average cargo price dynamically updates based on the aquisition prices and quantities
+            var privateObject = new PrivateObject(cargoMonitor);
+
+            // Synthesise 4 drones
+            line = @"{ ""timestamp"":""2020-10-26T04:05:27Z"", ""event"":""Synthesis"", ""Name"":""Limpet Basic"", ""Materials"":[ { ""Name"":""iron"", ""Count"":10 }, { ""Name"":""nickel"", ""Count"":10 } ] }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleSynthesisedEvent", new object[] { events[0] });
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.IsNotNull(cargo);
+            Assert.AreEqual(4, cargo.total);
+            Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(0, cargo.stolen);
+            Assert.AreEqual(4, cargo.owned);
+            Assert.AreEqual(0, cargo.price); // weighted price: 0
+
+            // Buy one drone
+            line = @"{ ""timestamp"":""2020-10-26T04:10:27Z"", ""event"":""BuyDrones"", ""Type"":""Drones"", ""Count"":1, ""BuyPrice"":127, ""TotalCost"":127 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleLimpetPurchasedEvent", new object[] { events[0] });
+            Assert.AreEqual(5, cargo.total);
+            Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(0, cargo.stolen);
+            Assert.AreEqual(5, cargo.owned);
+            Assert.AreEqual(25, cargo.price); // weighted price: 25.4
+
+            // Buy 5 drones
+            line = @"{ ""timestamp"":""2020-10-26T04:15:27Z"", ""event"":""BuyDrones"", ""Type"":""Drones"", ""Count"":5, ""BuyPrice"":127, ""TotalCost"":635 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleLimpetPurchasedEvent", new object[] { events[0] });
+            Assert.AreEqual(10, cargo.total);
+            Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(0, cargo.stolen);
+            Assert.AreEqual(10, cargo.owned);
+            Assert.AreEqual(76, cargo.price); // weighted price: 76.2
+
+            // Buy another 5 drones, except these are on sale
+            line = @"{ ""timestamp"":""2020-10-26T04:15:27Z"", ""event"":""BuyDrones"", ""Type"":""Drones"", ""Count"":5, ""BuyPrice"":1, ""TotalCost"":5 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleLimpetPurchasedEvent", new object[] { events[0] });
+            Assert.AreEqual(15, cargo.total);
+            Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(0, cargo.stolen);
+            Assert.AreEqual(15, cargo.owned);
+            Assert.AreEqual(51, cargo.price); // weighted price: 51.13
         }
     }
 }
