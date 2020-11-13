@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.2-b1
+  * Cargo monitor
+    * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
 
 ### 3.7.1
   * Core
