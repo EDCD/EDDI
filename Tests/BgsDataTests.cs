@@ -50,13 +50,15 @@ namespace UnitTests
     public class BgsDataTests : TestBase
     {
         FakeBgsRestClient fakeBgsRestClient;
+        FakeBgsRestClient fakeEddbRestClient;
         BgsService fakeBgsService;
 
         [TestInitialize]
         public void start()
         {
             fakeBgsRestClient = new FakeBgsRestClient();
-            fakeBgsService = new BgsService(fakeBgsRestClient);
+            fakeEddbRestClient = new FakeBgsRestClient();
+            fakeBgsService = new BgsService(fakeBgsRestClient, fakeEddbRestClient);
             MakeSafe();
         }
 
@@ -179,7 +181,6 @@ namespace UnitTests
             string resource = "v4/populatedsystems?";
             string json = Encoding.UTF8.GetString(Resources.bgsEddbSystemResponse);
             RestRequest data = new RestRequest();
-            fakeBgsRestClient.Expect(resource, json, data);
 
             StarSystem expectedSol = new StarSystem()
             {
@@ -188,12 +189,14 @@ namespace UnitTests
                 EDSMID = 27,
                 Power = Power.FromEDName("ZacharyHudson"),
                 powerState = PowerplayState.FromEDName("Controlled"),
-                updatedat = 1604805221
+                updatedat = 1599446773
             };
 
             // Act
+            fakeEddbRestClient.Expect(resource, json, data);
             StarSystem solByName = fakeBgsService.GetSystemByName("Sol");
             StarSystem solByAddress = fakeBgsService.GetSystemBySystemAddress(10477373803);
+            fakeEddbRestClient.Expect(resource, "", data);
             StarSystem nonExistentSystem = fakeBgsService.GetSystemByName("No such system");
 
             // Assert
@@ -209,7 +212,7 @@ namespace UnitTests
             string endpoint = "v4/populatedsystems?";
             string json = "";
             RestRequest data = new RestRequest();
-            fakeBgsRestClient.Expect(endpoint, json, data);
+            fakeEddbRestClient.Expect(endpoint, json, data);
             var queryList = new List<KeyValuePair<string, object>>()
             {
                 new KeyValuePair<string, object>(BgsService.SystemParameters.systemName, "")
