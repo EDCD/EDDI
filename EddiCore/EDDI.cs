@@ -30,9 +30,9 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
- 
-        private static bool running = true;
-        public static bool IsRunning => running;
+
+        //private static bool running = true;
+        public static bool IsRunning { get; private set; } = true;
 
         private static bool allowMarketUpdate = false;
         private static bool allowOutfittingUpdate = false;
@@ -121,7 +121,7 @@ namespace EddiCore
 
         private EDDI(bool safeMode)
         {
-            running = !safeMode;
+            IsRunning = !safeMode;
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
@@ -144,7 +144,7 @@ namespace EddiCore
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
                 List<Task> essentialAsyncTasks = new List<Task>();
-                if (running)
+                if (IsRunning)
                 {
                     // Tasks we can start asynchronously but need to complete before other dependent code is called
                     essentialAsyncTasks.AddRange(new List<Task>()
@@ -321,7 +321,7 @@ namespace EddiCore
 
         public void Stop()
         {
-            running = false; // Otherwise keepalive restarts them
+            IsRunning = false; // Otherwise keepalive restarts them
             if (started)
             {
                 foreach (EDDIResponder responder in responders)
@@ -486,7 +486,7 @@ namespace EddiCore
             try
             {
                 int failureCount = 0;
-                while (running && failureCount < 5 && activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
+                while (IsRunning && failureCount < 5 && activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
                 {
                     try
                     {
@@ -502,21 +502,21 @@ namespace EddiCore
                     catch (ThreadAbortException tax)
                     {
                         Thread.ResetAbort();
-                        if (running)
+                        if (IsRunning)
                         {
                             Logging.Error("Restarting " + name + " after thread abort", tax);
                         }
                     }
                     catch (Exception ex)
                     {
-                        if (running)
+                        if (IsRunning)
                         {
                             Logging.Error("Restarting " + name + " after exception", ex);
                         }
                     }
                     failureCount++;
                 }
-                if (running)
+                if (IsRunning)
                 {
                     DisableMonitor(name);
                     Logging.Warn(name + " stopping after too many failures");
@@ -813,7 +813,7 @@ namespace EddiCore
             }
         }
 
-        private bool eventSignalDetected(SignalDetectedEvent @event) 
+        private bool eventSignalDetected(SignalDetectedEvent @event)
         {
             if (Instance.CurrentStarSystem != null && Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
             {
@@ -2511,7 +2511,7 @@ namespace EddiCore
             return monitors;
         }
 
-        private Assembly safeLoadAssembly( FileInfo fi )
+        private Assembly safeLoadAssembly(FileInfo fi)
         {
             try
             {
@@ -2607,7 +2607,7 @@ namespace EddiCore
         {
             int maxTries = 6;
 
-            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+            while (IsRunning && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 try
                 {
