@@ -337,6 +337,9 @@
     <value>Destroços Recuperáveis</value>
     <comment>Salvageable Wreckage signal source</comment>
   </data>
-  
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Centro de Distribuição</value>
+    <comment>Distribution Centre</comment>
+  </data>
   
 </root>
