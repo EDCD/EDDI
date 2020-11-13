@@ -1,9 +1,12 @@
 ﻿using EddiEvents;
+using EddiSpeechResponder.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using Cottle.Stores;
 
 namespace GeneratorTests
 {
@@ -118,6 +121,72 @@ namespace GeneratorTests
             string output = "      <Word>" + string.Join("</Word>\r\n      <Word>", eventVars) + " </Word>\r\n";
             Directory.CreateDirectory(@"Cottle\");
             File.WriteAllText(@"Cottle\Custom keywords.txt", output);
+        }
+
+        // Generates a list of custom script resolver functions in the file `Help.md`.
+        [TestMethod, TestCategory("DocGen")]
+        public void TestGenerateFunctionsHelp()
+        {
+            List<string> output = new List<string>();
+            output.Add(@"
+# Templating with EDDI
+
+EDDI's speech responder uses Cottle for templating.  Cottle has a number of great features, including:
+
+* Ability to set and update variables, including arrays
+* Loops
+* Conditionals
+* Subroutines
+
+Information on how to write Cottle templates is available at http://r3c.github.io/cottle/#toc-2, and EDDI's default templates use a lot of the functions available.
+
+## State Variables
+
+Cottle does not retain state between templates, but EDDI provides a way of doing this with state variables.  State variables are provided to each Cottle template, and templates can set state variables that will be made available in future templates.
+
+State variables are available for individual templates in the 'state' object.  Note that state variables are not persistent, and the state is empty whenever EDDI restarts.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).
+
+## Context
+
+EDDI uses the idea of context to attempt to keep track of what it is talking about.  This can enhance the experience when used with VoiceAttack by allowing repetition and more detailed information to be provided.
+
+## EDDI Functions
+
+In addition to the basic Cottle features EDDI has a number of features that provide added functionality and specific information for Elite: Dangerous.  Details of these functions are as follows:
+");
+
+            // Prepare functions
+            var functions = new List<ICustomFunction>();
+            var resolver = new ScriptResolver(null);
+            var store = new BuiltinStore();
+            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            foreach (var type in assy.GetTypes()
+                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
+            {
+                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
+                    ? Activator.CreateInstance(type) :
+                    Activator.CreateInstance(type, resolver,  store));
+
+                if (function != null)
+                {
+                    functions.Add(function);
+                }
+            }
+
+            // Write results in alphabetical order (except exclude functions that we've flagged as hidden)
+            functions = functions.OrderBy(f => f.name).ToList();
+            foreach (var function in functions)
+            {
+                if (function.Category != FunctionCategory.Hidden)
+                {
+                    output.Add($"### {function.name}()");
+                    output.Add(function.description);
+                    output.Add("");
+                }
+            }
+
+            Directory.CreateDirectory(@"Wiki\");
+            File.WriteAllLines(@"Wiki\Functions.md", output);
         }
     }
 }

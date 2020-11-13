@@ -881,7 +881,7 @@ namespace EddiVoiceAttackResponder
             }
 
             // Step 3 - pass it through the script resolver
-            res = new ScriptResolver(null).resolveFromValue(res, true);
+            res = new EddiSpeechResponder.Service.ScriptResolver(null).resolveFromValue(res, true);
 
             return res ?? "";
         }

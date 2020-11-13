@@ -3,8 +3,8 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
+using EddiSpeechResponder.Service;
 using EddiSpeechService;
-using EddiStatusMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,15 +24,11 @@ namespace EddiSpeechResponder
         // The file to log speech
         public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
-        private ScriptResolver scriptResolver;
+        private Service.ScriptResolver scriptResolver;
 
         private bool subtitles;
 
         private bool subtitlesOnly;
-
-        protected static List<Event> eventQueue = new List<Event>();
-        private static readonly object queueLock = new object();
-
 #pragma warning disable IDE0052 // Remove unread private members: instantiating this registers the Cottle Highlighting Definition
         private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
 #pragma warning restore IDE0052 // Remove unread private members
@@ -64,7 +60,7 @@ namespace EddiSpeechResponder
             {
                 personality = Personality.Default();
             }
-            scriptResolver = new ScriptResolver(personality?.Scripts);
+            scriptResolver = new Service.ScriptResolver(personality?.Scripts);
             subtitles = configuration?.Subtitles ?? false;
             subtitlesOnly = configuration?.SubtitlesOnly ?? false;
             Logging.Info($"Initialized {ResponderName()}");
@@ -90,7 +86,7 @@ namespace EddiSpeechResponder
                 // Yes it does; use it
                 configuration.Personality = newPersonality;
                 configuration.ToFile();
-                scriptResolver = new ScriptResolver(personality.Scripts);
+                scriptResolver = new Service.ScriptResolver(personality.Scripts);
                 Logging.Debug("Changed personality to " + newPersonality);
                 return true;
             }
@@ -159,7 +155,7 @@ namespace EddiSpeechResponder
                 configuration.Personality = personality.Name;
                 configuration.ToFile();
             }
-            scriptResolver = new ScriptResolver(personality.Scripts);
+            scriptResolver = new Service.ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
             subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Debug($"Reloaded {ResponderName()}");
@@ -173,7 +169,6 @@ namespace EddiSpeechResponder
             }
 
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-            StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
 
             if (@event is BodyScannedEvent bodyScannedEvent)
             {
@@ -233,7 +228,7 @@ namespace EddiSpeechResponder
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        public void Say(Service.ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             Dictionary<string, Cottle.Value> dict = resolver.createVariables(theEvent);
             string speech = resolver.resolveFromName(scriptName, dict, true);
@@ -276,25 +271,6 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
-            }
-        }
-
-        private List<Event> TakeTypeFromEventQueue<T>()
-        {
-            List<Event> events = new List<Event>();
-            lock (queueLock)
-            {
-                events = eventQueue.Where(e => e is T).ToList();
-                eventQueue.RemoveAll(e => e is T);
-                return events;
-            }
-        }
-
-        private void AddToEventQueue(Event @event)
-        {
-            lock (queueLock)
-            {
-                eventQueue.Add(@event);
             }
         }
     }
