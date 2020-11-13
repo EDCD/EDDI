@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.2-b1
+
 ### 3.7.1
   * Core
     Fixed an exception when calculating distances if the second system were null (for example if a home star system were not set).
