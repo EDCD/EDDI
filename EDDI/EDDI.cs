@@ -816,7 +816,7 @@ namespace EddiCore
         {
             if (Instance.CurrentStarSystem != null && Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
             {
-                Instance.CurrentStarSystem.signalSources.Add(@event.signalSource);
+                Instance.CurrentStarSystem.AddOrUpdateSignalSource(@event.signalSource);
                 return true;
             }
             return false;

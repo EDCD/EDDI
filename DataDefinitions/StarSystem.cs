@@ -215,11 +215,11 @@ namespace EddiDataDefinitions
 
         /// <summary>Types of signals detected within the system</summary>
         [JsonIgnore]
-        public List<SignalSource> signalSources 
+        public ImmutableList<SignalSource> signalSources 
         { 
             get 
             {
-                _signalSources.RemoveAll(s => s.expiry != null && s.expiry < DateTime.UtcNow);
+                _signalSources = _signalSources.RemoveAll(s => s.expiry != null && s.expiry < DateTime.UtcNow);
                 return _signalSources; 
             } 
             set 
@@ -228,9 +228,16 @@ namespace EddiDataDefinitions
             } 
         }
         [JsonIgnore]
-        private List<SignalSource> _signalSources = new List<SignalSource>();
+        private ImmutableList<SignalSource> _signalSources = ImmutableList<SignalSource>.Empty;
         [JsonIgnore]
         public List<string> signalsources => signalSources.Select(s => s.localizedName).Distinct().ToList();
+
+        public void AddOrUpdateSignalSource(SignalSource signalSource)
+        {
+            var builder = signalSources.ToBuilder();
+            builder.Add(signalSource);
+            signalSources = builder.ToImmutable();
+        }
 
         /// <summary> Signals filtered to only return results with a carrier callsign </summary>
         [JsonIgnore]
