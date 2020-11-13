@@ -50,6 +50,7 @@ namespace UnitTests
     public class BgsDataTests : TestBase
     {
         FakeBgsRestClient fakeBgsRestClient;
+        FakeBgsRestClient fakeEddbRestClient;
         BgsService fakeBgsService;
 
         [TestInitialize]
@@ -180,7 +181,6 @@ namespace UnitTests
             string resource = "v4/populatedsystems?";
             string json = Encoding.UTF8.GetString(Resources.bgsEddbSystemResponse);
             RestRequest data = new RestRequest();
-            fakeEddbRestClient.Expect(resource, json, data);
 
             StarSystem expectedSol = new StarSystem()
             {
@@ -189,12 +189,14 @@ namespace UnitTests
                 EDSMID = 27,
                 Power = Power.FromEDName("ZacharyHudson"),
                 powerState = PowerplayState.FromEDName("Controlled"),
-                updatedat = 1604805221
+                updatedat = 1599446773
             };
 
             // Act
+            fakeEddbRestClient.Expect(resource, json, data);
             StarSystem solByName = fakeBgsService.GetSystemByName("Sol");
             StarSystem solByAddress = fakeBgsService.GetSystemBySystemAddress(10477373803);
+            fakeEddbRestClient.Expect(resource, "", data);
             StarSystem nonExistentSystem = fakeBgsService.GetSystemByName("No such system");
 
             // Assert
