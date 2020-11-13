@@ -91,6 +91,67 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestTemplateRecursedCustomFunctions()
+        {
+            var scripts = new Dictionary<string, string>
+            {
+                {"test", "The letter is {OneOf(\"a\", F(\"func\"), \"{c}\")}." },
+                {"func", "b" }
+            };
+            var dict = new Dictionary<string, Cottle.Value> { ["c"] = "c" };
+            var random = new Random();
+
+            string resolveFromName(string name, Dictionary<string, Cottle.Value> vars)
+            {
+                BuiltinStore store = new BuiltinStore();
+                // Function to call another script
+                store["F"] = new NativeFunction((values) =>
+                    _resolveFromName(values[0].AsString, store), 1);
+                // Function to select one of several responses
+                store["OneOf"] = new NativeFunction((values) =>
+                    resolveFromValue(values[random.Next(values.Count)].AsString, store));
+                // Variables
+                foreach (var entry in vars)
+                {
+                    store[entry.Key] = entry.Value;
+                }
+                return _resolveFromName(name, store);
+            }
+
+            string _resolveFromName(string name, BuiltinStore thisStore)
+            {
+                scripts.TryGetValue(name, out var script);
+                if (script == null) { return null; }
+                return resolveFromValue(script, thisStore);
+            }
+
+            string resolveFromValue(string script, BuiltinStore thisStore)
+            {
+                var document = new SimpleDocument(script, new CustomSetting
+                {
+                    Trimmer = BuiltinTrimmers.CollapseBlankCharacters
+                });
+                var result = document.Render(thisStore);
+                // Tidy up the output script
+                result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
+                return result.Trim() == "" ? null : result.Trim();
+            }
+
+            List<string> results = new List<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                results.Add(resolveFromName("test", dict));
+            }
+            Assert.IsTrue(results.Contains(@"The letter is a."));
+            results.RemoveAll(result => result == @"The letter is a.");
+            Assert.IsTrue(results.Contains(@"The letter is b."));
+            results.RemoveAll(result => result == @"The letter is b.");
+            Assert.IsTrue(results.Contains(@"The letter is c."));
+            results.RemoveAll(result => result == @"The letter is c.");
+            Assert.IsTrue(results.Count == 0);
+        }
+
+        [TestMethod]
         public void TestResolverSimple()
         {
             Dictionary<string, Script> scripts = new Dictionary<string, Script>
