@@ -205,6 +205,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distribution Center.
+        /// </summary>
+        public static string FIXED_EVENT_DISTRIBUTIONCENTRE {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_DISTRIBUTIONCENTRE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pirate Activity.
         /// </summary>
         public static string FIXED_EVENT_HIGHTHREATSCENARIO_T5 {

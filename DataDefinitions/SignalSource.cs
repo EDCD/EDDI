@@ -46,6 +46,7 @@ namespace EddiDataDefinitions
             var Checkpoint = new SignalSource("FIXED_EVENT_CHECKPOINT");
             var ConvoyBeacon = new SignalSource("FIXED_EVENT_CONVOY");
             var DebrisField = new SignalSource("FIXED_EVENT_DEBRIS");
+            var DistributionCenter = new SignalSource("FIXED_EVENT_DISTRIBUTIONCENTRE");
             var PirateAttackT5 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T5");
             var PirateAttackT6 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T6");
             var PirateAttackT7 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T7");

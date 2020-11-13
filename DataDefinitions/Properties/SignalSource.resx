@@ -337,4 +337,8 @@
     <value>Salvageable Wreckage</value>
     <comment>Salvageable Wreckage signal source</comment>
   </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Distribution Center</value>
+    <comment>Distribution Centre</comment>
+  </data>
 </root>
