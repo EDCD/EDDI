@@ -203,9 +203,9 @@
       <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>
       <Name>EddiInaraService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
+    <ProjectReference Include="..\EDDI\EddiApp.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>Eddi</Name>
+      <Name>EddiApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>

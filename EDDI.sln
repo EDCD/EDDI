@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiJournalMonitor", "JournalMonitor\EddiJournalMonitor.csproj", "{72B6F41D-0107-4D3A-8603-C3EDDA1C5243}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eddi", "EDDI\Eddi.csproj", "{EC7BA042-A370-447F-8C3E-241358CEBCBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiApp", "EDDI\EddiApp.csproj", "{EC7BA042-A370-447F-8C3E-241358CEBCBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiEvents", "Events\EddiEvents.csproj", "{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}"
 EndProject
@@ -238,9 +238,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TaskErrorCategory = Message
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_ShowErrorsInErrorList = False
 		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
+		RESX_ShowErrorsInErrorList = False
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_TaskErrorCategory = Message
 	EndGlobalSection
 EndGlobal
