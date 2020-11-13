@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distress Call.
+        /// </summary>
+        public static string Aftermath_Large {
+            get {
+                return ResourceManager.GetString("Aftermath_Large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ancient Ruins.
         /// </summary>
         public static string Ancient {
