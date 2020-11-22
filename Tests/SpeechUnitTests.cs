@@ -357,7 +357,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize14()
         {
-            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
+            Assert.AreEqual("minus 12.1", Translations.Humanize(-12.1M));
         }
 
         [TestMethod]
