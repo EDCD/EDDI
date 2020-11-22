@@ -825,8 +825,10 @@ namespace EddiSpeechService
                 switch (nextDigit)
                 {
                     case 0:
-                        return Properties.Phrases.justover + " " + maybeMinus + number + order;
+                        // the figure we are saying is round enough already
+                        return maybeMinus + number + order;
                     case 1:
+                        return Properties.Phrases.justover + " " + maybeMinus + number + order;
                     case 2:
                         return Properties.Phrases.over + " " + maybeMinus + number + order;
                     case 3:
@@ -847,17 +849,25 @@ namespace EddiSpeechService
             // Describe (less precisely) values for complex numbers where the largest order number exceeds one hundred
             else
             {
-                if (nextDigit < 2)
+                // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
+                if (number - (int)((decimal)number/100) * 100 >= 20)
+                {
+                    (number, nextDigit) = Normalize(number, 10);
+                    number *= 10;
+                }
+                
+                if (nextDigit == 0)
+                {
+                    // the figure we are saying is round enough already
+                    return maybeMinus + number + order;
+                }
+                else if (nextDigit < 2)
                 {
                     return Properties.Phrases.justover + " " + maybeMinus + number + order;
                 }
-                else if (nextDigit < 6)
+                else if (nextDigit < 7)
                 {
                     return Properties.Phrases.over + " " + maybeMinus + number + order;
-                }
-                else if (nextDigit < 8)
-                {
-                    return Properties.Phrases.wellover + " " + maybeMinus + number + order;
                 }
                 else if (nextDigit < 10)
                 {
