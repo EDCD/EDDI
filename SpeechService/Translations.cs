@@ -814,8 +814,8 @@ namespace EddiSpeechService
 
             if (number < 100)
             {
-                // See if we have a number whose value can be expressed with a short description (i.e 1.3 million)
-                if (number + ((decimal)nextDigit / 10) == (decimal)value / orderMultiplier)
+                // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
+                if (number + ((decimal)nextDigit / 10) == Math.Round((decimal)value / orderMultiplier, 2))
                 {
                     return maybeMinus + (number + (decimal)nextDigit / 10) + order;
                 }
