@@ -1721,7 +1721,16 @@
     <comment>Commodity SanumaMEAT</comment>
   </data>
   
-  
-  
-  
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>CD-75 Kätzchen Marken Kaffee</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Eden Äpfel der Luft</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Uzumokusische niedrig-G Flügel</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>
