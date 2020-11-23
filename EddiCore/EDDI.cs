@@ -1,20 +1,19 @@
-﻿using System;
+﻿using EddiCompanionAppService;
+using EddiDataDefinitions;
+using EddiDataProviderService;
+using EddiEvents;
+using EddiSpeechService;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EddiCompanionAppService;
-using EddiDataDefinitions;
-using EddiDataProviderService;
-using EddiEvents;
-using EddiSpeechService;
-using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiCore
