@@ -56,10 +56,7 @@
     <Compile Include="EDDIMonitor.cs" />
     <Compile Include="EDDIResponder.cs" />
     <Compile Include="EliteConfiguration.cs" />
-    <Compile Include="MarketInfoReader.cs" />
-    <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShipyardInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
