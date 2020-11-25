@@ -5,6 +5,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.7.2-b1
   * Cargo monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
+  * Speech responder
+    * Scripts
+      * Updated the `Signal detected` script Spanish translation to fix a typo (missing paranthesis).
 
 ### 3.7.1
   * Core
