@@ -367,16 +367,14 @@ namespace EDDNResponder
 
         private void sendCommodityInformation(MarketInformationUpdatedEvent theEvent)
         {
-            if (theEvent.commodityQuotes?.Count > 0)
+            if (theEvent.commodityQuotes != null)
             {
+                // An empty list is permissible, e.g. if a fleet carrier isn't buying or selling any commodities.
                 var commodities = theEvent.commodityQuotes
                     .Where(c => c.IsMarketable())
                     .ToList();
 
-                // Only send the message if we have commodities
-                if (commodities.Count > 0)
-                {
-                    IDictionary<string, object> data = new Dictionary<string, object>
+                IDictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "timestamp", Dates.FromDateTimeToString(theEvent.timestamp) },
                         { "systemName", theEvent.starSystem },
@@ -384,14 +382,13 @@ namespace EDDNResponder
                         { "marketId", theEvent.marketId },
                         { "horizons", theEvent.inHorizons}
                     };
-                    data.Add("commodities", commodities);
-                    if (theEvent.prohibitedCommodities?.Count > 0)
-                    {
-                        data.Add("prohibited", theEvent.prohibitedCommodities);
-                    }
-
-                    SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
+                data.Add("commodities", commodities);
+                if (theEvent.prohibitedCommodities?.Count > 0)
+                {
+                    data.Add("prohibited", theEvent.prohibitedCommodities);
                 }
+
+                SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
             }
         }
 
