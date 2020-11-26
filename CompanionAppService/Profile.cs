@@ -70,19 +70,19 @@ namespace EddiCompanionAppService
         public List<KeyValuePair<string, string>> stationServices { get; set; } = new List<KeyValuePair<string, string>>();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<ProfileEconomyShare> economyShares { get; set; }
+        public List<ProfileEconomyShare> economyShares { get; set; } = new List<ProfileEconomyShare>();
 
         /// <summary>Commodity market quotes as-received from the profile</summary>
-        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; }
+        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = new List<MarketInfoItem>();
 
         /// <summary>Prohibited commodities as-received from the profile</summary>
-        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; }
+        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; } = new List<KeyValuePair<long, string>>();
 
         /// <summary>Outfitting modules as-received from the profile</summary>
-        public List<OutfittingInfoItem> outfitting { get; set; }
+        public List<OutfittingInfoItem> outfitting { get; set; } = new List<OutfittingInfoItem>();
 
         /// <summary>Ship models as-received from the profile</summary>
-        public List<ShipyardInfoItem> ships { get; set; }
+        public List<ShipyardInfoItem> ships { get; set; } = new List<ShipyardInfoItem>();
 
         /// <summary>The market JSON object</summary>
         public JObject json { get; set; }
