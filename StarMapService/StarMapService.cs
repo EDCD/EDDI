@@ -34,13 +34,13 @@ namespace EddiStarMapService
         private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
 
         // The minimum interval between EDSM responder event syncs
-        private const int syncIntervalMilliSeconds = 5000; // 5 seconds
+        private const int syncIntervalMilliSeconds = 60000; // 1 minute
 
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
         private string apiKey { get; set; }
         private readonly IEdsmRestClient restClient;
-        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
+        private BlockingCollection<IDictionary<string, object>> queuedEvents;
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
@@ -114,32 +114,47 @@ namespace EddiStarMapService
             {
                 Logging.Debug("Stopping EDSM Responder event sync.");
                 syncCancellationTS.Cancel();
+                // Clean up by sending anything left in the queue.
+                SendEvents(queuedEvents.ToList());
             }
         }
 
         private async void BackgroundJournalSync()
         {
-            try
+            queuedEvents = new BlockingCollection<IDictionary<string, object>>();
+            using (syncCancellationTS = new CancellationTokenSource())
             {
-                using (syncCancellationTS = new CancellationTokenSource())
+                // Pause a short time to allow any initial events to build in the queue before our first sync
+                await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                await Task.Run(async () =>
                 {
-                    // Pause a short time to allow any initial events to build in the queue before our first sync
-                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
-
-                    while (!syncCancellationTS.IsCancellationRequested)
+                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                    // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
+                    var holdingQueue = new List<IDictionary<string, object>>();
+                    try
                     {
-                        await Task.Run(() => SendQueuedEvents(syncCancellationTS.Token), syncCancellationTS.Token).ConfigureAwait(false);
-                        await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                        foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(syncCancellationTS.Token))
+                        {
+                            holdingQueue.Add(pendingEvent);
+                            if (holdingQueue.Count > 0 && queuedEvents.Count == 0)
+                            {
+                                var sendingQueue = holdingQueue.Copy();
+                                holdingQueue = new List<IDictionary<string, object>>();
+                                await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                            }
+                        }
                     }
-                }
+                    catch (OperationCanceledException)
+                    {
+                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                        foreach (var pendingEvent in holdingQueue)
+                        {
+                            queuedEvents.Add(pendingEvent);
+                        }
+                    }
+                }).ConfigureAwait(false);
             }
-            catch (TaskCanceledException) { } // Tasks were cancelled. Nothing to do here.
-            finally
-            {
-                // Clean up by sending anything left in the queue. Use a new cancellation token which cannot be canceled.
-                SendQueuedEvents(new CancellationToken());
-            }
-
         }
 
         public void EnqueueEvent(IDictionary<string, object> eventObject)
@@ -163,29 +178,10 @@ namespace EddiStarMapService
             }
         }
 
-        private void SendQueuedEvents(CancellationToken cancellationToken)
+        private void SendEvents(List<IDictionary<string, object>> queue)
         {
-            var queue = new List<IDictionary<string, object>>();
-            try 
-            { 
-                // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
-                foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(cancellationToken))
-                {
-                    queue.Add(pendingEvent);
-                    if (queue.Count > 0 && queuedEvents.Count == 0) { break; }
-                }
-                StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-                SendEventBatch(queue, starMapConfiguration);
-            }
-            catch (OperationCanceledException)
-            {
-                // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                foreach (var pendingEvent in queue)
-                {
-                    queuedEvents.Add(pendingEvent);
-                }
-            }
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            SendEventBatch(queue, starMapConfiguration);
         }
 
         private void SendEventBatch(List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration)
