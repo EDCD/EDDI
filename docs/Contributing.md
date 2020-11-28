@@ -49,7 +49,7 @@ If your WIP branch has gotten so far behind `develop` that code and project file
   * Please always use braces around blocks following control statements such as `if`, `else`, `for` and `foreach`, etc. Rationale: the Apple "goto fail" bug.
     * You can still write one-line guard statements such as:
 ```cs
-if(gaurdFailed) {return;}
+if(guardFailed) {return;}
 ```
 
 ## Version conventions
