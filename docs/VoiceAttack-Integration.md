@@ -347,6 +347,7 @@ This function uses EDDI's voice to read a script. It takes one mandatory and two
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
+For convenience, the value `$=` in the script shall be replaced with the phonetic name of your ship while the value `$-` shall be replaced with your commander's phonetic name.
 To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'say'.
 
 ### speech
@@ -367,6 +368,7 @@ This function uses EDDI's voice to read a Speech Responder script with a radio e
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
  
+For convenience, the value `$=` in the script shall be replaced with the phonetic name of your ship while the value `$-` shall be replaced with your commander's phonetic name.
 To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'transmit'.
 
 ### shutup
