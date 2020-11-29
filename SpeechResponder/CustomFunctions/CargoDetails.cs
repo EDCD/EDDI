@@ -4,9 +4,11 @@ using EddiCargoMonitor;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class CargoDetails : ICustomFunction
     {
         public string name => "CargoDetails";

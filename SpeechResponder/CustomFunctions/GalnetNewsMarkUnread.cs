@@ -1,9 +1,11 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using GalnetMonitor;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class GalnetNewsMarkUnread : ICustomFunction
     {
         public string name => "GalnetNewsMarkUnread";

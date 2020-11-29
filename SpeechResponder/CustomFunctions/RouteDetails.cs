@@ -6,10 +6,12 @@ using EddiMaterialMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class RouteDetails : ICustomFunction
     {
         public string name => "RouteDetails";

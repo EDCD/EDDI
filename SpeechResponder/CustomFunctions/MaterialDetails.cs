@@ -3,9 +3,11 @@ using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using EddiDataProviderService;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class MaterialDetails : ICustomFunction
     {
         public string name => "MaterialDetails";

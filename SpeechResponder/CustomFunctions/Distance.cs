@@ -4,10 +4,12 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class Distance : ICustomFunction
     {
         public string name => "Distance";

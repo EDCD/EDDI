@@ -1,8 +1,10 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class Pause : ICustomFunction
     {
         public string name => "Pause";

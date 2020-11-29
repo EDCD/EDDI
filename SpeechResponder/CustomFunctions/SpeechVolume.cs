@@ -1,8 +1,10 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class SpeechVolume : ICustomFunction
     {
         public string name => "SpeechVolume";
@@ -10,7 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => @"
 This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
 
-##### Please take care with decibel values. If accidentally you blow out your speakers, that's totally on you. 
+##### Please take care with decibel values. If you accidentally blow out your speakers, that's totally on you. 
 SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include ""silent"", ""x-soft"", ""soft"", ""medium"", ""loud"", ""x-loud"", ""default"", as well as relative decibel values like ""-6dB"").
 A value of ""+0dB"" means no change of volume, ""+6dB"" means approximately twice the current amplitude, ""-6dB"" means approximately half the current amplitude.
 

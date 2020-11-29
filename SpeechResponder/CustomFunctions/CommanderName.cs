@@ -1,9 +1,11 @@
 ﻿using Cottle.Functions;
 using EddiCore;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class CommanderName : ICustomFunction
     {
         public string name => "CommanderName";

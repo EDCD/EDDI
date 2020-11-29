@@ -1,9 +1,11 @@
 ﻿using Cottle.Functions;
 using Cottle.Stores;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class F : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
     {
         public string name => "F";

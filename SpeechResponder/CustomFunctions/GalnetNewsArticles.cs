@@ -3,10 +3,12 @@ using Cottle.Functions;
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using GalnetMonitor;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
-    public class GalnetNewsArticles : ICustomFunction
+    [UsedImplicitly]
+    internal class GalnetNewsArticles : ICustomFunction
     {
         public string name => "GalnetNewsArticles";
         public FunctionCategory Category => FunctionCategory.Galnet;

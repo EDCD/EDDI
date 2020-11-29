@@ -2,10 +2,12 @@
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using System;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class SecondsSince : ICustomFunction
     {
         public string name => "SecondsSince";

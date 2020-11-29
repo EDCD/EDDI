@@ -2,9 +2,11 @@
 using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class EmpireRatingDetails : ICustomFunction
     {
         public string name => "EmpireRatingDetails";

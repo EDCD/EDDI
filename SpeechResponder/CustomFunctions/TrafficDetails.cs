@@ -3,9 +3,11 @@ using Cottle.Stores;
 using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class TrafficDetails : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
     {
         public string name => "TrafficDetails";

@@ -3,9 +3,11 @@ using Cottle.Values;
 using EddiCargoMonitor;
 using EddiCore;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class HaulageDetails : ICustomFunction
     {
         public string name => "HaulageDetails";

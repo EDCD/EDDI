@@ -5,9 +5,11 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStatusMonitor;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class OrbitalVelocity : ICustomFunction
     {
         public string name => "OrbitalVelocity";

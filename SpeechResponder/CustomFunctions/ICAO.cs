@@ -1,10 +1,12 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class ICAO : ICustomFunction
     {
         public string name => "ICAO";

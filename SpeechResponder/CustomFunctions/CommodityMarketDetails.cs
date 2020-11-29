@@ -4,10 +4,12 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class CommodityMarketDetails : ICustomFunction
     {
         public string name => "CommodityMarketDetails";

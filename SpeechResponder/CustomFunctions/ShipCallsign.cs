@@ -4,10 +4,12 @@ using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using System.Text.RegularExpressions;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class ShipCallsign : ICustomFunction
     {
         public string name => "ShipCallsign";

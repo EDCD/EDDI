@@ -4,9 +4,11 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class BodyDetails : ICustomFunction
     {
         public string name => "BodyDetails";

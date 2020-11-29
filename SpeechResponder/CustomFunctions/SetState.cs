@@ -2,9 +2,11 @@
 using Cottle.Stores;
 using EddiCore;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class SetState : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
     {
         public string name => "SetState";

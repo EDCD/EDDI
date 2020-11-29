@@ -3,9 +3,11 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class ShipName : ICustomFunction
     {
         public string name => "ShipName";

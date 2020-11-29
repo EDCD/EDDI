@@ -1,10 +1,12 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class List : ICustomFunction
     {
         public string name => "List";

@@ -4,9 +4,11 @@ using Cottle.Values;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class FactionDetails : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
     {
         public string name => "FactionDetails";

@@ -4,10 +4,12 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiMissionMonitor;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class MissionDetails : ICustomFunction
     {
         public string name => "MissionDetails";

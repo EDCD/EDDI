@@ -2,10 +2,12 @@
 using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class BlueprintDetails : ICustomFunction
     {
         public string name => "BlueprintDetails";

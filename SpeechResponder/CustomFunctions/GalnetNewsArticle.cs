@@ -2,9 +2,11 @@
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using GalnetMonitor;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class GalnetNewsArticle : ICustomFunction
     {
         public string name => "GalnetNewsArticle";

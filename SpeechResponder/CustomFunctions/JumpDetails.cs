@@ -3,9 +3,11 @@ using Cottle.Values;
 using EddiCore;
 using EddiShipMonitor;
 using EddiSpeechResponder.Service;
+using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
+    [UsedImplicitly]
     public class JumpDetails : ICustomFunction
     {
         public string name => "JumpDetails";
