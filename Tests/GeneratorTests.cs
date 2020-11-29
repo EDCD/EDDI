@@ -127,8 +127,36 @@ namespace GeneratorTests
         [TestMethod, TestCategory("DocGen")]
         public void TestGenerateFunctionsHelp()
         {
-            List<string> output = new List<string>();
-            output.Add(@"
+            // Prepare our functions
+            var functionsList = new List<ICustomFunction>();
+            var resolver = new ScriptResolver(null);
+            var store = new BuiltinStore();
+            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            foreach (var type in assy.GetTypes()
+                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
+            {
+                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
+                    ? Activator.CreateInstance(type) :
+                    Activator.CreateInstance(type, resolver, store));
+
+                if (function != null)
+                {
+                    functionsList.Add(function);
+                }
+            }
+
+            // Organize functions in alphabetical order (except exclude functions that we've flagged as hidden)
+            functionsList = functionsList
+                .Where(f => f.Category != FunctionCategory.Hidden)
+                .OrderBy(f => f.name)
+                .ToList();
+
+            // Make sure that a Wiki directory exists
+            Directory.CreateDirectory(@"Wiki\");
+
+            // Prepare Help.md
+            List<string> help = new List<string>();
+            help.Add(@"
 # Templating with EDDI
 
 EDDI's speech responder uses Cottle for templating.  Cottle has a number of great features, including:
@@ -154,39 +182,30 @@ EDDI uses the idea of context to attempt to keep track of what it is talking abo
 
 In addition to the basic Cottle features EDDI has a number of features that provide added functionality and specific information for Elite: Dangerous.  Details of these functions are as follows:
 ");
-
-            // Prepare functions
-            var functions = new List<ICustomFunction>();
-            var resolver = new ScriptResolver(null);
-            var store = new BuiltinStore();
-            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
-            foreach (var type in assy.GetTypes()
-                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
+            foreach (var function in functionsList)
             {
-                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
-                    ? Activator.CreateInstance(type) :
-                    Activator.CreateInstance(type, resolver,  store));
-
-                if (function != null)
-                {
-                    functions.Add(function);
-                }
+                help.Add($"### {function.name}()");
+                help.Add(function.description);
+                help.Add("");
             }
 
-            // Write results in alphabetical order (except exclude functions that we've flagged as hidden)
-            functions = functions.OrderBy(f => f.name).ToList();
-            foreach (var function in functions)
+            // Prepare Functions.md
+            List<string> functions = new List<string>();
+            functions.Add(@"
+EDDI's Speech Responder uses [Cottle templating language](https://cottle.readthedocs.io/en/stable/) to generate verbal responses to various events.
+
+Cottle's library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/blob/beta/SpeechResponder/Help.md)):
+");
+            functionsList = functionsList.OrderBy(f => f.name).ToList();
+            foreach (var function in functionsList)
             {
-                if (function.Category != FunctionCategory.Hidden)
-                {
-                    output.Add($"### {function.name}()");
-                    output.Add(function.description);
-                    output.Add("");
-                }
+                functions.Add($"* {function.name}()");
             }
 
-            Directory.CreateDirectory(@"Wiki\");
-            File.WriteAllLines(@"Wiki\Functions.md", output);
+            // Write our results
+            File.WriteAllLines(@"Help.md", help);
+            File.WriteAllLines(@"Wiki\Help.md", help);
+            File.WriteAllLines(@"Wiki\Functions.md", functions);
         }
     }
 }
