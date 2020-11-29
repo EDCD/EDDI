@@ -76,15 +76,16 @@ With one argument, the function returns a single `VoiceDetail` object. For examp
             return "The VoiceDetails function is used improperly. Please review the documentation for correct usage.";
         }, 0, 1);
     }
-    
+
+    [PublicAPI]
     class VoiceDetail
     {
-        private string name { get; set; }
-        private string cultureinvariantname { get; set; }
-        private string culturename { get; set; }
-        private string culturecode { get; set; }
-        private string gender { get; set; }
-        public bool enabled { get; set; }
+        public string name { get; }
+        public string cultureinvariantname { get; }
+        public string culturename { get; }
+        public string culturecode { get; }
+        public string gender { get; }
+        public bool enabled { get; }
 
         public VoiceDetail(string name, string cultureinvariantname, string culturename, string culturecode, string gender, bool enabled)
         {
