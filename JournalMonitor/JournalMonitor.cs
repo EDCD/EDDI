@@ -654,7 +654,7 @@ namespace EddiJournalMonitor
                                             {
                                                 // Ignore decals
                                             }
-                                            else if (slot.StartsWith("String_Lights", StringComparison.InvariantCultureIgnoreCase))
+                                            else if (slot.StartsWith("StringLights", StringComparison.InvariantCultureIgnoreCase))
                                             {
                                                 // Ignore string lights
                                             }
