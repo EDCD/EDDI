@@ -785,6 +785,7 @@ namespace EddiDataDefinitions
                 new Module(128049372, "Federation_Corvette_Armour_Grade3", 1500, "MilitaryGradeComposite", 1, "I", 169172510, 128049369),
                 new Module(128049373, "Federation_Corvette_Armour_Mirrored", 1501, "MirroredSurfaceComposite", 1, "I", 399811020, 128049369),
                 new Module(128049374, "Federation_Corvette_Armour_Reactive", 1502, "ReactiveSurfaceComposite", 1, "I", 443044000, 128049369),
+                new Module(128671346, "Hpt_BeamLaser_Fixed_Small_Heat", -1, "RetributionBeamLaser", 1, "E", 56150),
                 new Module(128672278, "Asp_Scout_Armour_Grade1", 1503, "LightweightAlloy", 1, "I", 0, 128049303),
                 new Module(128672279, "Asp_Scout_Armour_Grade2", 1504, "ReinforcedAlloy", 1, "I", 1584460, 128049303),
                 new Module(128672280, "Asp_Scout_Armour_Grade3", 1505, "MilitaryGradeComposite", 1, "I", 3565040, 128049303),
@@ -1006,6 +1007,7 @@ namespace EddiDataDefinitions
                 new Module(128833994, "Int_GuardianPowerplant_Size8", 1749, "GuardianPowerPlant", 8, "A", 138600000),
                 new Module(128833995, "Hpt_CausticMissile_Fixed_Medium", 1750, "EnzymeMissileRack", 2, "B", 580500),
                 new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", 1751, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
+                new Module(128833997, "Hpt_FlechetteLauncher_Turret_Medium", 1752, "FlechetteLauncher", 2, "B", 1279200, ModuleMount.Turreted),
                 new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", 1753, "GuardianPlasmaCharger", 2, "B", 498210, ModuleMount.Fixed),
                 new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", 1754, "GuardianPlasmaCharger", 2, "E", 1601542, ModuleMount.Turreted),
                 new Module(128839283, "Krait_Light_Armour_Grade1", 1768, "LightweightAlloy", 1, "I", 0, 128839281),
@@ -1025,18 +1027,38 @@ namespace EddiDataDefinitions
                 new Module(128834782, "Hpt_PlasmaShockCannon_Turret_Large", 1764, "ShockCannon", 3, "D", 5188441, ModuleMount.Turreted),
                 new Module(128834783, "Hpt_Guardian_PlasmaLauncher_Fixed_Large", 1765, "GuardianPlasmaCharger", 3, "C", 1248946, ModuleMount.Fixed),
                 new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", 1766, "GuardianPlasmaCharger", 3, "D", 5188441, ModuleMount.Turreted),
+                new Module(128891603, "Hpt_PlasmaShockCannon_Turret_Small", 1777, "ShockCannon", 1, "F", 354900, ModuleMount.Turreted),
+                new Module(128891604, "Hpt_PlasmaShockCannon_Gimbal_Small", 1778, "ShockCannon", 1, "E", 134063, ModuleMount.Gimballed),
+                new Module(128891605, "Hpt_PlasmaShockCannon_Fixed_Small", 1779, "ShockCannon", 1, "D", 64292, ModuleMount.Fixed),
                 new Module(128891606, "Hpt_Guardian_PlasmaLauncher_Turret_Small", 1780, "GuardianPlasmaCharger", 1, "F", 478910, ModuleMount.Turreted),
                 new Module(128891607, "Hpt_Guardian_PlasmaLauncher_Fixed_Small", 1781, "GuardianPlasmaCharger", 1, "D", 174626, ModuleMount.Fixed),
                 new Module(128891608, "Hpt_Guardian_ShardCannon_Turret_Small", 1782, "ShardCannon", 1, "F", 496669, ModuleMount.Turreted),
                 new Module(128891609, "Hpt_Guardian_ShardCannon_Fixed_Small", 1783, "ShardCannon", 1, "D", 150040, ModuleMount.Fixed),
                 new Module(128891610, "Hpt_Guardian_GaussCannon_Fixed_Small", 1784, "GuardianGaussCannon", 1, "D", 165474, ModuleMount.Fixed),
+                new Module(128915454, "Hpt_Mining_SubSurfDispMisle_Fixed_Small", 1785, "DisplacementMissile", 1, "B", 12601, ModuleMount.Fixed),
+                new Module(128915455, "Hpt_Mining_SubSurfDispMisle_Turret_Small", 1786, "DisplacementMissile", 1, "B", 38751, ModuleMount.Turreted),
+                new Module(128915456, "Hpt_Mining_SubSurfDispMisle_Fixed_Medium", 1787, "DisplacementMissile", 2, "B", 381750, ModuleMount.Fixed),
+                new Module(128915457, "Hpt_Mining_SubSurfDispMisle_Turret_Medium", 1788, "DisplacementMissile", 2, "B", 381750, ModuleMount.Turreted),
+                new Module(128915458, "Hpt_Mining_AbrBlstr_Fixed_Small", 1789, "AbrasionBlaster", 1, "D", 9700, ModuleMount.Fixed),
+                new Module(128915459, "Hpt_Mining_AbrBlstr_Turret_Small", 1790, "AbrasionBlaster", 1, "D", 27480, ModuleMount.Turreted),
+                new Module(128915460, "Hpt_Mining_SeismChrgWarhd_Fixed_Medium", 1791, "SeismicCharge", 2, "B", 170123, ModuleMount.Fixed),
+                new Module(128915461, "Hpt_Mining_SeismChrgWarhd_Turret_Medium", 1792, "SeismicCharge", 2, "B", 445570, ModuleMount.Turreted),
+                new Module(128915718, "Hpt_mrascanner_Size0_Class1", 1793, "PulseWave", 0, "E", 13540),
+                new Module(128915719, "Hpt_mrascanner_Size0_Class2", 1794, "PulseWave", 0, "D", 40630),
+                new Module(128915720, "Hpt_mrascanner_Size0_Class3", 1795, "PulseWave", 0, "C", 121900),
+                new Module(128915721, "Hpt_mrascanner_Size0_Class4", 1796, "PulseWave", 0, "B", 365700),
+                new Module(128915722, "Hpt_mrascanner_Size0_Class5", 1797, "PulseWave", 0, "A", 1097100),
                 new Module(128915981, "Mamba_Armour_Grade1", 1798, "LightweightAlloy", 1, "I", 0, 128915979),
                 new Module(128915982, "Mamba_Armour_Grade2", 1799, "ReinforcedAlloy", 1, "I", 0, 128915979),
                 new Module(128915983, "Mamba_Armour_Grade3", 1800, "MilitaryGradeComposite", 1, "I", 0, 128915979),
                 new Module(128915984, "Mamba_Armour_Mirrored", 1801, "MirroredSurfaceComposite", 1, "I", 0, 128915979),
                 new Module(128915985, "Mamba_Armour_Reactive", 1802, "ReactiveSurfaceComposite", 1, "I", 0, 128915979),
-                new Module(128935155, "Int_DockingComputer_Advanced", 1810, "AdvancedDockingComputer", 1, "E", 13507),
                 new Module(128932273, "Int_SupercruiseAssist", 1809, "SupercruiseAssist", 1, "E", 9121),
+                new Module(128935155, "Int_DockingComputer_Advanced", 1810, "AdvancedDockingComputer", 1, "E", 13507),
+                new Module(128935980, "Hpt_MultiCannon_Fixed_Medium_Advanced", 1811, "AdvancedMultiCannon", 2, "E", 38000, ModuleMount.Fixed),
+                new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", 1812, "AdvancedMultiCannon", 1, "F", 9500, ModuleMount.Fixed),
+                new Module(128935982, "Hpt_DumbfireMissileRack_Fixed_Small_Advanced", 1813, "AdvancedMissileRack", 1, "B", 32175, ModuleMount.Fixed),
+                new Module(128935983, "Hpt_DumbfireMissileRack_Fixed_Medium_Advanced", 1814, "AdvancedMissileRack", 2, "B", 240000, ModuleMount.Fixed),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "CargoRack", 2, "E", 0),
@@ -1148,27 +1170,6 @@ namespace EddiDataDefinitions
                 new Module(128064259, "Int_ShieldGenerator_Size1_Class2", 1805, "ShieldGenerator", 1, "D", 0),
                 new Module(128064260, "Int_ShieldGenerator_Size1_Class3", 1806, "ShieldGenerator", 1, "C", 0),
                 new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
-                new Module(128833997, "Hpt_FlechetteLauncher_Turret_Medium", 1752, "FlechetteLauncher", 2, "B", 0, ModuleMount.Turreted),
-                new Module(128891603, "Hpt_PlasmaShockCannon_Turret_Small", 1777, "ShockCannon", 1, "F", 0, ModuleMount.Turreted),
-                new Module(128891604, "Hpt_PlasmaShockCannon_Gimbal_Small", 1778, "ShockCannon", 1, "E", 0, ModuleMount.Gimballed),
-                new Module(128891605, "Hpt_PlasmaShockCannon_Fixed_Small", 1779, "ShockCannon", 1, "D", 0, ModuleMount.Fixed),
-                new Module(128915454, "Hpt_Mining_SubSurfDispMisle_Fixed_Small", 1785, "DisplacementMissile", 1, "B", 0, ModuleMount.Fixed),
-                new Module(128915455, "Hpt_Mining_SubSurfDispMisle_Turret_Small", 1786, "DisplacementMissile", 1, "B", 0, ModuleMount.Turreted),
-                new Module(128915456, "Hpt_Mining_SubSurfDispMisle_Fixed_Medium", 1787, "DisplacementMissile", 2, "B", 0, ModuleMount.Fixed),
-                new Module(128915457, "Hpt_Mining_SubSurfDispMisle_Turret_Medium", 1788, "DisplacementMissile", 2, "A", 0, ModuleMount.Turreted),
-                new Module(128915458, "Hpt_Mining_AbrBlstr_Fixed_Small", 1789, "AbrasionBlaster", 1, "D", 0, ModuleMount.Fixed),
-                new Module(128915459, "Hpt_Mining_AbrBlstr_Turret_Small", 1790, "AbrasionBlaster", 1, "D", 0, ModuleMount.Turreted),
-                new Module(128915460, "Hpt_Mining_SeismChrgWarhd_Fixed_Medium", 1791, "SeismicCharge", 2, "B", 0, ModuleMount.Fixed),
-                new Module(128915461, "Hpt_Mining_SeismChrgWarhd_Turret_Medium", 1792, "SeismicCharge", 2, "B", 0, ModuleMount.Turreted),
-                new Module(128915718, "Hpt_mrascanner_Size0_Class1", 1793, "PulseWave", 0, "E", 0),
-                new Module(128915719, "Hpt_mrascanner_Size0_Class2", 1794, "PulseWave", 0, "D", 0),
-                new Module(128915720, "Hpt_mrascanner_Size0_Class3", 1795, "PulseWave", 0, "C", 0),
-                new Module(128915721, "Hpt_mrascanner_Size0_Class4", 1796, "PulseWave", 0, "B", 0),
-                new Module(128915722, "Hpt_mrascanner_Size0_Class5", 1797, "PulseWave", 0, "A", 0),
-                new Module(128935980, "Hpt_MultiCannon_Fixed_Medium_Advanced", 1811, "AdvancedMultiCannon", 2, "E", 0, ModuleMount.Fixed),
-                new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", 1812, "AdvancedMultiCannon", 1, "F", 0, ModuleMount.Fixed),
-                new Module(128935982, "Hpt_DumbfireMissileRack_Fixed_Small_Advanced", 1813, "AdvancedMissileRack", 1, "B", 0, ModuleMount.Fixed),
-                new Module(128935983, "Hpt_DumbfireMissileRack_Fixed_Medium_Advanced", 1814, "AdvancedMissileRack", 2, "B", 0, ModuleMount.Fixed),
             };
         }
 
@@ -1176,22 +1177,22 @@ namespace EddiDataDefinitions
 
         public static HashSet<string> PowerPlayModules = new HashSet<string>()
         {
-            "Int_ShieldGenerator_Size1_Class5_Strong",
-            "Int_ShieldGenerator_Size2_Class5_Strong",
-            "Int_ShieldGenerator_Size3_Class5_Strong",
-            "Int_ShieldGenerator_Size4_Class5_Strong",
-            "Int_ShieldGenerator_Size5_Class5_Strong",
-            "Int_ShieldGenerator_Size6_Class5_Strong",
-            "Int_ShieldGenerator_Size7_Class5_Strong",
-            "Int_ShieldGenerator_Size8_Class5_Strong",
-            "Hpt_PulseLaserBurst_Fixed_Small_Scatter",
-            "Hpt_Slugshot_Fixed_Large_Range",
-            "Hpt_DrunkMissileRack_Fixed_Medium",
-            "Hpt_PlasmaAccelerator_Fixed_Large_Advanced",
-            "Hpt_Railgun_Fixed_Medium_Burst",
-            "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso",
-            "Hpt_MiningLaser_Fixed_Small_Advanced",
-            "Hpt_BeamLaser_Fixed_Small_Heat",
+            "Int_ShieldGenerator_Size1_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size2_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size3_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size4_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size5_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size6_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size7_Class5_Strong", // Prismatic shields
+            "Int_ShieldGenerator_Size8_Class5_Strong", // Prismatic shields
+            "Hpt_PulseLaserBurst_Fixed_Small_Scatter", // Prismatic shields
+            "Hpt_Slugshot_Fixed_Large_Range", // Pacifier Frag-Cannon
+            "Hpt_DrunkMissileRack_Fixed_Medium", // Pack-hound missle rack
+            "Hpt_PlasmaAccelerator_Fixed_Large_Advanced", // Advanced Plasma Accelerator
+            "Hpt_Railgun_Fixed_Medium_Burst", // Imperial Hammer Rail Gun
+            "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso", // Rocket Propelled FSD Disruptor
+            "Hpt_MiningLaser_Fixed_Small_Advanced", // Mining lance
+            "Hpt_BeamLaser_Fixed_Small_Heat", // Retribution beam laser
             "Hpt_MultiCannon_Fixed_Small_Strong", // Enforcer cannon 
             "Hpt_PulseLaser_Fixed_Medium_Disruptor", // Disruptor
         };

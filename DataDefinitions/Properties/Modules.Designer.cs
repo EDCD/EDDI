@@ -934,6 +934,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retribution Beam Laser.
+        /// </summary>
+        public static string RetributionBeamLaser {
+            get {
+                return ResourceManager.GetString("RetributionBeamLaser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rocket Propelled FSD Disruptor.
         /// </summary>
         public static string RocketPropelledFSDDisruptor {
