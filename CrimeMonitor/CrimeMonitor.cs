@@ -830,45 +830,44 @@ namespace EddiCrimeMonitor
         {
             if (record is null || report is null) { return; }
 
-            long total = record.fines + record.bounties + report.amount;
-            FactionRecord powerRecord = GetRecordWithFaction(record.allegiance);
+            var total = record.fines + record.bounties + report.amount;
+            var powerRecord = GetRecordWithFaction(record.allegiance);
 
-            // Minor faction crimes are converted to an interstellar bounty, owned by the faction's aligned
-            // superpower, when total fines & bounties incurred exceed 2 million credits
-            if (powerRecord != null || total > 2000000)
+            if (powerRecord == null && total <= 2000000) 
             {
-                // Check if an interstellar bounty is active for the minor faction
-                if (powerRecord?.interstellarBountyFactions.Contains(record.faction) ?? false)
-                {
-                    _AddCrimeToRecord(powerRecord, report);
-                    return;
-                }
-                else if (powerRecord == null)
-                {
-                    powerRecord = AddRecord(record.allegiance);
-                }
-
-                // Collect all minor faction fines and bounties incurred
-                List<FactionReport> reports = record.factionReports
-                    .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
-
-                // Transfer existing fines and bounties incurred to the power record
-                powerRecord.factionReports.AddRange(reports);
-                powerRecord.fines += record.fines;
-                powerRecord.bounties += record.bounties;
-                powerRecord.interstellarBountyFactions.Add(record.faction);
-                record.factionReports = record.factionReports.Except(reports).ToList();
-                record.fines = 0;
-                record.bounties = 0;
-
-                // Add new report to the power record and remove minor faction record if no pending claims
-                _AddCrimeToRecord(powerRecord, report);
-                RemoveRecord(record);
-
-                return;
+                // Add new report to the minor faction record
+                _AddCrimeToRecord(record, report); 
             }
-            // Criteria not met. Add new report to the minor faction record
-            _AddCrimeToRecord(record, report);
+            else
+            {
+                // Minor faction crimes are converted to an interstellar power record, owned by the faction's aligned
+                // superpower, when total fines & bounties incurred exceed 2 million credits
+                if (powerRecord == null) 
+                {
+                    // Add a new interstellar bounty. 
+                    // Transfer existing fines and bounties incurred to the interstellar power record
+                    // Collect all minor faction fines and bounties incurred
+                    powerRecord = AddRecord(record.allegiance);
+                    List<FactionReport> reports = record.factionReports
+                        .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
+                    powerRecord.factionReports.AddRange(reports);
+                    powerRecord.fines += record.fines;
+                    powerRecord.bounties += record.bounties;
+                    powerRecord.interstellarBountyFactions.Add(record.faction);
+                    record.factionReports = record.factionReports.Except(reports).ToList();
+                    record.fines = 0;
+                    record.bounties = 0;
+
+                    // Add new report to the interstellar power record and remove minor faction record if no pending claims
+                    _AddCrimeToRecord(powerRecord, report);
+                    RemoveRecord(record);
+                }
+                else if (powerRecord.interstellarBountyFactions.Contains(record.faction))
+                {
+                    // An interstellar power record is already active, update it
+                    _AddCrimeToRecord(powerRecord, report);
+                }
+            }
         }
 
         private void _AddCrimeToRecord(FactionRecord record, FactionReport report)
