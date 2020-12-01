@@ -934,11 +934,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retribution Beam Laser.
+        ///   Looks up a localized string similar to Retributor Beam Laser.
         /// </summary>
-        public static string RetributionBeamLaser {
+        public static string RetributorBeamLaser {
             get {
-                return ResourceManager.GetString("RetributionBeamLaser", resourceCulture);
+                return ResourceManager.GetString("RetributorBeamLaser", resourceCulture);
             }
         }
         

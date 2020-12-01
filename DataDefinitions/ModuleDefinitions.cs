@@ -785,7 +785,7 @@ namespace EddiDataDefinitions
                 new Module(128049372, "Federation_Corvette_Armour_Grade3", 1500, "MilitaryGradeComposite", 1, "I", 169172510, 128049369),
                 new Module(128049373, "Federation_Corvette_Armour_Mirrored", 1501, "MirroredSurfaceComposite", 1, "I", 399811020, 128049369),
                 new Module(128049374, "Federation_Corvette_Armour_Reactive", 1502, "ReactiveSurfaceComposite", 1, "I", 443044000, 128049369),
-                new Module(128671346, "Hpt_BeamLaser_Fixed_Small_Heat", -1, "RetributionBeamLaser", 1, "E", 56150),
+                new Module(128671346, "Hpt_BeamLaser_Fixed_Small_Heat", -1, "RetributorBeamLaser", 1, "E", 56150),
                 new Module(128672278, "Asp_Scout_Armour_Grade1", 1503, "LightweightAlloy", 1, "I", 0, 128049303),
                 new Module(128672279, "Asp_Scout_Armour_Grade2", 1504, "ReinforcedAlloy", 1, "I", 1584460, 128049303),
                 new Module(128672280, "Asp_Scout_Armour_Grade3", 1505, "MilitaryGradeComposite", 1, "I", 3565040, 128049303),
@@ -1192,7 +1192,7 @@ namespace EddiDataDefinitions
             "Hpt_Railgun_Fixed_Medium_Burst", // Imperial Hammer Rail Gun
             "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso", // Rocket Propelled FSD Disruptor
             "Hpt_MiningLaser_Fixed_Small_Advanced", // Mining lance
-            "Hpt_BeamLaser_Fixed_Small_Heat", // Retribution beam laser
+            "Hpt_BeamLaser_Fixed_Small_Heat", // Retributor beam laser
             "Hpt_MultiCannon_Fixed_Small_Strong", // Enforcer cannon 
             "Hpt_PulseLaser_Fixed_Medium_Disruptor", // Disruptor
         };
