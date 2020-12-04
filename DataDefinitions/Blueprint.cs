@@ -27,11 +27,11 @@ namespace EddiDataDefinitions
             var ArmourExplosive3 = new Blueprint(128673637, "ArmourExplosive3", "ArmourExplosive", 3);
             var ArmourExplosive4 = new Blueprint(128673638, "ArmourExplosive4", "ArmourExplosive", 4);
             var ArmourExplosive5 = new Blueprint(128673639, "ArmourExplosive5", "ArmourExplosive", 5);
-            var ArmourHeavyDuty1 = new Blueprint(128673640, "ArmourHeavy Duty1", "ArmourHeavyDuty", 1);
-            var ArmourHeavyDuty2 = new Blueprint(128673641, "ArmourHeavy Duty2", "ArmourHeavyDuty", 2);
-            var ArmourHeavyDuty3 = new Blueprint(128673642, "ArmourHeavy Duty3", "ArmourHeavyDuty", 3);
-            var ArmourHeavyDuty4 = new Blueprint(128673643, "ArmourHeavy Duty4", "ArmourHeavyDuty", 4);
-            var ArmourHeavyDuty5 = new Blueprint(128673644, "ArmourHeavy Duty5", "ArmourHeavyDuty", 5);
+            var ArmourHeavyDuty1 = new Blueprint(128673640, "ArmourHeavyDuty1", "ArmourHeavyDuty", 1);
+            var ArmourHeavyDuty2 = new Blueprint(128673641, "ArmourHeavyDuty2", "ArmourHeavyDuty", 2);
+            var ArmourHeavyDuty3 = new Blueprint(128673642, "ArmourHeavyDuty3", "ArmourHeavyDuty", 3);
+            var ArmourHeavyDuty4 = new Blueprint(128673643, "ArmourHeavyDuty4", "ArmourHeavyDuty", 4);
+            var ArmourHeavyDuty5 = new Blueprint(128673644, "ArmourHeavyDuty5", "ArmourHeavyDuty", 5);
             var ArmourKinetic1 = new Blueprint(128673645, "ArmourKinetic1", "ArmourKinetic", 1);
             var ArmourKinetic2 = new Blueprint(128673646, "ArmourKinetic2", "ArmourKinetic", 2);
             var ArmourKinetic3 = new Blueprint(128673647, "ArmourKinetic3", "ArmourKinetic", 3);
