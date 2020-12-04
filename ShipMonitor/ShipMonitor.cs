@@ -1127,16 +1127,16 @@ namespace EddiShipMonitor
                         ship.optimalmass = profileCurrentShip.optimalmass;
                         // Update ship hull health from profile
                         ship.health = profileCurrentShip.health;
-                        // Update ship module health from profile
-                        ship.bulkheads.health = profileCurrentShip.bulkheads.health;
-                        ship.powerplant.health = profileCurrentShip.powerplant.health;
-                        ship.thrusters.health = profileCurrentShip.thrusters.health;
-                        ship.powerdistributor.health = profileCurrentShip.powerdistributor.health;
-                        ship.frameshiftdrive.health = profileCurrentShip.frameshiftdrive.health;
-                        ship.lifesupport.health = profileCurrentShip.lifesupport.health;
-                        ship.sensors.health = profileCurrentShip.sensors.health;
-                        ship.fueltank.health = profileCurrentShip.fueltank.health;
-                        ship.cargohatch.health = profileCurrentShip.cargohatch.health;
+                        // Update ship modules from the profile
+                        ship.bulkheads.UpdateFromFrontierAPIModule(profileCurrentShip.bulkheads);
+                        ship.powerplant.UpdateFromFrontierAPIModule(profileCurrentShip.powerplant);
+                        ship.thrusters.UpdateFromFrontierAPIModule(profileCurrentShip.thrusters);
+                        ship.powerdistributor.UpdateFromFrontierAPIModule(profileCurrentShip.powerdistributor);
+                        ship.frameshiftdrive.UpdateFromFrontierAPIModule(profileCurrentShip.frameshiftdrive);
+                        ship.lifesupport.UpdateFromFrontierAPIModule(profileCurrentShip.lifesupport);
+                        ship.sensors.UpdateFromFrontierAPIModule(profileCurrentShip.sensors);
+                        ship.fueltank.UpdateFromFrontierAPIModule(profileCurrentShip.fueltank);
+                        ship.cargohatch.UpdateFromFrontierAPIModule(profileCurrentShip.cargohatch);
                         foreach (var profileHardpoint in profileCurrentShip.hardpoints)
                         {
                             foreach (var shipHardpoint in ship.hardpoints)
@@ -1144,7 +1144,7 @@ namespace EddiShipMonitor
                                 if (profileHardpoint.module != null && profileHardpoint.module.invariantName == shipHardpoint.module.invariantName)
                                 {
                                     shipHardpoint.module = shipHardpoint.module ?? new Module();
-                                    shipHardpoint.module.health = profileHardpoint.module.health;
+                                    shipHardpoint.module.UpdateFromFrontierAPIModule(profileHardpoint.module);
                                 }
                             }
                         }
@@ -1155,7 +1155,7 @@ namespace EddiShipMonitor
                                 if (profileCompartment.module != null && profileCompartment.module.invariantName == shipCompartment.module.invariantName)
                                 {
                                     shipCompartment.module = shipCompartment.module ?? new Module();
-                                    shipCompartment.module.health = profileCompartment.module.health;
+                                    shipCompartment.module.UpdateFromFrontierAPIModule(profileCompartment.module);
                                 }
                             }
                         }

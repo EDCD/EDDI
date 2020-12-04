@@ -253,14 +253,24 @@ namespace EddiShipMonitor
                 module = new Module(id, edName, -1, edName, -1, "", (long)json["module"]["value"]);
             }
 
+            module.fallbackLocalizedName = (string)json["module"]["locName"];
             module.price = (long)json["module"]["value"]; // How much we actually paid for it
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
             module.health = (decimal)json["module"]["health"] / 10_000M;
 
-            // Flag if module has engineering modifications
-            module.modified = json["engineer"] != null ? true : false;
-
+            // Engineering modifications
+            module.modified = json["engineer"] != null;
+            if (module.modified)
+            {
+                var blueprintName = (string)json["engineer"]["recipeName"];
+                var blueprintGrade = (int)json["engineer"]["recipeLevel"];
+                module.modificationEDName = blueprintName;
+                module.engineerlevel = blueprintGrade;
+                module.engineermodification = Blueprint.FromEDNameAndGrade(blueprintName, blueprintGrade);
+                module.blueprintId = module.engineermodification?.blueprintId ?? 0;
+                module.engineerExperimentalEffectEDName = json["specialModifications"].ToObject<KeyValuePair<string, string>>().Value;
+            }
             return module;
         }
 

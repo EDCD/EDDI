@@ -168,6 +168,28 @@ namespace EddiDataDefinitions
             this.modified = false;
             ModulesByEliteID[EDID] = this;
         }
+
+        public void UpdateFromFrontierAPIModule(Module frontierAPIModule)
+        {
+            if (edname == frontierAPIModule.edname)
+            {
+                EDID = frontierAPIModule.EDID;
+                fallbackLocalizedName = frontierAPIModule.fallbackLocalizedName;
+                price = frontierAPIModule.price;
+                enabled = frontierAPIModule.enabled;
+                priority = frontierAPIModule.priority;
+                health = frontierAPIModule.health;
+                modified = frontierAPIModule.modified;
+                modificationEDName = frontierAPIModule.modificationEDName;
+                engineerlevel = frontierAPIModule.engineerlevel;
+                engineermodification = frontierAPIModule.engineermodification;
+                blueprintId = frontierAPIModule.blueprintId;
+                engineerExperimentalEffectEDName = frontierAPIModule.engineerExperimentalEffectEDName;
+                // Details of modifications are not presented the same in `Loadout` events and in the Frontier API,
+                // so we do not update engineered modifiers from the Frontier API data
+                modifiers = modified ? modifiers : new List<EngineeringModifier>();
+            }
+        }
     }
 
     public class EngineeringModifier
