@@ -8,6 +8,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that caused certain faction names (e.g. "Brazilian Armada X") to throw an exception when passed through the `P()` function.
   * Cargo monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
+  * EDSM Responder
+    * Fixed a bug that could prevent sending pending sync data to EDSM after a request to stop the responder (e.g. on closing).
+  * Inara Responder
+    * Fixed a bug that could prevent sending pending sync data to Inara after a request to stop the responder (e.g. on closing).
   * Speech responder
     * Events
       * `Modules stored` updated to prevent an exception while testing.
