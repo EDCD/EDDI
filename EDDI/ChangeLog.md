@@ -6,13 +6,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Fixed a bug that could allow non-unique signals in the `Signal detected` script to be flagged as unique. 
     * Fixed a bug that caused certain faction names (e.g. "Brazilian Armada X") to throw an exception when passed through the `P()` function.
-  * Cargo monitor
+  * Cargo Monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
   * EDSM Responder
     * Fixed a bug that could prevent sending pending sync data to EDSM after a request to stop the responder (e.g. on closing).
   * Inara Responder
     * Fixed a bug that could prevent sending pending sync data to Inara after a request to stop the responder (e.g. on closing).
-  * Speech responder
+  * Speech Responder
     * Events
       * `Modules stored` updated to prevent an exception while testing.
     * Scripts
@@ -38,6 +38,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Signal detected` Spanish translation updated to fix a typo (missing paranthesis).
       * `System report` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
       * `System state report` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
+    * VoiceAttack Responder
+      * Revised `$-` output to more clearly render commander phonetic name
+      * Updated VoiceAttack wiki documentation to document implicit variables `$=` and `$-` as variables representing phonetic ship and commander names.
 
 ### 3.7.1
   * Core
