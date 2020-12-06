@@ -1361,12 +1361,12 @@ namespace EddiJournalMonitor
                                             slots.Add(slot);
 
                                             module = Module.FromEDName(JsonParsing.getString(item, "Name"));
-                                            module.hot = JsonParsing.getBool(data, "Hot");
-                                            string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
+                                            module.hot = JsonParsing.getBool(item, "Hot");
+                                            string engineerModifications = JsonParsing.getString(item, "EngineerModifications");
                                             module.modified = engineerModifications != null;
-                                            module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                            module.engineerlevel = JsonParsing.getOptionalInt(item, "Level") ?? 0;
                                             module.engineermodification = Blueprint.FromEDName(engineerModifications) ?? Blueprint.None;
-                                            module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
+                                            module.engineerquality = JsonParsing.getOptionalDecimal(item, "Quality") ?? 0;
                                             modules.Add(module);
                                         }
                                     }
