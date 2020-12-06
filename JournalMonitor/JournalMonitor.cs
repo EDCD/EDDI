@@ -711,6 +711,8 @@ namespace EddiJournalMonitor
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
+                                                    module.engineerExperimentalEffectEDName = experimentalEffect;
+                                                    module.modifiers = modifiers;
                                                     compartment.module = module;
                                                     compartments.Add(compartment);
                                                 }
