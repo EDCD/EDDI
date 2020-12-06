@@ -8,8 +8,18 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Cargo monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
   * Speech responder
+    * Events
+      * `Modules stored` updated to prevent an exception while testing.
     * Scripts
-      * Updated the `Signal detected` script Spanish translation to fix a typo (missing paranthesis).
+      * `Module purchased` updated to better pronounce module class & grade.
+      * `Module retrieved` updated to better pronounce module class & grade.
+      * `Module sold` updated to better pronounce module class & grade.
+      * `Module sold from storage` updated to better pronounce module class & grade.
+      * `Module stored` updated to better pronounce module class & grade.
+      * `Module swapped` updated to better pronounce module class & grade.
+      * `Module transfer` updated to better pronounce module class & grade.
+      * `Modules stored` updated to prevent an exception while testing and to better pronounce module class & grade.
+      * `Signal detected` Spanish translation updated to fix a typo (missing paranthesis).
 
 ### 3.7.1
   * Core
