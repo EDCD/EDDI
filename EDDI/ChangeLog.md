@@ -4,7 +4,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.2-b1
   * Core
-    * Fixed a bug that could allow non-unique signals in the `Signal detected` script to be flagged as unique. 
     * Fixed a bug that caused certain faction names (e.g. "Brazilian Armada X") to throw an exception when passed through the `P()` function.
   * Cargo Monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
@@ -15,6 +14,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Events
       * `Modules stored` updated to prevent an exception while testing.
+      * `Signal detected` updated to fix a bug that could allow non-unique signals to be flagged as unique. 
     * Scripts
       * `Bodies mapped` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
       * `Bodies to map` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
