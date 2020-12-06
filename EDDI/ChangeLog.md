@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.2-b1
+  * Core
+    * Fixed a bug that could allow non-unique signals in the `Signal detected` script to be flagged as unique. 
   * Cargo monitor
     * Cargo value (per unit) is now calculated as a weighted average of acquisition costs (rather than using the galactic average price).
   * Speech responder

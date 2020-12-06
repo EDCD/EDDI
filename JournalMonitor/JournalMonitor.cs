@@ -2071,7 +2071,12 @@ namespace EddiJournalMonitor
                                     source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
                                     source.isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
 
-                                    bool unique = EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
+                                    bool unique = false;
+                                    if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress == systemAddress)
+                                    {
+                                        unique = EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
+                                        EDDI.Instance.CurrentStarSystem.AddOrUpdateSignalSource(source);
+                                    }
                                     
                                     events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, unique) { raw = line, fromLoad = fromLogLoad });
                                 }
