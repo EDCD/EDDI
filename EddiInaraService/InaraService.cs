@@ -22,18 +22,20 @@ namespace EddiInaraService
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Variables
-        private static bool tooManyRequests;
-        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
-        private static readonly List<string> invalidAPIEvents = new List<string>();
-        public static EventHandler invalidAPIkey;
+        private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
+        private BlockingCollection<InaraAPIEvent> queuedAPIEvents;
+        private readonly List<string> invalidAPIEvents = new List<string>();
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
+        private bool eddiIsBeta;
+        public static EventHandler invalidAPIkey;
 
-        public void Start(bool eddiIsBeta = false)
+        public void Start(bool _eddiIsBeta = false)
         {
             if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
             {
                 Logging.Debug("Starting Inara service background sync.");
-                Task.Run(() => BackgroundSync(eddiIsBeta)).ConfigureAwait(false);
+                eddiIsBeta = _eddiIsBeta;
+                Task.Run(() => BackgroundSync());
             }
         }
 
@@ -43,36 +45,52 @@ namespace EddiInaraService
             {
                 Logging.Debug("Stopping Inara service background sync.");
                 syncCancellationTS.Cancel();
+                // Clean up by sending anything left in the queue.
+                SendAPIEvents(queuedAPIEvents.ToList());
             }
         }
 
-        private async void BackgroundSync(bool eddiIsBeta)
+        private async void BackgroundSync()
         {
-            try
+            queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
+            using (syncCancellationTS = new CancellationTokenSource())
             {
-                using (syncCancellationTS = new CancellationTokenSource())
+                // Pause a short time to allow any initial events to build in the queue before our first sync
+                await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                await Task.Run(async () =>
                 {
-                    // Pause a short time to allow any initial events to build in the queue before our first sync
-                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
-
-                    while (!syncCancellationTS.IsCancellationRequested)
+                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                    // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+                    List<InaraAPIEvent> holdingQueue = new List<InaraAPIEvent>();
+                    try
                     {
-                        await Task.Run(() => SendQueuedAPIEvents(eddiIsBeta, syncCancellationTS.Token), syncCancellationTS.Token).ConfigureAwait(false);
-                        await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
-                        tooManyRequests = false;
+                        foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(syncCancellationTS.Token))
+                        {
+                            holdingQueue.Add(pendingEvent);
+                            if (holdingQueue.Count > 0 && queuedAPIEvents.Count == 0)
+                            {
+                                var sendingQueue = holdingQueue.Copy();
+                                holdingQueue = new List<InaraAPIEvent>();
+                                await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                            }
+                        }
                     }
-                }
+                    catch (OperationCanceledException)
+                    {
+                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                        foreach (var pendingEvent in holdingQueue)
+                        {
+                            queuedAPIEvents.Add(pendingEvent);
+                        }
+                    }
+                }).ConfigureAwait(false);
             }
-            catch (TaskCanceledException) { } // Tasks were cancelled. Nothing to do here.
-            finally
-            {
-                // Clean up by sending anything left in the queue. Use a new cancellation token which cannot be canceled.
-                SendQueuedAPIEvents(eddiIsBeta, new CancellationToken());
-            }
+            tooManyRequests = false;
         }
 
         // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
-        public List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta = false)
+        public List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
@@ -80,7 +98,7 @@ namespace EddiInaraService
             try
             {
                 if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
-                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration, eddiIsBeta);
+                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
                 if (indexedEvents.Count > 0)
                 {
                     var client = new RestClient("https://inara.cz/inapi/v1/");
@@ -136,7 +154,7 @@ namespace EddiInaraService
             return inaraResponses;
         }
 
-        private static List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration, bool eddiIsBeta = false)
+        private List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
         {
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
@@ -249,35 +267,16 @@ namespace EddiInaraService
             return true;
         }
 
-        public void SendQueuedAPIEvents(bool eddiIsBeta, CancellationToken cancellationToken)
+        public void SendAPIEvents(List<InaraAPIEvent> queue)
         {
-            List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
-            try
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            if (checkAPIcredentialsOk(inaraConfiguration))
             {
-                // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
-                foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(cancellationToken))
+                var responses = SendEventBatch(queue, inaraConfiguration);
+                if (responses != null && responses.Count > 0)
                 {
-                    queue.Add(pendingEvent);
-                    if (queue.Count > 0 && queuedAPIEvents.Count == 0) { break; }
-                }
-                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                if (checkAPIcredentialsOk(inaraConfiguration))
-                {
-                    var responses = SendEventBatch(queue, inaraConfiguration, eddiIsBeta);
-                    if (responses != null && responses.Count > 0)
-                    {
-                        inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
-                        inaraConfiguration.ToFile();
-                    }
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                foreach (var pendingEvent in queue)
-                {
-                    queuedAPIEvents.Add(pendingEvent);
+                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
+                    inaraConfiguration.ToFile();
                 }
             }
         }
