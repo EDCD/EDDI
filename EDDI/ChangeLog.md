@@ -16,6 +16,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Events
       * `Modules stored` updated to prevent an exception while testing.
     * Scripts
+      * `Mission accepted` updated to fix a typo preventing warnings about wanted passengers and to make the mission count both occasional and less frequent for higher commander combat ranks.
       * `Mission completed` updated to summarize rewards more succinctly and include permit rewards. Community goals now use the localized name rather than "MISSION_CommunityGoal".
       * `Module purchased` updated to better pronounce module class & grade.
       * `Module retrieved` updated to better pronounce module class & grade.
