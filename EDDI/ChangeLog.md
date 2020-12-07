@@ -18,12 +18,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Bodies mapped` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
       * `Bodies to map` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
-      * `Carrier jump engaged` updated to set context variable `eddi_context_system_name`.
-      * `Carrier jumped` updated to set context variable `eddi_context_system_name`.
       * `Commander continued` updated to set context variable `eddi_context_system_name`.
       * `Discovery scan` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
-      * `FSD engaged` updated to set context variable `eddi_context_system_name`.
-      * `Jumped` updated to set context variable `eddi_context_system_name`.
       * `Mission accepted` updated to fix a typo preventing warnings about wanted passengers and to make the mission count both occasional and less frequent for higher commander combat ranks.
       * `Mission completed` updated to summarize rewards more succinctly and include permit rewards. Community goals now use the localized name rather than "MISSION_CommunityGoal".
       * `Mission redirected` updated to filter duplicate similar mission redirects (e.g. from stacked similar missions)
