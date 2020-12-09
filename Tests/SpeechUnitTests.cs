@@ -321,7 +321,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize8()
         {
-            Assert.AreEqual("just over 51 million", Translations.Humanize(51000001));
+            Assert.AreEqual("51 million", Translations.Humanize(51000001));
         }
 
         [TestMethod]
@@ -357,25 +357,25 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize14()
         {
-            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
+            Assert.AreEqual("minus 12.1", Translations.Humanize(-12.1M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize15()
         {
-            Assert.AreEqual("just over minus 12", Translations.Humanize(-12.01M));
+            Assert.AreEqual("minus 12", Translations.Humanize(-12.01M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize16()
         {
-            Assert.AreEqual("just over 436 trillion", Translations.Humanize(4.36156E14M));
+            Assert.AreEqual("over 430 trillion", Translations.Humanize(4.36156E14M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize17()
         {
-            Assert.AreEqual("well over 945 billion", Translations.Humanize(9.4571E11M));
+            Assert.AreEqual("over 940 billion", Translations.Humanize(9.4571E11M));
         }
 
         [TestMethod]
@@ -387,7 +387,25 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize19()
         {
-            Assert.AreEqual("nearly 646 thousand", Translations.Humanize(6.459E5M));
+            Assert.AreEqual("over 640 thousand", Translations.Humanize(6.459E5M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize20()
+        {
+            Assert.AreEqual("456", Translations.Humanize(456));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize21()
+        {
+            Assert.AreEqual("1.8 million", Translations.Humanize(1.8E6M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize22()
+        {
+            Assert.AreEqual("1.8 million", Translations.Humanize(1800001));
         }
 
         [TestMethod]

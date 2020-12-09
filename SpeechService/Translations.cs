@@ -726,11 +726,11 @@ namespace EddiSpeechService
                 return null;
             }
 
-            string minus = "";
+            string maybeMinus = "";
             if (value < 0)
             {
-                minus = Properties.Phrases.minus + " ";
-                value *= -1;
+                maybeMinus = Properties.Phrases.minus + " ";
+                value = -value;
             }
 
             if (value == 0)
@@ -748,109 +748,133 @@ namespace EddiSpeechService
                     numzeros++;
                 }
                 // Now round it to 2sf
-                return minus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
+                return maybeMinus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
+            }
+
+            (int number, int nextDigit) Normalize(decimal inputValue, long orderMultiplierVal)
+            {
+                return (
+                    number: (int)(inputValue / orderMultiplierVal),
+                    nextDigit: (int)((inputValue % orderMultiplierVal) / ((decimal)orderMultiplierVal / 10))
+                );
             }
 
             int number;
             int nextDigit;
             string order;
-            int digits = (int)Math.Log10((double)value);
-            if (digits < 3)
+            long orderMultiplier = 1;
+            int magnitude = (int)Math.Log10((double)value);
+            if (magnitude < 3)
             {
                 // Units
-                number = (int)value;
                 order = "";
-                nextDigit = (int)((value - number) * 10);
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
-            else if (digits < 6)
+            else if (magnitude < 6)
             {
                 // Thousands
-                number = (int)(value / 1E3M);
                 order = " " + Properties.Phrases.thousand;
-                nextDigit = (int)((value - (number * 1E3M)) / 1E2M);
+                orderMultiplier = (long)1E3;
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
-            else if (digits < 9)
+            else if (magnitude < 9)
             {
                 // Millions
-                number = (int)(value / 1E6M);
                 order = " " + Properties.Phrases.million;
-                nextDigit = (int)((value - (number * 1E6M)) / 1E5M);
+                orderMultiplier = (long)1E6;
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
-            else if (digits < 12)
+            else if (magnitude < 12)
             {
                 // Billions
-                number = (int)(value / 1E9M);
                 order = " " + Properties.Phrases.billion;
-                nextDigit = (int)((value - (number * 1E9M)) / 1E8M);
+                orderMultiplier = (long)1E9;
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
-            else if (digits < 15)
+            else if (magnitude < 15)
             {
                 // Trillions
-                number = (int)(value / 1E12M);
                 order = " " + Properties.Phrases.trillion;
-                nextDigit = (int)((value - (number * 1E12M)) / 1E11M);
+                orderMultiplier = (long)1E12;
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
             else
             {
                 // Quadrillions
-                number = (int)(value / 1E15M);
                 order = " " + Properties.Phrases.quadrillion;
-                nextDigit = (int)((value - (number * 1E15M)) / 1E14M);
+                orderMultiplier = (long)1E15M;
+                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
             }
-
-            // See if we have an exact match
-            if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
+            
+            // See if we have a whole number that is fully described within the largest order
+            if (number * orderMultiplier == value)
             {
-                return minus + number + order;
+                return maybeMinus + number + order;
             }
 
-            // Describe decimal values
             if (number < 100)
             {
+                // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
+                if (number + ((decimal)nextDigit / 10) == Math.Round((decimal)value / orderMultiplier, 2))
+                {
+                    return maybeMinus + (number + (decimal)nextDigit / 10) + order;
+                }
+
+                // Describe values for complex numbers where the largest order number does not exceed one hundred
                 string andahalf = " " + Properties.Phrases.andahalf;
                 switch (nextDigit)
                 {
                     case 0:
-                        return Properties.Phrases.justover + " " + minus + number + order;
+                        // the figure we are saying is round enough already
+                        return maybeMinus + number + order;
                     case 1:
+                        return Properties.Phrases.justover + " " + maybeMinus + number + order;
                     case 2:
-                        return Properties.Phrases.over + " " + minus + number + order;
+                        return Properties.Phrases.over + " " + maybeMinus + number + order;
                     case 3:
-                        return Properties.Phrases.wellover + " " + minus + number + order;
+                        return Properties.Phrases.wellover + " " + maybeMinus + number + order;
                     case 4:
-                        return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.nearly + " " + maybeMinus + number + andahalf + order;
                     case 5:
-                        return Properties.Phrases.around + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.around + " " + maybeMinus + number + andahalf + order;
                     case 6:
                     case 7:
-                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.over + " " + maybeMinus + number + andahalf + order;
                     case 8:
-                        return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.wellover + " " + maybeMinus + number + andahalf + order;
                     case 9:
-                        return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
+                        return Properties.Phrases.nearly + " " + maybeMinus + (number + 1) + order;
                 }
             }
-            // Describe (less precisely) decimal values for more complex numbers    
+            // Describe (less precisely) values for complex numbers where the largest order number exceeds one hundred
             else
             {
-                if (nextDigit < 2)
+                // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
+                if (number - (int)((decimal)number/100) * 100 >= 20)
                 {
-                    return Properties.Phrases.justover + " " + minus + number + order;
+                    (number, nextDigit) = Normalize(number, 10);
+                    number *= 10;
                 }
-                else if (nextDigit < 6)
+                
+                if (nextDigit == 0)
                 {
-                    return Properties.Phrases.over + " " + minus + number + order;
+                    // the figure we are saying is round enough already
+                    return maybeMinus + number + order;
                 }
-                else if (nextDigit < 8)
+                else if (nextDigit < 2)
                 {
-                    return Properties.Phrases.wellover + " " + minus + number + order;
+                    return Properties.Phrases.justover + " " + maybeMinus + number + order;
+                }
+                else if (nextDigit < 7)
+                {
+                    return Properties.Phrases.over + " " + maybeMinus + number + order;
                 }
                 else if (nextDigit < 10)
                 {
-                    return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
+                    return Properties.Phrases.nearly + " " + maybeMinus + (number + 1) + order;
                 }
             }
-            return Properties.Phrases.around + " " + minus + number + order;
+            return Properties.Phrases.around + " " + maybeMinus + number + order;
         }
     }
 }
