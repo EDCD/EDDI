@@ -458,5 +458,14 @@ namespace UnitTests
             var result = SpeechService.escapeSsml(line);
             Assert.AreEqual(line, result);
         }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping5()
+        {
+            // Test escaping for characters included in the escape sequence ('X' in this case)
+            var line = @"Brazilian armada <say-as interpret-as=""characters"">X</say-as>";
+            var result = SpeechService.escapeSsml(line);
+            Assert.AreEqual(line, result);
+        }
     }
 }
