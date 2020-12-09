@@ -217,6 +217,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="eddi.de.json" />
     <None Include="eddi.es.json" />
     <None Include="eddi.fr.json" />
