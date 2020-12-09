@@ -11,6 +11,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could prevent sending pending sync data to EDSM after a request to stop the responder (e.g. on closing).
   * Inara Responder
     * Fixed a bug that could prevent sending pending sync data to Inara after a request to stop the responder (e.g. on closing).
+  * Mission Monitor
+    * Fixed a bug that could cause the Mission monitor to only process the first stacked mission in a set if all were updated at the same time.
+    * Revised all missions to use the "Claim" status (rather than using "Complete" in some instances and "Claim" in others) after mission conditions are satisfied.
   * Speech Responder
     * Events
       * `Modules stored` updated to prevent an exception while testing.
