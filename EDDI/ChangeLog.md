@@ -15,6 +15,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Events
       * `Modules stored` updated to prevent an exception while testing.
       * `Signal detected` updated to fix a bug that could allow non-unique signals to be flagged as unique. 
+    * Functions
+      * `Humanise()` revised to fix a bug that created inaccurate descriptions for certain numbers, to return short decimal numbers when they are able to accurately and succinctly describe the number, and to round a little more aggressively for reduced verbosity.
     * Scripts
       * `Bodies mapped` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
       * `Bodies to map` updated to default to the current star system if context variable `eddi_context_system_name` is not set.
