@@ -124,36 +124,44 @@ namespace EddiStarMapService
             queuedEvents = new BlockingCollection<IDictionary<string, object>>();
             using (syncCancellationTS = new CancellationTokenSource())
             {
-                // Pause a short time to allow any initial events to build in the queue before our first sync
-                await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
-                await Task.Run(async () =>
+                try
                 {
-                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                    // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
-                    var holdingQueue = new List<IDictionary<string, object>>();
-                    try
+
+                    // Pause a short time to allow any initial events to build in the queue before our first sync
+                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                    await Task.Run(async () =>
                     {
-                        foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(syncCancellationTS.Token))
+                        // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                        // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
+                        var holdingQueue = new List<IDictionary<string, object>>();
+                        try
                         {
-                            holdingQueue.Add(pendingEvent);
-                            if (holdingQueue.Count > 0 && queuedEvents.Count == 0)
+                            foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(syncCancellationTS.Token))
                             {
-                                var sendingQueue = holdingQueue.Copy();
-                                holdingQueue = new List<IDictionary<string, object>>();
-                                await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
-                                await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                holdingQueue.Add(pendingEvent);
+                                if (holdingQueue.Count > 0 && queuedEvents.Count == 0)
+                                {
+                                    var sendingQueue = holdingQueue.Copy();
+                                    holdingQueue = new List<IDictionary<string, object>>();
+                                    await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                    await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                }
                             }
                         }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                        foreach (var pendingEvent in holdingQueue)
+                        catch (OperationCanceledException)
                         {
-                            queuedEvents.Add(pendingEvent);
+                            // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                            foreach (var pendingEvent in holdingQueue)
+                            {
+                                queuedEvents.Add(pendingEvent);
+                            }
                         }
-                    }
-                }).ConfigureAwait(false);
+                    }).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Task cancelled. Nothing to do here.
+                }
             }
         }
 

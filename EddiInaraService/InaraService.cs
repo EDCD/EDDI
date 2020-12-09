@@ -55,36 +55,43 @@ namespace EddiInaraService
             queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
             using (syncCancellationTS = new CancellationTokenSource())
             {
-                // Pause a short time to allow any initial events to build in the queue before our first sync
-                await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
-                await Task.Run(async () =>
+                try 
                 {
-                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                    // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
-                    List<InaraAPIEvent> holdingQueue = new List<InaraAPIEvent>();
-                    try
+                    // Pause a short time to allow any initial events to build in the queue before our first sync
+                    await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                    await Task.Run(async () =>
                     {
-                        foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(syncCancellationTS.Token))
+                        // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                        // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
+                        List<InaraAPIEvent> holdingQueue = new List<InaraAPIEvent>();
+                        try
                         {
-                            holdingQueue.Add(pendingEvent);
-                            if (holdingQueue.Count > 0 && queuedAPIEvents.Count == 0)
+                            foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(syncCancellationTS.Token))
                             {
-                                var sendingQueue = holdingQueue.Copy();
-                                holdingQueue = new List<InaraAPIEvent>();
-                                await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
-                                await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                holdingQueue.Add(pendingEvent);
+                                if (holdingQueue.Count > 0 && queuedAPIEvents.Count == 0)
+                                {
+                                    var sendingQueue = holdingQueue.Copy();
+                                    holdingQueue = new List<InaraAPIEvent>();
+                                    await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                }
                             }
                         }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                        foreach (var pendingEvent in holdingQueue)
+                        catch (OperationCanceledException)
                         {
-                            queuedAPIEvents.Add(pendingEvent);
+                            // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                            foreach (var pendingEvent in holdingQueue)
+                            {
+                                queuedAPIEvents.Add(pendingEvent);
+                            }
                         }
-                    }
-                }).ConfigureAwait(false);
+                    }).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Task cancelled. Nothing to do here.
+                }
             }
             tooManyRequests = false;
         }
