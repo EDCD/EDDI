@@ -56,6 +56,9 @@ EDDI should be in the "Apps" subdirectory of your VoiceAttack directory.  The di
 
 ![](images/Directory.jpg)
 
+Note: If your VoiceAttack installation is licensed from Steam, the directory structure may instead look like:
+`C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack\Apps`.
+
 ## Ensure you are running a suitable version of VoiceAttack
 
 EDDI requires at least version 1.5.12 of VoiceAttack.  To check the version of VoiceAttack first select the configuration button on the main VoiceAttack window:
