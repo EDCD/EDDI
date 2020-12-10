@@ -230,7 +230,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
-            Assert.AreEqual("Complete", mission.statusEDName);
+            Assert.AreEqual("Claim", mission.statusEDName);
 
             //MissionAcceptedEvent - 'Permit'
             line = "{ \"timestamp\":\"2018-09-19T01:12:57Z\", \"event\":\"MissionAccepted\", \"Faction\":\"Sublime Order of van Maanen's Star\", \"Name\":\"MISSION_genericPermit1\", \"LocalisedName\":\"Permit Acquisition Opportunity\", \"Wing\":false, \"Influence\":\"None\", \"Reputation\":\"None\", \"MissionID\":420098082 }";

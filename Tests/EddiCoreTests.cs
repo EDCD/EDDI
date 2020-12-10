@@ -207,11 +207,6 @@ namespace UnitTests
         {
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem", systemAddress = 6606892846275 });
-
-            void Handle(SignalDetectedEvent @event) 
-            {
-                privateObject.Invoke("eventSignalDetected", @event);
-            };
             var currentStarSystem = (StarSystem)privateObject.GetFieldOrProperty("CurrentStarSystem");
 
             string line0 = @"{ ""timestamp"":""2019-02-04T02:20:28Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
@@ -220,38 +215,21 @@ namespace UnitTests
             string line3 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$Fixed_Event_Life_Ring;"", ""SignalName_Localised"":""Notable stellar phenomena"" }";
             string line4 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
 
-            List<Event> events = new List<Event>();
-            events.AddRange(JournalMonitor.ParseJournalEntry(line0));
-            events.AddRange(JournalMonitor.ParseJournalEntry(line1));
-            events.AddRange(JournalMonitor.ParseJournalEntry(line2));
-            events.AddRange(JournalMonitor.ParseJournalEntry(line3));
-            events.AddRange(JournalMonitor.ParseJournalEntry(line4));
-            Assert.AreEqual(5, events.Count());
-
-            SignalDetectedEvent event0 = (SignalDetectedEvent)events[0];
-            SignalDetectedEvent event1 = (SignalDetectedEvent)events[1];
-            SignalDetectedEvent event2 = (SignalDetectedEvent)events[2];
-            SignalDetectedEvent event3 = (SignalDetectedEvent)events[3];
-            SignalDetectedEvent event4 = (SignalDetectedEvent)events[4];
-
-            Assert.IsNotNull(event0);
-            Assert.IsInstanceOfType(event0, typeof(SignalDetectedEvent));
-
-            Handle(event0);
+            JournalMonitor.ParseJournalEntry(line0);
             Assert.AreEqual(1, currentStarSystem.signalsources.Count());
             Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem.signalsources[0]);
 
-            Handle(event1);
+            JournalMonitor.ParseJournalEntry(line1);
             Assert.AreEqual(1, currentStarSystem.signalsources.Count());
 
-            Handle(event2);
+            JournalMonitor.ParseJournalEntry(line2);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
             Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem.signalsources[1]);
 
-            Handle(event3);
+            JournalMonitor.ParseJournalEntry(line3);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
 
-            Handle(event4);
+            JournalMonitor.ParseJournalEntry(line4);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
         }
 

@@ -27,8 +27,8 @@ namespace UnitTests
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
             };
-            PrivateType privateInaraService = new PrivateType(typeof(InaraService));
-            var results = (List<InaraAPIEvent>)privateInaraService.InvokeStatic("IndexAndFilterAPIEvents", new object[] { inaraAPIEvents, InaraConfiguration.FromFile(), false });
+            PrivateObject privateInaraService = new PrivateObject(typeof(InaraService));
+            var results = (List<InaraAPIEvent>)privateInaraService.Invoke("IndexAndFilterAPIEvents", new object[] { inaraAPIEvents, InaraConfiguration.FromFile() });
 
             if (results.Count == 2)
             {
