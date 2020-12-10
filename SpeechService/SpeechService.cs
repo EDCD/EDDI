@@ -8,19 +8,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public partial class SpeechService : INotifyPropertyChanged, IDisposable
+    public partial class SpeechService : INotifyPropertyChanged
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
         public SpeechServiceConfiguration Configuration
@@ -37,6 +37,9 @@ namespace EddiSpeechService
         }
         private SpeechServiceConfiguration configuration;
 
+        public List<VoiceDetails> allVoices { get; private set; } = new List<VoiceDetails>();
+        public List<string> allvoices => allVoices.Select(v => v.voiceInfo.Name).ToList();
+
         private static readonly object activeSpeechLock = new object();
         private ISoundOut _activeSpeech;
         private ISoundOut activeSpeech
@@ -52,9 +55,6 @@ namespace EddiSpeechService
             }
         }
         private int activeSpeechPriority;
-
-        private static readonly object synthLock = new object();
-        public SpeechSynthesizer synth { get; private set; } = new SpeechSynthesizer();
 
         public SpeechQueue speechQueue = SpeechQueue.Instance;
 
@@ -96,21 +96,18 @@ namespace EddiSpeechService
         private SpeechService()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
-        }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // another false positive from CA2213
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<synth>k__BackingField")]
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+            // Get all available voices from System.Speech.Synthesis
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
             {
-                synth?.Dispose();
+                var systemSpeechVoices = synth
+                    .GetInstalledVoices()
+                    .Where(v => v.Enabled && !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    .ToList();
+                foreach (var voice in systemSpeechVoices)
+                {
+                    allVoices.Add(new VoiceDetails(voice.VoiceInfo, nameof(SpeechSynthesizer)));
+                }
             }
         }
 
@@ -331,121 +328,118 @@ namespace EddiSpeechService
             return null;
         }
 
-        // Speak using the Windows SAPI speech synthesizer
         private void speak(MemoryStream stream, string voice, string speech)
         {
-            lock (synthLock)
+            // Get the voice we will use for speaking
+            VoiceDetails speakingVoiceDetails = null;
+            if (!string.IsNullOrEmpty(voice))
             {
-                if (synth == null) { synth = new SpeechSynthesizer(); };
-                var synthThread = new Thread(() =>
+                speakingVoiceDetails = allVoices.SingleOrDefault(v => string.Equals(v.voiceInfo.Name, voice, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (speakingVoiceDetails != null)
             {
-                try
+                switch (speakingVoiceDetails.synthType)
                 {
-                    if (voice != null)
+                    case nameof(SpeechSynthesizer):
+                        SystemSpeechSynthesis(stream, speakingVoiceDetails.voiceInfo, speech);
+                        break;
+                    default:
+                        SystemSpeechSynthesis(stream, speakingVoiceDetails.voiceInfo, speech);
+                        break;
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Voice data not available.");
+            }
+        }
+
+        private void SystemSpeechSynthesis(MemoryStream stream, VoiceInfo voice, string speech)
+        {
+            // Speak using the system's native speech synthesizer (System.Speech.Synthesis). SSML "speak" tag must use version 1.0.
+            var synthThread = new Thread(() =>
+            {
+                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                {
+                    try
                     {
-                        try
+                        if (voice != null && !voice.Equals(synth.Voice))
                         {
-                            Logging.Debug("Selecting voice " + voice);
-                            var timeout = new CancellationTokenSource();
-                            Task t = Task.Run(() => selectVoice(voice), timeout.Token);
-                            if (!t.Wait(TimeSpan.FromSeconds(2)))
+                            Logging.Debug("Selecting voice " + voice.Name);
+                            synth.SelectVoice(voice.Name);
+                        }
+                        synth.Rate = Configuration.Rate;
+                        synth.Volume = Configuration.Volume;
+                        synth.SetOutputToWaveStream(stream);
+
+                        Logging.Debug(JsonConvert.SerializeObject(Configuration));
+
+                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                        var culture = bestGuessCulture(synth.Voice);
+                        var lexicons = AddLexiconsSSMLv1_0(culture);
+                        if (speech.Contains("<") || !string.IsNullOrEmpty(lexicons))
+                        {
+                            Logging.Debug("Obtaining best guess culture");
+                            culture = $@" xml:lang=""{culture}""";
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""https://www.w3.org/2001/10/synthesis""" + culture + ">" + lexicons + escapeSsml(speech) + @"</speak>";
+                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                            if (voice != null && voice.Name.StartsWith("CereVoice "))
                             {
-                                timeout.Cancel();
-                                Logging.Warn("Failed to select voice " + voice + " (timed out)");
+                                // Cereproc voices do not respect `SpeakSsml` (particularly for IPA), but they do handle SSML via the `Speak` method.
+                                Logging.Debug("Working around CereVoice SSML support");
+                                synth.Speak(speech);
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Warn("Failed to select voice " + voice, ex);
-                        }
-                    }
-                    Logging.Debug("Configuration is " + Configuration == null ? "<null>" : JsonConvert.SerializeObject(Configuration));
-                    synth.Rate = Configuration.Rate;
-                    synth.Volume = Configuration.Volume;
-
-                    synth.SetOutputToWaveStream(stream);
-
-                    // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
-                    if (speech.Contains("<"))
-                    {
-                        Logging.Debug("Obtaining best guess culture");
-                        string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
-                        Logging.Debug("Best guess culture is " + culture);
-                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""https://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
-                        Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                        if (voice != null && voice.StartsWith("CereVoice "))
-                        {
-                            // Cereproc voices do not respect `SpeakSsml` (particularly for IPA), but they do handle SSML via the `Speak` method.
-                            Logging.Debug("Working around CereVoice SSML support");
-                            synth.Speak(speech);
+                            else
+                            {
+                                synth.SpeakSsml(speech);
+                            }
                         }
                         else
                         {
-                            synth.SpeakSsml(speech);
+                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                            synth.Speak(speech);
                         }
+                        stream.ToArray();
                     }
-                    else
+                    catch (ThreadAbortException)
                     {
-                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                        synth.Speak(speech);
+                        Logging.Debug("Thread aborted");
                     }
-                    stream.ToArray();
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Speech failed: ", ex);
-                    var badSpeech = new Dictionary<string, object>() {
-                            {"speech", speech},
+                    catch (Exception ex)
+                    {
+                        Logging.Warn("Speech failed: ", ex);
+                        var badSpeech = new Dictionary<string, object>() {
+                                {"speech", speech},
                     };
-                    string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                    Logging.Info("Speech failed", badSpeechJSON, "", "");
+                        string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
+                        Logging.Info("Speech failed", badSpeechJSON);
+                    }
                 }
             });
-                synthThread.Start();
-                synthThread.Join();
-                stream.Position = 0;
-            }
+            synthThread.Start();
+            synthThread.Join();
+            stream.Position = 0;
         }
 
-        private void selectVoice(string voice)
-        {
-            if (synth.Voice.Name == voice)
-            {
-                return;
-            }
-            foreach (InstalledVoice vc in synth.GetInstalledVoices())
-            {
-                if (vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
-                {
-                    if (vc.Enabled) { synth.SelectVoice(voice); }
-                }
-            }
-        }
-
-        private string bestGuessCulture()
+        private string bestGuessCulture(VoiceInfo voice)
         {
             string guess = "en-US";
-            if (synth != null)
+            if (voice != null)
             {
-                if (synth.Voice != null)
+                if (voice.Name.Contains("CereVoice"))
                 {
-                    if (synth.Voice.Name.Contains("CereVoice"))
-                    {
-                        /// Cereproc voices do not support the normal xml:lang attribute country/region codes (like en-GB) 
-                        /// (see https://www.cereproc.com/files/CereVoiceCloudGuide.pdf), 
-                        /// but it does support two letter country codes so we will use those instead
-                        guess = synth.Voice.Culture.Parent.Name;
-                    }
-                    else
-                    {
-                        // Trust the voice's information (with the complete country/region code)
-                        guess = synth.Voice.Culture.Name;
-                    }
+                    /// Cereproc voices do not support the normal xml:lang attribute country/region codes (like en-GB) 
+                    /// (see https://www.cereproc.com/files/CereVoiceCloudGuide.pdf), 
+                    /// but it does support two letter country codes so we will use those instead
+                    guess = voice.Culture.Parent.Name;
                 }
+                else
+                {
+                    // Trust the voice's information (with the complete country/region code)
+                    guess = voice.Culture.Name;
+                }
+                Logging.Debug("Best guess culture is " + guess);
             }
             return guess;
         }
@@ -630,12 +624,60 @@ namespace EddiSpeechService
             return false;
         }
 
+        private string AddLexiconsSSMLv1_0(string culture)
+        {
+            var result = string.Empty;
+
+            // Add lexicons from our installation directory
+            result += AddLexiconsFromDirectorySSMLv1_0(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons", culture);
+
+            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
+            result += AddLexiconsFromDirectorySSMLv1_0(Constants.DATA_DIR + @"\lexicons", culture);
+
+            return result;
+        }
+
+        private string AddLexiconsFromDirectorySSMLv1_0(string directory, string culture)
+        {
+            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
+            // Precedence means that a token is first looked up in the lexicon with highest precedence.
+            // Only if not found in that lexicon, the next lexicon is searched and so on until a first match or until all lexicons have been used for lookup. (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4).
+
+            if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(culture)) { return null; }
+            var result = string.Empty;
+            DirectoryInfo dir = new DirectoryInfo(directory);
+            if (dir.Exists)
+            {
+                foreach (FileInfo file in dir.GetFiles("*.pls", SearchOption.AllDirectories).Where(f => f.Name.Contains(culture.ToLowerInvariant())))
+                {
+                    result += $"<lexicon uri=\"{file.FullName}\" type=\"application/pls+xml\"/>";
+                }
+            }
+            else
+            {
+                dir.Create();
+            }
+            return result;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class VoiceDetails
+    {
+        public VoiceInfo voiceInfo { get; }
+        public string synthType { get; }
+
+        internal VoiceDetails(VoiceInfo voiceInfo, string synthType)
+        {
+            this.voiceInfo = voiceInfo;
+            this.synthType = synthType;
         }
     }
 }
