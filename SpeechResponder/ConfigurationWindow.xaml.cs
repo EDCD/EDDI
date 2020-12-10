@@ -1,8 +1,6 @@
 ﻿using EddiCore;
-using EddiEvents;
-using EddiJournalMonitor;
-using EddiShipMonitor;
 using EddiSpeechResponder.Service;
+using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,8 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiSpeechService;
-using Utilities;
 
 namespace EddiSpeechResponder
 {

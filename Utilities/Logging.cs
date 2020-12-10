@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Rollbar;
-using Rollbar.Telemetry;
 using Rollbar.DTOs;
+using Rollbar.Telemetry;
 using System;
 using System.Collections.Generic;
 using System.IO;

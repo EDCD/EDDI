@@ -1,8 +1,5 @@
-﻿using EddiCore;
-using EddiEvents;
-using EddiJournalMonitor;
-using EddiShipMonitor;
-using EddiSpeechResponder.Service;
+﻿using EddiSpeechResponder.Service;
+using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
@@ -10,8 +7,6 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiSpeechService;
-using Utilities;
 
 namespace EddiSpeechResponder
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Globalization;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Globalization;
 using Utilities;
 
 namespace UnitTests
