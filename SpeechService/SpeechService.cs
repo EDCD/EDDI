@@ -357,7 +357,7 @@ namespace EddiSpeechService
 
         private void SystemSpeechSynthesis(MemoryStream stream, VoiceInfo voice, string speech)
         {
-            // Speak using the system's native speech synthesizer (System.Speech.Synthesis). SSML "speak" tag must use version 1.0.
+            // Speak using the system's native speech synthesizer (System.Speech.Synthesis). 
             var synthThread = new Thread(() =>
             {
                 using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -375,14 +375,27 @@ namespace EddiSpeechService
 
                         Logging.Debug(JsonConvert.SerializeObject(Configuration));
 
-                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                        Logging.Debug("Obtaining best guess culture");
                         var culture = bestGuessCulture(synth.Voice);
+                        
+                        // Retrieve any culture-specific lexicons so that we can apply them
                         var lexicons = AddLexiconsSSMLv1_0(culture);
+
                         if (speech.Contains("<") || !string.IsNullOrEmpty(lexicons))
                         {
-                            Logging.Debug("Obtaining best guess culture");
-                            culture = $@" xml:lang=""{culture}""";
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""https://www.w3.org/2001/10/synthesis""" + culture + ">" + lexicons + escapeSsml(speech) + @"</speak>";
+                            // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                            var xmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
+
+                            // SSML "speak" tag must use version 1.0. This synthesizer rejects version 1.1.
+                            var speakHeader = $@"<speak version=""1.0"" xmlns=""https://www.w3.org/2001/10/synthesis"" xml:lang=""{culture}"">";
+                            var speakFooter = @"</speak>";
+
+                            // Lexicons are applied as a child element to the `speak` element
+                            var speakBody = lexicons + escapeSsml(speech);
+
+                            // Put it all together
+                            speech = xmlHeader + speakHeader + speakBody + speakFooter;
+
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             if (voice != null && voice.Name.StartsWith("CereVoice "))
                             {
