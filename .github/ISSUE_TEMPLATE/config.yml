@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: EDCD Discord chat link
+    url: https://discordapp.com/channels/164411426939600896/507929067459444751/513466296785043474
+    about: "Chat with the development team in the #eddi channel."
+  - name: Main forum
+    url: https://forums.frontier.co.uk/threads/eddi-3-3-bring-your-cockpit-to-life.387955/
+    about: "Please discuss EDDI here."
+  - name: Scripts and VoiceAttack commands
+    url: https://forums.frontier.co.uk/threads/eddi-scripts-and-eddi-enabled-va-commands-thread.311614/
+    about: "Please discuss custom scripts and VoiceAttack commands for EDDI here."
