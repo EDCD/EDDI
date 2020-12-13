@@ -16,7 +16,7 @@ IF %buildConfiguration%=="Release" (
   :: Run all tests except Speech tests 
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=Speech"""
 ) ELSE (
-  :: Run just our Credentials test
+  :: Run just our Credentials and Doc Generation tests
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
