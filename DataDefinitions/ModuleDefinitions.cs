@@ -527,7 +527,7 @@ namespace EddiDataDefinitions
                 new Module(128662535, "Int_StellarBodyDiscoveryScanner_Standard", 1242, "BasicDiscoveryScanner", 1, "E", 1000),
                 new Module(128663560, "Int_StellarBodyDiscoveryScanner_Intermediate", 1243, "IntermediateDiscoveryScanner", 1, "D", 505000),
                 new Module(128663561, "Int_StellarBodyDiscoveryScanner_Advanced", 1244, "AdvancedDiscoveryScanner", 1, "C", 1545000),
-                new Module(128666634, "Int_DetailedSurfaceScanner_Tiny", 1245, "DetailedSurfaceScanner", 1, "C", 250000),
+                new Module(128666634, "Int_DetailedSurfaceScanner_Tiny", 1245, "DetailedSurfaceScanner", 1, "I", 250000),
                 new Module(128666644, "Int_FuelScoop_Size1_Class1", 1246, "FuelScoop", 1, "E", 310),
                 new Module(128666645, "Int_FuelScoop_Size2_Class1", 1247, "FuelScoop", 2, "E", 1070),
                 new Module(128666646, "Int_FuelScoop_Size3_Class1", 1248, "FuelScoop", 3, "E", 3390),
