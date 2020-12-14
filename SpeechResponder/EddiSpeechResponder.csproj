@@ -102,9 +102,74 @@
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CottleHighlightingDefinition.cs" />
+    <Compile Include="CustomFunctions\BlueprintDetails.cs" />
+    <Compile Include="CustomFunctions\CargoDetails.cs" />
+    <Compile Include="CustomFunctions\CommodityMarketDetails.cs" />
+    <Compile Include="CustomFunctions\RefreshProfile.cs" />
+    <Compile Include="CustomFunctions\GalnetNewsDelete.cs" />
+    <Compile Include="CustomFunctions\GalnetNewsMarkUnread.cs" />
+    <Compile Include="CustomFunctions\GalnetNewsMarkRead.cs" />
+    <Compile Include="CustomFunctions\GalnetNewsArticles.cs" />
+    <Compile Include="CustomFunctions\GalnetNewsArticle.cs" />
+    <Compile Include="CustomFunctions\InaraDetails.cs" />
+    <Compile Include="CustomFunctions\OrbitalVelocity.cs" />
+    <Compile Include="CustomFunctions\SetState.cs" />
+    <Compile Include="CustomFunctions\Log.cs" />
+    <Compile Include="CustomFunctions\Distance.cs" />
+    <Compile Include="CustomFunctions\EngineerDetails.cs" />
+    <Compile Include="CustomFunctions\EconomyDetails.cs" />
+    <Compile Include="CustomFunctions\HaulageDetails.cs" />
+    <Compile Include="CustomFunctions\GovernmentDetails.cs" />
+    <Compile Include="CustomFunctions\FactionDetails.cs" />
+    <Compile Include="CustomFunctions\MaterialDetails.cs" />
+    <Compile Include="CustomFunctions\SecurityLevelDetails.cs" />
+    <Compile Include="CustomFunctions\StateDetails.cs" />
+    <Compile Include="CustomFunctions\SuperpowerDetails.cs" />
+    <Compile Include="CustomFunctions\StationDetails.cs" />
+    <Compile Include="CustomFunctions\MissionDetails.cs" />
+    <Compile Include="CustomFunctions\BodyDetails.cs" />
+    <Compile Include="CustomFunctions\SystemDetails.cs" />
+    <Compile Include="CustomFunctions\FederationRatingDetails.cs" />
+    <Compile Include="CustomFunctions\EmpireRatingDetails.cs" />
+    <Compile Include="CustomFunctions\ExplorationRatingDetails.cs" />
+    <Compile Include="CustomFunctions\TrafficDetails.cs" />
+    <Compile Include="CustomFunctions\TradeRatingDetails.cs" />
+    <Compile Include="CustomFunctions\ICAO.cs" />
+    <Compile Include="CustomFunctions\CombatRatingDetails.cs" />
+    <Compile Include="CustomFunctions\RouteDetails.cs" />
+    <Compile Include="CustomFunctions\SecondsSince.cs" />
+    <Compile Include="CustomFunctions\ShipCallsign.cs" />
+    <Compile Include="CustomFunctions\JumpDetails.cs" />
+    <Compile Include="CustomFunctions\ShipName.cs" />
+    <Compile Include="CustomFunctions\CommanderName.cs" />
+    <Compile Include="CustomFunctions\ShipDetails.cs" />
+    <Compile Include="CustomFunctions\VoiceDetails.cs" />
+    <Compile Include="CustomFunctions\Voice.cs" />
+    <Compile Include="CustomFunctions\StartsWithVowel.cs" />
+    <Compile Include="CustomFunctions\Transmit.cs" />
+    <Compile Include="CustomFunctions\SpeechVolume.cs" />
+    <Compile Include="CustomFunctions\SpeechRate.cs" />
+    <Compile Include="CustomFunctions\SpeechPitch.cs" />
+    <Compile Include="CustomFunctions\List.cs" />
+    <Compile Include="CustomFunctions\Occasionally.cs" />
+    <Compile Include="CustomFunctions\Humanise.cs" />
+    <Compile Include="CustomFunctions\Emphasize.cs" />
+    <Compile Include="CustomFunctions\Spacialise.cs" />
+    <Compile Include="CustomFunctions\Play.cs" />
+    <Compile Include="CustomFunctions\Pause.cs" />
+    <Compile Include="CustomFunctions\P.cs" />
+    <Compile Include="CustomFunctions\F.cs" />
+    <Compile Include="Properties\CustomFunctions.Untranslated.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptResolverService\ICustomFunction.cs" />
+    <Compile Include="CustomFunctions\OneOf.cs" />
     <Compile Include="MarkdownWindow.xaml.cs">
       <DependentUpon>MarkdownWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Personality.cs" />
     <Compile Include="Properties\SpeechResponder.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,21 +180,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Tooltips.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service\ScriptRecoveryService.cs" />
+    <Compile Include="Script.cs" />
+    <Compile Include="ScriptRecoveryService\ScriptRecoveryService.cs" />
+    <Compile Include="ScriptResolverService\ScriptResolver.cs" />
     <Compile Include="ShowDiffWindow.xaml.cs">
       <DependentUpon>ShowDiffWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SpeechResponderConfiguration.cs" />
     <Compile Include="ViewScriptWindow.xaml.cs">
       <DependentUpon>ViewScriptWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditScriptWindow.xaml.cs">
       <DependentUpon>EditScriptWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Personality.cs" />
-    <Compile Include="SpeechResponderConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Script.cs" />
-    <Compile Include="ScriptResolver.cs" />
     <Compile Include="SpeechResponder.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
@@ -218,6 +282,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Cottle.xshd" />
+    <EmbeddedResource Include="Properties\CustomFunctions.Untranslated.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
     <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Tooltips.ja.resx" />
@@ -236,6 +304,7 @@
     <None Include="eddi.fr.json" />
     <None Include="eddi.hu.json" />
     <None Include="eddi.it.json" />
+    <None Include="eddi.ja.json" />
     <None Include="eddi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -246,9 +315,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Variables.md">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Help.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -294,10 +360,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SpeechResponder.ru.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <EmbeddedResource Include="Properties\SpeechResponder.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

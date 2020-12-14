@@ -1,7 +1,10 @@
-﻿using Cottle.Documents;
+﻿using Cottle.Builtins;
+using Cottle.Documents;
 using Cottle.Functions;
+using Cottle.Settings;
 using Cottle.Stores;
 using EddiSpeechResponder;
+using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -63,17 +66,16 @@ namespace UnitTests
         public void TestTemplateOneOf()
         {
             Random random = new Random();
-            var document = new SimpleDocument("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.");
+            var document = new SimpleDocument("{set result to OneOf(\"a\", \"b\", \"c\", \"d\", null)} The letter is {OneOf(result)}.");
             var store = new BuiltinStore();
             store["OneOf"] = new NativeFunction((values) =>
             {
                 return values[random.Next(values.Count)];
             });
-            store["system"] = "Alrai";
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)
             {
-                results.Add(document.Render(store));
+                results.Add(document.Render(store).Trim());
             }
             Assert.IsTrue(results.Contains(@"The letter is a."));
             results.RemoveAll(result => result == @"The letter is a.");
@@ -129,7 +131,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestResolverLayeredCustomFunction()
+        public void TestResolverRecursedCustomFunctions()
         {
             Dictionary<string, Script> scripts = new Dictionary<string, Script>
             {

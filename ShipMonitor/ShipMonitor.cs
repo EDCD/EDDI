@@ -1361,6 +1361,31 @@ namespace EddiShipMonitor
             return ship;
         }
 
+        public Ship GetShip(int? localId, string model)
+        {
+            Ship ship;
+            if (localId == null)
+            {
+                // No local ID so take the current ship
+                ship = GetCurrentShip();
+            }
+            else
+            {
+                // Find the ship with the given local ID
+                ship = GetShip(localId);
+            }
+            if (ship == null)
+            {
+                // Provide a basic ship based on the model template if no ship is found using the local ID
+                ship = ShipDefinitions.FromModel(model);
+                if (ship == null)
+                {
+                    ship = ShipDefinitions.FromEDModel(model);
+                }
+            }
+            return ship;
+        }
+
         public void SetCurrentShip(int? localId, string EDName = null)
         {
             lock (shipyardLock)

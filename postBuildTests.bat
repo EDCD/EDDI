@@ -16,8 +16,8 @@ IF %buildConfiguration%=="Release" (
   :: Run all tests except Speech tests 
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=Speech"""
 ) ELSE (
-  :: Run just our Credentials test
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials"""
+  :: Run just our Credentials and Doc Generation tests
+  SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
 SET "command="%devEnvDir%CommonExtensions\Microsoft\TestWindow\vstest.console.exe" "%buildDir%Tests.dll" %testCaseFilter%"

@@ -1,9 +1,12 @@
 ﻿using EddiEvents;
+using EddiSpeechResponder.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using Cottle.Stores;
 
 namespace GeneratorTests
 {
@@ -118,6 +121,69 @@ namespace GeneratorTests
             string output = "      <Word>" + string.Join("</Word>\r\n      <Word>", eventVars) + " </Word>\r\n";
             Directory.CreateDirectory(@"Cottle\");
             File.WriteAllText(@"Cottle\Custom keywords.txt", output);
+        }
+
+        // Generates a list of custom script resolver functions in the file `Help.md`.
+        [TestMethod, TestCategory("DocGen")]
+        public void TestGenerateFunctionsHelp()
+        {
+            // Prepare our functions
+            var functionsList = new List<ICustomFunction>();
+            var resolver = new ScriptResolver(null);
+            var store = new BuiltinStore();
+            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            foreach (var type in assy.GetTypes()
+                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
+            {
+                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
+                    ? Activator.CreateInstance(type) :
+                    Activator.CreateInstance(type, resolver, store));
+
+                if (function != null)
+                {
+                    functionsList.Add(function);
+                }
+            }
+
+            // Organize functions in alphabetical order (except exclude functions that we've flagged as hidden)
+            functionsList = functionsList
+                .Where(f => f.Category != FunctionCategory.Hidden)
+                .OrderBy(f => f.name)
+                .ToList();
+
+            // Make sure that a Wiki directory exists
+            Directory.CreateDirectory(@"Wiki\");
+
+            // Prepare Help.md
+            List<string> help = new List<string>();
+            help.Add("");
+            help.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader);
+            help.Add("");
+
+            foreach (var function in functionsList)
+            {
+                help.Add($"### {function.name}()");
+                help.Add("");
+                help.Add(function.description);
+                help.Add("");
+            }
+
+            // Prepare Functions.md
+            List<string> functions = new List<string>();
+            functions.Add("");
+            functions.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader);
+            functions.Add("");
+
+            functionsList = functionsList.OrderBy(f => f.name).ToList();
+            foreach (var function in functionsList)
+            {
+                functions.Add($"* {function.name}()");
+            }
+
+            // Write our results
+            File.WriteAllLines(@"Help.md", help);
+            File.WriteAllLines(@"Wiki\Help.md", help);
+            File.WriteAllLines(@"Wiki\Functions.md", functions);
         }
     }
 }
