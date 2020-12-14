@@ -160,7 +160,7 @@ namespace EddiSpeechResponder.Service
                 ["va_active"] = App.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle,
                 ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
-                ["ssml_active"] = !SpeechService.Instance.Configuration.DisableSsml,
+                ["ipa_active"] = !SpeechService.Instance.Configuration.DisableIpa,
             };
 
             // Boolean constants

@@ -162,12 +162,13 @@ namespace EddiSpeechService
         {
             if (speech == null || speech.Trim() == "") { return; }
 
-            // If the user wants to disable SSML then we remove any tags here
-            if (Configuration.DisableSsml && (speech.Contains("<")))
+            // If the user wants to disable IPA then we remove any IPA phoneme tags here
+            if (Configuration.DisableIpa && speech.Contains("<phoneme"))
             {
-                Logging.Debug("Removing SSML");
-                // User has disabled SSML so remove all tags
-                speech = Regex.Replace(speech, "<.*?>", string.Empty);
+                // User has disabled IPA so remove all IPA phoneme tags
+                Logging.Debug("Phonetic speech is disabled, removing.");
+                speech = Regex.Replace(speech, @"<phoneme.*?>", string.Empty);
+                speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
             }
 
             if (string.IsNullOrWhiteSpace(voice))

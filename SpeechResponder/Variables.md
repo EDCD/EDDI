@@ -20,7 +20,7 @@ Information on game state is available at the top level i.e. these values can be
 
     - `capi_active` true when the companion API is active
     - `icao_active` true if ICAO is currently enabled
-    - `ssml_active` true if ssml tags are currently enabled
+    - `ipa_active` true if phonetic speech ssml tags are currently enabled
     - `va_active` true when the Voice Attack plug-in is active
 
 ---

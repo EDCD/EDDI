@@ -25,8 +25,8 @@ namespace EddiSpeechService
         [JsonProperty("rate")]
         public int Rate { get; set; }
 
-        [JsonProperty("disablessml")]
-        public bool DisableSsml { get; set; }
+        [JsonProperty("disableipa")]
+        public bool DisableIpa { get; set; }
 
         [JsonProperty("enableicao")]
         public bool EnableIcao { get; set; }
@@ -54,6 +54,9 @@ namespace EddiSpeechService
                     string data = Files.Read(filename);
                     if (data != null)
                     {
+                        // Fix up legacy configuration data
+                        data = data.Replace("disablessml", "disableipa");
+
                         configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(data);
                     }
                 }
@@ -80,7 +83,7 @@ namespace EddiSpeechService
             Volume = 100;
             EffectsLevel = 50;
             DistortOnDamage = true;
-            DisableSsml = false;
+            DisableIpa = false;
             EnableIcao = false;
         }
 
