@@ -10,10 +10,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "GalnetNewsMarkUnread";
         public FunctionCategory Category => FunctionCategory.Galnet;
-        public string description => @"
-This function will mark a Galnet article as unread.
-
-It takes a single mandatory argument, the article uuid to mark as unread.";
+        public string description => Properties.CustomFunctions_Untranslated.GalnetNewsMarkUnread;
         public NativeFunction function => new NativeFunction((values) =>
         {
             News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);

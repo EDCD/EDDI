@@ -13,15 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "BodyDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a body given its name.
-
-BodyDetails() takes a single mandatory argument of the name of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of the name of the system.
-
-Common usage of this is to provide further information about a body, for example:
-
-    {set body to BodyDetails(""Earth"", ""Sol"")}
-    Earth is {body.distancefromstar} light years from the system's main star.";
+        public string description => Properties.CustomFunctions_Untranslated.BodyDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             StarSystem system;

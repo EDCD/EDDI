@@ -14,14 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "SystemDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a star system given its name.
-
-SystemDetails() takes a single argument of the star system for which you want more information.
-
-Common usage of this is to provide further information about a star system, for example:
-
-    Sol has {len(SystemDetails(""Sol"").bodies)} bodies.";
+        public string description => Properties.CustomFunctions_Untranslated.SystemDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             StarSystem result;

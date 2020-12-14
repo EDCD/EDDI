@@ -10,16 +10,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "Occasionally";
         public FunctionCategory Category => FunctionCategory.Dynamic;
-        public string description => @"
-This function will take its argument 1/*n*th of the time, the rest of time discarding it.
-
-Occasionally() takes two arguments: n, and the text argument.
-
-Note that Occasionally() works on random numbers rather than counters, so in the below example the additional text will not show up every 7th time you boost but will show up on average 1/7 of the times that you boost.
-
-Common usage of this is to provide additional text that is said now and again but would become irritating if said all the time, for example:
-
-    Boost engaged.  {Occasionally(7, \""Hold on to something.\"")}";
+        public string description => Properties.CustomFunctions_Untranslated.Occasionally;
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (resolver.random.Next((int)values[0].AsNumber) == 0)

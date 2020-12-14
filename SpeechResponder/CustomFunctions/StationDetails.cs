@@ -14,15 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "StationDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a station given its name and optional system.
-
-StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
-
-Common usage of this is to provide further information about a station, for example:
-
-    {set station to StationDetails(""Jameson Memorial"", ""Shinrarta Dezhra"")}
-    Jameson Memorial is {station.distancefromstar} light years from the system's main star.";
+        public string description => Properties.CustomFunctions_Untranslated.StationDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             Station result;

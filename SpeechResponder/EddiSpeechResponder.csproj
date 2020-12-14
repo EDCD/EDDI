@@ -146,6 +146,11 @@
     <Compile Include="CustomFunctions\Pause.cs" />
     <Compile Include="CustomFunctions\P.cs" />
     <Compile Include="CustomFunctions\F.cs" />
+    <Compile Include="Properties\CustomFunctions.Untranslated.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
+    </Compile>
     <Compile Include="ScriptResolverService\ICustomFunction.cs" />
     <Compile Include="CustomFunctions\OneOf.cs" />
     <Compile Include="MarkdownWindow.xaml.cs">
@@ -264,6 +269,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Cottle.xshd" />
+    <EmbeddedResource Include="Properties\CustomFunctions.Untranslated.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
     <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Tooltips.ja.resx" />

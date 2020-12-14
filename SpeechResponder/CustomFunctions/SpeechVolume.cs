@@ -9,17 +9,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "SpeechVolume";
         public FunctionCategory Category => FunctionCategory.Voice;
-        public string description => @"
-This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
-
-##### Please take care with decibel values. If you accidentally blow out your speakers, that's totally on you. 
-SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include ""silent"", ""x-soft"", ""soft"", ""medium"", ""loud"", ""x-loud"", ""default"", as well as relative decibel values like ""-6dB"").
-A value of ""+0dB"" means no change of volume, ""+6dB"" means approximately twice the current amplitude, ""-6dB"" means approximately half the current amplitude.
-
-Common usage of this is to provide a more human-sounding reading of text with variation in speech volume:
-
-    {SpeechVolume('The quick brown fox', 'loud')}
-    {SpeechVolume('jumped over the lazy dog', 'x-soft')}.";
+        public string description => Properties.CustomFunctions_Untranslated.SpeechVolume;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString;

@@ -14,14 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "MissionDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a mission given its mission ID.
-
-MissionDetails() takes a single argument of the mission ID for which you want more information.
-
-Common usage of this is to provide detailed information about a previously accepted mission, for example:
-
-    {set mission to MissionDetails(event.missionid)}";
+        public string description => Properties.CustomFunctions_Untranslated.MissionDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             var missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();

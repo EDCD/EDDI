@@ -156,46 +156,24 @@ namespace GeneratorTests
 
             // Prepare Help.md
             List<string> help = new List<string>();
-            help.Add(@"
-# Templating with EDDI
+            help.Add("");
+            help.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader);
+            help.Add("");
 
-EDDI's speech responder uses Cottle for templating.  Cottle has a number of great features, including:
-
-* Ability to set and update variables, including arrays
-* Loops
-* Conditionals
-* Subroutines
-
-Information on how to write Cottle templates is available at https://cottle.readthedocs.io/en/stable/, and EDDI's default templates use a lot of the functions available.
-
-## State Variables
-
-Cottle does not retain state between templates, but EDDI provides a way of doing this with state variables.  State variables are provided to each Cottle template, and templates can set state variables that will be made available in future templates.
-
-State variables are available for individual templates in the 'state' object.  Note that state variables are not persistent, and the state is empty whenever EDDI restarts.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).
-
-## Context
-
-EDDI uses the idea of context to attempt to keep track of what it is talking about.  This can enhance the experience when used with VoiceAttack by allowing repetition and more detailed information to be provided.
-
-## EDDI Functions
-
-In addition to the basic Cottle features EDDI has a number of features that provide added functionality and specific information for Elite: Dangerous.  Details of these functions are as follows:
-");
             foreach (var function in functionsList)
             {
                 help.Add($"### {function.name}()");
+                help.Add("");
                 help.Add(function.description);
                 help.Add("");
             }
 
             // Prepare Functions.md
             List<string> functions = new List<string>();
-            functions.Add(@"
-EDDI's Speech Responder uses [Cottle templating language](https://cottle.readthedocs.io/en/stable/) to generate verbal responses to various events.
+            functions.Add("");
+            functions.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader);
+            functions.Add("");
 
-Cottle's library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/blob/beta/SpeechResponder/Help.md)):
-");
             functionsList = functionsList.OrderBy(f => f.name).ToList();
             foreach (var function in functionsList)
             {

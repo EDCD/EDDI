@@ -11,14 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "CombatRatingDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a combat rating given its name.
-
-CombatRatingDetails() takes a single argument of the combat rating for which you want more information.
-
-Common usage of this is to provide further information about your rating, for example:
-
-    You have been promoted {CombatRatingDetails(""Expert"").rank} times.";
+        public string description => Properties.CustomFunctions_Untranslated.CombatRatingDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             CombatRating result = CombatRating.FromName(values[0].AsString);

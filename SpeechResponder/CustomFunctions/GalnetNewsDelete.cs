@@ -10,10 +10,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "GalnetNewsDelete";
         public FunctionCategory Category => FunctionCategory.Galnet;
-        public string description => @"
-This function will delete a Galnet article from local storage.
-
-It takes a single mandatory argument, the article uuid to delete.";
+        public string description => Properties.CustomFunctions_Untranslated.GalnetNewsDelete;
         public NativeFunction function => new NativeFunction((values) =>
         {
             News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);

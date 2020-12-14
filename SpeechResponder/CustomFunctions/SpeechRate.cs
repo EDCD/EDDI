@@ -9,15 +9,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "SpeechRate";
         public FunctionCategory Category => FunctionCategory.Tempo;
-        public string description => @"
-This function allows you to dynamically adjust the rate of the spoken speech. This function uses SSML tags.
-
-SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include ""x-slow"", ""slow"", ""medium"", ""fast"", ""x-fast"", ""default"", as well as percentage values like ""-20%"" or ""+20%"").
-
-Common usage of this is to provide a more human-sounding reading of text with variation in the speech rate:
-
-    {SpeechRate('The quick brown fox', 'x-slow')}
-    {SpeechRate('jumped over the lazy dog', 'fast')}.";
+        public string description => Properties.CustomFunctions_Untranslated.SpeechRate;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString;

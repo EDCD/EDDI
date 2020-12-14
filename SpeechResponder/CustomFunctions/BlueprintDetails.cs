@@ -12,15 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "BlueprintDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a blueprint, given its name and grade.
-
-BlueprintDetails() takes two mandatory arguments: the name of the blueprint and the grade to retrieve. 
-
-Common usage of this is to provide further information about a blueprint, for example:
-
-    {set blueprint to BlueprintDetails(""Dirty Drive Tuning"", 5)}
-    {len(blueprint.materials)} {if len(blueprint.materials) > 1: different materials are |else: material is} required to produce {blueprint.localizedName}.";
+        public string description => Properties.CustomFunctions_Untranslated.BlueprintDetails; 
         public NativeFunction function => new NativeFunction((values) =>
         {
             string blueprintName = values[0].AsString;

@@ -11,14 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "SetState";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => @"
-This function will set a session state value.  The value will be available as a property of the 'state' object in future templates within the same EDDI session.
-
-SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, or a string; other values will be ignored.
-
-Common usage of this is to keep track of the cumulative or persistent information within a session, for example:
-
-    {SetState(""distance_travelled_today"", state.distance_travelled_today + event.distance)}";
+        public string description => Properties.CustomFunctions_Untranslated.SetState;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");

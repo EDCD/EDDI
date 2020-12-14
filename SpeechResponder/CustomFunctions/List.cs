@@ -11,15 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "List";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => @"
-This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
-
-List() takes a single argument, the array variable with items you want listed.
-
-Common usage is to convert an array to a list, for example:
-
-    {set systemsrepaired to ['the hull', 'the cockpit', 'corroded systems']}
-    The limpet has repaired {List(systemsrepaired)}.";
+        public string description => Properties.CustomFunctions_Untranslated.List;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string output = string.Empty;

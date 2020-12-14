@@ -14,17 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "Distance";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => @"
-This function will provide the distance (in light years) between two systems.
-
-Distance() takes either two or six arguments.
-- Two argurments, the names of the two systems.
-- Six arguments, the x, y, z coordinates of the two systems.
-
-Examples of each usage:
-
-    {set distance to Distance(""Sol"", ""Betelgeuse"")}
-    {set distance to Distance(from.x, from.y, from.z, to.x, to.y, to.z)}";
+        public string description => Properties.CustomFunctions_Untranslated.Distance;
         public NativeFunction function => new NativeFunction((values) =>
         {
             bool numVal = values[0].Type == Cottle.ValueContent.Number;

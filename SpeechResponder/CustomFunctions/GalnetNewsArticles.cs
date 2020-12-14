@@ -12,12 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "GalnetNewsArticles";
         public FunctionCategory Category => FunctionCategory.Galnet;
-        public string description => @"
-This function will provide full information for a collection of Galnet articles.
-
-GalnetNewsArticles() takes up to two optional arguments. By default it returns a collection of unread articles. 
-    - The first optional argument is a string to filter the results and only return those from a named category (You may use ""All"" if you'd like to omit this filter).
-    - The second optional argument is a boolean value which should be set to true if you'd like to retrieve all articles rather than all unread articles.";
+        public string description => Properties.CustomFunctions_Untranslated.GalnetNewsArticles;
         public NativeFunction function => new NativeFunction((values) =>
         {
             List<News> results = null;

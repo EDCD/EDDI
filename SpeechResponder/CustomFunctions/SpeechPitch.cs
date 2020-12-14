@@ -9,17 +9,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "SpeechPitch";
         public FunctionCategory Category => FunctionCategory.Voice;
-        public string description => @"
-This function allows you to dynamically adjust the pitch of the spoken speech. This function uses SSML tags.
-
-SpeechPitch() takes two mandatory arguments: the text to speak and the pitch at which to speak it (legal values for the pitch include ""x-low"", ""low"", ""medium"", ""high"", ""x-high"", ""default"", as well as percentage values like ""-20%"" or ""+10%"").
-
-Common usage of this is to provide a more human-sounding reading of text with variation in the speech pitch:
-
-    {SpeechPitch('Ok, who added helium to the life support unit?', 'high')}
-    {Pause(1000)}
-    {SpeechPitch('Countering with sodium hexa-flouride.', 'x-low')}
-    Equilibrium restored.";
+        public string description => Properties.CustomFunctions_Untranslated.SpeechPitch;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString;

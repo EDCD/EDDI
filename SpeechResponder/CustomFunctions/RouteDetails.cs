@@ -16,59 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "RouteDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will produce a destination/route for valid mission destinations.
-
-RouteDetails takes one mandatory argument, the `routetype`, and up to two optional arguments.
-
-The following `routetype` values are valid:
-
-* `cancel` Cancel the currently stored route.
-* `encoded` Nearest encoded materials trader.
-* `expiring` Destination of your next expiring mission.
-* `facilitator` Nearest 'Legal Facilities' contact.
-* `farthest` Mission destination farthest from your current location.
-* `guardian` Nearest guardian technology broker.
-* `human` Nearest human technology broker.
-* `manufactured` Nearest manufactured materials trader.
-* `most` Nearest system with the most missions. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-* `nearest` Mission destination nearest to your current location.
-* `next` Next destination in the currently stored route.
-* `raw` Nearest raw materials trader.
-* `route` 'Traveling Salesman' (RNNA) route for all active missions. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-* `scoop` Nearest scoopable star system.
-* `set` Set destination route to a single system. Sets the route destination to the last star system name returned from a `Route details` event. An optional second argument sets the route destination to the star system name specified instead. An optional third argument sets the destination station.
-* `source` Destination to nearest mission 'cargo source'. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system. 
-* `update` Update to the next mission route destination, once all missions in current system are completed. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-
-Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
-
-    {RouteDetails(""cancel"")}
-    {RouteDetails(""set"", ""Achenar"", ""Macmillan Terminal"")}
-    {set system to RouteDetails(""nearest"")}
-    {set system to RouteDetails(""most"", ""Sol"")}
-
-Upon success of the query, a 'Route details' event is triggered, providing a following event data:
-
-* `routetype` Type of route query (see above).
-* `destination` Destination system.
-* `distance` Destination distance
-* `route` '_' Delimited system(s) list, depending on route type:
-  * `most` Other systems with most number of missions.
-  * `route` Missions route list
-  * `source` Other systems designated as a source for missions.
-* `count` Count of missions, systems, or expiry seconds, etc, depending on route type:
-  * `expiring` Expiry seconds.
-  * `farthest` Missions in the system.
-  * `most` Number of most missions.
-  * `nearest` Missions in the system.
-  * `route` Systems in the route.
-  * `scoop` Number if scoopable stars found, within search radius.
-  * `source` Number of source systems.
-  * `update` Remaining systems in the route.
-* `routedistance` Remaining distance of the route (multiple or single), with the following exceptions:
-  * `scoop` Distance of the search radius.
-* `missionids` Mission ID(s) associated with the destination system.";
+        public string description => Properties.CustomFunctions_Untranslated.RouteDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");

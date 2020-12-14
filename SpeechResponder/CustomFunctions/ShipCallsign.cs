@@ -14,12 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "ShipCallsign";
         public FunctionCategory Category => FunctionCategory.Phonetic;
-        public string description => @"
-This function will provide your ship's callsign in the same way that Elite provides it (i.e. manufacturer followed by first three letters of your commander name).
-
-ShipCallsign() takes an optional ship ID for which to provide the callsign. If no argument is supplied then it provides the callsign for your current ship.
-
-This will only work if EDDI is connected to the Frontier API.";
+        public string description => Properties.CustomFunctions_Untranslated.ShipCallsign;
         public NativeFunction function => new NativeFunction((values) =>
         {
             int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);

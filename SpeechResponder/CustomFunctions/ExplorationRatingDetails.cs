@@ -11,14 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "ExplorationRatingDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for an exploration rating given its name.
-
-ExplorationRatingDetails() takes a single argument of the exploration rating for which you want more information.
-
-Common usage of this is to provide further information about your rating, for example:
-
-    You have been promoted {ExplorationRatingDetails(""Surveyor"").rank} times.";
+        public string description => Properties.CustomFunctions_Untranslated.ExplorationRatingDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             ExplorationRating result = ExplorationRating.FromName(values[0].AsString);

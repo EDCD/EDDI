@@ -10,13 +10,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "Voice";
         public FunctionCategory Category => FunctionCategory.Voice;
-        public string description => @"
-This function allows you to include a different voice in your script than then one currently selected. This function uses SSML tags.
-
-Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice should match one of the voices listed by EDDI's `Text-to-Speech` tab.""). For Example:
-
-    {Voice(""Now I can speak"", ""Microsoft Zira Desktop"")}
-    {Voice(""And I can listen"", ""Microsoft David Desktop"")}";
+        public string description => Properties.CustomFunctions_Untranslated.Voice;
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString ?? string.Empty;

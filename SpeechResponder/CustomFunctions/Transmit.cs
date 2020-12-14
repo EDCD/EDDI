@@ -10,12 +10,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "Transmit";
         public FunctionCategory Category => FunctionCategory.Phonetic;
-        public string description => @"
-This function allows you to add a radio effect to speech.
-
-Transmit() takes one argument: the text to speak. For example: 
-             
-    {Transmit(""{ShipName()} returning from orbit."")}";
+        public string description => Properties.CustomFunctions_Untranslated.Transmit;
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values.Count == 1)

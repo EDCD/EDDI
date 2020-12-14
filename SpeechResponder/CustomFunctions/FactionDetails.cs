@@ -13,21 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "FactionDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a minor faction given its name.
-
-FactionDetails() typically takes a single argument of the faction name, but may add a system name for filtering.
-
-Common usage of this is to obtain a `Faction` object, providing current specifics of a minor faction, for example:
-
-    {set faction to FactionDetails(""Lavigny's Legion"")}
-    {if faction.name != """":
-        {faction.name} is present in the
-        {for presence in faction.presences:
-            {presence.systemName},
-        }
-        {if len(faction.presences) = 1: system |else: systems}.
-    }";
+        public string description => Properties.CustomFunctions_Untranslated.FactionDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             Faction result;

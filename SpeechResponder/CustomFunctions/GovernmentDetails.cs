@@ -11,12 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "GovernmentDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function will provide full information for a government given its name.
-
-GovernmentDetails() takes a single argument of the government for which you want more information.
-
-At current this does not have a lot of use as the government object only contains its name, but expect it to be expanded in future.";
+        public string description => Properties.CustomFunctions_Untranslated.GovernmentDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             Government result = Government.FromName(values[0].AsString);

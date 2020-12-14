@@ -11,10 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "GalnetNewsArticle";
         public FunctionCategory Category => FunctionCategory.Galnet;
-        public string description => @"
-This function will provide full information for a Galnet article given its uuid.
-
-GalnetNewsArticle() takes a single argument of the article uuid for which you want more information.";
+        public string description => Properties.CustomFunctions_Untranslated.GalnetNewsArticle;
         public NativeFunction function => new NativeFunction((values) =>
         {
             News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);

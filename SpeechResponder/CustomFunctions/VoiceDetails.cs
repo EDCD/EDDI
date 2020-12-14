@@ -12,19 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "VoiceDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => @"
-This function allows you to discover details about the voices installed on your system. It is intended for use with `Voice()` to allow for more dynamic voice selection.
-
-VoiceDetails takes either zero or one arguments.
-
-With zero arguments, the function returns a list of `VoiceDetail` objects. For example:
-
-{for voice in VoiceDetails(): \{voice.name\} speaks \{voice.culturename\},}
-
-With one argument, the function returns a single `VoiceDetail` object. For example:
-
-    {VoiceDetails(""Microsoft Zira Desktop"").culturename}
-    {VoiceDetails(""Microsoft Zira Desktop"").gender}";
+        public string description => Properties.CustomFunctions_Untranslated.VoiceDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values.Count == 0)
