@@ -214,9 +214,6 @@
   <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
     <value>Disable phonetic speech:</value>
   </data>
-  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(this will disable all functions using SSML speech tags, as noted in the Speech Responder's Help file)</value>
-  </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDI can use ICAO, for example using 'alpha' rather than 'A', when saying star and body names. This can make it easier to understand system names, but does take longer to pronounce. If you want to hear ICAO pronunciations then check the option below. Note that this will not work if you have disabled phonetic speech above.</value>
   </data>

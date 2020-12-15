@@ -403,15 +403,6 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (this will disable all functions using SSML speech tags, as noted in the Speech Responder&apos;s Help file).
-        /// </summary>
-        public static string tab_tts_disable_phonetic_speech_note {
-            get {
-                return ResourceManager.GetString("tab_tts_disable_phonetic_speech_note", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Distort the voice on ship damage:.
         /// </summary>
         public static string tab_tts_distort_label {
