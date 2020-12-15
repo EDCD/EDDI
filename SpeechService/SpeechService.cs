@@ -165,10 +165,7 @@ namespace EddiSpeechService
             // If the user wants to disable IPA then we remove any IPA phoneme tags here
             if (Configuration.DisableIpa && speech.Contains("<phoneme"))
             {
-                // User has disabled IPA so remove all IPA phoneme tags
-                Logging.Debug("Phonetic speech is disabled, removing.");
-                speech = Regex.Replace(speech, @"<phoneme.*?>", string.Empty);
-                speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
+                speech = DisableIPA(speech);
             }
 
             if (string.IsNullOrWhiteSpace(voice))
@@ -231,6 +228,15 @@ namespace EddiSpeechService
                     play(source, priority);
                 }
             }
+        }
+
+        private static string DisableIPA(string speech)
+        {
+            // User has disabled IPA so remove all IPA phoneme tags
+            Logging.Debug("Phonetic speech is disabled, removing.");
+            speech = Regex.Replace(speech, @"<phoneme.*?>", string.Empty);
+            speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
+            return speech;
         }
 
         private static List<string> SeparateSpeechStatements(string speech, string separators)
