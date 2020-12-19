@@ -327,7 +327,7 @@ Whenever EDDI sees a particular event occur it will attempt to run a script.  Th
 
     ((EDDI <event>))
 
-with the <event> being in lower-case.  For example, if you wanted VoiceAttack to run a script every time you docked you would create a script called `((EDDI docked))` (note the lower-case d at the beginning of docked).
+with the \<event\> being in lower-case.  For example, if you wanted VoiceAttack to run a script every time you docked you would create a script called `((EDDI docked))` (note the lower-case d at the beginning of docked).
 
 There are a large number of events available.  Full details of the variables available for each event are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).  Note that event variables are only valid when the event occurs, and cannot be relied upon to be present or a specific value at any other time.  If you want to use information in an event after the event itself then you should copy the value to another variable.
 
@@ -335,7 +335,7 @@ There are a large number of events available.  Full details of the variables ava
 
 EDDI's VoiceAttack plugin allows you to access its features in your own profile.  Details of these functions are laid out below.
 
-![](../images/VoiceAttack-PluginView.jpg)
+![](images/VoiceAttack-PluginView.jpg)
 
 Note: Though the examples in this section show variables being passed as parameters within the plugin interface, it is no longer necessary to do so. Rather, when the plugin is invoked then the plugin will search for variables matching the plugin context and set prior to invoking the plugin.
 
@@ -494,7 +494,7 @@ For example, if you wanted to store the VoiceAttack boolean variable "Verbose" a
     * set the text variable "State variable" to "Verbose"
     * call EDDI with the context set to "setstate"
 
-![](../images/VoiceAttack-PluginView-SetState.jpg)
+![](images/VoiceAttack-PluginView-SetState.jpg)
 
 This function only supports integers, booleans, decimals and strings as state values.  The name of the value will be altered if necessary to ensure that it is all lower-case, and that spaces are replace by underscores.  For example, if you attempt to store a state variable "My variable" it will be stored as "my_variable".
 
