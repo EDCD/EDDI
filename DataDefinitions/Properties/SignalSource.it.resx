@@ -334,4 +334,12 @@
     <value>Rottami Recuperabili</value>
     <comment>Salvageable Wreckage signal source</comment>
   </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Centro di distribuzione</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Chiamata di Soccorso</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>
