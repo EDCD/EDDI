@@ -241,5 +241,11 @@ namespace UnitTests
             string expected = "<phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme> " + "<phoneme alphabet=\"ipa\" ph=\"speɪsweɪz\">Spaceways</phoneme>";
             Assert.AreEqual(expected, fromName);
         }
+
+        [TestMethod]
+        public void TestTranslateOrigamiAerospaceIndustries()
+        {
+            Assert.AreEqual("ORIGAMI AEROSPACE INDUSTRIES", Translations.GetTranslation("ORIGAMI AEROSPACE INDUSTRIES", false, "faction"));
+        }
     }
 }

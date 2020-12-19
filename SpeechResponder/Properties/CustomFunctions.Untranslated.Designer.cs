@@ -99,8 +99,7 @@ namespace EddiSpeechResponder.Properties {
         ///- The first form, a commodity name of the cargo. If the commodity is not in the hold, a &apos;null&apos; is returned.
         ///- The second form, a mission ID associated with the cargo, as haulage. If the mission ID is not associated with haulage, a &apos;null&apos; is returned.
         ///
-        ///Common usage of this is to provide further information about a particular cargo, for example:
-        /// [rest of string was truncated]&quot;;.
+        ///Common usage of this is to provide further information about a particular cargo, for example:        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CargoDetails {
             get {
@@ -569,11 +568,11 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
         ///
-        ///P() takes a single argument of the string for which to alter the pronunciation.
+        ///P() takes a mandatory argument of the string for which to alter the pronunciation and an optional second argument specifying the type of the string. The type may be one of: &quot;power&quot;, &quot;planettype&quot;, &quot;shipmodel&quot;, &quot;shipmanufacturer&quot;, &quot;body&quot;, &quot;starsystem&quot;, &quot;station&quot;, or &quot;faction&quot;.
         ///
         ///Common usage of this is to wrap the names of planets, powers, ships etc., for example:
         ///
-        ///    You are in the {P(system.name)} system..
+        ///    You are in the {P(syst [rest of string was truncated]&quot;;.
         /// </summary>
         public static string P {
             get {
