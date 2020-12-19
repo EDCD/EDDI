@@ -315,7 +315,7 @@
                             <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:MainWindow.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
                         </UniformGrid>
                         <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
-                        <Label x:Name="disableSsmltLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
+                        <Label x:Name="disableIpaLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
                         <DockPanel Grid.Column="1" Grid.Row="9" Margin="0, 5">
                             <CheckBox Grid.Column="1" x:Name="DisableIpaCheckbox" Margin="5" VerticalAlignment="Top" Checked="disableIpaUpdated" Unchecked="disableIpaUpdated"/>
                         </DockPanel>
