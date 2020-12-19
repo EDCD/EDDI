@@ -3870,7 +3870,7 @@ namespace EddiJournalMonitor
                                     {
                                         // Generate a new cancellation token source
                                         carrierJumpCancellationTS = new CancellationTokenSource();
-                                        carrierJumpCancellationTokenSources.Add(carrierId, carrierJumpCancellationTS);
+                                        carrierJumpCancellationTokenSources[carrierId] = carrierJumpCancellationTS;
 
                                         // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
                                         // These may be cancelled via the cancellation token source above.
