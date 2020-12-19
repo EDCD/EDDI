@@ -73,7 +73,9 @@ namespace GeneratorTests
                                 }
                             }
                         }
-                    }
+                        output.Add("");
+                        output.Add("");                    }
+                        output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
                 }
                 output.Add("");
                 Directory.CreateDirectory(@"Wiki\events\");
