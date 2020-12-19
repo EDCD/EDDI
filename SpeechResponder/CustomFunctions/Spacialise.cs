@@ -14,25 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values[0].AsString == null) { return ""; }
-
-            bool useSSML = !SpeechServiceConfiguration.FromFile().DisableSsml;
-            if (useSSML)
-            {
-                return Translations.sayAsLettersOrNumbers(values[0].AsString);
-            }
-            else
-            {
-                string Entree = values[0].AsString;
-                if (Entree == "")
-                { return ""; }
-                string Sortie = "";
-                foreach (char c in Entree)
-                {
-                    Sortie = Sortie + c + " ";
-                }
-                var UpperSortie = Sortie.ToUpper();
-                return UpperSortie.Trim();
-            }
+            return Translations.sayAsLettersOrNumbers(values[0].AsString);
         }, 1);
     }
 }
