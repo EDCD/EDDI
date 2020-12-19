@@ -19,6 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Modules stored` updated to prevent an exception while testing.
       * `Signal detected` updated to fix a bug that could allow non-unique signals to be flagged as unique. 
     * Functions
+      * Disabling phonetic speech no longer disables all SSML based functions (e.g. `{Pause()}` will no longer cease to work with phonetic speech disabled)
       * Reorganized the way we store EDDI's custom Cottle functions. 
       * `Humanise()` revised to fix a bug that created inaccurate descriptions for certain numbers, to return short decimal numbers when they are able to accurately and succinctly describe the number, and to round a little more aggressively for reduced verbosity.
     * Scripts
