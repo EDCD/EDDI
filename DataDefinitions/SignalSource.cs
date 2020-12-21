@@ -85,7 +85,6 @@ namespace EddiDataDefinitions
         public DateTime? expiry { get; set; }
         public int? threatLevel { get; set; }
         public bool? isStation { get; set; }
-        public SignalSource signalSource { get; set; }
         public FactionState spawningState { get; set; }
         public long? systemAddress { get; set; }
 
