@@ -210,8 +210,9 @@ namespace EddiVoiceAttackResponder
                 {
                     if (@event?.type != null)
                     {
-                        updateValuesOnEvent(@event, ref vaProxy);
+                        updateValuesOnEvent(@event, ref vaProxy, out List<VoiceAttackVariable> setVars);
                         triggerVACommands(@event, ref vaProxy);
+                        clearValuesAfterEvent(ref vaProxy, setVars);
                     }
                 }
                 catch (Exception ex)
@@ -221,15 +222,16 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy)
+        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy, out List<VoiceAttackVariable> setVars)
         {
+            // Event-specific values  
+            setVars = new List<VoiceAttackVariable>();
+            
             try
             {
                 lock (vaProxyLock)
                 {
                     vaProxy.SetText("EDDI event", @event.type);
-                    // Event-specific values  
-                    List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
                     // We start off preparing the variables
                     PrepareEventVariables($"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref setVars, true, @event);
                     // We update the event variable values
@@ -240,7 +242,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to set variables in VoiceAttack", ex);
+                Logging.Error("Failed to set event variables in VoiceAttack", ex);
             }
         }
 
@@ -264,6 +266,27 @@ namespace EddiVoiceAttackResponder
             catch (Exception ex)
             {
                 Logging.Error("Failed to trigger local VoiceAttack command " + commandName, ex);
+            }
+        }
+
+        public static void clearValuesAfterEvent(ref dynamic vaProxy, List<VoiceAttackVariable> setVars)
+        {
+            try
+            {
+                lock (vaProxyLock)
+                {
+                    // We set all values in our list to null
+                    foreach (var vaVar in setVars)
+                    {
+                        vaVar.Value = null;
+                    }
+                    // We set all variable values in VA to null
+                    SetEventVariables(vaProxy, setVars);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to clear event variables in VoiceAttack", ex);
             }
         }
 
