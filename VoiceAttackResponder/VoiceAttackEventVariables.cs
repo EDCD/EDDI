@@ -20,12 +20,12 @@ namespace EddiVoiceAttackResponder
         /// <param name="setVars">The list of values that we're preparing to set within VoiceAttack</param>
         /// <param name="isTopLevel">(Optional) Whether we're looking at the top level of the object that we're walking to obtain values</param>
         /// <param name="reflectionObject">(Optional) The object that we're walking to obtain values. At the top level, this should be an `Event` class object</param>
-        public static void PrepareEventVariables(string prefix, Type reflectionObjectType, ref List<VoiceAttackVariable> setVars, bool isTopLevel = true, object reflectionObject = null)
+        public static void PrepareEventVariables(string eventType, string prefix, Type reflectionObjectType, ref List<VoiceAttackVariable> setVars, bool isTopLevel = true, object reflectionObject = null)
         {
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType)) 
             {
-                PrepareEventVariable(ref setVars, prefix, "", reflectionObjectType, reflectionObject, isTopLevel);
+                PrepareEventVariable(eventType, ref setVars, prefix, "", reflectionObjectType, reflectionObject, isTopLevel);
                 return; 
             }
 
@@ -47,7 +47,7 @@ namespace EddiVoiceAttackResponder
                 }
                 if (passProperty)
                 {
-                    PrepareEventVariable(ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
+                    PrepareEventVariable(eventType, ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
                 }
             }
 
@@ -66,12 +66,12 @@ namespace EddiVoiceAttackResponder
                 }
                 if (passField)
                 {
-                    PrepareEventVariable(ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
+                    PrepareEventVariable(eventType, ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
                 }
             }
         }
 
-        private static void PrepareEventVariable(ref List<VoiceAttackVariable> setVars, string prefix, string key, Type type, object value, bool isTopLevel = true)
+        private static void PrepareEventVariable(string eventType, ref List<VoiceAttackVariable> setVars, string prefix, string key, Type type, object value, bool isTopLevel = true)
         {
             try
             {
@@ -110,33 +110,33 @@ namespace EddiVoiceAttackResponder
 
                 if (type == typeof(bool))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(bool), (bool?)value, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(bool), (bool?)value, isTopLevel));
                 }
                 else if (type == typeof(string))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(string), (string)value, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(string), (string)value, isTopLevel));
                 }
                 else if (type == typeof(int))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(int), (int?)value, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(int), (int?)value, isTopLevel));
                 }
                 else if (type == typeof(decimal))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(decimal), value is null ? null : (decimal?)Convert.ToDecimal(value), isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(decimal), value is null ? null : (decimal?)Convert.ToDecimal(value), isTopLevel));
                 }
                 else if (type == typeof(DateTime))
                 {
-                    setVars.Add(new VoiceAttackVariable(name, typeof(DateTime), (DateTime?)value, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(DateTime), (DateTime?)value, isTopLevel));
                 }
                 else if (type is null)
                 {
-                    setVars.Add(new VoiceAttackVariable(name, null, null, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, null, null, isTopLevel));
                 }
                 else if (!type.IsGenericType && type.IsEnum)
                 {
                     var fieldsArray = type?.GetFields(BindingFlags.Public | BindingFlags.Static);
                     var enumName = value != null ? fieldsArray[(int)value].Name : null;
-                    setVars.Add(new VoiceAttackVariable(name, typeof(string), enumName, isTopLevel));
+                    setVars.Add(new VoiceAttackVariable(eventType, name, typeof(string), enumName, isTopLevel));
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace EddiVoiceAttackResponder
                         {
                             foreach (DictionaryEntry kvp in (IDictionary)value)
                             {
-                                PrepareEventVariable(ref setVars, prefix, kvp.Key.ToString(), kvp.Value.GetType(), kvp.Value, false);
+                                PrepareEventVariable(eventType, ref setVars, prefix, kvp.Key.ToString(), kvp.Value.GetType(), kvp.Value, false);
                             }
                         }
                     }
@@ -165,23 +165,23 @@ namespace EddiVoiceAttackResponder
                             {
                                 // Handle filled collections
                                 Logging.Debug("Handling element " + i);
-                                PrepareEventVariable(ref setVars, name, i.ToString(), underlyingType, item, false);
+                                PrepareEventVariable(eventType, ref setVars, name, i.ToString(), underlyingType, item, false);
                                 i++;
                             }
                         }
                         if (i == 0)
                         {
                             // Handle empty collections (for when we're generating wiki documentation)
-                            PrepareEventVariable(ref setVars, name, "*\\<index\\>*", underlyingType, null, false);
+                            PrepareEventVariable(eventType, ref setVars, name, "*\\<index\\>*", underlyingType, null, false);
                             // Set i to null so that no value is written to the wiki documentation when i is zero
                             i = null;
                         }
-                        setVars.Add(new VoiceAttackVariable(name + " entries", typeof(int), i, isTopLevel));
+                        setVars.Add(new VoiceAttackVariable(eventType, name + " entries", typeof(int), i, isTopLevel));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
                         Logging.Debug($"Found object '{type.Name}'");
-                        PrepareEventVariables(name, type, ref setVars, false, value);
+                        PrepareEventVariables(eventType, name, type, ref setVars, false, value);
                     }
                     else
                     {
@@ -284,6 +284,8 @@ namespace EddiVoiceAttackResponder
 
     public class VoiceAttackVariable
     {
+        public string eventType { get; private set; }
+        
         /// <summary> The full key used to access the variable in VoiceAttack, including any applicable prefix </summary>
         public string Key { get; private set; }
 
@@ -296,8 +298,9 @@ namespace EddiVoiceAttackResponder
         /// <summary> Whether this is a top level variable which might have a description </summary>
         public bool IsTopLevel { get; private set; }
 
-        public VoiceAttackVariable(string key, Type type, object value = null, bool isTopLevel = true)
+        public VoiceAttackVariable(string eventType, string key, Type type, object value = null, bool isTopLevel = true)
         {
+            this.eventType = eventType;
             this.Key = key;
             this.Type = type;
             this.Value = value;
