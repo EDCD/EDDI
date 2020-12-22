@@ -49,6 +49,9 @@ namespace EddiVoiceAttackResponder
         public static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
         public static Thread updaterThread = null;
 
+        // We'll maintain a referenceable list of variables that we've set from events
+        private static List<VoiceAttackVariable> currentVariables = new List<VoiceAttackVariable>();
+
         private static readonly object vaProxyLock = new object();
 
         public static void VA_Init1(dynamic vaProxy)
@@ -210,9 +213,8 @@ namespace EddiVoiceAttackResponder
                 {
                     if (@event?.type != null)
                     {
-                        updateValuesOnEvent(@event, ref vaProxy, out List<VoiceAttackVariable> setVars);
+                        updateValuesOnEvent(@event, ref vaProxy);
                         triggerVACommands(@event, ref vaProxy);
-                        clearValuesAfterEvent(ref vaProxy, setVars);
                     }
                 }
                 catch (Exception ex)
@@ -222,27 +224,51 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy, out List<VoiceAttackVariable> setVars)
+        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy)
         {
-            // Event-specific values  
-            setVars = new List<VoiceAttackVariable>();
-            
             try
             {
                 lock (vaProxyLock)
                 {
                     vaProxy.SetText("EDDI event", @event.type);
-                    // We start off preparing the variables
-                    PrepareEventVariables($"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref setVars, true, @event);
-                    // We update the event variable values
-                    SetEventVariables(vaProxy, setVars);
-                    // We update all standard values  
+                    // Retrieve and clear variables from prior iterations of the same event
+                    clearPriorEventValues(ref vaProxy, @event.type, currentVariables);
+                    currentVariables = currentVariables.Where(v => v.eventType != @event.type).ToList();
+                    // Prepare and update this event's variable values
+                    var eventVariables = new List<VoiceAttackVariable>();
+                    PrepareEventVariables(@event.type, $"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref eventVariables, true, @event);
+                    SetEventVariables(vaProxy, eventVariables);
+                    // Save the updated state of our event variables
+                    currentVariables.AddRange(eventVariables);
+                    // Update all standard values  
                     setStandardValues(ref vaProxy);
                 }
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to set event variables in VoiceAttack", ex);
+            }
+        }
+
+        public static void clearPriorEventValues(ref dynamic vaProxy, string eventType, List<VoiceAttackVariable> eventVariables)
+        {
+            try
+            {
+                lock (vaProxyLock)
+                {
+                    // We set all values in our list from a prior version of the same event to null
+                    foreach (var variable in eventVariables
+                        .Where(v => v.eventType == eventType && v.Value != null))
+                    {
+                        variable.Value = null;
+                    }
+                    // We clear variable values by swapping the values to null and then instructing VA to set them again
+                    SetEventVariables(vaProxy, eventVariables);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to clear event variables in VoiceAttack", ex);
             }
         }
 
@@ -255,10 +281,10 @@ namespace EddiVoiceAttackResponder
                 {
                     // Fire local command if present  
                     Logging.Debug("Searching for command " + commandName);
-                    if (vaProxy.CommandExists(commandName))
+                    if (vaProxy.Command.Exists(commandName))
                     {
                         Logging.Debug("Found command " + commandName);
-                        vaProxy.ExecuteCommand(commandName);
+                        vaProxy.Command.Execute(commandName);
                         Logging.Info("Executed command " + commandName);
                     }
                 }
@@ -266,27 +292,6 @@ namespace EddiVoiceAttackResponder
             catch (Exception ex)
             {
                 Logging.Error("Failed to trigger local VoiceAttack command " + commandName, ex);
-            }
-        }
-
-        public static void clearValuesAfterEvent(ref dynamic vaProxy, List<VoiceAttackVariable> setVars)
-        {
-            try
-            {
-                lock (vaProxyLock)
-                {
-                    // We set all values in our list to null
-                    foreach (var vaVar in setVars)
-                    {
-                        vaVar.Value = null;
-                    }
-                    // We set all variable values in VA to null
-                    SetEventVariables(vaProxy, setVars);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Error("Failed to clear event variables in VoiceAttack", ex);
             }
         }
 
