@@ -415,16 +415,14 @@ namespace EddiMissionMonitor
             // Remove strays from the mission log
             foreach (Mission missionEntry in missions.ToList())
             {
-                // Ensure Community Goals remain in the mission log
-                if (!missionEntry.communal)
+                Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
+                if (mission == null || mission.name.Contains("StartZone") || (missionEntry.communal && missionEntry.statusEDName != "Active"))
                 {
-                    Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
-                    if (mission == null || mission.name.Contains("StartZone"))
-                    {
-                        // Strip out the stray and 'StartZone' missions from the log
-                        RemoveMissionWithMissionId(missionEntry.missionid);
-                        update = true;
-                    }
+                    // Strip out the stray and 'StartZone' missions from the log
+                    // This can include stale community goals (if any are eligible to claim,
+                    // they will be re-added by a Community Goal event)
+                    RemoveMissionWithMissionId(missionEntry.missionid);
+                    update = true;
                 }
             }
             return update;
