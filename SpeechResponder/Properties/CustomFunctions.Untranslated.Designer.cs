@@ -568,11 +568,9 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
         ///
-        ///P() takes a mandatory argument of the string for which to alter the pronunciation and an optional second argument specifying the type of the string. The type may be one of: &quot;power&quot;, &quot;planettype&quot;, &quot;shipmodel&quot;, &quot;shipmanufacturer&quot;, &quot;body&quot;, &quot;starsystem&quot;, &quot;station&quot;, or &quot;faction&quot;.
+        ///P() takes one mandatory and one optional argument. The first argument is the string to be pronounced. The second optional argument describes which set of pronunciation overrides should be applied. Recognized values are: &quot;power&quot;, &quot;planettype&quot;, &quot;shipmodel&quot;, &quot;shipmanufacturer&quot;, &quot;body&quot;, &quot;starsystem&quot;, &quot;station&quot;, or &quot;faction&quot;.
         ///
-        ///Common usage of this is to wrap the names of planets, powers, ships etc., for example:
-        ///
-        ///    You are in the {P(syst [rest of string was truncated]&quot;;.
+        ///Common usage of this is to wrap the names of planets, powers, ships e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string P {
             get {

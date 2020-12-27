@@ -439,7 +439,7 @@ Common usage of this is to provide the velocity in meters per second required to
   <data name="P" xml:space="preserve">
     <value>This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
 
-P() takes a mandatory argument of the string for which to alter the pronunciation and an optional second argument specifying the type of the string. The type may be one of: "power", "planettype", "shipmodel", "shipmanufacturer", "body", "starsystem", "station", or "faction".
+P() takes one mandatory and one optional argument. The first argument is the string to be pronounced. The second optional argument describes which set of pronunciation overrides should be applied. Recognized values are: "power", "planettype", "shipmodel", "shipmanufacturer", "body", "starsystem", "station", or "faction".
 
 Common usage of this is to wrap the names of planets, powers, ships etc., for example:
 
