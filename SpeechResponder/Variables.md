@@ -440,7 +440,7 @@ Information about your current starsystem is available under the `system` object
 
 Any values might be missing, depending on EDDI's configuration and the information available about the system.
 
-    - `name` the name of the starsystem
+    - `systemname` the name of the starsystem
     - `population` the population of the starsystem
     - `allegiance` the superpower allegiance of this starsystem (Federation, Empire etc)
     - `government` the type of government in this starsystem (Democracy, Confederacy etc)
