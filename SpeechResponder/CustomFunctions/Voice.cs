@@ -1,4 +1,6 @@
-﻿using Cottle.Functions;
+﻿using System.Linq;
+using System.Speech.Synthesis;
+using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
@@ -16,14 +18,14 @@ namespace EddiSpeechResponder.CustomFunctions
             string text = values[0].AsString ?? string.Empty;
             string voice = values[1].AsString ?? string.Empty;
 
-            if (SpeechService.Instance?.synth != null)
+            if (SpeechService.Instance?.allVoices != null)
             {
-                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
+                foreach (VoiceInfo vc in SpeechService.Instance.allVoices.Select(v => v.voiceInfo))
                 {
-                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
-                        && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    if (vc.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
+                        && !vc.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                     {
-                        voice = vc.VoiceInfo.Name;
+                        voice = vc.Name;
                         break;
                     }
                 }
