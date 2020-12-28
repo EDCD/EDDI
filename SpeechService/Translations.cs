@@ -843,9 +843,11 @@ namespace EddiSpeechService
             }
             
             // See if we have a whole number that is fully described within the largest order
-            if (number * orderMultiplier == value)
+            if (number * orderMultiplier == Math.Abs((decimal)value))
             {
-                return maybeMinus + number + order;
+                // Some languages render these differently than others. "1000" in English is "one thousand" but in Italian is simply "mille".
+                // Consequently, we leave the interpretation to the culture-specific voice.
+                return maybeMinus + number * orderMultiplier;
             }
 
             if (number < 100)
