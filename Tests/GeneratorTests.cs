@@ -64,7 +64,7 @@ namespace GeneratorTests
                         output.Add("");
                         output.Add("");
                         List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-                        VoiceAttackVariables.PrepareEventVariables($"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
+                        VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
                         foreach (var variable in setVars)
                         {
                             // Get descriptions for our top level variables
@@ -115,8 +115,9 @@ namespace GeneratorTests
                             WriteVariableToOutput(variable);
                         }
                         output.Add("");
-                        output.Add("");                    }
-                        output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
+                        output.Add("");
+                    }
+                    output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
                 }
                 output.Add("");
                 Directory.CreateDirectory(@"Wiki\events\");
