@@ -15,11 +15,11 @@ namespace EddiEvents
         {
             VARIABLES.Add("ringname", "The name of the ring that was mapped");
             VARIABLES.Add("reserves", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("composition", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("mass", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("innerradius", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("outerradius", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("probesused", "The parent body object, if the parent body has already been scanned");
+            VARIABLES.Add("composition", "The composition of the ring that was mapped (Icy, Rocky, Metallic, etc.)");
+            VARIABLES.Add("mass", "The mass of the ring that was mapped, in megatonnes");
+            VARIABLES.Add("innerradius", "The inner radius of the ring that was mapped, in kilometers");
+            VARIABLES.Add("outerradius", "The outer radius of the ring that was mapped, in kilometers");
+            VARIABLES.Add("probesused", "The number of probes used to map the ring");
         }
 
         public string ringname { get; private set; }
