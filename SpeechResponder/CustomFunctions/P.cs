@@ -14,8 +14,9 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string val = values[0].AsString;
+            string type = values.Count > 1 ? values[1].AsString : null;
             bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
-            return Translations.GetTranslation(val, useICAO);
-        }, 1);
+            return Translations.GetTranslation(val, useICAO, type);
+        }, 1, 2);
     }
 }

@@ -9,53 +9,92 @@ namespace EddiSpeechService
     /// <summary>Translations for Elite items for text-to-speech</summary>
     public class Translations
     {
-        public static string GetTranslation(string val, bool useICAO = false)
+        public static string GetTranslation(string val, bool useICAO = false, string type = null)
         {
             // Translations from fixed dictionaries
             string translation = val;
-            if (translation == val)
+            type = !string.IsNullOrEmpty(type) ? type.ToLowerInvariant() : null;
+
+            string getPhoneticModel(string val2)
             {
-                translation = Power(val);
-            }
-            if (translation == val)
-            {
-                translation = StellarClass(val);
-            }
-            if (translation == val)
-            {
-                translation = PlanetClass(val);
-            }
-            if (translation == val)
-            {
-                Ship ship = ShipDefinitions.FromModel(val);
+                Ship ship = ShipDefinitions.FromModel(val2);
                 if (ship != null && ship.EDID > 0)
                 {
-                    translation = ship.SpokenModel();
+                    return ship.SpokenModel();
                 }
+                return val2;
             }
-            if (translation == val)
+
+            string getPhoneticManufacturer(string val2) 
             {
-                string phoneticManufacturer = ShipDefinitions.SpokenManufacturer(val);
+                string phoneticManufacturer = ShipDefinitions.SpokenManufacturer(val2);
                 if (phoneticManufacturer != null)
                 {
-                    translation = phoneticManufacturer;
+                    return phoneticManufacturer;
                 }
+                return val2;
             }
-            if (translation == val)
+
+            switch (type)
             {
-                translation = Body(val, useICAO);
-            }
-            if (translation == val)
-            {
-                translation = StarSystem(val, useICAO);
-            }
-            if (translation == val)
-            {
-                translation = Station(val);
-            }
-            if (translation == val)
-            {
-                translation = Faction(val);
+                case "power":
+                    translation = Power(val);
+                    break;
+                case "planettype":
+                    translation = PlanetClass(val);
+                    break;
+                case "shipmodel":
+                    translation = getPhoneticModel(val);
+                    break;
+                case "shipmanufacturer":
+                    translation = getPhoneticManufacturer(val);
+                    break;
+                case "body":
+                    translation = Body(val, useICAO);
+                    break;
+                case "starsystem":
+                    translation = StarSystem(val, useICAO);
+                    break;
+                case "station":
+                    translation = Station(val);
+                    break;
+                case "faction":
+                    translation = Faction(val);
+                    break;
+                default:
+                    if (translation == val)
+                    {
+                        translation = Power(val);
+                    }
+                    if (translation == val)
+                    {
+                        translation = PlanetClass(val);
+                    }
+                    if (translation == val)
+                    {
+                        translation = getPhoneticModel(val);
+                    }
+                    if (translation == val)
+                    {
+                        translation = getPhoneticManufacturer(val);
+                    }
+                    if (translation == val)
+                    {
+                        translation = Body(val, useICAO);
+                    }
+                    if (translation == val)
+                    {
+                        translation = StarSystem(val, useICAO);
+                    }
+                    if (translation == val)
+                    {
+                        translation = Station(val);
+                    }
+                    if (translation == val)
+                    {
+                        translation = Faction(val);
+                    }
+                    break;
             }
             return translation.Trim();
         }
@@ -102,6 +141,7 @@ namespace EddiSpeechService
         {
             { "VESPER-M4", "Vesper M 4" }, // Stop Vesper being treated as a sector
             { "Sagittarius A*", "Sagittarius " + sayAsLettersOrNumbers("A") + " Star" }, // Allow the * to be parsed out
+            { "Summerland", "Summer Land" }, // Separate summer from land 
         };
 
         // Fixes to avoid issues with pronunciation of station model names
@@ -183,17 +223,6 @@ namespace EddiSpeechService
             { "Zhang Fei", new string[] { Properties.Phonetics.zhangfei_zhang, Properties.Phonetics.zhangfei_fei } },
         };
 
-        public static string StellarClass(string val)
-        {
-            if (val == null)
-            {
-                return null;
-            }
-
-            // Some test to speech voices replace "TTS" with "text-to-speech". Fix that here.
-            return val != "TTS" ? val : val.Replace("TTS", "T T S");
-        }
-
         public static string PlanetClass(string val)
         {
             if (val == null)
@@ -273,6 +302,7 @@ namespace EddiSpeechService
         private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
         private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
+        private static readonly Regex SHORTBODY = new Regex(@"^([A-E]){0,1}(?> )*(\d+){0,1}(?> )*([a-z]){0,1}$");
 
         /// <summary>Fix up faction names</summary>
         public static string Faction(string faction)
@@ -320,6 +350,12 @@ namespace EddiSpeechService
             }
             else
             {
+                // Might be a short body name
+                if (SHORTBODY.IsMatch(body))
+                {
+                    return sayAsLettersOrNumbers(body);
+                }
+
                 // Parse the starsystem
                 results.Add(StarSystem(match.Groups[1].Value.Trim(), useICAO));
                 // Parse the body
@@ -400,7 +436,7 @@ namespace EddiSpeechService
             // Specific fixing of names to avoid later confusion
             if (STAR_SYSTEM_FIXES.ContainsKey(starSystem))
             {
-                starSystem = STAR_SYSTEM_FIXES[starSystem];
+                return STAR_SYSTEM_FIXES[starSystem];
             }
 
             // Specific translations
