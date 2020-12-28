@@ -178,7 +178,7 @@
     <comment>MissionTarget signal</comment>
   </data>
   <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Traccie di Convoglio Disciolto</value>
+    <value>Tracce di Convoglio</value>
     <comment>Convoy signal</comment>
   </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
@@ -214,7 +214,7 @@
     <comment>Thargoid conflict zone</comment>
   </data>
   <data name="ListeningPost" xml:space="preserve">
-    <value>Locazione di Ascolto</value>
+    <value>Stazione di Ascolto</value>
     <comment>ListeningPost</comment>
   </data>
   <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
@@ -322,7 +322,7 @@
     <comment>Guardian Structure</comment>
   </data>
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
-    <value>Ammasso di Detriti</value>
+    <value>Campo di Detriti</value>
     <comment>Debris field</comment>
   </data>
   <data name="SAA_SignalType_Other" xml:space="preserve">
@@ -333,5 +333,13 @@
   <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
     <value>Rottami Recuperabili</value>
     <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Centro di distribuzione</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Chiamata di Soccorso</value>
+    <comment>Distress Call</comment>
   </data>
 </root>

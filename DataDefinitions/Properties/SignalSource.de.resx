@@ -177,7 +177,10 @@
     <value>Missionsziel</value>
     <comment>MissionTarget signal</comment>
   </data>
-  
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Konvoi-Auflösungsmuster</value>
+    <comment>Convoy signal</comment>
+  </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Notruf</value>
     <comment>Distress signal</comment>
@@ -322,7 +325,24 @@
     <value>Trümmerfeld</value>
     <comment>Debris field</comment>
   </data>
-  
-  
-  
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Anderes Oberflächensignal</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Abgestürztes Thargoiden-Schiff</value>
+    <comment>Thargoid crash site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Bergungsfähige Wrackteile</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Verteilungszentrum</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Notruf</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>

@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
-    <value>Fortschrittlicher Plasmabeschleuniger</value>
+    <value>Optimierter Plasmabeschleuniger</value>
     <comment>Module AdvancedPlasmaAccelerator</comment>
   </data>
   <data name="ATMulticannon" xml:space="preserve">
-    <value>AT Mehrzweckgeschütz</value>
+    <value>AT Mehrfachgeschütz</value>
     <comment>Module ATMulticannon</comment>
   </data>
   <data name="AutoField_MaintenanceUnit" xml:space="preserve">
@@ -134,7 +134,7 @@
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
-    <value>AX Mehrzweckgeschütz</value>
+    <value>AX Mehrfachgeschütz</value>
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
@@ -242,7 +242,7 @@
     <comment>Module FirstClassPassengerCabin</comment>
   </data>
   <data name="FragmentCannon" xml:space="preserve">
-    <value>Fragmentkanone</value>
+    <value>Splitterkanone</value>
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
@@ -588,5 +588,9 @@
   <data name="AdvancedMissileRack" xml:space="preserve">
     <value>Fortschrittliches Raketengestell</value>
     <comment>Module Advanced Missile Rack</comment>
+  </data>
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Retributor</value>
+    <comment>Module RetributorBeamLaser</comment>
   </data>
 </root>

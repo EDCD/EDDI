@@ -589,4 +589,8 @@
     <value>Porta Missili Avanzato</value>
     <comment>Module Advanced Missile Rack</comment>
   </data>
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Laser Punitivo</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>
