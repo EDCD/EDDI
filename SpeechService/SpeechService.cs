@@ -106,7 +106,7 @@ namespace EddiSpeechService
                     .ToList();
                 foreach (var voice in systemSpeechVoices)
                 {
-                    allVoices.Add(new VoiceDetails(voice.VoiceInfo, nameof(SpeechSynthesizer)));
+                    allVoices.Add(new VoiceDetails(voice.VoiceInfo, synth.GetType().FullName));
                 }
             }
         }
@@ -339,14 +339,9 @@ namespace EddiSpeechService
 
             if (speakingVoiceDetails != null)
             {
-                switch (speakingVoiceDetails.synthType)
+                if (speakingVoiceDetails.synthType.GetType().FullName is "System.Speech.Synthesis.SpeechSynthesizer")
                 {
-                    case nameof(SpeechSynthesizer):
-                        SystemSpeechSynthesis(stream, speakingVoiceDetails.voiceInfo, speech);
-                        break;
-                    default:
-                        SystemSpeechSynthesis(stream, speakingVoiceDetails.voiceInfo, speech);
-                        break;
+                    SystemSpeechSynthesis(stream, speakingVoiceDetails.voiceInfo, speech);
                 }
             }
             else
