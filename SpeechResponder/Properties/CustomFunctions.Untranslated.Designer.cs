@@ -207,9 +207,9 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This function will provide full information for an Engineer given its name (including current progress information if you are in game).
+        ///   Looks up a localized string similar to This function will provide full information for an Engineer given either the engineer&apos;s name or the star system where the engineer resides (including current progress information if you are in game).
         ///
-        ///EngineerDetails() takes a single argument of the engineer for which you want more information and returns an Engineer object..
+        ///EngineerDetails() takes a single argument of either the engineer&apos;s name for which you want more information or the star system where the engineer resides. It returns an Engineer object..
         /// </summary>
         public static string EngineerDetails {
             get {

@@ -105,6 +105,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AsteroidMaterialContent.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\EngineerSpecialty.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineerSpecialty.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Ship.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -662,6 +667,10 @@
     <EmbeddedResource Include="Properties\AsteroidMaterialContent.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AsteroidMaterialContent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EngineerSpecialty.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EngineerSpecialty.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.cs.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />
