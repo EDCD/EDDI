@@ -1408,7 +1408,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Mission warning }\r\n{_ Triggered when a mission is about to expire, based on a set threshold }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'warning')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.typeEDName, \"Passenger\") > -1:\r\n    {set type to \"Transport \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.type}\r\n}\r\n{set type to cat(type, \" mission\")}\r\n\r\nWarning: {type} {if mission.faction: for {mission.faction}} will expire in {event.remaining} minutes.\r\n\r\n",
+      "script": "{_ Mission warning }\r\n{_ Triggered when a mission is about to expire, based on a set threshold }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'warning')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.typeEDName, \"Passenger\") > -1:\r\n    {set type to \"Transport \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.type}\r\n}\r\n{set type to cat(type, \" mission\")}\r\n\r\nWarning: {type} {if mission.faction: for {P(mission.faction, \"faction\")}} will expire in {event.remaining} minutes.\r\n\r\n",
       "default": true,
       "name": "Mission warning",
       "description": "Triggered when a mission is about to expire, based on a set threshold"
