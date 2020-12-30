@@ -4,6 +4,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.2-b2
   * Speech Responder
+    * Functions
+      * `Humanise()` revised to leave the interpretation of simple whole numbers like 1000 and 10000 to the culture-specific voice.
     * Scripts
       * `Body report summary` updated to correct some script redundancies and formatting errors.
       * `Community goal` updated to fix a formatting issue.
