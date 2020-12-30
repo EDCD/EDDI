@@ -134,7 +134,7 @@
     <value>L'API di Frontier non è operativo</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
-    <value>La connessione con Chiave API Frontier è ora operative, Comandante {0}.</value>
+    <value>La connessione con Chiave API Frontier è ora operativa, Comandante {0}.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Se si sta usando VoiceAttack è necessario chiudere questa finestra PRIMA di avviare VoiceAttack per far si che i cambiamenti apportati abbiano effetto. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>
