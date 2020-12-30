@@ -3,6 +3,23 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.2-b2
+  * Speech Responder
+    * Scripts
+      * `Body report summary` updated to correct some script redundancies and formatting errors.
+      * `Community goal` updated to fix a formatting issue.
+      * `Mission accepted` updated to more consistently apply the P() function with faction names.
+      * `Mission completed` updated to correct typos.
+      * `Mission failed` updated to more consistently apply the P() function.
+      * `Mission redirected` updated to more consistently apply the P() function. 
+      * `Mission warning` updated to more consistently apply the P() function.
+      * `Module arrived` updated to more consistently apply the P() function.
+      * `Power commodity delivered` updated to correct a script formatting error.
+      * `Route details` updated to more consistently apply the P() function.
+      * `Ship arrived` updated to more consistently apply the P() function.
+      * `Ship sold` updated to more consistently apply the P() function.
+      * `Ship sold on rebuy` updated to more consistently apply the P() function.
+      * `Signal detected` updated to more consistently apply the P() function.
+      * `System state report` updated to more consistently apply the P() function.
 
 ### 3.7.2-b1
   * Core
