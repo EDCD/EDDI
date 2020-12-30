@@ -1930,7 +1930,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Retired {ShipName(event.shipid, event.ship)} from active duty\",\r\n             \"Decommissioned {ShipName(event.shipid, event.ship)}\",\r\n             \"Sold {ShipName(event.shipid, event.ship)}\")}\r\n{if event.system && event.system != system.name:\r\n   in {event.system}\r\n}.",
+      "script": "{OneOf(\"Retired {ShipName(event.shipid, event.ship)} from active duty\",\r\n             \"Decommissioned {ShipName(event.shipid, event.ship)}\",\r\n             \"Sold {ShipName(event.shipid, event.ship)}\")}\r\n{if event.system && event.system != system.name:\r\n   in {P(event.system, \"starsystem\")}\r\n}.",
       "default": true,
       "name": "Ship sold",
       "description": "Triggered when you sell a ship"
