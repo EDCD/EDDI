@@ -1588,7 +1588,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.amount} units of {event.commodity} delivered {Occasionally(2, \"for {P(event.power, \"power\")}\")}.",
+      "script": "{event.amount} units of {event.commodity} delivered {Occasionally(2, \"for {P(event.power, 'power')}\")}.",
       "default": true,
       "name": "Power commodity delivered",
       "description": "Triggered when a commander delivers a commodity to a power"
