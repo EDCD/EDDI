@@ -9,7 +9,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Module arrived";
         public const string DESCRIPTION = "Triggered when your transferred module is arriving at its destination";
-        public const string SAMPLE = "{ \"timestamp\":\"2017-09-20T07:05:41Z\", \"event\":\"ModuleArrived\", \"StorageSlot\":25, \"StoredItem\":\"$hpt_cloudscanner_size0_class1_name;\", \"StoredItem_Localised\":\"Wake Scanner\", \"ServerId\":128662525, \"TransferCost\":322, \"TransferTime\":30, \"Ship\":\"diamondbackxl\", \"ShipID\":38 }";
+        public static ModuleArrivedEvent SAMPLE = new ModuleArrivedEvent(DateTime.UtcNow, "Adder", 106, 25, 128662525, Module.FromEDName("$hpt_cloudscanner_size0_class1_name;"), 322, 30, "Lalande 32151", "Lee Gateway");
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
