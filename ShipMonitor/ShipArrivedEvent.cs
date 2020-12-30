@@ -10,7 +10,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship arrived";
         public const string DESCRIPTION = "Triggered when you complete a ship transfer";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardArrived\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580,\"TransferTime\":30}";
+        public static ShipArrivedEvent SAMPLE = new ShipArrivedEvent(DateTime.UtcNow, "Adder", 1, "Eranin", 85.639145M, 580, 30, "Xuesen Orbital", 128035840, 3222994688);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipArrivedEvent()
