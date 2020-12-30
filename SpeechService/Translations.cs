@@ -855,7 +855,14 @@ namespace EddiSpeechService
                 // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
                 if (number + ((decimal)nextDigit / 10) == Math.Round((decimal)value / orderMultiplier, 2))
                 {
-                    return maybeMinus + (number + (decimal)nextDigit / 10) + order;
+                    if (nextDigit == 0)
+                    {
+                        return maybeMinus + number * orderMultiplier;
+                    }
+                    else
+                    {
+                        return maybeMinus + (number + (decimal)nextDigit / 10) + order;
+                    }
                 }
 
                 // Describe values for complex numbers where the largest order number does not exceed one hundred

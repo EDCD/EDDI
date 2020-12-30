@@ -315,13 +315,13 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize7()
         {
-            Assert.AreEqual("minus 51 million", Translations.Humanize(-51000000));
+            Assert.AreEqual("minus 51000000", Translations.Humanize(-51000000));
         }
 
         [TestMethod]
         public void TestSpeechHumanize8()
         {
-            Assert.AreEqual("51 million", Translations.Humanize(51000001));
+            Assert.AreEqual("51000000", Translations.Humanize(51000001));
         }
 
         [TestMethod]
