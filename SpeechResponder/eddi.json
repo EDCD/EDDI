@@ -1939,7 +1939,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.ship}, identification {event.shipid}, sold in {event.system} for {Humanise(event.price)} credits",
+      "script": "{P(event.ship, \"shipmodel\")}, identification {event.shipid}, sold in {P(event.system, \"starsystem\")} for {Humanise(event.price)} credits",
       "default": true,
       "name": "Ship sold on rebuy",
       "description": "Triggered when you sell a ship to raise funds on the insurance / rebuy screen"
