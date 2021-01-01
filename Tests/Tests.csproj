@@ -320,6 +320,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Properties\Resources.cs.resx" />
     <EmbeddedResource Include="Properties\shipMonitor.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem1.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem2.json" />

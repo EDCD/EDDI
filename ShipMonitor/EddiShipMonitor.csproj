@@ -184,6 +184,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\ShipMonitor.cs.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.de.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.es.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.fr.resx" />

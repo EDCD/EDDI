@@ -120,6 +120,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Properties\MissionMonitor.cs.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.de.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.es.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.fr.resx" />

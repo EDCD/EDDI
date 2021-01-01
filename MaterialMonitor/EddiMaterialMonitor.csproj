@@ -115,6 +115,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\MaterialMonitor.cs.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.de.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.es.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.fr.resx" />

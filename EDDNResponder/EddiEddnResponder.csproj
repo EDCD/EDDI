@@ -135,6 +135,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\EddnResources.cs.resx" />
     <EmbeddedResource Include="Properties\EddnResources.de.resx" />
     <EmbeddedResource Include="Properties\EddnResources.es.resx" />
     <EmbeddedResource Include="Properties\EddnResources.fr.resx" />

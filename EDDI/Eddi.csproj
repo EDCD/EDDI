@@ -207,12 +207,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\EddiResources.cs.resx" />
     <EmbeddedResource Include="Properties\EddiResources.de.resx" />
     <EmbeddedResource Include="Properties\EddiResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddiResources.it.resx" />
     <EmbeddedResource Include="Properties\EddiResources.ja.resx" />
     <EmbeddedResource Include="Properties\EddiResources.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EddiResources.ru.resx" />
+    <EmbeddedResource Include="Properties\MainWindow.cs.resx" />
     <EmbeddedResource Include="Properties\MainWindow.de.resx" />
     <EmbeddedResource Include="Properties\MainWindow.es.resx" />
     <EmbeddedResource Include="Properties\MainWindow.fr.resx" />

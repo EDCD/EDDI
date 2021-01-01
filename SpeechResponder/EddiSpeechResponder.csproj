@@ -286,6 +286,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SpeechResponder.cs.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.cs.resx" />
     <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
     <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Tooltips.ja.resx" />

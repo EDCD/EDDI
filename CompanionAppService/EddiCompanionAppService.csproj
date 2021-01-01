@@ -140,6 +140,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\CapiResources.cs.resx" />
     <EmbeddedResource Include="Properties\CapiResources.de.resx" />
     <EmbeddedResource Include="Properties\CapiResources.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
