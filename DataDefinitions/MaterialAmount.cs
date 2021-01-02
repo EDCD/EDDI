@@ -3,13 +3,14 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class MaterialAmount : INotifyPropertyChanged
     {
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        [DefaultValue(null)]
+        [DefaultValue(null), VoiceAttackIgnore]
         public string edname { get; private set; }
 
         [JsonIgnore]
