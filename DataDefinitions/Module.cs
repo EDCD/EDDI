@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -59,7 +60,7 @@ namespace EddiDataDefinitions
         public bool modified { get; set; } // If the module has been modified
         [JsonProperty]
         public string modificationEDName { get; set; }
-        [JsonIgnore]
+        [JsonIgnore, VoiceAttackIgnore]
         public Blueprint engineermodification
         {
             get
@@ -71,7 +72,7 @@ namespace EddiDataDefinitions
                 engineerModification = value;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, VoiceAttackIgnore]
         private Blueprint engineerModification;
         [JsonProperty]
         public long blueprintId { get; set; }
