@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -7,7 +8,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class MaterialPresence
     {
-        [JsonIgnore]
+        [JsonIgnore, VoiceAttackIgnore]
         public Material definition { get; private set; }
 
         // We merged this with MaterialPercentage (which is now gone) but old scripts used different keys for the material's name so put them both here
