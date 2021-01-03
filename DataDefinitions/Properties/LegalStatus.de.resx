@@ -150,7 +150,7 @@
     <comment>LegalStatus - WantedEnemy</comment>
   </data>
   <data name="Warrant" xml:space="preserve">
-    <value>Bevollmächtigt</value>
+    <value>Haftbefehl</value>
     <comment>LegalStatus - Warrant</comment>
   </data>
   <data name="IllegalCargo" xml:space="preserve">
