@@ -1309,7 +1309,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'abandon')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if event.communal:\r\n    You have abandoned the community goal: {mission.localisedname}\r\n|else:\r\n    {if find(mission.typeEDName, \"Passenger\") > -1:\r\n        {set type to \"Transport \"}\r\n        {set type to cat(type, mission.passengertype)}\r\n    |else:\r\n        {set type to mission.type}\r\n    }\r\n    {set type to cat(type, \" mission\")}\r\n\r\n    {type} {if mission.faction: for {mission.faction}} abandoned.\r\n}\r\n\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'abandon')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if event.communal:\r\n    You have abandoned the community goal: {mission.localisedname}\r\n|else:\r\n    {if find(mission.typeEDName, \"Passenger\") > -1:\r\n        {set type to \"Transport \"}\r\n        {set type to cat(type, mission.passengertype)}\r\n    |else:\r\n        {set type to mission.type}\r\n    }\r\n    {set type to cat(type, \" mission\")}\r\n\r\n    {type} {if mission.faction: for {P(mission.faction, \"faction\")}} abandoned.\r\n}\r\n\r\n",
       "default": true,
       "name": "Mission abandoned",
       "description": "Triggered when you abandon a mission"
