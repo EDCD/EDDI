@@ -238,11 +238,11 @@ namespace EddiCore
 
         public bool ShouldUseTestEndpoints()
         {
-#if RELEASE
+#if DEBUG
+            return true;
+#else
             // use test endpoints if the game is in beta
             return EDDI.Instance.gameIsBeta;
-#else
-            return true;
 #endif
         }
 
