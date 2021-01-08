@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Scripts
       * `Bond awarded` updated to more consistently apply the P() function.
+      * `Commander continued` updated to move mission check to new `Missions` event.
       * `Carrier jump engaged` updated to fix indentation.  
       * `Crime check system` updated to more consistently apply the P() function.
       * `Data voucher awarded` updated to more consistently apply the P() function.
@@ -13,6 +14,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission abandoned` updated to more consistently apply the P() function.
       * `Mission completed` updated to more consistently apply the P() function. 
       * `Mission expired` updated to more consistently apply the P() function.
+      * `Missions` added, triggered at startup when mission information has been updated.
       * `Star report` updated to apply the List() function for notable features.
 
 ### 3.7.2-b2

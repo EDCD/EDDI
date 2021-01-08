@@ -303,7 +303,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Commander continued }\r\n{_ Triggered when you continue an existing game }\r\n\r\n\r\nWelcome back {F(\"Honorific\")}.\r\n\r\n{SetState('eddi_context_last_subject', 'load_game')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_body_name', body.name)}\r\n{SetState('eddi_context_station_name', station.name)}\r\n{SetState('eddi_context_lastdocked', station.name)}\r\n\r\n{F(\"Mission check galaxy\")}\r\n\r\n\r\n",
+      "script": "{_ Commander continued }\r\n{_ Triggered when you continue an existing game }\r\n\r\n\r\nWelcome back {F(\"Honorific\")}.\r\n\r\n{SetState('eddi_context_last_subject', 'load_game')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_body_name', body.name)}\r\n{SetState('eddi_context_station_name', station.name)}\r\n{SetState('eddi_context_lastdocked', station.name)}",
       "default": true,
       "name": "Commander continued",
       "description": "Triggered when you continue an existing game"
@@ -1412,6 +1412,15 @@
       "default": true,
       "name": "Mission warning",
       "description": "Triggered when a mission is about to expire, based on a set threshold"
+    },
+    "Missions": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Missions }\r\n{_ Triggered at startup, with basic information of the Mission Log }\r\n\r\n{F(\"Mission check galaxy\")}",
+      "default": true,
+      "name": "Missions",
+      "description": "Triggered at startup, with basic information of the Mission Log"
     },
     "Modification crafted": {
       "enabled": true,

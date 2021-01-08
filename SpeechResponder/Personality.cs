@@ -290,7 +290,6 @@ namespace EddiSpeechResponder
                 // Shares updates with monitors / responders but are not intended to be user facing
                 "Cargo",
                 "Market",
-                "Missions",
                 "Outfitting",
                 "Shipyard",
                 "Squadron startup",
