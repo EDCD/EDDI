@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         public static readonly EngineerSpecialty Missiles = new EngineerSpecialty("Missiles");
         public static readonly EngineerSpecialty MultiCannons = new EngineerSpecialty("MultiCannons");
         public static readonly EngineerSpecialty PlasmaAccelerators = new EngineerSpecialty("PlasmaAccelerators");
-        public static readonly EngineerSpecialty PointDefenses = new EngineerSpecialty("PointDefenses");
+        public static readonly EngineerSpecialty PointDefence = new EngineerSpecialty("PointDefence");
         public static readonly EngineerSpecialty PowerDistributors = new EngineerSpecialty("PowerDistributors");
         public static readonly EngineerSpecialty PowerPlants = new EngineerSpecialty("PowerPlants");
         public static readonly EngineerSpecialty RailGuns = new EngineerSpecialty("RailGuns");

@@ -168,8 +168,8 @@
   <data name="PlasmaAccelerators" xml:space="preserve">
     <value>Plasma Accelerators</value>
   </data>
-  <data name="PointDefenses" xml:space="preserve">
-    <value>Point Defenses</value>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Point Defence</value>
   </data>
   <data name="PowerDistributors" xml:space="preserve">
     <value>Power Distributors</value>

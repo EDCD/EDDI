@@ -214,11 +214,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Point Defenses.
+        ///   Looks up a localized string similar to Point Defence.
         /// </summary>
-        public static string PointDefenses {
+        public static string PointDefence {
             get {
-                return ResourceManager.GetString("PointDefenses", resourceCulture);
+                return ResourceManager.GetString("PointDefence", resourceCulture);
             }
         }
         
