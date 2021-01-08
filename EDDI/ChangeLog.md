@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.2-rc1
+  * Frontier API
+    * Fixed a bug that would re-play the speech "Frontier API connection operational" when the token was refreshed.
   * Speech Responder
     * Scripts
       * `Bond awarded` updated to more consistently apply the P() function.
