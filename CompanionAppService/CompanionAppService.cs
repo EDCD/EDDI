@@ -43,6 +43,7 @@ namespace EddiCompanionAppService
             AwaitingCallback,
             Authorized,
             NoClientIDConfigured,
+            TokenRefresh,
         };
         private State _currentState;
         public State CurrentState
@@ -307,7 +308,7 @@ namespace EddiCompanionAppService
                 throw new EliteDangerousCompanionAppAuthenticationException("Refresh token not found, need full login");
             }
 
-            CurrentState = State.AwaitingCallback;
+            CurrentState = State.TokenRefresh;
             HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
