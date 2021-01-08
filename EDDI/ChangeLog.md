@@ -12,6 +12,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Data voucher awarded` updated to more consistently apply the P() function.
       * `Fuel check` updated to more consistently apply the P() function.
       * `Mission abandoned` updated to more consistently apply the P() function.
+      * `Mission check galaxy` updated to reduce verbosity.
+      * `Mission check station` updated to reduce verbosity.
+      * `Mission check system` updated to reduce verbosity and more consistently apply the P() function.
       * `Mission completed` updated to more consistently apply the P() function. 
       * `Mission expired` updated to more consistently apply the P() function.
       * `Missions` added, triggered at startup when mission information has been updated.
