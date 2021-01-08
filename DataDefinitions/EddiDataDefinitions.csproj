@@ -497,6 +497,15 @@
     <EmbeddedResource Include="Properties\EmpireRatingsMale.cs.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.ru.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.cs.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.de.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.es.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.fr.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.hu.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.it.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.ja.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.ru.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.cs.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.ru.resx" />
