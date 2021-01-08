@@ -128,17 +128,6 @@ namespace EddiCore
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
 
-                // Set up the Elite configuration
-                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                gameIsBeta = eliteConfiguration.Beta;
-                Logging.Info(gameIsBeta ? "On beta" : "On live");
-                inHorizons = eliteConfiguration.Horizons;
-
-                // Set up our CompanionAppService instance
-                // CAUTION: CompanionAppService.Instance must be invoked with the EDDI .ctor to correctly
-                // configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
-                CompanionAppService.Instance.gameIsBeta = gameIsBeta;
-
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
@@ -198,6 +187,8 @@ namespace EddiCore
                 Task.Run(() =>
                 {
                     // Set up the Frontier API service
+                    // CAUTION: CompanionAppService.Instance must be invoked with the EDDI .ctor to correctly
+                    // configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         // Carry out initial population of profile
@@ -1766,11 +1757,8 @@ namespace EddiCore
                         )
                     )
                 );
+            CompanionAppService.Instance.gameIsBeta = gameIsBeta;
             Logging.Info(gameIsBeta ? "On beta" : "On live");
-            EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Beta = gameIsBeta;
-            config.ToFile();
-
             return true;
         }
 
@@ -1957,9 +1945,6 @@ namespace EddiCore
 
             // Set game version
             inHorizons = theEvent.horizons;
-            EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Horizons = inHorizons;
-            config.ToFile();
 
             return true;
         }
