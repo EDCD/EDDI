@@ -90,6 +90,7 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="EngineerSpecialty.cs" />
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
