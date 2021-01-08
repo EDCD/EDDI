@@ -971,6 +971,7 @@ namespace Eddi
                     companionAppText.Text = Properties.EddiResources.frontier_api_please_authenticate;
                     break;
                 case CompanionAppService.State.Authorized:
+                case CompanionAppService.State.TokenRefresh:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnected;
                     companionAppButton.Content = Properties.MainWindow.reset_button;
                     companionAppButton.IsEnabled = true;
