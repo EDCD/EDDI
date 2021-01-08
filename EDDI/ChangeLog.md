@@ -2,6 +2,19 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.2-rc1
+  * Speech Responder
+    * Scripts
+      * `Bond awarded` updated to more consistently apply the P() function.
+      * `Carrier jump engaged` updated to fix indentation.  
+      * `Crime check system` updated to more consistently apply the P() function.
+      * `Data voucher awarded` updated to more consistently apply the P() function.
+      * `Fuel check` updated to more consistently apply the P() function.
+      * `Mission abandoned` updated to more consistently apply the P() function.
+      * `Mission completed` updated to more consistently apply the P() function. 
+      * `Mission expired` updated to more consistently apply the P() function.
+      * `Star report` updated to apply the List() function for notable features.
+
 ### 3.7.2-b2
   * Speech Responder
     * Functions
