@@ -116,7 +116,7 @@ namespace EddiDataDefinitions
         public string squadronfaction { get; set; }
 
         /// <summary>The insurance excess percentage the commander has to pay</summary>
-        public decimal? insurance { get; set; }
+        public decimal? insurance { get; set; } = 0.05M;
 
         /// <summary>The Commander's friends</summary>
         public List<Friend> friends = new List<Friend>();
