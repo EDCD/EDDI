@@ -128,6 +128,10 @@ namespace EddiCore
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
 
+                // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
+                // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
+                CompanionAppService.Instance.gameIsBeta = false;
+
                 // Retrieve commander preferences
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
@@ -187,8 +191,6 @@ namespace EddiCore
                 Task.Run(() =>
                 {
                     // Set up the Frontier API service
-                    // CAUTION: CompanionAppService.Instance must be invoked with the EDDI .ctor to correctly
-                    // configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         // Carry out initial population of profile
