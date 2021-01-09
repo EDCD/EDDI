@@ -21,7 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission expired` updated to more consistently apply the P() function.
       * `Missions` added, triggered at startup when mission information has been updated.
       * `Star report` updated to apply the List() function for notable features.
-      * `System state report` updated to remove "the" prefixing faction names (to correct pronounciation of faction names like "The Fatherhood"). 
+      * `System state report` updated to remove "the" prefixing faction names (to correct pronunciation of faction names like "The Fatherhood"). 
 
 ### 3.7.2-b2
   * Speech Responder
