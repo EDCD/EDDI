@@ -1733,7 +1733,10 @@
     <value>Schalenaussengewebeprobe</value>
     <comment>Commodity S6_TissueSample_Cells</comment>
   </data>
-  
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Hülsen-Schalengewebe</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
   <data name="SanumaMEAT" xml:space="preserve">
     <value>Dekoratives Sanuma Fleisch</value>
     <comment>Commodity SanumaMEAT</comment>
