@@ -126,7 +126,10 @@
   
   
   
-  
+  <data name="default_personality_script_filename" xml:space="preserve">
+    <value>eddi.cs.json</value>
+    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
+  </data>
   
   
   
