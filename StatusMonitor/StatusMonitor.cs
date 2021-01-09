@@ -328,34 +328,13 @@ namespace EddiStatusMonitor
                 lastStatus = currentStatus;
                 currentStatus = thisStatus;
 
-                // Update environment and vehicle information
-                if (EDDI.Instance.Environment != Constants.ENVIRONMENT_WITCH_SPACE)
+                // Update glide status
+                if (thisStatus.hyperspace || thisStatus.supercruise || thisStatus.docked || thisStatus.landed)
                 {
-                    if (thisStatus.hyperspace)
-                    {
-                        EDDI.Instance.Environment = Constants.ENVIRONMENT_WITCH_SPACE;
-                        gliding = false;
-                    }
-                    else if (thisStatus.supercruise)
-                    {
-                        EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                        gliding = false;
-                    }
-                    else if (thisStatus.docked)
-                    {
-                        EDDI.Instance.Environment = Constants.ENVIRONMENT_DOCKED;
-                        gliding = false;
-                    }
-                    else if (thisStatus.landed)
-                    {
-                        EDDI.Instance.Environment = Constants.ENVIRONMENT_LANDED;
-                        gliding = false;
-                    }
-                    else
-                    {
-                        EDDI.Instance.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                    }
+                    gliding = false;
                 }
+
+                // Update vehicle information
                 EDDI.Instance.Vehicle = thisStatus.vehicle;
 
                 // Trigger events for changed status, as applicable
