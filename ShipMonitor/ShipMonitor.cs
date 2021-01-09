@@ -522,7 +522,10 @@ namespace EddiShipMonitor
             ship.health = @event.hullhealth;
 
             // Calculate and update our commander's insurance rate
-            EDDI.Instance.Cmdr.insurance = Math.Round((decimal)@event.rebuy / ((@event.hullvalue ?? 0) + (@event.modulesvalue ?? 0)), 2);
+            if (@event.value > 0)
+            {
+                EDDI.Instance.Cmdr.insurance = Math.Round((decimal)@event.rebuy / (@event.value ?? 0), 2);
+            }
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
