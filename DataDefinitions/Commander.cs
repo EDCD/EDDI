@@ -146,6 +146,8 @@ namespace EddiDataDefinitions
 
         public static Commander FromFrontierApiCmdr(Commander currentCmdr, FrontierApiCommander frontierApiCommander, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool cmdrMatches)
         {
+            if (frontierApiCommander is null) { cmdrMatches = true; return currentCmdr; }
+
             // Copy our current commander to a new commander object
             Commander Cmdr = currentCmdr.Copy();
 
