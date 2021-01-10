@@ -24,13 +24,13 @@ namespace EddiDataDefinitions
 
         // Station prices
         [JsonProperty]
-        public int buyPrice { get; set; }
+        public decimal buyPrice { get; set; }
 
         [JsonProperty]
-        public int meanPrice { get; set; }
+        public decimal meanPrice { get; set; }
 
         [JsonProperty]
-        public int sellPrice { get; set; }
+        public decimal sellPrice { get; set; }
 
         // Station in-stock parameter
         [JsonProperty]

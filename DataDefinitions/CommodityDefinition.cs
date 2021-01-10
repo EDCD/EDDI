@@ -453,7 +453,7 @@ namespace EddiDataDefinitions
         public CommodityDefinition() : this(0, null, "", Unknown)
         { }
 
-        internal CommodityDefinition(long EliteID, long? EDDBID, string edname, CommodityCategory Category, int AveragePrice = 0, bool Rare = false) : base(edname, edname)
+        internal CommodityDefinition(long EliteID, long? EDDBID, string edname, CommodityCategory Category, decimal AveragePrice = 0, bool Rare = false) : base(edname, edname)
         {
             this.EliteID = EliteID;
             this.EDDBID = EDDBID;

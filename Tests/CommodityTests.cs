@@ -132,7 +132,7 @@ namespace UnitTests
             Assert.AreEqual(quote.demand, edQuote.demand);
             Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
             Assert.AreEqual(quote.StatusFlags.First(), edQuote.statusFlags.First());
-            Assert.AreEqual("{\"name\":\"explosives\",\"buyPrice\":313,\"meanPrice\":294,\"sellPrice\":281,\"stock\":31881,\"stockBracket\":2,\"demand\":1,\"demandBracket\":\"\",\"statusFlags\":[\"Producer\"]}", JsonConvert.SerializeObject(edQuote, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() }));
+            Assert.AreEqual("{\"name\":\"explosives\",\"buyPrice\":313.0,\"meanPrice\":294.0,\"sellPrice\":281.0,\"stock\":31881,\"stockBracket\":2,\"demand\":1,\"demandBracket\":\"\",\"statusFlags\":[\"Producer\"]}", JsonConvert.SerializeObject(edQuote, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() }));
         }
 
         [TestMethod]
