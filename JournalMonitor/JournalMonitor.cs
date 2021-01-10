@@ -2074,7 +2074,7 @@ namespace EddiJournalMonitor
                                     bool unique = false;
                                     if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress == systemAddress)
                                     {
-                                        unique = EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
+                                        unique = !EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
                                         EDDI.Instance.CurrentStarSystem.AddOrUpdateSignalSource(source);
                                     }
                                     
