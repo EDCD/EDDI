@@ -1691,13 +1691,19 @@
     <comment>Commodity Tritium</comment>
   </data>
   
-  
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Mollusken-Weichgewebe</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
   
   <data name="S_TissueSample_Cells" xml:space="preserve">
     <value>Schalenkerngewebeprobe</value>
     <comment>Commodity S_TissueSample_Cells</comment>
   </data>
-  
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Hülsentotgewebe</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
   <data name="S_TissueSample_Core" xml:space="preserve">
     <value>Schalenoberflächengewebeprobe</value>
     <comment>Commodity S_TissueSample_Core</comment>
@@ -1707,15 +1713,30 @@
     <value>Schalengewebeprobe</value>
     <comment>Commodity S9_TissueSample_Shell</comment>
   </data>
-  
-  
-  
-  
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Molluskenmembran</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Molluskenmyzel</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Molluskensporen</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Hülsen-Mesoglea</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
   <data name="S6_TissueSample_Cells" xml:space="preserve">
     <value>Schalenaussengewebeprobe</value>
     <comment>Commodity S6_TissueSample_Cells</comment>
   </data>
-  
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Hülsen-Schalengewebe</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
   <data name="SanumaMEAT" xml:space="preserve">
     <value>Dekoratives Sanuma Fleisch</value>
     <comment>Commodity SanumaMEAT</comment>
