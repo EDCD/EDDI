@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.2-rc2
+  * Core
+    * Fixed a bug that caused the `Signal detected` event to identify non-unique signals as unique rather than the reverse.
+
 ### 3.7.2-rc1
   * Frontier API
     * Fixed a bug that would re-play the speech "Frontier API connection operational" when the token was refreshed.
