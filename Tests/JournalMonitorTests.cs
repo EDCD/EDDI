@@ -1134,6 +1134,22 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSignalDetectedEvent4()
+        {
+            // Test a carrier signal source
+            string line = @"{ ""timestamp"":""2021-01-11T19:44:08Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":1733119939274, ""SignalName"":""PBSF SPACE ODDITY XBH-64Y"", ""IsStation"":true }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("PBSF SPACE ODDITY XBH-64Y", @event.signalSource.localizedName);
+
+            var testSystem = new StarSystem() { systemname = "Test System" };
+            testSystem.AddOrUpdateSignalSource(@event.signalSource);
+            Assert.AreEqual(1, testSystem.carriersignalsources.Count);
+        }
+
+        [TestMethod]
         public void TestSignalDetectedUnique()
         {
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
