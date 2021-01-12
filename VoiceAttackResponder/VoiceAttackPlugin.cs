@@ -230,14 +230,26 @@ namespace EddiVoiceAttackResponder
             {
                 lock (vaProxyLock)
                 {
+                    Logging.Info("Processing EDDI event", @event.type);
+                    var startTime = DateTime.UtcNow;
                     vaProxy.SetText("EDDI event", @event.type);
+
                     // Retrieve and clear variables from prior iterations of the same event
                     clearPriorEventValues(ref vaProxy, @event.type, currentVariables);
                     currentVariables = currentVariables.Where(v => v.eventType != @event.type).ToList();
+                    var clearedVarTime = DateTime.UtcNow;
+                    Logging.Info($"Cleared prior variables in {(clearedVarTime - startTime).Milliseconds} milliseconds");
+                    
                     // Prepare and update this event's variable values
                     var eventVariables = new List<VoiceAttackVariable>();
                     PrepareEventVariables(@event.type, $"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref eventVariables, true, @event);
+                    var preparedVarTime = DateTime.UtcNow;
+                    Logging.Info($"Prepared new event variables in {(preparedVarTime - clearedVarTime).Milliseconds} milliseconds");
+
                     SetEventVariables(vaProxy, eventVariables);
+                    var setVarTime = DateTime.UtcNow;
+                    Logging.Info($"Set new event variables in {(setVarTime - preparedVarTime).Milliseconds} milliseconds");
+
                     // Save the updated state of our event variables
                     currentVariables.AddRange(eventVariables);
                     // Update all standard values  
