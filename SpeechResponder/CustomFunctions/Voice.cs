@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
+using System;
+using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -16,10 +16,10 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString ?? string.Empty;
-            string voice = SpeechService.Instance.allvoices?.SingleOrDefault(v => string.Equals(v, values[1].AsString ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
-            if (values.Count == 2)
+            var voice = SpeechService.Instance.allVoices?.SingleOrDefault(v => string.Equals(v.name, values[1].AsString ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
+            if (voice != null && values.Count == 2)
             {
-                return @"<voice name=""" + voice + @""">" + text + "</voice>";
+                return @"<voice name=""" + voice.name + @""" xml:lang=""" + voice.culturecode + @""">" + text + "</voice>";
             }
             return "The Voice function is used improperly. Please review the documentation for correct usage.";
         }, 1, 2);

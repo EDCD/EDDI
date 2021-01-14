@@ -786,10 +786,10 @@ namespace EddiSpeechService
                 // but it does support two letter country codes so we will use those instead
                 guess = Culture.Parent.Name;
             }
-            else if (name.Contains("IVONA") && Culture.Name == "en-GB")
-            {
-                guess = "en-uk";
-            }
+            //else if (name.Contains("IVONA") && Culture.Name == "en-GB")
+            //{
+            //    guess = "en-uk";
+            //}
             else
             {
                 // Trust the voice's information (with the complete country/region code)

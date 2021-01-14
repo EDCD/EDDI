@@ -3,8 +3,6 @@ using Cottle.Values;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using System.Collections.Generic;
-using System.Linq;
-using System.Speech.Synthesis;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
