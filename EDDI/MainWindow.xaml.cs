@@ -413,17 +413,10 @@ namespace Eddi
             };
             try
             {
-                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                foreach (var voice in SpeechService.Instance.allvoices)
                 {
-                    foreach (InstalledVoice voice in synth.GetInstalledVoices())
-                    {
-                        if (voice.Enabled && (!voice.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice")))
-                        {
-                            speechOptions.Add(voice.VoiceInfo.Name);
-                        }
-                    }
+                    speechOptions.Add(voice);
                 }
-                speechOptions.Sort();
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
             }

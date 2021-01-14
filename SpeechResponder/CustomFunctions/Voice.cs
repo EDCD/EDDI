@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Speech.Synthesis;
+﻿using System;
+using System.Linq;
 using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
@@ -16,21 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString ?? string.Empty;
-            string voice = values[1].AsString ?? string.Empty;
-
-            if (SpeechService.Instance?.allVoices != null)
-            {
-                foreach (VoiceInfo vc in SpeechService.Instance.allVoices.Select(v => v.voiceInfo))
-                {
-                    if (vc.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
-                        && !vc.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
-                    {
-                        voice = vc.Name;
-                        break;
-                    }
-                }
-            }
-
+            string voice = SpeechService.Instance.allvoices?.SingleOrDefault(v => string.Equals(v, values[1].AsString ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
             if (values.Count == 2)
             {
                 return @"<voice name=""" + voice + @""">" + text + "</voice>";

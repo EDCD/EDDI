@@ -22,16 +22,16 @@ namespace EddiSpeechResponder.CustomFunctions
                 List<VoiceDetail> voices = new List<VoiceDetail>();
                 if (SpeechService.Instance?.allVoices != null)
                 {
-                    foreach (VoiceInfo vc in SpeechService.Instance.allVoices.Select(v => v.voiceInfo))
+                    foreach (var vc in SpeechService.Instance.allVoices)
                     {
-                        if (!vc.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        if (!vc.name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             voices.Add(new VoiceDetail(
-                                vc.Name,
+                                vc.name,
                                 vc.Culture.Parent.EnglishName,
                                 vc.Culture.Parent.NativeName,
                                 vc.Culture.Name,
-                                vc.Gender.ToString()
+                                vc.gender
                                 ));
                         }
                     }
@@ -43,17 +43,17 @@ namespace EddiSpeechResponder.CustomFunctions
                 VoiceDetail result = null;
                 if (SpeechService.Instance?.allVoices != null && !string.IsNullOrEmpty(values[0].AsString))
                 {
-                    foreach (VoiceInfo vc in SpeechService.Instance.allVoices.Select(v => v.voiceInfo))
+                    foreach (var vc in SpeechService.Instance.allVoices)
                     {
-                        if (vc.Name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant())
-                        && !vc.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        if (vc.name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant())
+                        && !vc.name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             result = new VoiceDetail(
-                                vc.Name,
+                                vc.name,
                                 vc.Culture.Parent.EnglishName,
                                 vc.Culture.Parent.NativeName,
                                 vc.Culture.Name,
-                                vc.Gender.ToString()
+                                vc.gender
                                 );
                             break;
                         }
