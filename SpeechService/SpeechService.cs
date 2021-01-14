@@ -184,8 +184,8 @@ namespace EddiSpeechService
             string[] separators =
             {
                         @"(<audio.*?>)",
-                        @"(<transmit.*?>.*<\/transmit>)",
-                        @"(<voice.*?>.*<\/voice>)",
+                        @"(<transmit.*?>[\s\S]*?<\/transmit>)",
+                        @"(<voice.*?>[\s\S]*?<\/voice>)",
                     };
             List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
 
