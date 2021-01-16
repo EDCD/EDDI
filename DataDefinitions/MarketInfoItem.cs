@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -23,14 +24,14 @@ namespace EddiDataDefinitions
         private string _edName;
 
         // Station prices
-        [JsonProperty]
-        public decimal buyPrice { get; set; }
+        [JsonProperty, JsonConverter(typeof(DecimalToIntPriceConverter))]
+        public int buyPrice { get; set; }
 
-        [JsonProperty]
-        public decimal meanPrice { get; set; }
+        [JsonProperty, JsonConverter(typeof(DecimalToIntPriceConverter))]
+        public int meanPrice { get; set; }
 
-        [JsonProperty]
-        public decimal sellPrice { get; set; }
+        [JsonProperty, JsonConverter(typeof(DecimalToIntPriceConverter))]
+        public int sellPrice { get; set; }
 
         // Station in-stock parameter
         [JsonProperty]
@@ -205,6 +206,47 @@ namespace EddiDataDefinitions
             else if (value is CommodityBracket bracket)
             {
                 serializer.Serialize(writer, bracket);
+            }
+        }
+    }
+
+    // Prices are sometimes written as floats (either to Market.json or to the Frontier API).
+    // These must be converted to integers before they can be passed to EDDN.
+    class DecimalToIntPriceConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(decimal) || objectType == typeof(decimal?));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            JToken token = JToken.Load(reader);
+            if (token.Type == JTokenType.Float || token.Type == JTokenType.Integer)
+            {
+                return token.ToObject<int>();
+            }
+            if (token.Type == JTokenType.Null)
+            {
+                return null;
+            }
+            throw new JsonSerializationException("Unexpected token type: " +
+                                                  token.Type.ToString());
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (value is null)
+            {
+                serializer.Serialize(writer, null);
+            }
+            else if (value is int i)
+            {
+                serializer.Serialize(writer, i);
+            }
+            else if (value is decimal d)
+            { 
+                serializer.Serialize(writer, Convert.ToInt32(d));
             }
         }
     }
