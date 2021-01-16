@@ -1632,7 +1632,7 @@ namespace EddiJournalMonitor
                                     string interdictor = JsonParsing.getString(data, "Interdictor");
                                     bool iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out object val);
-                                    CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
+                                    CombatRating rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
                                     string faction = getFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
