@@ -22,9 +22,9 @@ namespace EddiEvents
 
         // Admin
         [JsonProperty("marketId")]
-        public long marketId { get; private set; }
+        public long? marketId { get; private set; }
 
-        public UndockedEvent(DateTime timestamp, string station, long marketId) : base(timestamp, NAME)
+        public UndockedEvent(DateTime timestamp, string station, long? marketId) : base(timestamp, NAME)
         {
             this.station = station;
             this.marketId = marketId;

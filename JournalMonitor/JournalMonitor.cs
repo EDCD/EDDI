@@ -159,7 +159,7 @@ namespace EddiJournalMonitor
                             case "Undocked":
                                 {
                                     string stationName = JsonParsing.getString(data, "StationName");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? marketId = JsonParsing.getLong(data, "MarketID");
                                     events.Add(new UndockedEvent(timestamp, stationName, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
