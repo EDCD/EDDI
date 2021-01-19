@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.2-rc3
+  * Core
+    * Fixed a bug with parsing float / decimal commodity prices.
+
 ### 3.7.2-rc2
   * Core
     * Fixed a bug that caused the `Signal detected` event to identify non-unique signals as unique rather than the reverse.
