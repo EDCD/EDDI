@@ -82,6 +82,7 @@ Type: files; Name: "{app}\RestSharp.xml"
 Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
 Type: files; Name: "{app}\EntityFramework.xml"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
+Type: files; Name: "{userappdata}\EDDI\elite.json"
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]

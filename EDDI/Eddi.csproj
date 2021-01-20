@@ -157,7 +157,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="EDDI.cs" />
-    <Compile Include="EliteConfiguration.cs" />
     <Compile Include="EDDIMonitor.cs" />
     <Compile Include="EDDIResponder.cs" />
     <Page Include="ChangeLog.xaml">
