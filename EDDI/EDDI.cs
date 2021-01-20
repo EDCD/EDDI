@@ -234,8 +234,8 @@ namespace EddiCore
 #if DEBUG
             return true;
 #else
-            // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.gameIsBeta || EddiIsBeta();
+            // use test endpoints if the game is in beta
+            return EDDI.Instance.gameIsBeta;
 #endif
         }
 
