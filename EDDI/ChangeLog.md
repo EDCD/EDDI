@@ -3,7 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.7.3-b1
-
+  * Core
+    * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
 
 ### 3.7.2
   * Promote 3.7.2-rc3 to final
