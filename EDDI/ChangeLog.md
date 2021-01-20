@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.7.2
+  * Promote 3.7.2-rc3 to final
+
 ### 3.7.2-rc3
   * Core
     * Fixed a bug with parsing float / decimal commodity prices.
