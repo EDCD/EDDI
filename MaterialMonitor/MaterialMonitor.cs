@@ -283,7 +283,7 @@ namespace EddiMaterialMonitor
 
                 if (ma.maximum.HasValue)
                 {
-                    if (previous <= ma.maximum && ma.amount > ma.maximum)
+                    if (previous <= ma.maximum && ma.amount >= ma.maximum)
                     {
                         // We have crossed the high water threshold for this material
                         pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
