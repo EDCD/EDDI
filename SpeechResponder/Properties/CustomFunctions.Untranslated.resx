@@ -749,6 +749,6 @@ In addition to the basic Cottle features EDDI has a number of features that prov
   <data name="FunctionsHeader" xml:space="preserve">
     <value>EDDI's Speech Responder uses [Cottle templating language](https://cottle.readthedocs.io/en/stable/) to generate verbal responses to various events.
 
-Cottle's library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/blob/beta/SpeechResponder/Help.md)):</value>
+Cottle's library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/wiki/Help)):</value>
   </data>
 </root>
