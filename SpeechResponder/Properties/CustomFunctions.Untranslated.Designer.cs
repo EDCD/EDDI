@@ -286,7 +286,7 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to EDDI&apos;s Speech Responder uses [Cottle templating language](https://cottle.readthedocs.io/en/stable/) to generate verbal responses to various events.
         ///
-        ///Cottle&apos;s library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/blob/beta/SpeechResponder/Help.md)):.
+        ///Cottle&apos;s library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/wiki/Help)):.
         /// </summary>
         public static string FunctionsHeader {
             get {
