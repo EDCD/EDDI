@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1648,6 +1649,12 @@ namespace EddiCore
         private void updateCurrentSystem(string name)
         {
             if (name == null || CurrentStarSystem?.systemname == name) { return; }
+
+            // Discard any signal sources from the current star system
+            if (CurrentStarSystem != null)
+            {
+                CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
+            }
 
             // We have changed system so update the old one as to when we left
             StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
