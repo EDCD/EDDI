@@ -1420,5 +1420,19 @@ namespace UnitTests
             // Assert the results
             Assert.IsTrue(expectedEvent.DeepEquals(@event));
         }
+
+        [TestMethod]
+        public void TestShipInterdictedByPlayerEvent()
+        {
+            string line = @"{ ""timestamp"":""2021-01-14T16:15:01Z"", ""event"":""Interdicted"", ""Submitted"":true, ""Interdictor"":""Blaes"", ""IsPlayer"":true, ""CombatRank"":5 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ShipInterdictedEvent @event = (ShipInterdictedEvent)events[0];
+            Assert.AreEqual("Ship interdicted", @event.type);
+            Assert.IsTrue(@event.submitted);
+            Assert.AreEqual("Blaes", @event.interdictor);
+            Assert.IsTrue(@event.iscommander);
+            Assert.AreEqual(CombatRating.FromRank(5).localizedName, @event.rating);
+            Assert.IsNull(@event.power);
+        }
     }
 }
