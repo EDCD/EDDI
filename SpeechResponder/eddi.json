@@ -738,6 +738,15 @@
       "name": "Engineer progressed",
       "description": "Triggered when you reach a new rank with an engineer"
     },
+    "Engineer report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from Context, if a context is set _}\r\n{if state.eddi_context_system_name:\r\n    {set systemname to state.eddi_context_system_name}\r\n|else:\r\n    {set systemname to system.systemname}\r\n}\r\n\r\n{if !systemname || systemname = \"\":\r\n\r\n    I'm not sure which system you are asking about.\r\n\r\n|else:\r\n\r\n    {set reportEngineer to EngineerDetails(systemname)}\r\n    {if reportEngineer:\r\n        This system is home to {reportEngineer.name}, who\r\n        {if len(reportEngineer.majorspecialties) > 0:\r\n            specializes in {OneOf(\"improving\", \"upgrading\")}\r\n            {List(reportEngineer.majorspecialties)}\r\n            {if len(reportEngineer.minorspecialties) > 0:. They also}\r\n        }\r\n        {if len(reportEngineer.minorspecialties) > 0:\r\n            {OneOf(\"improve\", \"upgrade\")} {List(reportEngineer.minorspecialties)}\r\n        }.\r\n        You can find {reportEngineer.name} at {P(reportEngineer.stationname, \"station\")}.\r\n    }\r\n}",
+      "default": true,
+      "name": "Engineer report",
+      "description": "Report on the engineer in a contextual system"
+    },
     "Entered CQC": {
       "enabled": true,
       "priority": 3,

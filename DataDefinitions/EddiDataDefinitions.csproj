@@ -90,6 +90,7 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="EngineerSpecialty.cs" />
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
@@ -104,6 +105,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AsteroidMaterialContent.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\EngineerSpecialty.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineerSpecialty.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Ship.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -492,6 +498,15 @@
     <EmbeddedResource Include="Properties\EmpireRatingsMale.cs.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.ru.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.cs.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.de.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.es.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.fr.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.hu.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.it.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.ja.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\EngineerSpecialty.ru.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.cs.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.ru.resx" />
@@ -662,6 +677,10 @@
     <EmbeddedResource Include="Properties\AsteroidMaterialContent.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AsteroidMaterialContent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EngineerSpecialty.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EngineerSpecialty.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.cs.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />

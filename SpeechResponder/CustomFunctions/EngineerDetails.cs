@@ -14,7 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.EngineerDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            Engineer result = Engineer.FromName(values[0].AsString);
+            Engineer result = Engineer.FromName(values[0].AsString) ?? Engineer.FromSystemName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }
