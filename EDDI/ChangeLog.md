@@ -5,6 +5,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.7.3-b1
   * Core
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
+    * Fixed a bug that could double-count signal sources when re-logging. 
+  * Speech Responder
+    * Functions
+      * Revised the `EngineerDetails` function to accept a system name as an input.
+    * Scripts
+      * `Carrier jumped` script updated to announce engineer systems.
+      * `Engineer report` script added.
+      * `Jumped` script updated to announce engineer systems.
 
 ### 3.7.2
   * Promote 3.7.2-rc3 to final
