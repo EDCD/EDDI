@@ -172,11 +172,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\docs\VoiceAttack-Integration.md">
-      <Link>VoiceAttack-Integration.md</Link>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="..\VoiceAttack-Integration.md" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -306,6 +306,12 @@ namespace EddiDataDefinitions
         [JsonProperty("discoverableBodies")]
         public int totalbodies;
 
+        [JsonIgnore]
+        public int scannedbodies => bodies.Count(b => b.scanned != null);
+
+        [JsonIgnore]
+        public int mappedbodies => bodies.Count(b => b.mapped != null);
+
         // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
 

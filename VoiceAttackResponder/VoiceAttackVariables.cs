@@ -782,6 +782,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
                 vaProxy.SetBoolean(prefix + " scoopable", system?.scoopable);
                 vaProxy.SetInt(prefix + " total bodies", system?.totalbodies);
+                vaProxy.SetInt(prefix + " scanned bodies", system?.scannedbodies);
+                vaProxy.SetInt(prefix + " mapped bodies", system?.mappedbodies);
 
                 if (system != null)
                 {
