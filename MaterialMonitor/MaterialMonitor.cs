@@ -283,7 +283,7 @@ namespace EddiMaterialMonitor
 
                 if (ma.maximum.HasValue)
                 {
-                    if (previous <= ma.maximum && ma.amount >= ma.maximum)
+                    if (previous < ma.maximum && ma.maximum <= ma.amount)
                     {
                         // We have crossed the high water threshold for this material
                         pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
@@ -291,7 +291,7 @@ namespace EddiMaterialMonitor
                 }
                 if (ma.desired.HasValue)
                 {
-                    if (previous < ma.desired && ma.amount >= ma.desired)
+                    if (previous < ma.desired && ma.desired <= ma.amount)
                     {
                         // We have crossed the desired threshold for this material
                         pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
