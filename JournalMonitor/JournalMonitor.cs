@@ -3149,8 +3149,12 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    bool repairedfully = JsonParsing.getBool(data, "FullyRepaired");
+                                    // There is an FDev bug that can set `FullyRepaired` to false even when the module health is full,
+                                    // so we work around this by relying on the `Health` property rather than the `FullyRepaired` property.
+                                    // This appears to be a unique problem with Module Reinforcement Packages.
+
                                     decimal health = JsonParsing.getDecimal(data, "Health");
+                                    bool repairedfully = health == 1M;
 
                                     events.Add(new ShipAfmuRepairedEvent(timestamp, item, repairedfully, health) { raw = line, fromLoad = fromLogLoad });
                                 }
