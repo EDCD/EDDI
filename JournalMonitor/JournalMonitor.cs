@@ -3999,7 +3999,7 @@ namespace EddiJournalMonitor
                             case "CarrierDockingPermission":
                             case "CarrierFinance":
                             case "CarrierModulePack":
-                            case "CarrierNameChanged":
+                            case "CarrierNameChange":
                             case "CarrierShipPack":
                             case "CarrierTradeOrder":
                             case "CodexDiscovery":
