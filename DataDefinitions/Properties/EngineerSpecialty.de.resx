@@ -120,33 +120,91 @@
   <data name="AFMUs" xml:space="preserve">
     <value>Feldwartungs-Einheit</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Armour" xml:space="preserve">
+    <value>Panzerung</value>
+  </data>
+  <data name="Cannons" xml:space="preserve">
+    <value>Kanonen</value>
+  </data>
+  <data name="ChaffAndHeatSinkLaunchers" xml:space="preserve">
+    <value>Düppel- und Kühlkörperwerfer</value>
+  </data>
+  <data name="ECMs" xml:space="preserve">
+    <value>Elektronische Gegenmaßnahmen</value>
+  </data>
+  <data name="FragCannons" xml:space="preserve">
+    <value>Splitterkanonen</value>
+  </data>
+  <data name="FrameShiftDriveInterdictors" xml:space="preserve">
+    <value>FSA-Unterbrecher</value>
+  </data>
+  <data name="FrameShiftDrives" xml:space="preserve">
+    <value>Frameshiftantriebe</value>
+  </data>
+  <data name="FuelScoops" xml:space="preserve">
+    <value>Treibstoffsammler</value>
+  </data>
+  <data name="HullReinforcements" xml:space="preserve">
+    <value>Hüllenverstärkungen</value>
+  </data>
+  <data name="Lasers" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="LifeSupportSystems" xml:space="preserve">
+    <value>Lebenserhaltungen</value>
+  </data>
+  <data name="LimpetControllers" xml:space="preserve">
+    <value>Drohnencontroller</value>
+  </data>
+  <data name="Mines" xml:space="preserve">
+    <value>Minen</value>
+  </data>
+  <data name="Missiles" xml:space="preserve">
+    <value>Raketen</value>
+  </data>
+  <data name="MultiCannons" xml:space="preserve">
+    <value>Mehrfachgeschütze</value>
+  </data>
+  <data name="PlasmaAccelerators" xml:space="preserve">
+    <value>Plasmabeschleuniger</value>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Punktverteidigungen</value>
+  </data>
+  <data name="PowerDistributors" xml:space="preserve">
+    <value>Energieverteiler</value>
+  </data>
+  <data name="PowerPlants" xml:space="preserve">
+    <value>Kraftwerke</value>
+  </data>
+  <data name="RailGuns" xml:space="preserve">
+    <value>Schienenkanonen</value>
+  </data>
+  <data name="Refineries" xml:space="preserve">
+    <value>Raffinerien</value>
+  </data>
+  <data name="Scanners" xml:space="preserve">
+    <value>Scanner</value>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensoren</value>
+  </data>
+  <data name="ShieldBoosters" xml:space="preserve">
+    <value>Schild-Booster</value>
+  </data>
+  <data name="ShieldCellBanks" xml:space="preserve">
+    <value>Schildzellenbänke</value>
+  </data>
+  <data name="ShieldGenerators" xml:space="preserve">
+    <value>Schildgeneratoren</value>
+  </data>
+  <data name="SurfaceScanners" xml:space="preserve">
+    <value>Oberflächenscanner</value>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Schubdüsen</value>
+  </data>
+  <data name="Torpedos" xml:space="preserve">
+    <value>Torpedos</value>
+  </data>
 </root>
