@@ -46,8 +46,8 @@ namespace EddiVoiceAttackResponder
 
         private static readonly Random random = new Random();
 
-        public static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
-        public static Thread updaterThread = null;
+        public static BlockingCollection<Event> eventQueue = new BlockingCollection<Event>();
+        private static CancellationTokenSource updaterCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         // We'll maintain a referenceable list of variables that we've set from events
         private static List<VoiceAttackVariable> currentVariables = new List<VoiceAttackVariable>();
@@ -83,35 +83,17 @@ namespace EddiVoiceAttackResponder
 
                 Logging.Info("Initialising EDDI VoiceAttack plugin");
 
-                // Set up our event responders
+                Task.Run(() =>
+                {
+                    // ReSharper disable once AccessToModifiedClosure - OK to use vaProxy in this context.
+                    dequeueEvents(ref vaProxy);
+                }).ConfigureAwait(false);
+
+                // Set up our event responder
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
                 {
-                    try
-                    {
-                        eventQueue.Enqueue(theEvent);
-                        Thread eventHandler = new Thread(() => dequeueEvent(ref vaProxy))
-                        {
-                            Name = "VoiceAttackEventHandler",
-                            IsBackground = true
-                        };
-                        eventHandler.Start();
-                        eventHandler.Join();
-                    }
-                    catch (ThreadAbortException tax)
-                    {
-                        Thread.ResetAbort();
-                        Logging.Debug("Thread aborted", tax);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dictionary<string, object> data = new Dictionary<string, object>
-                        {
-                            { "event", JsonConvert.SerializeObject(theEvent) },
-                            { "exception", ex.Message },
-                            { "stacktrace", ex.StackTrace }
-                        };
-                        Logging.Error("VoiceAttack failed to handle event.", data);
-                    }
+                    if (theEvent is null) { return; }
+                    eventQueue.Add(theEvent);
                 };
 
                 // Add notifiers for changes in variables we want to react to 
@@ -205,21 +187,47 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void dequeueEvent(ref dynamic vaProxy)
+        private static void dequeueEvents(ref dynamic vaProxy)
         {
-            if (eventQueue.TryDequeue(out Event @event))
+            using (updaterCancellationTS = new CancellationTokenSource())
             {
-                try
+                string lastEventType = string.Empty;
+                foreach (var @event in eventQueue.GetConsumingEnumerable(updaterCancellationTS.Token))
                 {
-                    if (@event?.type != null)
+                    try
                     {
-                        updateValuesOnEvent(@event, ref vaProxy);
-                        triggerVACommands(@event, ref vaProxy);
+                        if (@event?.type != null)
+                        {
+                            lock (vaProxyLock)
+                            {
+                                updateValuesOnEvent(@event, ref vaProxy);
+                                triggerVACommands(@event, ref vaProxy);
+
+                                // For repeating events of the same type, we need to add a short pause before the next event
+                                // so that variables aren't overwritten before VoiceAttack can respond
+                                if (@event.type == lastEventType)
+                                {
+                                    Thread.Sleep(25);
+                                }
+                                lastEventType = @event.type;
+                            }
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Failed to handle event in VoiceAttack", ex);
+                    catch (OperationCanceledException)
+                    {
+                        // Operation was cancelled. Return any events we've extracted back to the queue.
+                        eventQueue.Add(@event);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dictionary<string, object> data = new Dictionary<string, object>
+                        {
+                            { "event", JsonConvert.SerializeObject(@event) },
+                            { "exception", ex.Message },
+                            { "stacktrace", ex.StackTrace }
+                        };
+                        Logging.Error("VoiceAttack failed to handle event.", data);
+                    }
                 }
             }
         }
@@ -228,33 +236,25 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                lock (vaProxyLock)
-                {
-                    Logging.Info("Processing EDDI event", @event.type);
-                    var startTime = DateTime.UtcNow;
-                    vaProxy.SetText("EDDI event", @event.type);
+                Logging.Info($"Processing EDDI event {@event.type}:", @event);
+                var startTime = DateTime.UtcNow;
+                vaProxy.SetText("EDDI event", @event.type);
 
-                    // Retrieve and clear variables from prior iterations of the same event
-                    clearPriorEventValues(ref vaProxy, @event.type, currentVariables);
-                    currentVariables = currentVariables.Where(v => v.eventType != @event.type).ToList();
-                    var clearedVarTime = DateTime.UtcNow;
-                    Logging.Info($"Cleared prior variables in {(clearedVarTime - startTime).Milliseconds} milliseconds");
-                    
-                    // Prepare and update this event's variable values
-                    var eventVariables = new List<VoiceAttackVariable>();
-                    PrepareEventVariables(@event.type, $"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref eventVariables, true, @event);
-                    var preparedVarTime = DateTime.UtcNow;
-                    Logging.Info($"Prepared new event variables in {(preparedVarTime - clearedVarTime).Milliseconds} milliseconds");
+                // Retrieve and clear variables from prior iterations of the same event
+                clearPriorEventValues(ref vaProxy, @event.type, currentVariables);
+                currentVariables = currentVariables.Where(v => v.eventType != @event.type).ToList();
 
-                    SetEventVariables(vaProxy, eventVariables);
-                    var setVarTime = DateTime.UtcNow;
-                    Logging.Info($"Set new event variables in {(setVarTime - preparedVarTime).Milliseconds} milliseconds");
+                // Prepare and update this event's variable values
+                var eventVariables = new List<VoiceAttackVariable>();
+                PrepareEventVariables(@event.type, $"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref eventVariables, true, @event);
+                SetEventVariables(vaProxy, eventVariables);
 
-                    // Save the updated state of our event variables
-                    currentVariables.AddRange(eventVariables);
-                    // Update all standard values  
-                    setStandardValues(ref vaProxy);
-                }
+                // Save the updated state of our event variables
+                currentVariables.AddRange(eventVariables);
+                // Update all standard values  
+                setStandardValues(ref vaProxy);
+
+                Logging.Info($"Processed EDDI event {@event.type} in {(DateTime.UtcNow - startTime).Milliseconds} milliseconds:", @event);
             }
             catch (Exception ex)
             {
@@ -266,17 +266,14 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                lock (vaProxyLock)
+                // We set all values in our list from a prior version of the same event to null
+                foreach (var variable in eventVariables
+                    .Where(v => v.eventType == eventType && v.Value != null))
                 {
-                    // We set all values in our list from a prior version of the same event to null
-                    foreach (var variable in eventVariables
-                        .Where(v => v.eventType == eventType && v.Value != null))
-                    {
-                        variable.Value = null;
-                    }
-                    // We clear variable values by swapping the values to null and then instructing VA to set them again
-                    SetEventVariables(vaProxy, eventVariables);
+                    variable.Value = null;
                 }
+                // We clear variable values by swapping the values to null and then instructing VA to set them again
+                SetEventVariables(vaProxy, eventVariables);
             }
             catch (Exception ex)
             {
@@ -289,16 +286,13 @@ namespace EddiVoiceAttackResponder
             string commandName = "((EDDI " + @event.type.ToLowerInvariant() + "))";
             try
             {
-                lock (vaProxyLock)
+                // Fire local command if present  
+                Logging.Debug("Searching for command " + commandName);
+                if (vaProxy.Command.Exists(commandName))
                 {
-                    // Fire local command if present  
-                    Logging.Debug("Searching for command " + commandName);
-                    if (vaProxy.Command.Exists(commandName))
-                    {
-                        Logging.Debug("Found command " + commandName);
-                        vaProxy.Command.Execute(commandName);
-                        Logging.Info("Executed command " + commandName);
-                    }
+                    Logging.Debug("Found command " + commandName);
+                    vaProxy.Command.Execute(commandName);
+                    Logging.Info("Executed command " + commandName);
                 }
             }
             catch (Exception ex)
@@ -314,7 +308,7 @@ namespace EddiVoiceAttackResponder
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
             // Stop the updater thread.
-            updaterThread?.Abort();
+            updaterCancellationTS?.Cancel();
 
             if (Application.Current?.Dispatcher != null)
             {
