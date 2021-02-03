@@ -46,8 +46,9 @@ namespace EddiVoiceAttackResponder
 
         private static readonly Random random = new Random();
 
-        public static BlockingCollection<Event> eventQueue = new BlockingCollection<Event>();
-        private static CancellationTokenSource updaterCancellationTS; // This must be static so that it is visible to child threads and tasks
+        public static readonly ConcurrentDictionary<string, BlockingCollection<Event>> eventQueues = new ConcurrentDictionary<string, BlockingCollection<Event>>();
+        private static readonly ConcurrentBag<Task> consumerTasks = new ConcurrentBag<Task>();
+        private static readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
 
         // We'll maintain a referenceable list of variables that we've set from events
         private static List<VoiceAttackVariable> currentVariables = new List<VoiceAttackVariable>();
@@ -83,17 +84,26 @@ namespace EddiVoiceAttackResponder
 
                 Logging.Info("Initialising EDDI VoiceAttack plugin");
 
-                Task.Run(() =>
-                {
-                    // ReSharper disable once AccessToModifiedClosure - OK to use vaProxy in this context.
-                    dequeueEvents(ref vaProxy);
-                }).ConfigureAwait(false);
-
-                // Set up our event responder
+                // Set up our event responder.
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
                 {
                     if (theEvent is null) { return; }
-                    eventQueue.Add(theEvent);
+                    if (eventQueues.ContainsKey(theEvent.type))
+                    {
+                        // Add our event to an existing blocking collection for that event type.
+                        eventQueues[theEvent.type].Add(theEvent);
+                    }
+                    else
+                    {
+                        // Add our event to a new blocking collection for that event type and start a consumer task for that collection
+                        eventQueues[theEvent.type] = new BlockingCollection<Event> { theEvent };
+                        var consumerTask = Task.Run(() =>
+                        {
+                            // ReSharper disable once AccessToModifiedClosure - OK to use vaProxy in this context.
+                            dequeueEvents(eventQueues[theEvent.type], ref vaProxy);
+                        });
+                        consumerTasks.Add(consumerTask);
+                    }
                 };
 
                 // Add notifiers for changes in variables we want to react to 
@@ -187,12 +197,11 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void dequeueEvents(ref dynamic vaProxy)
+        private static void dequeueEvents(BlockingCollection<Event> eventQueue, ref dynamic vaProxy)
         {
-            using (updaterCancellationTS = new CancellationTokenSource())
+            try
             {
-                string lastEventType = string.Empty;
-                foreach (var @event in eventQueue.GetConsumingEnumerable(updaterCancellationTS.Token))
+                foreach (var @event in eventQueue.GetConsumingEnumerable(consumerCancellationTS.Token))
                 {
                     try
                     {
@@ -202,21 +211,17 @@ namespace EddiVoiceAttackResponder
                             {
                                 updateValuesOnEvent(@event, ref vaProxy);
                                 triggerVACommands(@event, ref vaProxy);
-
-                                // For repeating events of the same type, we need to add a short pause before the next event
-                                // so that variables aren't overwritten before VoiceAttack can respond
-                                if (@event.type == lastEventType)
-                                {
-                                    Thread.Sleep(25);
-                                }
-                                lastEventType = @event.type;
+                            }
+                            // We need to wait until each event is no longer active before moving to the next from the same
+                            // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
+                            // Other queues / event types will be able to continue processing events while we wait.
+                            var active = true;
+                            while (active)
+                            {
+                                Thread.Sleep(50);
+                                active = vaProxy.Command.Active("((EDDI " + @event.type.ToLowerInvariant() + "))");
                             }
                         }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Operation was cancelled. Return any events we've extracted back to the queue.
-                        eventQueue.Add(@event);
                     }
                     catch (Exception ex)
                     {
@@ -229,6 +234,11 @@ namespace EddiVoiceAttackResponder
                         Logging.Error("VoiceAttack failed to handle event.", data);
                     }
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // Task canceled. Mark this collection as not accepting any new items.
+                eventQueue.CompleteAdding();
             }
         }
 
@@ -307,8 +317,10 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
-            // Stop the updater thread.
-            updaterCancellationTS?.Cancel();
+            // Cancel the updater threads and wait for them to complete
+            consumerCancellationTS?.Cancel();
+            var timeout = Task.Delay(2000);
+            Task.WhenAny(Task.WhenAll(consumerTasks), timeout);
 
             if (Application.Current?.Dispatcher != null)
             {
