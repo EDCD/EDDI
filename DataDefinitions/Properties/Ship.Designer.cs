@@ -77,5 +77,347 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("your", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAdder {
+            get {
+                return ResourceManager.GetString("yourAdder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAllChallenger {
+            get {
+                return ResourceManager.GetString("yourAllChallenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAllChieftain {
+            get {
+                return ResourceManager.GetString("yourAllChieftain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAllCrusader {
+            get {
+                return ResourceManager.GetString("yourAllCrusader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAnaconda {
+            get {
+                return ResourceManager.GetString("yourAnaconda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAspEx {
+            get {
+                return ResourceManager.GetString("yourAspEx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourAspS {
+            get {
+                return ResourceManager.GetString("yourAspS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourBeluga {
+            get {
+                return ResourceManager.GetString("yourBeluga", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourCobraMkIII {
+            get {
+                return ResourceManager.GetString("yourCobraMkIII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourCobraMkIV {
+            get {
+                return ResourceManager.GetString("yourCobraMkIV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourDBS {
+            get {
+                return ResourceManager.GetString("yourDBS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourDBX {
+            get {
+                return ResourceManager.GetString("yourDBX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourDolphin {
+            get {
+                return ResourceManager.GetString("yourDolphin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourEagle {
+            get {
+                return ResourceManager.GetString("yourEagle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourFDL {
+            get {
+                return ResourceManager.GetString("yourFDL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourFedAssaultShip {
+            get {
+                return ResourceManager.GetString("yourFedAssaultShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourFedCorvette {
+            get {
+                return ResourceManager.GetString("yourFedCorvette", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourFedDropship {
+            get {
+                return ResourceManager.GetString("yourFedDropship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourFedGunship {
+            get {
+                return ResourceManager.GetString("yourFedGunship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourHauler {
+            get {
+                return ResourceManager.GetString("yourHauler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourImpClipper {
+            get {
+                return ResourceManager.GetString("yourImpClipper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourImpCourier {
+            get {
+                return ResourceManager.GetString("yourImpCourier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourImpCutter {
+            get {
+                return ResourceManager.GetString("yourImpCutter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourImpEagle {
+            get {
+                return ResourceManager.GetString("yourImpEagle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourKeelback {
+            get {
+                return ResourceManager.GetString("yourKeelback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourKraitMkII {
+            get {
+                return ResourceManager.GetString("yourKraitMkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourMamba {
+            get {
+                return ResourceManager.GetString("yourMamba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourOrca {
+            get {
+                return ResourceManager.GetString("yourOrca", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourPhantom {
+            get {
+                return ResourceManager.GetString("yourPhantom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourPython {
+            get {
+                return ResourceManager.GetString("yourPython", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourSidewinder {
+            get {
+                return ResourceManager.GetString("yourSidewinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourType10 {
+            get {
+                return ResourceManager.GetString("yourType10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourType6 {
+            get {
+                return ResourceManager.GetString("yourType6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourType7 {
+            get {
+                return ResourceManager.GetString("yourType7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourType9 {
+            get {
+                return ResourceManager.GetString("yourType9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourViperMkIII {
+            get {
+                return ResourceManager.GetString("yourViperMkIII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourViperMkIV {
+            get {
+                return ResourceManager.GetString("yourViperMkIV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
+        public static string yourVulture {
+            get {
+                return ResourceManager.GetString("yourVulture", resourceCulture);
+            }
+        }
     }
 }

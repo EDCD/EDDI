@@ -99,8 +99,162 @@
   </resheader>
   <data name="your" xml:space="preserve">
     <value>your</value>
+    <comment>e.g. *your* ship</comment>
   </data>
   <data name="_ship" xml:space="preserve">
     <value>ship</value>
+    <comment>e.g. your *ship*</comment>
+  </data>
+  <data name="yourAdder" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Adder</comment>
+  </data>
+  <data name="yourAnaconda" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Anaconda</comment>
+  </data>
+  <data name="yourAspEx" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Asp Explorer</comment>
+  </data>
+  <data name="yourAspS" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Asp Scout</comment>
+  </data>
+  <data name="yourBeluga" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Beluga</comment>
+  </data>
+  <data name="yourCobraMkIII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Cobra Mk. III</comment>
+  </data>
+  <data name="yourCobraMkIV" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Cobra Mk. IV</comment>
+  </data>
+  <data name="yourDBX" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Diamondback Explorer</comment>
+  </data>
+  <data name="yourDBS" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Diamondback Scout</comment>
+  </data>
+  <data name="yourDolphin" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Dolphin</comment>
+  </data>
+  <data name="yourEagle" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Eagle</comment>
+  </data>
+  <data name="yourFedAssaultShip" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Federal Assault Ship</comment>
+  </data>
+  <data name="yourFedCorvette" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Federal Corvette</comment>
+  </data>
+  <data name="yourFedDropship" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Federal Dropship</comment>
+  </data>
+  <data name="yourFedGunship" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Federal Gunship</comment>
+  </data>
+  <data name="yourFDL" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Fer-de-Lance</comment>
+  </data>
+  <data name="yourImpClipper" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Imperial Clipper</comment>
+  </data>
+  <data name="yourImpCourier" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Imperial Courier</comment>
+  </data>
+  <data name="yourImpCutter" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Imperial Cutter</comment>
+  </data>
+  <data name="yourImpEagle" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Imperial Eagle</comment>
+  </data>
+  <data name="yourHauler" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Hauler</comment>
+  </data>
+  <data name="yourKeelback" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Keelback</comment>
+  </data>
+  <data name="yourOrca" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Orca</comment>
+  </data>
+  <data name="yourPython" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Python</comment>
+  </data>
+  <data name="yourSidewinder" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Sidewinder</comment>
+  </data>
+  <data name="yourType6" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Type-6 Transporter</comment>
+  </data>
+  <data name="yourType7" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Type-7 Transporter</comment>
+  </data>
+  <data name="yourType9" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Type-9 Heavy</comment>
+  </data>
+  <data name="yourViperMkIII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Viper Mk. III</comment>
+  </data>
+  <data name="yourViperMkIV" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Viper Mk. IV</comment>
+  </data>
+  <data name="yourVulture" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Vulture</comment>
+  </data>
+  <data name="yourType10" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Type-10 Defender</comment>
+  </data>
+  <data name="yourAllChieftain" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Alliance Chieftain</comment>
+  </data>
+  <data name="yourAllCrusader" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Alliance Crusader</comment>
+  </data>
+  <data name="yourAllChallenger" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Alliance Challenger</comment>
+  </data>
+  <data name="yourKraitMkII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Krait Mk. II</comment>
+  </data>
+  <data name="yourPhantom" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Krait Phantom</comment>
+  </data>
+  <data name="yourMamba" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Mamba</comment>
   </data>
 </root>
