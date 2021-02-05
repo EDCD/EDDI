@@ -305,13 +305,13 @@
     <value>Capacità Munizioni Bersagli Fantasma</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Alleggerito</value>
+    <value>Emettitore Bersagli Fantasma Alleggerito</value>
   </data>
   <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Rinforzato</value>
+    <value>Emettitore Bersagli Fantasma Rinforzato</value>
   </data>
   <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Protetto</value>
+    <value>Emettitore Bersagli Fantasma Protetto</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Raccolta Alleggerito</value>
