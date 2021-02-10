@@ -1822,7 +1822,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {P(event.ship, \"shipmodel\")} has \r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {P(event.station, \"station\")}\r\n   {if system.name != event.system && event.system:\r\n      in the {P(event.system, \"starsystem\")} system\r\n   }\r\n}.",
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\n{ShipName(event.shipid, event.ship)} has \r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {P(event.station, \"station\")}\r\n   {if system.name != event.system && event.system:\r\n      in the {P(event.system, \"starsystem\")} system\r\n   }\r\n}.",
       "default": true,
       "name": "Ship arrived",
       "description": "Triggered when you complete a ship transfer"

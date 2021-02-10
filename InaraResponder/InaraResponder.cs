@@ -536,7 +536,7 @@ namespace EddiInaraResponder
         {
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipTransfer", new Dictionary<string, object>()
             {
-                { "shipType", @event.edModel },
+                { "shipType", @event.Ship.EDName },
                 { "shipGameID", @event.shipid },
                 { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                 { "stationName", EDDI.Instance.CurrentStation?.name },

@@ -10,13 +10,14 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship arrived";
         public const string DESCRIPTION = "Triggered when you complete a ship transfer";
-        public static ShipArrivedEvent SAMPLE = new ShipArrivedEvent(DateTime.UtcNow, "Adder", 1, "Eranin", 85.639145M, 580, 30, "Xuesen Orbital", 128035840, 3222994688);
+        public static ShipArrivedEvent SAMPLE = new ShipArrivedEvent(DateTime.Parse("2016-06-10T14:32:03Z").ToUniversalTime(), ShipDefinitions.FromEDModel("CobraMkIII"), "Eranin", 85.639145M, 580, 30, "Azeban City", 128168184, 128001536);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipArrivedEvent()
         {
             VARIABLES.Add("shipid", "The ID of the ship that was transferred");
-            VARIABLES.Add("ship", "The ship that was transferred");
+            VARIABLES.Add("ship", "The ship model that was transferred");
+            VARIABLES.Add("phoneticname", "The phonetic name of the ship that was transferred");
             VARIABLES.Add("station", "The station at which the ship shall arrive");
             VARIABLES.Add("system", "The system at which the ship shall arrive");
             VARIABLES.Add("distance", "The distance that the transferred ship travelled, in light years");
@@ -25,10 +26,12 @@ namespace EddiShipMonitor
         }
 
         [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
+        public int? shipid => Ship.LocalId;
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => Ship.model;
+
+        public string phoneticname => Ship.phoneticname;
 
         public string station { get; private set; }
 
@@ -47,11 +50,11 @@ namespace EddiShipMonitor
         // Admin
         public long fromMarketId { get; private set; }
         public long toMarketId { get; private set; }
+        public Ship Ship { get; private set; }
 
-        public ShipArrivedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, string station, long fromMarketId, long toMarketId) : base(timestamp, NAME)
+        public ShipArrivedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, string station, long fromMarketId, long toMarketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
-            this.shipid = shipid;
+            this.Ship = Ship;
             this.station = station;
             this.system = system;
             this.distance = distance;

@@ -715,7 +715,7 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///ShipName() takes an optional ship ID for which to provide the name. If no argument is supplied then it provides the name for your current ship.
         ///
-        ///If you have not set up a name for your ship it will just return &quot;your ship&quot;..
+        ///ShipName() also takes an optional ship model. If the optional ship ID is not found then this provides a ship name based on the ship mo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ShipName {
             get {
