@@ -148,7 +148,7 @@
     <Compile Include="EnteredCQCEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />
-    <Compile Include="NPCInterdictionCommendedEvent.cs" />
+    <Compile Include="NPCInterdictionCommencedEvent.cs" />
     <Compile Include="PowerVoucherReceivedEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />

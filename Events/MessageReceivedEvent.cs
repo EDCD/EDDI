@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using EddiDataDefinitions;
 
 namespace EddiEvents
 {
@@ -24,7 +25,7 @@ namespace EddiEvents
         public string from { get; private set; }
 
         [JsonProperty("source")]
-        public string source { get; private set; }
+        public string source => Source.localizedName;
 
         [JsonProperty("player")]
         public bool player { get; private set; }
@@ -35,10 +36,13 @@ namespace EddiEvents
         [JsonProperty("message")]
         public string message { get; private set; }
 
-        public MessageReceivedEvent(DateTime timestamp, string from, string source, bool player, string channel, string message) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public MessageSource Source { get; }
+
+        public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, string channel, string message) : base(timestamp, NAME)
         {
             this.from = from;
-            this.source = source;
+            Source = source;
             this.player = player;
             this.channel = channel;
             this.message = message;
