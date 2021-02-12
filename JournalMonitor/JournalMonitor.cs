@@ -1779,6 +1779,7 @@ namespace EddiJournalMonitor
                                         // Give priority to player messages
                                         if (string.IsNullOrEmpty(channel))
                                         {
+                                            // Multicrew messages omit the `channel` property
                                             source = MessageSource.CrewMate;
                                         }
                                         else if (channel == "squadron")
