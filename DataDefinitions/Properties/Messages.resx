@@ -113,10 +113,6 @@
     <value>Commander</value>
     <comment>Message source</comment>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-    <comment>Message source</comment>
-  </data>
   <data name="AmbushedPilot" xml:space="preserve">
     <value>Ambushed pilot</value>
     <comment>Message source</comment>

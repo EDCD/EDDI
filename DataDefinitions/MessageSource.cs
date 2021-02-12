@@ -23,7 +23,6 @@
         public static readonly MessageSource Messenger = new MessageSource("Messenger");
         public static readonly MessageSource Military = new MessageSource("Military");
         public static readonly MessageSource Miner = new MessageSource("Miner");
-        public static readonly MessageSource None = new MessageSource("None");
         public static readonly MessageSource NPC = new MessageSource("NPC");
         public static readonly MessageSource PassengerHunter = new MessageSource("PassengerHunter");
         public static readonly MessageSource PassengerLiner = new MessageSource("PassengerLiner");
