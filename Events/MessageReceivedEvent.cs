@@ -31,20 +31,21 @@ namespace EddiEvents
         public bool player { get; private set; }
 
         [JsonProperty("channel")]
-        public string channel { get; private set; }
+        public string channel => Channel.localizedName;
 
         [JsonProperty("message")]
         public string message { get; private set; }
 
         // Not intended to be user facing
+        public MessageChannel Channel { get; }
         public MessageSource Source { get; }
 
-        public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, string channel, string message) : base(timestamp, NAME)
+        public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, MessageChannel channel, string message) : base(timestamp, NAME)
         {
             this.from = from;
             Source = source;
             this.player = player;
-            this.channel = channel;
+            Channel = channel;
             this.message = message;
         }
     }

@@ -99,130 +99,130 @@
   </resheader>
   <data name="SquadronMate" xml:space="preserve">
     <value>Squadron mate</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="WingMate" xml:space="preserve">
     <value>Wing mate</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="CrewMate" xml:space="preserve">
     <value>Crew mate</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Commander" xml:space="preserve">
     <value>Commander</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="AmbushedPilot" xml:space="preserve">
     <value>Ambushed pilot</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="BountyHunter" xml:space="preserve">
     <value>Bounty hunter</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="CapShip" xml:space="preserve">
     <value>Capital ship</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="CargoHunter" xml:space="preserve">
     <value>Cargo hunter</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="ConvoyExplorers" xml:space="preserve">
     <value>Exploration convoy</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="ConvoyWedding" xml:space="preserve">
     <value>Wedding convoy</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="CruiseLiner" xml:space="preserve">
     <value>Cruise liner</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Escort" xml:space="preserve">
     <value>Escort</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Hitman" xml:space="preserve">
     <value>Hitman</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Messenger" xml:space="preserve">
     <value>Messenger</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Military" xml:space="preserve">
     <value>Military</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Miner" xml:space="preserve">
     <value>Miner</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="PassengerHunter" xml:space="preserve">
     <value>Passenger hunter</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="PassengerLiner" xml:space="preserve">
     <value>Passenger liner</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirate</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Police" xml:space="preserve">
     <value>Police</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="PowersAssassin" xml:space="preserve">
     <value>Rival power's agent</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="PowersPirate" xml:space="preserve">
     <value>Rival power's agent</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="PowersSecurity" xml:space="preserve">
     <value>Rival power's agent</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandist</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Protester" xml:space="preserve">
     <value>Protester</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Refugee" xml:space="preserve">
     <value>Refugee</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="StarshipOne" xml:space="preserve">
     <value>Starship One</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="SearchandRescue" xml:space="preserve">
     <value>Search and rescue</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="NPC" xml:space="preserve">
     <value>NPC</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="Station" xml:space="preserve">
     <value>Station</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="CivilianPilot" xml:space="preserve">
     <value>Civilian pilot</value>
-    <comment>Message source</comment>
+    
   </data>
   <data name="ConflictZone" xml:space="preserve">
     <value>Conflict zone</value>
-    <comment>Message source</comment>
+    
   </data>
 </root>

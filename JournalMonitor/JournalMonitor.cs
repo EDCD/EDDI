@@ -1756,6 +1756,7 @@ namespace EddiJournalMonitor
                                     string from = JsonParsing.getString(data, "From");
                                     string channel = JsonParsing.getString(data, "Channel");
                                     string message = JsonParsing.getString(data, "Message");
+                                    MessageChannel messageChannel = MessageChannel.None;
                                     MessageSource source;
 
                                     if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
@@ -1794,8 +1795,8 @@ namespace EddiJournalMonitor
                                         {
                                             source = MessageSource.Commander;
                                         }
-                                        channel = channel ?? "multicrew";
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line, fromLoad = fromLogLoad });
+                                        messageChannel = MessageChannel.FromEDName(channel ?? "multicrew");
+                                        events.Add(new MessageReceivedEvent(timestamp, from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
@@ -1818,7 +1819,8 @@ namespace EddiJournalMonitor
                                         {
                                             source = MessageSource.NPC;
                                         }
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, false, channel, JsonParsing.getString(data, "Message_Localised")) { raw = line, fromLoad = fromLogLoad });
+                                        messageChannel = MessageChannel.FromEDName(channel);
+                                        events.Add(new MessageReceivedEvent(timestamp, from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised")) { raw = line, fromLoad = fromLogLoad });
 
                                         // See if we also want to spawn a specific event as well?
                                         if (message == "$STATION_NoFireZone_entered;")

@@ -4,8 +4,9 @@
     {
         static MessageSource()
         {
-            resourceManager = Properties.Messages.ResourceManager;
+            resourceManager = Properties.MessageSources.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new MessageSource(edname);
         }
 
         public static readonly MessageSource AmbushedPilot = new MessageSource("AmbushedPilot");
