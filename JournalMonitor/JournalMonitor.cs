@@ -1805,7 +1805,7 @@ namespace EddiJournalMonitor
                                             source = MessageSource.FromMessage(from, message);
                                             from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
                                         }
-                                        else if (from.Contains("ShipName_"))
+                                        else if (from.Contains("ShipName_") || from.Contains("_Scenario_"))
                                         {
                                             source = MessageSource.FromMessage(from, message);
                                             from = JsonParsing.getString(data, "From_Localised");
