@@ -12,7 +12,6 @@
         public static readonly MessageChannel Friend = new MessageChannel("Friend");
         public static readonly MessageChannel Local = new MessageChannel("Local");
         public static readonly MessageChannel MultiCrew = new MessageChannel("MultiCrew");
-        public static readonly MessageChannel None = new MessageChannel("None");
         public static readonly MessageChannel NPC = new MessageChannel("NPC");
         public static readonly MessageChannel Player = new MessageChannel("Player");
         public static readonly MessageChannel Squadron = new MessageChannel("Squadron");

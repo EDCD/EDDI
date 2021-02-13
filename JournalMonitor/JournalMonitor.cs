@@ -1756,7 +1756,7 @@ namespace EddiJournalMonitor
                                     string from = JsonParsing.getString(data, "From");
                                     string channel = JsonParsing.getString(data, "Channel");
                                     string message = JsonParsing.getString(data, "Message");
-                                    MessageChannel messageChannel = MessageChannel.None;
+                                    MessageChannel messageChannel;
                                     MessageSource source;
 
                                     if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
