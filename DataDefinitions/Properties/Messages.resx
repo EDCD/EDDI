@@ -221,4 +221,8 @@
     <value>Civilian pilot</value>
     <comment>Message source</comment>
   </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>Conflict zone</value>
+    <comment>Message source</comment>
+  </data>
 </root>

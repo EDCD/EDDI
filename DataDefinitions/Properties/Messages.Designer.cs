@@ -115,6 +115,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conflict zone.
+        /// </summary>
+        public static string ConflictZone {
+            get {
+                return ResourceManager.GetString("ConflictZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exploration convoy.
         /// </summary>
         public static string ConvoyExplorers {

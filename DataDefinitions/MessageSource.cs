@@ -14,6 +14,7 @@
         public static readonly MessageSource CargoHunter = new MessageSource("CargoHunter");
         public static readonly MessageSource CivilianPilot = new MessageSource("CivilianPilot");
         public static readonly MessageSource Commander = new MessageSource("Commander");
+        public static readonly MessageSource ConflictZone = new MessageSource("ConflictZone");
         public static readonly MessageSource ConvoyExplorers = new MessageSource("ConvoyExplorers");
         public static readonly MessageSource ConvoyWedding = new MessageSource("ConvoyWedding");
         public static readonly MessageSource CrewMate = new MessageSource("CrewMate");
@@ -161,6 +162,10 @@
             else if (message.Contains("_SearchandRescue_"))
             {
                 by = SearchandRescue;
+            }
+            else if (message.Contains("_Warzone_NPC"))
+            {
+                by = ConflictZone;
             }
             else
             {
