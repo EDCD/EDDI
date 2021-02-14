@@ -163,7 +163,7 @@
     <value>Missili</value>
   </data>
   <data name="MultiCannons" xml:space="preserve">
-    <value>Cannoni a ripetizione</value>
+    <value>Cannoni multipli</value>
   </data>
   <data name="PlasmaAccelerators" xml:space="preserve">
     <value>Acceleratori di plasma</value>
