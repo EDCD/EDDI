@@ -97,6 +97,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Monitoruj journal.log hry Elite:Dangerous pro získání obecných událostí. Toto by nemělo být vypnuto - mimo případy, kdy víte co děláte - výsledkem může být nefunkčnost mnoha funkcí EDDI</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor žurnálu</value>
+  </data>
 </root>
