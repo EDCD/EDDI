@@ -117,20 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Přístup k bete verzím EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Stav EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>má množství funkcí, které se nezávisle nastavovat. Jsou tři samostatné typy položek.</value>
+  </data>
   
   
   
   
+  <data name="report_issue" xml:space="preserve">
+    <value>Náhlasit chybu</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Řešení nejčastějších problémů</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Povolit detailní logování (pouze pokud vás o to požádají vývojáři EDDI)</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Verze:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>wiki projektu</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Vyberte jazyk EDDI (vyžaduje restart aplikace):</value>
+  </data>
   
   
   
