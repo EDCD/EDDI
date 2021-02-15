@@ -61,5 +61,28 @@ namespace UnitTests
             Assert.AreEqual(1, materialAmount.amount);
             Assert.AreEqual("Molybdenum", materialAmount.material);
         }
+
+        [TestMethod]
+        public void TestMaterialThresholds()
+        {
+            var privateObject = new PrivateObject(new MaterialMonitor());
+
+            bool TestThreshold(int previous, int amount, int? target)
+            {
+                return (bool)privateObject.Invoke("materialThreshold", previous, amount, target);
+            }
+
+            // If no threshold target is specified, the result must be false
+            Assert.IsFalse(TestThreshold(149, 150, null));
+
+            // If we haven't reached our target, the result must be false
+            Assert.IsFalse(TestThreshold(149, 150, 200));
+
+            // If we have reached our target, the result must be true
+            Assert.IsTrue(TestThreshold(149, 150, 150));
+
+            // If we're already beyond our target, the result must be false
+            Assert.IsFalse(TestThreshold(149, 150, 100));
+        }
     }
 }

@@ -281,25 +281,26 @@ namespace EddiMaterialMonitor
                 ma.amount += amount;
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
-                if (ma.maximum.HasValue)
+                if (materialThreshold(previous, ma.amount, ma.maximum))
                 {
-                    if (previous <= ma.maximum && ma.amount > ma.maximum)
-                    {
-                        // We have crossed the high water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
-                    }
+                    // We have crossed the high water threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
-                if (ma.desired.HasValue)
+                if (materialThreshold(previous, ma.amount, ma.desired))
                 {
-                    if (previous < ma.desired && ma.amount >= ma.desired)
-                    {
-                        // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
-                    }
+                    // We have crossed the desired threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
 
                 writeMaterials();
             }
+        }
+
+        private bool materialThreshold(int previous, int amount, int? target)
+        {
+            // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
+            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
+            return previous < target && target <= amount;
         }
 
         /// <summary>
