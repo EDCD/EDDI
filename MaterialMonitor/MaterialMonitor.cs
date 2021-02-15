@@ -185,11 +185,19 @@ namespace EddiMaterialMonitor
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
+            // Set all listed material quantities to match the event
             List<string> knownNames = new List<string>();
             foreach (MaterialAmount materialAmount in @event.inventory)
             {
                 setMaterial(materialAmount.edname, materialAmount.amount);
                 knownNames.Add(materialAmount.edname);
+            }
+
+            // Set any unlisted materials to zero
+            var unlistedMaterials = Material.AllOfThem.Select(m => m.edname).Except(knownNames).ToList();
+            foreach (var unlistedMaterial in unlistedMaterials)
+            {
+                setMaterial(unlistedMaterial, 0);
             }
 
             // Update configuration information
