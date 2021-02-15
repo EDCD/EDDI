@@ -1434,5 +1434,32 @@ namespace UnitTests
             Assert.AreEqual(CombatRating.FromRank(5).localizedName, @event.rating);
             Assert.IsNull(@event.power);
         }
+
+        [TestMethod]
+        public void TestAFMURepairsEvent()
+        {
+            string line1 = @"{ ""timestamp"":""2021-01-30T00:28:18Z"", ""event"":""AfmuRepairs"", ""Module"":""$int_modulereinforcement_size2_class2_name;"", ""Module_Localised"":""Module Reinforcement"", ""FullyRepaired"":false, ""Health"":1.000000 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line1);
+            ShipAfmuRepairedEvent event1 = (ShipAfmuRepairedEvent)events[0];
+            Assert.AreEqual("Module Reinforcement Package", event1.item);
+            Assert.AreEqual(1M, event1.health);
+            // There is an FDev bug that can set `repairedfully` to false even when the module health is full.
+            // This appears to be a unique problem with Module Reinforcement Packages. We need to work around this.
+            Assert.IsTrue(event1.repairedfully);
+
+            string line2 = @"{ ""timestamp"":""2020-05-31T16:37:08Z"", ""event"":""AfmuRepairs"", ""Module"":""$hpt_multicannon_gimbal_small_name;"", ""Module_Localised"":""Multi-Cannon"", ""FullyRepaired"":true, ""Health"":1.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line2);
+            ShipAfmuRepairedEvent event2 = (ShipAfmuRepairedEvent)events[0];
+            Assert.AreEqual("1G gimballed Multi-Cannon", event2.item);
+            Assert.AreEqual(1M, event2.health);
+            Assert.IsTrue(event2.repairedfully);
+
+            string line3 = @"{ ""timestamp"":""2020-05-31T16:38:56Z"", ""event"":""AfmuRepairs"", ""Module"":""$hpt_beamlaser_gimbal_medium_name;"", ""Module_Localised"":""Beam Laser"", ""FullyRepaired"":false, ""Health"":0.993321 }";
+            events = JournalMonitor.ParseJournalEntry(line3);
+            ShipAfmuRepairedEvent event3 = (ShipAfmuRepairedEvent)events[0];
+            Assert.AreEqual("2D gimballed Beam Laser", event3.item);
+            Assert.AreEqual(0.993321M, event3.health);
+            Assert.IsFalse(event3.repairedfully);
+        }
     }
 }
