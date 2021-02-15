@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
   * Material monitor
     * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
+    * Fixed a bug that could prevent material counts from being updated for materials no longer in inventory.
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
