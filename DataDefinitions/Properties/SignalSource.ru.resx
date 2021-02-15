@@ -129,18 +129,9 @@
     <value>Неизвестный источник сигнала</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Зона Конфликта Высокий</value>
-    <comment>Combat Zone (High Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Зона Конфликта Средний</value>
-    <comment>Combat Zone (Medium Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Зона Конфликта Низкий</value>
-    <comment>Combat Zone (Low Intensity)</comment>
-  </data>
+  
+  
+  
   
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Последствия боя</value>
