@@ -129,18 +129,9 @@
     <value>Fonte de Sinal Desconhecida</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zona de Combate de Alta Intensidade</value>
-    <comment>Combat Zone (High Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zona de Combate de Média Intensidade</value>
-    <comment>Combat Zone (Medium Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zona de Combate de Baixa Intensidade</value>
-    <comment>Combat Zone (Low Intensity)</comment>
-  </data>
+  
+  
+  
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Transmissões Degradadas</value>
     <comment>Salvage signal</comment>
