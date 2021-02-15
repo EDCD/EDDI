@@ -538,7 +538,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to High Intensity Combat Zone.
+        ///   Looks up a localized string similar to High Intensity Conflict Zone.
         /// </summary>
         public static string Warzone_PointRace_High {
             get {
@@ -547,7 +547,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Low Intensity Combat Zone.
+        ///   Looks up a localized string similar to Low Intensity Conflict Zone.
         /// </summary>
         public static string Warzone_PointRace_Low {
             get {
@@ -556,7 +556,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medium Intensity Combat Zone.
+        ///   Looks up a localized string similar to Medium Intensity Conflict Zone.
         /// </summary>
         public static string Warzone_PointRace_Med {
             get {
