@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
+  * Material monitor
+    * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
