@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
+    * "Conflict zone" signal sources are no longer described as "Combat zone" signal sources.
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
   * Material monitor
     * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
@@ -17,6 +18,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jumped` script updated to announce engineer systems.
       * `Engineer report` script added.
       * `Jumped` script updated to announce engineer systems.
+      * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
   * VoiceAttack
     * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
 
