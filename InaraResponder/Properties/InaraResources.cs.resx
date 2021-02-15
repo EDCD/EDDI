@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>Klič k API:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Posílat podrobnosti o tvých cestách na Inaru (https://inara.cz). Inara je nástroj třetí strany jež poskytuje informace o členech Federace pilotů a generuje profil s podrobnostmi o statusu a úspěších. </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Inara odpovídač</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Pro připojení k Inaře musíte mít u nich vytvořen účet. Jakmile to budete mít hotovo, klíč API získáte kliknutím na odkaz 'SETTINGS' umístěný v hlavičce stránky a dále kliknete na 'INARA API' v levém panelu.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Jakmile vložíte svůj klíč pro API, EDDI začne přenášet data z hraní na Inaru.</value>
+  </data>
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>Prosím zadejte platný klič k Inara API.</value>
+  </data>
 </root>
