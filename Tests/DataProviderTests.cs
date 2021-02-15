@@ -194,6 +194,8 @@ namespace UnitTests
             var result = results[0];
 
             // Evaluate the results. The result must include the preserved data.
+            Assert.AreEqual(3, result.scannedbodies);
+            Assert.AreEqual(1, result.mappedbodies);
             Assert.AreEqual(20, result.totalbodies);
             Assert.AreEqual(8557, result.bodies?.FirstOrDefault(b => b?.bodyId == 0)?.EDSMID);
             Assert.AreEqual(17, result.visits);

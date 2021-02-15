@@ -226,6 +226,8 @@ Note: "Tiny" hardpoints are utility slots.
   * {INT:System planetary stations}: the total number of planetary stations (outposts and ports) in the system
   * {INT:System planetary settlements}: the total number of undockable planetary ports in the system, as reported to EDDB.
   * {INT:System total bodies}: the total number of discoverable bodies within the system.
+  * {INT:System scanned bodies}: the total number of bodies you have scanned within the system.
+  * {INT:System mapped bodies}: the total number of bodies you have mapped within the system.
   * {BOOL:System requires permit}: Whether a permit is required to enter the system, as reported to EDDB.
   * {TXT:System permit name}: The name of the permit required to enter the system, if any, as reported to EDDB.
   * {TXT:System main star stellar class}: the stellar class of the main star of the system (M, G etc)
