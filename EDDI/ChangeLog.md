@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
+    * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
@@ -13,6 +14,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jumped` script updated to announce engineer systems.
       * `Engineer report` script added.
       * `Jumped` script updated to announce engineer systems.
+  * VoiceAttack
+    * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
 
 ### 3.7.2
   * Promote 3.7.2-rc3 to final
