@@ -117,16 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ice" xml:space="preserve">
+    <value>Ledová</value>
+    <comment>Body Composition "Ice"</comment>
+  </data>
+  <data name="Metal" xml:space="preserve">
+    <value>Metalická</value>
+    <comment>Body Composition "Metal"</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planeta</value>
+    <comment>Body Type "Planet"</comment>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Skalnatá</value>
+    <comment>Body Composition "Rock"</comment>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Hvězda</value>
+    <comment>Body Type "Star"</comment>
+  </data>
+  <data name="Belt" xml:space="preserve">
+    <value>Pás</value>
+    <comment>Body Type "Belt"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Těleso</value>
+    <comment>None</comment>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Stanice</value>
+    <comment>BodyType "Station"</comment>
+  </data>
+  <data name="Null" xml:space="preserve">
+    <value>Těleso</value>
+    <comment>BodyType "Null"</comment>
+  </data>
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>Planetární prstenec</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
+  <data name="Moon" xml:space="preserve">
+    <value>Měsíc</value>
+    <comment>Body Type "Moon"</comment>
+  </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Hvězdný prstenec</value>
+    <comment>Body Type StellarRing</comment>
+  </data>
 </root>
