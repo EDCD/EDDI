@@ -97,20 +97,68 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="andahalf" xml:space="preserve">
+    <value>a půl</value>
+    <comment/>
+  </data>
+  <data name="around" xml:space="preserve">
+    <value>kolem</value>
+    <comment/>
+  </data>
+  <data name="billion" xml:space="preserve">
+    <value>miliarda</value>
+    <comment/>
+  </data>
+  <data name="dash" xml:space="preserve">
+    <value>pomlčka</value>
+    <comment/>
+  </data>
+  <data name="justover" xml:space="preserve">
+    <value>více jak</value>
+    <comment/>
+  </data>
+  <data name="million" xml:space="preserve">
+    <value>milión</value>
+    <comment/>
+  </data>
+  <data name="minus" xml:space="preserve">
+    <value>mínus</value>
+    <comment/>
+  </data>
+  <data name="nearly" xml:space="preserve">
+    <value>skoro</value>
+    <comment/>
+  </data>
+  <data name="over" xml:space="preserve">
+    <value>přes</value>
+    <comment/>
+  </data>
+  <data name="plus" xml:space="preserve">
+    <value>plus</value>
+    <comment/>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>celých</value>
+    <comment/>
+  </data>
+  <data name="quadrillion" xml:space="preserve">
+    <value>kvadrilion</value>
+    <comment/>
+  </data>
+  <data name="thousand" xml:space="preserve">
+    <value>tisíc</value>
+    <comment/>
+  </data>
+  <data name="trillion" xml:space="preserve">
+    <value>bilión</value>
+    <comment/>
+  </data>
+  <data name="wellover" xml:space="preserve">
+    <value>mnohem více</value>
+    <comment/>
+  </data>
+  <data name="zero" xml:space="preserve">
+    <value>nula</value>
+    <comment/>
+  </data>
 </root>
