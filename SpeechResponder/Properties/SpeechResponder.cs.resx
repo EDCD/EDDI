@@ -163,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Opravdu chcete smazat skript "{0}"?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Reaguje na události skriptovaným hlasovým výstupem založeným na informaci z události. Ne všechny události mají naskriptovány odpovědi. Pokud nemá skript definovanou odpovět, budou tlačítka "Vyzkoušet" a "Zobrazit" neaktivní. Skripty založené na událostech můžete vypnout nebo změnit jejich priporitu, ale nelze je smazat.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Upravit</value>
   </data>
@@ -182,7 +184,9 @@
   <data name="help_button" xml:space="preserve">
     <value>Nápověda</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Hlasový odpovídač</value>
+  </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Obnovit výchozí</value>
   </data>
@@ -190,8 +194,12 @@
     <value>Proměnné</value>
     <comment>button that shows help for script variables</comment>
   </data>
-  
-  
+  <data name="subs" xml:space="preserve">
+    <value>Zapisovat textové kopie hlasového výsupu do souboru %APPDATA%\EDDI\speechresponder.out</value>
+  </data>
+  <data name="subs_only" xml:space="preserve">
+    <value>Nemluv nahlas pokud je text zapisován do souboru výše</value>
+  </data>
   <data name="test_script" xml:space="preserve">
     <value>Vyzkoušet</value>
   </data>
@@ -219,11 +227,16 @@
   <data name="reset_script" xml:space="preserve">
     <value>Resetovat</value>
   </data>
-  
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Opravdu chcete obnovit skript "{0}"?</value>
+  </data>
   <data name="messagebox_recoveredScript_title" xml:space="preserve">
     <value>Obnovený skript</value>
   </data>
-  
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI obnovil skript který se upravoval v době havárie programu.
+Chcete jej znovu otevřít?</value>
+  </data>
   <data name="validation_tooltip_name_empty" xml:space="preserve">
     <value>Prosím zadejte název</value>
   </data>
