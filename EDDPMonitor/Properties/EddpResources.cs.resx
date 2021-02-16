@@ -147,7 +147,9 @@
   <data name="p1" xml:space="preserve">
     <value>Můžeš vytvořit, upravit a odstranit hlídání níže. Kdykoliv EDDI obdrží informace o změně někde v galaxii, porovná ji s každým hlídáním. Budou-li informace splňovat kritéria hlídání spustí se událost. Mějte na paměti, že tyto informace pochází z EDDN, a do něj posílají data velitelé jako vy, kteří mají spuštěné programy jako je EDDI, takže bude hlásit jen ty změny o kterých si je síť vědoma.</value>
   </data>
-  
+  <data name="state_header" xml:space="preserve">
+    <value>Stav</value>
+  </data>
   <data name="system_header" xml:space="preserve">
     <value>Systém</value>
   </data>
