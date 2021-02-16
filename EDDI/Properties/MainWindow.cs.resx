@@ -129,7 +129,9 @@
   
   
   
-  
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Podrobnější informace o funkcích EDDI naleznete na</value>
+  </data>
   <data name="report_issue" xml:space="preserve">
     <value>Náhlasit chybu</value>
   </data>
@@ -140,7 +142,9 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Povolit detailní logování (pouze pokud vás o to požádají vývojáři EDDI)</value>
   </data>
-  
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Je-li povoleno podrobné logování, vytvoří se archív zip s vaším logem na ploše, který můžete vloži do hlášení chyb na GitHubu. Do logu nejsou přidávány žádne informace umožňující osobní identifikaci.</value>
+  </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verze:</value>
   </data>
@@ -156,7 +160,9 @@
   </data>
   
   
-  
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Zkreslit hlas při poškození lodi:</value>
+  </data>
   <data name="tab_tts_header" xml:space="preserve">
     <value>Převod textu na řeč</value>
   </data>
@@ -201,7 +207,9 @@
   <data name="tab_commander_details_header" xml:space="preserve">
     <value>Podrobnosti velitele</value>
   </data>
-  
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Preferovaný rod pro zájmena a funkce:</value>
+  </data>
   <data name="tab_commander_gender_f" xml:space="preserve">
     <value>Žena</value>
   </data>
@@ -217,7 +225,9 @@
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Domovský systém:</value>
   </data>
-  
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Můžete zadat informace o konkrétním systému, který považujete za svůj domov, a také jméno stanice v tomto systému. Pokud tak učiníte budou informace o systému a stanici dostupné odpovídačům EDDI.</value>
+  </data>
   <data name="tab_commander_squadron_name" xml:space="preserve">
     <value>Jméno letky:</value>
   </data>
@@ -242,11 +252,26 @@
   <data name="no_station" xml:space="preserve">
     <value>Bez stanice</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Není povoleno Frontier API v tomto sestavení EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Vyberte jazyk EDDI (vyžaduje restart VoiceAttacku):</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Jméno (výslovnost)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Poslechnout si</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Mezinárodní fonetická abeceda</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Pokud má EDDI problém vyslovit jméno velitele, může přidat výslovnost jméno velitele pomocí</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Například, jmenuje-il se velitel 'Salomé', bude výslovnost jména 'səˈloʊmi'.</value>
+  </data>
 </root>
