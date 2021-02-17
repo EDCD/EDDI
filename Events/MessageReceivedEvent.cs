@@ -16,8 +16,10 @@ namespace EddiEvents
         {
             VARIABLES.Add("from", "The name of the source who sent the message");
             VARIABLES.Add("player", "True if the sender is a player");
-            VARIABLES.Add("source", "The source of the transmission");
-            VARIABLES.Add("channel", "The channel in which the message came (i.e. friend, local, multicrew, npc, player, squadron, starsystem, voicechat, wing)");
+            VARIABLES.Add("source", "The localized source of the transmission");
+            VARIABLES.Add("source_invariant", "The invariant source of the transmission");
+            VARIABLES.Add("channel", "The localized channel in which the message came (i.e. friend, local, multicrew, npc, player, squadron, starsystem, voicechat, wing)");
+            VARIABLES.Add("channel_invariant", "The invariant channel in which the message came (i.e. friend, local, multicrew, npc, player, squadron, starsystem, voicechat, wing)");
             VARIABLES.Add("message", "The message");
         }
 
@@ -27,11 +29,15 @@ namespace EddiEvents
         [JsonProperty("source")]
         public string source => Source.localizedName;
 
+        public string source_invariant => Source.invariantName;
+
         [JsonProperty("player")]
         public bool player { get; private set; }
 
         [JsonProperty("channel")]
         public string channel => Channel.localizedName;
+
+        public string channel_invariant => Channel.invariantName;
 
         [JsonProperty("message")]
         public string message { get; private set; }
