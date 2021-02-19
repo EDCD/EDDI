@@ -16,7 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("deployable", "A boolean value. True if you are leaving the restriction zone around a ship.");
         }
 
-        bool deployable { get; set; }
+        public bool deployable { get; }
 
         public SRVTurretDeployableEvent(DateTime timestamp, bool deployable) : base(timestamp, NAME)
         {
