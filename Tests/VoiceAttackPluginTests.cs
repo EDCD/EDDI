@@ -179,5 +179,17 @@ namespace UnitTests
             Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* title")?.Type);
             Assert.AreEqual(typeof(int), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items entries")?.Type);
         }
+
+
+        [TestMethod]
+        public void TestSRVTurretDeployableEvent()
+        {
+            var setVars = new List<VoiceAttackVariable>();
+            var entry = new KeyValuePair<string, Type>("SRV turret deployable", typeof(SRVTurretDeployableEvent));
+            VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
+
+            Assert.AreEqual(1, setVars.Count);
+            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.Key == @"EDDI srv turret deployable")?.Type);
+        }
     }
 }
