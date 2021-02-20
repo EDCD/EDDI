@@ -117,7 +117,8 @@ namespace EddiCore
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         // The event queue
-        public ConcurrentQueue<Event> eventQueue { get; private set; } = new ConcurrentQueue<Event>();
+        private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
+        private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
 
         private EDDI(bool safeMode)
         {
@@ -304,9 +305,11 @@ namespace EddiCore
                         {
                             Logging.Error("Failed to start " + responder.ResponderName(), ex);
                         }
-
                     }
                 }
+
+                // Start our event handler thread
+                Task.Run(dequeueEvents);
 
                 started = true;
             }
@@ -317,6 +320,7 @@ namespace EddiCore
             running = false; // Otherwise keepalive restarts them
             if (started)
             {
+                eventHandlerTS.Cancel();
                 foreach (EDDIResponder responder in responders)
                 {
                     DisableResponder(responder.ResponderName());
@@ -527,40 +531,22 @@ namespace EddiCore
 
         public void enqueueEvent(Event @event)
         {
-            eventQueue.Enqueue(@event);
-
-            try
-            {
-                Thread eventHandler = new Thread(() => dequeueEvent())
-                {
-                    Name = "EventHandler",
-                    IsBackground = true
-                };
-                eventHandler.Start();
-                eventHandler.Join();
-            }
-            catch (ThreadAbortException tax)
-            {
-                Thread.ResetAbort();
-                Logging.Debug("Thread aborted", tax);
-            }
-            catch (Exception ex)
-            {
-                Dictionary<string, object> data = new Dictionary<string, object>
-                {
-                    { "event", JsonConvert.SerializeObject(@event) },
-                    { "exception", ex.Message },
-                    { "stacktrace", ex.StackTrace }
-                };
-                Logging.Error("Failed to enqueue event", data);
-            }
+            eventQueue.Add(@event);
         }
 
-        private void dequeueEvent()
+        private void dequeueEvents()
         {
-            if (eventQueue.TryDequeue(out Event @event))
+            try
             {
-                eventHandler(@event);
+                foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
+                {
+                    eventHandler(@event);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Task canceled. Mark this collection as not accepting any new items.
+                eventQueue.CompleteAdding();
             }
         }
 
