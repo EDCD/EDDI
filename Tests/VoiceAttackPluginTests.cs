@@ -1,14 +1,15 @@
-﻿using EddiDataDefinitions;
+﻿using EddiCargoMonitor;
+using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiVoiceAttackResponder;
+using GalnetMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EddiCargoMonitor;
 
 namespace UnitTests
 {
@@ -160,6 +161,23 @@ namespace UnitTests
             {
                 Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
             }
+        }
+
+        [TestMethod]
+        public void TestGalnetNewsPublishedEvent()
+        {
+            var setVars = new List<VoiceAttackVariable>();
+            var entry = new KeyValuePair<string, Type>("Galnet news published", typeof(GalnetNewsPublishedEvent));
+            VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
+
+            Assert.AreEqual(7, setVars.Count);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* category")?.Type);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* content")?.Type);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* id")?.Type);
+            Assert.AreEqual(typeof(DateTime), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* published")?.Type);
+            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* read")?.Type);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* title")?.Type);
+            Assert.AreEqual(typeof(int), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items entries")?.Type);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GalnetMonitor
 {
-    class GalnetNewsPublishedEvent : Event
+    public class GalnetNewsPublishedEvent : Event
     {
         public const string NAME = "Galnet news published";
         public const string DESCRIPTION = "Triggered when news is published on Galnet";
