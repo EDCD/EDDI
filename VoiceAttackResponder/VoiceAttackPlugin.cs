@@ -246,7 +246,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                Logging.Info($"Processing EDDI event {@event.type}:", @event);
+                Logging.Debug($"Processing EDDI event {@event.type}:", @event);
                 var startTime = DateTime.UtcNow;
                 vaProxy.SetText("EDDI event", @event.type);
 
@@ -264,7 +264,7 @@ namespace EddiVoiceAttackResponder
                 // Update all standard values  
                 setStandardValues(ref vaProxy);
 
-                Logging.Info($"Processed EDDI event {@event.type} in {(DateTime.UtcNow - startTime).Milliseconds} milliseconds:", @event);
+                Logging.Debug($"Processed EDDI event {@event.type} in {(DateTime.UtcNow - startTime).Milliseconds} milliseconds:", @event);
             }
             catch (Exception ex)
             {
