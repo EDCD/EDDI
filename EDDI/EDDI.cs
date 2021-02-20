@@ -2643,7 +2643,7 @@ namespace EddiCore
                         }
 
                         // Make sure we know where we are
-                        if (CurrentStarSystem.systemname.Length < 0)
+                        if (CurrentStarSystem is null || CurrentStarSystem.systemname.Length < 0)
                         {
                             break;
                         }
@@ -2653,13 +2653,13 @@ namespace EddiCore
                         if (profile != null)
                         {
                             // Sanity check
-                            if (profile.Cmdr.name != Cmdr.name)
+                            if (profile.Cmdr != null && profile.Cmdr.name != Cmdr.name)
                             {
                                 Logging.Warn("Frontier API incorrectly configured: Returning information for Commander " +
                                     $"'{profile.Cmdr.name}' rather than for '{Cmdr.name}'. Disregarding incorrect information.");
                                 return;
                             }
-                            else if (profile.CurrentStarSystem.systemName != CurrentStarSystem.systemname)
+                            else if (profile.CurrentStarSystem != null && profile.CurrentStarSystem.systemName != CurrentStarSystem.systemname)
                             {
                                 Logging.Warn("Frontier API incorrectly configured: Returning information for Star System " +
                                     $"'{profile.CurrentStarSystem.systemName}' rather than for '{CurrentStarSystem.systemname}'. Disregarding incorrect information.");
