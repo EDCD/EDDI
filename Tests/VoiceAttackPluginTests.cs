@@ -120,5 +120,24 @@ namespace UnitTests
                 Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
             }
         }
+
+        [TestMethod]
+        public void TestVAShipFSDEvent()
+        {
+            // Test a generated variable name from overlapping strings.
+            // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
+            ShipFsdEvent ev = new ShipFsdEvent (DateTime.UtcNow, "ready");
+
+            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
+            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(ShipFsdEvent), ref setVars, true, ev);
+            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+
+            Assert.AreEqual(2, setVars.Count);
+            Assert.AreEqual("ready", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI ship fsd status").Value);
+            foreach (VoiceAttackVariable variable in setVars)
+            {
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+            }
+        }
     }
 }

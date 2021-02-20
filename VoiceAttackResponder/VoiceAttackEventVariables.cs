@@ -75,17 +75,10 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                // Only append the child name to the current prefix if if does not repeat the prior word
-                string childKey = AddSpacesToTitleCasedName(key).Replace("_", " ").ToLowerInvariant();
-                string name;
-                if (Regex.Match(prefix, @"(\w+)$").Value == childKey)
-                {
-                    name = prefix;
-                }
-                else
-                {
-                    name = prefix + " " + childKey;
-                }
+                // Generate a variable name from the prefix and key. 
+                // Only append the portion of the formatted key which isn't redundant with the current prefix.
+                var childKey = AddSpacesToTitleCasedName(key).Replace("_", " ").ToLowerInvariant();
+                var name = ConcatOverlappingNames(prefix, childKey);
 
                 // We also ignore any keys that we have already set elsewhere
                 if (setVars.FirstOrDefault(v => v.Key == name) != null)
@@ -221,6 +214,18 @@ namespace EddiVoiceAttackResponder
                 newText.Append(text[i]);
             }
             return newText.ToString();
+        }
+
+        private static string ConcatOverlappingNames(string prefix, string childKey)
+        {
+            // For a prefix of "AA BB CC" and a childKey of "BB CC DD", return "AA BB CC DD"
+            var skip = 0;
+            if (!prefix.EndsWith(" ")) { prefix += " "; }
+            while (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length)
+            {
+                skip++;
+            }
+            return string.Concat(prefix.Take(skip).Concat(childKey));
         }
 
         public static void SetEventVariables(dynamic vaProxy, List<VoiceAttackVariable> variables)
