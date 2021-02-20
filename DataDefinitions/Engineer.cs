@@ -85,7 +85,7 @@ namespace EddiDataDefinitions
             Engineer result = ENGINEERS.FirstOrDefault(v => v.name.Equals(from, StringComparison.InvariantCultureIgnoreCase));
             if (result == null)
             {
-                Logging.Info("Unknown Engineer name " + from);
+                Logging.Debug("Unknown Engineer name " + from);
             }
             return result;
         }
