@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EddiCargoMonitor;
 
 namespace UnitTests
 {
@@ -134,6 +135,28 @@ namespace UnitTests
 
             Assert.AreEqual(2, setVars.Count);
             Assert.AreEqual("ready", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI ship fsd status").Value);
+            foreach (VoiceAttackVariable variable in setVars)
+            {
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+            }
+        }
+
+        [TestMethod]
+        public void TestVACommodityEjectedEvent()
+        {
+            // Test a generated variable name from overlapping strings.
+            // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
+            CommodityEjectedEvent ev = new CommodityEjectedEvent(DateTime.UtcNow, CommodityDefinition.FromEDName("Water"), 5, null, true);
+
+            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
+            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(CommodityEjectedEvent), ref setVars, true, ev);
+            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+
+            Assert.AreEqual(5, setVars.Count);
+            Assert.AreEqual("Water", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected commodity").Value);
+            Assert.AreEqual(5, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected amount").Value);
+            Assert.IsNull(vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected missionid").Value);
+            Assert.AreEqual(true, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected abandoned").Value);
             foreach (VoiceAttackVariable variable in setVars)
             {
                 Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");

@@ -221,7 +221,7 @@ namespace EddiVoiceAttackResponder
             // For a prefix of "AA BB CC" and a childKey of "BB CC DD", return "AA BB CC DD"
             var skip = 0;
             if (!prefix.EndsWith(" ")) { prefix += " "; }
-            while (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length)
+            while (skip < childKey.Length || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
             {
                 skip++;
             }
