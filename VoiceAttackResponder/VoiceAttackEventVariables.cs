@@ -222,7 +222,7 @@ namespace EddiVoiceAttackResponder
             var skip = 0;
             if (!prefix.EndsWith(" ")) { prefix += " "; }
             while (skip < childKey.Length 
-                || prefix.Skip(skip).Count() > childKey.Length 
+                || prefix.Skip(skip).Count() - 1 > childKey.Length 
                 || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
             {
                 skip++;
