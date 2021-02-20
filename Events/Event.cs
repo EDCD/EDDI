@@ -9,6 +9,7 @@ namespace EddiEvents
         [VoiceAttackIgnore]
         public string raw { get; set; }
 
+        [VoiceAttackIgnore]
         public DateTime timestamp { get; private set; }
 
         /// <summary> The EDDI event triggered by this event.</summary>
