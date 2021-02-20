@@ -52,17 +52,12 @@ namespace GeneratorTests
                         output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
                         output.Add("");
                         output.Add("");
-                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
+                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key].OrderBy(v => v.Key))
                         {
                             output.Add("  * `" + variable.Key + "` " + variable.Value);
                             output.Add("");
                         }
 
-                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
-                        output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*' and a value ending in 'entries' will identify the total number of entries in that index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
-                        output.Add("The following VoiceAttack variables are available for this event:");
-                        output.Add("");
-                        output.Add("");
                         List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
                         VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
                         foreach (var variable in setVars)
@@ -81,6 +76,16 @@ namespace GeneratorTests
                                 }
                             }
                         }
+
+                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
+                        if (setVars.Any(v => v.Key.Contains(@"<index")))
+                        {
+                            output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*' and a value ending in 'entries' will identify the total number of entries in that index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
+                        }
+                        output.Add("The following VoiceAttack variables are available for this event:");
+                        output.Add("");
+                        output.Add("");
+
                         void WriteVariableToOutput(VoiceAttackVariable variable)
                         {
                             if (variable.Type == typeof(string))
@@ -103,6 +108,7 @@ namespace GeneratorTests
                             {
                                 output.Add("  * {DATE:" + variable.Key + "} " + variable.Value);
                             }
+                            output.Add("");
                         }
                         foreach (var variable in setVars.Where(v => v.Value != null).OrderBy(i => i.Key))
                         {
@@ -114,7 +120,6 @@ namespace GeneratorTests
                             // Write variables without descriptions second
                             WriteVariableToOutput(variable);
                         }
-                        output.Add("");
                         output.Add("");
                     }
                     output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
