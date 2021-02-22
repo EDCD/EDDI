@@ -22,6 +22,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Carrier jumped` script updated to announce engineer systems.
       * `Engineer report` script added.
+      * `Message received` script and properties updated to better support localization.
       * `Jumped` script updated to announce engineer systems.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
       * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
