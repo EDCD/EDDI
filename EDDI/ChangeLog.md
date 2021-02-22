@@ -8,7 +8,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could double-count signal sources when re-logging. 
     * "Conflict zone" signal sources are no longer described as "Combat zone" signal sources.
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
-  * Material monitor
+  * Galnet Monitor
+    * Reduced Galnet article polling from 30s / 2min to 5min / 15min.
+    * Delayed active monitoring until 5 minutes after we become active in game rather than 5 minutes after EDDI is launched.
+  * Material Monitor
     * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
     * Fixed a bug that could prevent material counts from being updated for materials no longer in inventory.
   * Speech Responder
