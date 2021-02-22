@@ -99,8 +99,48 @@
   </resheader>
   <data name="your" xml:space="preserve">
     <value>Dein</value>
+    <comment>e.g. *your* ship</comment>
   </data>
   <data name="_ship" xml:space="preserve">
     <value>Schiff</value>
+    <comment>e.g. your *ship*</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
