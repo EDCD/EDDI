@@ -17,6 +17,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
+    * Personalities
+      * Portuguese default personality updated (thanks to @Kenjiro). 
     * Scripts
       * `Carrier jumped` script updated to announce engineer systems.
       * `Engineer report` script added.
