@@ -27,7 +27,8 @@ namespace GalnetMonitor
         private GalnetConfiguration configuration = new GalnetConfiguration();
         protected static ResourceManager resourceManager = EddiGalnetMonitor.Properties.GalnetMonitor.ResourceManager;
 
-        private bool running = false;
+        private bool running;
+        private DateTime journalTimeStamp;
 
         public static bool altURL { get; private set; }
 
@@ -112,34 +113,36 @@ namespace GalnetMonitor
         private void monitor()
         {
             const int inGameOnlyStartDelayMilliSecs = 5 * 60 * 1000; // 5 mins
-            const int alwaysOnIntervalMilliSecs = 2 * 60 * 1000; // 2 mins
-            const int inGameOnlyIntervalMilliSecs = 30 * 1000; // 30 secs
+            const int passiveIntervalMilliSecs = 15 * 60 * 1000; // 15 mins
+            const int activeIntervalMilliSecs = 5 * 60 * 1000; // 5 mins
 
-            if (!configuration.galnetAlwaysOn)
-            {
-                // Wait at least 5 minutes after starting before polling for new articles, but only if galnetAlwaysOn is false
-                Thread.Sleep(inGameOnlyStartDelayMilliSecs);
-            }
-
+            bool firstRun = true;
             while (running)
             {
                 if (configuration.galnetAlwaysOn)
                 {
                     monitorGalnet();
-                    Thread.Sleep(alwaysOnIntervalMilliSecs);
+                    Thread.Sleep(passiveIntervalMilliSecs);
                 }
                 else
                 {
                     // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
-                    if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
+                    if ((DateTime.UtcNow - journalTimeStamp).TotalMilliseconds < passiveIntervalMilliSecs)
                     {
+                        if (firstRun)
+                        {
+                            // Wait at least 5 minutes after starting before polling for new articles
+                            firstRun = false;
+                            Thread.Sleep(inGameOnlyStartDelayMilliSecs);
+                        }
                         monitorGalnet();
+                        Thread.Sleep(activeIntervalMilliSecs);
                     }
                     else
                     {
                         Logging.Debug("No in-game activity detected, skipping galnet feed update");
+                        Thread.Sleep(passiveIntervalMilliSecs);
                     }
-                    Thread.Sleep(inGameOnlyIntervalMilliSecs);
                 }
 
                 void monitorGalnet()
@@ -261,6 +264,10 @@ namespace GalnetMonitor
 
         public void PreHandle(Event @event)
         {
+            if (!@event.fromLoad)
+            {
+                journalTimeStamp = @event.timestamp;
+            }
         }
 
         public void PostHandle(Event @event)
