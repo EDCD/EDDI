@@ -13,10 +13,12 @@ namespace EddiEvents
 
         static NPCInterdictionCommencedEvent()
         {
-            VARIABLES.Add("by", "Who the interdiction is by (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
+            VARIABLES.Add("by", "The localized source of the interdiction (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
+            VARIABLES.Add("by_invariant", "The invariant source of the interdiction (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
         }
 
         public string by => Source.localizedName;
+        public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing
         public MessageSource Source { get; }
