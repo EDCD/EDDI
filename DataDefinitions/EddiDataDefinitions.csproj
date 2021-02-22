@@ -727,10 +727,18 @@
     <EmbeddedResource Include="Properties\SecurityLevels.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.ru.resx" />
     <EmbeddedResource Include="Properties\Ship.cs.resx" />
+    <EmbeddedResource Include="Properties\Ship.de.resx" />
+    <EmbeddedResource Include="Properties\Ship.es.resx" />
+    <EmbeddedResource Include="Properties\Ship.fr.resx" />
+    <EmbeddedResource Include="Properties\Ship.hu.resx" />
+    <EmbeddedResource Include="Properties\Ship.it.resx" />
+    <EmbeddedResource Include="Properties\Ship.ja.resx" />
+    <EmbeddedResource Include="Properties\Ship.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Ship.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Ship.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Ship.ru.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.cs.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ru.resx" />
