@@ -489,7 +489,6 @@ namespace UnitTests
             Assert.AreEqual("SlowIce", event1.from);
             Assert.AreEqual("hello", event1.message);
             Assert.AreEqual("wing", event1.Channel.invariantName);
-
         }
 
         [TestMethod]

@@ -13,10 +13,12 @@ namespace EddiEvents
 
         static NPCAttackCommencedEvent()
         {
-            VARIABLES.Add("by", "Who the attack is by (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
+            VARIABLES.Add("by", "The localized source of the attack (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
+            VARIABLES.Add("by_invariant", "The invariant source of the attack (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
         }
 
         public string by => Source.localizedName;
+        public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing
         public MessageSource Source { get; }

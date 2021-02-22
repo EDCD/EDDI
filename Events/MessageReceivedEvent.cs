@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using EddiDataDefinitions;
 
 namespace EddiEvents
 {
