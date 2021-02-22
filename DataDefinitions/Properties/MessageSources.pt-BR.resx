@@ -97,36 +97,132 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SquadronMate" xml:space="preserve">
+    <value>Colega de esquadra</value>
+    
+  </data>
+  <data name="WingMate" xml:space="preserve">
+    <value>Colega de Esquadrão</value>
+    
+  </data>
+  <data name="CrewMate" xml:space="preserve">
+    <value>Colega de tripulação</value>
+    
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Comandante</value>
+    
+  </data>
+  <data name="AmbushedPilot" xml:space="preserve">
+    <value>Piloto emboscado</value>
+    
+  </data>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Caçador de recompensas</value>
+    
+  </data>
+  <data name="CapShip" xml:space="preserve">
+    <value>Nave capital</value>
+    
+  </data>
+  <data name="CargoHunter" xml:space="preserve">
+    <value>Caçador de carga</value>
+    
+  </data>
+  <data name="ConvoyExplorers" xml:space="preserve">
+    <value>Comboio de exploração</value>
+    
+  </data>
+  <data name="ConvoyWedding" xml:space="preserve">
+    <value>Comboio de casamento</value>
+    
+  </data>
+  <data name="CruiseLiner" xml:space="preserve">
+    <value>Nave de cruzeiro</value>
+    
+  </data>
+  <data name="Escort" xml:space="preserve">
+    <value>Escolta</value>
+    
+  </data>
+  <data name="Hitman" xml:space="preserve">
+    <value>Assassino</value>
+    
+  </data>
+  <data name="Messenger" xml:space="preserve">
+    <value>Mensageiro</value>
+    
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Militar</value>
+    
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Minerador</value>
+    
+  </data>
+  <data name="PassengerHunter" xml:space="preserve">
+    <value>Caçador de passageiro</value>
+    
+  </data>
+  <data name="PassengerLiner" xml:space="preserve">
+    <value>Nave de passageiros</value>
+    
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirata</value>
+    
+  </data>
+  <data name="Police" xml:space="preserve">
+    <value>Polícia</value>
+    
+  </data>
+  <data name="PowersAssassin" xml:space="preserve">
+    <value>Agente de poder rival</value>
+    
+  </data>
+  <data name="PowersPirate" xml:space="preserve">
+    <value>Agente de poder rival</value>
+    
+  </data>
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>Agente de poder rival</value>
+    
+  </data>
+  <data name="Propagandist" xml:space="preserve">
+    <value>Propagandista</value>
+    
+  </data>
+  <data name="Protester" xml:space="preserve">
+    <value>Protestante</value>
+    
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Refugiado</value>
+    
+  </data>
+  <data name="StarshipOne" xml:space="preserve">
+    <value>Starship One</value>
+    
+  </data>
+  <data name="SearchandRescue" xml:space="preserve">
+    <value>Busca e Resgate</value>
+    
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+    
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Estação</value>
+    
+  </data>
+  <data name="CivilianPilot" xml:space="preserve">
+    <value>Piloto civil</value>
+    
+  </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>Zona de conflito</value>
+    
+  </data>
 </root>
