@@ -90,12 +90,19 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="MessageChannel.cs" />
+    <Compile Include="MessageSource.cs" />
     <Compile Include="EngineerSpecialty.cs" />
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
+    <Compile Include="Properties\MessageChannels.Designer.cs">
+      <DependentUpon>MessageChannels.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,6 +117,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EngineerSpecialty.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MessageSources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageSources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Ship.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -618,6 +630,28 @@
     <EmbeddedResource Include="Properties\Materials.cs.resx" />
     <EmbeddedResource Include="Properties\Materials.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Materials.ru.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.cs.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.de.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.es.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.fr.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.hu.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.it.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.ja.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\MessageChannels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageChannels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MessageChannels.ru.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.cs.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.de.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.es.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.fr.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.hu.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.it.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.ja.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\MessageSources.ru.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.cs.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.ru.resx" />
@@ -681,6 +715,10 @@
     <EmbeddedResource Include="Properties\EngineerSpecialty.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EngineerSpecialty.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MessageSources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageSources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.cs.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />

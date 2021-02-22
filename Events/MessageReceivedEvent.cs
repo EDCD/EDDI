@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using EddiDataDefinitions;
 
 namespace EddiEvents
 {
@@ -15,8 +16,10 @@ namespace EddiEvents
         {
             VARIABLES.Add("from", "The name of the source who sent the message");
             VARIABLES.Add("player", "True if the sender is a player");
-            VARIABLES.Add("source", "The source of the transmission");
-            VARIABLES.Add("channel", "The channel in which the message came (e.g. direct, local, multicrew, wing, squadron, starsystem, npc)");
+            VARIABLES.Add("source", "The localized source of the transmission");
+            VARIABLES.Add("source_invariant", "The invariant source of the transmission");
+            VARIABLES.Add("channel", "The localized channel in which the message came (i.e. friend, local, multicrew, npc, player, squadron, starsystem, voicechat, wing)");
+            VARIABLES.Add("channel_invariant", "The invariant channel in which the message came (i.e. friend, local, multicrew, npc, player, squadron, starsystem, voicechat, wing)");
             VARIABLES.Add("message", "The message");
         }
 
@@ -24,23 +27,31 @@ namespace EddiEvents
         public string from { get; private set; }
 
         [JsonProperty("source")]
-        public string source { get; private set; }
+        public string source => Source.localizedName;
+
+        public string source_invariant => Source.invariantName;
 
         [JsonProperty("player")]
         public bool player { get; private set; }
 
         [JsonProperty("channel")]
-        public string channel { get; private set; }
+        public string channel => Channel.localizedName;
+
+        public string channel_invariant => Channel.invariantName;
 
         [JsonProperty("message")]
         public string message { get; private set; }
 
-        public MessageReceivedEvent(DateTime timestamp, string from, string source, bool player, string channel, string message) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public MessageChannel Channel { get; }
+        public MessageSource Source { get; }
+
+        public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, MessageChannel channel, string message) : base(timestamp, NAME)
         {
             this.from = from;
-            this.source = source;
+            Source = source;
             this.player = player;
-            this.channel = channel;
+            Channel = channel;
             this.message = message;
         }
     }

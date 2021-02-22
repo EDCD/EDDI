@@ -409,8 +409,9 @@ namespace UnitTests
             MessageReceivedEvent theEvent = (MessageReceivedEvent)events[0];
 
             Assert.IsFalse(theEvent.player);
-            Assert.AreEqual("Police", theEvent.source);
+            Assert.AreEqual("Police", theEvent.Source.invariantName);
             Assert.AreEqual("Federal Security Service", theEvent.from);
+            Assert.AreEqual("npc", theEvent.Channel.invariantName);
         }
 
         [TestMethod]
@@ -424,8 +425,9 @@ namespace UnitTests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsFalse(event1.player);
-            Assert.AreEqual("Pirate", event1.source);
+            Assert.AreEqual("Pirate", event1.Source.invariantName);
             Assert.AreEqual("Jonathan Dallard", event1.from);
+            Assert.AreEqual("npc", event1.Channel.invariantName);
 
             NPCCargoScanCommencedEvent event2 = (NPCCargoScanCommencedEvent)events[1];
 
@@ -451,9 +453,10 @@ namespace UnitTests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsTrue(event1.player);
-            Assert.AreEqual("Commander", event1.source);
+            Assert.AreEqual("Commander", event1.Source.invariantName);
             Assert.AreEqual("SlowIce", event1.from);
             Assert.AreEqual("good luck", event1.message);
+            Assert.AreEqual("player", event1.Channel.invariantName);
         }
 
         [TestMethod]
@@ -466,9 +469,10 @@ namespace UnitTests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsTrue(event1.player);
-            Assert.AreEqual("Commander", event1.source);
+            Assert.AreEqual("Commander", event1.Source.invariantName);
             Assert.AreEqual("Rebecca Lansing", event1.from);
             Assert.AreEqual("Hi there", event1.message);
+            Assert.AreEqual("local", event1.Channel.invariantName);
         }
 
         [TestMethod]
@@ -481,9 +485,11 @@ namespace UnitTests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsTrue(event1.player);
-            Assert.AreEqual("Wing mate", event1.source);
+            Assert.AreEqual("Wing mate", event1.Source.invariantName);
             Assert.AreEqual("SlowIce", event1.from);
             Assert.AreEqual("hello", event1.message);
+            Assert.AreEqual("wing", event1.Channel.invariantName);
+
         }
 
         [TestMethod]
@@ -497,8 +503,8 @@ namespace UnitTests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsTrue(event1.player);
-            Assert.AreEqual("multicrew", event1.channel);
-            Assert.AreEqual("Crew mate", event1.source);
+            Assert.AreEqual("multicrew", event1.Channel.invariantName);
+            Assert.AreEqual("Crew mate", event1.Source.invariantName);
             Assert.AreEqual("Nexonoid", event1.from);
             Assert.AreEqual("whats up", event1.message);
         }

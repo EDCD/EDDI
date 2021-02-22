@@ -1756,7 +1756,8 @@ namespace EddiJournalMonitor
                                     string from = JsonParsing.getString(data, "From");
                                     string channel = JsonParsing.getString(data, "Channel");
                                     string message = JsonParsing.getString(data, "Message");
-                                    string source = "";
+                                    MessageChannel messageChannel;
+                                    MessageSource source;
 
                                     if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
                                     {
@@ -1777,32 +1778,49 @@ namespace EddiJournalMonitor
                                     )
                                     {
                                         // Give priority to player messages
-                                        source = channel == "squadron" ? "Squadron mate" : channel == "wing" ? "Wing mate" : channel == null ? "Crew mate" : "Commander";
-                                        channel = channel ?? "multicrew";
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line, fromLoad = fromLogLoad });
+                                        if (string.IsNullOrEmpty(channel))
+                                        {
+                                            // Multicrew messages omit the `channel` property
+                                            source = MessageSource.CrewMate;
+                                        }
+                                        else if (channel == "squadron")
+                                        {
+                                            source = MessageSource.SquadronMate;
+                                        }
+                                        else if (channel == "wing")
+                                        {
+                                            source = MessageSource.WingMate;
+                                        }
+                                        else
+                                        {
+                                            source = MessageSource.Commander;
+                                        }
+                                        messageChannel = MessageChannel.FromEDName(channel ?? "multicrew");
+                                        events.Add(new MessageReceivedEvent(timestamp, from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
                                         // This is NPC speech.  What's the source?
                                         if (from.Contains("npc_name_decorate"))
                                         {
-                                            source = npcSpeechBy(from, message);
+                                            source = MessageSource.FromMessage(from, message);
                                             from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
                                         }
-                                        else if (from.Contains("ShipName_"))
+                                        else if (from.Contains("ShipName_") || from.Contains("_Scenario_"))
                                         {
-                                            source = npcSpeechBy(from, message);
+                                            source = MessageSource.FromMessage(from, message);
                                             from = JsonParsing.getString(data, "From_Localised");
                                         }
-                                        else if ((message.StartsWith("$STATION_")) || message.Contains("$Docking"))
+                                        else if (message.StartsWith("$STATION_") || message.Contains("$Docking"))
                                         {
-                                            source = "Station";
+                                            source = MessageSource.Station;
                                         }
                                         else
                                         {
-                                            source = "NPC";
+                                            source = MessageSource.NPC;
                                         }
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, false, channel, JsonParsing.getString(data, "Message_Localised")) { raw = line, fromLoad = fromLogLoad });
+                                        messageChannel = MessageChannel.FromEDName(channel);
+                                        events.Add(new MessageReceivedEvent(timestamp, from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised")) { raw = line, fromLoad = fromLogLoad });
 
                                         // See if we also want to spawn a specific event as well?
                                         if (message == "$STATION_NoFireZone_entered;")
@@ -1820,20 +1838,20 @@ namespace EddiJournalMonitor
                                         else if (message.Contains("_StartInterdiction"))
                                         {
                                             // Find out who is doing the interdicting
-                                            string by = npcSpeechBy(from, message);
+                                            MessageSource by = MessageSource.FromMessage(from, message);
 
                                             events.Add(new NPCInterdictionCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
                                         }
                                         else if (message.Contains("_Attack") || message.Contains("_OnAttackStart") || message.Contains("AttackRun") || message.Contains("OnDeclarePiracyAttack"))
                                         {
                                             // Find out who is doing the attacking
-                                            string by = npcSpeechBy(from, message);
+                                            MessageSource by = MessageSource.FromMessage(from, message);
                                             events.Add(new NPCAttackCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
                                         }
                                         else if (message.Contains("_OnStartScanCargo"))
                                         {
                                             // Find out who is doing the scanning
-                                            string by = npcSpeechBy(from, message);
+                                            MessageSource by = MessageSource.FromMessage(from, message);
                                             events.Add(new NPCCargoScanCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
@@ -4277,130 +4295,6 @@ namespace EddiJournalMonitor
                 source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
             }
             return source;
-        }
-
-
-
-        private static string npcSpeechBy(string from, string message)
-        {
-            string by;
-            if (message.StartsWith("$AmbushedPilot_"))
-            {
-                by = "Ambushed pilot";
-            }
-            else if (message.StartsWith("$BountyHunter"))
-            {
-                by = "Bounty hunter";
-            }
-            else if (message.StartsWith("$CapShip") || message.StartsWith("$FEDCapShip"))
-            {
-                by = "Capital ship";
-            }
-            else if (message.StartsWith("$CargoHunter"))
-            {
-                by = "Cargo hunter"; // Mission specific
-            }
-            else if (message.StartsWith("$Commuter"))
-            {
-                by = "Civilian pilot";
-            }
-            else if (message.StartsWith("$ConvoyExplorers"))
-            {
-                by = "Exploration convoy";
-            }
-            else if (message.StartsWith("$ConvoyWedding"))
-            {
-                by = "Wedding convoy";
-            }
-            else if (message.StartsWith("$CruiseLiner"))
-            {
-                by = "Cruise liner";
-            }
-            else if (message.StartsWith("$Escort"))
-            {
-                by = "Escort";
-            }
-            else if (message.StartsWith("$Hitman"))
-            {
-                by = "Hitman";
-            }
-            else if (message.StartsWith("$Messenger"))
-            {
-                by = "Messenger";
-            }
-            else if (message.StartsWith("$Military"))
-            {
-                by = "Military";
-            }
-            else if (message.StartsWith("$Miner"))
-            {
-                by = "Miner";
-            }
-            else if (message.StartsWith("$PassengerHunter"))
-            {
-                by = "Passenger hunter"; // Mission specific
-            }
-            else if (message.StartsWith("$PassengerLiner"))
-            {
-                by = "Passenger liner";
-            }
-            else if (message.StartsWith("$Pirate"))
-            {
-                by = "Pirate";
-            }
-            else if (message.StartsWith("$Police"))
-            {
-                // Police messages appear to be re-used by bounty hunters.  Check from to see if it really is police
-                if (from.Contains("Police"))
-                {
-                    by = "Police";
-                }
-                else
-                {
-                    by = "Bounty hunter";
-                }
-            }
-            else if (message.StartsWith("$PowersAssassin"))
-            {
-                by = "Rival power's agent";  // Power play specific
-            }
-            else if (message.StartsWith("$PowersPirate"))
-            {
-                by = "Rival power's agent"; // Power play specific
-            }
-            else if (message.StartsWith("$PowersSecurity"))
-            {
-                by = "Rival power's agent"; // Power play specific
-            }
-            else if (message.StartsWith("$Propagandist"))
-            {
-                by = "Propagandist";
-            }
-            else if (message.StartsWith("$Protester"))
-            {
-                by = "Protester";
-            }
-            else if (message.StartsWith("$Refugee"))
-            {
-                by = "Refugee";
-            }
-            else if (message.StartsWith("$Smuggler"))
-            {
-                by = "Civilian pilot";  // We shouldn't recognize a smuggler without a cargo scan
-            }
-            else if (message.StartsWith("$StarshipOne"))
-            {
-                by = "Starship One";
-            }
-            else if (message.Contains("_SearchandRescue_"))
-            {
-                by = "Search and rescue";
-            }
-            else
-            {
-                by = "NPC";
-            }
-            return by;
         }
 
         // Be sensible with health - round it unless it's very low
