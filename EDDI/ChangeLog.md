@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Engineer report` script added.
       * `Jumped` script updated to announce engineer systems.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
+      * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
   * VoiceAttack
     * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
 
