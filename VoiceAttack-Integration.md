@@ -369,6 +369,8 @@ For convenience, the value `$=` in the script stands for the phonetic name of yo
 
 To use this function in your own commands set the 'Script' variable and optionally the 'Priority' and 'Voice' variables, then use the 'Execute an external plugin function' command with the plugin context set to 'say'.
 
+A tip for advanced users: It is possible to invoke the Cottle language used in the Speech Responder from the `say` context. To do so, curly brackets used in Cottle functions must be escaped using the `|` (vertical pipe) character. For example, you might use `|{P('{TXT:EDDI body mapped shortname}', 'body')|}` to modify the pronunciation of `{TXT:EDDI body mapped shortname}` by passing it through the Cottle `P()` function.
+
 ### speech
 
 This function uses EDDI's voice to read a Speech Responder script. It takes one mandatory and two optional variables as parameters.
