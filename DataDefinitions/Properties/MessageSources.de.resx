@@ -121,7 +121,10 @@
     <value>Kopfgeldjäger</value>
     
   </data>
-  
+  <data name="CapShip" xml:space="preserve">
+    <value>Großkampfschiff</value>
+    
+  </data>
   <data name="CargoHunter" xml:space="preserve">
     <value>Frachtjäger</value>
     
@@ -142,8 +145,14 @@
     <value>Begleitschutz</value>
     
   </data>
-  
-  
+  <data name="Hitman" xml:space="preserve">
+    <value>Killer</value>
+    
+  </data>
+  <data name="Messenger" xml:space="preserve">
+    <value>Nachrichtensystem</value>
+    
+  </data>
   <data name="Military" xml:space="preserve">
     <value>Militär</value>
     
@@ -196,7 +205,10 @@
     <value>Starship One</value>
     
   </data>
-  
+  <data name="SearchandRescue" xml:space="preserve">
+    <value>Suche und Rettung</value>
+    
+  </data>
   <data name="NPC" xml:space="preserve">
     <value>NPC</value>
     
