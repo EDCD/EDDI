@@ -145,18 +145,57 @@
   
   
   
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirat</value>
+    
+  </data>
+  <data name="Police" xml:space="preserve">
+    <value>Polizei</value>
+    
+  </data>
+  <data name="PowersAssassin" xml:space="preserve">
+    <value>Agent der rivalisierenden Macht</value>
+    
+  </data>
+  <data name="PowersPirate" xml:space="preserve">
+    <value>Agent der rivalisierenden Macht</value>
+    
+  </data>
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>Agent der rivalisierenden Macht</value>
+    
+  </data>
+  <data name="Propagandist" xml:space="preserve">
+    <value>Propagandist</value>
+    
+  </data>
+  <data name="Protester" xml:space="preserve">
+    <value>Demonstrant</value>
+    
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Flüchtling</value>
+    
+  </data>
+  <data name="StarshipOne" xml:space="preserve">
+    <value>Starship One</value>
+    
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+    
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station</value>
+    
+  </data>
+  <data name="CivilianPilot" xml:space="preserve">
+    <value>ziviler Pilot</value>
+    
+  </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>Konfliktzone</value>
+    
+  </data>
 </root>
