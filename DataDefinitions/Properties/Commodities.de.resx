@@ -1708,7 +1708,10 @@
     <value>Schalenoberflächengewebeprobe</value>
     <comment>Commodity S_TissueSample_Core</comment>
   </data>
-  
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Anomaliepartikel</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
   <data name="S9_TissueSample_Shell" xml:space="preserve">
     <value>Schalengewebeprobe</value>
     <comment>Commodity S9_TissueSample_Shell</comment>
