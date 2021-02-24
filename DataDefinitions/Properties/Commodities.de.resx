@@ -1690,12 +1690,18 @@
     <value>Tritium</value>
     <comment>Commodity Tritium</comment>
   </data>
-  
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Molluskenflüssigkeit</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
   <data name="M_TissueSample_Soft" xml:space="preserve">
     <value>Mollusken-Weichgewebe</value>
     <comment>Commodity M_TissueSample_Soft</comment>
   </data>
-  
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Molluskengehirngewebe</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
   <data name="S_TissueSample_Cells" xml:space="preserve">
     <value>Schalenkerngewebeprobe</value>
     <comment>Commodity S_TissueSample_Cells</comment>
