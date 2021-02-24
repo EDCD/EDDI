@@ -102,10 +102,13 @@
     
   </data>
   <data name="WingMate" xml:space="preserve">
-    <value>Staffelkamerad</value>
+    <value>Wing-Kamerad</value>
     
   </data>
-  
+  <data name="CrewMate" xml:space="preserve">
+    <value>Besatzungsmitglied</value>
+    
+  </data>
   <data name="Commander" xml:space="preserve">
     <value>Kommandant</value>
     
@@ -141,10 +144,22 @@
   </data>
   
   
-  
-  
-  
-  
+  <data name="Military" xml:space="preserve">
+    <value>Militär</value>
+    
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Bergarbeiter</value>
+    
+  </data>
+  <data name="PassengerHunter" xml:space="preserve">
+    <value>Passagierjäger</value>
+    
+  </data>
+  <data name="PassengerLiner" xml:space="preserve">
+    <value>Passagierschiiff</value>
+    
+  </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirat</value>
     
