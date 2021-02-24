@@ -97,18 +97,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SquadronMate" xml:space="preserve">
+    <value>Geschwaderkamerad</value>
+    
+  </data>
+  <data name="WingMate" xml:space="preserve">
+    <value>Staffelkamerad</value>
+    
+  </data>
   
+  <data name="Commander" xml:space="preserve">
+    <value>Kommandant</value>
+    
+  </data>
+  <data name="AmbushedPilot" xml:space="preserve">
+    <value>Überfallener Pilot</value>
+    
+  </data>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Kopfgeldjäger</value>
+    
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CargoHunter" xml:space="preserve">
+    <value>Frachtjäger</value>
+    
+  </data>
+  <data name="ConvoyExplorers" xml:space="preserve">
+    <value>Erkundungskonvoi</value>
+    
+  </data>
+  <data name="ConvoyWedding" xml:space="preserve">
+    <value>Hochzeitskonvoi</value>
+    
+  </data>
+  <data name="CruiseLiner" xml:space="preserve">
+    <value>Kreuzfahrtschiff</value>
+    
+  </data>
+  <data name="Escort" xml:space="preserve">
+    <value>Begleitschutz</value>
+    
+  </data>
   
   
   
