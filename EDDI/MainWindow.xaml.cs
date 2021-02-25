@@ -56,35 +56,35 @@ namespace Eddi
         private void SaveWindowState()
         {
             Rect savePosition;
-
+            var eddiConfiguration = EDDIConfiguration.FromFile();
             switch (WindowState)
             {
                 case WindowState.Maximized:
                     savePosition = new Rect(RestoreBounds.Left, RestoreBounds.Top, RestoreBounds.Width, RestoreBounds.Height);
-                    Properties.Settings.Default.Maximized = true;
-                    Properties.Settings.Default.Minimized = false;
+                    eddiConfiguration.Maximized = true;
+                    eddiConfiguration.Minimized = false;
                     break;
                 case WindowState.Minimized:
                     savePosition = new Rect(RestoreBounds.Left, RestoreBounds.Top, RestoreBounds.Width, RestoreBounds.Height);
-                    Properties.Settings.Default.Maximized = false;
+                    eddiConfiguration.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    Properties.Settings.Default.Minimized = !App.FromVA;
+                    eddiConfiguration.Minimized = !App.FromVA;
 
                     break;
                 default:
                     savePosition = new Rect(Left, Top, Width, Height);
-                    Properties.Settings.Default.Maximized = false;
-                    Properties.Settings.Default.Minimized = false;
+                    eddiConfiguration.Maximized = false;
+                    eddiConfiguration.Minimized = false;
                     break;
             }
 
-            Properties.Settings.Default.WindowPosition = savePosition;
+            eddiConfiguration.MainWindowPosition = savePosition;
 
             // Remember which tab we have selected in EDDI
-            Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
+            eddiConfiguration.SelectedTab = tabControl.SelectedIndex;
 
-            Properties.Settings.Default.Save();
+            eddiConfiguration.ToFile();
         }
 
         private void RestoreWindowState()
@@ -92,7 +92,8 @@ namespace Eddi
             int designedHeight = (int)MinHeight;
             int designedWidth = (int)MinWidth;
 
-            Rect windowPosition = Properties.Settings.Default.WindowPosition;
+            var eddiConfiguration = EDDIConfiguration.FromFile();
+            Rect windowPosition = eddiConfiguration.MainWindowPosition;
             Visibility = Visibility.Collapsed;
 
             if (windowPosition != Rect.Empty && isWindowValid(windowPosition))
@@ -116,7 +117,7 @@ namespace Eddi
                 Height = Math.Min(Screen.PrimaryScreen.Bounds.Height, designedHeight);
             }
 
-            tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
+            tabControl.SelectedIndex = eddiConfiguration.SelectedTab;
 
             // Check detected monitors to see if the saved window size and location is valid
             bool isWindowValid(Rect rect)
@@ -444,9 +445,10 @@ namespace Eddi
         // Hook the window Loaded event to set minimize/maximize state at startup 
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is Window senderWindow && (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized))
+            var eddiConfiguration = EDDIConfiguration.FromFile();
+            if (sender is Window senderWindow && (eddiConfiguration.Maximized || eddiConfiguration.Minimized))
             {
-                if (Properties.Settings.Default.Minimized && !App.FromVA)
+                if (eddiConfiguration.Minimized && !App.FromVA)
                 {
                     senderWindow.WindowState = WindowState.Minimized;
                 }

@@ -116,7 +116,6 @@ namespace Eddi
             if (_Rollbar.TelemetryEnabled)
             {
                 // Generate an id unique to this app run for bug tracking
-                if (!string.IsNullOrEmpty(Eddi.Properties.Settings.Default.uniqueID)) { Eddi.Properties.Settings.Default.uniqueID = null; }
                 _Rollbar.configureRollbar(Guid.NewGuid().ToString(), FromVA);
 
                 // Catch and send unhandled exceptions from Windows forms
@@ -150,26 +149,16 @@ namespace Eddi
 
         public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration)
         {
-            string overrideCultureName = null;
             try
             {
-                // Use Eddi.Properties.Settings if an override culture isn't set in our configuration
-                if (configuration.OverrideCulture is null && !string.IsNullOrEmpty(Eddi.Properties.Settings.Default.OverrideCulture))
-                {
-                    configuration.OverrideCulture = Eddi.Properties.Settings.Default.OverrideCulture;
-                    configuration.ToFile();
-                }
-
-                overrideCultureName = configuration.OverrideCulture;
-
                 // we are using the InvariantCulture name "" to mean user's culture
-                CultureInfo overrideCulture = string.IsNullOrEmpty(overrideCultureName) ? null : new CultureInfo(overrideCultureName);
+                CultureInfo overrideCulture = string.IsNullOrEmpty(configuration.OverrideCulture) ? null : new CultureInfo(configuration.OverrideCulture);
                 ApplyCulture(overrideCulture);
             }
             catch
             {
                 ApplyCulture(null);
-                Debug.WriteLine("Culture [{0}] not available", overrideCultureName);
+                Debug.WriteLine("Culture [{0}] not available", configuration.OverrideCulture);
             }
         }
 

@@ -1,9 +1,11 @@
 ﻿using EddiDataDefinitions;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using Utilities;
 
 namespace EddiCore
@@ -12,7 +14,7 @@ namespace EddiCore
     public class EDDIConfiguration : INotifyPropertyChanged
     {
         [JsonIgnore]
-        private string _HomeSystem = null;
+        private string _HomeSystem;
         [JsonProperty("homeSystem")]
         public string HomeSystem
         {
@@ -21,7 +23,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _HomeStation = null;
+        private string _HomeStation;
         [JsonProperty("homeStation")]
         public string HomeStation
         {
@@ -30,7 +32,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _DestinationSystem = null;
+        private string _DestinationSystem;
         [JsonProperty("destinationSystem")]
         public string DestinationSystem
         {
@@ -39,7 +41,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _DestinationStation = null;
+        private string _DestinationStation;
         [JsonProperty("destinationStation")]
         public string DestinationStation
         {
@@ -48,7 +50,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _SquadronName = null;
+        private string _SquadronName;
         [JsonProperty("squadronName")]
         public string SquadronName
         {
@@ -57,7 +59,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _SquadronID = null;
+        private string _SquadronID;
         [JsonProperty("squadronID")]
         public string SquadronID
         {
@@ -126,7 +128,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _SquadronSystem = null;
+        private string _SquadronSystem;
         [JsonProperty("squadronSystem")]
         public string SquadronSystem
         {
@@ -135,7 +137,7 @@ namespace EddiCore
         }
 
         [JsonIgnore]
-        private string _SquadronFaction = null;
+        private string _SquadronFaction;
         [JsonProperty("squadronFaction")]
         public string SquadronFaction
         {
@@ -156,14 +158,14 @@ namespace EddiCore
         public IDictionary<string, bool> Plugins { get; set; }
 
         [JsonProperty("Gender")]
-        public string Gender { get; set; } = "Male";
+        public string Gender { get; set; }
 
         [JsonProperty("powerMerits")]
         public int? powerMerits { get; set; }
 
         /// <summary>the current export target for the shipyard</summary>
         [JsonProperty("exporttarget")]
-        public string exporttarget { get; set; } = "Coriolis";
+        public string exporttarget { get; set; }
 
         [JsonProperty("OverrideCulture")]
         public string OverrideCulture { get; set; }
@@ -173,6 +175,22 @@ namespace EddiCore
 
         [JsonProperty("PhoneticName")]
         public string PhoneticName { get; set; }
+
+        // Window Properties
+
+        [JsonProperty("Maximized")]
+        public bool Maximized { get; set; }
+
+        [JsonProperty("Minimized")]
+        public bool Minimized { get; set; }
+
+        [JsonProperty("SelectedTab")]
+        public int SelectedTab { get; set; }
+
+        [JsonProperty("MainWindowPosition")]
+        public Rect MainWindowPosition { get; set; }
+
+        // Configuration properties
 
         [JsonIgnore]
         private string dataPath;
@@ -186,6 +204,12 @@ namespace EddiCore
             Gender = "Male";
             DisableTelemetry = false;
 
+            // Window defaults
+            Maximized = false;
+            Minimized = false;
+            SelectedTab = 0;
+            MainWindowPosition = new Rect(40, 40, 800, 600);
+
             // Default the galnet monitor to 'off'
             Plugins.Add("Galnet monitor", false);
         }
@@ -194,6 +218,7 @@ namespace EddiCore
         /// Obtain configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\eddi.json is used
         /// </summary>
+        [NotNull]
         public static EDDIConfiguration FromFile(string filename = null)
         {
             if (filename == null)
