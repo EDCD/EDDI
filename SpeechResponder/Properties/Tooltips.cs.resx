@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>Kopírovat (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>Vyjmout (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Smazat (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>Smazat řádek (Ctrl+D)</value>
+  </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Smazat řádek</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>Najít (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>Vložit (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Zpět (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>Zobrazit čísla řádků</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Zpět (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>Zalamování slov</value>
+  </data>
 </root>
