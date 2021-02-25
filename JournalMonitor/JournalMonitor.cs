@@ -1276,14 +1276,21 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("ShipID", out object val);
                                     int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "ShipType");
 
                                     string system = JsonParsing.getString(data, "System");
                                     decimal distance = JsonParsing.getDecimal(data, "Distance");
                                     long? price = JsonParsing.getOptionalLong(data, "TransferPrice");
                                     long? time = JsonParsing.getOptionalLong(data, "TransferTime");
 
-                                    events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time, fromMarketId, toMarketId) { raw = line, fromLoad = fromLogLoad });
+                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetShip(shipId);
+                                    if (ship is null)
+                                    {
+                                        string shipModel = JsonParsing.getString(data, "ShipType");
+                                        ship = ShipDefinitions.FromEDModel(shipModel);
+                                        ship.LocalId = shipId;
+                                    }
+
+                                    events.Add(new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price, time, fromMarketId, toMarketId) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the ship is arriving
                                     if (time.HasValue)
@@ -1295,7 +1302,7 @@ namespace EddiJournalMonitor
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)time * 1000);
-                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
+                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
                                         }
                                     }
                                 }

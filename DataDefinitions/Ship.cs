@@ -122,7 +122,7 @@ namespace EddiDataDefinitions
         }
 
         private string _model;
-        /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
+        /// <summary>the model of the ship (Python, Anaconda, Cobra Mk. III, etc.)</summary>
         public string model
         {
             get

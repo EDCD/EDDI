@@ -16,7 +16,8 @@ namespace EddiShipMonitor
         static ShipTransferInitiatedEvent()
         {
             VARIABLES.Add("shipid", "The ID of the ship that is being transferred");
-            VARIABLES.Add("ship", "The ship that is being transferred");
+            VARIABLES.Add("ship", "The ship model that is being transferred");
+            VARIABLES.Add("phoneticname", "The phonetic name of the ship that is being transferred");
             VARIABLES.Add("system", "The system from which the ship is being transferred");
             VARIABLES.Add("distance", "The distance that the transferred ship needs to travel, in light years");
             VARIABLES.Add("price", "The price of transferring the ship");
@@ -24,10 +25,12 @@ namespace EddiShipMonitor
         }
 
         [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
+        public int? shipid => Ship.LocalId;
 
         [JsonProperty("ship")]
-        public string ship => shipDefinition.model;
+        public string ship => Ship.model;
+
+        public string phoneticname => Ship.phoneticname;
 
         [JsonProperty("system")]
         public string system { get; private set; }
@@ -44,13 +47,11 @@ namespace EddiShipMonitor
         // Admin
         public long fromMarketId { get; private set; }
         public long toMarketId { get; private set; }
-        public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
-        public string edModel { get; private set; }
+        public Ship Ship { get; private set; }
 
-        public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)
+        public ShipTransferInitiatedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)
         {
-            this.edModel = ship;
-            this.shipid = shipid;
+            this.Ship = Ship;
             this.system = system;
             this.distance = distance;
             this.price = price;
