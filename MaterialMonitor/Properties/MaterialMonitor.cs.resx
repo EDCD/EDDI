@@ -125,15 +125,35 @@
   
   
   
+  <data name="inventory_header" xml:space="preserve">
+    <value>Inventář</value>
+  </data>
+  <data name="max_header" xml:space="preserve">
+    <value>Maximální</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>Minimální</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor materiálů</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Název</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="p2" xml:space="preserve">
+    <value>Pokud jsou informace o inventáři nesprávné, budete muset restartovat Elite. Informace se aktualizují.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Tip: Čím větší maximální vzdálenost ke stanici, tím menší doba vyhledávání.</value>
+  </data>
+  <data name="set_dest_button" xml:space="preserve">
+    <value>Nastavit cíl</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Maximální vzdálenost stanice od hlavni hvězdy (Ls):</value>
+  </data>
+  <data name="type_header" xml:space="preserve">
+    <value>Typ</value>
+  </data>
 </root>
