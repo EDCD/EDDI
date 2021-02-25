@@ -1285,8 +1285,8 @@ namespace EddiJournalMonitor
                                     var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetShip(shipId);
                                     if (ship is null)
                                     {
-                                        string shipModel = JsonParsing.getString(data, "ShipType");
-                                        ship = ShipDefinitions.FromEDModel(shipModel);
+                                        string shipEDModel = JsonParsing.getString(data, "ShipType");
+                                        ship = ShipDefinitions.FromEDModel(shipEDModel);
                                         ship.LocalId = shipId;
                                     }
 

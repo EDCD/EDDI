@@ -17,6 +17,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
+      * Updated the ShipName() function to document its second argument (which is optional).
     * Personalities
       * Portuguese default personality updated (thanks to @Kenjiro). 
     * Scripts
@@ -24,6 +25,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Engineer report` script added.
       * `Message received` script and properties updated to better support localization.
       * `Jumped` script updated to announce engineer systems.
+      * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
       * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
   * VoiceAttack

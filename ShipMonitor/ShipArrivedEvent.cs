@@ -16,7 +16,7 @@ namespace EddiShipMonitor
         static ShipArrivedEvent()
         {
             VARIABLES.Add("shipid", "The ID of the ship that was transferred");
-            VARIABLES.Add("ship", "The ship model that was transferred");
+            VARIABLES.Add("ship", "The (invariant) ship model that was transferred");
             VARIABLES.Add("phoneticname", "The phonetic name of the ship that was transferred");
             VARIABLES.Add("station", "The station at which the ship shall arrive");
             VARIABLES.Add("system", "The system at which the ship shall arrive");

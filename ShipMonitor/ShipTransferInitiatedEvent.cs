@@ -16,7 +16,7 @@ namespace EddiShipMonitor
         static ShipTransferInitiatedEvent()
         {
             VARIABLES.Add("shipid", "The ID of the ship that is being transferred");
-            VARIABLES.Add("ship", "The ship model that is being transferred");
+            VARIABLES.Add("ship", "The (invariant) ship model that is being transferred");
             VARIABLES.Add("phoneticname", "The phonetic name of the ship that is being transferred");
             VARIABLES.Add("system", "The system from which the ship is being transferred");
             VARIABLES.Add("distance", "The distance that the transferred ship needs to travel, in light years");
