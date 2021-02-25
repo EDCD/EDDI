@@ -126,9 +126,15 @@
   <data name="paragraph_0" xml:space="preserve">
     <value>má množství funkcí, které se nezávisle nastavovat. Jsou tři samostatné typy položek.</value>
   </data>
-  
-  
-  
+  <data name="paragraph_1" xml:space="preserve">
+    <value>První skupina přijímá a zpracovává základní informace používané v EDDI. Jsou to 'Podrobnosti o veliteli', 'Frontier API' a 'Převod textu na řeč'. Měli byste si každou projít a nakonfigurovat aby mělo EDDI plný přístup k informacím z Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Druhá skupina přijímá informace o událostech. To jsou záložky, jež maji na začátku slovo 'monitor'. Získávají informace z různých míst, vyžadují minimální konfiguraci, ale předtím než budou fungovat je musíte dokončit.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Třetí skupina reaguje na události. To jsou záložky se slovem 'odpovídač'. Lze je v rozdílné míře nastavit, ale budou fungovat okamžitě.</value>
+  </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Podrobnější informace o funkcích EDDI naleznete na</value>
   </data>
@@ -154,12 +160,18 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>Vyberte jazyk EDDI (vyžaduje restart aplikace):</value>
   </data>
-  
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier poskytuje API které dovoluje EDDI získat informace o vašich lodích, informace o trhu na aktuální stanici a o dalších položkách. Tyto data nelze jinde získat. Pokud chcete aby EDDI mohlo tyto informace využívat, klikněte na tlačítko Přihlásit se a proveďte autorizaci pro EDDI na serverech firmy Frontier.</value>
+  </data>
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
-  
-  
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Pokud narazíte na problémy s vašeho spojením, mužete jej resetovat a znovu se přihlásit. Tento postup může problém vyřešit.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI používá vlastní převod textu na řeč který upravuje hlas v závislosti na vlastnostech jako úrovně poškození lodi a velikosti vašecho kokpitu. Zde můžete nastavit parametry hlasu.</value>
+  </data>
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>Zkreslit hlas při poškození lodi:</value>
   </data>
@@ -169,7 +181,9 @@
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Uroveň zpracování hlasu:</value>
   </data>
-  
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI používá fonetickou řeč pro vyslovování různých těžko vyslovitelných slov a vkládá mezery v projevu. Některé hlasy, zejména od Microsoftu, mají problém s fonetickou řečí a způsobují. že EDDI přestane reagovat nebo se samovolně ukončí. Pokud se u vás toto projeví, zkuste zkontrolovat možnosti níže</value>
+  </data>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Rychlost mluvení:</value>
   </data>
@@ -200,7 +214,9 @@
   <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
     <value>Vypnout fonetickou řeč:</value>
   </data>
-  
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI může používat ICAO, např. použitím 'alfa místo 'A', při vyslovování jméno hvězd a těles. To usnadní porozumění názvů systémů, ale trvá delší dobu je vyslovit. Chcete-li používat ICAO zaškrtněte volbu uvedenou níže. Poznámka: toto nebude fungovat, pokud jste deaktivovali fonetickou reč výše.</value>
+  </data>
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>Povolit ICAO:</value>
   </data>
