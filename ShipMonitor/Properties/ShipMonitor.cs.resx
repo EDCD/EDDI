@@ -153,14 +153,18 @@
   <data name="name" xml:space="preserve">
     <value>Monitor lodě</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Toto umožní zobrazit vaše lodě a dát jim individuální role. Informace jsou dostupné pro odpovídače a jsou používány ve skriptech.</value>
+  </data>
   <data name="p2" xml:space="preserve">
     <value>Pokud má EDDI problém vyslovit jméno vaší lodi, může přidat výslovnost jména lodi pomocí</value>
   </data>
   <data name="p3" xml:space="preserve">
     <value>. Například, pokud se vaše loď jmenuje 'Pride of Achenar' bude její výslovnost 'praɪdɒvˈakɜːnɑ' (všimněte si mezer u fonetické verze).</value>
   </data>
-  
+  <data name="p4" xml:space="preserve">
+    <value>Mějte na paměti, že pokud nemáte nakonfigurován přístup k Frontier API můžou být data uvedená níže nesprávná nebo nedostupná. Dále pokud máte více lodí již před instalací EDDI, budete muset kařdou postupně přepnout jako vaši hlavní loď a chvíli počkat než budou všechny informace dostupné.</value>
+  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} je připravena.</value>
   </data>
