@@ -3542,6 +3542,7 @@ namespace EddiJournalMonitor
                                             int amount = JsonParsing.getInt(signal, "Count");
                                             hotspots.Add(new CommodityAmount(type, amount));
                                         }
+                                        hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
                                         events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
@@ -3557,6 +3558,7 @@ namespace EddiJournalMonitor
                                             int amount = JsonParsing.getInt(signal, "Count");
                                             surfaceSignals.Add(new SignalAmount(source, amount));
                                         }
+                                        surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
                                         events.Add(new SurfaceSignalsEvent(timestamp, systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
