@@ -1524,16 +1524,15 @@ namespace EddiCore
 
         private bool eventTouchdown(TouchdownEvent theEvent)
         {
-            Environment = Constants.ENVIRONMENT_LANDED;
-            if (theEvent.playercontrolled)
+            // Only pass on this event if our location is set
+            // (if not then this is probably being written prior to a `Location` event))
+            if (theEvent.latitude != null && theEvent.longitude != null)
             {
-                Vehicle = Constants.VEHICLE_SHIP;
+                Environment = Constants.ENVIRONMENT_LANDED;
+                Vehicle = theEvent.playercontrolled ? Constants.VEHICLE_SHIP : Constants.VEHICLE_SRV;
+                return true;
             }
-            else
-            {
-                Vehicle = Constants.VEHICLE_SRV;
-            }
-            return true;
+            return false;
         }
 
         private bool eventLiftoff(LiftoffEvent theEvent)
