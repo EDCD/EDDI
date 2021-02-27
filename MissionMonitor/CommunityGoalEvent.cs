@@ -26,6 +26,8 @@ namespace EddiEvents
             VARIABLES.Add("toprank", "Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank) (this is a list containing values for all active goals)");
             VARIABLES.Add("tier", "The current tier of the goal (only once the 1st tier is reached) (this is a list containing values for all active goals)");
             VARIABLES.Add("tierreward", "The reward on offer for the current tier (this is a list containing values for all active goals)");
+            VARIABLES.Add("toptier", "The top tier of the goal (this is a list containing values for all active goals)");
+            VARIABLES.Add("toptierreward", "The reward on offer for the top tier (this is a list containing values for all active goals)");
         }
 
         public List<long> cgid { get; private set; }
@@ -55,11 +57,15 @@ namespace EddiEvents
         public List<string> tier { get; private set; }
 
         public List<long?> tierreward { get; private set; }
+        
+        public List<string> toptier { get; private set; }
+
+        public List<string> toptierreward { get; private set; }
 
         // Not intended to be user facing
         public List<DateTime> expiryDateTime { get; private set; }
 
-        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<DateTime> expiryDateTime, List<bool> iscomplete, List<long> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
+        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<DateTime> expiryDateTime, List<bool> iscomplete, List<long> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward, List<string> toptier, List<string> toptierreward) : base(timestamp, NAME)
         {
             this.cgid = cgid;
             this.name = name;
@@ -76,6 +82,8 @@ namespace EddiEvents
             this.toprank = toprank;
             this.tier = tier;
             this.tierreward = tierreward;
+            this.toptier = toptier;
+            this.toptierreward = toptierreward;
         }
     }
 }

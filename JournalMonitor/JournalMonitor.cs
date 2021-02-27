@@ -2832,6 +2832,9 @@ namespace EddiJournalMonitor
                                     List<string> tier = new List<string>();
                                     List<long?> tierreward = new List<long?>();
 
+                                    List<string> toptier = new List<string>();
+                                    List<string> toptierreward = new List<string>();
+
                                     // Fill the lists
                                     foreach (IDictionary<string, object> goaldata in goalsdata)
                                     {
@@ -2858,9 +2861,17 @@ namespace EddiJournalMonitor
 
                                         tier.Add(JsonParsing.getString(goaldata, "TierReached"));
                                         tierreward.Add(JsonParsing.getOptionalLong(goaldata, "Bonus"));
+
+                                        // Data about the max tier of the goal
+                                        if (goaldata.TryGetValue("TopTier", out object topTierVal))
+                                        {
+                                            IDictionary<string, object> topTierData = (Dictionary<string, object>)topTierVal;
+                                            toptier.Add(JsonParsing.getString(topTierData, "Name"));
+                                            toptierreward.Add(JsonParsing.getString(topTierData, "Bonus"));
+                                        }
                                     }
 
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward, toptier, toptierreward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

@@ -357,7 +357,10 @@ namespace EddiInaraResponder
                     // If you didn't contribute to the goal, your tier may be null
                     // This is a localised string like "Tier 1" so we'll use Last() to extract just the numeric value.
                     cgEventData.Add("tierReached", char.GetNumericValue(@event.tier[i].Last()));
-                   
+                }
+                if (!string.IsNullOrEmpty(@event.toptier[i]))
+                {
+                    cgEventData.Add("tierMax", char.GetNumericValue(@event.toptier[i].Last()));
                 }
                 if (@event.topranksize[i] != null)
                 {
@@ -366,6 +369,7 @@ namespace EddiInaraResponder
                 }
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommunityGoal", cgEventData));
 
+                // If we've contributed to this community goal, also report our progress
                 if (@event.contribution[i] > 0)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCommunityGoalProgress", new Dictionary<string, object>()
