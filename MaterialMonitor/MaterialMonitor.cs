@@ -116,45 +116,45 @@ namespace EddiMaterialMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is MaterialInventoryEvent)
+            if (@event is MaterialInventoryEvent materialInventoryEvent)
             {
-                handleMaterialInventoryEvent((MaterialInventoryEvent)@event);
+                handleMaterialInventoryEvent(materialInventoryEvent);
             }
-            else if (@event is MaterialCollectedEvent)
+            else if (@event is MaterialCollectedEvent materialCollectedEvent)
             {
-                handleMaterialCollectedEvent((MaterialCollectedEvent)@event);
+                handleMaterialCollectedEvent(materialCollectedEvent);
             }
-            else if (@event is MaterialDiscardedEvent)
+            else if (@event is MaterialDiscardedEvent materialDiscardedEvent)
             {
-                handleMaterialDiscardedEvent((MaterialDiscardedEvent)@event);
+                handleMaterialDiscardedEvent(materialDiscardedEvent);
             }
-            else if (@event is MaterialDonatedEvent)
+            else if (@event is MaterialDonatedEvent materialDonatedEvent)
             {
-                handleMaterialDonatedEvent((MaterialDonatedEvent)@event);
+                handleMaterialDonatedEvent(materialDonatedEvent);
             }
-            else if (@event is MaterialTradedEvent)
+            else if (@event is MaterialTradedEvent materialTradedEvent)
             {
-                handleMaterialTradedEvent((MaterialTradedEvent)@event);
+                handleMaterialTradedEvent(materialTradedEvent);
             }
-            else if (@event is SynthesisedEvent)
+            else if (@event is SynthesisedEvent synthesisedEvent)
             {
-                handleSynthesisedEvent((SynthesisedEvent)@event);
+                handleSynthesisedEvent(synthesisedEvent);
             }
-            else if (@event is ModificationCraftedEvent)
+            else if (@event is ModificationCraftedEvent modificationCraftedEvent)
             {
-                handleModificationCraftedEvent((ModificationCraftedEvent)@event);
+                handleModificationCraftedEvent(modificationCraftedEvent);
             }
-            else if (@event is TechnologyBrokerEvent)
+            else if (@event is TechnologyBrokerEvent technologyBrokerEvent)
             {
-                handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
+                handleTechnologyBrokerEvent(technologyBrokerEvent);
             }
-            else if (@event is MissionCompletedEvent)
+            else if (@event is MissionCompletedEvent missionCompletedEvent)
             {
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+                handleMissionCompletedEvent(missionCompletedEvent);
             }
-            else if (@event is EngineerContributedEvent)
+            else if (@event is EngineerContributedEvent engineerContributedEvent)
             {
-                handleEngineerContributedEvent((EngineerContributedEvent)@event);
+                handleEngineerContributedEvent(engineerContributedEvent);
             }
 
         }
