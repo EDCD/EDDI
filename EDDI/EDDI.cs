@@ -559,209 +559,209 @@ namespace EddiCore
                     Logging.Debug("Handling event " + JsonConvert.SerializeObject(@event));
                     // We have some additional processing to do for a number of events
                     bool passEvent = true;
-                    if (@event is FileHeaderEvent)
+                    if (@event is FileHeaderEvent fileHeaderEvent)
                     {
-                        passEvent = eventFileHeader((FileHeaderEvent)@event);
+                        passEvent = eventFileHeader(fileHeaderEvent);
                     }
-                    else if (@event is LocationEvent)
+                    else if (@event is LocationEvent locationEvent)
                     {
-                        passEvent = eventLocation((LocationEvent)@event);
+                        passEvent = eventLocation(locationEvent);
                     }
-                    else if (@event is DockedEvent)
+                    else if (@event is DockedEvent dockedEvent)
                     {
-                        passEvent = eventDocked((DockedEvent)@event);
+                        passEvent = eventDocked(dockedEvent);
                     }
-                    else if (@event is UndockedEvent)
+                    else if (@event is UndockedEvent undockedEvent)
                     {
-                        passEvent = eventUndocked((UndockedEvent)@event);
+                        passEvent = eventUndocked(undockedEvent);
                     }
                     else if (@event is DockingRequestedEvent dockingRequestedEvent)
                     {
                         passEvent = eventDockingRequested(dockingRequestedEvent);
                     }
-                    else if (@event is TouchdownEvent)
+                    else if (@event is TouchdownEvent touchdownEvent)
                     {
-                        passEvent = eventTouchdown((TouchdownEvent)@event);
+                        passEvent = eventTouchdown(touchdownEvent);
                     }
-                    else if (@event is LiftoffEvent)
+                    else if (@event is LiftoffEvent liftoffEvent)
                     {
-                        passEvent = eventLiftoff((LiftoffEvent)@event);
+                        passEvent = eventLiftoff(liftoffEvent);
                     }
-                    else if (@event is FSDEngagedEvent)
+                    else if (@event is FSDEngagedEvent fsdEngagedEvent)
                     {
-                        passEvent = eventFSDEngaged((FSDEngagedEvent)@event);
+                        passEvent = eventFSDEngaged(fsdEngagedEvent);
                     }
-                    else if (@event is FSDTargetEvent)
+                    else if (@event is FSDTargetEvent fsdTargetEvent)
                     {
-                        passEvent = eventFSDTarget((FSDTargetEvent)@event);
+                        passEvent = eventFSDTarget(fsdTargetEvent);
                     }
-                    else if (@event is JumpedEvent)
+                    else if (@event is JumpedEvent jumpedEvent)
                     {
-                        passEvent = eventJumped((JumpedEvent)@event);
+                        passEvent = eventJumped(jumpedEvent);
                     }
-                    else if (@event is EnteredSupercruiseEvent)
+                    else if (@event is EnteredSupercruiseEvent enteredSupercruiseEvent)
                     {
-                        passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)@event);
+                        passEvent = eventEnteredSupercruise(enteredSupercruiseEvent);
                     }
-                    else if (@event is EnteredNormalSpaceEvent)
+                    else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
                     {
-                        passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)@event);
+                        passEvent = eventEnteredNormalSpace(enteredNormalSpaceEvent);
                     }
-                    else if (@event is CommanderLoadingEvent)
+                    else if (@event is CommanderLoadingEvent commanderLoadingEvent)
                     {
-                        passEvent = eventCommanderLoading((CommanderLoadingEvent)@event);
+                        passEvent = eventCommanderLoading(commanderLoadingEvent);
                     }
-                    else if (@event is CommanderContinuedEvent)
+                    else if (@event is CommanderContinuedEvent commanderContinuedEvent)
                     {
-                        passEvent = eventCommanderContinued((CommanderContinuedEvent)@event);
+                        passEvent = eventCommanderContinued(commanderContinuedEvent);
                     }
-                    else if (@event is CommanderRatingsEvent)
+                    else if (@event is CommanderRatingsEvent commanderRatingsEvent)
                     {
-                        passEvent = eventCommanderRatings((CommanderRatingsEvent)@event);
+                        passEvent = eventCommanderRatings(commanderRatingsEvent);
                     }
-                    else if (@event is CombatPromotionEvent)
+                    else if (@event is CombatPromotionEvent combatPromotionEvent)
                     {
-                        passEvent = eventCombatPromotion((CombatPromotionEvent)@event);
+                        passEvent = eventCombatPromotion(combatPromotionEvent);
                     }
-                    else if (@event is TradePromotionEvent)
+                    else if (@event is TradePromotionEvent tradePromotionEvent)
                     {
-                        passEvent = eventTradePromotion((TradePromotionEvent)@event);
+                        passEvent = eventTradePromotion(tradePromotionEvent);
                     }
-                    else if (@event is ExplorationPromotionEvent)
+                    else if (@event is ExplorationPromotionEvent explorationPromotionEvent)
                     {
-                        passEvent = eventExplorationPromotion((ExplorationPromotionEvent)@event);
+                        passEvent = eventExplorationPromotion(explorationPromotionEvent);
                     }
-                    else if (@event is FederationPromotionEvent)
+                    else if (@event is FederationPromotionEvent federationPromotionEvent)
                     {
-                        passEvent = eventFederationPromotion((FederationPromotionEvent)@event);
+                        passEvent = eventFederationPromotion(federationPromotionEvent);
                     }
-                    else if (@event is EmpirePromotionEvent)
+                    else if (@event is EmpirePromotionEvent empirePromotionEvent)
                     {
-                        passEvent = eventEmpirePromotion((EmpirePromotionEvent)@event);
+                        passEvent = eventEmpirePromotion(empirePromotionEvent);
                     }
-                    else if (@event is CrewJoinedEvent)
+                    else if (@event is CrewJoinedEvent crewJoinedEvent)
                     {
-                        passEvent = eventCrewJoined((CrewJoinedEvent)@event);
+                        passEvent = eventCrewJoined(crewJoinedEvent);
                     }
-                    else if (@event is CrewLeftEvent)
+                    else if (@event is CrewLeftEvent crewLeftEvent)
                     {
-                        passEvent = eventCrewLeft((CrewLeftEvent)@event);
+                        passEvent = eventCrewLeft(crewLeftEvent);
                     }
-                    else if (@event is EnteredCQCEvent)
+                    else if (@event is EnteredCQCEvent enteredCqcEvent)
                     {
-                        passEvent = eventEnteredCQC((EnteredCQCEvent)@event);
+                        passEvent = eventEnteredCQC(enteredCqcEvent);
                     }
-                    else if (@event is SRVLaunchedEvent)
+                    else if (@event is SRVLaunchedEvent srvLaunchedEvent)
                     {
-                        passEvent = eventSRVLaunched((SRVLaunchedEvent)@event);
+                        passEvent = eventSRVLaunched(srvLaunchedEvent);
                     }
-                    else if (@event is SRVDockedEvent)
+                    else if (@event is SRVDockedEvent srvDockedEvent)
                     {
-                        passEvent = eventSRVDocked((SRVDockedEvent)@event);
+                        passEvent = eventSRVDocked(srvDockedEvent);
                     }
-                    else if (@event is FighterLaunchedEvent)
+                    else if (@event is FighterLaunchedEvent fighterLaunchedEvent)
                     {
-                        passEvent = eventFighterLaunched((FighterLaunchedEvent)@event);
+                        passEvent = eventFighterLaunched(fighterLaunchedEvent);
                     }
-                    else if (@event is FighterDockedEvent)
+                    else if (@event is FighterDockedEvent fighterDockedEvent)
                     {
-                        passEvent = eventFighterDocked((FighterDockedEvent)@event);
+                        passEvent = eventFighterDocked(fighterDockedEvent);
                     }
-                    else if (@event is StarScannedEvent)
+                    else if (@event is StarScannedEvent starScannedEvent)
                     {
-                        passEvent = eventStarScanned((StarScannedEvent)@event);
+                        passEvent = eventStarScanned(starScannedEvent);
                     }
-                    else if (@event is BodyScannedEvent)
+                    else if (@event is BodyScannedEvent bodyScannedEvent)
                     {
-                        passEvent = eventBodyScanned((BodyScannedEvent)@event);
+                        passEvent = eventBodyScanned(bodyScannedEvent);
                     }
-                    else if (@event is BodyMappedEvent)
+                    else if (@event is BodyMappedEvent bodyMappedEvent)
                     {
-                        passEvent = eventBodyMapped((BodyMappedEvent)@event);
+                        passEvent = eventBodyMapped(bodyMappedEvent);
                     }
-                    else if (@event is RingMappedEvent)
+                    else if (@event is RingMappedEvent ringMappedEvent)
                     {
-                        passEvent = eventRingMapped((RingMappedEvent)@event);
+                        passEvent = eventRingMapped(ringMappedEvent);
                     }
-                    else if (@event is VehicleDestroyedEvent)
+                    else if (@event is VehicleDestroyedEvent vehicleDestroyedEvent)
                     {
-                        passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
+                        passEvent = eventVehicleDestroyed(vehicleDestroyedEvent);
                     }
-                    else if (@event is NearSurfaceEvent)
+                    else if (@event is NearSurfaceEvent nearSurfaceEvent)
                     {
-                        passEvent = eventNearSurface((NearSurfaceEvent)@event);
+                        passEvent = eventNearSurface(nearSurfaceEvent);
                     }
-                    else if (@event is SquadronStatusEvent)
+                    else if (@event is SquadronStatusEvent squadronStatusEvent)
                     {
-                        passEvent = eventSquadronStatus((SquadronStatusEvent)@event);
+                        passEvent = eventSquadronStatus(squadronStatusEvent);
                     }
-                    else if (@event is SquadronRankEvent)
+                    else if (@event is SquadronRankEvent squadronRankEvent)
                     {
-                        passEvent = eventSquadronRank((SquadronRankEvent)@event);
+                        passEvent = eventSquadronRank(squadronRankEvent);
                     }
-                    else if (@event is FriendsEvent)
+                    else if (@event is FriendsEvent friendsEvent)
                     {
-                        passEvent = eventFriends((FriendsEvent)@event);
+                        passEvent = eventFriends(friendsEvent);
                     }
-                    else if (@event is MarketEvent)
+                    else if (@event is MarketEvent marketEvent)
                     {
-                        passEvent = eventMarket((MarketEvent)@event);
+                        passEvent = eventMarket(marketEvent);
                     }
-                    else if (@event is OutfittingEvent)
+                    else if (@event is OutfittingEvent outfittingEvent)
                     {
-                        passEvent = eventOutfitting((OutfittingEvent)@event);
+                        passEvent = eventOutfitting(outfittingEvent);
                     }
-                    else if (@event is ShipyardEvent)
+                    else if (@event is ShipyardEvent shipyardEvent)
                     {
-                        passEvent = eventShipyard((ShipyardEvent)@event);
+                        passEvent = eventShipyard(shipyardEvent);
                     }
-                    else if (@event is SettlementApproachedEvent)
+                    else if (@event is SettlementApproachedEvent settlementApproachedEvent)
                     {
-                        passEvent = eventSettlementApproached((SettlementApproachedEvent)@event);
+                        passEvent = eventSettlementApproached(settlementApproachedEvent);
                     }
-                    else if (@event is DiscoveryScanEvent)
+                    else if (@event is DiscoveryScanEvent discoveryScanEvent)
                     {
-                        passEvent = eventDiscoveryScan((DiscoveryScanEvent)@event);
+                        passEvent = eventDiscoveryScan(discoveryScanEvent);
                     }
-                    else if (@event is SystemScanComplete)
+                    else if (@event is SystemScanComplete systemScanComplete)
                     {
-                        passEvent = eventSystemScanComplete((SystemScanComplete)@event);
+                        passEvent = eventSystemScanComplete(systemScanComplete);
                     }
-                    else if (@event is PowerplayEvent)
+                    else if (@event is PowerplayEvent powerplayEvent)
                     {
-                        passEvent = eventPowerplay((PowerplayEvent)@event);
+                        passEvent = eventPowerplay(powerplayEvent);
                     }
-                    else if (@event is PowerDefectedEvent)
+                    else if (@event is PowerDefectedEvent powerDefectedEvent)
                     {
-                        passEvent = eventPowerDefected((PowerDefectedEvent)@event);
+                        passEvent = eventPowerDefected(powerDefectedEvent);
                     }
-                    else if (@event is PowerJoinedEvent)
+                    else if (@event is PowerJoinedEvent powerJoinedEvent)
                     {
-                        passEvent = eventPowerJoined((PowerJoinedEvent)@event);
+                        passEvent = eventPowerJoined(powerJoinedEvent);
                     }
-                    else if (@event is PowerLeftEvent)
+                    else if (@event is PowerLeftEvent powerLeftEvent)
                     {
-                        passEvent = eventPowerLeft((PowerLeftEvent)@event);
+                        passEvent = eventPowerLeft(powerLeftEvent);
                     }
-                    else if (@event is PowerPreparationVoteCast)
+                    else if (@event is PowerPreparationVoteCast powerPreparationVoteCast)
                     {
-                        passEvent = eventPowerPreparationVoteCast((PowerPreparationVoteCast)@event);
+                        passEvent = eventPowerPreparationVoteCast(powerPreparationVoteCast);
                     }
-                    else if (@event is PowerSalaryClaimedEvent)
+                    else if (@event is PowerSalaryClaimedEvent powerSalaryClaimedEvent)
                     {
-                        passEvent = eventPowerSalaryClaimed((PowerSalaryClaimedEvent)@event);
+                        passEvent = eventPowerSalaryClaimed(powerSalaryClaimedEvent);
                     }
-                    else if (@event is PowerVoucherReceivedEvent)
+                    else if (@event is PowerVoucherReceivedEvent powerVoucherReceivedEvent)
                     {
-                        passEvent = eventPowerVoucherReceived((PowerVoucherReceivedEvent)@event);
+                        passEvent = eventPowerVoucherReceived(powerVoucherReceivedEvent);
                     }
-                    else if (@event is CarrierJumpEngagedEvent)
+                    else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
-                        passEvent = eventCarrierJumpEngaged((CarrierJumpEngagedEvent)@event);
+                        passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
                     }
-                    else if (@event is CarrierJumpedEvent)
+                    else if (@event is CarrierJumpedEvent carrierJumpedEvent)
                     {
-                        passEvent = eventCarrierJumped((CarrierJumpedEvent)@event);
+                        passEvent = eventCarrierJumped(carrierJumpedEvent);
                     }
 
                     // Additional processing is over, send to the event responders if required
