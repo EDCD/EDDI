@@ -150,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EddiUpgrader.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="StarSystemComboBox.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
