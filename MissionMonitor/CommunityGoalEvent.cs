@@ -40,7 +40,7 @@ namespace EddiEvents
 
         public List<bool> iscomplete { get; private set; }
 
-        public List<int> total { get; private set; }
+        public List<long> total { get; private set; }
 
         public List<int> contribution { get; private set; }
 
@@ -59,7 +59,7 @@ namespace EddiEvents
         // Not intended to be user facing
         public List<DateTime> expiryDateTime { get; private set; }
 
-        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<DateTime> expiryDateTime, List<bool> iscomplete, List<int> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
+        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<DateTime> expiryDateTime, List<bool> iscomplete, List<long> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
         {
             this.cgid = cgid;
             this.name = name;

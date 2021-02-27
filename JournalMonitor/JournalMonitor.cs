@@ -2821,7 +2821,7 @@ namespace EddiJournalMonitor
                                     List<long> expiry = new List<long>();
                                     List<DateTime> expiryDateTimes = new List<DateTime>();
                                     List<bool> iscomplete = new List<bool>();
-                                    List<int> total = new List<int>();
+                                    List<long> total = new List<long>();
                                     List<int> contribution = new List<int>();
                                     List<int> contributors = new List<int>();
                                     List<decimal> percentileband = new List<decimal>();
@@ -2844,7 +2844,7 @@ namespace EddiJournalMonitor
                                         long expiryseconds = (long)(expiryDateTime - timestamp).TotalSeconds;
                                         expiry.Add(expiryseconds);
                                         iscomplete.Add(JsonParsing.getBool(goaldata, "IsComplete"));
-                                        total.Add(JsonParsing.getInt(goaldata, "CurrentTotal"));
+                                        total.Add(JsonParsing.getLong(goaldata, "CurrentTotal"));
                                         contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
                                         contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
                                         percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
