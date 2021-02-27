@@ -276,8 +276,8 @@ namespace EddiMaterialMonitor
         {
             lock (inventoryLock)
             {
-                Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
+                var material = Material.FromEDName(edname);
+                var ma = inventory.FirstOrDefault(inv => inv.edname == material.edname);
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to 0
@@ -285,30 +285,28 @@ namespace EddiMaterialMonitor
                     inventory.Add(ma);
                 }
 
-                int previous = ma.amount;
+                var previous = ma.amount;
                 ma.amount += amount;
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
-                if (materialThreshold(previous, ma.amount, ma.maximum))
+                if (ma.maximum != null && incMaterialThreshold(previous, ma.amount, ma.maximum))
                 {
                     // We have crossed the high water threshold for this material
                     pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
-                if (materialThreshold(previous, ma.amount, ma.desired))
+                if (ma.desired != null && incMaterialThreshold(previous, ma.amount, ma.desired))
                 {
                     // We have crossed the desired threshold for this material
                     pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
+                if (ma.minimum != null && incMaterialThreshold(previous, ma.amount, ma.minimum))
+                {
+                    // We have crossed the minimum threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Minimum", (int)ma.minimum, ma.amount, "Increase") { fromLoad = fromLogLoad });
+                }
 
                 writeMaterials();
             }
-        }
-
-        private bool materialThreshold(int previous, int amount, int? target)
-        {
-            // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
-            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
-            return previous < target && target <= amount;
         }
 
         /// <summary>
@@ -318,8 +316,8 @@ namespace EddiMaterialMonitor
         {
             lock (inventoryLock)
             {
-                Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
+                var material = Material.FromEDName(edname);
+                var ma = inventory.FirstOrDefault(inv => inv.edname == material.edname);
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -327,30 +325,43 @@ namespace EddiMaterialMonitor
                     inventory.Add(ma);
                 }
 
-                int previous = ma.amount;
+                var previous = ma.amount;
                 ma.amount -= Math.Min(amount, previous); // Never subtract more than we started with
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
                 // We have limits for this material; carry out relevant checks
-                if (ma.minimum.HasValue)
+                if (ma.minimum != null && decMaterialThreshold(previous, ma.amount, ma.minimum))
                 {
-                    if (previous >= ma.minimum && ma.amount < ma.minimum)
-                    {
-                        // We have crossed the low water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
-                    }
+                    // We have crossed the minimum threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
-                if (ma.desired.HasValue)
+                if (ma.desired != null && decMaterialThreshold(previous, ma.amount, ma.desired))
                 {
-                    if (previous >= ma.desired && ma.amount < ma.desired)
-                    {
-                        // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
-                    }
+                    // We have crossed the desired threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
+                }
+                if (ma.maximum != null && decMaterialThreshold(previous, ma.amount, ma.maximum))
+                {
+                    // We have crossed the maximum threshold for this material
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
 
                 writeMaterials();
             }
+        }
+
+        private bool incMaterialThreshold(int previous, int amount, int? target)
+        {
+            // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
+            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
+            return previous < target && target <= amount;
+        }
+
+        private bool decMaterialThreshold(int previous, int amount, int? target)
+        {
+            // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
+            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
+            return previous >= target && target > amount;
         }
 
         /// <summary>

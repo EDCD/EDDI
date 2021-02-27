@@ -12,6 +12,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Reduced Galnet article polling from 30s / 2min to 5min / 15min.
     * Delayed active monitoring until 5 minutes after we become active in game rather than 5 minutes after EDDI is launched.
   * Material Monitor
+    * Expanded conditions that can trigger a `Material threshold` event (for example, if the material amount is increased above the minimum)
     * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
     * Fixed a bug that could prevent material counts from being updated for materials no longer in inventory.
   * Speech Responder
@@ -23,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Carrier jumped` script updated to announce engineer systems.
       * `Engineer report` script added.
+      * `Material threshold` script updated for expanded triggering conditions.
       * `Message received` script and properties updated to better support localization.
       * `Jumped` script updated to announce engineer systems.
       * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
