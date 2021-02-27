@@ -4020,6 +4020,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":
                             case "CarrierBankTransfer":
