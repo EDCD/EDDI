@@ -531,7 +531,10 @@ namespace EddiCore
 
         public void enqueueEvent(Event @event)
         {
-            eventQueue.Add(@event);
+            if (!eventQueue.IsAddingCompleted)
+            {
+                eventQueue.Add(@event);
+            }
         }
 
         private void dequeueEvents()
