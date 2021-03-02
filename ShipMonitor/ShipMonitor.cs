@@ -1133,16 +1133,35 @@ namespace EddiShipMonitor
                         ship.optimalmass = profileCurrentShip.optimalmass;
                         // Update ship hull health from profile
                         ship.health = profileCurrentShip.health;
+
                         // Update ship modules from the profile
+                        ship.bulkheads = ship.bulkheads ?? new Module();
                         ship.bulkheads.UpdateFromFrontierAPIModule(profileCurrentShip.bulkheads);
+
+                        ship.powerplant = ship.powerplant ?? new Module();
                         ship.powerplant.UpdateFromFrontierAPIModule(profileCurrentShip.powerplant);
+
+                        ship.thrusters = ship.thrusters ?? new Module();
                         ship.thrusters.UpdateFromFrontierAPIModule(profileCurrentShip.thrusters);
+
+                        ship.powerdistributor = ship.powerdistributor ?? new Module();
                         ship.powerdistributor.UpdateFromFrontierAPIModule(profileCurrentShip.powerdistributor);
+                        
+                        ship.frameshiftdrive = ship.frameshiftdrive ?? new Module();
                         ship.frameshiftdrive.UpdateFromFrontierAPIModule(profileCurrentShip.frameshiftdrive);
+
+                        ship.lifesupport = ship.lifesupport ?? new Module();
                         ship.lifesupport.UpdateFromFrontierAPIModule(profileCurrentShip.lifesupport);
+
+                        ship.sensors = ship.sensors ?? new Module();
                         ship.sensors.UpdateFromFrontierAPIModule(profileCurrentShip.sensors);
+
+                        ship.fueltank = ship.fueltank ?? new Module();
                         ship.fueltank.UpdateFromFrontierAPIModule(profileCurrentShip.fueltank);
+
+                        ship.cargohatch = ship.cargohatch ?? new Module();
                         ship.cargohatch.UpdateFromFrontierAPIModule(profileCurrentShip.cargohatch);
+
                         foreach (var profileHardpoint in profileCurrentShip.hardpoints)
                         {
                             foreach (var shipHardpoint in ship.hardpoints)
