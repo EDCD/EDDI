@@ -120,8 +120,18 @@
   
   
   
-  
-  
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Magas intenzitású konfliktus zóna</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Közepes intenzitású konfliktus zóna</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Alacsony intenzitású konfliktus zóna</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
   
   
   
