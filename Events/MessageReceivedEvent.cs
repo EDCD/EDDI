@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -37,7 +38,10 @@ namespace EddiEvents
         public string message { get; private set; }
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public MessageChannel Channel { get; }
+
+        [VoiceAttackIgnore]
         public MessageSource Source { get; }
 
         public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, MessageChannel channel, string message) : base(timestamp, NAME)
