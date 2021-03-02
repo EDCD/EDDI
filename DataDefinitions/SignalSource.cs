@@ -53,7 +53,8 @@ namespace EddiDataDefinitions
             var NotableStellarPhenomenaCloud = new SignalSource("Fixed_Event_Life_Cloud");
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
 
-            var DistressCall = new SignalSource("Aftermath_Large");
+            var AttackAftermath = new SignalSource("AttackAftermath");
+            var AftermathLarge = new SignalSource("Aftermath_Large");
 
             var Biological = new SignalSource("SAA_SignalType_Biological");
             var Geological = new SignalSource("SAA_SignalType_Geological");

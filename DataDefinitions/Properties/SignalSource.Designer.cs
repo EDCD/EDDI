@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distress Call.
+        /// </summary>
+        public static string AttackAftermath {
+            get {
+                return ResourceManager.GetString("AttackAftermath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capital Ship.
         /// </summary>
         public static string FIXED_EVENT_CAPSHIP {
