@@ -345,5 +345,8 @@
     <value>Pedido de Ajuda</value>
     <comment>Distress Call</comment>
   </data>
-  
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Pedido de Ajuda</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>
