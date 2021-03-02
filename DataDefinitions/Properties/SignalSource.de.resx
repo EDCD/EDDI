@@ -345,5 +345,8 @@
     <value>Notruf</value>
     <comment>Distress Call</comment>
   </data>
-  
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Notruf</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>
