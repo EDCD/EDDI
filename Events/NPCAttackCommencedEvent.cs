@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,6 +22,7 @@ namespace EddiEvents
         public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing
+        [VoiceAttackIgnore]
         public MessageSource Source { get; }
 
         public NPCAttackCommencedEvent(DateTime timestamp, MessageSource source) : base(timestamp, NAME)

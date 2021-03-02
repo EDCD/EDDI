@@ -48,6 +48,8 @@ namespace EddiShipMonitor
 
         [VoiceAttackIgnore]
         public long toMarketId { get; private set; }
+
+        [VoiceAttackIgnore]
         public Ship Ship { get; private set; }
 
         public ShipArrivedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, string station, long fromMarketId, long toMarketId) : base(timestamp, NAME)
