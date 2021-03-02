@@ -207,9 +207,15 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        // Desintation systems for chained missions
+
+        // Destination systems for chained missions
         public List<DestinationSystem> destinationsystems { get; set; }
 
+        // Community goal details, if applicable
+        public int communalPercentileBand { get; set; }
+
+        public int communalTier { get; set; }
+        
         // The mission time remaining
         [JsonIgnore]
         private string _timeremaining;

@@ -251,9 +251,9 @@ namespace EddiMissionMonitor
             {
                 handleMissionsEvent((MissionsEvent)@event);
             }
-            else if (@event is CommunityGoalEvent)
+            else if (@event is CommunityGoalsEvent)
             {
-                handleCommunityGoalEvent((CommunityGoalEvent)@event);
+                handleCommunityGoalsEvent((CommunityGoalsEvent)@event);
             }
             else if (@event is CargoDepotEvent)
             {
@@ -415,12 +415,13 @@ namespace EddiMissionMonitor
             // Remove strays from the mission log
             foreach (Mission missionEntry in missions.ToList())
             {
+                // Community goals aren't written by the `Missions` event so we exclude them from pruning
+                if (missionEntry.communal) { continue; }
+                
                 Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
-                if (mission == null || mission.name.Contains("StartZone") || (missionEntry.communal && missionEntry.statusEDName != "Active"))
+                if (mission == null || mission.name.Contains("StartZone"))
                 {
-                    // Strip out the stray and 'StartZone' missions from the log
-                    // This can include stale community goals (if any are eligible to claim,
-                    // they will be re-added by a Community Goal event)
+                    // Strip out stray and 'StartZone' missions from the log
                     RemoveMissionWithMissionId(missionEntry.missionid);
                     update = true;
                 }
@@ -468,51 +469,75 @@ namespace EddiMissionMonitor
             }
         }
 
-        private void handleCommunityGoalEvent(CommunityGoalEvent @event)
+        private void handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                _handleCommunityGoalEvent(@event);
+                _handleCommunityGoalsEvent(@event);
                 writeMissions();
             }
         }
 
-        public void _handleCommunityGoalEvent(CommunityGoalEvent @event)
+        public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
-            for (int i = 0; i < @event.cgid.Count(); i++)
+            // Update missions status
+            foreach (var goal in @event.goals)
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.cgid[i]);
+                // Find or create our mission
+                Mission mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
                 if (mission == null)
                 {
-                    mission = new Mission(@event.cgid[i], "MISSION_CommunityGoal", @event.expiryDateTime[i], MissionStatus.FromEDName("Active"))
-                    {
-                        localisedname = @event.name[i],
-                        originsystem = @event.system[i],
-                        originstation = @event.station[i],
-                        reward = @event.tierreward[i]
-                    };
+                    mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.FromEDName("Active"));
                     missions.Add(mission);
                 }
-                else
+
+                // Raise events for the notable changes in community goal status.
+                var cgUpdates = new List<CGUpdate>();
+                if (mission.communalTier < goal.tier)
                 {
-                    mission.localisedname = @event.name[i];
-                    mission.originsystem = @event.system[i];
-                    mission.originstation = @event.station[i];
-                    mission.destinationsystem = @event.system[i];
-                    mission.destinationstation = @event.station[i];
-                    mission.reward = @event.tierreward[i];
-                    mission.expiry = @event.expiryDateTime[i];
-                    if (@event.iscomplete[i])
+                    // Did the goal's current tier change?
+                    cgUpdates.Add(new CGUpdate("Tier", "Increase"));
+                }
+                if (goal.contribution > 0)
+                {
+                    if (mission.communalPercentileBand < goal.percentileband)
                     {
-                        if (@event.tierreward[i] > 0)
-                        {
-                            mission.statusDef = MissionStatus.FromEDName("Claim");
-                        }
-                        else
-                        {
-                            RemoveMissionWithMissionId(mission.missionid);
-                        }
+                        // Did the player's percentile band increase?
+                        cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
+                    }
+                    if (mission.communalPercentileBand > goal.percentileband)
+                    {
+                        // Did the player's percentile band decrease?
+                        cgUpdates.Add(new CGUpdate("Percentile", "Decrease"));
+                    }
+                }
+
+                if (cgUpdates.Any())
+                {
+                    EDDI.Instance.enqueueEvent(new CommunityGoalEvent(DateTime.UtcNow, cgUpdates, goal));
+                }
+
+                // Update our mission records
+                mission.localisedname = goal.name;
+                mission.originsystem = goal.system;
+                mission.originstation = goal.station;
+                mission.destinationsystem = goal.system;
+                mission.destinationstation = goal.station;
+                mission.reward = goal.tierreward;
+                mission.communal = true;
+                mission.communalPercentileBand = goal.percentileband;
+                mission.communalTier = goal.tier;
+                mission.expiry = goal.expiryDateTime;
+                if (goal.iscomplete)
+                {
+                    if (goal.tierreward > 0)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Claim");
+                    }
+                    else
+                    {
+                        RemoveMissionWithMissionId(mission.missionid);
                     }
                 }
             }
@@ -914,8 +939,8 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Write missions configuration with current missions log
-                goalsCount = missions.Where(m => m.communal).Count();
-                missionsCount = missions.Where(m => !m.shared && !m.communal).Count();
+                goalsCount = missions.Count(m => m.communal);
+                missionsCount = missions.Count(m => !m.shared && !m.communal);
                 MissionMonitorConfiguration configuration = new MissionMonitorConfiguration
                 {
                     updatedat = updateDat,

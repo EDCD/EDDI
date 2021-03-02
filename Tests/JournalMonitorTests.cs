@@ -1468,7 +1468,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestCommunityGoalEvent()
+        public void TestCommunityGoalsEvent()
         {
             string line = @"{
                ""timestamp"": ""2021-02-27T15:32:42Z"",
@@ -1496,22 +1496,25 @@ namespace UnitTests
                   }
                ]
             }";
-            List<Event> events = JournalMonitor.ParseJournalEntry(line);
-            CommunityGoalEvent @event = (CommunityGoalEvent)events[0];
-            Assert.AreEqual(641, @event.cgid[0]);
-            Assert.AreEqual("Defence of the Galactic Summit", @event.name[0]);
-            Assert.AreEqual("Sirius", @event.system[0]);
-            Assert.AreEqual("Spirit of Laelaps", @event.station[0]);
-            Assert.AreEqual(Dates.fromDateTimeStringToSeconds("2021-03-04T06:00:00Z") - Dates.fromDateTimeStringToSeconds("2021-02-27T15:32:42Z"), @event.expiry[0] );
-            Assert.AreEqual(false, @event.iscomplete[0]);
-            Assert.AreEqual(163782436330, @event.total[0]);
-            Assert.AreEqual(84049848, @event.contribution[0]);
-            Assert.AreEqual(8354, @event.contributors[0]);
-            Assert.AreEqual(10, @event.topranksize[0]);
-            Assert.AreEqual(false, @event.toprank[0]);
-            Assert.AreEqual("Tier 5", @event.tier[0]);
-            Assert.AreEqual(10, @event.percentileband[0]);
-            Assert.AreEqual(100000000, @event.tierreward[0]);
+            var events = JournalMonitor.ParseJournalEntry(line);
+            var @event = (CommunityGoalsEvent)events[0];
+            var goal = @event.goals[0];
+            Assert.AreEqual(641, goal.cgid);
+            Assert.AreEqual("Defence of the Galactic Summit", goal.name);
+            Assert.AreEqual("Sirius", goal.system);
+            Assert.AreEqual("Spirit of Laelaps", goal.station);
+            Assert.AreEqual(DateTime.Parse("2021-03-04T06:00:00Z").ToUniversalTime(), goal.expiryDateTime );
+            Assert.AreEqual(false, goal.iscomplete);
+            Assert.AreEqual(163782436330, goal.total);
+            Assert.AreEqual(84049848, goal.contribution);
+            Assert.AreEqual(8354, goal.contributors);
+            Assert.AreEqual(8, goal.toptier);
+            Assert.AreEqual("", goal.toptierreward);
+            Assert.AreEqual(10, goal.topranksize);
+            Assert.AreEqual(false, goal.toprank);
+            Assert.AreEqual(5, goal.tier);
+            Assert.AreEqual(10, goal.percentileband);
+            Assert.AreEqual(100000000, goal.tierreward);
         }
     }
 }

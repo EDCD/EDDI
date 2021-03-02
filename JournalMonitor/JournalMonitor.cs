@@ -2808,70 +2808,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "CommunityGoal":
                                 {
-
-                                    // There may be multiple goals in each event. We add them all to lists
-                                    data.TryGetValue("CurrentGoals", out object val);
-                                    List<object> goalsdata = (List<object>)val;
-
-                                    // Create empty lists
-                                    List<long> cgid = new List<long>();
-                                    List<string> name = new List<string>();
-                                    List<string> system = new List<string>();
-                                    List<string> station = new List<string>();
-                                    List<long> expiry = new List<long>();
-                                    List<DateTime> expiryDateTimes = new List<DateTime>();
-                                    List<bool> iscomplete = new List<bool>();
-                                    List<long> total = new List<long>();
-                                    List<int> contribution = new List<int>();
-                                    List<int> contributors = new List<int>();
-                                    List<decimal> percentileband = new List<decimal>();
-
-                                    List<int?> topranksize = new List<int?>();
-                                    List<bool?> toprank = new List<bool?>();
-
-                                    List<string> tier = new List<string>();
-                                    List<long?> tierreward = new List<long?>();
-
-                                    List<string> toptier = new List<string>();
-                                    List<string> toptierreward = new List<string>();
-
-                                    // Fill the lists
-                                    foreach (IDictionary<string, object> goaldata in goalsdata)
-                                    {
-                                        cgid.Add(JsonParsing.getLong(goaldata, "CGID"));
-                                        name.Add(JsonParsing.getString(goaldata, "Title"));
-                                        system.Add(JsonParsing.getString(goaldata, "SystemName"));
-                                        station.Add(JsonParsing.getString(goaldata, "MarketName"));
-                                        DateTime expiryDateTime = ((DateTime)goaldata["Expiry"]).ToUniversalTime();
-                                        expiryDateTimes.Add(expiryDateTime);
-                                        long expiryseconds = (long)(expiryDateTime - timestamp).TotalSeconds;
-                                        expiry.Add(expiryseconds);
-                                        iscomplete.Add(JsonParsing.getBool(goaldata, "IsComplete"));
-                                        total.Add(JsonParsing.getLong(goaldata, "CurrentTotal"));
-                                        contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
-                                        contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
-                                        percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
-
-                                        // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
-
-                                        topranksize.Add(JsonParsing.getOptionalInt(goaldata, "TopRankSize"));
-                                        toprank.Add(JsonParsing.getOptionalBool(goaldata, "PlayerInTopRank"));
-
-                                        // If the community goal has reached the first success tier
-
-                                        tier.Add(JsonParsing.getString(goaldata, "TierReached"));
-                                        tierreward.Add(JsonParsing.getOptionalLong(goaldata, "Bonus"));
-
-                                        // Data about the max tier of the goal
-                                        if (goaldata.TryGetValue("TopTier", out object topTierVal))
-                                        {
-                                            IDictionary<string, object> topTierData = (Dictionary<string, object>)topTierVal;
-                                            toptier.Add(JsonParsing.getString(topTierData, "Name"));
-                                            toptierreward.Add(JsonParsing.getString(topTierData, "Bonus"));
-                                        }
-                                    }
-
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward, toptier, toptierreward) { raw = line, fromLoad = fromLogLoad });
+                                    // There may be multiple goals in each event.
+                                    data.TryGetValue("CurrentGoals", out object goalsVal);
+                                    string goalsJson = JsonConvert.SerializeObject(goalsVal);
+                                    List<CommunityGoal> goals = JsonConvert.DeserializeObject<List<CommunityGoal>>(goalsJson);
+                                    events.Add(new CommunityGoalsEvent(timestamp, goals) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

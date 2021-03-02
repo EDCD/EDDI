@@ -15,6 +15,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Expanded conditions that can trigger a `Material threshold` event (for example, if the material amount is increased above the minimum)
     * Fixed a bug that could prevent the `Material threshold` from firing when we meet but do not exceed the maximum material threshold.
     * Fixed a bug that could prevent material counts from being updated for materials no longer in inventory.
+  * Mission Monitor
+    * Fixed a bug that temporarily stripped community goal missions from the mission list.
+    * Fixed a bug that prevented community goal missions from sometimes being identified as community goal missions. 
   * Speech Responder
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
@@ -23,9 +26,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Portuguese default personality updated (thanks to @Kenjiro). 
     * Scripts
       * `Carrier jumped` script updated to announce engineer systems.
+      * `Community goal` script revised and re-enabled. The event is now written only in response to specific changes in community goal status.
+      * `Community goals` script added, updated whenever the game provides updated information on community goals.
       * `Engineer report` script added.
       * `Material threshold` script updated for expanded triggering conditions.
       * `Message received` script and properties updated to better support localization.
+      * `Mission check galaxy` script updated to more gracefully handle community goals.
+      * `Mission check station` script updated to more gracefully handle community goals.
+      * `Mission check system` script updated to more gracefully handle community goals.
       * `Jumped` script updated to announce engineer systems.
       * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.

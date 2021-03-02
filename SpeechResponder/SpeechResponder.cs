@@ -193,11 +193,6 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (@event is CommunityGoalEvent)
-            {
-                // Disable speech from the community goal event for the time being.
-                return;
-            }
 
             Say(@event);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -6,84 +7,101 @@ namespace EddiEvents
     public class CommunityGoalEvent : Event
     {
         public const string NAME = "Community goal";
-        public const string DESCRIPTION = "Triggered when checking the status of a community goal";
-        public const string SAMPLE = "{ \"timestamp\":\"2017-08-14T13:20:28Z\", \"event\":\"CommunityGoal\", \"CurrentGoals\":[ { \"CGID\":726, \"Title\":\"Alliance Research Initiative – Trade\", \"SystemName\":\"Kaushpoos\", \"MarketName\":\"Neville Horizons\", \"Expiry\":\"2017-08-17T14:58:14Z\", \"IsComplete\":false, \"CurrentTotal\":10062, \"PlayerContribution\":562, \"NumContributors\":101, \"TopRankSize\":10, \"PlayerInTopRank\":false, \"TierReached\":\"Tier 1\", \"PlayerPercentileBand\":50, \"Bonus\":200000 } ] }";
+        public const string DESCRIPTION = "Triggered when the status of a community goal changes";
+        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow, new List<CGUpdate>() { new CGUpdate("Tier", "Increase"), new CGUpdate("Percentile", "Increase") }, new CommunityGoal()
+        {
+            cgid = 641,
+            name = "Defence of the Galactic Summit",
+            system = "Sirius",
+            station = "Spirit of Laelaps",
+            expiryDateTime = DateTime.Parse("2021-03-04T06:00:00Z").ToUniversalTime(),
+            iscomplete = false,
+            total = 163782436330,
+            contribution = 84049848, 
+            contributors = 8354,
+            TopTier = new TopTier("Tier 8", string.Empty),
+            topranksize = 10,
+            toprank = false,
+            Tier = "Tier 5",
+            percentileband = 10, 
+            tierreward = 100000000
+        });
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommunityGoalEvent()
         {
-            VARIABLES.Add("cgid", "the unique id of the goal (this is a list containing values for all active goals)");
-            VARIABLES.Add("name", "The description of the goal (this is a list containing values for all active goals)");
-            VARIABLES.Add("system", "The system where the goal is located (this is a list containing values for all active goals)");
-            VARIABLES.Add("station", "The station where the goal is located (this is a list containing values for all active goals)");
-            VARIABLES.Add("expiry", "The expiration time for the goal in seconds (this is a list containing values for all active goals)");
-            VARIABLES.Add("iscomplete", "The completion status of the goal (true/false) (this is a list containing values for all active goals)");
-            VARIABLES.Add("total", "The community's current total contributions (this is a list containing values for all active goals)");
-            VARIABLES.Add("contribution", "The commander's contribution (this is a list containing values for all active goals)");
-            VARIABLES.Add("contributors", "The number of commanders participating (this is a list containing values for all active goals)");
-            VARIABLES.Add("percentileband", "the commander's current rewards percentile (this is a list containing values for all active goals)");
-            VARIABLES.Add("topranksize", "The number of commanders in the top rank (only for goals with a fixed size top rank) (this is a list containing values for all active goals)");
-            VARIABLES.Add("toprank", "Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank) (this is a list containing values for all active goals)");
-            VARIABLES.Add("tier", "The current tier of the goal (only once the 1st tier is reached) (this is a list containing values for all active goals)");
-            VARIABLES.Add("tierreward", "The reward on offer for the current tier (this is a list containing values for all active goals)");
-            VARIABLES.Add("toptier", "The top tier of the goal (this is a list containing values for all active goals)");
-            VARIABLES.Add("toptierreward", "The reward on offer for the top tier (this is a list containing values for all active goals)");
+            VARIABLES.Add("updates", "a list of objects with sub-properties \"type\" (either \"Tier\" or \"Percentile\") and direction (either \"Increase\" or \"Decrease\")");
+            VARIABLES.Add("cgid", "the unique id of the goal");
+            VARIABLES.Add("name", "The description of the goal");
+            VARIABLES.Add("system", "The star system where the goal is located");
+            VARIABLES.Add("station", "The station where the goal is located");
+            VARIABLES.Add("expiry", "The expiration time for the goal in seconds");
+            VARIABLES.Add("iscomplete", "The completion status of the goal (true/false)");
+            VARIABLES.Add("total", "The community's current total contributions");
+            VARIABLES.Add("contribution", "The commander's contribution");
+            VARIABLES.Add("contributors", "The number of commanders participating");
+            VARIABLES.Add("percentileband", "the commander's current rewards percentile");
+            VARIABLES.Add("topranksize", "The number of commanders in the top rank (only for goals with a fixed size top rank)");
+            VARIABLES.Add("toprank", "Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank)");
+            VARIABLES.Add("tier", "The current tier of the goal (only once the 1st tier is reached)");
+            VARIABLES.Add("tierreward", "The reward on offer for the current tier");
+            VARIABLES.Add("toptier", "The top tier of the goal");
+            VARIABLES.Add("toptierreward", "The reward on offer for the top tier");
         }
 
-        public List<long> cgid { get; private set; }
+        public List<CGUpdate> updates { get; private set; }
 
-        public List<string> name { get; private set; }
+        public long cgid => goal.cgid;
 
-        public List<string> system { get; private set; }
+        public string name => goal.name;
 
-        public List<string> station { get; private set; }
+        public string system => goal.system;
 
-        public List<long> expiry { get; private set; }
+        public string station => goal.station;
 
-        public List<bool> iscomplete { get; private set; }
+        public long expiry => goal.expiry;
 
-        public List<long> total { get; private set; }
+        public bool iscomplete => goal.iscomplete;
 
-        public List<int> contribution { get; private set; }
+        public long total => goal.total;
 
-        public List<int> contributors { get; private set; }
+        public long contribution => goal.contribution;
 
-        public List<decimal> percentileband { get; private set; }
+        public int contributors => goal.contributors;
 
-        public List<int?> topranksize { get; private set; }
+        public int percentileband => goal.percentileband;
 
-        public List<bool?> toprank { get; private set; }
+        public int? topranksize => goal.topranksize;
 
-        public List<string> tier { get; private set; }
+        public bool? toprank => goal.toprank;
 
-        public List<long?> tierreward { get; private set; }
-        
-        public List<string> toptier { get; private set; }
+        public int? tier => goal.tier;
 
-        public List<string> toptierreward { get; private set; }
+        public long? tierreward => goal.tierreward;
+
+        public int? toptier => goal.toptier;
+
+        public string toptierreward => goal.toptierreward;
 
         // Not intended to be user facing
-        public List<DateTime> expiryDateTime { get; private set; }
+        public CommunityGoal goal { get; private set; }
 
-        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<DateTime> expiryDateTime, List<bool> iscomplete, List<long> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward, List<string> toptier, List<string> toptierreward) : base(timestamp, NAME)
+        public CommunityGoalEvent(DateTime timestamp, List<CGUpdate> cgupdates, CommunityGoal goal) : base(timestamp, NAME)
         {
-            this.cgid = cgid;
-            this.name = name;
-            this.system = system;
-            this.station = station;
-            this.expiry = expiry;
-            this.expiryDateTime = expiryDateTime;
-            this.iscomplete = iscomplete;
-            this.total = total;
-            this.contribution = contribution;
-            this.contributors = contributors;
-            this.percentileband = percentileband;
-            this.topranksize = topranksize;
-            this.toprank = toprank;
-            this.tier = tier;
-            this.tierreward = tierreward;
-            this.toptier = toptier;
-            this.toptierreward = toptierreward;
+            this.updates = cgupdates;
+            this.goal = goal;
+        }
+    }
+
+    public class CGUpdate
+    {
+        public string type { get; private set; }
+        public string direction { get; private set; }
+
+        public CGUpdate(string updateType, string updateDirection)
+        {
+            type = updateType;
+            direction = updateDirection;
         }
     }
 }

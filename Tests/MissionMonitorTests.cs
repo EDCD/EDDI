@@ -332,7 +332,7 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2020-10-25T05:05:51Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":false, ""CurrentTotal"":14801430, ""PlayerContribution"":5516, ""NumContributors"":4560, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":false, ""TierReached"":""Tier 1"", ""PlayerPercentileBand"":25, ""Bonus"":600000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":false, ""CurrentTotal"":6029526816, ""PlayerContribution"":281617, ""NumContributors"":2879, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":false, ""TierReached"":""Tier 2"", ""PlayerPercentileBand"":100, ""Bonus"":150000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleCommunityGoalEvent((CommunityGoalEvent)events[0]);
+            missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
             Assert.AreEqual("Fox Enterprise", missionMonitor.missions[0].originstation);
             Assert.AreEqual("Active", missionMonitor.missions[0].statusEDName);
             Assert.AreEqual(600000, missionMonitor.missions[0].reward);
@@ -341,7 +341,7 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2020-10-30T01:22:34Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":true, ""CurrentTotal"":33417668, ""PlayerContribution"":6304, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":true, ""CurrentTotal"":18046921733, ""PlayerContribution"":4899320, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleCommunityGoalEvent((CommunityGoalEvent)events[0]);
+            missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
             Assert.AreEqual("Claim", missionMonitor.missions[0].statusEDName);
             Assert.AreEqual(10000000, missionMonitor.missions[0].reward);
 
