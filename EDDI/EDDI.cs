@@ -1501,7 +1501,7 @@ namespace EddiCore
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
                     // Refresh station data
-                    if (theEvent.fromLoad || !passEvent) { return true; } // Don't fire this event when loading pre-existing logs or if we were already at this station
+                    if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
                     profileUpdateNeeded = true;
                     profileStationRequired = CurrentStation.name;
                     Thread updateThread = new Thread(() => conditionallyRefreshProfile())
