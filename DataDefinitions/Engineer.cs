@@ -26,11 +26,11 @@ namespace EddiDataDefinitions
 
         // Top tier specialties
         public HashSet<EngineerSpecialty> majorSpecialties { get; private set; }
-        public List<string> majorspecialties => majorSpecialties.Select(s => s.localizedName).ToList();
+        public List<string> majorspecialties => majorSpecialties?.Select(s => s.localizedName).ToList();
 
         // Other specialties
         public HashSet<EngineerSpecialty> minorSpecialties { get; private set; }
-        public List<string> minorspecialties => minorSpecialties.Select(s => s.localizedName).ToList();
+        public List<string> minorspecialties => minorSpecialties?.Select(s => s.localizedName).ToList();
 
         // Progress
         public string stage { get; set; }
@@ -38,6 +38,17 @@ namespace EddiDataDefinitions
         public int? rankprogress { get; set; }
 
         public int? rank { get; set; }
+
+        public Engineer(string name, long engineerId, string progressStage, int? rankProgress, int? rank)
+        {
+            this.name = name;
+            this.id = engineerId;
+            this.stage = progressStage;
+            this.rankprogress = rankProgress;
+            this.rank = rank;
+            this.majorSpecialties = ENGINEERS.SingleOrDefault(e => e.id == engineerId)?.majorSpecialties;
+            this.minorSpecialties = ENGINEERS.SingleOrDefault(e => e.id == engineerId)?.minorSpecialties;
+        }
 
         private Engineer(long engineerId, string engineerName, string systemName, long systemAddress, string stationName, long marketId, HashSet<EngineerSpecialty> majorSpecialties, HashSet<EngineerSpecialty> minorSpecialties)
         {
@@ -113,15 +124,6 @@ namespace EddiDataDefinitions
                 }
             }
             return result;
-        }
-        
-        public Engineer(string name, long engineerId, string progressStage, int? rankProgress, int? rank)
-        {
-            this.name = name;
-            this.id = engineerId;
-            this.stage = progressStage;
-            this.rankprogress = rankProgress;
-            this.rank = rank;
         }
 
         public static void AddOrUpdate(Engineer engineer)
