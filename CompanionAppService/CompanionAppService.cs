@@ -23,7 +23,7 @@ namespace EddiCompanionAppService
         private static readonly string AUTH_URL = "/auth";
         private static readonly string DECODE_URL = "/decode";
         private static readonly string TOKEN_URL = "/token";
-        private static readonly string AUDIENCE = "audience=steam,frontier";
+        private static readonly string AUDIENCE = "audience=steam,frontier,epic";
         private static readonly string SCOPE = "scope=capi";
         private static readonly string PROFILE_URL = "/profile";
         private static readonly string MARKET_URL = "/market";
