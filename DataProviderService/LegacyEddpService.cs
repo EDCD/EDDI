@@ -59,18 +59,30 @@ namespace EddiDataProviderService
                     if (Station != null)
                     {
                         // Commodities price listings
-                        station.commodities = CommodityQuotesFromEDDP(Station);
-                        station.commoditiesupdatedat = (long?)Station["market_updated_at"];
+                        var commoditiesUpdatedAt = (long?)Station["market_updated_at"];
+                        if (commoditiesUpdatedAt > station.commoditiesupdatedat)
+                        {
+                            station.commodities = CommodityQuotesFromEDDP(Station);
+                            station.commoditiesupdatedat = commoditiesUpdatedAt;
+                        }
 
                         // Detailed shipyard data 
-                        List<Ship> shipyard = ShipyardFromEDDP(Station);
-                        station.shipyard = shipyard;
-                        station.shipyardupdatedat = (long?)Station["shipyard_updated_at"];
+                        var shipyardUpdatedAt = (long?)Station["shipyard_updated_at"];
+                        if (shipyardUpdatedAt > station.shipyardupdatedat)
+                        {
+                            List<Ship> shipyard = ShipyardFromEDDP(Station);
+                            station.shipyard = shipyard;
+                            station.shipyardupdatedat = shipyardUpdatedAt;
+                        }
 
                         // Detailed module data
-                        List<Module> modules = ModulesFromEDDP(Station);
-                        station.outfitting = modules;
-                        station.outfittingupdatedat = (long?)Station["outfitting_updated_at"];
+                        var outfittingUpdatedAt = (long?)Station["outfitting_updated_at"];
+                        if (outfittingUpdatedAt > station.outfittingupdatedat)
+                        {
+                            List<Module> modules = ModulesFromEDDP(Station);
+                            station.outfitting = modules;
+                            station.outfittingupdatedat = outfittingUpdatedAt;
+                        }
                     }
                 }
                 SetPlanetarySettlementData(system, response); // Non-landable planetary settlement data
