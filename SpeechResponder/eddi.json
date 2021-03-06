@@ -1894,7 +1894,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if len(event.modules) > 0:\r\n    Emergency repairs have been\r\n    {OneOf(\"made\", \"applied\")}\r\n    to the {List(event.modules)}.\r\n}",
       "default": true,
       "name": "Ship rebooted",
       "description": "Triggered when you run reboot/repair on your ship"
