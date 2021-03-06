@@ -374,10 +374,6 @@ namespace EddiCrimeMonitor
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-            if (currentSystem != null)
-            {
-                currentSystem = LegacyEddpService.SetLegacyData(currentSystem, true, false, false);
-            }
 
             // Default to 1.0 for unit testing
             double bonus = (!test && currentSystem?.Power == Power.FromEDName("ALavignyDuval")) ? 1.2 : 1.0;
