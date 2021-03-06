@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Next jump";
         public const string DESCRIPTION = "Triggered when selecting a star system to jump to";
-        public const string SAMPLE = @"{""timestamp"":""2019-01-29T07:13:08Z"",""event"":""FSDTarget"",""Name"":""Kuma"",""SystemAddress"":1247411177835,""RemainingJumpsInRoute"":1}";
+        public const string SAMPLE = @"{ ""timestamp"":""2020-11-14T09:19:25Z"", ""event"":""FSDTarget"", ""Name"":""Musca Dark Region CQ-Y d31"", ""SystemAddress"":1075729926531, ""StarClass"":""F"", ""RemainingJumpsInRoute"":1 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FSDTargetEvent()
