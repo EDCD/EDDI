@@ -755,12 +755,10 @@ namespace EddiSpeechService
             return sb.ToString();
         }
 
-        public static string Humanize(decimal? value)
+        public static string Humanize(decimal? rawValue)
         {
-            if (value == null)
-            {
-                return null;
-            }
+            if (rawValue == null) { return null; }
+            var value = (decimal)rawValue;
 
             string maybeMinus = "";
             if (value < 0)
@@ -784,76 +782,72 @@ namespace EddiSpeechService
                     numzeros++;
                 }
                 // Now round it to 2sf
-                return maybeMinus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
+                return maybeMinus + (Math.Round(value * 10) / (decimal)Math.Pow(10, numzeros + 2));
             }
 
-            (int number, int nextDigit) Normalize(decimal inputValue, long orderMultiplierVal)
+            (int number, int nextDigit) Normalize(decimal inputValue, decimal orderMultiplierVal)
             {
                 return (
                     number: (int)(inputValue / orderMultiplierVal),
-                    nextDigit: (int)((inputValue % orderMultiplierVal) / ((decimal)orderMultiplierVal / 10))
+                    nextDigit: (int)((inputValue % orderMultiplierVal) / (orderMultiplierVal / 10))
                 );
             }
 
             int number;
             int nextDigit;
             string order;
-            long orderMultiplier = 1;
-            int magnitude = (int)Math.Log10((double)value);
-            if (magnitude < 3)
+            var magnitude = Math.Log10((double)value);
+            var orderMultiplier = (long)Math.Pow(10, Math.Floor(magnitude / 3) * 3);
+            
+            if (orderMultiplier == 1)
             {
                 // Units
                 order = "";
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
-            else if (magnitude < 6)
+            else if (orderMultiplier == 1E3M)
             {
                 // Thousands
                 order = " " + Properties.Phrases.thousand;
-                orderMultiplier = (long)1E3;
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
-            else if (magnitude < 9)
+            else if (orderMultiplier == 1E6M)
             {
                 // Millions
                 order = " " + Properties.Phrases.million;
-                orderMultiplier = (long)1E6;
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
-            else if (magnitude < 12)
+            else if (orderMultiplier == 1E9M)
             {
                 // Billions
                 order = " " + Properties.Phrases.billion;
-                orderMultiplier = (long)1E9;
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
-            else if (magnitude < 15)
+            else if (orderMultiplier == 1E12M)
             {
                 // Trillions
                 order = " " + Properties.Phrases.trillion;
-                orderMultiplier = (long)1E12;
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else
             {
                 // Quadrillions
                 order = " " + Properties.Phrases.quadrillion;
-                orderMultiplier = (long)1E15M;
-                (number, nextDigit) = Normalize((decimal)value, orderMultiplier);
+                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             
             // See if we have a whole number that is fully described within the largest order
-            if (number * orderMultiplier == Math.Abs((decimal)value))
+            if (number * orderMultiplier == Math.Abs(value))
             {
                 // Some languages render these differently than others. "1000" in English is "one thousand" but in Italian is simply "mille".
                 // Consequently, we leave the interpretation to the culture-specific voice.
-                return maybeMinus + number * orderMultiplier;
+                return maybeMinus + (number * orderMultiplier);
             }
 
             if (number < 100)
             {
                 // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
-                if (number + ((decimal)nextDigit / 10) == Math.Round((decimal)value / orderMultiplier, 2))
+                if (number + ((decimal)nextDigit / 10) == Math.Round(value / orderMultiplier, 2))
                 {
                     if (nextDigit == 0)
                     {
@@ -861,7 +855,7 @@ namespace EddiSpeechService
                     }
                     else
                     {
-                        return maybeMinus + (number + (decimal)nextDigit / 10) + order;
+                        return maybeMinus + (number + ((decimal)nextDigit / 10)) + order;
                     }
                 }
 
