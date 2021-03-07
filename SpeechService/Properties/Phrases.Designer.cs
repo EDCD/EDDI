@@ -61,29 +61,128 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to and a half.
+        ///   Looks up a localized string similar to around {0} and a half.
         /// </summary>
-        public static string andahalf {
+        public static string aroundAndAHalf {
             get {
-                return ResourceManager.GetString("andahalf", resourceCulture);
+                return ResourceManager.GetString("aroundAndAHalf", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around.
+        ///   Looks up a localized string similar to around {0} and a half billion.
         /// </summary>
-        public static string around {
+        public static string aroundAndAHalfBillion {
             get {
-                return ResourceManager.GetString("around", resourceCulture);
+                return ResourceManager.GetString("aroundAndAHalfBillion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to billion.
+        ///   Looks up a localized string similar to around {0} and a half million.
         /// </summary>
-        public static string billion {
+        public static string aroundAndAHalfMillion {
             get {
-                return ResourceManager.GetString("billion", resourceCulture);
+                return ResourceManager.GetString("aroundAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around {0} and a half quadrillion.
+        /// </summary>
+        public static string aroundAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("aroundAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around {0} and a half quintillion.
+        /// </summary>
+        public static string aroundAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("aroundAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around {0} and a half thousand.
+        /// </summary>
+        public static string aroundAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("aroundAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around {0} and a half trillion.
+        /// </summary>
+        public static string aroundAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("aroundAndAHalfTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half.
+        /// </summary>
+        public static string aroundMinusAndAHalf {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half billion.
+        /// </summary>
+        public static string aroundMinusAndAHalfBillion {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half million.
+        /// </summary>
+        public static string aroundMinusAndAHalfMillion {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half quadrillion.
+        /// </summary>
+        public static string aroundMinusAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half quintillion.
+        /// </summary>
+        public static string aroundMinusAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half thousand.
+        /// </summary>
+        public static string aroundMinusAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to around negative {0} and a half trillion.
+        /// </summary>
+        public static string aroundMinusAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("aroundMinusAndAHalfTrillion", resourceCulture);
             }
         }
         
@@ -97,20 +196,128 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over.
+        ///   Looks up a localized string similar to just over {0}.
         /// </summary>
-        public static string justover {
+        public static string justOver {
             get {
-                return ResourceManager.GetString("justover", resourceCulture);
+                return ResourceManager.GetString("justOver", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to million.
+        ///   Looks up a localized string similar to just over {0} billion.
         /// </summary>
-        public static string million {
+        public static string justOverBillion {
             get {
-                return ResourceManager.GetString("million", resourceCulture);
+                return ResourceManager.GetString("justOverBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over {0} million.
+        /// </summary>
+        public static string justOverMillion {
+            get {
+                return ResourceManager.GetString("justOverMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0}.
+        /// </summary>
+        public static string justOverMinus {
+            get {
+                return ResourceManager.GetString("justOverMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} billion.
+        /// </summary>
+        public static string justOverMinusBillion {
+            get {
+                return ResourceManager.GetString("justOverMinusBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} million.
+        /// </summary>
+        public static string justOverMinusMillion {
+            get {
+                return ResourceManager.GetString("justOverMinusMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} quadrillion.
+        /// </summary>
+        public static string justOverMinusQuadrillion {
+            get {
+                return ResourceManager.GetString("justOverMinusQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} quintillion.
+        /// </summary>
+        public static string justOverMinusQuintillion {
+            get {
+                return ResourceManager.GetString("justOverMinusQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} thousand.
+        /// </summary>
+        public static string justOverMinusThousand {
+            get {
+                return ResourceManager.GetString("justOverMinusThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over negative {0} trillion.
+        /// </summary>
+        public static string justOverMinusTrillion {
+            get {
+                return ResourceManager.GetString("justOverMinusTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over {0} quadrillion.
+        /// </summary>
+        public static string justOverQuadrillion {
+            get {
+                return ResourceManager.GetString("justOverQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over {0} quintillion.
+        /// </summary>
+        public static string justOverQuintillion {
+            get {
+                return ResourceManager.GetString("justOverQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over {0} thousand.
+        /// </summary>
+        public static string justOverThousand {
+            get {
+                return ResourceManager.GetString("justOverThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to just over {0} trillion.
+        /// </summary>
+        public static string justOverTrillion {
+            get {
+                return ResourceManager.GetString("justOverTrillion", resourceCulture);
             }
         }
         
@@ -124,7 +331,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly.
+        ///   Looks up a localized string similar to nearly {0}.
         /// </summary>
         public static string nearly {
             get {
@@ -133,11 +340,506 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over.
+        ///   Looks up a localized string similar to nearly {0} and a half.
+        /// </summary>
+        public static string nearlyAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} billion.
+        /// </summary>
+        public static string nearlyBillion {
+            get {
+                return ResourceManager.GetString("nearlyBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} billion and a half.
+        /// </summary>
+        public static string nearlyBillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyBillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} million.
+        /// </summary>
+        public static string nearlyMillion {
+            get {
+                return ResourceManager.GetString("nearlyMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} million and a half.
+        /// </summary>
+        public static string nearlyMillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0}.
+        /// </summary>
+        public static string nearlyMinus {
+            get {
+                return ResourceManager.GetString("nearlyMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half.
+        /// </summary>
+        public static string nearlyMinusAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} billion.
+        /// </summary>
+        public static string nearlyMinusBillion {
+            get {
+                return ResourceManager.GetString("nearlyMinusBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half billion.
+        /// </summary>
+        public static string nearlyMinusBillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusBillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} million.
+        /// </summary>
+        public static string nearlyMinusMillion {
+            get {
+                return ResourceManager.GetString("nearlyMinusMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half million.
+        /// </summary>
+        public static string nearlyMinusMillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusMillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} quadrillion.
+        /// </summary>
+        public static string nearlyMinusQuadrillion {
+            get {
+                return ResourceManager.GetString("nearlyMinusQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half quadrillion.
+        /// </summary>
+        public static string nearlyMinusQuadrillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusQuadrillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} quintillion.
+        /// </summary>
+        public static string nearlyMinusQuintillion {
+            get {
+                return ResourceManager.GetString("nearlyMinusQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half quintillion.
+        /// </summary>
+        public static string nearlyMinusQuintillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusQuintillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} thousand.
+        /// </summary>
+        public static string nearlyMinusThousand {
+            get {
+                return ResourceManager.GetString("nearlyMinusThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half thousand.
+        /// </summary>
+        public static string nearlyMinusThousandAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusThousandAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} trillion.
+        /// </summary>
+        public static string nearlyMinusTrillion {
+            get {
+                return ResourceManager.GetString("nearlyMinusTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly negative {0} and a half trillion.
+        /// </summary>
+        public static string nearlyMinusTrillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyMinusTrillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} quadrillion.
+        /// </summary>
+        public static string nearlyQuadrillion {
+            get {
+                return ResourceManager.GetString("nearlyQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} and a half quadrillion.
+        /// </summary>
+        public static string nearlyQuadrillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyQuadrillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} quintillion.
+        /// </summary>
+        public static string nearlyQuintillion {
+            get {
+                return ResourceManager.GetString("nearlyQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} and a half quintillion.
+        /// </summary>
+        public static string nearlyQuintillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyQuintillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} thousand.
+        /// </summary>
+        public static string nearlyThousand {
+            get {
+                return ResourceManager.GetString("nearlyThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} and a half thousand.
+        /// </summary>
+        public static string nearlyThousandAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyThousandAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} trillion.
+        /// </summary>
+        public static string nearlyTrillion {
+            get {
+                return ResourceManager.GetString("nearlyTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nearly {0} and a half trillion.
+        /// </summary>
+        public static string nearlyTrillionAndAHalf {
+            get {
+                return ResourceManager.GetString("nearlyTrillionAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to negative.
+        /// </summary>
+        public static string negative {
+            get {
+                return ResourceManager.GetString("negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0}.
         /// </summary>
         public static string over {
             get {
                 return ResourceManager.GetString("over", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half.
+        /// </summary>
+        public static string overAndAHalf {
+            get {
+                return ResourceManager.GetString("overAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half billion.
+        /// </summary>
+        public static string overAndAHalfBillion {
+            get {
+                return ResourceManager.GetString("overAndAHalfBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half million.
+        /// </summary>
+        public static string overAndAHalfMillion {
+            get {
+                return ResourceManager.GetString("overAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half quadrillion.
+        /// </summary>
+        public static string overAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("overAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half quintillion.
+        /// </summary>
+        public static string overAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("overAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half thousand.
+        /// </summary>
+        public static string overAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("overAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} and a half trillion.
+        /// </summary>
+        public static string overAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("overAndAHalfTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} billion.
+        /// </summary>
+        public static string overBillion {
+            get {
+                return ResourceManager.GetString("overBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} million.
+        /// </summary>
+        public static string overMillion {
+            get {
+                return ResourceManager.GetString("overMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0}.
+        /// </summary>
+        public static string overMinus {
+            get {
+                return ResourceManager.GetString("overMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half.
+        /// </summary>
+        public static string overMinusAndAHalf {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half billion.
+        /// </summary>
+        public static string overMinusAndAHalfBillion {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half million.
+        /// </summary>
+        public static string overMinusAndAHalfMillion {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half quadrillion.
+        /// </summary>
+        public static string overMinusAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half quintillion.
+        /// </summary>
+        public static string overMinusAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half thousand.
+        /// </summary>
+        public static string overMinusAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} and a half trillion.
+        /// </summary>
+        public static string overMinusAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("overMinusAndAHalfTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} billion.
+        /// </summary>
+        public static string overMinusBillion {
+            get {
+                return ResourceManager.GetString("overMinusBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} million.
+        /// </summary>
+        public static string overMinusMillion {
+            get {
+                return ResourceManager.GetString("overMinusMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} quadrillion.
+        /// </summary>
+        public static string overMinusQuadrillion {
+            get {
+                return ResourceManager.GetString("overMinusQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} quintillion.
+        /// </summary>
+        public static string overMinusQuintillion {
+            get {
+                return ResourceManager.GetString("overMinusQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} thousand.
+        /// </summary>
+        public static string overMinusThousand {
+            get {
+                return ResourceManager.GetString("overMinusThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over negative {0} trillion.
+        /// </summary>
+        public static string overMinusTrillion {
+            get {
+                return ResourceManager.GetString("overMinusTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} quadrillion.
+        /// </summary>
+        public static string overQuadrillion {
+            get {
+                return ResourceManager.GetString("overQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} quintillion.
+        /// </summary>
+        public static string overQuintillion {
+            get {
+                return ResourceManager.GetString("overQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} thousand.
+        /// </summary>
+        public static string overThousand {
+            get {
+                return ResourceManager.GetString("overThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to over {0} trillion.
+        /// </summary>
+        public static string overTrillion {
+            get {
+                return ResourceManager.GetString("overTrillion", resourceCulture);
             }
         }
         
@@ -160,38 +862,308 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to quadrillion.
+        ///   Looks up a localized string similar to {0} billion.
         /// </summary>
-        public static string quadrillion {
+        public static string shortDecimalBillion {
             get {
-                return ResourceManager.GetString("quadrillion", resourceCulture);
+                return ResourceManager.GetString("shortDecimalBillion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to thousand.
+        ///   Looks up a localized string similar to {0} million.
         /// </summary>
-        public static string thousand {
+        public static string shortDecimalMillion {
             get {
-                return ResourceManager.GetString("thousand", resourceCulture);
+                return ResourceManager.GetString("shortDecimalMillion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trillion.
+        ///   Looks up a localized string similar to {0} quadrillion.
         /// </summary>
-        public static string trillion {
+        public static string shortDecimalQuadrillion {
             get {
-                return ResourceManager.GetString("trillion", resourceCulture);
+                return ResourceManager.GetString("shortDecimalQuadrillion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over.
+        ///   Looks up a localized string similar to {0} quintillion.
         /// </summary>
-        public static string wellover {
+        public static string shortDecimalQuintillion {
             get {
-                return ResourceManager.GetString("wellover", resourceCulture);
+                return ResourceManager.GetString("shortDecimalQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} thousand.
+        /// </summary>
+        public static string shortDecimalThousand {
+            get {
+                return ResourceManager.GetString("shortDecimalThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} trillion.
+        /// </summary>
+        public static string shortDecimalTrillion {
+            get {
+                return ResourceManager.GetString("shortDecimalTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0}.
+        /// </summary>
+        public static string wellOver {
+            get {
+                return ResourceManager.GetString("wellOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half.
+        /// </summary>
+        public static string wellOverAndAHalf {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half billion.
+        /// </summary>
+        public static string wellOverAndAHalfBillion {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half million.
+        /// </summary>
+        public static string wellOverAndAHalfMillion {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half quadrillion.
+        /// </summary>
+        public static string wellOverAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half quintillion.
+        /// </summary>
+        public static string wellOverAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half thousand.
+        /// </summary>
+        public static string wellOverAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} and a half trillion.
+        /// </summary>
+        public static string wellOverAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("wellOverAndAHalfTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} billion.
+        /// </summary>
+        public static string wellOverBillion {
+            get {
+                return ResourceManager.GetString("wellOverBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} million.
+        /// </summary>
+        public static string wellOverMillion {
+            get {
+                return ResourceManager.GetString("wellOverMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0}.
+        /// </summary>
+        public static string wellOverMinus {
+            get {
+                return ResourceManager.GetString("wellOverMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half.
+        /// </summary>
+        public static string wellOverMinusAndAHalf {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half billion.
+        /// </summary>
+        public static string wellOverMinusAndAHalfBillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half million.
+        /// </summary>
+        public static string wellOverMinusAndAHalfMillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half quadrillion.
+        /// </summary>
+        public static string wellOverMinusAndAHalfQuadrillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half quintillion.
+        /// </summary>
+        public static string wellOverMinusAndAHalfQuintillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half thousand.
+        /// </summary>
+        public static string wellOverMinusAndAHalfThousand {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} and a half trillion.
+        /// </summary>
+        public static string wellOverMinusAndAHalfTrillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusAndAHalfTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} billion.
+        /// </summary>
+        public static string wellOverMinusBillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusBillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} million.
+        /// </summary>
+        public static string wellOverMinusMillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusMillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} quadrillion.
+        /// </summary>
+        public static string wellOverMinusQuadrillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} quintillion.
+        /// </summary>
+        public static string wellOverMinusQuintillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} thousand.
+        /// </summary>
+        public static string wellOverMinusThousand {
+            get {
+                return ResourceManager.GetString("wellOverMinusThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over negative {0} trillion.
+        /// </summary>
+        public static string wellOverMinusTrillion {
+            get {
+                return ResourceManager.GetString("wellOverMinusTrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} quadrillion.
+        /// </summary>
+        public static string wellOverQuadrillion {
+            get {
+                return ResourceManager.GetString("wellOverQuadrillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} quintillion.
+        /// </summary>
+        public static string wellOverQuintillion {
+            get {
+                return ResourceManager.GetString("wellOverQuintillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} thousand.
+        /// </summary>
+        public static string wellOverThousand {
+            get {
+                return ResourceManager.GetString("wellOverThousand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to well over {0} trillion.
+        /// </summary>
+        public static string wellOverTrillion {
+            get {
+                return ResourceManager.GetString("wellOverTrillion", resourceCulture);
             }
         }
         
