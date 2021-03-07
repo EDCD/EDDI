@@ -793,11 +793,11 @@ namespace EddiSpeechService
                 );
             }
 
-            string order;
             var magnitude = Math.Log10((double)value);
             var orderMultiplier = (long)Math.Pow(10, Math.Floor(magnitude / 3) * 3);
             var (number, nextDigit) = Normalize(value, orderMultiplier);
 
+            string order;
             if (orderMultiplier == 1)
             {
                 // Units
@@ -856,9 +856,6 @@ namespace EddiSpeechService
                 string andahalf = " " + Properties.Phrases.andahalf;
                 switch (nextDigit)
                 {
-                    case 0:
-                        // the figure we are saying is round enough already
-                        return maybeMinus + number + order;
                     case 1:
                         return Properties.Phrases.justover + " " + maybeMinus + number + order;
                     case 2:
@@ -876,6 +873,9 @@ namespace EddiSpeechService
                         return Properties.Phrases.wellover + " " + maybeMinus + number + andahalf + order;
                     case 9:
                         return Properties.Phrases.nearly + " " + maybeMinus + (number + 1) + order;
+                    default:
+                        // `nextDigit` is zero. the figure we are saying is round enough already
+                        return maybeMinus + number + order;
                 }
             }
             // Describe (less precisely) values for complex numbers where the largest order number exceeds one hundred
@@ -887,26 +887,26 @@ namespace EddiSpeechService
                     (number, nextDigit) = Normalize(number, 10);
                     number *= 10;
                 }
-                
-                if (nextDigit == 0)
+
+                switch (nextDigit)
                 {
-                    // the figure we are saying is round enough already
-                    return maybeMinus + number + order;
-                }
-                else if (nextDigit < 2)
-                {
-                    return Properties.Phrases.justover + " " + maybeMinus + number + order;
-                }
-                else if (nextDigit < 7)
-                {
-                    return Properties.Phrases.over + " " + maybeMinus + number + order;
-                }
-                else if (nextDigit < 10)
-                {
-                    return Properties.Phrases.nearly + " " + maybeMinus + (number + 1) + order;
+                    case 1:
+                        return Properties.Phrases.justover + " " + maybeMinus + number + order;
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                        return Properties.Phrases.over + " " + maybeMinus + number + order;
+                    case 7:
+                    case 8:
+                    case 9:
+                        return Properties.Phrases.nearly + " " + maybeMinus + (number + 1) + order;
+                    default:
+                        // `nextDigit` is zero. the figure we are saying is round enough already
+                        return maybeMinus + number + order;
                 }
             }
-            return Properties.Phrases.around + " " + maybeMinus + number + order;
         }
     }
 }
