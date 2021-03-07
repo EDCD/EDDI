@@ -793,47 +793,40 @@ namespace EddiSpeechService
                 );
             }
 
-            int number;
-            int nextDigit;
             string order;
             var magnitude = Math.Log10((double)value);
             var orderMultiplier = (long)Math.Pow(10, Math.Floor(magnitude / 3) * 3);
-            
+            var (number, nextDigit) = Normalize(value, orderMultiplier);
+
             if (orderMultiplier == 1)
             {
                 // Units
                 order = "";
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else if (orderMultiplier == 1E3M)
             {
                 // Thousands
                 order = " " + Properties.Phrases.thousand;
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else if (orderMultiplier == 1E6M)
             {
                 // Millions
                 order = " " + Properties.Phrases.million;
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else if (orderMultiplier == 1E9M)
             {
                 // Billions
                 order = " " + Properties.Phrases.billion;
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else if (orderMultiplier == 1E12M)
             {
                 // Trillions
                 order = " " + Properties.Phrases.trillion;
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             else
             {
                 // Quadrillions
                 order = " " + Properties.Phrases.quadrillion;
-                (number, nextDigit) = Normalize(value, orderMultiplier);
             }
             
             // See if we have a whole number that is fully described within the largest order
