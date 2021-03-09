@@ -3184,14 +3184,55 @@ namespace EddiJournalMonitor
                                 break;
                             case "RebootRepair":
                                 {
+                                    // This event returns a list of slots rather than actual module ednames.
                                     data.TryGetValue("Modules", out object val);
-                                    List<object> modulesJson = (List<object>)val;
+                                    List<object> slotsJson = (List<object>)val;
 
-                                    List<string> modules = new List<string>();
-                                    foreach (string module in modulesJson)
+                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
+                                    List<Module> modules = new List<Module>();
+                                    foreach (string slot in slotsJson)
                                     {
-                                        modules.Add(module);
+                                        Module module = null;
+                                        if (slot.Contains("CargoHatch"))
+                                        {
+                                            module = ship.cargohatch;
+                                        }
+                                        else if (slot.Contains("FrameShiftDrive"))
+                                        {
+                                            module = ship.frameshiftdrive;
+                                        }
+                                        else if (slot.Contains("LifeSupport"))
+                                        {
+                                            module = ship.lifesupport;
+                                        }
+                                        else if (slot.Contains("MainEngines"))
+                                        {
+                                            module = ship.thrusters;
+                                        }
+                                        else if (slot.Contains("PowerDistributor"))
+                                        {
+                                            module = ship.powerdistributor;
+                                        }
+                                        else if (slot.Contains("PowerPlant"))
+                                        {
+                                            module = ship.powerplant;
+                                        }
+                                        else if (slot.Contains("Radar"))
+                                        {
+                                            module = ship.sensors;
+                                        }
+                                        else if (slot.Contains("Hardpoint"))
+                                        {
+                                            module = ship.hardpoints.SingleOrDefault(h => h.name == slot)?.module;
+                                        }
+                                        else if (slot.Contains("Slot") || slot.Contains("Military"))
+                                        {
+                                            module = ship.compartments.SingleOrDefault(c => c.name == slot)?.module;
+                                        }
+
+                                        if (module != null) { modules.Add(module); }
                                     }
+
                                     events.Add(new ShipRebootedEvent(timestamp, modules) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
