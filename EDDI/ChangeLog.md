@@ -36,6 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission check system` script updated to more gracefully handle community goals.
       * `Jumped` script updated to announce engineer systems.
       * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
+      * `Ship rebooted` event updated to provide localized and invariant module names rather than ship slots.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
       * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
   * VoiceAttack
