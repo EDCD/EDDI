@@ -782,7 +782,7 @@ namespace EddiSpeechService
                     numzeros++;
                 }
                 // Now round it to 2sf
-                return (isNegative ? Properties.Phrases.negative + " " : "") + (Math.Round(value * 10) / (decimal)Math.Pow(10, numzeros + 2));
+                return (isNegative ? Properties.Phrases.minus + " " : "") + (Math.Round(value * 10) / (decimal)Math.Pow(10, numzeros + 2));
             }
 
             (int number, int nextDigit) Normalize(decimal inputValue, decimal orderMultiplierVal)
@@ -802,7 +802,7 @@ namespace EddiSpeechService
             {
                 // Some languages render these differently than others. "1000" in English is "one thousand" but in Italian is simply "mille".
                 // Consequently, we leave the interpretation to the culture-specific voice.
-                return (isNegative ? Properties.Phrases.negative + " " : "") + (number * orderMultiplier);
+                return (isNegative ? Properties.Phrases.minus + " " : "") + (number * orderMultiplier);
             }
 
             if (number < 100)
@@ -812,7 +812,7 @@ namespace EddiSpeechService
                 {
                     if (nextDigit == 0)
                     {
-                        return (isNegative ? Properties.Phrases.negative + " " : "") + number * orderMultiplier;
+                        return (isNegative ? Properties.Phrases.minus + " " : "") + number * orderMultiplier;
                     }
                     else
                     {
@@ -820,21 +820,21 @@ namespace EddiSpeechService
                         switch ((decimal)orderMultiplier)
                         {
                             case 1:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + shortDecimal;
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + shortDecimal;
                             case 1E3M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalThousand, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalThousand, shortDecimal);
                             case 1E6M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalMillion, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalMillion, shortDecimal);
                             case 1E9M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalBillion, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalBillion, shortDecimal);
                             case 1E12M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalTrillion, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalTrillion, shortDecimal);
                             case 1E15M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalQuadrillion, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalQuadrillion, shortDecimal);
                             case 1E18M:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + string.Format(Properties.Phrases.shortDecimalQuintillion, shortDecimal);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + string.Format(Properties.Phrases.shortDecimalQuintillion, shortDecimal);
                             default:
-                                return (isNegative ? Properties.Phrases.negative + " " : "") + (shortDecimal * orderMultiplier);
+                                return (isNegative ? Properties.Phrases.minus + " " : "") + (shortDecimal * orderMultiplier);
                         }
                     }
                 }
@@ -1005,7 +1005,7 @@ namespace EddiSpeechService
                         }
                     default:
                         // `nextDigit` is zero. the figure we are saying is round enough already
-                        return (isNegative ? Properties.Phrases.negative + " " : "") + (number * orderMultiplier);
+                        return (isNegative ? Properties.Phrases.minus + " " : "") + (number * orderMultiplier);
                 }
             }
             // Describe (less precisely) values for complex numbers where the largest order number exceeds one hundred
@@ -1088,7 +1088,7 @@ namespace EddiSpeechService
                         }
                     default:
                         // `nextDigit` is zero. the figure we are saying is round enough already
-                        return (isNegative ? Properties.Phrases.negative + " " : "") + (number * orderMultiplier);
+                        return (isNegative ? Properties.Phrases.minus + " " : "") + (number * orderMultiplier);
                 }
             }
         }

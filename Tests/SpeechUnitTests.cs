@@ -279,7 +279,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize1()
         {
-            Assert.AreEqual("well over negative 12 thousand", Translations.Humanize(-12345));
+            Assert.AreEqual("well over minus 12 thousand", Translations.Humanize(-12345));
         }
 
         [TestMethod]
@@ -315,7 +315,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize7()
         {
-            Assert.AreEqual("negative 51000000", Translations.Humanize(-51000000));
+            Assert.AreEqual("minus 51000000", Translations.Humanize(-51000000));
         }
 
         [TestMethod]
@@ -339,31 +339,31 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize11()
         {
-            Assert.AreEqual("negative 0.16", Translations.Humanize(-0.15555555M));
+            Assert.AreEqual("minus 0.16", Translations.Humanize(-0.15555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize12()
         {
-            Assert.AreEqual("negative 0.016", Translations.Humanize(-0.015555555M));
+            Assert.AreEqual("minus 0.016", Translations.Humanize(-0.015555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize13()
         {
-            Assert.AreEqual("negative 0.0016", Translations.Humanize(-0.0015555555M));
+            Assert.AreEqual("minus 0.0016", Translations.Humanize(-0.0015555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize14()
         {
-            Assert.AreEqual("negative 12.1", Translations.Humanize(-12.1M));
+            Assert.AreEqual("minus 12.1", Translations.Humanize(-12.1M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize15()
         {
-            Assert.AreEqual("negative 12", Translations.Humanize(-12.01M));
+            Assert.AreEqual("minus 12", Translations.Humanize(-12.01M));
         }
 
         [TestMethod]
@@ -411,7 +411,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize23()
         {
-            Assert.AreEqual("negative 1000", Translations.Humanize(-1000));
+            Assert.AreEqual("minus 1000", Translations.Humanize(-1000));
         }
 
         [TestMethod]

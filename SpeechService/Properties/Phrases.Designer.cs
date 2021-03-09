@@ -124,7 +124,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half.
+        ///   Looks up a localized string similar to around minus {0} and a half.
         /// </summary>
         public static string aroundMinusAndAHalf {
             get {
@@ -133,7 +133,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half billion.
+        ///   Looks up a localized string similar to around minus {0} and a half billion.
         /// </summary>
         public static string aroundMinusAndAHalfBillion {
             get {
@@ -142,7 +142,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half million.
+        ///   Looks up a localized string similar to around minus {0} and a half million.
         /// </summary>
         public static string aroundMinusAndAHalfMillion {
             get {
@@ -151,7 +151,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half quadrillion.
+        ///   Looks up a localized string similar to around minus {0} and a half quadrillion.
         /// </summary>
         public static string aroundMinusAndAHalfQuadrillion {
             get {
@@ -160,7 +160,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half quintillion.
+        ///   Looks up a localized string similar to around minus {0} and a half quintillion.
         /// </summary>
         public static string aroundMinusAndAHalfQuintillion {
             get {
@@ -169,7 +169,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half thousand.
+        ///   Looks up a localized string similar to around minus {0} and a half thousand.
         /// </summary>
         public static string aroundMinusAndAHalfThousand {
             get {
@@ -178,7 +178,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around negative {0} and a half trillion.
+        ///   Looks up a localized string similar to around minus {0} and a half trillion.
         /// </summary>
         public static string aroundMinusAndAHalfTrillion {
             get {
@@ -223,7 +223,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0}.
+        ///   Looks up a localized string similar to just over minus {0}.
         /// </summary>
         public static string justOverMinus {
             get {
@@ -232,7 +232,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} billion.
+        ///   Looks up a localized string similar to just over minus {0} billion.
         /// </summary>
         public static string justOverMinusBillion {
             get {
@@ -241,7 +241,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} million.
+        ///   Looks up a localized string similar to just over minus {0} million.
         /// </summary>
         public static string justOverMinusMillion {
             get {
@@ -250,7 +250,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} quadrillion.
+        ///   Looks up a localized string similar to just over minus {0} quadrillion.
         /// </summary>
         public static string justOverMinusQuadrillion {
             get {
@@ -259,7 +259,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} quintillion.
+        ///   Looks up a localized string similar to just over minus {0} quintillion.
         /// </summary>
         public static string justOverMinusQuintillion {
             get {
@@ -268,7 +268,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} thousand.
+        ///   Looks up a localized string similar to just over minus {0} thousand.
         /// </summary>
         public static string justOverMinusThousand {
             get {
@@ -277,7 +277,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over negative {0} trillion.
+        ///   Looks up a localized string similar to just over minus {0} trillion.
         /// </summary>
         public static string justOverMinusTrillion {
             get {
@@ -385,7 +385,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0}.
+        ///   Looks up a localized string similar to nearly minus {0}.
         /// </summary>
         public static string nearlyMinus {
             get {
@@ -394,7 +394,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half.
+        ///   Looks up a localized string similar to nearly minus {0} and a half.
         /// </summary>
         public static string nearlyMinusAndAHalf {
             get {
@@ -403,7 +403,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} billion.
+        ///   Looks up a localized string similar to nearly minus {0} billion.
         /// </summary>
         public static string nearlyMinusBillion {
             get {
@@ -412,7 +412,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half billion.
+        ///   Looks up a localized string similar to nearly minus {0} and a half billion.
         /// </summary>
         public static string nearlyMinusBillionAndAHalf {
             get {
@@ -421,7 +421,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} million.
+        ///   Looks up a localized string similar to nearly minus {0} million.
         /// </summary>
         public static string nearlyMinusMillion {
             get {
@@ -430,7 +430,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half million.
+        ///   Looks up a localized string similar to nearly minus {0} and a half million.
         /// </summary>
         public static string nearlyMinusMillionAndAHalf {
             get {
@@ -439,7 +439,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} quadrillion.
+        ///   Looks up a localized string similar to nearly minus {0} quadrillion.
         /// </summary>
         public static string nearlyMinusQuadrillion {
             get {
@@ -448,7 +448,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half quadrillion.
+        ///   Looks up a localized string similar to nearly minus {0} and a half quadrillion.
         /// </summary>
         public static string nearlyMinusQuadrillionAndAHalf {
             get {
@@ -457,7 +457,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} quintillion.
+        ///   Looks up a localized string similar to nearly minus {0} quintillion.
         /// </summary>
         public static string nearlyMinusQuintillion {
             get {
@@ -466,7 +466,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half quintillion.
+        ///   Looks up a localized string similar to nearly minus {0} and a half quintillion.
         /// </summary>
         public static string nearlyMinusQuintillionAndAHalf {
             get {
@@ -475,7 +475,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} thousand.
+        ///   Looks up a localized string similar to nearly minus {0} thousand.
         /// </summary>
         public static string nearlyMinusThousand {
             get {
@@ -484,7 +484,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half thousand.
+        ///   Looks up a localized string similar to nearly minus {0} and a half thousand.
         /// </summary>
         public static string nearlyMinusThousandAndAHalf {
             get {
@@ -493,7 +493,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} trillion.
+        ///   Looks up a localized string similar to nearly minus {0} trillion.
         /// </summary>
         public static string nearlyMinusTrillion {
             get {
@@ -502,7 +502,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly negative {0} and a half trillion.
+        ///   Looks up a localized string similar to nearly minus {0} and a half trillion.
         /// </summary>
         public static string nearlyMinusTrillionAndAHalf {
             get {
@@ -579,15 +579,6 @@ namespace EddiSpeechService.Properties {
         public static string nearlyTrillionAndAHalf {
             get {
                 return ResourceManager.GetString("nearlyTrillionAndAHalf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to negative.
-        /// </summary>
-        public static string negative {
-            get {
-                return ResourceManager.GetString("negative", resourceCulture);
             }
         }
         
@@ -682,7 +673,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0}.
+        ///   Looks up a localized string similar to over minus {0}.
         /// </summary>
         public static string overMinus {
             get {
@@ -691,7 +682,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half.
+        ///   Looks up a localized string similar to over minus {0} and a half.
         /// </summary>
         public static string overMinusAndAHalf {
             get {
@@ -700,7 +691,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half billion.
+        ///   Looks up a localized string similar to over minus {0} and a half billion.
         /// </summary>
         public static string overMinusAndAHalfBillion {
             get {
@@ -709,7 +700,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half million.
+        ///   Looks up a localized string similar to over minus {0} and a half million.
         /// </summary>
         public static string overMinusAndAHalfMillion {
             get {
@@ -718,7 +709,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half quadrillion.
+        ///   Looks up a localized string similar to over minus {0} and a half quadrillion.
         /// </summary>
         public static string overMinusAndAHalfQuadrillion {
             get {
@@ -727,7 +718,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half quintillion.
+        ///   Looks up a localized string similar to over minus {0} and a half quintillion.
         /// </summary>
         public static string overMinusAndAHalfQuintillion {
             get {
@@ -736,7 +727,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half thousand.
+        ///   Looks up a localized string similar to over minus {0} and a half thousand.
         /// </summary>
         public static string overMinusAndAHalfThousand {
             get {
@@ -745,7 +736,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} and a half trillion.
+        ///   Looks up a localized string similar to over minus {0} and a half trillion.
         /// </summary>
         public static string overMinusAndAHalfTrillion {
             get {
@@ -754,7 +745,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} billion.
+        ///   Looks up a localized string similar to over minus {0} billion.
         /// </summary>
         public static string overMinusBillion {
             get {
@@ -763,7 +754,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} million.
+        ///   Looks up a localized string similar to over minus {0} million.
         /// </summary>
         public static string overMinusMillion {
             get {
@@ -772,7 +763,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} quadrillion.
+        ///   Looks up a localized string similar to over minus {0} quadrillion.
         /// </summary>
         public static string overMinusQuadrillion {
             get {
@@ -781,7 +772,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} quintillion.
+        ///   Looks up a localized string similar to over minus {0} quintillion.
         /// </summary>
         public static string overMinusQuintillion {
             get {
@@ -790,7 +781,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} thousand.
+        ///   Looks up a localized string similar to over minus {0} thousand.
         /// </summary>
         public static string overMinusThousand {
             get {
@@ -799,7 +790,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over negative {0} trillion.
+        ///   Looks up a localized string similar to over minus {0} trillion.
         /// </summary>
         public static string overMinusTrillion {
             get {
@@ -1006,7 +997,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0}.
+        ///   Looks up a localized string similar to well over minus {0}.
         /// </summary>
         public static string wellOverMinus {
             get {
@@ -1015,7 +1006,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half.
+        ///   Looks up a localized string similar to well over minus {0} and a half.
         /// </summary>
         public static string wellOverMinusAndAHalf {
             get {
@@ -1024,7 +1015,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half billion.
+        ///   Looks up a localized string similar to well over minus {0} and a half billion.
         /// </summary>
         public static string wellOverMinusAndAHalfBillion {
             get {
@@ -1033,7 +1024,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half million.
+        ///   Looks up a localized string similar to well over minus {0} and a half million.
         /// </summary>
         public static string wellOverMinusAndAHalfMillion {
             get {
@@ -1042,7 +1033,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half quadrillion.
+        ///   Looks up a localized string similar to well over minus {0} and a half quadrillion.
         /// </summary>
         public static string wellOverMinusAndAHalfQuadrillion {
             get {
@@ -1051,7 +1042,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half quintillion.
+        ///   Looks up a localized string similar to well over minus {0} and a half quintillion.
         /// </summary>
         public static string wellOverMinusAndAHalfQuintillion {
             get {
@@ -1060,7 +1051,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half thousand.
+        ///   Looks up a localized string similar to well over minus {0} and a half thousand.
         /// </summary>
         public static string wellOverMinusAndAHalfThousand {
             get {
@@ -1069,7 +1060,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} and a half trillion.
+        ///   Looks up a localized string similar to well over minus {0} and a half trillion.
         /// </summary>
         public static string wellOverMinusAndAHalfTrillion {
             get {
@@ -1078,7 +1069,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} billion.
+        ///   Looks up a localized string similar to well over minus {0} billion.
         /// </summary>
         public static string wellOverMinusBillion {
             get {
@@ -1087,7 +1078,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} million.
+        ///   Looks up a localized string similar to well over minus {0} million.
         /// </summary>
         public static string wellOverMinusMillion {
             get {
@@ -1096,7 +1087,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} quadrillion.
+        ///   Looks up a localized string similar to well over minus {0} quadrillion.
         /// </summary>
         public static string wellOverMinusQuadrillion {
             get {
@@ -1105,7 +1096,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} quintillion.
+        ///   Looks up a localized string similar to well over minus {0} quintillion.
         /// </summary>
         public static string wellOverMinusQuintillion {
             get {
@@ -1114,7 +1105,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} thousand.
+        ///   Looks up a localized string similar to well over minus {0} thousand.
         /// </summary>
         public static string wellOverMinusThousand {
             get {
@@ -1123,7 +1114,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over negative {0} trillion.
+        ///   Looks up a localized string similar to well over minus {0} trillion.
         /// </summary>
         public static string wellOverMinusTrillion {
             get {
