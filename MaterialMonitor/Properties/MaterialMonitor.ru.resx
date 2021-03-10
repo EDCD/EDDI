@@ -117,18 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="cancel_dest_button" xml:space="preserve">
+    <value>Отменить пункт назначения</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Отслеживает количество материалов и генерирует события, когда будут достигнуты ограничения.</value>
   </data>
   <data name="desired_header" xml:space="preserve">
     <value>Требуемое</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="find_encoded_button" xml:space="preserve">
+    <value>Найти закодированного торговца</value>
+  </data>
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>Найти брокера Guardian</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>Найти брокера людей</value>
+  </data>
+  <data name="find_manufactured_button" xml:space="preserve">
+    <value>Найти промышленного торговца</value>
+  </data>
+  <data name="find_raw_button" xml:space="preserve">
+    <value>Найти торговца сырьем</value>
+  </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Инвентарь</value>
   </data>
@@ -150,9 +162,15 @@
   <data name="p2" xml:space="preserve">
     <value>Обратите внимание, что если ваш инвентарь отображается неверно, то вам нужно запустить или перезапустить Elite, и эта информация будет обновлена.</value>
   </data>
-  
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Совет: Увеличьте допустимое расстояние до станции, чтобы уменьшить время поиска.</value>
+  </data>
+  <data name="set_dest_button" xml:space="preserve">
+    <value>Задать место назначения</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Максимальное расстояние от станции до главной звезды (с. с.):</value>
+  </data>
   <data name="type_header" xml:space="preserve">
     <value>Тип</value>
   </data>
