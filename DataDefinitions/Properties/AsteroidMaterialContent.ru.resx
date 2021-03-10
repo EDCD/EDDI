@@ -97,7 +97,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="High" xml:space="preserve">
+    <value>Высокий</value>
+    <comment>High material content</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Средний</value>
+    <comment>Medium material content</comment>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Низкий</value>
+    <comment>Low material content</comment>
+  </data>
 </root>
