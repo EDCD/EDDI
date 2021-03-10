@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="copy" xml:space="preserve">
+    <value>Копировать (Ctrl-c)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>Вырезать (Ctrl-x)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Удалить (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>Удалить строку (Ctrl+D)</value>
+  </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>Удалить строку</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>Поиск (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>Вставить (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Отменить (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>Показать номера строк</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Отменить (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>Перенос по словам</value>
+  </data>
 </root>
