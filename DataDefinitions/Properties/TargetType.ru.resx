@@ -132,7 +132,9 @@
   <data name="Pirate" xml:space="preserve">
     <value>Пират</value>
   </data>
-  
+  <data name="PirateLord" xml:space="preserve">
+    <value>Известный пират</value>
+  </data>
   <data name="Security" xml:space="preserve">
     <value>Служба безопасности</value>
   </data>
@@ -145,7 +147,14 @@
   <data name="Trader" xml:space="preserve">
     <value>Торговец</value>
   </data>
-  
-  
-  
+  <data name="VenerableGeneral" xml:space="preserve">
+    <value>Преподобный генерал</value>
+  </data>
+  <data name="DeserterASS" xml:space="preserve">
+    <value>Дезертир</value>
+    <comment>Assassination mission target: Deserter</comment>
+  </data>
+  <data name="TerroristLeader" xml:space="preserve">
+    <value>Лидер террористов</value>
+  </data>
 </root>
