@@ -201,7 +201,10 @@
     <value>Управление полетом</value>
     <comment>Station Service: FlightController</comment>
   </data>
-  
+  <data name="StationOperations" xml:space="preserve">
+    <value>Работа станции</value>
+    <comment>Station Service: StationOperations</comment>
+  </data>
   <data name="OnDockMission" xml:space="preserve">
     <value>Стыковка</value>
     <comment>Station Service: OnDockMission</comment>
