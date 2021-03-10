@@ -154,7 +154,10 @@
   
   
   
-  
+  <data name="Drought" xml:space="preserve">
+    <value>Засуха</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+  </data>
   
   
   
