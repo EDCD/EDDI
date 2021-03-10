@@ -149,8 +149,14 @@
     <value>Вода</value>
     <comment>Volcanism Water</comment>
   </data>
-  
-  
+  <data name="Major" xml:space="preserve">
+    <value>Большой</value>
+    <comment>Volcanism Major</comment>
+  </data>
+  <data name="Minor" xml:space="preserve">
+    <value>Незначительный</value>
+    <comment>Volcanism Minor</comment>
+  </data>
   <data name="Geysers" xml:space="preserve">
     <value>Гейзеры</value>
     <comment>Volcanism Geysers</comment>
