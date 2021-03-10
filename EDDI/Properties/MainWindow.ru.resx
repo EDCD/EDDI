@@ -268,11 +268,26 @@
   <data name="no_station" xml:space="preserve">
     <value>Станций нет</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>В этой версии EDDI использование Frontier API невозможно.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Выберите язык EDDI (требуется перезапуск VoiceAttack):</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Имя (произносимое)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Прослушать</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Международный фонетический алфавит</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Если EDDI не может произнести имя командира, то вы можете добавить произносимую версию имени командира используя</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. К примеру, если ваше имя командира "Salomé", то ваше произносимое имя командира будет "səˈloʊmi".</value>
+  </data>
 </root>
