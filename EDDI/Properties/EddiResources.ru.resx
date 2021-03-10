@@ -148,7 +148,9 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Невозможно залогиниться. Возможно проблема с сервисами Frontier, пожулайста, попробуйте позже</value>
   </data>
-  
+  <data name="logout" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
   <data name="operational" xml:space="preserve">
     <value>Работает</value>
   </data>
@@ -192,7 +194,9 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Начинается обновление.</value>
   </data>
-  
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Я не смог подключиться к серверу обновлений. Пожалуйста, зайдите на форум и посмотрите известно-ли нам об этом.</value>
+  </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Одновременно может выполняться только одна копия программы.
 
@@ -220,7 +224,9 @@
   <data name="safe_mode" xml:space="preserve">
     <value>Бозопасный режим - необходимо обновление.</value>
   </data>
-  
+  <data name="login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Для того, что бы Войти, пожалуйста, закройте Voice Attack и запустите EDDI самостоятельно.</value>
   </data>
@@ -245,7 +251,15 @@
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Пожалуйста, пройдите аутентификацию EDDI подключившись к Frontier API.</value>
   </data>
-  
-  
-  
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Не включен</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Соединение с Frontier API не установлено</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDI запущен от имени администратора. Запуск от имени администратора может блокировать отправку сообщений из вашего браузера в EDDI и вызвать сбой входа в систему.</value>
+  </data>
 </root>
