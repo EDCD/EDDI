@@ -165,6 +165,12 @@
     <value>Научный аванпост</value>
     <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
   </data>
-  
-  
+  <data name="Ocellus" xml:space="preserve">
+    <value>Космическая станция Ocellus</value>
+    <comment>An Ocellus Starport</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>Флотоносец</value>
+    <comment>A Fleet Carrier</comment>
+  </data>
 </root>
