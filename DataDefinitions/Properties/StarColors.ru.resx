@@ -121,5 +121,8 @@
     <value>оранжево-красный</value>
     <comment>Star color orange_red</comment>
   </data>
-  
+  <data name="red" xml:space="preserve">
+    <value>красный</value>
+    <comment>Star color red</comment>
+  </data>
 </root>
