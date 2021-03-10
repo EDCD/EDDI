@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="EmpireFour" xml:space="preserve">
+    <value>карданные пучковые лазеры и пусковая установка теплоотводов</value>
+  </data>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>фиксированные пучковые лазеры и пусковая установка теплоотвода</value>
+  </data>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>фиксированные импульсные лазеры и точечная защита</value>
+  </data>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>фиксированные плазма повторители и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>Карданные импульсные лазеры и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>карданные пучковые лазеры и пусковая установка теплоотводов</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>фиксированные импульсные лазеры и пусковая установка теплоотводов</value>
+  </data>
+  <data name="FederationThree" xml:space="preserve">
+    <value>фиксированные плазма повторители и точечная защита</value>
+  </data>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>фиксированные многоствольные орудия и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="FederationZero" xml:space="preserve">
+    <value>карданные импульсные лазеры и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>плазменные автоматические пушки</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>пусковые установки осколков</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>гауссовские пушки</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>фиксированные многоствольные анти-ксено пушки</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>карданные пучковые лазеры и теплоотвод</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>фиксированные пучковые лазеры и пусковая установка теплоотвода</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>фиксированные импульсные лазеры и точечная защита</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>фиксированные плазма повторители и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>карданные импульсные лазеры и пусковая установка дипольных отражателей</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>двойные плазма повторители</value>
+  </data>
 </root>
