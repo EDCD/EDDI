@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>Ключи API:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Отправьте детали вашего путешествия на сайт Inara (https://inara.cz). Inara это сторонний инструмент который предоставляет информацию о членах федерации пилотов и генерирует профиль вашего статуса и достижений. </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Ответчик Inara</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Чтобы подключится к Inara вам нужно иметь зарегистрированный аккаунт. Как только вы зарегистрируетесь вы сможете получить свой API-ключ нажав на кнопку "SETTINGS" в заголовке сайта и далее нажмите на "INARA API" на панели слева.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Как только вы введете свой API ключ, EDDI начнет передачу данных из игровой сессии в Inara.</value>
+  </data>
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>Укажите корректный API-ключ.</value>
+  </data>
 </root>
