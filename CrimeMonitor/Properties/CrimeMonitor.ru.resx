@@ -147,7 +147,9 @@
   <data name="header_bounties" xml:space="preserve">
     <value>Награды</value>
   </data>
-  
+  <data name="header_claims" xml:space="preserve">
+    <value>Награды</value>
+  </data>
   <data name="header_faction" xml:space="preserve">
     <value>Фракция</value>
   </data>
