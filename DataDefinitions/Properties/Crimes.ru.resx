@@ -129,7 +129,10 @@
     <value>Пиратство</value>
     <comment>Crime piracy</comment>
   </data>
-  
+  <data name="interdiction" xml:space="preserve">
+    <value>Перехват гражданского судна</value>
+    <comment>Crime interdiction</comment>
+  </data>
   <data name="illegalCargo" xml:space="preserve">
     <value>Перевозка незаконного груза</value>
     <comment>Crime illegalCargo</comment>
@@ -154,15 +157,48 @@
     <value>Сброз груза рядом со станцией</value>
     <comment>Crime dumpingNearStation</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>Блокировка шлюза</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>Блокировка шлюза</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>Задержка при посадке</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>Блокировка посадочной площадки</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>Проникновение</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Незаконное проникновение</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Столкновение</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>Столкновение и порча имущества</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Безответственное обращение с оружием</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Перевозка разыскиваемого преступника</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+  <data name="missionFine" xml:space="preserve">
+    <value>Штраф за миссию</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>
