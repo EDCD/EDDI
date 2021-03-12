@@ -619,7 +619,7 @@ namespace EddiSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈbrɑːˈvo\">bravo</phoneme>");
                         break;
                     case 'C':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑɹli\">charlie</phoneme>");
                         break;
                     case 'D':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme>");
