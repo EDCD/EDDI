@@ -425,7 +425,6 @@ namespace EddiSpeechService
                             Logging.Debug("Feeding normal text to synthesizer: " + speech);
                             synth.Speak(speech);
                         }
-                        stream.ToArray();
                         stream.Position = 0;
                     }
                     catch (ThreadAbortException)
