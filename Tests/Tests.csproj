@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="CapiTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="HumanizeTests.cs" />
     <Compile Include="UtilityTests.cs" />
     <Compile Include="InaraTests.cs" />
     <Compile Include="CrimeMonitorTests.cs" />
