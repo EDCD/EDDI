@@ -350,14 +350,14 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.Count);
+            Assert.AreEqual(1, missionMonitor.missions.Count);  // One of our two community goals is still active. The other (completed) has been removed.
 
             // MissionsEvent
             line = @"{ ""timestamp"":""2020-10-30T01:30:27Z"", ""event"":""Missions"", ""Active"":[  ], ""Failed"":[  ], ""Complete"":[  ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.AreEqual(0, missionMonitor.missions.Count);
+            Assert.AreEqual(1, missionMonitor.missions.Count); // Commnunity goals are not removed from by the `Missions` event (where community goals are absent)
 
             // Restore original data
             missionData.ToFile();
