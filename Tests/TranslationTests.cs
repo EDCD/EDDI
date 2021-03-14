@@ -37,7 +37,7 @@ namespace UnitTests
         {
             string source = "abc";
             string icao = Translations.ICAO(source);
-            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme>", icao);
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme>", icao);
         }
 
         [TestMethod]
@@ -79,14 +79,14 @@ namespace UnitTests
         public void TestTranslateBody4()
         {
             Assert.AreEqual(@"H R 7 7 5 6 A B C D E 6 <say-as interpret-as=""characters"">b</say-as>", Translations.GetTranslation("HR 7756 ABCDE 6 b"));
-            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> <phoneme alphabet=""ipa"" ph=""ˈroːmiˑo"">romeo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeko"">echo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", Translations.GetTranslation("HR 7756 ABCDE 6 b", true));
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> <phoneme alphabet=""ipa"" ph=""ˈroːmiˑo"">romeo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeko"">echo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", Translations.GetTranslation("HR 7756 ABCDE 6 b", true));
         }
 
         [TestMethod]
         public void TestTranslateBody5()
         {
             Assert.AreEqual(@"Hip 6 3 8 3 5 A B C D 1 <say-as interpret-as=""characters"">c</say-as> <say-as interpret-as=""characters"">a</say-as>", Translations.GetTranslation("HIP 63835 ABCD 1 c a"));
-            Assert.AreEqual(@"Hip <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>", Translations.GetTranslation("HIP 63835 ABCD 1 c a", true));
+            Assert.AreEqual(@"Hip <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>", Translations.GetTranslation("HIP 63835 ABCD 1 c a", true));
         }
 
         [TestMethod]
@@ -156,7 +156,7 @@ namespace UnitTests
         public void TestTranslateStarSystem8()
         {
             Assert.AreEqual(@"Coll 2 8 5 Sector Q H dash U c 3 dash 22", Translations.GetTranslation("Col 285 Sector QH-U c3-22"));
-            Assert.AreEqual(@"Coll <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> Sector <phoneme alphabet=""ipa"" ph=""keˈbek"">quebec</phoneme> <phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈjuːnifɔːm"">uniform</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme>", Translations.GetTranslation("Col 285 Sector QH-U c3-22", true));
+            Assert.AreEqual(@"Coll <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> Sector <phoneme alphabet=""ipa"" ph=""keˈbek"">quebec</phoneme> <phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈjuːnifɔːm"">uniform</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme>", Translations.GetTranslation("Col 285 Sector QH-U c3-22", true));
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace UnitTests
         public void TestTranslateStarSystem10()
         {
             Assert.AreEqual(@"C F B D S I R 1 4 5 8 plus 10 <say-as interpret-as=""characters"">B</say-as>", Translations.GetTranslation("CFBDSIR 1458+10 B"));
-            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfɒkstrɒt"">foxtrot</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""siˈerə"">sierra</phoneme> <phoneme alphabet=""ipa"" ph=""ˈindiˑɑ"">india</phoneme> <phoneme alphabet=""ipa"" ph=""ˈroːmiˑo"">romeo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfoʊ.ər"">fawer</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> plus 10 <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", Translations.GetTranslation("CFBDSIR 1458+10 B", true));
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfɒkstrɒt"">foxtrot</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""siˈerə"">sierra</phoneme> <phoneme alphabet=""ipa"" ph=""ˈindiˑɑ"">india</phoneme> <phoneme alphabet=""ipa"" ph=""ˈroːmiˑo"">romeo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfoʊ.ər"">fawer</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> plus 10 <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", Translations.GetTranslation("CFBDSIR 1458+10 B", true));
         }
 
         [TestMethod]
