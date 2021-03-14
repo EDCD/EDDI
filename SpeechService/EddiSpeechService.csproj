@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Humanize.cs" />
     <Compile Include="SpeechQueue.cs" />
     <Compile Include="SpeechFX.cs" />
     <Compile Include="EddiSpeech.cs" />
