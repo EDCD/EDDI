@@ -1246,10 +1246,11 @@ namespace UnitTests
             Assert.AreEqual("HIP 41908 AB 1 c a", surfaceSignalEvent.bodyname);
             Assert.AreEqual(61461226668, surfaceSignalEvent.systemAddress);
             Assert.AreEqual(3, surfaceSignalEvent.surfacesignals.Count);
-            Assert.AreEqual("Biological Surface Signal", surfaceSignalEvent.surfacesignals[0].signalSource.invariantName);
-            Assert.AreEqual(16, surfaceSignalEvent.surfacesignals[0].amount);
-            Assert.AreEqual("Geological Surface Signal", surfaceSignalEvent.surfacesignals[1].signalSource.invariantName);
-            Assert.AreEqual(17, surfaceSignalEvent.surfacesignals[1].amount);
+            // The types of surface signals are ordered by count, so we expect geo signals before bio signals.
+            Assert.AreEqual("Geological Surface Signal", surfaceSignalEvent.surfacesignals[0].signalSource.invariantName);
+            Assert.AreEqual(17, surfaceSignalEvent.surfacesignals[0].amount);
+            Assert.AreEqual("Biological Surface Signal", surfaceSignalEvent.surfacesignals[1].signalSource.invariantName);
+            Assert.AreEqual(16, surfaceSignalEvent.surfacesignals[1].amount);
             Assert.AreEqual("Human Surface Signal", surfaceSignalEvent.surfacesignals[2].signalSource.invariantName);
             Assert.AreEqual(4, surfaceSignalEvent.surfacesignals[2].amount);
         }
