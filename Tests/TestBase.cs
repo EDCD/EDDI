@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.ClassLevel)]
+
 namespace UnitTests
 {
     public class TestBase
