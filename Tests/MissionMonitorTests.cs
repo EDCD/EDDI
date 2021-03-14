@@ -362,10 +362,5 @@ namespace UnitTests
             // Restore original data
             missionData.ToFile();
         }
-
-        [TestCleanup]
-        private void StopTestMissionMonitor()
-        {
-        }
     }
 }

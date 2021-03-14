@@ -295,10 +295,5 @@ namespace UnitTests
             privateObject.Invoke("_handleJumpedEvent", new object[] { events[0] });
             Assert.AreEqual(0, crimeMonitor.shipTargets.Count);
         }
-
-        [TestCleanup]
-        private void StopTestCrimeMonitor()
-        {
-        }
     }
 }
