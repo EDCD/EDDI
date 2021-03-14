@@ -72,22 +72,39 @@ namespace UnitTests
         {
             var privateObject = new PrivateObject(new MaterialMonitor());
 
-            bool TestThreshold(int previous, int amount, int? target)
+            bool TestIncThreshold(int previous, int amount, int? target)
             {
-                return (bool)privateObject.Invoke("materialThreshold", previous, amount, target);
+                return (bool)privateObject.Invoke("incMaterialThreshold", previous, amount, target);
             }
 
             // If no threshold target is specified, the result must be false
-            Assert.IsFalse(TestThreshold(149, 150, null));
+            Assert.IsFalse(TestIncThreshold(149, 150, null));
 
             // If we haven't reached our target, the result must be false
-            Assert.IsFalse(TestThreshold(149, 150, 200));
+            Assert.IsFalse(TestIncThreshold(149, 150, 200));
 
             // If we have reached our target, the result must be true
-            Assert.IsTrue(TestThreshold(149, 150, 150));
+            Assert.IsTrue(TestIncThreshold(149, 150, 150));
 
             // If we're already beyond our target, the result must be false
-            Assert.IsFalse(TestThreshold(149, 150, 100));
+            Assert.IsFalse(TestIncThreshold(149, 150, 100));
+
+            bool TestDecThreshold(int previous, int amount, int? target)
+            {
+                return (bool)privateObject.Invoke("decMaterialThreshold", previous, amount, target);
+            }
+
+            // If no threshold target is specified, the result must be false
+            Assert.IsFalse(TestDecThreshold(151, 150, null));
+
+            // If we've already fallen below our target, the result must be false
+            Assert.IsFalse(TestDecThreshold(151, 150, 200));
+
+            // If we have fallen below our target, the result must be true
+            Assert.IsTrue(TestDecThreshold(150, 149, 150));
+
+            // If we haven't fallen below our target, the result must be false
+            Assert.IsFalse(TestDecThreshold(151, 150, 150));
         }
 
         [TestMethod]
