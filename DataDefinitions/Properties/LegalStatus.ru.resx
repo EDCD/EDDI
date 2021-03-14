@@ -149,9 +149,24 @@
     <value>Разыскиваемый враг</value>
     <comment>LegalStatus - WantedEnemy</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Warrant" xml:space="preserve">
+    <value>Ордер</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
+  <data name="IllegalCargo" xml:space="preserve">
+    <value>Незаконный груз</value>
+    <comment>LegalStatus - Illegal cargo</comment>
+  </data>
+  <data name="Speeding" xml:space="preserve">
+    <value>Превышение скорости</value>
+    <comment>LegalStatus - Speeding</comment>
+  </data>
+  <data name="Hostile" xml:space="preserve">
+    <value>Враждебный</value>
+    <comment>LegalStatus - Hostile</comment>
+  </data>
+  <data name="PassengerWanted" xml:space="preserve">
+    <value>Пассажир разыскивается</value>
+    <comment>LegalStatus - PassengerWanted</comment>
+  </data>
 </root>

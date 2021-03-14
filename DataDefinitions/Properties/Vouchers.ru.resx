@@ -129,7 +129,10 @@
     <value>Сканирование</value>
     <comment>scannable voucher</comment>
   </data>
-  
+  <data name="settlement" xml:space="preserve">
+    <value>Поселение</value>
+    <comment>settlement voucher</comment>
+  </data>
   <data name="trade" xml:space="preserve">
     <value>Торговля</value>
     <comment>trade voucher</comment>

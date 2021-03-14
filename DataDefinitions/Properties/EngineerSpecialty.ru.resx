@@ -117,34 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AFMUs" xml:space="preserve">
+    <value>Блок автоматического полевого ремонта</value>
+  </data>
+  <data name="Armour" xml:space="preserve">
+    <value>Броня</value>
+  </data>
+  <data name="Cannons" xml:space="preserve">
+    <value>Пушки</value>
+  </data>
+  <data name="ChaffAndHeatSinkLaunchers" xml:space="preserve">
+    <value>Пусковая установка дипольных отражателей и теплоотводов</value>
+  </data>
+  <data name="ECMs" xml:space="preserve">
+    <value>Электронное противодействие</value>
+  </data>
+  <data name="FragCannons" xml:space="preserve">
+    <value>Осколочные пушки</value>
+  </data>
+  <data name="FrameShiftDriveInterdictors" xml:space="preserve">
+    <value>FSD перехватчик</value>
+  </data>
+  <data name="FrameShiftDrives" xml:space="preserve">
+    <value>Рамочно-сместительный двигатель</value>
+  </data>
+  <data name="FuelScoops" xml:space="preserve">
+    <value>Топливозаборник</value>
+  </data>
+  <data name="HullReinforcements" xml:space="preserve">
+    <value>Укрепление корпуса</value>
+  </data>
+  <data name="Lasers" xml:space="preserve">
+    <value>Лазеры</value>
+  </data>
+  <data name="LifeSupportSystems" xml:space="preserve">
+    <value>Система жизнеобеспечения</value>
+  </data>
+  <data name="LimpetControllers" xml:space="preserve">
+    <value>Контроллер дронов</value>
+  </data>
+  <data name="Mines" xml:space="preserve">
+    <value>Мины</value>
+  </data>
+  <data name="Missiles" xml:space="preserve">
+    <value>Ракеты</value>
+  </data>
+  <data name="MultiCannons" xml:space="preserve">
+    <value>Многоствольное орудие</value>
+  </data>
+  <data name="PlasmaAccelerators" xml:space="preserve">
+    <value>Ускоритель плазмы</value>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Точечная оборона</value>
+  </data>
+  <data name="PowerDistributors" xml:space="preserve">
+    <value>Распределитель питания</value>
+  </data>
+  <data name="PowerPlants" xml:space="preserve">
+    <value>Силовая установка</value>
+  </data>
+  <data name="RailGuns" xml:space="preserve">
+    <value>Электромагнитная пушка</value>
+  </data>
+  <data name="Refineries" xml:space="preserve">
+    <value>Устройство переработки</value>
+  </data>
+  <data name="Scanners" xml:space="preserve">
+    <value>Сканеры</value>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Сенсоры</value>
+  </data>
+  <data name="ShieldBoosters" xml:space="preserve">
+    <value>Усилитель щита</value>
+  </data>
+  <data name="ShieldCellBanks" xml:space="preserve">
+    <value>Щитонакопитель</value>
+  </data>
+  <data name="ShieldGenerators" xml:space="preserve">
+    <value>Щитогенератор</value>
+  </data>
+  <data name="SurfaceScanners" xml:space="preserve">
+    <value>Сканер Поверхностей</value>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Двигатели</value>
+  </data>
+  <data name="Torpedos" xml:space="preserve">
+    <value>Торпеды</value>
+  </data>
 </root>

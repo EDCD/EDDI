@@ -153,8 +153,14 @@
     <value>Наркотики</value>
     <comment>Commodity category Narcotics</comment>
   </data>
-  
-  
+  <data name="NonMarketable" xml:space="preserve">
+    <value>Не для рынка</value>
+    <comment>Commodity category NonMarketable</comment>
+  </data>
+  <data name="Powerplay" xml:space="preserve">
+    <value>Борьба за власть</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Спасенное имущество</value>
     <comment>Commodity category Salvage</comment>

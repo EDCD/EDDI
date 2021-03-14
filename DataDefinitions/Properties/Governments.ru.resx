@@ -161,5 +161,8 @@
     <value>Инженерная</value>
     <comment>Government type engineer</comment>
   </data>
-  
+  <data name="Carrier" xml:space="preserve">
+    <value>Частная собственность</value>
+    <comment>Government Type Carrier</comment>
+  </data>
 </root>

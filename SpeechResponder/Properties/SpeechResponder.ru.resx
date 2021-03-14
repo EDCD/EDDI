@@ -151,14 +151,18 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Удалить персональность</value>
   </data>
-  
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить личность "{0}"?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Удалить</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Удалить скрипт</value>
   </data>
-  
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить скрипт "{0}"?</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Отвечает на события с помощью скриптовой речи на основе информации в событии. Не у всех событий есть скриптовые ответы. Если скрипт ответа пуст, то кнопки «Тест» и «Просмотр» отключены. Скрипты могут быть отключены, или им можно поменять приоритет, но не удалить.</value>
   </data>
@@ -211,15 +215,31 @@
   <data name="header_priority" xml:space="preserve">
     <value>Приоритет</value>
   </data>
-  
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Почитайте о функциях речевого ответчика</value>
+  </data>
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>здесь.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="localizedAnd" xml:space="preserve">
+    <value>и</value>
+  </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Вы уверены, что хотите сбросить скрипт "{0}"?</value>
+  </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>Восстановленный скрипт</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI восстановил скрипт, который редактировался когда программа неожиданно закрылась. Вы хотите его открыть?</value>
+  </data>
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>Пожалуйста, укажите название</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>Это название уже занято; выберите другое</value>
+  </data>
 </root>

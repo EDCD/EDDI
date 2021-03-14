@@ -1669,29 +1669,104 @@
     <value>Таргоидская биомасса</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Удобрения Rockforth</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>Агрономическая обработка</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>Печёные Greebles</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>Экспериментальные ультра компактные процессоры</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Серебряная дурь Crom</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
+  <data name="Tritium" xml:space="preserve">
+    <value>Тритий</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Жидкость моллюска</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>Мягкие ткани моллюска</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Мозговое вещество моллюска</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Ткань ядра стручков</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Мертвая ткань стручков</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Поверхностная ткань стручков</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Аномальные частицы</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Ткань стручков</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
+  <data name="M3_TissueSample_Membrane" xml:space="preserve">
+    <value>Мембрана моллюска</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+  </data>
+  <data name="M3_TissueSample_Mycelium" xml:space="preserve">
+    <value>Мицелий моллюска</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+  </data>
+  <data name="M3_TissueSample_Spores" xml:space="preserve">
+    <value>Споры моллюсков</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+  </data>
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Мезоглея стручков</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Внешняя ткань стручков</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Ткань оболочки стручков</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Декоративное мясо Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Волчья дурь</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Кошачий кофе CD-75</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Райские яблоки с Эриала</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Узумокские крылья для малой гравитации</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>

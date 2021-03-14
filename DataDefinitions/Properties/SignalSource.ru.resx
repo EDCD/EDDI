@@ -130,18 +130,21 @@
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Зона Конфликта Высокий</value>
-    <comment>Combat Zone (High Intensity)</comment>
+    <value>Зона конфликта высокой интенсивности</value>
+    <comment>Conflict Zone (High Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Зона Конфликта Средний</value>
-    <comment>Combat Zone (Medium Intensity)</comment>
+    <value>Зона конфликта средней интенсивности</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Зона Конфликта Низкий</value>
-    <comment>Combat Zone (Low Intensity)</comment>
+    <value>Зона конфликта низкой интенсивности</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
   </data>
-  
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Деградированные выбросы</value>
+    <comment>Salvage signal</comment>
+  </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Последствия боя</value>
     <comment>Aftermatch signal</comment>
@@ -150,7 +153,10 @@
     <value>Зарегистрирован аномальный сигнал</value>
     <comment>Anomaly signal</comment>
   </data>
-  
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Церемониальная связь</value>
+    <comment>Ceremonial signal</comment>
+  </data>
   <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
     <value>Высокоуровневые излучения</value>
     <comment>VeryValuable signal</comment>
@@ -171,7 +177,10 @@
     <value>Цель миссии</value>
     <comment>MissionTarget signal</comment>
   </data>
-  
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Рассредоточение конвоя</value>
+    <comment>Convoy signal</comment>
+  </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Сигнал о помощи</value>
     <comment>Distress signal</comment>
@@ -196,39 +205,148 @@
     <value>Место добычи ресурсов Опасный</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="NumberStation" xml:space="preserve">
+    <value>Незарегистрированный маяк связи</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Зона конфликта AX</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Прослушивающая станция</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Известные звездные явления</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Флагман</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Известные звездные явления</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Активность пиратов</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Биологический поверхностный сигнал</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Геологический поверхностный сигнал</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Человеческий поверхностный сигнал</value>
+    <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Таргойдский поверхностный сигнал</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Таргойдский нарост</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Застава</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Маяк конвоя</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Активность пиратов</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Активность пиратов</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Поверхностный сигнал стражей</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Древние руины</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Структура стражей</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Поле обломков</value>
+    <comment>Debris field</comment>
+  </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Другой поверхностный сигнал</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Разрушенный корабль таргойдов</value>
+    <comment>Thargoid crash site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Восстанавливаемые обломки</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Центр распространения</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Сигнал о помощи</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Сигнал о помощи</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>

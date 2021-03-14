@@ -189,14 +189,26 @@
     <value>Миссии</value>
     <comment>Station Service: MissionsGenerated</comment>
   </data>
-  
+  <data name="Facilitator" xml:space="preserve">
+    <value>Контакт властей</value>
+    <comment>Station Service: Facilitator (means "Interstellar Factors Contact)</comment>
+  </data>
   <data name="Research" xml:space="preserve">
     <value>Исследование</value>
     <comment>Station Service: Research</comment>
   </data>
-  
-  
-  
+  <data name="FlightController" xml:space="preserve">
+    <value>Управление полетом</value>
+    <comment>Station Service: FlightController</comment>
+  </data>
+  <data name="StationOperations" xml:space="preserve">
+    <value>Работа станции</value>
+    <comment>Station Service: StationOperations</comment>
+  </data>
+  <data name="OnDockMission" xml:space="preserve">
+    <value>Стыковка</value>
+    <comment>Station Service: OnDockMission</comment>
+  </data>
   <data name="Powerplay" xml:space="preserve">
     <value>Powerplay</value>
     <comment>Station Service: Powerplay</comment>
@@ -217,11 +229,32 @@
     <value>Службы космопорта</value>
     <comment>Station Service: Station Menu</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Shop" xml:space="preserve">
+    <value>Магазин</value>
+    <comment>Station Service: Shop</comment>
+  </data>
+  <data name="CarrierFuel" xml:space="preserve">
+    <value>Склад трития</value>
+    <comment>Station Service: CarrierFuel</comment>
+  </data>
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Управление носителем</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Торговец носителями</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Дизайн</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Комплекты модулей</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Офис выкупа</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
 </root>

@@ -209,5 +209,8 @@
     <value>Газовый гигант</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
-  
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Аммиак и кислород</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
+  </data>
 </root>

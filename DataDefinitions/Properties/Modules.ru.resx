@@ -201,7 +201,10 @@
     <value>Дезинтегратор</value>
     <comment>Module Cytoscrambler</comment>
   </data>
-  
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Сканер данных</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
     <value>Очищение</value>
     <comment>Module DecontaminationLimpetController</comment>
@@ -294,7 +297,10 @@
     <value>«Молот»</value>
     <comment>Module ImperialHammer</comment>
   </data>
-  
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Промежуточный сканер обнаружения</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
   <data name="KillWarrantScanner" xml:space="preserve">
     <value>Сканер преступников</value>
     <comment>Module KillWarrantScanner</comment>
@@ -427,7 +433,10 @@
     <value>Контроллер дрона геологоразведки</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
-  
+  <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
+    <value>Ракетный дезинтегратор FSD</value>
+    <comment>Module RocketPropelledFSDDisruptor</comment>
+  </data>
   <data name="Sensors" xml:space="preserve">
     <value>Сенсоры</value>
     <comment>Module Sensors</comment>
@@ -452,7 +461,10 @@
     <value>Пусковая шоковых мин</value>
     <comment>Module ShockMineLauncher</comment>
   </data>
-  
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Отключение нейтрализатора поля</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
   <data name="StandardDockingComputer" xml:space="preserve">
     <value>Стыковочный компьютер</value>
     <comment>Module StandardDockingComputer</comment>
@@ -501,7 +513,10 @@
     <value>Автоматическая плазменная пушка</value>
     <comment>Module PlasmaRepeater (fighter module)</comment>
   </data>
-  
+  <data name="Enforcer" xml:space="preserve">
+    <value>Пушка боевика</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
     <value>Ускоритель FSD Guardians</value>
     <comment>Module GuardianFsdBooster</comment>
@@ -566,7 +581,16 @@
     <value>Улучшенный стыковочный компьютер</value>
     <comment>Module AdvancedDockingComputer</comment>
   </data>
-  
-  
-  
+  <data name="AdvancedMultiCannon" xml:space="preserve">
+    <value>Продвинутое многоствольное орудие</value>
+    <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
+  </data>
+  <data name="AdvancedMissileRack" xml:space="preserve">
+    <value>Продвинутая стойка для ракет</value>
+    <comment>Module Advanced Missile Rack</comment>
+  </data>
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Пучковый Лазер Каратель</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>

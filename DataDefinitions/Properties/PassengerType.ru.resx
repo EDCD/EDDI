@@ -97,24 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AidWorker" xml:space="preserve">
+    <value>Пассажирская группа гуманитарных работников</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Группа пассажиров представительского класса</value>
+  </data>
+  <data name="Celebrity" xml:space="preserve">
+    <value>Знаменитость</value>
+  </data>
+  <data name="CEO" xml:space="preserve">
+    <value>Генеральный директор</value>
+  </data>
+  <data name="Criminal" xml:space="preserve">
+    <value>Преступник</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Врач</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Исследователь</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Военный генерал</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>Глава государства</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Команда медиков</value>
+  </data>
+  <data name="Politician" xml:space="preserve">
+    <value>Группа политических пассажиров</value>
+  </data>
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>узник войны</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>Группа протестующих пассажиров</value>
+  </data>
+  <data name="Rebel" xml:space="preserve">
+    <value>Группа мятежных пассажиров</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Группа пассажиров беженцев</value>
+  </data>
+  <data name="Scientist" xml:space="preserve">
+    <value>Научная команда</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Команда безопастности</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Главарь мятежников</value>
+  </data>
+  <data name="Tourist" xml:space="preserve">
+    <value>Богатый турист</value>
+  </data>
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Политический заключенный</value>
+  </data>
 </root>
