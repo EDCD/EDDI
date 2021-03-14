@@ -6,6 +6,20 @@ namespace UnitTests
     [TestClass]
     public class HumanizeTests
     {
+        [DataTestMethod]
+        [DataRow(-12345, "well over minus 12 thousand")]
+        public void TestIntToFloatingMantissa(int number, string expected)
+        {
+            Assert.AreEqual(expected, Translations.Humanize(number));
+        }
+
+        [DataTestMethod]
+        [DataRow(-12345.0, "well over minus 12 thousand")]
+        public void TestDoubleToFloatingMantissa(double number, string expected)
+        {
+            Assert.AreEqual(expected, Translations.Humanize((decimal)number));
+        }
+
         [TestMethod]
         public void TestSpeechHumanize1()
         {
