@@ -148,7 +148,7 @@
       <Version>106.3.1</Version>
     </PackageReference>
     <PackageReference Include="Rollbar">
-      <Version>3.12.3</Version>
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="System.Collections">
       <Version>4.3.0</Version>

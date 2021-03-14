@@ -70,6 +70,9 @@
     <PackageReference Include="RestSharp">
       <Version>106.3.1</Version>
     </PackageReference>
+    <PackageReference Include="Rollbar">
+      <Version>4.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

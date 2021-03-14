@@ -354,6 +354,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
+    <PackageReference Include="Rollbar">
+      <Version>4.0.1</Version>
+    </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>5.0.0</Version>
     </PackageReference>
