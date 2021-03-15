@@ -387,18 +387,12 @@
     <value>почти минус {0} с половиной миллион</value>
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
-  <data name="nearlyMillionAndAHalf" xml:space="preserve">
-    <value>почти {0} с половиной миллион</value>
-    <comment>Where {0} is a whole number in the millions order</comment>
-  </data>
+  
   <data name="nearlyMinusBillionAndAHalf" xml:space="preserve">
     <value>почти минус {0} с половиной миллиард</value>
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
-  <data name="nearlyBillionAndAHalf" xml:space="preserve">
-    <value>почти {0} с половиной миллиард</value>
-    <comment>Where {0} is a whole number in the billions order</comment>
-  </data>
+  
   <data name="nearlyMinusTrillionAndAHalf" xml:space="preserve">
     <value>почти минус {0} с половиной триллион</value>
     <comment>Where {0} is a negative whole number in the trillions order</comment>
