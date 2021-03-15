@@ -387,12 +387,18 @@
     <value>quase menos {0} milhões e meio</value>
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
-  
+  <data name="nearlyMillionAndAHalf" xml:space="preserve">
+    <value>quase {0} milhões e meio</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
   <data name="nearlyMinusBillionAndAHalf" xml:space="preserve">
     <value>quase menos {0} bilhões e meio</value>
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
-  
+  <data name="nearlyBillionAndAHalf" xml:space="preserve">
+    <value>quase {0} bilhões e meio</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
   <data name="nearlyMinusTrillionAndAHalf" xml:space="preserve">
     <value>quase menos {0} trilhões e meio</value>
     <comment>Where {0} is a negative whole number in the trillions order</comment>
