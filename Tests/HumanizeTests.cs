@@ -52,7 +52,7 @@ namespace UnitTests
         [DataRow(1110001, "just over 1 million")]
         [DataRow(1210001, "over 1 million")]
         [DataRow(1310001, "well over 1 million")]
-        [DataRow(1410001, "nearly 1 million and a half")]
+        [DataRow(1410001, "nearly 1 and a half million")]
         [DataRow(1510001, "around 1 and a half million")]
         [DataRow(1610001, "over 1 and a half million")]
         [DataRow(1810001, "well over 1 and a half million")]
