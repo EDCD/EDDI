@@ -184,9 +184,15 @@
   
   
   
+  <data name="nearlyMillionAndAHalf" xml:space="preserve">
+    <value>skoro {0} a půl milionu</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
   
-  
-  
+  <data name="nearlyBillionAndAHalf" xml:space="preserve">
+    <value>skoro {0} a půl milionu</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
   
   
   
