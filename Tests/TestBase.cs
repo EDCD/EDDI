@@ -3,6 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
+// Number of worker threads is automatic because `Workers` is set to 0.
+// There are 3 scopes of parallelization:
+// (1) ClassLevel – each thread executes a TestClass worth of tests. Within the TestClass, the test methods execute serially.
+//     This is the default – tests within a class might have interdependency, and we don’t want to be too aggressive.
+// (2) MethodLevel – each thread executes a TestMethod.
+// (3) Custom – the user can provide a plugin implementing the required execution semantics. 
+// source: https://devblogs.microsoft.com/devops/mstest-v2-in-assembly-parallel-test-execution/
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.ClassLevel)]
 
 namespace UnitTests
