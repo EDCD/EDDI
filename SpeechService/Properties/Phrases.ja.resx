@@ -97,6 +97,146 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="dash" xml:space="preserve">
+    <value>ダッシュ</value>
+    <comment/>
+  </data>
+  <data name="minus" xml:space="preserve">
+    <value>マイナス</value>
+    <comment/>
+  </data>
+  <data name="plus" xml:space="preserve">
+    <value>プラス</value>
+    <comment/>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>点</value>
+    <comment/>
+  </data>
+  <data name="zero" xml:space="preserve">
+    <value>ゼロ</value>
+    <comment/>
+  </data>
+  <data name="shortDecimalThousand" xml:space="preserve">
+    <value>{0} 千</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 thousand</comment>
+  </data>
+  <data name="shortDecimalMillion" xml:space="preserve">
+    <value>{0} 百万</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 million</comment>
+  </data>
+  <data name="shortDecimalBillion" xml:space="preserve">
+    <value>{0} 十億</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 billion</comment>
+  </data>
+  <data name="shortDecimalTrillion" xml:space="preserve">
+    <value>{0} 兆</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 trillion</comment>
+  </data>
+  <data name="shortDecimalQuadrillion" xml:space="preserve">
+    <value>{0} 千兆</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quadrillion</comment>
+  </data>
+  <data name="shortDecimalQuintillion" xml:space="preserve">
+    <value>{0} 百穰</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quintillion</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
