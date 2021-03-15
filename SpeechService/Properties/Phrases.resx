@@ -388,7 +388,7 @@
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
   <data name="nearlyMillionAndAHalf" xml:space="preserve">
-    <value>nearly {0} million and a half</value>
+    <value>nearly {0} and a half million</value>
     <comment>Where {0} is a whole number in the millions order</comment>
   </data>
   <data name="nearlyMinusBillionAndAHalf" xml:space="preserve">
@@ -396,7 +396,7 @@
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
   <data name="nearlyBillionAndAHalf" xml:space="preserve">
-    <value>nearly {0} billion and a half</value>
+    <value>nearly {0} and a half billion</value>
     <comment>Where {0} is a whole number in the billions order</comment>
   </data>
   <data name="nearlyMinusTrillionAndAHalf" xml:space="preserve">
