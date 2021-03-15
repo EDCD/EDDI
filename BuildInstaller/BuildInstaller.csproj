@@ -40,7 +40,7 @@
     <PostBuildEvent>cd "$(SolutionDir)"
 if exist $(SolutionDir)postBuildTests.bat (
   @echo Post-build script exists at: $(SolutionDir)postBuild.bat - executing...
-  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir)$(OutDir)"
+  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)$(OutDir)"
 )
 
 if "$(ConfigurationName)" == "Release" (
