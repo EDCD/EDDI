@@ -24,7 +24,7 @@ namespace UnitTests
         [DataRow(-1999001, "nearly minus 2 million")]
         public void TestIntToFloatingMantissa(int number, string expected)
         {
-            Assert.AreEqual(expected, Translations.Humanize(number));
+            Assert.AreEqual(expected, Translations.Humanize(number, false));
         }
 
         [DataTestMethod]
@@ -68,7 +68,7 @@ namespace UnitTests
         [DataRow(9.1235E17, "over 912 quadrillion")]
         public void TestDoubleToFloatingMantissa(double number, string expected)
         {
-            Assert.AreEqual(expected, Translations.Humanize((decimal)number));
+            Assert.AreEqual(expected, Translations.Humanize((decimal)number, false));
         }
 
         [DataTestMethod]
@@ -103,7 +103,7 @@ namespace UnitTests
         [DataRow(1999001, "nearly 2 million")]
         public void Test2ndDigitRangePositive(int number, string expected)
         {
-            Assert.AreEqual(expected, Translations.Humanize(number));
+            Assert.AreEqual(expected, Translations.Humanize(number, false));
         }
 
         [DataTestMethod]
@@ -118,7 +118,7 @@ namespace UnitTests
         [DataRow(-1999001, "nearly minus 2 million")]
         public void Test2ndDigitRangeNegative(int number, string expected)
         {
-            Assert.AreEqual(expected, Translations.Humanize(number));
+            Assert.AreEqual(expected, Translations.Humanize(number, false));
         }
 
         [DataTestMethod]
@@ -128,7 +128,7 @@ namespace UnitTests
         [DataRow(111700, "nearly 112 thousand")]
         public void TestNumbersWith3DigitMantissa(int number, string expected)
         {
-            Assert.AreEqual(expected, Translations.Humanize(number));
+            Assert.AreEqual(expected, Translations.Humanize(number, false));
         }
     }
 }
