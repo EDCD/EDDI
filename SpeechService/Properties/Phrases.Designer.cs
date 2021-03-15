@@ -196,15 +196,6 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to false.
-        /// </summary>
-        public static string forceIntegerMantissa {
-            get {
-                return ResourceManager.GetString("forceIntegerMantissa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to just over {0}.
         /// </summary>
         public static string justOver {
