@@ -13,9 +13,11 @@ namespace EddiSpeechService
         public static string Humanize(decimal? rawValue, bool? forceIntegerMantissa = null)
         {
             if (rawValue == null) {return null;}
-            decimal value = (decimal) rawValue;
+            decimal value = (decimal)rawValue;
             if (value == 0) {return Properties.Phrases.zero;}
-            bool wantIntegerMantissa = forceIntegerMantissa ?? false;
+
+            bool wantIntegerMantissa = forceIntegerMantissa ?? Properties.Phrases.forceIntegerMantissa.Equals("true");
+
             bool isNegative = value < 0;
             if (isNegative)
             {
