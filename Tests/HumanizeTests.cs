@@ -21,6 +21,7 @@ namespace UnitTests
         [DataRow(-51000000, "minus 51000000")]
         [DataRow(-12345, "well over minus 12 thousand")]
         [DataRow(1800001, "1.8 million")]
+        [DataRow(-1999001, "nearly minus 2 million")]
         public void TestIntToFloatingMantissa(int number, string expected)
         {
             Assert.AreEqual(expected, Translations.Humanize(number));
@@ -44,6 +45,36 @@ namespace UnitTests
         public void TestDoubleToFloatingMantissa(double number, string expected)
         {
             Assert.AreEqual(expected, Translations.Humanize((decimal)number));
+        }
+
+        [DataTestMethod]
+        [DataRow(1100001, "1.1 million")]
+        [DataRow(1110001, "just over 1 million")]
+        [DataRow(1210001, "over 1 million")]
+        [DataRow(1310001, "well over 1 million")]
+        [DataRow(1410001, "nearly 1 million and a half")]
+        [DataRow(1510001, "around 1 and a half million")]
+        [DataRow(1610001, "over 1 and a half million")]
+        [DataRow(1810001, "well over 1 and a half million")]
+        [DataRow(1999001, "nearly 2 million")]
+        public void Test2ndDigitRangePositive(int number, string expected)
+        {
+            Assert.AreEqual(expected, Translations.Humanize(number));
+        }
+
+        [DataTestMethod]
+        [DataRow(-1100001, "minus 1.1 million")]
+        [DataRow(-1110001, "just over minus 1 million")]
+        [DataRow(-1210001, "over minus 1 million")]
+        [DataRow(-1310001, "well over minus 1 million")]
+        [DataRow(-1410001, "nearly minus 1 and a half million")]
+        [DataRow(-1510001, "around minus 1 and a half million")]
+        [DataRow(-1610001, "over minus 1 and a half million")]
+        [DataRow(-1810001, "well over minus 1 and a half million")]
+        [DataRow(-1999001, "nearly minus 2 million")]
+        public void Test2ndDigitRangeNegative(int number, string expected)
+        {
+            Assert.AreEqual(expected, Translations.Humanize(number));
         }
     }
 }
