@@ -73,7 +73,7 @@ namespace EddiSpeechService
                     return FormatAsShortDecimal(shortDecimal, isNegative, orderMultiplier);
                 }
 
-                // Describe values for complex numbers where the largest order number does not exceed one hundred
+                // Describe values for numbers where the largest order number does not exceed one hundred
                 switch (nextDigit)
                 {
                 case 1:
@@ -98,7 +98,7 @@ namespace EddiSpeechService
                     return FormatVerbatim(number, isNegative, orderMultiplier);
                 }
             }
-            // Describe (less precisely) values for complex numbers where the largest order number exceeds one hundred
+            // Describe (less precisely) values for numbers where the largest order number exceeds one hundred
             else
             {
                 // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
