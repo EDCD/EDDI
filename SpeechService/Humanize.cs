@@ -146,7 +146,9 @@ namespace EddiSpeechService
 
         private static string FormatVerbatim(int number, bool isNegative, long orderMultiplier)
         {
-            return (isNegative ? Properties.Phrases.minus + " " : "") + (number * orderMultiplier);
+            long value = number * orderMultiplier;
+            // some TTS voices need the thousands separators, so use format string "N0" (numeric, zero decimal places)
+            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0");
         }
 
         private static string FormatAsShortDecimal(decimal shortDecimal, bool isNegative, long orderMultiplier)
