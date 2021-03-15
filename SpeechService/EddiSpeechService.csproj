@@ -62,6 +62,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Humanize.cs" />
+    <Compile Include="Properties\FormatOverrides.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormatOverrides.resx</DependentUpon>
+    </Compile>
     <Compile Include="SpeechQueue.cs" />
     <Compile Include="SpeechFX.cs" />
     <Compile Include="EddiSpeech.cs" />
@@ -95,6 +100,19 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\FormatOverrides.cs.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.de.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.es.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.fr.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.hu.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.it.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.ja.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\FormatOverrides.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormatOverrides.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\FormatOverrides.ru.resx" />
     <EmbeddedResource Include="Properties\Phonetics.cs.resx" />
     <EmbeddedResource Include="Properties\Phonetics.de.resx" />
     <EmbeddedResource Include="Properties\Phonetics.es.resx" />
