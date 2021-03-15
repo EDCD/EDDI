@@ -76,5 +76,15 @@ namespace UnitTests
         {
             Assert.AreEqual(expected, Translations.Humanize(number));
         }
+
+        [DataTestMethod]
+        [DataRow(111000, "111000")]
+        [DataRow(111100, "just over 111 thousand")]
+        [DataRow(111200, "over 111 thousand")]
+        [DataRow(111700, "nearly 112 thousand")]
+        public void TestNumbersWith3DigitMantissa(int number, string expected)
+        {
+            Assert.AreEqual(expected, Translations.Humanize(number));
+        }
     }
 }
