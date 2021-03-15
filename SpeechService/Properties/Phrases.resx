@@ -591,8 +591,4 @@
     <value>well over {0} and a half quintillion</value>
     <comment>Where {0} is a whole number in the quintillions order</comment>
   </data>
-  <data name="forceIntegerMantissa" xml:space="preserve">
-    <value>false</value>
-    <comment>For developer use for languages where phrases like "2.4 million" do not work. Leave as false unless otherwise instructed.</comment>
-  </data>
 </root>
