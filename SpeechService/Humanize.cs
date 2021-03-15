@@ -145,12 +145,29 @@ namespace EddiSpeechService
             }
         }
 
+        private static CultureInfo _formattingCultureInfo;
+        private static CultureInfo formattingCultureInfo
+        {
+            get
+            {
+                if (_formattingCultureInfo == null)
+                {
+                    _formattingCultureInfo = (CultureInfo)CultureInfo.CurrentUICulture.Clone();
+                    if (Properties.FormatOverrides.overrideThousandsSeparator.Equals("true"))
+                    {
+                        _formattingCultureInfo.NumberFormat.NumberGroupSeparator = Properties.FormatOverrides.thousandsSeparator;
+                    }
+                }
+
+                return _formattingCultureInfo;
+            }
+        }
+
         private static string FormatVerbatim(int number, bool isNegative, long orderMultiplier)
         {
             long value = number * orderMultiplier;
             // some TTS voices need the thousands separators, so use format string "N0" (numeric, zero decimal places)
-            CultureInfo ci = CultureInfo.CurrentUICulture;
-            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0", CultureInfo.CurrentUICulture);
+            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0", formattingCultureInfo);
         }
 
         private static string FormatAsShortDecimal(decimal shortDecimal, bool isNegative, long orderMultiplier)
