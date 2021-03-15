@@ -196,6 +196,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to false.
+        /// </summary>
+        public static string forceIntegerMantissa {
+            get {
+                return ResourceManager.GetString("forceIntegerMantissa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to just over {0}.
         /// </summary>
         public static string justOver {
@@ -358,7 +367,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly {0} billion and a half.
+        ///   Looks up a localized string similar to nearly {0} and a half billion.
         /// </summary>
         public static string nearlyBillionAndAHalf {
             get {
@@ -376,7 +385,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly {0} million and a half.
+        ///   Looks up a localized string similar to nearly {0} and a half million.
         /// </summary>
         public static string nearlyMillionAndAHalf {
             get {
