@@ -6,23 +6,14 @@ namespace EddiSpeechService
     {
         public static string Humanize(decimal? rawValue)
         {
-            if (rawValue == null)
-            {
-                return null;
-            }
+            if (rawValue == null) {return null;}
+            decimal value = (decimal) rawValue;
+            if (value == 0) {return Properties.Phrases.zero;}
 
-            var value = (decimal) rawValue;
-
-            bool isNegative = false;
-            if (value < 0)
+            bool isNegative = value < 0;
+            if (isNegative)
             {
-                isNegative = true;
                 value = -value;
-            }
-
-            if (value == 0)
-            {
-                return Properties.Phrases.zero;
             }
 
             if (value < 10)
@@ -40,16 +31,8 @@ namespace EddiSpeechService
                        (Math.Round(value * 10) / (decimal) Math.Pow(10, numzeros + 2));
             }
 
-            (int number, int nextDigit) Normalize(decimal inputValue, decimal orderMultiplierVal)
-            {
-                return (
-                    number: (int) (inputValue / orderMultiplierVal),
-                    nextDigit: (int) ((inputValue % orderMultiplierVal) / (orderMultiplierVal / 10))
-                );
-            }
-
-            var magnitude = Math.Log10((double) value);
-            var orderMultiplier = (long) Math.Pow(10, Math.Floor(magnitude / 3) * 3);
+            double magnitude = Math.Log10((double) value);
+            long orderMultiplier = (long) Math.Pow(10, Math.Floor(magnitude / 3) * 3);
             var (number, nextDigit) = Normalize(value, orderMultiplier);
 
             // See if we have a whole number that is fully described within the largest order
@@ -62,70 +45,86 @@ namespace EddiSpeechService
 
             if (number < 100)
             {
-                // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
-                var shortDecimal = (number + ((decimal)nextDigit / 10));
-                if (shortDecimal == Math.Round(value / orderMultiplier, 2))
-                {
-                    if (nextDigit == 0)
-                    {
-                        return FormatVerbatim(number, isNegative, orderMultiplier);
-                    }
-                    return FormatAsShortDecimal(shortDecimal, isNegative, orderMultiplier);
-                }
-
-                // Describe values for numbers where the largest order number does not exceed one hundred
-                switch (nextDigit)
-                {
-                case 1:
-                    return FormatAsJustOver(number, isNegative, orderMultiplier, value);
-                case 2:
-                    return FormatAsOver(number, isNegative, orderMultiplier, value);
-                case 3:
-                    return FormatAsWellOver(number, isNegative, orderMultiplier, value);
-                case 4:
-                    return FormatAsNearlyOneAndAHalf(number, isNegative, orderMultiplier, value);
-                case 5:
-                    return FormatAsAroundOneAndAHalf(number, isNegative, orderMultiplier, value);
-                case 6:
-                case 7:
-                    return FormatAsOverOneAndAHalf(number, isNegative, orderMultiplier, value);
-                case 8:
-                    return FormatAsWellOverOneAndAHalf(number, isNegative, orderMultiplier, value);
-                case 9:
-                    return FormatAsNearly(number + 1, isNegative, orderMultiplier, value);
-                default:
-                    // `nextDigit` is zero. the figure we are saying is round enough already
-                    return FormatVerbatim(number, isNegative, orderMultiplier);
-                }
+                return FormatWith2SignificantDigits(number, isNegative, orderMultiplier, nextDigit, value);
             }
-            // Describe (less precisely) values for numbers where the largest order number exceeds one hundred
-            else
+            else // Describe (less precisely) values for numbers where the largest order number exceeds one hundred
             {
-                // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
-                if (number - (int) ((decimal) number / 100) * 100 >= 20)
-                {
-                    (number, nextDigit) = Normalize(number, 10);
-                    number *= 10;
-                }
+                return FormatWith3SignificantDigits(number, isNegative, orderMultiplier, nextDigit, value);
+            }
+        }
 
-                switch (nextDigit)
+        private static (int number, int nextDigit) Normalize(decimal inputValue, decimal orderMultiplierVal)
+        {
+            return (number: (int) (inputValue / orderMultiplierVal), nextDigit: (int) ((inputValue % orderMultiplierVal) / (orderMultiplierVal / 10)));
+        }
+
+        private static string FormatWith2SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit, decimal value)
+        {
+            // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
+            var shortDecimal = (number + ((decimal) nextDigit / 10));
+            if (shortDecimal == Math.Round(value / orderMultiplier, 2))
+            {
+                if (nextDigit == 0)
                 {
-                case 1:
-                    return FormatAsJustOver(number, isNegative, orderMultiplier, value);
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                    return FormatAsOver(number, isNegative, orderMultiplier, value);
-                case 7:
-                case 8:
-                case 9:
-                    return FormatAsNearly(number + 1, isNegative, orderMultiplier, value);
-                default:
-                    // `nextDigit` is zero. the figure we are saying is round enough already
                     return FormatVerbatim(number, isNegative, orderMultiplier);
                 }
+
+                return FormatAsShortDecimal(shortDecimal, isNegative, orderMultiplier);
+            }
+
+            // Describe values for numbers where the largest order number does not exceed one hundred
+            switch (nextDigit)
+            {
+            case 1:
+                return FormatAsJustOver(number, isNegative, orderMultiplier, value);
+            case 2:
+                return FormatAsOver(number, isNegative, orderMultiplier, value);
+            case 3:
+                return FormatAsWellOver(number, isNegative, orderMultiplier, value);
+            case 4:
+                return FormatAsNearlyOneAndAHalf(number, isNegative, orderMultiplier, value);
+            case 5:
+                return FormatAsAroundOneAndAHalf(number, isNegative, orderMultiplier, value);
+            case 6:
+            case 7:
+                return FormatAsOverOneAndAHalf(number, isNegative, orderMultiplier, value);
+            case 8:
+                return FormatAsWellOverOneAndAHalf(number, isNegative, orderMultiplier, value);
+            case 9:
+                return FormatAsNearly(number + 1, isNegative, orderMultiplier, value);
+            default:
+                // `nextDigit` is zero. the figure we are saying is round enough already
+                return FormatVerbatim(number, isNegative, orderMultiplier);
+            }
+        }
+
+        private static string FormatWith3SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit,
+            decimal value)
+        {
+            // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
+            if (number - (int)((decimal)number / 100) * 100 >= 20)
+            {
+                (number, nextDigit) = Normalize(number, 10);
+                number *= 10;
+            }
+
+            switch (nextDigit)
+            {
+            case 1:
+                return FormatAsJustOver(number, isNegative, orderMultiplier, value);
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return FormatAsOver(number, isNegative, orderMultiplier, value);
+            case 7:
+            case 8:
+            case 9:
+                return FormatAsNearly(number + 1, isNegative, orderMultiplier, value);
+            default:
+                // `nextDigit` is zero. the figure we are saying is round enough already
+                return FormatVerbatim(number, isNegative, orderMultiplier);
             }
         }
 
