@@ -591,7 +591,4 @@
     <value>значительно больше {0} с половиной квинтиллион</value>
     <comment>Where {0} is a whole number in the quintillions order</comment>
   </data>
-  <data name="forceIntegerMantissa" xml:space="preserve">
-    <value>true</value>
-  </data>
 </root>
