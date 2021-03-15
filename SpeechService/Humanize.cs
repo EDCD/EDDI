@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace EddiSpeechService
 {
@@ -16,7 +17,7 @@ namespace EddiSpeechService
             decimal value = (decimal)rawValue;
             if (value == 0) {return Properties.Phrases.zero;}
 
-            bool wantIntegerMantissa = forceIntegerMantissa ?? Properties.Phrases.forceIntegerMantissa.Equals("true");
+            bool wantIntegerMantissa = forceIntegerMantissa ?? Properties.FormatOverrides.forceIntegerMantissa.Equals("true");
 
             bool isNegative = value < 0;
             if (isNegative)
@@ -148,7 +149,8 @@ namespace EddiSpeechService
         {
             long value = number * orderMultiplier;
             // some TTS voices need the thousands separators, so use format string "N0" (numeric, zero decimal places)
-            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0");
+            CultureInfo ci = CultureInfo.CurrentUICulture;
+            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0", CultureInfo.CurrentUICulture);
         }
 
         private static string FormatAsShortDecimal(decimal shortDecimal, bool isNegative, long orderMultiplier)
