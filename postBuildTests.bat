@@ -1,5 +1,13 @@
-:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir)$(OutDir)"
+:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)$(OutDir)"
 
+:: Do not run if AppVeyor environmental variable is set
+SETLOCAL ENABLEEXTENSIONS
+IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
+IF DEFINED APPVEYOR (
+  GOTO :EOF
+)
+
+:: Not AppVeyor... we can proceed with the script.
 ECHO ****************************
 SET this=Post-build script
 
@@ -29,15 +37,9 @@ IF %buildConfiguration%=="Release" (
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
-:: Find and invoke our test adapter
+:: Invoke our test adapter in our install directory
 SET "testAdapter=%devEnvDir%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
-IF exist %testAdapter% (
-  SET "command="%testAdapter%" "%buildDir%Tests.dll" %testCaseFilter%"
-  ECHO %this%: Invoking... %command%
-  %command%
-) ELSE (
-  ECHO %this%: Unable to locate test adapter @ %testAdapter%
-  EXIT 1
-)
+SET "command="%testAdapter%" "%buildDir%Tests.dll" %testCaseFilter%"
+%command%
 
 ECHO ****************************
