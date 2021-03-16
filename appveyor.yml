@@ -26,7 +26,7 @@ test_script:
  # The VSTest target file path must be updated if the CI is building using something other than Visual Studios 2019 Community Edition
  - ps: |
       $userProfile = '$env:USERPROFILE'
-      $openCoverConsole = '$userProfile\.nuget\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe'
+      $openCoverConsole = '$userProfile\nuget\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe'
       $openCoverReg = '-register:user'
       $openCoverArgs = '-mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*"'
       
