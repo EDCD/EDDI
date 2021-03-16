@@ -26,11 +26,11 @@ test_script:
  # The VSTest target file path must be updated if the CI is building using something other than Visual Studios 2019 Community Edition
  - ps: |
       $openCoverConsole = $env:USERPROFILE + '\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe'
-      $openCoverReg = '-register:user'
+      $openCoverReg = '-register:Path64'
       $openCoverArgs = '-mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*"'
       
       $target = '-target:"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"'
-      $targetArgs = '-targetargs:"bin\Release\Tests.dll' + $(If ($APPVEYOR) {' /logger:Appveyor'}) + ' /tests:UnitTests /Parallel /InIsolation /noshadow /Blame"'
+      $targetArgs = '-targetargs:"bin\Release\Tests.dll' + $(If ($APPVEYOR) {' /logger:Appveyor'}) + ' /tests:UnitTests /Parallel /InIsolation /Blame"'
  
       New-Item -ItemType directory -Path '.\TestResults' -Force
       $output = '-output:".\TestResults\coverage.xml"'
