@@ -481,6 +481,15 @@ namespace EddiMissionMonitor
 
         public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
+            // Prune community goals not reported from the CommunityGoalsEvent.
+            foreach (var cgMissionID in missions.Where(m => m.communal).Select(m => m.missionid))
+            {
+                if (!@event.goals.Select(cg => (long)cg.cgid).Contains(cgMissionID))
+                {
+                    RemoveMissionWithMissionId(cgMissionID);
+                }
+            }
+
             // Update missions status
             foreach (var goal in @event.goals)
             {
@@ -531,7 +540,7 @@ namespace EddiMissionMonitor
                 mission.expiry = goal.expiryDateTime;
                 if (goal.iscomplete)
                 {
-                    if (goal.tierreward > 0)
+                    if (goal.contribution > 0)
                     {
                         mission.statusDef = MissionStatus.FromEDName("Claim");
                     }
