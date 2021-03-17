@@ -6,7 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
-    * Fixed a bug that could cause undockable approached settlements to be counted as stations
+    * Fixed a bug that could cause undockable approached settlements to be counted as stations.
+    * Fixed a bug that had broken access to the `category` property in material objects. 
     * "Conflict zone" signal sources are no longer described as "Combat zone" signal sources.
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
   * Galnet Monitor
