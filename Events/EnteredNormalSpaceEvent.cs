@@ -17,13 +17,16 @@ namespace EddiEvents
         {
             VARIABLES.Add("systemname", "The system at which the commander has entered normal space");
             VARIABLES.Add("bodyname", "The nearest body to the commander when entering normal space");
-            VARIABLES.Add("bodytype", "The type of the nearest body to the commander when entering normal space");
+            VARIABLES.Add("bodytype", "The localized type of the nearest body to the commander when entering normal space");
+            VARIABLES.Add("bodytype_invariant", "The invariant type of the nearest body to the commander when entering normal space");
         }
 
         [JsonProperty("system")]
         public string systemname { get; private set; }
 
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
+
+        public string bodytype_invariant => (bodyType ?? BodyType.None).localizedName;
 
         [JsonProperty("body")]
         public string bodyname { get; private set; }

@@ -718,10 +718,6 @@ namespace EddiCore
                     {
                         passEvent = eventShipyard(shipyardEvent);
                     }
-                    else if (@event is SettlementApproachedEvent settlementApproachedEvent)
-                    {
-                        passEvent = eventSettlementApproached(settlementApproachedEvent);
-                    }
                     else if (@event is DiscoveryScanEvent discoveryScanEvent)
                     {
                         passEvent = eventDiscoveryScan(discoveryScanEvent);
@@ -1127,23 +1123,6 @@ namespace EddiCore
             {
                 CurrentStarSystem.totalbodies = @event.totalbodies;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-            }
-            return true;
-        }
-
-        private bool eventSettlementApproached(SettlementApproachedEvent @event)
-        {
-            Station station = CurrentStarSystem?.stations?.Find(s => s.name == @event.name);
-            if (station == null && @event.systemAddress == CurrentStarSystem?.systemAddress)
-            {
-                // This settlement is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                station = new Station
-                {
-                    name = @event.name,
-                    marketId = @event.marketId,
-                    systemname = CurrentStarSystem.systemname
-                };
-                CurrentStarSystem?.stations?.Add(station);
             }
             return true;
         }

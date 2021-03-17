@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
+    * Fixed a bug that could cause undockable approached settlements to be counted as stations
     * "Conflict zone" signal sources are no longer described as "Combat zone" signal sources.
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
   * Galnet Monitor
@@ -29,6 +30,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Community goal` script revised and re-enabled. The event is now written only in response to specific changes in community goal status.
       * `Community goals` script added, updated whenever the game provides updated information on community goals.
       * `Engineer report` script added.
+      * `Entered normal space` script updated to provide easier access to invariant bodytype names and to correct a bug around filtering unknown station types.
       * `Material threshold` script updated for expanded triggering conditions.
       * `Message received` script and properties updated to better support localization.
       * `Mission check galaxy` script updated to more gracefully handle community goals.
