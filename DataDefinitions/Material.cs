@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -199,7 +200,7 @@ namespace EddiDataDefinitions
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
             surfaceElements = ImmutableHashSet.ToImmutableHashSet(AllOfThem
-                .Where(m => m.category == Element)
+                .Where(m => m.Category == Element)
                 .Where(m => m.greatpctbody != null).ToList());
 
             jumponiumElements = ImmutableHashSet.Create(
@@ -214,7 +215,10 @@ namespace EddiDataDefinitions
             );
         }
 
-        public MaterialCategory category { get; }
+        public string category => Category.localizedName;
+
+        [JsonProperty("category")]
+        public MaterialCategory Category { get; }
         public Rarity rarity { get; }
 
         // Only for elements
@@ -244,7 +248,7 @@ namespace EddiDataDefinitions
 
         private Material(string edname, MaterialCategory category, Rarity rarity, string symbol = null, decimal? goodpctbody = null, decimal? greatpctbody = null) : base(edname, edname)
         {
-            this.category = category;
+            this.Category = category;
             this.symbol = symbol;
             this.rarity = rarity;
             this.goodpctbody = goodpctbody; // top 25% from top value ever recorded

@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
                     Material My_material = Material.FromName(value) ?? Material.FromEDName(value);
                     _material = My_material?.localizedName ?? value;
                     edname = My_material?.edname ?? value;
-                    Category = My_material?.category.localizedName;
+                    Category = My_material?.Category.localizedName;
                     NotifyPropertyChanged("material");
                 }
             }
@@ -157,7 +157,7 @@ namespace EddiDataDefinitions
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
-            this.Category = My_material?.category.localizedName;
+            this.Category = My_material?.Category.localizedName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

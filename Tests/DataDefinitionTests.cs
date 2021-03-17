@@ -46,7 +46,7 @@ namespace UnitTests
             Material material = Material.FromName("Niobium");
             Assert.AreEqual("Niobium", material.invariantName);
             Assert.IsNotNull(material.rarity);
-            Assert.AreEqual("Element", material.category.invariantName);
+            Assert.AreEqual("Element", material.Category.invariantName);
         }
 
         [TestMethod]

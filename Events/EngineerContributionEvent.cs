@@ -62,7 +62,7 @@ namespace EddiEvents
             {
                 Material definition = Material.FromEDName(materialAmount?.edname);
                 contribution = definition?.localizedName;
-                category = definition?.category?.localizedName;
+                category = definition?.Category?.localizedName;
             }
         }
     }
