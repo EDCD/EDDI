@@ -1,4 +1,4 @@
-:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir)$(OutDir)"
+:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir) $(OutDir)"
 
 ECHO ****************************
 SET this=Post-build script
@@ -6,7 +6,8 @@ SET this=Post-build script
 :: Rename the passed parameters for clarity
 SET "buildConfiguration=%1"
 SET "devEnvDir=%~2"
-SET "buildDir=%~3"
+SET "solutionDir=%~3"
+SET "outDir=%~4"
 
 ECHO %this%: Build configuration is %buildConfiguration%
 
@@ -20,7 +21,7 @@ IF %buildConfiguration%=="Release" (
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
-SET "command="%devEnvDir%CommonExtensions\Microsoft\TestWindow\vstest.console.exe" "%buildDir%Tests.dll" %testCaseFilter%"
+SET "command="%devEnvDir%CommonExtensions\Microsoft\TestWindow\vstest.console.exe" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFilter%"
 
 ECHO %this%: Invoking... %command%
 %command%
