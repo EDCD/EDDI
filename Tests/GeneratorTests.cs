@@ -13,6 +13,22 @@ namespace GeneratorTests
     [TestClass]
     public class GeneratorTests
     {
+        private string initialCurrentDirectory;
+
+        [TestInitialize]
+        public void SetOutputDirectory()
+        {
+            initialCurrentDirectory = Directory.GetCurrentDirectory();
+            string newCurrentDirectory = initialCurrentDirectory.Replace(@"Tests\", "");
+            Directory.SetCurrentDirectory(newCurrentDirectory);
+        }
+
+        [TestCleanup]
+        public void RestoreOutuptDirectory()
+        {
+            Directory.SetCurrentDirectory(initialCurrentDirectory);
+        }
+
         [TestMethod, TestCategory("DocGen")]
         public void TestGenerateWikiEvents()
         {
@@ -153,9 +169,6 @@ namespace GeneratorTests
                 .OrderBy(f => f.name)
                 .ToList();
 
-            // Make sure that a Wiki directory exists
-            Directory.CreateDirectory(@"Wiki\");
-
             // Prepare Help.md
             List<string> help = new List<string>();
             help.Add("");
@@ -181,6 +194,9 @@ namespace GeneratorTests
             {
                 functions.Add($"* {function.name}()");
             }
+
+            // Make sure that a Wiki directory exists
+            Directory.CreateDirectory(@"Wiki\");
 
             // Write our results
             File.WriteAllLines(@"Help.md", help);
