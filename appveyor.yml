@@ -16,6 +16,7 @@ nuget:
   project_feed: true
 before_build:
 - cmd: nuget restore
+- cmd: dotnet tool install --global Codecov.Tool
 build:
   project: EDDI.sln      # path to Visual Studio solution or project
   parallel: true
@@ -41,6 +42,7 @@ test_script:
       IEX $runCoverageCmd
 after_test:
  - ps: |
-      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
-      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-      bash codecov.sh -f '.\TestResults\coverage.xml'
+      $error.clear()
+      try { codecov -f 'TestResults\coverage.xml' -v }
+      catch {}
+      if ($error) { ECHO 'Failed to upload coverage report... ' + $error }
