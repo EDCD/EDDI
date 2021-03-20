@@ -1,15 +1,32 @@
-:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(DevEnvDir)" "$(SolutionDir) $(OutDir)"
+:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
 
+:: Do not run if AppVeyor environmental variable is set
+SETLOCAL ENABLEEXTENSIONS
+IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
+IF DEFINED APPVEYOR (
+  GOTO :EOF
+)
+
+:: Not AppVeyor... we can proceed with the script.
 ECHO ****************************
 SET this=Post-build script
 
 :: Rename the passed parameters for clarity
 SET "buildConfiguration=%1"
-SET "devEnvDir=%~2"
-SET "solutionDir=%~3"
-SET "outDir=%~4"
+SET "solutionDir=%~2"
+SET "outDir=%~3"
 
+:: Our build configuration
 ECHO %this%: Build configuration is %buildConfiguration%
+
+:: Find our install directory
+SET "vswhere=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+SET "vswhereArgs=-latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath"
+FOR /f "usebackq tokens=*" %%i IN (
+   `CALL "%vswhere%" %vswhereArgs%`
+ ) DO (
+  SET devEnvDir=%%i
+)
 
 :: Ref. vstest.console.exe documentation at https://docs.microsoft.com/en-us/visualstudio/test/vstest-console-options?view=vs-2019
 :: We need to apply batch file rules for escaping certain characters in our command (using "^"), ref. https://www.robvanderwoude.com/escapechars.php
@@ -21,9 +38,9 @@ IF %buildConfiguration%=="Release" (
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
-SET "command="%devEnvDir%CommonExtensions\Microsoft\TestWindow\vstest.console.exe" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFilter%"
-
-ECHO %this%: Invoking... %command%
+:: Invoke our test adapter in our install directory
+SET "testAdapter=%devEnvDir%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
+SET "command="%testAdapter%" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFilter%"
 %command%
 
 ECHO ****************************
