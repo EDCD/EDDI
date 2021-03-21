@@ -3,19 +3,15 @@
 
 name: Continuous Integration
 env:
-  config: Release
+  build-config: Release
   solution: EDDI.sln
 
 # Define our triggers
-# Since we are configuring the triggers, we need to specify each set of triggering conditions separately
 on:
   push:
-    branches: [ develop, beta, stable ]
-    paths-ignore:
-    - docs/*        # Every file in the root docs folder
-    - '**.html'     # HTML files anywhere in the repo
-    - '**.md'       # Markdown files anywhere in the repo
-    - '**.resx'     # RESX files anywhere in the repo
+    # For CodeQL code scanning workflow files, don't use the paths-ignore or paths keywords with the on:push event 
+    # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
+    # compare new changes with the analysis of the previous commit.
   pull_request:
     branches: [ develop ]
     paths-ignore:
@@ -41,6 +37,11 @@ jobs:
     name: Analyze
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ csharp ]
+
     steps:
     - name: Check out the repository on the workflow runner
       uses: actions/checkout@v2.3.4
@@ -50,28 +51,43 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Add VSTest.console.exe to PATH
       uses: darenm/Setup-VSTest@v1.1.1
-    - uses: nuget/setup-nuget@v1.0.5
+    - name: Add nuget to PATH
+      uses: nuget/setup-nuget@v1.0.5
       with:
         nuget-version: 'latest'
 
-    # Setup our dependencies
-    - name: Retrieve any cached copies of dependencies (these may be stored for up to a week)
+    # Retrieve any cached copies of dependencies (these may be stored for up to a week) then install any missing dependencies
+    - name: Retrieve any cached copies of dependencies
       uses: actions/cache@main
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget
-    - name: Restore or install any missing any dependencies
+    - name: Restore any missing any dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: nuget restore ${{ env.solution }} -NonInteractive
 
+    # Initializes Github's CodeQL tools for scanning our build
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+        # queries: ./path/to/local/query, your-org/your-repo/queries@main
+
     # Build
-    - name: Build our solution (using the environment variables configured above)
-      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.config }} /verbosity:minimal
+    - name: Build our solution
+      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
+
+    # Analyze our build for security vulnerabilities
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v1
 
     # Test and generate coverage report
-    - name: Make a TestResults directory (if it does not already exist)
+    - name: Make a TestResults directory
       run: mkdir -p ./TestResults
     - name: Test our solution and generate a coverage report using OpenCover
       uses: ./.github/actions/TestWithCoverage
@@ -87,3 +103,4 @@ jobs:
       uses: codecov/codecov-action@master
       with:
         files: TestResults/coverage.xml
+        fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false
