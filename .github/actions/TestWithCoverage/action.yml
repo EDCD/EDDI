@@ -1,0 +1,34 @@
+name: 'Test with OpenCover'
+description: 'Run tests and generate a coverage report using OpenCover'
+inputs:
+  opencover-console-path:
+    description: The file path to OpenCover.Console.exe
+    required: true
+  opencover-console-args:
+    description: The arguments to be passed to OpenCover.Console.exe
+    required: false
+    default: ""
+  target-path:
+    description: The path to the test adapter that should be used to run the tests
+    required: true
+  target-args:
+    description: The arguments to be passed to the test adapter
+    required: false
+    default: ""
+  output-path:
+    description: The path to the output file, including the output file name, which shall contain the coverage report
+    required: true
+runs:
+  using: composite
+  steps:
+  - name: Run tests and generate a coverage report
+    run: |
+      $openCoverConsole = "$HOME${{ inputs.opencover-console-path }}"
+      $openCoverArgs = '${{ inputs.opencover-console-args }}'
+      $target = '-target:"${{ inputs.target-path }}"'
+      $targetArgs = '-targetargs:"${{ inputs.target-args }}"'
+      $output = '-output:"${{ inputs.output-path }}"'
+      $runCoverageCmd = "$openCoverConsole $openCoverArgs $target $targetArgs $output"
+      ECHO Invoking... $runCoverageCmd
+      IEX $runCoverageCmd
+    shell: pwsh
