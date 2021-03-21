@@ -13,7 +13,7 @@ on:
     # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
     # compare new changes with the analysis of the previous commit.
   pull_request:
-    branches: [ develop ]
+    branches: [ develop, experimental/github-actions-ci ]
     paths-ignore:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
