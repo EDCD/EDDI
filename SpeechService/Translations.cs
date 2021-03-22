@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -89,7 +90,7 @@ namespace EddiSpeechService
         private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
         private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
-        private static readonly Regex SHORTBODY = new Regex(@"^([A-E]){0,1}(?> )*(\d+){0,1}(?> )*([a-z]){0,1}$");
+        private static readonly Regex SHORTBODY = new Regex(@"^([A-E]*)(?> )(\d*)(?> )*([a-z]*)$");
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
@@ -117,7 +118,7 @@ namespace EddiSpeechService
                 return null;
             }
 
-            List<string> elements = new List<string>();
+            var elements = new List<string>();
             foreach (char c in callsign.ToUpperInvariant())
             {
                 switch (c)
@@ -233,36 +234,87 @@ namespace EddiSpeechService
                     case '-':
                         if (passDash)
                         {
-                            elements.Add("-");
+                            elements.Add(" " + Properties.Phrases.dash + " ");
                         }
 
                         break;
                 }
             }
 
-            return String.Join(" ", elements).Trim();
+            return string.Join(" ", elements).Trim();
         }
 
-        public static string sayAsLettersOrNumbers(string part)
+        public static string sayAsLettersOrNumbers(string part, bool useLongNumbers = false, bool useICAO = false)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var c in part)
+            var matchConditions = new Regex(@"([A-Z])|(\d+)|([a-z])|(\S)");
+
+            var elements = new List<string>();
+            foreach (var match in matchConditions.Matches(part))
             {
-                var s = c.ToString();
-                if (new Regex(@"\d").IsMatch(s))
+                var matchAsString = match.ToString();
+                if (long.TryParse(matchAsString, out long number))
                 {
-                    sb.Append(@"<say-as interpret-as=""number"">" + s + @"</say-as>");
+                    // Handle numbers
+                    if (useICAO)
+                    {
+                        elements.Add(ICAO(matchAsString));
+                    }
+                    else if (!useLongNumbers)
+                    {
+                        foreach (var c in matchAsString)
+                        {
+                            elements.Add(@"<say-as interpret-as=""number"">" + c + @"</say-as>");
+                        }
+                    }
+                    else
+                    {
+                        elements.Add(@"<say-as interpret-as=""number"">" + number + @"</say-as>");
+                    }
                 }
-                else if (new Regex(@"\w").IsMatch(s))
+                else if (!(new Regex(@"\w").IsMatch(matchAsString)))
                 {
-                    sb.Append(@"<say-as interpret-as=""characters"">" + s + @"</say-as>");
+                    // Handle non-word and non-number characters
+                    foreach (var c in matchAsString)
+                    {
+                        if (matchAsString == "-")
+                        {
+                            elements.Add(Properties.Phrases.dash);
+                        }
+                        else if (matchAsString == ".")
+                        {
+                            elements.Add(Properties.Phrases.point);
+                        }
+                        else if (matchAsString == "+")
+                        {
+                            elements.Add(Properties.Phrases.plus);
+                        }
+                        else if (matchAsString == "-")
+                        {
+                            elements.Add(Properties.Phrases.minus);
+                        }
+                        else
+                        {
+                            elements.Add(matchAsString);
+                        }
+                    }
                 }
                 else
                 {
-                    sb.Append(s);
+                    // Handle strings
+                    if (useICAO)
+                    {
+                        elements.Add(ICAO(matchAsString));
+                    }
+                    else
+                    {
+                        foreach (var c in matchAsString)
+                        {
+                            elements.Add(@"<say-as interpret-as=""characters"">" + c + @"</say-as>");
+                        }
+                    }
                 }
             }
-            return sb.ToString();
+            return string.Join(" ", elements).Trim();
         }
     }
 }
