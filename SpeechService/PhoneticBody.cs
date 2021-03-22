@@ -27,7 +27,7 @@ namespace EddiSpeechService
                 // Might be a short body name
                 if (SHORTBODY.IsMatch(body))
                 {
-                    return sayAsLettersOrNumbers(body);
+                    return sayAsLettersOrNumbers(body, true, useICAO);
                 }
 
                 // Parse the starsystem
@@ -62,7 +62,7 @@ namespace EddiSpeechService
                             }
                             else
                             {
-                                results.Add(sayAsLettersOrNumbers(part));
+                                results.Add(sayAsLettersOrNumbers(part, true, useICAO));
                             }
                         }
                         else if (part == "Belt" || part == "Cluster" || part == "Ring")
@@ -84,7 +84,7 @@ namespace EddiSpeechService
                             }
                             else
                             {
-                                results.Add(sayAsLettersOrNumbers(part));
+                                results.Add(sayAsLettersOrNumbers(part, true, useICAO));
                             }
                         }
                         else
