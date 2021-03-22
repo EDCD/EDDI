@@ -151,7 +151,7 @@ namespace SpeechTests
             };
             foreach (string powerName in powerNames)
             {
-                speaker.Say(ship, Translations.Power(powerName) + ".");
+                speaker.Say(ship, Translations.getPhoneticPower(powerName) + ".");
             }
         }
 

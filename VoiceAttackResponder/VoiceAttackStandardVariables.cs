@@ -35,7 +35,7 @@ namespace EddiVoiceAttackResponder
                     try
                     {
                         App.vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
-                        App.vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem?.systemname));
+                        App.vaProxy.SetText("Home system (spoken)", Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
                         if (EDDI.Instance.HomeStation != null)
                         {
                                 App.vaProxy.SetText("Home station", EDDI.Instance.HomeStation?.name);
@@ -420,7 +420,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 vaProxy.SetText(prefix + " name", system?.systemname);
-                vaProxy.SetText(prefix + " name (spoken)", Translations.StarSystem(system?.systemname));
+                vaProxy.SetText(prefix + " name (spoken)", Translations.getPhoneticStarSystem(system?.systemname));
                 vaProxy.SetDecimal(prefix + " population", system?.population);
                 vaProxy.SetText(prefix + " population (spoken)", Translations.Humanize(system?.population));
                 vaProxy.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
@@ -431,7 +431,7 @@ namespace EddiVoiceAttackResponder
                     .FirstOrDefault(p => p.systemName == system.systemname)?.FactionState ?? FactionState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
-                vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
+                vaProxy.SetText(prefix + " power (spoken)", Translations.getPhoneticPower(EDDI.Instance.CurrentStarSystem?.power));
                 vaProxy.SetText(prefix + " power state", system?.powerstate);
                 vaProxy.SetBoolean(prefix + " requires permit", system?.requirespermit);
                 vaProxy.SetText(prefix + " permit name", system?.permitname);

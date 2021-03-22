@@ -63,6 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PhoneticShipManufacturer.cs" />
+    <Compile Include="PhoneticShipModel.cs" />
+    <Compile Include="PhoneticPlanetClass.cs" />
+    <Compile Include="PhoneticFaction.cs" />
+    <Compile Include="PhoneticPower.cs" />
+    <Compile Include="PhoneticStation.cs" />
+    <Compile Include="PhoneticStarSystem.cs" />
+    <Compile Include="PhoneticBody.cs" />
     <Compile Include="Humanize.cs" />
     <Compile Include="Properties\FormatOverrides.Designer.cs">
       <AutoGen>True</AutoGen>

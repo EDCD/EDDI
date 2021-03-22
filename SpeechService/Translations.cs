@@ -1,5 +1,4 @@
-﻿using EddiDataDefinitions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,291 +14,69 @@ namespace EddiSpeechService
             string translation = val;
             type = !string.IsNullOrEmpty(type) ? type.ToLowerInvariant() : null;
 
-            string getPhoneticModel(string val2)
-            {
-                Ship ship = ShipDefinitions.FromModel(val2);
-                if (ship != null && ship.EDID > 0)
-                {
-                    return ship.SpokenModel();
-                }
-                return val2;
-            }
-
-            string getPhoneticManufacturer(string val2) 
-            {
-                string phoneticManufacturer = ShipDefinitions.SpokenManufacturer(val2);
-                if (phoneticManufacturer != null)
-                {
-                    return phoneticManufacturer;
-                }
-                return val2;
-            }
-
             switch (type)
             {
                 case "power":
-                    translation = Power(val);
+                    translation = getPhoneticPower(val);
                     break;
                 case "planettype":
-                    translation = PlanetClass(val);
+                    translation = getPhoneticPlanetClass(val);
                     break;
                 case "shipmodel":
-                    translation = getPhoneticModel(val);
+                    translation = getPhoneticShipModel(val);
                     break;
                 case "shipmanufacturer":
-                    translation = getPhoneticManufacturer(val);
+                    translation = getPhoneticShipManufacturer(val);
                     break;
                 case "body":
-                    translation = Body(val, useICAO);
+                    translation = getPhoneticBody(val, useICAO);
                     break;
                 case "starsystem":
-                    translation = StarSystem(val, useICAO);
+                    translation = getPhoneticStarSystem(val, useICAO);
                     break;
                 case "station":
-                    translation = Station(val);
+                    translation = getPhoneticStation(val);
                     break;
                 case "faction":
-                    translation = Faction(val);
+                    translation = getPhoneticFaction(val);
                     break;
                 default:
                     if (translation == val)
                     {
-                        translation = Power(val);
+                        translation = getPhoneticPower(val);
                     }
                     if (translation == val)
                     {
-                        translation = PlanetClass(val);
+                        translation = getPhoneticPlanetClass(val);
                     }
                     if (translation == val)
                     {
-                        translation = getPhoneticModel(val);
+                        translation = getPhoneticShipModel(val);
                     }
                     if (translation == val)
                     {
-                        translation = getPhoneticManufacturer(val);
+                        translation = getPhoneticShipManufacturer(val);
                     }
                     if (translation == val)
                     {
-                        translation = Body(val, useICAO);
+                        translation = getPhoneticBody(val, useICAO);
                     }
                     if (translation == val)
                     {
-                        translation = StarSystem(val, useICAO);
+                        translation = getPhoneticStarSystem(val, useICAO);
                     }
                     if (translation == val)
                     {
-                        translation = Station(val);
+                        translation = getPhoneticStation(val);
                     }
                     if (translation == val)
                     {
-                        translation = Faction(val);
+                        translation = getPhoneticFaction(val);
                     }
                     break;
             }
             return translation.Trim();
         }
-
-        /// <summary>Fix up power names</summary>
-        public static string Power(string power)
-        {
-            if (power == null)
-            {
-                return null;
-            }
-
-            switch (power)
-            {
-                case "Archon Delaine":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.archon + "\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.delaine + "\">Delaine</phoneme>";
-                case "Aisling Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.aisling + "\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.duval + "\">Duval</phoneme>";
-                case "Arissa Lavigny-Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.arissa + "\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.lavigny + "\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.duval + "\">Duval</phoneme>";
-                case "Denton Patreus":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.denton + "\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.patreus + "\">Patreus</phoneme>";
-                case "Edmund Mahon":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.edmund + "\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.mahon + "\">Mahon</phoneme>";
-                case "Felicia Winters":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.felicia + "\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.winters + "\">Winters</phoneme>";
-                case "Pranav Antal":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.pranav + "\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.antal + "\">Antal</phoneme>";
-                case "Zachary Hudson":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.zachary + "\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.hudson + "\">Hudson</phoneme>";
-                case "Zemina Torval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.zemina + "\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.torval + "\">Torval</phoneme>";
-                case "Li Yong-Rui":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.li + "\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.yong + "\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.rui + "\">Rui</phoneme>";
-                case "Yuri Grom":
-                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.yuri + "\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.grom + "\">Grom</phoneme>";
-                default:
-                    return power;
-            }
-        }
-
-        // Fixes to avoid issues with some of the more strangely-named systems
-        private static readonly Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
-        {
-            { "VESPER-M4", "Vesper M 4" }, // Stop Vesper being treated as a sector
-            { "Sagittarius A*", "Sagittarius " + sayAsLettersOrNumbers("A") + " Star" }, // Allow the * to be parsed out
-            { "Summerland", "Summer Land" }, // Separate summer from land 
-        };
-
-        // Fixes to avoid issues with pronunciation of station model names
-        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()
-        {
-            { "Orbis Starport", "Or-bis Starport" }, // Stop "Or-bis" from sometimes being pronounced as "Or-bise"
-            { "Megaship", "Mega-ship" } // Stop "Mega-Ship" from sometimes being pronounced as "Meg-AH-ship"
-        };
-
-        // Fixes to avoid issues with some of the more strangely-named factions
-        private static readonly Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
-        {
-            { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
-            { "Federation Unite!", "Federation Unite"}, // Stop pausing at the end of Unite!
-            { "Minutemen", "Minute men" } // Prevent pronunciation like "Minnuh-tea-men"
-        };
-
-        private static readonly Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
-        {
-            { "Achenar", new string[] { Properties.Phonetics.achenar } },
-            { "Acihault", new string[] { Properties.Phonetics.acihault } },
-            { "Adan", new string[] { Properties.Phonetics.adan } },
-            { "Alcyone", new string[] { Properties.Phonetics.alcyone } },
-            { "Aldebaran", new string[] { Properties.Phonetics.aldebaran } },
-            { "Anemoi", new string[] { Properties.Phonetics.anemoi } },
-            { "Apoyota", new string[] { Properties.Phonetics.apoyota } },
-            { "Arque", new string[] { Properties.Phonetics.arque } },
-            { "Asterope", new string[] { Properties.Phonetics.asterope } },
-            { "Atlas", new string[] { Properties.Phonetics.atlas } },
-            { "Aulin", new string[] { Properties.Phonetics.aulin } },
-            { "Bunda", new string[] { Properties.Phonetics.bunda } },
-            { "Cayutorme", new string[] { Properties.Phonetics.cayutorme } },
-            { "Celaeno", new string[] { Properties.Phonetics.celaeno } },
-            { "Ceos", new string[] { Properties.Phonetics.ceos } },
-            { "Conn", new string[] { Properties.Phonetics.Conn } },
-            { "Cygnus", new string[] { Properties.Phonetics.cygnus } },
-            { "Deciat", new string[] { Properties.Phonetics.deciat } },
-            { "Diso", new string[] { Properties.Phonetics.diso } },
-            { "Eta Draconis", new string[] {Properties.Phonetics.Eta, Properties.Phonetics.Draconis } },
-            { "Djiwal", new string[] { Properties.Phonetics.djiwal } },
-            { "Dvorsi", new string[] { Properties.Phonetics.dvorsi } },
-            { "Electra", new string[] { Properties.Phonetics.electra } },
-            { "Eravate" , new string[] { Properties.Phonetics.eravate } },
-            { "Eranin" , new string[] { Properties.Phonetics.eranin } },
-            { "Frigaha", new string[] { Properties.Phonetics.frigaha } },
-            { "Grandmort" , new string[] { Properties.Phonetics.grandmort } },
-            { "Hecate" , new string[] { Properties.Phonetics.hecate } },
-            { "Hotas" , new string[] { Properties.Phonetics.hotas } },
-            { "Isleta" , new string[] { Properties.Phonetics.hotas } },
-            { "i Bootis" , new string[] { Properties.Phonetics.ibootis_i, Properties.Phonetics.ibootis_bootis } },
-            { "Lave", new string[] { Properties.Phonetics.lave } },
-            { "Kaia Bajaja", new string[] { Properties.Phonetics.kaiabajaja_kaia, Properties.Phonetics.kaiabajaja_bajaja } },
-            { "Kigana", new string[] { Properties.Phonetics.kigana } },
-            { "Kini", new string[] { Properties.Phonetics.kini } },
-            { "Kremainn", new string[] { Properties.Phonetics.kremainn } },
-            { "Laksak", new string[] { Properties.Phonetics.laksak } },
-            { "Leesti", new string[] { Properties.Phonetics.leesti } },
-            { "Leucos", new string[] { Properties.Phonetics.leucos } },
-            { "Luyten's Star", new string[] { Properties.Phonetics.luytens, Properties.Phonetics.star } },
-            { "Maia", new string[] { Properties.Phonetics.maia } },
-            { "Mata", new string[] { Properties.Phonetics.mata } },
-            { "Merope", new string[] { Properties.Phonetics.merope } },
-            { "Mu Koji", new string[] { Properties.Phonetics.mukoji_mu, Properties.Phonetics.mukoji_koji } },
-            { "Nuenets", new string[] { Properties.Phonetics.nuenets } },
-            { "Okinura", new string[] { Properties.Phonetics.okinura } },
-            { "Orrere", new string[] { Properties.Phonetics.orrere } },
-            { "Pai Szu", new string[] { Properties.Phonetics.paiszu_pai, Properties.Phonetics.paiszu_szu } },
-            { "Pleione", new string[] { Properties.Phonetics.pleione } },
-            { "Procyon", new string[] { Properties.Phonetics.procyon } },
-            { "Potriti", new string[] { Properties.Phonetics.potriti } },
-            { "Reorte", new string[] { Properties.Phonetics.reorte } },
-            { "Sagittarius A Star", new string[] {Properties.Phonetics.Sagittarius, Properties.Phonetics.Sagittarius_A, Properties.Phonetics.Sagittarius_A_star} },
-            { "Sakti", new string[] { Properties.Phonetics.sakti } },
-            { "Shinrarta Dezhra", new string[] { Properties.Phonetics.shinrartadezhra_shinrarta, Properties.Phonetics.shinrartadezhra_dezhra } },
-            { "Sterope", new string[] {Properties.Phonetics.Sterope} },
-            { "Surya", new string[] { Properties.Phonetics.surya } },
-            { "Taygeta", new string[] { Properties.Phonetics.taygeta } },
-            { "Tse", new string[] { Properties.Phonetics.tse } },
-            { "Xihe", new string[] { Properties.Phonetics.xihe } },
-            { "Xinca", new string[] { Properties.Phonetics.xinca } },
-            { "Yakabugai", new string[] { Properties.Phonetics.yakabugai } },
-            { "Zaonce", new string[] { Properties.Phonetics.zaonce } },
-            { "Zhang Fei", new string[] { Properties.Phonetics.zhangfei_zhang, Properties.Phonetics.zhangfei_fei } },
-        };
-
-        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
-        {
-            { "Aachen Town", new string[] { Properties.Phonetics.Aachen, Properties.Phonetics.Town } },
-            { "Slough Orbital", new string[] { Properties.Phonetics.Slough, Properties.Phonetics.Orbital } },
-        };
-
-        public static string PlanetClass(string val)
-        {
-            if (val == null)
-            {
-                return null;
-            }
-
-            // Properly handle roman numerals in planet classes
-            foreach (PlanetClass planetClass in EddiDataDefinitions.PlanetClass.AllOfThem)
-            {
-                if (val.Contains(planetClass.localizedName))
-                {
-                    string numeralToNumber = planetClass.localizedName
-                        .Replace(" I ", " 1 ")
-                        .Replace(" II ", " 2 ")
-                        .Replace(" III ", " 3 ")
-                        .Replace(" IV ", " 4 ")
-                        .Replace(" V ", " 5 ")
-                        .Replace(" VI ", " 6 ");
-                    val = val.Replace(planetClass.localizedName, numeralToNumber);
-                }
-            }
-            return val;
-        }
-
-        private static readonly Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
-        {
-            { "Alrai" , new string[] { Properties.Phonetics.Alrai } },
-            { "Antliae" , new string[] { Properties.Phonetics.Antliae } },
-            { "Aquarii" , new string[] { Properties.Phonetics.Aquarii } },
-            { "Arietis" , new string[] { Properties.Phonetics.Arietis } },
-            { "Bei Dou" , new string[] { Properties.Phonetics.Bei, Properties.Phonetics.Dou } },
-            { "Blanco" , new string[] { Properties.Phonetics.Blanco } },
-            { "Bleae Thaa" , new string[] { Properties.Phonetics.BleaeThaa_Bleae, Properties.Phonetics.BleaeThaa_Thaa } },
-            { "Capricorni" , new string[] { Properties.Phonetics.Capricorni } },
-            { "Cepheus" , new string[] { Properties.Phonetics.Cepheus } },
-            { "Cephei" , new string[] { Properties.Phonetics.Cephei } },
-            { "Ceti" , new string[] { Properties.Phonetics.Ceti } },
-            { "Chi Persei" , new string[] { Properties.Phonetics.ChiPersei_Chi, Properties.Phonetics.ChiPersei_Persei } },
-            { "Crucis" , new string[] { Properties.Phonetics.Crucis } },
-            { "Cygni" , new string[] { Properties.Phonetics.Cygni } },
-            { "Eta Carina" , new string[] { Properties.Phonetics.EtaCarina_Eta, Properties.Phonetics.EtaCarina_Carina } },
-            { "Fornacis" , new string[] { Properties.Phonetics.Fornacis } },
-            { "Herculis" , new string[] { Properties.Phonetics.Herculis } },
-            { "Hyades" , new string[] { Properties.Phonetics.Hyades } },
-            { "Hydrae" , new string[] { Properties.Phonetics.Hydrae } },
-            { "Lupus" , new string[] { Properties.Phonetics.Lupus } },
-            { "Lyncis" , new string[] { Properties.Phonetics.Lyncis } },
-            { "Omega" , new string[] { Properties.Phonetics.Omega } },
-            { "Ophiuchus" , new string[] { Properties.Phonetics.Ophiuchus } },
-            { "Pegasi" , new string[] { Properties.Phonetics.Pegasi } },
-            { "Persei" , new string[] { Properties.Phonetics.Persei } },
-            { "Piscium" , new string[] { Properties.Phonetics.Piscium } },
-            { "Pleiades" , new string[] { Properties.Phonetics.Pleiades } },
-            { "Puppis" , new string[] { Properties.Phonetics.Puppis } },
-            { "Pru Euq" , new string[] { Properties.Phonetics.PruEuq_Pru, Properties.Phonetics.PruEuq_Euq } },
-            { "Rho Ophiuchi" , new string[] { Properties.Phonetics.RhoOphiuchi_Rho, Properties.Phonetics.RhoOphiuchi_Ophiuchi } },
-            { "Sagittarius", new string[] { Properties.Phonetics.Sagittarius } },
-            { "Scorpii", new string[] { Properties.Phonetics.Scorpii } },
-            { "Shui Wei", new string[] { Properties.Phonetics.ShuiWei_Shui, Properties.Phonetics.ShuiWei_Wei } },
-            { "Tau Ceti" , new string[] { Properties.Phonetics.TauCeti_Tau, Properties.Phonetics.TauCeti_Ceti } },
-            { "Tascheter", new string[] { Properties.Phonetics.Tascheter } },
-            { "Trianguli", new string[] { Properties.Phonetics.Trianguli } },
-            { "Trifid", new string[] { Properties.Phonetics.Trifid} },
-            { "Tucanae", new string[] { Properties.Phonetics.Tucanae } },
-            { "Wredguia", new string[] { Properties.Phonetics.Wredguia } },
-        };
 
         // Various handy regexes so we don't keep recreating them
         private static readonly Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z][0-9]");
@@ -313,289 +90,6 @@ namespace EddiSpeechService
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
         private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
         private static readonly Regex SHORTBODY = new Regex(@"^([A-E]){0,1}(?> )*(\d+){0,1}(?> )*([a-z]){0,1}$");
-
-        /// <summary>Fix up faction names</summary>
-        public static string Faction(string faction)
-        {
-            if (faction == null)
-            {
-                return null;
-            }
-
-            // Specific fixing of names to avoid later confusion
-            if (FACTION_FIXES.ContainsKey(faction))
-            {
-                faction = FACTION_FIXES[faction];
-            }
-
-            // Faction names can contain system names; hunt them down and change them
-            foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
-            {
-                if (faction.Contains(pronunciation.Key))
-                {
-                    var replacement = replaceWithPronunciation(pronunciation.Key, pronunciation.Value);
-                    return faction.Replace(pronunciation.Key, replacement);
-                }
-            }
-
-            return faction;
-        }
-
-        /// <summary>Fix up body names</summary>
-        private static string Body(string body, bool useICAO = false)
-        {
-            if (body == null)
-            {
-                return null;
-            }
-
-            List<string> results = new List<string>();
-
-            // Use a regex to break apart the body from the system
-            Match match = BODY.Match(body);
-            if (!match.Success)
-            {
-                // There was no match so we pass this as-is
-                return body;
-            }
-            else
-            {
-                // Might be a short body name
-                if (SHORTBODY.IsMatch(body))
-                {
-                    return sayAsLettersOrNumbers(body);
-                }
-
-                // Parse the starsystem
-                results.Add(StarSystem(match.Groups[1].Value.Trim(), useICAO));
-                // Parse the body
-                for (int i = 2; i < match.Groups.Count; i++)
-                {
-                    for (int j = 0; j < match.Groups[i].Captures.Count; j++)
-                    {
-                        var part = match.Groups[i].Captures[j].Value.Trim();
-                        var lastPart = j > 0 ? match.Groups[i].Captures[j - 1].Value.Trim()
-                            : i > 2 && match.Groups[i - 1].Captures.Count > 0 ? match.Groups[i - 1].Captures[match.Groups[i - 1].Captures.Count - 1].Value.Trim()
-                            : null;
-                        var nextPart = j < match.Groups[i].Captures.Count - 1 ? match.Groups[i].Captures[j + 1].Value.Trim()
-                            : i < match.Groups.Count - 1 ? match.Groups[i + 1].Captures[0].Value.Trim()
-                            : null;
-
-                        if (DIGIT.IsMatch(part))
-                        {
-                            // The part is a number; turn it in to ICAO if required
-                            results.Add(useICAO ? ICAO(part, true) : part);
-                        }
-                        else if (PLANET.IsMatch(part) || lastPart == "Cluster" || nextPart == "Ring" || nextPart == "Belt")
-                        {
-                            // The part represents a body, possibly part of the name of a moon, ring, (stellar) belt, or belt cluster; 
-                            // e.g. "Pru Aescs NC-M d7-192 A A Belt", "Prai Flyou JQ-F b30-3 B Belt Cluster 9", "Oopailks NV-X c17-1 AB 6 A Ring"
-
-                            // turn it in to ICAO if required
-                            if (useICAO)
-                            {
-                                results.Add(ICAO(part, true));
-                            }
-                            else
-                            {
-                                results.Add(sayAsLettersOrNumbers(part));
-                            }
-                        }
-                        else if (part == "Belt" || part == "Cluster" || part == "Ring")
-                        {
-                            // Pass as-is
-                            results.Add(part);
-                        }
-                        else if (SUBSTARS.IsMatch(part))
-                        {
-                            // The part is uppercase; turn it in to ICAO if required
-                            results.Add(UPPERCASE.Replace(part, m => useICAO ? ICAO(m.Value, true) : string.Join<char>(" ", m.Value)));
-                        }
-                        else if (TEXT.IsMatch(part))
-                        {
-                            // turn it in to ICAO if required
-                            if (useICAO)
-                            {
-                                results.Add(ICAO(part));
-                            }
-                            else
-                            {
-                                results.Add(sayAsLettersOrNumbers(part));
-                            }
-                        }
-                        else
-                        {
-                            // Pass it as-is
-                            results.Add(part);
-                        }
-                    }
-                }
-            }
-
-            return Regex.Replace(string.Join(" ", results), @"\s+", " ");
-        }
-
-        /// <summary>Fix up star system names</summary>
-        public static string StarSystem(string starSystem, bool useICAO = false)
-        {
-            if (starSystem == null)
-            {
-                return null;
-            }
-
-            // Specific fixing of names to avoid later confusion
-            if (STAR_SYSTEM_FIXES.ContainsKey(starSystem))
-            {
-                return STAR_SYSTEM_FIXES[starSystem];
-            }
-
-            // Specific translations
-            if (STAR_SYSTEM_PRONUNCIATIONS.ContainsKey(starSystem))
-            {
-                return replaceWithPronunciation(starSystem, STAR_SYSTEM_PRONUNCIATIONS[starSystem]);
-            }
-
-            // Common star catalogues
-            if (starSystem.StartsWith("HIP"))
-            {
-                starSystem = starSystem.Replace("HIP", "Hip");
-            }
-            else if (starSystem.StartsWith("L ")
-                || starSystem.StartsWith("LFT ")
-                || starSystem.StartsWith("LHS ")
-                || starSystem.StartsWith("LP ")
-                || starSystem.StartsWith("LTT ")
-                || starSystem.StartsWith("NLTT ")
-                || starSystem.StartsWith("LPM ")
-                || starSystem.StartsWith("PPM ")
-                || starSystem.StartsWith("ADS ")
-                || starSystem.StartsWith("HR ")
-                || starSystem.StartsWith("HD ")
-                || starSystem.StartsWith("Luyten ")
-            )
-            {
-                starSystem = starSystem.Replace("-", " " + Properties.Phrases.dash + " ");
-            }
-            else if (starSystem.StartsWith("Gliese "))
-            {
-                starSystem = starSystem.Replace(".", " " + Properties.Phrases.point + " ");
-            }
-            else if (SECTOR.IsMatch(starSystem))
-            {
-                // Generated star systems
-                // Need to handle the pieces before and after the sector marker separately
-                Match Match = SECTOR.Match(starSystem);
-
-                // Fix common names
-                string firstPiece = Match.Groups[1].Value
-                    .Replace("Col ", "Coll ")
-                    .Replace("R CrA ", "R CRA ")
-                    .Replace("Tr ", "TR ")
-                    .Replace("Skull and Crossbones Neb. ", "Skull and Crossbones ")
-                    .Replace("(", "").Replace(")", "");
-
-                // Various items between the sector name and 'Sector' need to be removed to allow us to find the base pronunciation
-                string subPiece = "";
-                if (firstPiece.EndsWith(" Dark Region B Sector"))
-                {
-                    firstPiece = firstPiece.Replace(" Dark Region B Sector", "");
-                    subPiece = " Dark Region B Sector";
-                }
-                else if (firstPiece.EndsWith(" Sector"))
-                {
-                    firstPiece = firstPiece.Replace(" Sector", "");
-                    subPiece = " Sector";
-                }
-
-                // Might be a name that we need to translate
-                if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(firstPiece))
-                {
-                    firstPiece = replaceWithPronunciation(firstPiece, CONSTELLATION_PRONUNCIATIONS[firstPiece]);
-                }
-
-                string secondPiece = Match.Groups[2].Value;
-                if (useICAO)
-                {
-                    secondPiece = ICAO(secondPiece, true);
-                }
-                secondPiece = secondPiece.Replace("-", " " + Properties.Phrases.dash + " ");
-                starSystem = firstPiece + subPiece + " " + secondPiece;
-            }
-            else if (starSystem.StartsWith("2MASS ")
-                || starSystem.StartsWith("AC ")
-                || starSystem.StartsWith("AG") // Note no space
-                || starSystem.StartsWith("BD") // Note no space
-                || starSystem.StartsWith("CFBDSIR ")
-                || starSystem.StartsWith("CXOONC ")
-                || starSystem.StartsWith("CXOU ")
-                || starSystem.StartsWith("CPD") // Note no space
-                || starSystem.StartsWith("CSI") // Note no space
-                || starSystem.StartsWith("Csi") // Note no space
-                || starSystem.StartsWith("IDS ")
-                || starSystem.StartsWith("LF ")
-                || starSystem.StartsWith("MJD95 ")
-                || starSystem.StartsWith("SDSS ")
-                || starSystem.StartsWith("UGCS ")
-                || starSystem.StartsWith("WISE ")
-                || starSystem.StartsWith("XTE ")
-                )
-            {
-                // Star systems with +/- (and sometimes .)
-                starSystem = starSystem.Replace("Csi ", "CSI ")
-                                       .Replace("WISE ", "Wise ")
-                                       .Replace("2MASS ", "2 mass ")
-                                       .Replace("+", " " + Properties.Phrases.plus + " ")
-                                       .Replace("-", " " + Properties.Phrases.minus + " ")
-                                       .Replace(".", " " + Properties.Phrases.point + " ");
-            }
-            else
-            {
-                // It's possible that the name contains a constellation, in which case translate it
-                string[] pieces = starSystem.Split(' ');
-                for (int i = 0; i < pieces.Length; i++)
-                {
-                    if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
-                    {
-                        pieces[i] = replaceWithPronunciation(pieces[i], CONSTELLATION_PRONUNCIATIONS[pieces[i]]);
-                    }
-                }
-                starSystem = string.Join(" ", pieces);
-            }
-
-            // Any string of an alpha followd by a numeric is broken up
-            starSystem = ALPHA_THEN_NUMERIC.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
-
-            // Fix up digit strings
-            // Any digits after a decimal point are broken in to individual digits
-            starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", useICAO ? ICAO(match.Groups[2].Value, true) : match.Groups[2].Value));
-            // Any string of more than two digits is broken up in to individual digits
-            starSystem = THREE_OR_MORE_DIGITS.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
-
-            // Any string of upper-case letters is broken up to avoid issues such as 'DR' being pronounced as 'Doctor'
-            starSystem = UPPERCASE.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
-
-            return Regex.Replace(starSystem, @"\s+", " ");
-        }
-
-        /// <summary>Fix up station related pronunciations </summary>
-        private static string Station(string station)
-        {
-            // Specific translations
-            if (STATION_PRONUNCIATIONS.ContainsKey(station))
-            {
-                return replaceWithPronunciation(station, STATION_PRONUNCIATIONS[station]);
-            }
-
-            // Specific fixing of station model pronunciations
-            if (STATION_MODEL_FIXES.ContainsKey(station))
-            {
-                station = STATION_MODEL_FIXES[station];
-            }
-            // Strip plus signs and spaces from station name suffixes
-            char[] charsToTrim = { '+', ' ' };
-            station = station.TrimEnd(charsToTrim);
-            return station;
-        }
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
