@@ -82,6 +82,14 @@ jobs:
     - name: Build our solution
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
 
+    # Compress and upload our build assets
+    - name: Compress build artifacts
+      run: Compress-Archive -Path ./bin/Release/* -DestinationPath build-artifact.zip
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+
     # Analyze our build for security vulnerabilities
     - name: Perform CodeQL Security Analysis
       uses: github/codeql-action/analyze@v1
