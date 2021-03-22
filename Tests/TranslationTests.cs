@@ -61,6 +61,53 @@ namespace UnitTests
         }
 
         [DataTestMethod]
+        [DataRow("A 1", 
+            @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""number"">1</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>"
+        )]
+        [DataRow("B 2 a", 
+            @"<say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""number"">2</say-as> <say-as interpret-as=""characters"">a</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>"
+        )]
+        [DataRow("C 3", 
+            @"<say-as interpret-as=""characters"">C</say-as> <say-as interpret-as=""number"">3</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme>"
+        )]
+        [DataRow("D 4 b", 
+            @"<say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""number"">4</say-as> <say-as interpret-as=""characters"">b</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfoʊ.ər"">fawer</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>"
+        )]
+        [DataRow("E 5", 
+            @"<say-as interpret-as=""characters"">E</say-as> <say-as interpret-as=""number"">5</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈeko"">echo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme>"
+        )]
+        [DataRow("6 f",
+            @"<say-as interpret-as=""number"">6</say-as> <say-as interpret-as=""characters"">f</say-as>",
+            @"<phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfɒkstrɒt"">foxtrot</phoneme>"
+        )]
+        [DataRow("AB 9", 
+            @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""number"">9</say-as>",
+            @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈnaɪnər"">niner</phoneme>"
+        )]
+        [DataRow("ABC 10", 
+            @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""characters"">C</say-as> <say-as interpret-as=""number"">10</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme>"
+        )]
+        [DataRow("ABCD 11", 
+            @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""characters"">C</say-as> <say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""number"">11</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>"
+        )]
+        [DataRow("ABCDE 12", 
+            @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""characters"">C</say-as> <say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""characters"">E</say-as> <say-as interpret-as=""number"">12</say-as>", 
+            @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑɹli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeko"">echo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme>"
+        )]
+        public void TestTranslateShortBody(string source, string expected, string expectedICAO)
+        {
+            Assert.AreEqual(expected, Translations.GetTranslation(source));
+            Assert.AreEqual(expectedICAO, Translations.GetTranslation(source, true));
+        }
+
+        [DataTestMethod]
         [DataRow("Shinrarta Dezhra",
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme>",
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme>"
