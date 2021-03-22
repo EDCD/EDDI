@@ -90,7 +90,7 @@ namespace EddiSpeechService
         private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
         private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
-        private static readonly Regex SHORTBODY = new Regex(@"^([A-E]*)(?> )(\d*)(?> )*([a-z]*)$");
+        private static readonly Regex SHORTBODY = new Regex(@"^([A-Z]*)(?> ){0,1}(\d*)(?> ){0,1}([a-z]*)$");
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
