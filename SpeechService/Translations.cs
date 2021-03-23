@@ -288,10 +288,6 @@ namespace EddiSpeechService
                         {
                             elements.Add(Properties.Phrases.plus);
                         }
-                        else if (matchAsString == "-")
-                        {
-                            elements.Add(Properties.Phrases.minus);
-                        }
                         else
                         {
                             elements.Add(matchAsString);
