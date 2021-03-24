@@ -263,12 +263,12 @@ namespace EddiSpeechService
                     {
                         foreach (var c in matchAsString)
                         {
-                            elements.Add(@"<say-as interpret-as=""number"">" + c + @"</say-as>");
+                            elements.Add($"{c}");
                         }
                     }
                     else
                     {
-                        elements.Add(@"<say-as interpret-as=""number"">" + number + @"</say-as>");
+                        elements.Add($"{number}");
                     }
                 }
                 else if (!(new Regex(@"\w").IsMatch(matchAsString)))
