@@ -214,7 +214,7 @@
     <comment>Station Service: Powerplay</comment>
   </data>
   <data name="SearchAndRescue" xml:space="preserve">
-    <value>Such- und Rettungsteam</value>
+    <value>Suche und Rettung</value>
     <comment>Station Service: SearchAndRescue</comment>
   </data>
   <data name="TechBroker" xml:space="preserve">
