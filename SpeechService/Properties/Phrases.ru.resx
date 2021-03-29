@@ -198,59 +198,59 @@
     <comment>Where {0} is a whole number in the quintillions order</comment>
   </data>
   <data name="over" xml:space="preserve">
-    <value>более {0}</value>
+    <value>Больше {0}</value>
     <comment>Where {0} is a whole number</comment>
   </data>
   <data name="overMinus" xml:space="preserve">
-    <value>более минус {0}</value>
+    <value>Больше минус {0}</value>
     <comment>Where {0} is a negative whole number</comment>
   </data>
   <data name="overThousand" xml:space="preserve">
-    <value>более {0} тысяч</value>
+    <value>Больше {0} тысяч</value>
     <comment>Where {0} is a whole number in the thousands order</comment>
   </data>
   <data name="overMinusThousand" xml:space="preserve">
-    <value>более минус {0} тысяч</value>
+    <value>Больше минус {0} тысяч</value>
     <comment>Where {0} is a negative whole number in the thousands order</comment>
   </data>
   <data name="overMinusMillion" xml:space="preserve">
-    <value>более минус {0} миллион</value>
+    <value>Больше минус {0} миллион</value>
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
   <data name="overMillion" xml:space="preserve">
-    <value>более {0} миллион</value>
+    <value>Больше {0} миллион</value>
     <comment>Where {0} is a whole number in the millions order</comment>
   </data>
   <data name="overBillion" xml:space="preserve">
-    <value>более {0} миллиард</value>
+    <value>Больше {0} миллиард</value>
     <comment>Where {0} is a whole number in the billions order</comment>
   </data>
   <data name="overMinusBillion" xml:space="preserve">
-    <value>более минус {0} миллиард</value>
+    <value>Больше минус {0} миллиард</value>
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
   <data name="overTrillion" xml:space="preserve">
-    <value>более {0} триллион</value>
+    <value>Больше {0} триллион</value>
     <comment>Where {0} is a whole number in the trillions order</comment>
   </data>
   <data name="overMinusTrillion" xml:space="preserve">
-    <value>более минус {0} триллион</value>
+    <value>Больше минус {0} триллион</value>
     <comment>Where {0} is a negative whole number in the trillions order</comment>
   </data>
   <data name="overQuadrillion" xml:space="preserve">
-    <value>более {0} квадриллион</value>
+    <value>Больше {0} квадриллион</value>
     <comment>Where {0} is a whole number in the quadrillions order</comment>
   </data>
   <data name="overMinusQuadrillion" xml:space="preserve">
-    <value>более минус {0} квадриллион</value>
+    <value>Больше минус {0} квадриллион</value>
     <comment>Where {0} is a negative whole number in the quadrillions order</comment>
   </data>
   <data name="overMinusQuintillion" xml:space="preserve">
-    <value>более минус {0} квинтиллион</value>
+    <value>Больше минус {0} квинтиллион</value>
     <comment>Where {0} is a negative whole number in the quintillions order</comment>
   </data>
   <data name="overQuintillion" xml:space="preserve">
-    <value>более {0} квинтиллион</value>
+    <value>Больше {0} квинтиллион</value>
     
     <comment>Where {0} is a whole number in the quintillions order
 </comment>
@@ -480,59 +480,59 @@
     <comment>Where {0} is a whole number in the quintillions order</comment>
   </data>
   <data name="overMinusAndAHalf" xml:space="preserve">
-    <value>более минус {0} с половиной</value>
+    <value>Больше минус {0} с половиной</value>
     <comment>Where {0} is a whole number</comment>
   </data>
   <data name="overMinusAndAHalfThousand" xml:space="preserve">
-    <value>более минус {0} с половиной тысяч</value>
+    <value>Больше минус {0} с половиной тысяч</value>
     <comment>Where {0} is a negative whole number in the thousands order</comment>
   </data>
   <data name="overMinusAndAHalfMillion" xml:space="preserve">
-    <value>более минус {0} с половиной миллион</value>
+    <value>Больше минус {0} с половиной миллион</value>
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
   <data name="overMinusAndAHalfBillion" xml:space="preserve">
-    <value>более минус {0} с половиной миллиард</value>
+    <value>Больше минус {0} с половиной миллиард</value>
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
   <data name="overMinusAndAHalfTrillion" xml:space="preserve">
-    <value>более минус {0} с половиной триллион</value>
+    <value>Больше минус {0} с половиной триллион</value>
     <comment>Where {0} is a negative whole number in the trillions order</comment>
   </data>
   <data name="overMinusAndAHalfQuadrillion" xml:space="preserve">
-    <value>более минус {0} с половиной квадриллион</value>
+    <value>Больше минус {0} с половиной квадриллион</value>
     <comment>Where {0} is a negative whole number in the quadrillions order</comment>
   </data>
   <data name="overMinusAndAHalfQuintillion" xml:space="preserve">
-    <value>более минус {0} с половиной квинтиллион</value>
+    <value>Больше минус {0} с половиной квинтиллион</value>
     <comment>Where {0} is a negative whole number in the quintillions order</comment>
   </data>
   <data name="overAndAHalf" xml:space="preserve">
-    <value>более {0} с половиной</value>
+    <value>Больше {0} с половиной</value>
     <comment>Where {0} is a whole number</comment>
   </data>
   <data name="overAndAHalfThousand" xml:space="preserve">
-    <value>более {0} с половиной тысяч</value>
+    <value>Больше {0} с половиной тысяч</value>
     <comment>Where {0} is a whole number in the thousands order</comment>
   </data>
   <data name="overAndAHalfMillion" xml:space="preserve">
-    <value>более {0} с половиной миллион</value>
+    <value>Больше {0} с половиной миллион</value>
     <comment>Where {0} is a whole number in the millions order</comment>
   </data>
   <data name="overAndAHalfBillion" xml:space="preserve">
-    <value>более {0} с половиной миллиард</value>
+    <value>Больше {0} с половиной миллиард</value>
     <comment>Where {0} is a whole number in the billions order</comment>
   </data>
   <data name="overAndAHalfTrillion" xml:space="preserve">
-    <value>более {0} с половиной триллион</value>
+    <value>Больше {0} с половиной триллион</value>
     <comment>Where {0} is a whole number in the trillions order</comment>
   </data>
   <data name="overAndAHalfQuadrillion" xml:space="preserve">
-    <value>более {0} с половиной квадриллион</value>
+    <value>Больше {0} с половиной квадриллион</value>
     <comment>Where {0} is a whole number in the quadrillions order</comment>
   </data>
   <data name="overAndAHalfQuintillion" xml:space="preserve">
-    <value>более {0} с половиной квинтиллион</value>
+    <value>Больше {0} с половиной квинтиллион</value>
     <comment>Where {0} is a whole number in the quintillions order</comment>
   </data>
   <data name="wellOverMinusAndAHalf" xml:space="preserve">
