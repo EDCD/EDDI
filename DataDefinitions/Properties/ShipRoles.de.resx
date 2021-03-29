@@ -155,7 +155,7 @@
     <comment>Ship role Science</comment>
   </data>
   <data name="Searchandrescue" xml:space="preserve">
-    <value>Suchen und Retten</value>
+    <value>Suche und Rettung</value>
     <comment>Ship role Searchandrescue</comment>
   </data>
   <data name="Smuggling" xml:space="preserve">
