@@ -62,7 +62,6 @@ Source: "EddiDataProviderService.dll.config"; DestDir: "{app}"; Flags: ignorever
 Source: "EDDI.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiVoiceAttackResponder.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiGalnetMonitor.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "System.Data.SQLite.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Remove outdated files
 [InstallDelete]
@@ -81,6 +80,7 @@ Type: files; Name: "{app}\CSCore.xml"
 Type: files; Name: "{app}\RestSharp.xml"
 Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
 Type: files; Name: "{app}\EntityFramework.xml"
+Type: files; Name: "{app}\System.Data.SQLite.dll.config"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 
 ; Remove sensitive data on uninstall
