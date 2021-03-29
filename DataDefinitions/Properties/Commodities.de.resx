@@ -1685,17 +1685,26 @@
     <value>Ultrakompakte Prozessorprototypen</value>
     <comment>Commodity Ultra-Compact Processor Prototypes</comment>
   </data>
-  
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Crom Silver Fesh</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
   <data name="Tritium" xml:space="preserve">
     <value>Tritium</value>
     <comment>Commodity Tritium</comment>
   </data>
-  
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>Molluskenflüssigkeit</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
   <data name="M_TissueSample_Soft" xml:space="preserve">
     <value>Mollusken-Weichgewebe</value>
     <comment>Commodity M_TissueSample_Soft</comment>
   </data>
-  
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>Molluskengehirngewebe</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
   <data name="S_TissueSample_Cells" xml:space="preserve">
     <value>Schalenkerngewebeprobe</value>
     <comment>Commodity S_TissueSample_Cells</comment>
@@ -1708,7 +1717,10 @@
     <value>Schalenoberflächengewebeprobe</value>
     <comment>Commodity S_TissueSample_Core</comment>
   </data>
-  
+  <data name="P_ParticulateSample" xml:space="preserve">
+    <value>Anomaliepartikel</value>
+    <comment>Commodity P_ParticulateSample</comment>
+  </data>
   <data name="S9_TissueSample_Shell" xml:space="preserve">
     <value>Schalengewebeprobe</value>
     <comment>Commodity S9_TissueSample_Shell</comment>
@@ -1741,7 +1753,10 @@
     <value>Dekoratives Sanuma Fleisch</value>
     <comment>Commodity SanumaMEAT</comment>
   </data>
-  
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Wolf Fesh</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
   <data name="CD75CatCoffee" xml:space="preserve">
     <value>CD-75 Kätzchen Marken Kaffee</value>
     <comment>Commodity CD75CatCoffee </comment>
