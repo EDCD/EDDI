@@ -117,27 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Vymazat trasu</value>
+  </data>
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Vymaže trasu mise a cílový systém.</value>
+  </data>
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>Vymazat trasu:</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Získat trasu</value>
+  </data>
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Začne s kalkulaci algoritmu pro "Nejbližšího souseda" aby mohl určit nejkratší trasu mise.</value>
+  </data>
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>Získat trasu:</value>
+  </data>
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Cílová stanice</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Cílový systém</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>ID mise</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Zbývá</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Sledovat informace o vašich misích.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Monitor misí</value>
+  </data>
+  <data name="next_route_button" xml:space="preserve">
+    <value>Další na trase</value>
+  </data>
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Nastaví cílový systém na systém, který je další na trase mise.</value>
+  </data>
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>Další v trase:</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Níže je uveden seznam vašich misí.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Pokud jsou informace o misích nesprávné, budete muset restartovat Elite. Informace se aktualizují.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Hranice pro varování o expirujících misích (minuty):</value>
+  </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>Aktualizovat trasu</value>
+  </data>
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Nastaví cílový systém na další systém na trase mise, pokud jsou všechny mise dokončeny.</value>
+  </data>
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>Aktualizovat trasu:</value>
+  </data>
 </root>

@@ -305,13 +305,13 @@
     <value>Capacità Munizioni Bersagli Fantasma</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Alleggerito</value>
+    <value>Emettitore Bersagli Fantasma Alleggerito</value>
   </data>
   <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Rinforzato</value>
+    <value>Emettitore Bersagli Fantasma Rinforzato</value>
   </data>
   <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>Lanciatore Bersagli Fantasma Protetto</value>
+    <value>Emettitore Bersagli Fantasma Protetto</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Raccolta Alleggerito</value>
@@ -488,7 +488,7 @@
     <value>Cannone a Ripetizione ad Alta Capacità</value>
   </data>
   <data name="RailGunHighCapacity" xml:space="preserve">
-    <value>Cannone a Binario ad Alta Capacità</value>
+    <value>Cannone Elettromagnetico ad Alta Capacità</value>
   </data>
   <data name="BeamLaserLightWeight" xml:space="preserve">
     <value>Laser Alleggerito</value>
@@ -518,7 +518,7 @@
     <value>Laser ad Impulso Alleggerito</value>
   </data>
   <data name="RailGunLightWeight" xml:space="preserve">
-    <value>Cannone a Binario Alleggerito</value>
+    <value>Cannone Elettromagnetico Alleggerito</value>
   </data>
   <data name="TorpedoLightWeight" xml:space="preserve">
     <value>Lancia Torpedo Alleggerito</value>
@@ -542,7 +542,7 @@
     <value>Laser ad Impulso a Lungo Raggio</value>
   </data>
   <data name="RailGunLongRange" xml:space="preserve">
-    <value>Cannone a Binario a Lungo Raggio</value>
+    <value>Cannone Elettromagnetico a Lungo Raggio</value>
   </data>
   <data name="BeamLaserOvercharged" xml:space="preserve">
     <value>Laser Sovraccaricato</value>
@@ -608,7 +608,7 @@
     <value>Laser ad Impulso a Corto Raggio</value>
   </data>
   <data name="RailGunShortRange" xml:space="preserve">
-    <value>Cannone a Binario a Corto Raggio</value>
+    <value>Cannone Elettromagnetico a Corto Raggio</value>
   </data>
   <data name="BeamLaserSturdy" xml:space="preserve">
     <value>Laser Irrobustito</value>
@@ -638,7 +638,7 @@
     <value>Laser ad Impulso Irrobustito</value>
   </data>
   <data name="RailGunSturdy" xml:space="preserve">
-    <value>Cannone a Binario Irrobustito</value>
+    <value>Cannone Elettromagnetico Irrobustito</value>
   </data>
   <data name="TorpedoSturdy" xml:space="preserve">
     <value>Torpedo Irrobustito</value>

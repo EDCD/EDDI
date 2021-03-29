@@ -130,16 +130,16 @@
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zona de Combate de Alta Intensidade</value>
-    <comment>Combat Zone (High Intensity)</comment>
+    <value>Zona de Conflito de Alta Intensidade</value>
+    <comment>Conflict Zone (High Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zona de Combate de Média Intensidade</value>
-    <comment>Combat Zone (Medium Intensity)</comment>
+    <value>Zona de Conflito de Média Intensidade</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zona de Combate de Baixa Intensidade</value>
-    <comment>Combat Zone (Low Intensity)</comment>
+    <value>Zona de Conflito de Baixa Intensidade</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
   </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Transmissões Degradadas</value>
@@ -342,6 +342,10 @@
     <comment>Distribution Centre</comment>
   </data>
   <data name="Aftermath_Large" xml:space="preserve">
+    <value>Pedido de Ajuda</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
     <value>Pedido de Ajuda</value>
     <comment>Distress Call</comment>
   </data>

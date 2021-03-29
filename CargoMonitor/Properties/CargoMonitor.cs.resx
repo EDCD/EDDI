@@ -117,16 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>Sledovat informace o nákladu.</value>
+  </data>
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Monitor nákladu</value>
+  </data>
+  <data name="header_haulage" xml:space="preserve">
+    <value>Náklad</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Název</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>Potřeba</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Pokud jsou informace o nákladu nesprávné, budete muset restartovat Elite. Informace se aktualizují.</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Níže je uveden seznam vašeho nákladu.</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Typ</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Ukradeno</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Cena za tunu</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Vlastníte</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Poznámka: Pokud se účastníte mise ve wingu, bude se zobrazovat u komodity "Neznámý" do doby než jej vyzvednete nebo doručíte.</value>
+  </data>
 </root>

@@ -222,7 +222,7 @@
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio o come ricompensa per Missioni.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto verso Iperspazio o come ricompensa per Missioni.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Material location Open Symmetric Keys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Material location Divergent Scan Data</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto verso Iperspazio.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
@@ -366,7 +366,7 @@
     <comment>Material location Classified Scan Fragment</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">

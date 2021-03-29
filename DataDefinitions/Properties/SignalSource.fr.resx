@@ -129,18 +129,9 @@
     <value>Source du signal non identifiée</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zone de combat de haute intensité</value>
-    <comment>Combat Zone (High Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zone de combat d'intensité moyenne</value>
-    <comment>Combat Zone (Medium Intensity)</comment>
-  </data>
-  <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zone de combat de faible intensité</value>
-    <comment>Combat Zone (Low Intensity)</comment>
-  </data>
+  
+  
+  
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Émissions dégradées</value>
     <comment>Salvage signal</comment>
@@ -319,6 +310,7 @@
     <value>Champ de débris</value>
     <comment>Debris field</comment>
   </data>
+  
   
   
   
