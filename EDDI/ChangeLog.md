@@ -45,6 +45,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack
     * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
 
+### 3.7.3
+  * Treat alpha game clients just the same as beta game clients, i.e. do not upload data to live endpoints.
+
 ### 3.7.2
   * Promote 3.7.2-rc3 to final
 
