@@ -117,17 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Lovec odměn</value>
+  </data>
+  <data name="Civilian" xml:space="preserve">
+    <value>Civilista</value>
+  </data>
+  <data name="Hostage" xml:space="preserve">
+    <value>Rukojmí</value>
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Těžař</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirát</value>
+  </data>
+  <data name="PirateLord" xml:space="preserve">
+    <value>Pirátský lord</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Ochranka</value>
+  </data>
+  <data name="Smuggler" xml:space="preserve">
+    <value>Pašerák</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Terorista</value>
+  </data>
+  <data name="Trader" xml:space="preserve">
+    <value>Obchodník</value>
+  </data>
+  <data name="VenerableGeneral" xml:space="preserve">
+    <value>Ctihodný generál</value>
+  </data>
+  <data name="DeserterASS" xml:space="preserve">
+    <value>Dezertér</value>
+    <comment>Assassination mission target: Deserter</comment>
+  </data>
+  <data name="TerroristLeader" xml:space="preserve">
+    <value>Vůdce teroristů</value>
+  </data>
 </root>
