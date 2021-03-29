@@ -174,7 +174,7 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Emettitore Chaff</value>
+    <value>Emettitore Bersagli Fantasma</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Interdittore FSD</value>
+    <value>Interdittore Motore a Modulazione di Sistema</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
@@ -402,7 +402,7 @@
     <comment>Module PulseLaser</comment>
   </data>
   <data name="RailGun" xml:space="preserve">
-    <value>Cannone a Rotaia</value>
+    <value>Cannone Elettromagnetico</value>
     <comment>Module RailGun</comment>
   </data>
   <data name="ReactiveSurfaceComposite" xml:space="preserve">
