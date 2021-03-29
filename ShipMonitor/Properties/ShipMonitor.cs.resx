@@ -117,25 +117,71 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Sledovat informace o vašich lodích.</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>Exportuj to</value>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>Poloha</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Jméno</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>ID lodě</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Jméno (výslovnost)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Hodnota</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Poslechnout si</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Mezinárodní fonetická abeceda</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor lodě</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Toto umožní zobrazit vaše lodě a dát jim individuální role. Informace jsou dostupné pro odpovídače a jsou používány ve skriptech.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Pokud má EDDI problém vyslovit jméno vaší lodi, může přidat výslovnost jména lodi pomocí</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>. Například, pokud se vaše loď jmenuje 'Pride of Achenar' bude její výslovnost 'praɪdɒvˈakɜːnɑ' (všimněte si mezer u fonetické verze).</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Mějte na paměti, že pokud nemáte nakonfigurován přístup k Frontier API můžou být data uvedená níže nesprávná nebo nedostupná. Dále pokud máte více lodí již před instalací EDDI, budete muset kařdou postupně přepnout jako vaši hlavní loď a chvíli počkat než budou všechny informace dostupné.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} je připravena.</value>
+  </data>
+  <data name="header_hot" xml:space="preserve">
+    <value>Stav</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Čistá</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Hledaná</value>
+    <comment>Ship is Hot</comment>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>EDDI může odeslat data o vaší lodi na Coriolis nebo EDShipyard (nástroje třetích stran).
+Zvolte nástroj, který upřednostňujete.</value>
+  </data>
 </root>
