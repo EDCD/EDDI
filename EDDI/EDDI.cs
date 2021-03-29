@@ -1719,12 +1719,14 @@ namespace EddiCore
 
         private bool eventFileHeader(FileHeaderEvent @event)
         {
-            // Test whether we're in beta by checking the filename, version described by the header, 
-            // and certain version / build combinations
+            // Test whether we're in beta by checking the filename, version described by the header,
+            // and certain version / build combinations. Test the most common situations first.
             gameIsBeta =
                 (
                     @event.filename.Contains("Beta") ||
                     @event.version.Contains("Beta") ||
+                    @event.filename.Contains("Alpha") ||
+                    @event.version.Contains("Alpha") ||
                     (
                         @event.version.Contains("2.2") &&
                         (
