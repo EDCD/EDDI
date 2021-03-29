@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Odpovídač jež generuje velké množství proměných pro VoiceAttack a také spouští akce zadané uživatelem.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack odpovídač</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Pro integraci EDDI do VoiceAttacku je nutné EDDI nainstalovat do složky s aplikacemi VoiceAttacku. Standardní cesta je 'C:\Program Files (x86)\VoiceAttack\Apps', zde bude EDDI standardně nainstalován.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI je možné používat s VoiceAttackem ve verzi 1.5.12.22 a vyšší. Mějte na paměti, že je toto beta verze.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Jakmile bude VoiceAttack nainstalován budete muset aktivovat podporu pro plugin. To provedete tak, že kliknete na ikonu nastavení (klíč) v dolním pravém rohu okna VoiceAttacku. Měli byste vidět zprávu v okně aplikace ve smyslu 'Plugin EDDI 2.0.0 initialized'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>V tomto bodě můžete integrovat proměné z EDDI ve vlastních skriptech pro VoiceAttack. Například, vaše jméno velitele je uloženo v proměnné 'Name', takže budete-li chtít jej použít zvolíte '{TXT:Name}' ve vašem příkazu. Jsou proměnné pro tvého velitele, lodě, aktuálním hvězdném systému a stanice kde se nacházíte a dále. Celý seznam proměných je dostupný </value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>na hlavní stránce EDDI</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>Mimo psaní skriptu, jež jsou spušteny pomocí hlasové neho klávesové akce, můžete také psát skripty, které se aktivují při různých akcích ve hře Elite. Například: pokud chcete spouštět skript pokaždé když nastane akce 'Docked', napíšete skript s použitím volání '((EDDI docked))' (dvojité závorky kolem jména zabraňují náhodnému spuštění, a malé písmena u 'd' ve slově docked). Celý seznam událostí je také dostupný </value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>na hlavní stránce EDDI</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Prosím ukončete VoiceAttack a spuště EDDI samostatně pro provedení aktualizace.</value>
+  </data>
 </root>
