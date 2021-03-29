@@ -117,61 +117,177 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>Přístup k bete verzím EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Stav EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>má množství funkcí, které se nezávisle nastavovat. Jsou tři samostatné typy položek.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>První skupina přijímá a zpracovává základní informace používané v EDDI. Jsou to 'Podrobnosti o veliteli', 'Frontier API' a 'Převod textu na řeč'. Měli byste si každou projít a nakonfigurovat aby mělo EDDI plný přístup k informacím z Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Druhá skupina přijímá informace o událostech. To jsou záložky, jež maji na začátku slovo 'monitor'. Získávají informace z různých míst, vyžadují minimální konfiguraci, ale předtím než budou fungovat je musíte dokončit.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Třetí skupina reaguje na události. To jsou záložky se slovem 'odpovídač'. Lze je v rozdílné míře nastavit, ale budou fungovat okamžitě.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Podrobnější informace o funkcích EDDI naleznete na</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Náhlasit chybu</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Řešení nejčastějších problémů</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Povolit detailní logování (pouze pokud vás o to požádají vývojáři EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Je-li povoleno podrobné logování, vytvoří se archív zip s vaším logem na ploše, který můžete vloži do hlášení chyb na GitHubu. Do logu nejsou přidávány žádne informace umožňující osobní identifikaci.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Verze:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>wiki projektu</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Vyberte jazyk EDDI (vyžaduje restart aplikace):</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier poskytuje API které dovoluje EDDI získat informace o vašich lodích, informace o trhu na aktuální stanici a o dalších položkách. Tyto data nelze jinde získat. Pokud chcete aby EDDI mohlo tyto informace využívat, klikněte na tlačítko Přihlásit se a proveďte autorizaci pro EDDI na serverech firmy Frontier.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Pokud narazíte na problémy s vašeho spojením, mužete jej resetovat a znovu se přihlásit. Tento postup může problém vyřešit.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI používá vlastní převod textu na řeč který upravuje hlas v závislosti na vlastnostech jako úrovně poškození lodi a velikosti vašecho kokpitu. Zde můžete nastavit parametry hlasu.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Zkreslit hlas při poškození lodi:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Převod textu na řeč</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Uroveň zpracování hlasu:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI používá fonetickou řeč pro vyslovování různých těžko vyslovitelných slov a vkládá mezery v projevu. Některé hlasy, zejména od Microsoftu, mají problém s fonetickou řečí a způsobují. že EDDI přestane reagovat nebo se samovolně ukončí. Pokud se u vás toto projeví, zkuste zkontrolovat možnosti níže</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Rychlost mluvení:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Otestovat řeč</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Otestovat reč (vážné poškození)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Loď pro test hlasu:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Hlas:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Hlasitost řeči:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Aktualizovat EDDI</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Níže můžete otestovat jak bude hlas znít. Je-li tento hlas nekompatibilní, použije se výchozí hlas.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Vypnout fonetickou řeč:</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI může používat ICAO, např. použitím 'alfa místo 'A', při vyslovování jméno hvězd a těles. To usnadní porozumění názvů systémů, ale trvá delší dobu je vyslovit. Chcete-li používat ICAO zaškrtněte volbu uvedenou níže. Poznámka: toto nebude fungovat, pokud jste deaktivovali fonetickou reč výše.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Povolit ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Podrobnosti o veliteli</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Preferovaný rod pro zájmena a funkce:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Žena</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Muž</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Neuvedeno</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Domovská stanice:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Domovský systém:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Můžete zadat informace o konkrétním systému, který považujete za svůj domov, a také jméno stanice v tomto systému. Pokud tak učiníte budou informace o systému a stanici dostupné odpovídačům EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Jméno letky:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Systém letky:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Přislušnost letky:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Frakce letky:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Síla letky:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Hodnost letky:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID letky:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Bez stanice</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Není povoleno Frontier API v tomto sestavení EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Vyberte jazyk EDDI (vyžaduje restart VoiceAttacku):</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Jméno (výslovnost)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Poslechnout si</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Mezinárodní fonetická abeceda</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Pokud má EDDI problém vyslovit jméno velitele, může přidat výslovnost jméno velitele pomocí</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Například, jmenuje-il se velitel 'Salomé', bude výslovnost jména 'səˈloʊmi'.</value>
+  </data>
 </root>
