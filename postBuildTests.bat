@@ -1,18 +1,10 @@
 :: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
 
-:: Do not run if AppVeyor environmental variable is set
-SETLOCAL ENABLEEXTENSIONS
-IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
-IF DEFINED CI (
-  GOTO :EOF :: Set to TRUE in Github Actions
-)
-IF DEFINED APPVEYOR (
-  GOTO :EOF :: Set to TRUE in Appveyor
-)
-
-:: This is a local build rather than a continuous integration... we can proceed.
 ECHO ****************************
 SET this=Post-build script
+
+SETLOCAL ENABLEEXTENSIONS
+IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
 
 :: Rename the passed parameters for clarity
 SET "buildConfiguration=%1"
