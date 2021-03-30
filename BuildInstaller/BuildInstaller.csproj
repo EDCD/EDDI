@@ -39,7 +39,7 @@
   <PropertyGroup>
     <PostBuildEvent>cd "$(SolutionDir)"
 if exist $(SolutionDir)postBuildTests.bat (
-  @echo Post-build script exists at: $(SolutionDir)postBuild.bat - executing...
+  @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
   call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
 )
 

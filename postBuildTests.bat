@@ -3,11 +3,14 @@
 :: Do not run if AppVeyor environmental variable is set
 SETLOCAL ENABLEEXTENSIONS
 IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
+IF DEFINED CI (
+  GOTO :EOF :: Set to TRUE in Github Actions
+)
 IF DEFINED APPVEYOR (
-  GOTO :EOF
+  GOTO :EOF :: Set to TRUE in Appveyor
 )
 
-:: Not AppVeyor... we can proceed with the script.
+:: This is a local build rather than a continuous integration... we can proceed.
 ECHO ****************************
 SET this=Post-build script
 
