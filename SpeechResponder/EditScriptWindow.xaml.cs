@@ -4,8 +4,6 @@ using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace EddiSpeechResponder
@@ -18,8 +16,6 @@ namespace EddiSpeechResponder
         private readonly Dictionary<string, Script> _scripts;
         private Script _script;
         private readonly string originalName;
-        private Task lastTest;
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         private string scriptName;
         public string ScriptName
