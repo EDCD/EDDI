@@ -30,10 +30,10 @@ parsers:
       method: no
       macro: no
 
-comment:                           # if top level key is false, suppresses all comments
-  layout: "header, flags, files"
-  behavior: default
-  require_changes: true            # if true, suppresses comment when coverage is unchanged
+comment: false                     # if top level key is false, suppresses all comments
+#  layout: "header, flags, files"
+#  behavior: default
+#  require_changes: true           # if true, suppresses comment when coverage is unchanged
 
 # Available parameters:
 
