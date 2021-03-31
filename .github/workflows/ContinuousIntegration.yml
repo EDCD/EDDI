@@ -1,0 +1,115 @@
+﻿# Workflow Syntax: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+# Example: https://github.com/github/VisualStudio/blob/263aac11f57d53c5f9fe64ba9916f77c058974d7/.github/workflows/main.yml
+
+name: Continuous Integration
+env:
+  build-config: Release
+  solution: EDDI.sln
+
+# Define our triggers
+on:
+  push:
+    # For CodeQL code scanning workflow files, don't use the paths-ignore or paths keywords with the on:push event 
+    # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
+    # compare new changes with the analysis of the previous commit.
+  pull_request:
+    branches: [ develop, experimental/github-actions-ci ]
+    paths-ignore:
+    - docs/*        # Every file in the root docs folder
+    - '**.html'     # HTML files anywhere in the repo
+    - '**.md'       # Markdown files anywhere in the repo
+    - '**.resx'     # RESX files anywhere in the repo
+  schedule:
+    #        ┌───────────── minute (0 - 59)
+    #        │  ┌───────────── hour (0 - 23)
+    #        │  │ ┌───────────── day of the month (1 - 31)
+    #        │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #        │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #        │  │ │ │ │  * indicates 'all'
+    #        │  │ │ │ │  Ref. https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
+    #        │  │ │ │ │
+    #        *  * * * *
+    - cron: '30 2 * * 0' # Runs at 2:30 AM UTC, any day of the month, any month of the year, on Sundays
+
+# Build and Test (ref. https://docs.github.com/en/actions/guides/building-and-testing-net)
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ csharp ]
+
+    steps:
+    - name: Check out the repository on the workflow runner
+      uses: actions/checkout@v2.3.4
+
+    # Setup our PATH
+    - name: Add msbuild.exe to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Add VSTest.console.exe to PATH
+      uses: darenm/Setup-VSTest@v1.1.1
+    - name: Add nuget to PATH
+      uses: nuget/setup-nuget@v1.0.5
+      with:
+        nuget-version: 'latest'
+
+    # Retrieve any cached copies of dependencies (these may be stored for up to a week) then install any missing dependencies
+    - name: Retrieve any cached copies of dependencies
+      uses: actions/cache@main
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+    - name: Restore any missing any dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: nuget restore ${{ env.solution }} -NonInteractive
+
+    # Initializes Github's CodeQL tools for scanning our build
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+        # queries: ./path/to/local/query, your-org/your-repo/queries@main
+
+    # Build
+    - name: Build our solution
+      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
+
+    # Compress and upload our build assets
+    - name: Compress build artifacts
+      run: Compress-Archive -Path ./bin/Release/* -DestinationPath build-artifact.zip
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: build-artifact.zip
+
+    # Analyze our build for security vulnerabilities
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v1
+
+    # Test and generate coverage report
+    - name: Make a TestResults directory
+      run: mkdir -p ./TestResults
+    - name: Test our solution and generate a coverage report using OpenCover
+      uses: ./.github/actions/TestWithCoverage
+      with:
+        opencover-console-path: \.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
+        opencover-console-args: -mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*" -register:Path32
+        target-path: vstest.console.exe
+        target-args: Tests/bin/Release/Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
+        output-path: ./TestResults/coverage.xml
+
+    # Upload coverage results
+    - name: Upload coverage to CodeCov (ref. https://github.com/codecov/codecov-action)
+      uses: codecov/codecov-action@master
+      with:
+        files: TestResults/coverage.xml
+        fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false

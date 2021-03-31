@@ -1,0 +1,19 @@
+# Ref. https://github.com/potiuk/cancel-workflow-runs
+
+name: Cancel Duplicate Runs
+on:
+  workflow_run:
+    workflows: ['Continuous Integration']
+    types: ['requested']
+
+jobs:
+  cancel-duplicate-workflow-runs:
+    name: "Cancel duplicate workflow runs"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: potiuk/cancel-workflow-runs@v4_8
+        name: "Cancel duplicate workflow runs"
+        with:
+          cancelMode: allDuplicates
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sourceRunId: ${{ github.event.workflow_run.id }}

@@ -1,15 +1,10 @@
 :: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
 
-:: Do not run if AppVeyor environmental variable is set
-SETLOCAL ENABLEEXTENSIONS
-IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
-IF DEFINED APPVEYOR (
-  GOTO :EOF
-)
-
-:: Not AppVeyor... we can proceed with the script.
 ECHO ****************************
 SET this=Post-build script
+
+SETLOCAL ENABLEEXTENSIONS
+IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
 
 :: Rename the passed parameters for clarity
 SET "buildConfiguration=%1"

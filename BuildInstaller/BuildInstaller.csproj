@@ -37,9 +37,19 @@
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(SolutionDir)"
+    <PostBuildEvent>:: Skip our post-build events when running continuous integration
+IF DEFINED CI (
+  GOTO :EOF :: Set to TRUE in Github Actions
+)
+IF DEFINED APPVEYOR (
+  GOTO :EOF :: Set to TRUE in Appveyor
+)
+
+:: This is a local build rather than a continuous integration... we will proceed.
+
+cd "$(SolutionDir)"
 if exist $(SolutionDir)postBuildTests.bat (
-  @echo Post-build script exists at: $(SolutionDir)postBuild.bat - executing...
+  @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
   call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
 )
 

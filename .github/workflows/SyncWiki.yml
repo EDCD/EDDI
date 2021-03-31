@@ -1,0 +1,71 @@
+# Syncs our Wiki whenever we publish a new release
+
+name: Sync Wiki
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  sync_docs:
+    name: Sync docs
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout current version
+      uses: actions/checkout@v2
+
+    # Retrieve our zipped build from a prior workflow
+    - name: Retrieve build artifacts
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        # Required, workflow file name or ID
+        workflow: ContinuousIntegration.yml
+        # Optional, the status or conclusion of a completed workflow to search for
+        # Can be one of a workflow conclusion::
+        # "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
+        # Or a workflow status:
+        # "completed", "in_progress", "queued"
+        # Default: "completed,success"
+        workflow_conclusion: success
+        # Required, commit ID
+        commit: ${{ GITHUB_SHA }}
+        # Optional, uploaded artifact name,
+        # will download all artifacts if not specified
+        # and extract them in respective subdirectories
+        # https://github.com/actions/download-artifact#download-all-artifacts
+        name: build-artifact
+        # Optional, directory where to extract artifact
+        path: ./bin/Release
+
+    # Uncompress the build
+    - name: Uncompress build artifacts (may not be required if completed by the prior step)
+      run: Expand-Archive -Path build-artifact.zip -DestinationPath ./bin/Release
+
+    # Run our generator tests
+    - name: Add VSTest.console.exe to PATH
+      uses: darenm/Setup-VSTest@v1.1.1
+    - name: Generate updated wiki documentation from Tests output
+      run: vstest.console.exe Tests/bin/Release/Tests.dll /tests:GeneratorTests /Parallel /InIsolation
+
+    # Sync generated wiki files
+    - name: Sync wiki events (delete missing)
+      uses: kai-tub/external-repo-sync-action@v1
+      with:
+        source-directory: "./Release/Wiki" # Required
+        include-patterns: "./events/*"     # Optional
+        delete-missing: true               # Delete all files in the repo that are not present in the source-directory. Defaults to false
+        dry-run: true                      # Optional. Defaults to false
+      env:
+        GH_ACCESS_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
+
+    # Sync new or updated root wiki files (without deleting)
+    - name: Sync root wiki docs
+      uses: kai-tub/external-repo-sync-action@v1
+      with:
+        source-directory: "./Release/Wiki" # Required
+        exclude-patterns: "./events/*"     # Optional
+        delete-missing: false              # Delete all files in the repo that are not present in the source-directory. Defaults to false
+        dry-run: true                      # Optional. Defaults to false
+      env:
+        GH_ACCESS_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}

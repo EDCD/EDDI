@@ -1,20 +1,26 @@
 codecov:
   branch: develop
   token: c0cc9048-1cdc-464b-b2fa-dac79464e1c4
-  notify: no
-#    require_ci_to_pass: no
+  notify: 
+    require_ci_to_pass: no
 
 coverage:
   precision: 2
-  round: down
-  range: "25...80"
-
-  status: 
+  round: down 
+  range: "70...100"
+  status:                          # this controls whether a pull request will be blocked by a decrease in coverage
     project:
       default:
-        threshold: 10%
-    patch: off
-    changes: off
+        # threshold: 1%            # allows coverage to drop by up to the percent noted and still post a success status
+        informational: true        # If true is specified the resulting status will pass no matter what the coverage is or what other settings are specified
+    patch: 
+      default:
+        # threshold: 1%            # allows coverage to drop by up to the percent noted and still post a success status
+        informational: true        # If true is specified the resulting status will pass no matter what the coverage is or what other settings are specified
+    changes: 
+      default:
+        # threshold: 1%            # allows coverage to drop by up to the percent noted and still post a success status
+        informational: true        # If true is specified the resulting status will pass no matter what the coverage is or what other settings are specified
 
 parsers:
   gcov:
@@ -24,11 +30,10 @@ parsers:
       method: no
       macro: no
 
-comment:
-  layout: "header, diff"
-  behavior: default
-  require_changes: no
-  branches: improbablyNamed # suppress commenting for all branches w/ a sane name
+comment: false                     # if top level key is false, suppresses all comments
+#  layout: "header, flags, files"
+#  behavior: default
+#  require_changes: true           # if true, suppresses comment when coverage is unchanged
 
 # Available parameters:
 
