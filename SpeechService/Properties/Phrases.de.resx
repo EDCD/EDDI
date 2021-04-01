@@ -117,16 +117,34 @@
     <value>null</value>
     <comment/>
   </data>
+  <data name="shortDecimalThousand" xml:space="preserve">
+    <value>{0} Tausend</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 thousand</comment>
+  </data>
+  <data name="shortDecimalMillion" xml:space="preserve">
+    <value>{0} Millionen</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 million</comment>
+  </data>
+  <data name="shortDecimalBillion" xml:space="preserve">
+    <value>{0} Milliarden</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 billion</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="justOverThousand" xml:space="preserve">
+    <value>etwas mehr als {0} Tausend</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="justOver" xml:space="preserve">
+    <value>etwas mehr als {0}</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="justOverMinus" xml:space="preserve">
+    <value>etwas mehr als minus {0}</value>
+    <comment>Where {0} is a negative whole number	</comment>
+  </data>
   
   
   
