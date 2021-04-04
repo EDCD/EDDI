@@ -25,18 +25,32 @@ namespace EddiCargoMonitor
             VARIABLES.Add("blackmarket", "True if the commodity was sold to a black market");
         }
 
+        [PublicAPI]
         public long marketid { get; }
+        
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
+
+        [PublicAPI]
         public int amount { get; }
+
+        [PublicAPI]
         public long price { get; }
+
+        [PublicAPI]
         public long profit { get; }
+
+        [PublicAPI]
         public bool illegal { get; }
+
+        [PublicAPI]
         public bool stolen { get; }
+
+        [PublicAPI]
         public bool blackmarket { get; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommoditySoldEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)

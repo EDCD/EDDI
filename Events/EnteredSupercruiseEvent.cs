@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,6 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
+        [PublicAPI]
         public string system { get; private set; }
 
         [JsonProperty("taxi")]

@@ -19,16 +19,16 @@ namespace EddiEvents
             VARIABLES.Add("topower", "The name of the power that the commander has defected to");
         }
 
+        [PublicAPI]
         public string frompower => (fromPower ?? Power.None)?.localizedName;
 
+        [PublicAPI]
         public string topower => (toPower ?? Power.None)?.localizedName;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power fromPower { get; private set; }
 
-        [VoiceAttackIgnore]
         public Power toPower { get; private set; }
 
         public PowerDefectedEvent(DateTime timestamp, Power fromPower, Power toPower) : base(timestamp, NAME)

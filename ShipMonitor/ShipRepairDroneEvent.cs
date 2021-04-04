@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -17,8 +18,13 @@ namespace EddiShipMonitor
             VARIABLES.Add("corrosion", "The amount of corrosion damage repaired");
         }
 
+        [PublicAPI]
         public decimal? hull { get; private set; }
+
+        [PublicAPI]
         public decimal? cockpit { get; private set; }
+
+        [PublicAPI]
         public decimal? corrosion { get; private set; }
 
         public ShipRepairDroneEvent(DateTime timestamp, decimal? hull, decimal? cockpit, decimal? corrosion) : base(timestamp, NAME)

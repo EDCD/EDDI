@@ -23,20 +23,31 @@ namespace EddiEvents
             VARIABLES.Add("unique", "True if this is the first signal of this type detected within the star system");
         }
 
+        [PublicAPI]
         public string source => signalSource.localizedName;
+
+        [PublicAPI]
         public string factionstate => signalSource.spawningState.localizedName ?? signalSource.spawningState.fallbackLocalizedName ?? signalSource.spawningState.edname;
+
+        [PublicAPI]
         public string faction => signalSource.spawningFaction;
+
+        [PublicAPI]
         public decimal? secondsremaining => signalSource.expiry is null ? null : (decimal?)((DateTime)signalSource.expiry - timestamp).TotalSeconds;
+
+        [PublicAPI]
         public int threatlevel => Convert.ToInt32(signalSource.threatLevel);
+
+        [PublicAPI]
         public bool stationsignal => Convert.ToBoolean(signalSource.isStation);
+
+        [PublicAPI]
         public bool unique { get; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public SignalSource signalSource { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
 
         public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, bool unique) : base(timestamp, NAME)

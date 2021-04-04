@@ -216,31 +216,49 @@ namespace EddiDataDefinitions
             );
         }
 
+        [PublicAPI]
         public string category => Category.localizedName;
 
         [JsonProperty("category")]
         public MaterialCategory Category { get; }
-        public Rarity rarity { get; }
+
+        [PublicAPI]
+        public string rarity => Rarity.localizedName;
+
+        [JsonProperty("rarity")]
+        public Rarity Rarity { get; }
 
         // Only for elements
+
+        [PublicAPI]
         public string symbol { get; }
 
+        [PublicAPI]
         public decimal? goodpctbody { get; }
+
+        [PublicAPI]
         public decimal? greatpctbody { get; }
 
         // The body with the greatest percent concentration (for the MaterialDetails() function).
+
+        [PublicAPI]
         public string bodyname { get; set; }
+
+        [PublicAPI]
         public string bodyshortname { get; set; }
 
         public static ImmutableHashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
         public static ImmutableHashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
+        [PublicAPI]
         public List<Blueprint> blueprints => Blueprint.AllOfThem
             .Where(bp => bp.materials?.Where(ma => ma.edname == this.edname).Count() > 0)
             .ToList();
 
         // Location of the material (localized)
+
+        [PublicAPI]
         public string location => Properties.MaterialLocations.ResourceManager.GetString(edname);
 
         // dummy used to ensure that the static constructor has run
@@ -251,7 +269,7 @@ namespace EddiDataDefinitions
         {
             this.Category = category;
             this.symbol = symbol;
-            this.rarity = rarity;
+            this.Rarity = rarity;
             this.goodpctbody = goodpctbody; // top 25% from top value ever recorded
             this.greatpctbody = greatpctbody; // top 10% from top value ever recorded
         }

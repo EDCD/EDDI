@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,12 +19,16 @@ namespace EddiEvents
             VARIABLES.Add("total", "The total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)");
         }
 
+        [PublicAPI]
         public List<string> systems { get; private set; }
 
+        [PublicAPI]
         public decimal reward { get; private set; }
 
+        [PublicAPI]
         public decimal bonus { get; private set; }
 
+        [PublicAPI]
         public decimal total { get; private set; }
 
         public ExplorationDataSoldEvent(DateTime timestamp, List<string> systems, decimal reward, decimal bonus, decimal total) : base(timestamp, NAME)

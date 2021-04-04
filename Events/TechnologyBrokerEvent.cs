@@ -20,17 +20,20 @@ namespace EddiEvents
             VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object with keys \"commodity\" and \"amount\", consisting of a commodity object and an amount)");
         }
 
+        [PublicAPI]
         public string brokertype { get; private set; }
 
+        [PublicAPI]
         public List<Module> items { get; private set; }
 
+        [PublicAPI]
         public List<CommodityAmount> commodities { get; private set; }
 
+        [PublicAPI]
         public List<MaterialAmount> materials { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketid { get; private set; }
 
         public TechnologyBrokerEvent(DateTime timestamp, string brokerType, long marketId, List<Module> items, List<CommodityAmount> commodities, List<MaterialAmount> materials) : base(timestamp, NAME)

@@ -19,16 +19,16 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The amount of the donated material");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public string edname { get; private set; }
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public MaterialDonatedEvent(DateTime timestamp, Material material, int amount, long marketId) : base(timestamp, NAME)

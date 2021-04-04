@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("marketId", "Market ID of the station from which the commander has undocked");
         }
 
+        [PublicAPI]
         public string station { get; private set; }
 
+        [PublicAPI]
         public long? marketId { get; private set; }
 
         public UndockedEvent(DateTime timestamp, string station, long? marketId) : base(timestamp, NAME)

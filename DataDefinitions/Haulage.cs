@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -15,45 +16,57 @@ namespace EddiDataDefinitions
             {"rescuethewares", "salvage"}
         };
 
+        [PublicAPI]
         public long missionid { get; set; }
 
+        [PublicAPI]
         public string name { get; set; }
 
         public string typeEDName { get; set; }
 
-        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => MissionType.FromEDName(typeEDName)?.localizedName;
 
+        [PublicAPI]
         public string status { get; set; }
 
+        [PublicAPI]
         public string originsystem { get; set; }
 
+        [PublicAPI]
         public string sourcesystem { get; set; }
 
+        [PublicAPI]
         public string sourcebody { get; set; }
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool legal => !name.ToLowerInvariant().Contains("illegal");
 
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
 
+        [PublicAPI]
         public int amount { get; set; }
 
         public int remaining { get; set; }
 
+        [PublicAPI]
         public int need { get; set; }
 
         public long startmarketid { get; set; }
 
         public long endmarketid { get; set; }
 
+        [PublicAPI]
         public int collected { get; set; }
 
+        [PublicAPI]
         public int delivered { get; set; }
 
+        [PublicAPI]
         public DateTime? expiry { get; set; }
 
+        [PublicAPI]
         public bool shared { get; set; }
 
         public Haulage() { }

@@ -19,15 +19,16 @@ namespace EddiShipMonitor
             VARIABLES.Add("shipid", "The ID of the ship that was delivered");
         }
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipDeliveredEvent(DateTime timestamp, string ship, int? shipId) : base(timestamp, NAME)

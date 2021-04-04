@@ -21,19 +21,22 @@ namespace EddiEvents
             VARIABLES.Add("motherlode", "The asteroid's motherlode (if any)");
         }
 
+        [PublicAPI]
         public List<CommodityPresence> commodities { get; private set; }
 
+        [PublicAPI]
         public string materialcontent => materialContent.localizedName;
 
+        [PublicAPI]
         public decimal remaining { get; private set; }
 
+        [PublicAPI]
         public string motherlode => motherlodeCommodityDefinition != null ? motherlodeCommodityDefinition.localizedName : "";
 
         // Not intended to be public facing
-        [VoiceAttackIgnore]
+
         public AsteroidMaterialContent materialContent { get; private set; }
 
-        [VoiceAttackIgnore]
         public CommodityDefinition motherlodeCommodityDefinition { get; private set; }
 
         public AsteroidProspectedEvent(DateTime timestamp, List<CommodityPresence> commodities, AsteroidMaterialContent materialContent, decimal remaining, CommodityDefinition motherlodeCommodityDefinition) : base(timestamp, NAME)

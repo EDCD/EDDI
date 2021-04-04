@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,12 +19,16 @@ namespace EddiEvents
             VARIABLES.Add("alliance", "The percentage progress of the commander's alliance superpower reputation");
         }
 
+        [PublicAPI]
         public decimal empire { get; private set; }
 
+        [PublicAPI]
         public decimal federation { get; private set; }
 
+        [PublicAPI]
         public decimal independent { get; private set; }
 
+        [PublicAPI]
         public decimal alliance { get; private set; }
 
         public CommanderReputationEvent(DateTime timestamp, decimal empire, decimal federation, decimal independent, decimal alliance) : base(timestamp, NAME)

@@ -59,7 +59,7 @@ namespace UnitTests
             Assert.AreEqual(CommodityBracket.Low, commodity.demandbracket);
             Assert.AreEqual(128049669, commodity.EliteID);
             Assert.AreEqual(36, commodity.EDDBID);
-            Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
+            Assert.AreEqual("Medicines", commodity.definition.Category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
         }

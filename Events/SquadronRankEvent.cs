@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,10 +18,13 @@ namespace EddiEvents
             VARIABLES.Add("newrank", "The new rank");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public int oldrank { get; private set; }
 
+        [PublicAPI]
         public int newrank { get; private set; }
 
         public SquadronRankEvent(DateTime timestamp, string name, int oldrank, int newrank) : base(timestamp, NAME)

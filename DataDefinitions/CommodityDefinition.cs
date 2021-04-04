@@ -442,14 +442,25 @@ namespace EddiDataDefinitions
         }
         private static readonly Dictionary<long, CommodityDefinition> CommoditiesByEliteID;
 
-        public readonly long EliteID;
-        public readonly long? EDDBID;
-        public readonly CommodityCategory category;
+        [PublicAPI, JsonProperty("category")]
+        public readonly CommodityCategory Category;
+
+        [PublicAPI]
+        public string category => Category.localizedName;
+
+        [PublicAPI]
         public readonly bool rare;
 
         // The average price of a commodity can change - thus this cannot be read only.
         // Instead, this value should be updated whenever revised data is received.
+        [PublicAPI]
         public decimal avgprice { get; set; }
+
+        // Not intended to be user facing
+
+        public readonly long EliteID;
+        
+        public readonly long? EDDBID;
 
         // dummy used to ensure that the static constructor has run
         public CommodityDefinition() : this(0, null, "", Unknown)
@@ -459,7 +470,7 @@ namespace EddiDataDefinitions
         {
             this.EliteID = EliteID;
             this.EDDBID = EDDBID;
-            this.category = Category;
+            this.Category = Category;
             this.avgprice = AveragePrice;
             this.rare = Rare;
             CommoditiesByEliteID[EliteID] = this;

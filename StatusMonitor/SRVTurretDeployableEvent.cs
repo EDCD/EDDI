@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("deployable", "A boolean value. True if you are leaving the restriction zone around a ship.");
         }
 
+        [PublicAPI]
         public bool deployable { get; }
 
         public SRVTurretDeployableEvent(DateTime timestamp, bool deployable) : base(timestamp, NAME)

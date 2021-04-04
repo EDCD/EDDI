@@ -18,15 +18,16 @@ namespace EddiEvents
             VARIABLES.Add("hotspots", "A list of CommodityAmount objects (with properties 'commodity' and 'amount')");
         }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
+
+        [PublicAPI]
         public List<CommodityAmount> hotspots { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public long bodyId { get; private set; }
 
         public RingHotspotsEvent(DateTime timestamp, long? systemAddress, string bodyName, long bodyId, List<CommodityAmount> hotspots) : base(timestamp, NAME)

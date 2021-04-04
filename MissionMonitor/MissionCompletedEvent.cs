@@ -38,46 +38,64 @@ namespace EddiMissionMonitor
             VARIABLES.Add("rewardMicroResourceAmount", "The amount of the micro-resource (on foot item) reward (if applicable)");
         }
 
+        [PublicAPI]
         public long? missionid { get; }
 
+        [PublicAPI]
         public string name { get; }
 
+        [PublicAPI]
         public string faction { get; }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName;
-        
+
+        [PublicAPI]
         public string microresource => microResource?.localizedName;
 
         public CommodityDefinition commodityDefinition { get; }
 
         public int? amount { get; }
 
+        [PublicAPI]
         public bool communal { get; }
 
+        [PublicAPI]
         public long reward { get; }
 
+        [PublicAPI]
         public List<string> permitsawarded { get; }
 
+        [PublicAPI]
         public List<CommodityAmount> commodityrewards { get; }
 
+        [PublicAPI]
         public List<MaterialAmount> materialsrewards { get; }
 
+        [PublicAPI]
         public List<MicroResourceAmount> microresourcerewards { get; }
 
+        [PublicAPI]
         public long donation { get; }
 
+        [PublicAPI]
         public string rewardPermit { get; }
 
+        [PublicAPI]
         public string rewardCommodity { get; }
 
+        [PublicAPI]
         public int rewardCommodityAmount { get; }
 
+        [PublicAPI]
         public string rewardMaterial { get; }
 
+        [PublicAPI]
         public int rewardMaterialAmount { get; }
 
         public string rewardMicroResource { get; }
 
+        [PublicAPI]
         public int rewardMicroResourceAmount { get; }
 
         public MicroResource microResource { get; }

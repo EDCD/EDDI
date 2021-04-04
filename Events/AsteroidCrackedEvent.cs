@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("bodyname", "The name of the nearest body (normally the ring where the asteroid was found)");
         }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
         public AsteroidCrackedEvent(DateTime timestamp, string bodyName) : base(timestamp, NAME)

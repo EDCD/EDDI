@@ -18,11 +18,14 @@ namespace EddiEvents
             VARIABLES.Add("by_invariant", "The invariant source of the attack (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
         }
 
+        [PublicAPI]
         public string by => Source.localizedName;
+
+        [PublicAPI]
         public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public MessageSource Source { get; }
 
         public NPCAttackCommencedEvent(DateTime timestamp, MessageSource source) : base(timestamp, NAME)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("id", "The vehicle's id");
         }
 
+        [PublicAPI]
         public string vehicle { get; private set; }
 
+        [PublicAPI]
         public int id { get; private set; }
 
         public VehicleDestroyedEvent(DateTime timestamp, string vehicle, int id) : base(timestamp, NAME)

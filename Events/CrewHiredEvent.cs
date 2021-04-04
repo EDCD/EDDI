@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -20,14 +21,19 @@ namespace EddiEvents
             VARIABLES.Add("combatrating", "The combat rating of the crewmember being hired");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long crewid { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public long price { get; private set; }
 
+        [PublicAPI]
         public string combatrating { get; private set; }
 
         public CrewHiredEvent(DateTime timestamp, string name, long crewid, string faction, long price, CombatRating combatrating) : base(timestamp, NAME)

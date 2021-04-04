@@ -18,6 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("bodyname", "The name of the body that has been scanned");
             VARIABLES.Add("systemname", "The name of the system containing the scanned body");
             VARIABLES.Add("shortname", "The short name of the body, less the system name");
+            VARIABLES.Add("bodytype", "The body type of the body that has been scanned (e.g. 'Planet', 'Moon', 'Star' etc.)");
             VARIABLES.Add("planettype", "The type of body that has been scanned (High metal content body etc)");
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
             VARIABLES.Add("gravityprobability", "The cumulative probability describing the body's gravity, relative to other bodies of the same planet type");
@@ -63,142 +64,179 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
+        [PublicAPI]
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
-        public string bodyname => body.bodyname;
+        [PublicAPI]
+        public string bodyname => body?.bodyname;
 
-        public string systemname => body.systemname;
+        [PublicAPI]
+        public string systemname => body?.systemname;
 
-        public string shortname => body.shortname;
+        [PublicAPI]
+        public string shortname => body?.shortname;
 
-        public string bodytype => (body.bodyType ?? BodyType.None).localizedName;
+        [PublicAPI]
+        public string bodytype => (body?.bodyType ?? BodyType.None).localizedName;
 
-        public string planettype => (body.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
+        [PublicAPI]
+        public string planettype => (body?.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
 
-        public decimal? earthmass => body.earthmass;
+        [PublicAPI]
+        public decimal? earthmass => body?.earthmass;
 
-        public decimal? massprobability => body.massprobability;
+        [PublicAPI]
+        public decimal? massprobability => body?.massprobability;
 
-        public decimal? radius => body.radius;
+        [PublicAPI]
+        public decimal? radius => body?.radius;
 
-        public decimal? radiusprobability => body.radiusprobability;
+        [PublicAPI]
+        public decimal? radiusprobability => body?.radiusprobability;
 
-        public decimal gravity => (decimal)body.gravity;
+        [PublicAPI]
+        public decimal? gravity => body?.gravity;
 
-        public decimal? gravityprobability => body.gravityprobability;
+        [PublicAPI]
+        public decimal? gravityprobability => body?.gravityprobability;
 
-        public decimal? temperature => body.temperature;
+        [PublicAPI]
+        public decimal? temperature => body?.temperature;
 
-        public decimal? tempprobability => body.tempprobability;
+        [PublicAPI]
+        public decimal? tempprobability => body?.tempprobability;
 
-        public decimal? pressure => body.pressure;
+        [PublicAPI]
+        public decimal? pressure => body?.pressure;
 
-        public decimal? pressureprobability => body.pressureprobability;
+        [PublicAPI]
+        public decimal? pressureprobability => body?.pressureprobability;
 
-        public bool? tidallylocked => body.tidallylocked;
+        [PublicAPI]
+        public bool? tidallylocked => body?.tidallylocked;
 
-        public bool? landable => body.landable;
+        [PublicAPI]
+        public bool? landable => body?.landable;
 
-        public string atmosphere => (body.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
+        [PublicAPI]
+        public string atmosphere => (body?.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<AtmosphereComposition> atmospherecompositions => body.atmospherecompositions;
+        [PublicAPI]
+        public List<AtmosphereComposition> atmospherecompositions => body?.atmospherecompositions;
 
-        public List<SolidComposition> solidcompositions => body.solidcompositions;
+        [PublicAPI]
+        public List<SolidComposition> solidcompositions => body?.solidcompositions;
 
-        public Volcanism volcanism => body.volcanism;
+        [PublicAPI]
+        public Volcanism volcanism => body?.volcanism;
 
-        public decimal distance => (decimal)body.distance;
+        [PublicAPI]
+        public decimal? distance => body?.distance;
 
-        public decimal? orbitalperiod => body.orbitalperiod;
+        [PublicAPI]
+        public decimal? orbitalperiod => body?.orbitalperiod;
 
-        public decimal? orbitalperiodprobability => body.orbitalperiodprobability;
+        [PublicAPI]
+        public decimal? orbitalperiodprobability => body?.orbitalperiodprobability;
 
-        public decimal? rotationalperiod => body.rotationalperiod;
+        [PublicAPI]
+        public decimal? rotationalperiod => body?.rotationalperiod;
 
-        public decimal? rotationalperiodprobability => body.rotationalperiodprobability;
+        [PublicAPI]
+        public decimal? rotationalperiodprobability => body?.rotationalperiodprobability;
 
-        public decimal? semimajoraxis => body.semimajoraxis;
+        [PublicAPI]
+        public decimal? semimajoraxis => body?.semimajoraxis;
 
-        public decimal? eccentricityprobability => body.eccentricityprobability;
+        [PublicAPI]
+        public decimal? semimajoraxisprobability => body?.semimajoraxisprobability;
 
-        public decimal? eccentricity => body.eccentricity;
+        [PublicAPI]
+        public decimal? eccentricity => body?.eccentricity;
 
-        public decimal? semimajoraxisprobability => body.semimajoraxisprobability;
+        [PublicAPI]
+        public decimal? eccentricityprobability => body?.eccentricityprobability;
 
-        public decimal? inclination => body.inclination;
+        [PublicAPI]
+        public decimal? inclination => body?.inclination;
 
-        public decimal? inclinationprobability => body.inclinationprobability;
+        [PublicAPI]
+        public decimal? inclinationprobability => body?.inclinationprobability;
 
-        public decimal? periapsis => body.periapsis;
+        [PublicAPI]
+        public decimal? periapsis => body?.periapsis;
 
-        public decimal? periapsisprobability => body.periapsisprobability;
+        [PublicAPI]
+        public decimal? periapsisprobability => body?.periapsisprobability;
 
-        public List<Ring> rings => body.rings;
+        [PublicAPI]
+        public List<Ring> rings => body?.rings;
 
-        public string reserves => (body.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
+        [PublicAPI]
+        public string reserves => (body?.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<MaterialPresence> materials => body.materials;
+        [PublicAPI]
+        public List<MaterialPresence> materials => body?.materials;
 
-        public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
+        [PublicAPI]
+        public string terraformstate => (body?.terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public decimal? tilt => body.tilt;
+        [PublicAPI]
+        public decimal? tilt => body?.tilt;
 
-        public decimal? tiltyprobability => body.tiltprobability;
+        [PublicAPI]
+        public decimal? tiltprobability => body?.tiltprobability;
 
-        public decimal? density => body.density;
+        [PublicAPI]
+        public decimal? density => body?.density;
 
-        public decimal? densityprobability => body.densityprobability;
+        [PublicAPI]
+        public decimal? densityprobability => body?.densityprobability;
 
-        public long? estimatedvalue => body.estimatedvalue;
+        [PublicAPI]
+        public long? estimatedvalue => body?.estimatedvalue;
 
-        public DateTime? scanned => body.scanned;
+        [PublicAPI]
+        public bool? alreadydiscovered => body?.alreadydiscovered;
 
-        public DateTime? mapped => body.mapped;
-
-        public bool? alreadydiscovered => body.alreadydiscovered;
-
-        public bool? alreadymapped => body.alreadymapped;
+        [PublicAPI]
+        public bool? alreadymapped => body?.alreadymapped;
 
         // Variables below are not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Body body { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? bodyId => body.bodyId;
         
-        [VoiceAttackIgnore]
         public List<IDictionary<string, object>> parents => body.parents;
 
-        [VoiceAttackIgnore]
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
         
-        [VoiceAttackIgnore] 
         public PlanetClass planetClass => body.planetClass;
         
-        [VoiceAttackIgnore] 
         public TerraformState terraformState => body.terraformState;
 
-        [VoiceAttackIgnore] 
         public long? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+
+        [Obsolete("Use bodyname instead")]
         public string name => bodyname;
 
-        [Obsolete("Use planetClass instead"), VoiceAttackIgnore]
+        [Obsolete("Use planetClass instead")]
         public string bodyclass => (body.planetClass ?? PlanetClass.None).localizedName;
         
-        [Obsolete("Use distance instead"), VoiceAttackIgnore]
-        public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
+        [Obsolete("Use distance instead")]
+        public decimal? distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
 
-        [Obsolete("Use inclination instead"), VoiceAttackIgnore]
+        [Obsolete("Use inclination instead")]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
 
-        [Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
+        [Obsolete("Use rotationalperiod instead")]
         public decimal? rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
 
-        [Obsolete("Use tilt instead"), VoiceAttackIgnore]
+        [Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
         public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)

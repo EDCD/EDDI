@@ -39,34 +39,46 @@ namespace EddiEvents
             VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public decimal x { get; private set; }
 
+        [PublicAPI]
         public decimal y { get; private set; }
 
+        [PublicAPI]
         public decimal z { get; private set; }
 
+        [PublicAPI]
         public string star { get; private set; }
 
+        [PublicAPI]
         public decimal distance { get; private set; }
 
+        [PublicAPI]
         public decimal fuelused { get; private set; }
 
+        [PublicAPI]
         public decimal fuelremaining { get; private set; }
 
-        public int? boostused { get; private set; }
-
+        [PublicAPI]
         public string economy => (Economy ?? Economy.None).localizedName;
 
+        [PublicAPI]
         public string economy2 => (Economy2 ?? Economy.None).localizedName;
 
+        [PublicAPI]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
+        [PublicAPI]
         public long? population { get; private set; }
 
+        [PublicAPI]
         public List<Faction> factions { get; private set; }
 
+        [PublicAPI]
         public List<Conflict> conflicts { get; private set; }
 
         public bool? taxi { get; private set; }
@@ -74,39 +86,45 @@ namespace EddiEvents
         public bool? multicrew { get; private set; }
 
         // Controlling faction properties
+
+        [PublicAPI]
         public string faction => controllingfaction?.name;
+
+        [PublicAPI]
         public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
+        
+        [PublicAPI]
         public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
+
+        [PublicAPI]
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // Powerplay properties (only when pledged)
+
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
+
+        [PublicAPI]
         public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
         // These properties are not intended to be user facing
 
-        [VoiceAttackIgnore]
+        public int? boostused { get; private set; }
+
         public long systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public Economy Economy { get; private set; } = Economy.None;
 
-        [VoiceAttackIgnore]
         public Economy Economy2 { get; private set; } = Economy.None;
 
-        [VoiceAttackIgnore]
         public Faction controllingfaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
 
-        [VoiceAttackIgnore]
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
-        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)

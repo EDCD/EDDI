@@ -24,37 +24,40 @@ namespace EddiEvents
             VARIABLES.Add("nearestdestination", "The nearest location from where the ship has lifted off");
         }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
-        
+
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
+        [PublicAPI]
         public bool? taxi { get; private set; }
 
+        [PublicAPI]
         public bool? multicrew { get; private set; }
 
+        [PublicAPI]
         public bool playercontrolled { get; private set; }
 
+        [PublicAPI]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public SignalSource nearestDestination { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
 
-        [VoiceAttackIgnore]
         public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
         public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, long? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)

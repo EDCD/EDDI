@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -27,15 +28,19 @@ namespace EddiDataDefinitions
             var Iron = new AtmosphereComposition("iron", 0);
         }
 
-        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => localizedName;
+        
+        [PublicAPI, JsonProperty]
+        public decimal percent { get; set; } // Percent share of the atmosphere
+
+        // Not intended to be user facing
+
         [JsonIgnore]
         public string localizedComposition => localizedName;
+
         [JsonIgnore]
         public string invariantComposition => invariantName;
-
-        [JsonProperty]
-        public decimal percent { get; set; } // Percent share of the atmosphere
 
         // dummy used to ensure that the static constructor has run
         public AtmosphereComposition() : this("", 0)

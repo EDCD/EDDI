@@ -25,29 +25,27 @@ namespace EddiEvents
 
         // System variables
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
         // Body variables
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // These properties are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
         
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
         
-        [VoiceAttackIgnore]
         public long? carrierId { get; private set; }
         
-        [VoiceAttackIgnore]
         public string originSystemName { get; private set; }
         
-        [VoiceAttackIgnore]
         public long? originSystemAddress { get; private set; }
 
         public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, long systemAddress, string originSystemName, long? originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,8 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("module", "the module that was damaged (this is a module object)");
         }
 
-        public string modulename { get; private set; }
+        [PublicAPI]
+         public string modulename { get; private set; }
 
+        [PublicAPI]
         public Module module { get; private set; }
 
         public JetConeDamageEvent(DateTime timestamp, string modulename, Module module) : base(timestamp, NAME)

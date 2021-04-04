@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -22,16 +23,22 @@ namespace EddiEvents
             VARIABLES.Add("exobiologist", "The percentage progress of the commander's exobiologist rating");
         }
 
+        [PublicAPI]
         public decimal combat { get; private set; }
 
+        [PublicAPI]
         public decimal trade { get; private set; }
 
+        [PublicAPI]
         public decimal exploration { get; private set; }
 
+        [PublicAPI]
         public decimal cqc { get; private set; }
 
+        [PublicAPI]
         public decimal empire { get; private set; }
 
+        [PublicAPI]
         public decimal federation { get; private set; }
 
         [JsonProperty("mercenary")]

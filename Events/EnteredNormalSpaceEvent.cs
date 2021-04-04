@@ -23,12 +23,16 @@ namespace EddiEvents
             VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
+        [PublicAPI]
         public string bodytype_invariant => (bodyType ?? BodyType.None).localizedName;
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
         [JsonProperty("taxi")]
@@ -39,21 +43,18 @@ namespace EddiEvents
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead")]
         public string system => systemname;
 
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
         public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)

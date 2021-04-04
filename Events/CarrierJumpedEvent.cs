@@ -45,96 +45,101 @@ namespace EddiEvents
 
         // System variables
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public decimal x { get; private set; }
 
+        [PublicAPI]
         public decimal y { get; private set; }
 
+        [PublicAPI]
         public decimal z { get; private set; }
 
+        [PublicAPI]
         public string economy => systemEconomy?.localizedName;
 
+        [PublicAPI]
         public string economy2 => systemEconomy2?.localizedName;
 
+        [PublicAPI]
         public string security => securityLevel?.localizedName;
 
+        [PublicAPI]
         public long? population { get; private set; }
 
+        [PublicAPI]
         public string systemfaction => controllingsystemfaction?.name;
 
+        [PublicAPI]
         public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
+        [PublicAPI]
         public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
 
+        [PublicAPI]
         public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
+        [PublicAPI]
         public List<Faction> factions { get; private set; }
 
+        [PublicAPI]
         public List<Conflict> conflicts { get; private set; }
 
         // Powerplay properties (only when pledged)
 
+        [PublicAPI]
         public string power => Power?.localizedName;
 
+        [PublicAPI]
         public string powerstate => powerState?.localizedName;
 
         // Body variables
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public string bodytype => bodyType?.localizedName;
 
+        [PublicAPI]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Carrier variables
 
+        [PublicAPI]
         public string carriername { get; private set; }
 
         // These properties are not intended to be user facing
-        [VoiceAttackIgnore]
         public bool docked { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? carrierId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Economy systemEconomy { get; private set; }
 
-        [VoiceAttackIgnore]
         public Economy systemEconomy2 { get; private set; }
 
-        [VoiceAttackIgnore]
         public Faction controllingsystemfaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; }
 
-        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
-        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
 
-        [VoiceAttackIgnore]
         public Faction carrierFaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public StationModel carrierType { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<StationService> carrierServices { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<EconomyShare> carrierEconomies { get; private set; }
 
         public CarrierJumpedEvent(DateTime timestamp, string systemName, long systemAddress, decimal x, decimal y, decimal z,

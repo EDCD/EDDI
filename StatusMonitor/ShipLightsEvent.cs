@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("lightson", "A boolean value. True if your lights are on.");
         }
 
+        [PublicAPI]
         public bool lightson { get; private set; }
 
         public ShipLightsEvent(DateTime timestamp, bool lightson) : base(timestamp, NAME)

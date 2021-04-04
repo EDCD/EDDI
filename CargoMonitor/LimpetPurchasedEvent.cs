@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -17,7 +18,10 @@ namespace EddiCargoMonitor
             VARIABLES.Add("price", "The price paid per limpet");
         }
 
+        [PublicAPI]
         public int amount { get; }
+
+        [PublicAPI]
         public int price { get; }
 
         public LimpetPurchasedEvent(DateTime timestamp, int amount, int price) : base(timestamp, NAME)

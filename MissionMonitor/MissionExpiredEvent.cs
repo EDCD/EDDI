@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -18,8 +19,10 @@ namespace EddiMissionMonitor
             VARIABLES.Add("name", "The name of the mission");
         }
 
+        [PublicAPI]
         public long? missionid { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
         public MissionExpiredEvent(DateTime timestamp, long? MissionId, string Name) : base(timestamp, NAME)

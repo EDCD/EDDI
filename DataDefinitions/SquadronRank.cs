@@ -23,6 +23,7 @@ namespace EddiDataDefinitions
 
         public static readonly SquadronRank None;
 
+        [PublicAPI]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

@@ -3,11 +3,11 @@ using Cottle.Functions;
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
-using JetBrains.Annotations;
+using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
-    [UsedImplicitly]
+    [JetBrains.Annotations.UsedImplicitly]
     public class VoiceDetails : ICustomFunction
     {
         public string name => "VoiceDetails";
@@ -65,14 +65,23 @@ namespace EddiSpeechResponder.CustomFunctions
         }, 0, 1);
     }
 
-    [PublicAPI]
     class VoiceDetail
     {
+        [PublicAPI]
         public string name { get; }
+
+        [PublicAPI]
         public string cultureinvariantname { get; }
+
+        [PublicAPI]
         public string culturename { get; }
+
+        [PublicAPI]
         public string culturecode { get; }
+
+        [PublicAPI]
         public string gender { get; }
+
         public bool enabled { get; }
 
         public VoiceDetail(string name, string cultureinvariantname, string culturename, string culturecode, string gender, bool enabled)

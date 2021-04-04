@@ -29,35 +29,35 @@ namespace EddiEvents
 
         // System variables
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
         // Body variables
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public string bodytype => bodyType?.localizedName;
 
+        [PublicAPI]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Carrier variables
 
+        [PublicAPI]
         public string carriername { get; private set; }
 
         // These properties are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? carrierId { get; private set; }
 
-        [VoiceAttackIgnore]
         public StationModel carrierType { get; private set; }
 
         public CarrierCooldownEvent(DateTime timestamp, string systemName, long? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)

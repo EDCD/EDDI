@@ -1,11 +1,20 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class CommodityAmount
     {
-        public CommodityDefinition commodityDefinition { get; }
+        [PublicAPI]
         public string commodity => commodityDefinition.localizedName;
-        public string edname => commodityDefinition.edname;
+
+        [PublicAPI]
         public int amount { get; }
+
+        // Not intended to be user facing
+
+        public CommodityDefinition commodityDefinition { get; }
+
+        public string edname => commodityDefinition.edname;
 
         public CommodityAmount(CommodityDefinition commodity, int amount)
         {

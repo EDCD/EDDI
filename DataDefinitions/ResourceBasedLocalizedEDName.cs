@@ -89,23 +89,22 @@ namespace EddiDataDefinitions
         protected static Func<string, T> missingEDNameHandler;
         public static readonly object resourceLock = new object();
 
-        [JsonProperty, VoiceAttackIgnore]
+        [JsonProperty]
         public readonly string edname;
 
-        [JsonIgnore, VoiceAttackIgnore]
+        [JsonIgnore]
         public readonly string basename;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string invariantName => resourceManager.GetString(basename, CultureInfo.InvariantCulture) ?? basename;
 
-        [JsonIgnore, VoiceAttackIgnore]
+        [JsonIgnore]
         public string fallbackLocalizedName { get; set; } = null;
 
-        [JsonIgnore, VoiceAttackIgnore]
+        [JsonIgnore]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
 
-        [JsonIgnore]
-        [Obsolete("Please be explicit and use localizedName or invariantName")]
+        [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
 
         public override string ToString()

@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -21,14 +22,19 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("fine", "The number of credits issued as the fine");
         }
 
+        [PublicAPI]
         public string crimetype { get; private set; }
 
+        [PublicAPI]
         public string crime { get; private set; }
 
+        [PublicAPI]
         public string victim { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public long fine { get; private set; }
 
         public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)

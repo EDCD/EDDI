@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEddpMonitor
 {
@@ -19,12 +20,16 @@ namespace EddiEddpMonitor
             VARIABLES.Add("newfaction", "The name of the new controlling faction of the system");
         }
 
+        [PublicAPI]
         public string match { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string oldfaction { get; private set; }
 
+        [PublicAPI]
         public string newfaction { get; private set; }
 
         public SystemFactionChangedEvent(DateTime timestamp, string match, string system, string oldfaction, string newfaction) : base(timestamp, NAME)

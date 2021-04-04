@@ -566,8 +566,8 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             SearchAndRescueEvent sarEvent = (SearchAndRescueEvent)events[0];
-            Assert.AreEqual("Black Box", sarEvent.commodity.invariantName);
-            Assert.AreEqual("Salvage", sarEvent.commodity.category.invariantName);
+            Assert.AreEqual("Black Box", sarEvent.Commodity.invariantName);
+            Assert.AreEqual("Salvage", sarEvent.Commodity.Category.invariantName);
         }
 
         [TestMethod]
@@ -933,7 +933,7 @@ namespace UnitTests
             SearchAndRescueEvent @event = (SearchAndRescueEvent)events[0];
 
             Assert.AreEqual(3222633216, @event.marketId);
-            Assert.AreEqual("occupiedcryopod", @event.commodity.edname.ToLowerInvariant());
+            Assert.AreEqual("occupiedcryopod", @event.Commodity.edname.ToLowerInvariant());
             Assert.AreEqual(2, @event.amount);
             Assert.AreEqual(48593, @event.reward);
         }

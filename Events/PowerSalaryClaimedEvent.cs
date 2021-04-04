@@ -19,13 +19,14 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The salary claimed");
         }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
+        [PublicAPI]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerSalaryClaimedEvent(DateTime timestamp, Power Power, int amount) : base(timestamp, NAME)

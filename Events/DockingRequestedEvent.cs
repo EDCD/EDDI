@@ -16,19 +16,19 @@ namespace EddiEvents
         {
             VARIABLES.Add("station", "The station at which the commander has requested docking");
             VARIABLES.Add("stationtype", "The localized model / type of the station at which the commander has requested docking");
-            VARIABLES.Add("stationDefinition", "The model / type of the station at which the commander has requested docking (this is an object)");
         }
 
+        [PublicAPI]
         public string station { get; private set; }
 
-        public StationModel stationDefinition { get; private set; }
-
+        [PublicAPI]
         public string stationtype => stationDefinition?.localizedName;
 
-        // Admin
+        // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        public StationModel stationDefinition { get; private set; }
 
         public DockingRequestedEvent(DateTime timestamp, string station, string stationType, long marketId) : base(timestamp, NAME)
         {

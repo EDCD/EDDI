@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("crewid", "The ID of the crewmember being assigned");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long crewid { get; private set; }
 
         public CrewFiredEvent(DateTime timestamp, string name, long crewid) : base(timestamp, NAME)

@@ -49,110 +49,134 @@ namespace EddiEvents
             VARIABLES.Add("powerstate", "(Only when pledged) The state of powerplay efforts within the star system");
         }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public decimal x { get; private set; }
 
+        [PublicAPI]
         public decimal y { get; private set; }
 
+        [PublicAPI]
         public decimal z { get; private set; }
 
+        [PublicAPI]
         public decimal? distancefromstar { get; private set; }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
+        [PublicAPI]
         public bool docked { get; private set; }
 
+        [PublicAPI]
         public string station { get; private set; }
 
+        [PublicAPI]
+        public long? marketId { get; private set; }
+
+        [PublicAPI]
         public string stationtype => (stationModel ?? StationModel.None).localizedName;
 
+        [PublicAPI]
         public string economy => (Economy ?? Economy.None).localizedName;
 
+        [PublicAPI]
         public string economy2 => (Economy2 ?? Economy.None).localizedName;
 
+        [PublicAPI]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
+        [PublicAPI]
         public long? population { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
 
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
         // Post-3.3.03 faction properties
+
+        [PublicAPI]
         public string systemfaction => controllingsystemfaction?.name;
+
+        [PublicAPI]
         public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
+
+        [PublicAPI]
         public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
+
+        [PublicAPI]
         public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
+
+        [PublicAPI]
         public string stationfaction => controllingstationfaction?.name;
+
+        [PublicAPI]
         public string stationstate => (controllingstationfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
+
+        [PublicAPI]
         public string stationgovernment => (controllingstationfaction?.Government ?? Government.None).localizedName;
+
+        [PublicAPI]
         public string stationallegiance => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // Powerplay properties (only when pledged)
+
+        [PublicAPI]
         public string power => Power.localizedName;
+
+        [PublicAPI]
         public string powerstate => powerState.localizedName;
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead")]
         public string system => systemname;
 
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
-        [Obsolete("Use systemfaction instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemfaction instead")]
         public string faction => controllingsystemfaction?.name;
 
-        [Obsolete("Use systemstate instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemstate instead")]
         public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
-        [Obsolete("Use systemgovernment instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemgovernment instead")]
         public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
 
-        [Obsolete("Use systemallegiance instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemallegiance instead")]
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // These properties are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
-        public long? marketId { get; private set; }
-
-        [VoiceAttackIgnore]
         public Economy Economy { get; private set; } = Economy.None;
 
-        [VoiceAttackIgnore]
         public Economy Economy2 { get; private set; } = Economy.None;
 
-        [VoiceAttackIgnore]
         public Faction controllingsystemfaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public Faction controllingstationfaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<Faction> factions { get; private set; }
 
-        [VoiceAttackIgnore]
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
 
-        [VoiceAttackIgnore]
         public StationModel stationModel { get; private set; } = StationModel.None;
 
-        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
-        [VoiceAttackIgnore]
         public PowerplayState powerState { get; private set; }
         public bool taxi { get; private set; }
         public bool multicrew { get; private set; }

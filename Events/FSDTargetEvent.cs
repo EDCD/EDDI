@@ -18,15 +18,17 @@ namespace EddiEvents
             VARIABLES.Add("starclass", "The primary star's class");
         }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public int remainingjumpsinroute { get; private set; }
 
+        [PublicAPI]
         public string starclass { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public FSDTargetEvent(DateTime timestamp, string system, long systemAddress, int remainingjumpsinroute, string starclass) : base(timestamp, NAME)

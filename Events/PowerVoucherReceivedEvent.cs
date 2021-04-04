@@ -19,13 +19,14 @@ namespace EddiEvents
             VARIABLES.Add("systems", "The systems for which the commander is turning in the vouchers");
         }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
+        [PublicAPI]
         public List<string> systems { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerVoucherReceivedEvent(DateTime timestamp, Power Power, List<string> systems) : base(timestamp, NAME)

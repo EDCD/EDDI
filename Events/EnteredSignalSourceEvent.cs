@@ -19,14 +19,17 @@ namespace EddiEvents
             VARIABLES.Add("threat", "The threat level of the signal source (0 is lowest)");
         }
 
+        [PublicAPI]
         public string source => signalSource.edname;
+
+        [PublicAPI]
         public string localizedsource => signalSource.localizedName ?? signalSource.fallbackLocalizedName ?? signalSource.edname;
 
+        [PublicAPI]
         public int threat { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public SignalSource signalSource { get; private set; }
 
         public EnteredSignalSourceEvent(DateTime timestamp, SignalSource source, int threat) : base(timestamp, NAME)

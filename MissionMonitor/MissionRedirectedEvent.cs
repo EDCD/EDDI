@@ -1,6 +1,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -21,16 +22,22 @@ namespace EddiMissionMonitor
             VARIABLES.Add("olddestinationsystem", "The old destination system for the mission");
         }
 
+        [PublicAPI]
         public long? missionid { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string newdestinationstation { get; private set; }
 
+        [PublicAPI]
         public string olddestinationstation { get; private set; }
 
+        [PublicAPI]
         public string newdestinationsystem { get; private set; }
 
+        [PublicAPI]
         public string olddestinationsystem { get; private set; }
 
         public MissionRedirectedEvent(DateTime timestamp, long? missionid, string name, string newdestinationstation, string olddestinationstation, string newdestinationsystem, string olddestinationsystem) : base(timestamp, NAME)

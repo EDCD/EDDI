@@ -1047,7 +1047,7 @@ namespace EddiInaraResponder
         {
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodity?.invariantName },
+                { "itemName", @event.Commodity?.invariantName },
                 { "itemCount", @event.amount }
             }));
         }

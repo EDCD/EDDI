@@ -3,6 +3,7 @@ using EddiEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -19,11 +20,14 @@ namespace EddiShipMonitor
             VARIABLES.Add("modules_invariant", "The invariant module names that have been repaired");
         }
 
+        [PublicAPI]
         public List<string> modules => Modules?.Select(m => m.localizedName).ToList();
 
+        [PublicAPI]
         public List<string> modules_invariant => Modules?.Select(m => m.invariantName).ToList();
         
         // Not intended to be user facing
+
         public List<Module> Modules { get; private set; }
 
         public ShipRebootedEvent(DateTime timestamp, List<Module> Modules) : base(timestamp, NAME)

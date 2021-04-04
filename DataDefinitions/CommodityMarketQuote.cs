@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -49,7 +50,7 @@ namespace EddiDataDefinitions
             get => definition?.localizedName;
         }
 
-        [Obsolete("deprecated for UI usage but retained for JSON conversion from the cAPI")]
+        [PublicAPI, Obsolete("deprecated for UI usage but retained for JSON conversion from the cAPI")]
         public string name
         {
             get => definition?.localizedName;
@@ -64,27 +65,39 @@ namespace EddiDataDefinitions
         }
 
         // Per-station information (prices are usually integers but not always)
+
+        [PublicAPI]
         public decimal buyprice { get; set; }
+
+        [PublicAPI]
         public int stock { get; set; }
 
-        // StockBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
+        // StockBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so we use an optional enum
+
         public CommodityBracket? stockbracket { get; set; }
 
+        [PublicAPI]
         public decimal sellprice { get; set; }
+
+        [PublicAPI]
         public int demand { get; set; }
 
-        // DemandBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
+        // DemandBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so we use an optional enum
+
         public CommodityBracket? demandbracket { get; set; }
 
-
         public long? EliteID => definition?.EliteID;
+
+        [PublicAPI]
         public long? EDDBID => definition?.EDDBID;
-        [Obsolete("Please use localizedName or InvariantName")]
-        public string category => definition?.category.localizedName;
+
+        [PublicAPI, Obsolete("Please use localizedName or InvariantName")]
+        public string category => definition?.Category.localizedName;
 
         // Update the definition with the new galactic average price whenever this is set.
         // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
         // The average pricing data is the only data which may reference our internal definition, and even then only to obtain an average price.
+        [PublicAPI]
         public decimal avgprice
         {
             get => definition?.avgprice ?? 0;
@@ -98,7 +111,9 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI]
         public bool rare => definition?.rare ?? false;
+        
         public HashSet<string> StatusFlags { get; set; }
 
         [JsonConstructor]

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,14 +16,16 @@ namespace EddiEvents
         {
             VARIABLES.Add("station", "The station at which the docking request has timed out");
             VARIABLES.Add("stationtype", "The localized model / type of the station at which docking has timed out");
-            VARIABLES.Add("stationDefinition", "The model / type of the station at which docking has timed out (this is an object)");
         }
 
+        [PublicAPI]
         public string station { get; private set; }
 
-        public StationModel stationDefinition { get; private set; }
-
+        [PublicAPI]
         public string stationtype => stationDefinition?.localizedName;
+
+        // Not intended to be user facing
+        public StationModel stationDefinition { get; private set; }
 
         public DockingTimedOutEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {

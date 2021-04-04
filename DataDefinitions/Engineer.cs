@@ -14,29 +14,39 @@ namespace EddiDataDefinitions
 
         public long id { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string systemname { get; private set; }
         
         public long systemAddress { get; private set; }
 
+        [PublicAPI]
         public string stationname { get; private set; }
 
         public long marketId { get; private set; }
 
         // Top tier specialties
         public HashSet<EngineerSpecialty> majorSpecialties { get; private set; }
+
+        [PublicAPI]
         public List<string> majorspecialties => majorSpecialties?.Select(s => s.localizedName).ToList();
 
         // Other specialties
         public HashSet<EngineerSpecialty> minorSpecialties { get; private set; }
+
+        [PublicAPI]
         public List<string> minorspecialties => minorSpecialties?.Select(s => s.localizedName).ToList();
 
         // Progress
+        [PublicAPI]
         public string stage { get; set; }
 
+        [PublicAPI]
         public int? rankprogress { get; set; }
 
+        [PublicAPI]
         public int? rank { get; set; }
 
         public Engineer(string name, long engineerId, string progressStage, int? rankProgress, int? rank)

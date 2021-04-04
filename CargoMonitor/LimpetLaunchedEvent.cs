@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -16,6 +17,7 @@ namespace EddiCargoMonitor
             VARIABLES.Add("kind", "The kind of limpet launched");
         }
 
+        [PublicAPI]
         public string kind { get; }
 
         public LimpetLaunchedEvent(DateTime timestamp, string kind) : base(timestamp, NAME)

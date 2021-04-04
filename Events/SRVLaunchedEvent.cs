@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,8 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("id", "The vehicle ID assigned to the SRV");
         }
 
+        [PublicAPI]
         public string loadout { get; private set; }
 
+        [PublicAPI]
         public bool playercontrolled { get; private set; }
 
         public int? id { get; private set; }

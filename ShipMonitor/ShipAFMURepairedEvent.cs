@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -17,8 +18,13 @@ namespace EddiShipMonitor
             VARIABLES.Add("health", "The health of the module (1.000000 = fully repaired)");
         }
 
+        [PublicAPI]
         public string item { get; private set; }
+
+        [PublicAPI]
         public bool repairedfully { get; private set; }
+
+        [PublicAPI]
         public decimal health { get; private set; }
 
         public ShipAfmuRepairedEvent(DateTime timestamp, string item, bool repairedfully, decimal health) : base(timestamp, NAME)

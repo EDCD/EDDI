@@ -25,28 +25,34 @@ namespace EddiShipMonitor
             VARIABLES.Add("storedmodule", "The module (object) being stored (if existing module stored)");
         }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string slot { get; private set; }
 
+        [PublicAPI]
         public Module buymodule { get; private set; }
 
+        [PublicAPI]
         public long buyprice { get; private set; }
 
+        [PublicAPI]
         public Module sellmodule { get; private set; }
 
+        [PublicAPI]
         public long? sellprice { get; private set; }
 
+        [PublicAPI]
         public Module storedmodule { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Ship shipDefinition { get; private set; }
 
         public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule, long marketId) : base(timestamp, NAME)

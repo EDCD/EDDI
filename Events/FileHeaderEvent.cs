@@ -17,13 +17,14 @@ namespace EddiEvents
             VARIABLES.Add("build", "The build of the game");
         }
 
+        [PublicAPI]
         public string version { get; private set; }
 
+        [PublicAPI]
         public string build { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public string filename { get; private set; }
 
         public FileHeaderEvent(DateTime timestamp, string filename, string version, string build) : base(timestamp, NAME)

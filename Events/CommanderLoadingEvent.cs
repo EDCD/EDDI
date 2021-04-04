@@ -16,11 +16,11 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the player account being loaded");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
         public CommanderLoadingEvent(DateTime timestamp, string name, string frontierID) : base(timestamp, NAME)

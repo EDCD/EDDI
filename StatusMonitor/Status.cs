@@ -66,6 +66,7 @@ namespace EddiDataDefinitions
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
+        [PublicAPI]
         public string vehicle =>
                   ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
                 : ((flags & Flags.InFighter) != 0) ? Constants.VEHICLE_FIGHTER
@@ -74,41 +75,105 @@ namespace EddiDataDefinitions
                 : ((flags2 & Flags2.InMultiCrew) != 0) ? Constants.VEHICLE_MULTICREW
                 : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP : ""; // "InMainShip" can be set when other flags are also set so we check "InMainShip" last.
                 // Per private comments from Howard Chalkey, `InMainShip` means a FSD-capable ship, as against a SRV or Fighter: it will be set when in a Taxi
+
+        [PublicAPI]
         public bool being_interdicted => (flags & Flags.BeingInterdicted) != 0;
+
+        [PublicAPI]
         public bool in_danger => (flags & Flags.IsInDanger) != 0;
+
+        [PublicAPI]
         public bool near_surface => (flags & Flags.HasLatLong) != 0;
+
+        [PublicAPI]
         public bool overheating => (flags & Flags.OverHeating) != 0;
+
+        [PublicAPI]
         public bool low_fuel => (flags & Flags.LowFuel) != 0;
+
+        [PublicAPI]
         public string fsd_status =>
                 ((flags & Flags.FsdCooldown) != 0) ? "cooldown"
                 : ((flags & Flags.FsdCharging) != 0) ? "charging"
                 : ((flags & Flags.FsdMassLocked) != 0) ? "masslock"
                 : "ready";
+
+        [PublicAPI]
         public bool srv_drive_assist => (flags & Flags.SrvDriveAssist) != 0 && (flags & Flags.InSRV) != 0;
+
+        [PublicAPI]
         public bool srv_under_ship => (flags & Flags.SrvUnderShip) != 0 && (flags & Flags.InSRV) != 0;
+
+        [PublicAPI]
         public bool srv_turret_deployed => (flags & Flags.SrvTurret) != 0 && (flags & Flags.InSRV) != 0;
+
+        [PublicAPI]
         public bool srv_handbrake_activated => (flags & Flags.SrvHandbrake) != 0 && (flags & Flags.InSRV) != 0;
+
+        [PublicAPI]
         public bool srv_high_beams => (flags & Flags.SrvHighBeam) != 0 && (flags & Flags.InSRV) != 0;
+
+        [PublicAPI]
         public bool scooping_fuel => (flags & Flags.ScoopingFuel) != 0;
+
+        [PublicAPI]
         public bool silent_running => (flags & Flags.SilentRunning) != 0;
+
+        [PublicAPI]
         public bool cargo_scoop_deployed => (flags & Flags.CargoScoopDeployed) != 0;
+
+        [PublicAPI]
         public bool lights_on => (flags & Flags.LightsOn) != 0;
+
+        [PublicAPI]
         public bool in_wing => (flags & Flags.InWing) != 0;
+
+        [PublicAPI]
         public bool flight_assist_off => (flags & Flags.FlightAssistOff) != 0;
+
+        [PublicAPI]
         public bool supercruise => (flags & Flags.Supercruise) != 0;
+
+        [PublicAPI]
         public bool hyperspace => (flags & Flags.Hyperspace) != 0;
+
+        [PublicAPI]
         public bool shields_up => (flags & Flags.ShieldsUp) != 0;
+
+        [PublicAPI]
         public bool landing_gear_down => (flags & Flags.LandingGearDown) != 0;
+
+        [PublicAPI]
         public bool landed => (flags & Flags.Landed) != 0;
+
+        [PublicAPI]
         public bool docked => (flags & Flags.Docked) != 0;
+
+        [PublicAPI]
         public bool analysis_mode => (flags & Flags.HudAnalysisMode) != 0;
+
+        [PublicAPI]
         public bool night_vision => (flags & Flags.NightVision) != 0;
+
+        [PublicAPI]
         public bool altitude_from_average_radius => (flags & Flags.AltitudeFromAverageRadius) != 0;
+
+        [PublicAPI]
         public bool on_foot_in_station => (flags2 & Flags2.OnFootInStation) != 0;
+
+        [PublicAPI]
         public bool on_foot_on_planet => (flags2 & Flags2.OnFootOnPlanet) != 0;
+
+        [PublicAPI]
         public bool aim_down_sight => (flags2 & Flags2.AimDownSight) != 0;
+
+        [PublicAPI]
         public bool low_oxygen => (flags2 & Flags2.LowOxygen) != 0;
+
+        [PublicAPI]
         public bool low_health => (flags2 & Flags2.LowHealth) != 0;
+
+        [PublicAPI]
         public string on_foot_temperature =>
             (flags2 & Flags2.VeryCold) != 0 ? "very cold" :
             (flags2 & Flags2.Cold) != 0 ? "cold" :
@@ -118,25 +183,48 @@ namespace EddiDataDefinitions
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise or hyperspace.
+        [PublicAPI]
         public bool hardpoints_deployed => ((flags & Flags.HardpointsDeployed) != 0) && !supercruise && !hyperspace;
         
         // Variables set from pips (these are not always present in the event)
+        [PublicAPI]
         public decimal? pips_sys = 0;
+
+        [PublicAPI]
         public decimal? pips_eng = 0;
+
+        [PublicAPI]
         public decimal? pips_wea = 0;
 
         // Variables set directly from the event (these are not always present in the event)
+        [PublicAPI]
         public int? firegroup = 0;
+
+        [PublicAPI]
         public string gui_focus = string.Empty;
+
+        [PublicAPI]
         public decimal? latitude;
+
+        [PublicAPI]
         public decimal? longitude;
+
+        [PublicAPI]
         public decimal? altitude;
+
+        [PublicAPI]
         public decimal? heading;
-        public decimal? fuelInTanks;
-        public decimal? fuelInReservoir;
+        
+        [PublicAPI]
         public int? cargo_carried;
+
+        [PublicAPI]
         public string legalstatus => (legalStatus ?? LegalStatus.Clean).localizedName;
+
+        [PublicAPI]
         public string bodyname;
+
+        [PublicAPI]
         public decimal? planetradius;
         public decimal? oxygen; // 0..100, when on foot
         public decimal? health; // 0..100, when on foot
@@ -145,12 +233,22 @@ namespace EddiDataDefinitions
         public decimal? gravity; // relative to 1G, when on foot
         
         // Variables calculated from event data
+        [PublicAPI]
         public decimal? slope { get; set; }
+
+        [PublicAPI]
         public decimal? fuel => fuelInTanks + fuelInReservoir;
+
+        [PublicAPI]
         public decimal? fuel_percent { get; set; }
+
+        [PublicAPI]
         public int? fuel_seconds { get; set; }
 
-        // Admin values
+        // Not intended to be user facing
+
+        public decimal? fuelInTanks;
+        public decimal? fuelInReservoir;
         public Flags flags;
         public Flags2 flags2;
         public DateTime timestamp = DateTime.UtcNow;

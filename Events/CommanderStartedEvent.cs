@@ -17,13 +17,14 @@ namespace EddiEvents
             VARIABLES.Add("package", "The starting package of the new commander");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string package { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
         public CommanderStartedEvent(DateTime timestamp, string name, string frontierID, string package) : base(timestamp, NAME)

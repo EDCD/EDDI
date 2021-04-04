@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("crew", "The name of the crew member who launched");
         }
 
+        [PublicAPI]
         public string crew { get; private set; }
 
         public int id { get; private set; }

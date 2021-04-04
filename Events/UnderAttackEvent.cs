@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("target", "The target of the attack (either 'Fighter', 'Mothership', or 'You')");
         }
 
+        [PublicAPI]
         public string target { get; private set; }
 
         public UnderAttackEvent(DateTime timestamp, string target) : base(timestamp, NAME)

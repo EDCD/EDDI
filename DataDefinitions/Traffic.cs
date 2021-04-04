@@ -1,9 +1,16 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Traffic
     {
+        [PublicAPI]
         public decimal total { get; set; }
+
+        [PublicAPI]
         public decimal week { get; set; }
+
+        [PublicAPI]
         public decimal day { get; set; }
 
         public Traffic() { }

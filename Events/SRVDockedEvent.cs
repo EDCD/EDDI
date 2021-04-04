@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("id", "The srv's id");
         }
 
+        [PublicAPI]
         public int? id { get; private set; }
 
         public SRVDockedEvent(DateTime timestamp, int? id) : base(timestamp, NAME)

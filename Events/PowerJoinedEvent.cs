@@ -18,11 +18,11 @@ namespace EddiEvents
             VARIABLES.Add("power", "The name of the power that the commander has joined");
         }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerJoinedEvent(DateTime timestamp, Power Power) : base(timestamp, NAME)

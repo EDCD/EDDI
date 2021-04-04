@@ -2374,7 +2374,7 @@ namespace EddiJournalMonitor
                                             {
                                                 // Used could be a material or a commodity
                                                 CommodityDefinition commodity = CommodityDefinition.FromEDName(used.Key);
-                                                if (commodity.category != null)
+                                                if (commodity.Category != null)
                                                 {
                                                     // This is a real commodity
                                                     commodities.Add(new CommodityAmount(commodity, (int)(long)used.Value));

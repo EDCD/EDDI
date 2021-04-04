@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -17,16 +18,21 @@ namespace EddiDataDefinitions
             var Metal = new SolidComposition("metal", 0);
         }
 
-        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => localizedName;
-        [JsonIgnore]
-        public string localizedComposition => localizedName;
-        [JsonIgnore]
-        public string invariantComposition => invariantName;
 
-        [JsonProperty]
+        [PublicAPI, JsonProperty]
         public decimal percent { get; set; } // Percent share of the solid body
 
+        // Not intended to be user facing
+
+        
+        [JsonIgnore]
+        public string localizedComposition => localizedName;
+
+        [JsonIgnore]
+        public string invariantComposition => invariantName;
+        
         // dummy used to ensure that the static constructor has run
         public SolidComposition() : this("", 0)
         { }

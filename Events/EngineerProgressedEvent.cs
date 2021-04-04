@@ -22,20 +22,22 @@ namespace EddiEvents
             VARIABLES.Add("progresstype", "The type of progress that is applicable (Rank/Stage) (not written at startup)");
         }
 
+        [PublicAPI]
         public string engineer => Engineer?.name;
 
+        [PublicAPI]
         public int? rank => Engineer?.rank;
 
+        [PublicAPI]
         public string stage => Engineer?.stage;
 
+        [PublicAPI]
         public string progresstype { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Engineer Engineer { get; private set; }
 
-        [VoiceAttackIgnore]
         public int? rankprogress => Engineer?.rankprogress;
 
         public EngineerProgressedEvent(DateTime timestamp, Engineer Engineer, string type) : base(timestamp, NAME)

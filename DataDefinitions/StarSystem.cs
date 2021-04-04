@@ -15,22 +15,28 @@ namespace EddiDataDefinitions
     public class StarSystem
     {
         // General information
-        [JsonProperty("name"), JsonRequired]
+        [PublicAPI, JsonProperty("name"), JsonRequired]
         public string systemname { get; set; }
 
         public long? EDSMID { get; set; } // The ID in EDSM
 
         /// <summary>X co-ordinate for this system</summary>
+        [PublicAPI]
         public decimal? x { get; set; }
+
         /// <summary>Y co-ordinate for this system</summary>
+        [PublicAPI]
         public decimal? y { get; set; }
+
         /// <summary>Z co-ordinate for this system</summary>
+        [PublicAPI]
         public decimal? z { get; set; }
+
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
-        [JsonProperty] // Required to deserialize to the private setter
+        [PublicAPI, JsonProperty] // Required to deserialize to the private setter
         public ImmutableList<Body> bodies
         {
             get => _bodies;
@@ -143,72 +149,85 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>True if any star in the system is scoopable</summary>
-        public bool scoopable => bodies.Where(b => b.scoopable).Count() > 0;
+        [PublicAPI]
+        public bool scoopable => bodies.Any(b => b.scoopable);
 
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
+
         [JsonIgnore]
         public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
 
         // Populated system data
 
+        [PublicAPI]
         public long? population { get; set; } = 0;
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
+        
         public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
+
         /// <summary>The system's security level (localized name)</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         /// <summary> The powerplay power exerting influence within the system (null if contested)</summary>
         public Power Power { get; set; }
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;
 
         /// <summary> The state of powerplay within the system </summary>
         public PowerplayState powerState { get; set; }
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
+
+        [PublicAPI]
         public List<Faction> factions { get; set; }
 
-        [JsonIgnore, Obsolete("Please use Faction instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
         public string faction => Faction.name;
-        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
+
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => Faction.allegiance;
-        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
+
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => Faction.government;
 
         [JsonIgnore]
         public List<Conflict> conflicts { get; set; }
 
         /// <summary>Details of stations</summary>
+        [PublicAPI]
         public List<Station> stations { get; set; }
 
         /// <summary>Summary info for stations</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public List<Station> planetarystations => stations.FindAll(s => s.IsPlanetary());
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public List<Station> orbitalstations => stations.FindAll(s => (s.hasdocking ?? false) 
             && !s.IsPlanetary() 
             && !s.IsCarrier() 
             && !s.IsMegaShip());
 
         /// <summary> Whether this system requires a permit for visiting </summary>
+        [PublicAPI]
         public bool requirespermit { get; set; }
 
         /// <summary> The name of the permit required for visiting this system, if any </summary>
+        [PublicAPI]
         public string permitname { get; set; }
 
         // Other data
@@ -227,9 +246,11 @@ namespace EddiDataDefinitions
                 _signalSources = value; 
             } 
         }
+
         [JsonIgnore]
         private ImmutableList<SignalSource> _signalSources = ImmutableList<SignalSource>.Empty;
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public List<string> signalsources => signalSources.Select(s => s.localizedName).Distinct().ToList();
 
         public void AddOrUpdateSignalSource(SignalSource signalSource)
@@ -240,7 +261,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> Signals filtered to only return results with a carrier callsign </summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public List<string> carriersignalsources => signalSources
             .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.localizedName) 
                 && (s.isStation ?? false))
@@ -248,18 +269,19 @@ namespace EddiDataDefinitions
             .ToList();
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool isgreen => materialsAvailable.IsSupersetOf(Material.jumponiumElements);
 
         /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool isgold => materialsAvailable.IsSupersetOf(Material.surfaceElements);
 
         /// <summary>Number of visits</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public long estimatedvalue => estimateSystemValue(bodies);
 
         /// <summary>Number of visits</summary>
+        [PublicAPI]
         public int visits => visitLog.Count();
 
         /// <summary>Time of last visit</summary>
@@ -269,14 +291,15 @@ namespace EddiDataDefinitions
         public SortedSet<DateTime> visitLog { get; set; } = new SortedSet<DateTime>();
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public long? lastVisitSeconds => lastvisit > DateTime.MinValue ? (long?)Utilities.Dates.fromDateTimeToSeconds((DateTime)lastvisit) : null;
 
         /// <summary>comment on this starsystem</summary>
+        [PublicAPI]
         public string comment;
 
         /// <summary>distance from home</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? distancefromhome;
 
         /// <summary>Whether a system scan has already been completed for this system in the current play session</summary>
@@ -303,16 +326,17 @@ namespace EddiDataDefinitions
         }
 
         // Discoverable bodies as reported by a discovery scan "honk"
-        [JsonProperty("discoverableBodies")]
+        [PublicAPI, JsonProperty("discoverableBodies")]
         public int totalbodies;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public int scannedbodies => bodies.Count(b => b.scanned != null);
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public int mappedbodies => bodies.Count(b => b.mapped != null);
 
         // Not intended to be user facing - the last time the information present changed
+        [PublicAPI]
         public long? updatedat;
 
         // Not intended to be user facing - the last time the data about this system was obtained from remote repository

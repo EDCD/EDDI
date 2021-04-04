@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -17,6 +18,7 @@ namespace EddiMissionMonitor
             VARIABLES.Add("passengers", "The manifest of passengers on your ship (as a list of objects)");
         }
 
+        [PublicAPI]
         public List<Passenger> passengers { get; private set; }
 
         public PassengersEvent(DateTime timestamp, List<Passenger> passengers) : base(timestamp, NAME)

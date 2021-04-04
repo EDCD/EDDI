@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -7,8 +8,10 @@ namespace EddiDataDefinitions
     {
         public DateTime timestamp { get; set; }
 
+        [PublicAPI]
         public bool bounty { get; set; }
 
+        [PublicAPI]
         public int shipId { get; set; }
 
         public string crimeEDName
@@ -26,22 +29,27 @@ namespace EddiDataDefinitions
         public string localizedCrime => (crimeDef ?? Crime.None).localizedName;
 
         // deprecated crime description (exposed to Cottle and VA)
-        [JsonIgnore, Obsolete("Please use localizedCrime instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedCrime instead")]
         public string crime => localizedCrime;
 
         [JsonIgnore]
         public Crime crimeDef;
 
+        [PublicAPI]
         public string system { get; set; }
 
+        [PublicAPI]
         public string station { get; set; }
 
+        [PublicAPI]
         public string body { get; set; }
 
+        [PublicAPI]
         public string victim { get; set; }
 
         public string victimAllegiance { get; set; }
 
+        [PublicAPI]
         public long amount { get; set; }
 
         public FactionReport() { }

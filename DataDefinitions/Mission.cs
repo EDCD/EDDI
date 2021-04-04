@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -56,12 +57,15 @@ namespace EddiDataDefinitions
         };
 
         // The mission ID
+        [PublicAPI]
         public long missionid { get; private set; }
 
         // The name of the mission
+        [PublicAPI]
         public string name { get; set; }
 
         // The localised name of the mission
+        [PublicAPI]
         public string localisedname;
 
         // The type of mission
@@ -90,7 +94,8 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public string localizedType => typeDef?.localizedName ?? "Unknown";
-        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => localizedType;
 
         // Status of the mission
@@ -119,18 +124,23 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
-        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string status => localizedStatus;
 
         // The system in which the mission was accepted
+        [PublicAPI]
         public string originsystem { get; set; }
 
         // The station in which the mission was accepted
+        [PublicAPI]
         public string originstation { get; set; }
 
         // Mission returns to origin
+        [PublicAPI]
         public bool originreturn { get; set; }
 
+        [PublicAPI]
         public string faction { get; set; }
 
         // The state of the minor faction
@@ -154,26 +164,42 @@ namespace EddiDataDefinitions
             set { _FactionState = value; }
         }
 
+        [PublicAPI]
         public string influence { get; set; }
+
+        [PublicAPI]
         public string reputation { get; set; }
 
         public bool chained => name.ToLowerInvariant().Contains("chained");
+
+        [PublicAPI]
         public bool communal { get; set; }
+
+        [PublicAPI]
         public bool legal => !name.ToLowerInvariant().Contains("hack")
             && !name.ToLowerInvariant().Contains("illegal")
             && !name.ToLowerInvariant().Contains("piracy")
             && !name.ToLowerInvariant().Contains("smuggle");
 
+        [PublicAPI]
         public bool shared { get; set; }
+
+        [PublicAPI]
         public bool wing { get; set; }
 
+        [PublicAPI]
         public long? reward { get; set; }
 
+        [PublicAPI]
         public string commodity { get; set; }
+
+        [PublicAPI]
         public int? amount { get; set; }
 
         // THe destination system of the mission
         private string _destinationsystem;
+
+        [PublicAPI]
         public string destinationsystem
         {
             get
@@ -192,6 +218,8 @@ namespace EddiDataDefinitions
 
         // The destination station of the mission
         private string _destinationstation;
+
+        [PublicAPI]
         public string destinationstation
         {
             get
@@ -209,6 +237,8 @@ namespace EddiDataDefinitions
         }
 
         // Destination systems for chained missions
+
+        [PublicAPI]
         public List<DestinationSystem> destinationsystems { get; set; }
 
         // Community goal details, if applicable
@@ -219,6 +249,7 @@ namespace EddiDataDefinitions
         // The mission time remaining
         [JsonIgnore]
         private string _timeremaining;
+
         [JsonIgnore]
         public string timeremaining
         {
@@ -237,20 +268,33 @@ namespace EddiDataDefinitions
         }
 
         public string passengertypeEDName { get; set; }
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public string passengertype => PassengerType.FromEDName(passengertypeEDName)?.localizedName;
+
+        [PublicAPI]
         public bool? passengerwanted { get; set; }
+
+        [PublicAPI]
         public bool? passengervips { get; set; }
 
+        [PublicAPI]
         public string target { get; set; }
+
+        [PublicAPI]
         public string targetfaction { get; set; }
+
         public string targetTypeEDName;
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public string targettype => TargetType.FromEDName(targetTypeEDName)?.localizedName;
 
+        [PublicAPI]
         public DateTime? expiry { get; set; }
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds((DateTime)expiry) : null;
+
         [JsonIgnore]
         public bool expiring { get; set; }
 

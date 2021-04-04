@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -15,39 +16,42 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary>The name</summary>
+        [PublicAPI]
         public string name { get; set; }
 
         /// <summary>The controlling faction</summary>
         public Faction Faction { get; set; } = new Faction();
 
         /// <summary>The controlling faction's name</summary>
-        [JsonIgnore, Obsolete("Please use Faction instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
         public string faction => (Faction ?? new Faction()).name;
 
         /// <summary>The controlling faction's government</summary>
-        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => (Faction?.Government ?? Government.None).localizedName;
 
         /// <summary>The controlling faction's allegiance</summary>
-        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => (Faction?.Allegiance ?? Superpower.None).localizedName;
 
         /// <summary>The controlling faction's state within the system</summary>
-        [JsonIgnore, Obsolete("Please use Faction.factionState instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Faction.factionState instead")]
         public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
         /// <summary>The primary economy of the station</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string primaryeconomy => (economyShares?.Count > 0 && economyShares[0] != null ? economyShares[0].economy : Economy.None).localizedName;
 
         /// <summary>The secondary economy of the station</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string secondaryeconomy => (economyShares?.Count > 1 && economyShares[1] != null ? economyShares[1].economy : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
+        [PublicAPI]
         public decimal? distancefromstar { get; set; }
 
         /// <summary>The system in which this station resides</summary>
+        [PublicAPI]
         public string systemname { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
@@ -60,6 +64,7 @@ namespace EddiDataDefinitions
         public List<StationService> stationServices { get; set; } = new List<StationService>();
 
         /// <summary>A localized list of the services offered by this station</summary>
+        [PublicAPI]
         public List<string> stationservices
         {
             get
@@ -74,54 +79,61 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>Does this station have refuel facilities?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasrefuel
         {
             get { return stationServices.Exists(s => s?.edname == "Refuel"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
         }
+
         /// <summary>Does this station have rearm facilities?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasrearm
         {
             get { return stationServices.Exists(s => s?.edname == "Rearm"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
         }
+
         /// <summary>Does this station have repair facilities?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasrepair
         {
             get { return stationServices.Exists(s => s?.edname == "Repair"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
         }
+
         /// <summary>Does this station have outfitting?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasoutfitting
         {
             get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
         }
+
         /// <summary>Does this station have a shipyard?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasshipyard
         {
             get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
         }
+
         /// <summary>Does this station have a market?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasmarket
         {
             get { return stationServices.Exists(s => s?.edname == "Commodities"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
         }
+
         /// <summary>Does this station have a black market?</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? hasblackmarket
         {
             get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
         }
+
         /// <summary>Does this station allow docking?</summary>
         [JsonIgnore]
         public bool? hasdocking
@@ -131,13 +143,15 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The model of the station</summary>
-        [JsonIgnore, Obsolete("Please use Model instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use Model instead")]
         public string model => (Model ?? StationModel.None).localizedName;
+
         public StationModel Model { get; set; } = StationModel.None;
 
         /// <summary>What is the largest ship that can land here?</summary>
-        [JsonIgnore, Obsolete("Please use LargestPad instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use LargestPad instead")]
         public string largestpad => LargestPad.localizedName;
+        
         // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
         public LandingPadSize LargestPad
         {
@@ -221,35 +235,40 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>Which commodities are bought/sold by the station</summary>
+        [PublicAPI]
         public List<CommodityMarketQuote> commodities { get; set; }
 
         /// <summary>Which commodities are imported by the station</summary>
-        [JsonIgnore]
-        public List<CommodityMarketQuote> imported => commodities
+        [PublicAPI, JsonIgnore]
+        public List<CommodityMarketQuote> imports => commodities
             ?.Where(c => c.demandbracket > 0)
             .OrderByDescending(c => c.demand)
             .ToList();
 
         /// <summary>Which commodities are exported by the station</summary>
-        [JsonIgnore]
-        public List<CommodityMarketQuote> exported => commodities
+        [PublicAPI, JsonIgnore]
+        public List<CommodityMarketQuote> exports => commodities
             ?.Where(c => c.stockbracket > 0)
             .OrderByDescending(c => c.stock)
             .ToList();
 
         /// <summary>Which commodities are prohibited at the station</summary>
+        [PublicAPI]
         public List<CommodityDefinition> prohibited { get; set; }
 
         /// <summary>Which modules are available for outfitting at the station</summary>
+        [PublicAPI]
         public List<Module> outfitting { get; set; }
 
         /// <summary>Which ships are available for purchase at the station</summary>
         public List<Ship> shipyard { get; set; }
 
         // Admin - the last time the information present changed
+        [PublicAPI]
         public long? updatedat;
 
-        // Admin - the last time the market information present changed
+        /// <summary>the last time the market information present changed</summary>
+        [PublicAPI]
         public long? commoditiesupdatedat;
 
         // Admin - the last time the outfitting information present changed

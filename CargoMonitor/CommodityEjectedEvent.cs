@@ -19,20 +19,22 @@ namespace EddiCargoMonitor
             VARIABLES.Add("amount", "The amount of cargo ejected");
             VARIABLES.Add("abandoned", "If the cargo has been abandoned");
             VARIABLES.Add("missionid", "ID of the mission-related commodity, if applicable");
-
         }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
+        [PublicAPI]
         public int amount { get; }
 
-        public long? missionid { get; }
-
+        [PublicAPI]
         public bool abandoned { get; }
+
+        [PublicAPI]
+        public long? missionid { get; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity, int amount, long? missionid, bool abandoned) : base(timestamp, NAME)

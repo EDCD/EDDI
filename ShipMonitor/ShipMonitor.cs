@@ -1906,7 +1906,10 @@ namespace EddiShipMonitor
 
         public class JumpDetail
         {
+            [PublicAPI]
             public decimal distance { get; private set; }
+
+            [PublicAPI]
             public int jumps { get; private set; }
 
             public JumpDetail() { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("health", "The percentage health of the hull");
         }
 
+        [PublicAPI]
         public string vehicle { get; private set; }
 
+        [PublicAPI]
         public bool? piloted { get; private set; }
 
+        [PublicAPI]
         public decimal health { get; private set; }
 
         public HullDamagedEvent(DateTime timestamp, string vehicle, bool? piloted, decimal health) : base(timestamp, NAME)

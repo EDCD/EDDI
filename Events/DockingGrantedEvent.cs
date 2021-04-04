@@ -16,22 +16,23 @@ namespace EddiEvents
         {
             VARIABLES.Add("station", "The station at which the commander has been granted docking");
             VARIABLES.Add("stationtype", "The localized model / type of the station at which the commander has been granted docking");
-            VARIABLES.Add("stationDefinition", "The model / type of the station at which the commander has been granted docking (this is an object)");
             VARIABLES.Add("landingpad", "The landing pad at which the commander has been granted docking");
         }
 
+        [PublicAPI]
         public string station { get; private set; }
 
-        public StationModel stationDefinition { get; private set; }
-
+        [PublicAPI]
         public string stationtype => stationDefinition?.localizedName;
 
+        [PublicAPI]
         public int landingpad { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
+
+        public StationModel stationDefinition { get; private set; }
 
         public DockingGrantedEvent(DateTime timestamp, string station, string stationType, long marketId, int landingpad) : base(timestamp, NAME)
         {

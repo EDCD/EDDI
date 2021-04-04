@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -22,24 +21,30 @@ namespace EddiEvents
             VARIABLES.Add("shortname", "The short name of the body, less the system name");
         }
 
+        [PublicAPI]
         public bool approaching_surface { get; private set; }
+
+        [PublicAPI]
         public string systemname { get; private set; }
+
+        [PublicAPI]
         public string bodyname { get; private set; }
+
+        [PublicAPI]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
+
+        [Obsolete("Use systemname instead")]
         public string system => systemname;
         
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
         public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, long systemAddress, string bodyName, long? bodyId) : base(timestamp, NAME)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,8 +18,10 @@ namespace EddiEvents
 
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public int rank { get; private set; }
 
         public SquadronStartupEvent(DateTime timestamp, string name, int rank) : base(timestamp, NAME)

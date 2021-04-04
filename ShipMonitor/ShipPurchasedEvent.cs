@@ -24,40 +24,41 @@ namespace EddiShipMonitor
             VARIABLES.Add("storedshipid", "The ID of the ship that was stored as part of the purchase");
         }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
+        [PublicAPI]
         public long price { get; private set; }
 
+        [PublicAPI]
         public string soldship => soldShipDefinition?.model;
 
+        [PublicAPI]
         public int? soldshipid { get; private set; }
 
+        [PublicAPI]
         public long? soldprice { get; private set; }
 
+        [PublicAPI]
         public string storedship => storedShipDefinition?.model;
 
+        [PublicAPI]
         public int? storedshipid { get; private set; }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
         
-        [VoiceAttackIgnore]
         public Ship storedShipDefinition => string.IsNullOrEmpty(storedEdModel) ? null : ShipDefinitions.FromEDModel(storedEdModel);
 
-        [VoiceAttackIgnore]
         public Ship soldShipDefinition => string.IsNullOrEmpty(soldEdModel) ? null : ShipDefinitions.FromEDModel(soldEdModel);
 
-        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
-        [VoiceAttackIgnore]
         public string storedEdModel { get; private set; }
 
-        [VoiceAttackIgnore]
         public string soldEdModel { get; private set; }
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public ShipPurchasedEvent(DateTime timestamp, string ship, long price, string soldShip, int? soldShipId, long? soldPrice, string storedShip, int? storedShipId, long marketId) : base(timestamp, NAME)

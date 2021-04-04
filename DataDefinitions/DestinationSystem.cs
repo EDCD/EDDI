@@ -1,9 +1,13 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class DestinationSystem
     {
+        [PublicAPI]
         public string name { get; set; }
 
+        [PublicAPI]
         public bool visited;
 
         public DestinationSystem() { }

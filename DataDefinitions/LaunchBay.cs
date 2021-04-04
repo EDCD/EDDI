@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -7,12 +8,17 @@ namespace EddiDataDefinitions
     {
         // The name of the launchbay
         public string name { get; set; }
+
         /// <summary>The size of the launchbay</summary>
+        [PublicAPI]
         public int size { get; set; }
+
         // The type of the launchbay ("SRV" or "Fighter")
+        [PublicAPI]
         public string type { get; set; }
 
         /// <summary>The vehicles residing in the launchbay (can be null)</summary>
+        [PublicAPI]
         public List<Vehicle> vehicles { get; set; }
 
         public LaunchBay()

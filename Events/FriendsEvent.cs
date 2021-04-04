@@ -17,13 +17,15 @@ namespace EddiEvents
             VARIABLES.Add("status", "Status: one of the following: Requested, Declined, Added, Lost, Offline, Online");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string status { get; private set; }
 
         // Not intended to be user facing
 
-        [Obsolete("Use 'name' instead"), VoiceAttackIgnore]
+        [Obsolete("Use 'name' instead")]
         public string friend => name; // Deprecated but preserved for backwards compatibility
 
         public FriendsEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)

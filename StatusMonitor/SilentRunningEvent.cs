@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("silentrunning", "A boolean value. True if silent running is active.");
         }
 
+        [PublicAPI]
         public bool silentrunning { get; private set; }
 
         public SilentRunningEvent(DateTime timestamp, bool silentRunning) : base(timestamp, NAME)

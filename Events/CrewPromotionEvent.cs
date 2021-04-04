@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("combatrating", "The combat rating of the crewmember promoted");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long crewid { get; private set; }
 
+        [PublicAPI]
         public string combatrating { get; private set; }
 
         public CrewPromotionEvent(DateTime timestamp, string name, long crewid, CombatRating combatrating) : base(timestamp, NAME)

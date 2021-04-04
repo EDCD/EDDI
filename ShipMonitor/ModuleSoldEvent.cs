@@ -22,22 +22,25 @@ namespace EddiShipMonitor
             VARIABLES.Add("price", "The price of the module being sold");
         }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string slot { get; private set; }
 
+        [PublicAPI]
         public Module module { get; private set; }
 
+        [PublicAPI]
         public long price { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Ship shipDefinition { get; private set; }
 
         public ModuleSoldEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long price, long marketId) : base(timestamp, NAME)

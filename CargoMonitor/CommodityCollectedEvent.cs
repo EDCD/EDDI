@@ -20,15 +20,17 @@ namespace EddiCargoMonitor
             VARIABLES.Add("missionid", "ID of the mission-related commodity, if applicable");
         }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        public long? missionid { get; }
-
+        [PublicAPI]
         public bool stolen { get; }
+
+        [PublicAPI]
+        public long? missionid { get; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, long? missionid, bool stolen) : base(timestamp, NAME)

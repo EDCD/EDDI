@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("status", "The squadron status (`applied`, `created`, `disbanded`, `invited`, `joined`, `kicked`, `left`)");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string status { get; private set; }
 
         public SquadronStatusEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)

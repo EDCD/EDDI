@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -20,14 +21,19 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("shared", "True if the rewards have been shared with wing-mates");
         }
 
+        [PublicAPI]
         public string target { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public long reward { get; private set; }
 
+        [PublicAPI]
         public List<Reward> rewards { get; private set; }
 
+        [PublicAPI]
         public bool shared { get; private set; }
 
         public BountyAwardedEvent(DateTime timestamp, string target, string faction, long reward, List<Reward> rewards, bool shared) : base(timestamp, NAME)

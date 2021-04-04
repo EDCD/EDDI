@@ -1,12 +1,21 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class SignalAmount
     {
-        public SignalSource signalSource { get; }
+        [PublicAPI]
         public string source => signalSource.localizedName;
-        public string edname => signalSource.edname;
-        public int amount { get; }
+        
+        [PublicAPI]
+        public int amount { get; }      
+        
+        // Not intended to be user facing
 
+        public SignalSource signalSource { get; }
+
+        public string edname => signalSource.edname;
+        
         public SignalAmount(SignalSource signalSource, int amount)
         {
             this.signalSource = signalSource;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,8 +17,10 @@ namespace EddiEvents
             VARIABLES.Add("price", "The price of the purchase");
         }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public long price { get; private set; }
 
         public TradeDataPurchasedEvent(DateTime timestamp, string system, long price) : base(timestamp, NAME)

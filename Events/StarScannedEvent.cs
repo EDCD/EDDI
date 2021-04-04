@@ -61,124 +61,160 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
+        [PublicAPI]
         public decimal? absolutemagnitude => star.absolutemagnitude;
 
+        [PublicAPI]
         public decimal? absolutemagnitudeprobability => star.absolutemagnitudeprobability;
 
+        [PublicAPI]
         public long? age => star.age;
 
+        [PublicAPI]
         public decimal? ageprobability => star.ageprobability;
 
+        [PublicAPI]
         public bool? alreadydiscovered => star.alreadydiscovered;
 
+        [PublicAPI]
         public string bodyname => star.bodyname;
 
+        [PublicAPI]
         public string chromaticity => star.chromaticity;
 
+        [PublicAPI]
         public decimal? density => star.density;
 
+        [PublicAPI]
         public decimal? densityprobability => star.densityprobability;
 
+        [PublicAPI]
         public decimal? distance => star.distance;
 
+        [PublicAPI]
         public decimal? eccentricity => star.eccentricity;
 
+        [PublicAPI]
         public decimal? eccentricityprobability => star.eccentricityprobability;
 
+        [PublicAPI]
         public decimal? estimatedhabzoneinner => star.estimatedhabzoneinner;
 
+        [PublicAPI]
         public decimal? estimatedhabzoneouter => star.estimatedhabzoneouter;
 
+        [PublicAPI]
         public long? estimatedvalue => star.estimatedvalue;
 
+        [PublicAPI]
         public decimal? inclination => star.inclination;
 
+        [PublicAPI]
         public decimal? inclinationprobability => star.inclinationprobability;
 
+        [PublicAPI]
         public decimal? luminosity => star.luminosity;
 
+        [PublicAPI]
         public string luminosityclass => star.luminosityclass;
 
+        [PublicAPI]
         public bool? mainstar => star.mainstar;
 
+        [PublicAPI]
         public decimal? massprobability => star.massprobability;
 
+        [PublicAPI]
         public decimal? orbitalperiod => star.orbitalperiod;
 
+        [PublicAPI]
         public decimal? orbitalperiodprobability => star.orbitalperiodprobability;
 
+        [PublicAPI]
         public decimal? periapsis => star.periapsis;
 
+        [PublicAPI]
         public decimal? periapsisprobability => star.periapsisprobability;
 
+        [PublicAPI]
         public decimal? radius => star.radius;
 
+        [PublicAPI]
         public decimal? radiusprobability => star.radiusprobability;
 
+        [PublicAPI]
         public List<Ring> rings => star.rings;
 
+        [PublicAPI]
         public decimal? rotationalperiod => star.rotationalperiod;
 
+        [PublicAPI]
         public decimal? rotationalperiodprobability => star.rotationalperiodprobability;
 
+        [PublicAPI]
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
+        [PublicAPI]
         public bool scoopable => star.scoopable;
 
+        [PublicAPI]
         public decimal? semimajoraxis => star.semimajoraxis;
 
+        [PublicAPI]
         public decimal? semimajoraxisprobability => star.semimajoraxisprobability;
 
+        [PublicAPI]
         public decimal? solarmass => star.solarmass;
 
+        [PublicAPI]
         public decimal? solarradius => star.solarradius;
 
+        [PublicAPI]
         public string stellarclass => star.stellarclass;
 
+        [PublicAPI]
         public int? stellarsubclass => star.stellarsubclass;
 
+        [PublicAPI]
         public decimal? temperature => star.temperature;
 
+        [PublicAPI]
         public decimal? tempprobability => star.tempprobability;
 
+        [PublicAPI]
         public decimal? tilt => star.tilt;
 
+        [PublicAPI]
         public decimal? tiltprobability => star.tiltprobability;
-
-        // Variables below are not intended to be user facing
-
-        [VoiceAttackIgnore]
-        public bool? alreadymapped => star.alreadymapped;
-
-        [VoiceAttackIgnore]
-        public long? bodyId => star.bodyId;
-
-        [VoiceAttackIgnore]
-        public DateTime? mapped => star.mapped;
-
-        [VoiceAttackIgnore]
-        public List<IDictionary<string, object>> parents => star.parents;
-
-        [VoiceAttackIgnore]
-        public DateTime? scanned => star.scanned;
-
-        [VoiceAttackIgnore]
-        public Body star { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [Obsolete("Use distance instead"), VoiceAttackIgnore]
+        [Obsolete("Use distance instead")]
         public decimal? distancefromarrival => distance;
 
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead")]
         public string name => bodyname;
 
-        [Obsolete("Use inclination instead"), VoiceAttackIgnore]
+        [Obsolete("Use inclination instead")]
         public decimal? orbitalinclination => inclination;
 
-        [Obsolete("Use rotationalperiod instead"), VoiceAttackIgnore]
+        [Obsolete("Use rotationalperiod instead")]
         public decimal? rotationperiod => rotationalperiod;
+
+        // Variables below are not intended to be user facing
+
+        public bool? alreadymapped => star.alreadymapped;
+
+        public long? bodyId => star.bodyId;
+
+        public DateTime? mapped => star.mapped;
+
+        public List<IDictionary<string, object>> parents => star.parents;
+
+        public DateTime? scanned => star.scanned;
+
+        public Body star { get; private set; }
 
         public StarScannedEvent(DateTime timestamp, string scantype, Body star) : base(timestamp, NAME)
         {

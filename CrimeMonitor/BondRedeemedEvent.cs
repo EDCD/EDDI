@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -19,10 +20,13 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }
 
+        [PublicAPI]
         public List<Reward> rewards { get; private set; }
 
+        [PublicAPI]
         public long amount { get; private set; }
 
+        [PublicAPI]
         public decimal? brokerpercentage { get; private set; }
 
         public BondRedeemedEvent(DateTime timestamp, List<Reward> rewards, long amount, decimal? brokerpercentage) : base(timestamp, NAME)

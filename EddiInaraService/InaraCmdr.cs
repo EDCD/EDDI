@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiInaraService
 {
@@ -8,43 +9,43 @@ namespace EddiInaraService
         [JsonProperty("userID")]
         public int id { get; set; }
 
-        [JsonProperty("userName")]
+        [PublicAPI, JsonProperty("userName")]
         public string username { get; set; }
 
-        [JsonProperty("commanderName")]
+        [PublicAPI, JsonProperty("commanderName")]
         public string commandername { get; set; }
 
-        [JsonProperty("commanderRanksPilot")]
+        [PublicAPI, JsonProperty("commanderRanksPilot")]
         public List<InaraCmdrRanks> commanderranks { get; set; }
 
-        [JsonProperty("preferredAllegianceName")]
+        [PublicAPI, JsonProperty("preferredAllegianceName")]
         public string preferredallegiance { get; set; }
 
-        [JsonProperty("preferredPowerName")]
+        [PublicAPI, JsonProperty("preferredPowerName")]
         public string preferredpower { get; set; }
 
-        [JsonProperty("commanderSquadron")]
+        [PublicAPI, JsonProperty("commanderSquadron")]
         public InaraCmdrSquadron squadron { get; set; }
 
-        [JsonProperty("preferredGameRole")]
+        [PublicAPI, JsonProperty("preferredGameRole")]
         public string preferredrole { get; set; }
 
         [JsonProperty("avatarImageURL")]
         public string imageurl { get; set; }
 
-        [JsonProperty("inaraURL")]
+        [PublicAPI, JsonProperty("inaraURL")]
         public string url { get; set; }
     }
 
     public class InaraCmdrRanks
     {
-        [JsonProperty("rankName")]
+        [PublicAPI, JsonProperty("rankName")]
         public string rank { get; set; }
 
-        [JsonProperty("rankValue")]
+        [PublicAPI, JsonProperty("rankValue")]
         public int rankvalue { get; set; }
 
-        [JsonProperty("rankProgress")]
+        [PublicAPI, JsonProperty("rankProgress")]
         public double progress { get; set; }
     }
 
@@ -53,16 +54,16 @@ namespace EddiInaraService
         [JsonProperty("SquadronID")]
         public int id { get; set; }
 
-        [JsonProperty("SquadronName")]
+        [PublicAPI, JsonProperty("SquadronName")]
         public string name { get; set; }
 
-        [JsonProperty("SquadronMembersCount")]
+        [PublicAPI, JsonProperty("SquadronMembersCount")]
         public int memberscount { get; set; }
 
-        [JsonProperty("SquadronMemberRank")]
+        [PublicAPI, JsonProperty("SquadronMemberRank")]
         public string squadronrank { get; set; }
 
-        [JsonProperty("inaraURL")]
+        [PublicAPI, JsonProperty("inaraURL")]
         public string url { get; set; }
     }
 }

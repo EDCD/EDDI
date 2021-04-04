@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -21,14 +22,19 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");
         }
 
+        [PublicAPI]
         public long amount { get; private set; }
 
+        [PublicAPI]
         public decimal? brokerpercentage { get; private set; }
 
+        [PublicAPI]
         public bool allbounties { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public int shipid { get; private set; }
 
         public BountyPaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool allbounties, string faction, int shipId) : base(timestamp, NAME)

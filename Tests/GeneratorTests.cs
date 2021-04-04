@@ -77,6 +77,7 @@ namespace GeneratorTests
                             }
                         }
 
+                        if (!setVars.Any()) { output.Add(""); }
                         output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
                         if (setVars.Any(v => v.Key.Contains(@"<index")))
                         {

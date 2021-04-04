@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("musictrack", "Possible track names are: NoTrack, MainMenu, CQCMenu, SystemMap, GalaxyMap, GalacticPowers, CQC, DestinationFromHyperspace, DestinationFromSupercruise, Supercruise, Combat_Unknown, Unknown_Encounter, CapitalShip, CombatLargeDogFight, Combat_Dogfight, Combat_SRV, Unknown_Settlement, DockingComputer, Starport, Unknown_Exploration, Exploration. Note: Other music track names may be used in future.");
         }
 
+        [PublicAPI]
         public string musictrack { get; private set; }
 
         public MusicEvent(DateTime timestamp, string musictrack) : base(timestamp, NAME)

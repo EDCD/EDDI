@@ -1,8 +1,8 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -20,17 +20,13 @@ namespace EddiShipMonitor
 
         // not intended to be user facing
 
-        [VoiceAttackIgnore]
-        public long marketId { get; private set; }
-
-        [VoiceAttackIgnore]
         public string station { get; private set; }
 
-        [VoiceAttackIgnore]
         public string system { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<StoredModule> storedmodules { get; set; }
+        
+        public long marketId { get; private set; }
 
         public StoredModulesEvent(DateTime timestamp, long marketId, string station, string system, List<StoredModule> storedmodules) : base(timestamp, NAME)
         {

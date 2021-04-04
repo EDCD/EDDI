@@ -16,11 +16,11 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the player whose save has been cleared");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
         // Not intended to be user facing
         
-        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
         public ClearedSaveEvent(DateTime timestamp, string name, string frontierID) : base(timestamp, NAME)

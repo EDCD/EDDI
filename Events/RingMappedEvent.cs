@@ -21,33 +21,39 @@ namespace EddiEvents
             VARIABLES.Add("innerradius", "The inner radius of the ring that was mapped, in kilometers");
             VARIABLES.Add("outerradius", "The outer radius of the ring that was mapped, in kilometers");
             VARIABLES.Add("probesused", "The number of probes used to map the ring");
+            VARIABLES.Add("efficiencytarget", "Use less probes than indicated to achieve a mapping efficiency bonus" );
         }
 
+        [PublicAPI]
         public string ringname { get; private set; }
 
+        [PublicAPI]
         public string reserves => body?.reserveLevel?.localizedName;
 
+        [PublicAPI]
         public string composition => ring?.localizedComposition;
 
+        [PublicAPI]
         public decimal? mass => ring?.mass;
 
+        [PublicAPI]
         public decimal? innerradius => ring?.innerradius;
 
+        [PublicAPI]
         public decimal? outerradius => ring?.outerradius;
 
+        [PublicAPI]
         public int probesused { get; private set; }
 
+        [PublicAPI]
         public int efficiencytarget { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Ring ring { get; private set; }
 
-        [VoiceAttackIgnore]
         public Body body { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
         public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, long? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)

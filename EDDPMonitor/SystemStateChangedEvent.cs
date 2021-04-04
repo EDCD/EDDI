@@ -21,20 +21,22 @@ namespace EddiEddpMonitor
             VARIABLES.Add("newstate", "The new state of the system");
         }
 
+        [PublicAPI]
         public string match { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string oldstate => oldSystemState.localizedName;
-       
+
+        [PublicAPI]
         public string newstate => newSystemState.localizedName;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public FactionState oldSystemState { get; private set; }
 
-        [VoiceAttackIgnore]
         public FactionState newSystemState { get; private set; }
 
         public SystemStateChangedEvent(DateTime timestamp, string match, string system, FactionState oldSystemState, FactionState newSystemState) : base(timestamp, NAME)

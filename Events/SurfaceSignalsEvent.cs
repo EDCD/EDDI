@@ -18,16 +18,16 @@ namespace EddiEvents
             VARIABLES.Add("surfacesignals", "A list of SignalAmount objects (with properties 'source' and 'amount')");
         }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
-        
+
+        [PublicAPI]
         public List<SignalAmount> surfacesignals { get; private set; }
 
         // Not intended to be user facing
         
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
         
-        [VoiceAttackIgnore]
         public long bodyId { get; private set; }
 
         public SurfaceSignalsEvent(DateTime timestamp, long? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals) : base(timestamp, NAME)

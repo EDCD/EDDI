@@ -18,13 +18,14 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The amount of the discarded material");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public string edname { get; private set; }
 
         public MaterialDiscardedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)

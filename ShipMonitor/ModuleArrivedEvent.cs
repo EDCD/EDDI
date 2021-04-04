@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -24,15 +25,31 @@ namespace EddiShipMonitor
             VARIABLES.Add("station", "The station at which the module shall arrive");
         }
 
+        [PublicAPI]
         public string ship { get; private set; }
+
+        [PublicAPI]
         public int? shipid { get; private set; }
-        public int storageslot { get; private set; }
-        public long serverid { get; private set; }
+
+        [PublicAPI]
         public Module module { get; private set; }
+
+        [PublicAPI]
         public long transfercost { get; private set; }
+
+        [PublicAPI]
         public long? transfertime { get; private set; }
+
+        [PublicAPI]
         public string system { get; private set; }
+
+        [PublicAPI]
         public string station { get; private set; }
+
+        // Not intended to be user facing
+        public int storageslot { get; private set; }
+
+        public long serverid { get; private set; }
 
         public ModuleArrivedEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long transfercost, long? transfertime, string system, string station) : base(timestamp, NAME)
         {

@@ -64,6 +64,8 @@ An engineer object
     - `rank` the rank of your relationship with the engineer
     - `stage` the current stage of your relations with the engineer (e.g. Invited/Known/Unlocked/Barred)
     - `rankprogress` the percentage towards your next rank with the engineer
+    - `majorspecialties` the major specialties of the engineer
+    - `minorspecialties` the minor specialties of the engineer
 
 ### Friend
 
@@ -153,6 +155,7 @@ A material.
 
     - `name` the name of the material (e.g. Iron)
     - `category` the category of the material (Element, Data or Manufactured)
+    - `location` typical locations where the material can be found
     - `rarity` the rarity of the material
     - `blueprints` the blueprints for which the material is used (this is an array of blueprint objects)
     - `bodyname` the body name with the highest known concentration of the material within the specified system (only available when using the MaterialDetails() function)
@@ -537,8 +540,8 @@ All bodies have the following data:
     - `distance` the distance from the arrival point in the system, in light seconds
     - `tidallylocked` true if the body is tidally locked to its parent
     - `temperature` the surface temperature of the body, in Kelvin
-    - `density` the density of the body, in kg per cubic meter
-	- `rings` (when applicable) (an array of ring objects)
+    - `radius` the radius of the body, in km
+    - `rings` (when applicable) (an array of ring objects)
     - `scanned` a DateTime value that is set when the body is scanned and unset otherwise.
     - `mapped` a DateTime value that is set when the body is mapped and unset otherwise.
     - `alreadydiscovered` whether another commander has already submitted a scan of the body to Universal Cartographics (scan required to fill this value)
@@ -588,7 +591,6 @@ Planets and moons have the following data:
     - `solidcompositions` a list of the solid types found in the body (array of SolidComposition objects)
     - `earthmass` the earth masses of the planet
     - `gravity` the gravity of the planet, relative to Earth gravity
-    - `radius` the radius of the planet, in km
     - `pressure` the surface pressure on the planet, in Earth atmospheres
     - `terraformstate` the terraforming state of the planet (Not terraformable, Terraformable, Terraforming, Terraformed)
     - `planettype` the type of the planet (Metal-rich body, Earth-like world, etc.)
@@ -701,7 +703,6 @@ An object describing the presence and state of a faction within a system
     - `RecoveringStates` a list of FactionState objects and trend values
     - `influence` the faction's influence level within the system
     - `happiness` the current happiness level within the faction
-    - `squadronfaction` true if the faction is the pilot's current squadron faction
 
 ### Conflict
 
@@ -732,6 +733,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `low_fuel` a boolean value indicating whether the commander has less than 25% fuel remaining
     - `fsd_status` the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
     - `srv_drive_assist` a boolean value indicating whether SRV drive assist is active
+    - `srv_highbeam` true if the lights in your SRV are set to the high beam mode.
     - `srv_under_ship` a boolean value indicating whether the SRV in within the proximity zone around the ship
     - `srv_turret_deployed` a boolean value indicating whether the SRV's turret has been deployed
     - `srv_handbrake_activated` a boolean value indicating whether the SRV's handbrake has been activated
@@ -743,6 +745,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `hardpoints_deployed` a boolean value indicating whether hardpoints are currently deployed
     - `flight_assist_off` a boolean value indicating whether flight assistance has been deactivated
     - `supercruise` a boolean value indicating whether the ship is currently in supercruise
+    - `hyperspace` true if jumping between star systems
     - `shields_up` a boolean value indicating whether the ship's shields are maintaining their integrity
     - `landing_gear_down` a boolean value indicating whether the ship's landing gears have been deployed
     - `landed` a boolean value indicating whether the ship is currently landed (on a surface)

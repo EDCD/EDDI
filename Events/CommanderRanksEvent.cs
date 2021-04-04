@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -23,22 +24,28 @@ namespace EddiEvents
             VARIABLES.Add("exobiologist", "The commander's exobiologist rating");
         }
 
+        [PublicAPI]
         public CombatRating combat { get; private set; }
 
+        [PublicAPI]
         public TradeRating trade { get; private set; }
 
+        [PublicAPI]
         public ExplorationRating exploration { get; private set; }
 
+        [PublicAPI]
         public CQCRating cqc { get; private set; }
 
+        [PublicAPI]
         public EmpireRating empire { get; private set; }
 
+        [PublicAPI]
         public FederationRating federation { get; private set; }
 
-        [JsonProperty("mercenary")]
+        [PublicAPI]
         public MercenaryRating mercenary { get; private set; }
 
-        [JsonProperty("exobiologist")]
+        [PublicAPI]
         public ExobiologistRating exobiologist { get; private set; }
 
         public CommanderRatingsEvent(DateTime timestamp, CombatRating combat, TradeRating trade, ExplorationRating exploration, CQCRating cqc, EmpireRating empire, FederationRating federation, MercenaryRating mercenary, ExobiologistRating exobiologist) : base(timestamp, NAME)

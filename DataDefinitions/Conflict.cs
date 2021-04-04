@@ -1,27 +1,37 @@
 ﻿using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Conflict
     {
+        [PublicAPI]
         public string state => factionState?.localizedName;
 
+        [PublicAPI]
         public string status { get; set; }
 
+        [PublicAPI]
         public string stake => !string.IsNullOrEmpty(faction1Stake) ? faction1Stake : faction2Stake;
 
+        [PublicAPI]
         public int conflictdays => faction1dayswon + faction2dayswon;
 
+        [PublicAPI]
         public int margin => Math.Abs(faction1dayswon - faction2dayswon);
 
         // Faction 1
+        [PublicAPI]
         public string faction1 => Faction1?.name;
 
+        [PublicAPI]
         public int faction1dayswon { get; private set; }
 
         // Faction 2
+        [PublicAPI]
         public string faction2 => Faction2?.name;
 
+        [PublicAPI]
         public int faction2dayswon { get; private set; }
 
         // Not intended to be user facing

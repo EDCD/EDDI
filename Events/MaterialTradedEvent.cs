@@ -21,25 +21,27 @@ namespace EddiEvents
             VARIABLES.Add("received_quantity", "The amount of the material gained in the trade");
         }
 
+        [PublicAPI]
         public string tradertype { get; private set; }
 
+        [PublicAPI]
         public string paid { get; private set; }
 
+        [PublicAPI]
         public int paid_quantity { get; private set; }
 
+        [PublicAPI]
         public string received { get; private set; }
 
+        [PublicAPI]
         public int received_quantity { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketid { get; private set; }
 
-        [VoiceAttackIgnore]
         public string paid_edname { get; private set; }
 
-        [VoiceAttackIgnore]
         public string received_edname { get; private set; }
 
         public MaterialTradedEvent(DateTime timestamp, long marketId, string traderType, Material materialPaid, int materialPaidQty, Material materialReceived, int materialReceivedQty) : base(timestamp, NAME)

@@ -15,24 +15,31 @@ namespace EddiDataDefinitions
         // Parameters obtained from the Frontier API
 
         /// <summary>The commander's name</summary>
+        [PublicAPI]
         public string name { get; set; }
 
         /// <summary>The commander's combat rating</summary>
+        [PublicAPI]
         public CombatRating combatrating { get; set; }
 
         /// <summary>The commander's trade rating</summary>
+        [PublicAPI]
         public TradeRating traderating { get; set; }
 
         /// <summary>The commander's exploration rating</summary>
+        [PublicAPI]
         public ExplorationRating explorationrating { get; set; }
 
         /// <summary>The commander's CQC rating</summary>
+        [PublicAPI]
         public CQCRating cqcrating { get; set; }
 
         /// <summary>The commander's empire rating</summary>
+        [PublicAPI]
         public EmpireRating empirerating { get; set; }
 
         /// <summary>The commander's federation rating</summary>
+        [PublicAPI]
         public FederationRating federationrating { get; set; }
 
         /// <summary>The commander's mercenary rating</summary>
@@ -51,9 +58,11 @@ namespace EddiDataDefinitions
         public int powerrating { get; set; }
 
         /// <summary>The number of credits the commander holds</summary>
+        [PublicAPI]
         public long credits { get; set; }
 
         /// <summary>The amount of debt the commander owes</summary>
+        [PublicAPI]
         public long debt { get; set; }
     }
 
@@ -86,48 +95,59 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's spoken name (rendered using ssml and IPA)</summary>
+        [PublicAPI]
         public string phoneticname => SpokenName();
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
         public string title { get; set; }
 
         /// <summary> The commander's gender.  This is set in EDDI's configuration</summary>
+        [PublicAPI]
         public string gender { get; set; }
 
         /// <summary>The commander's powerplay power (if pledged)</summary>
         public Power Power { get; set; }
 
         /// <summary>The commander's powerplay power (localized) (if pledged)</summary>
+        [PublicAPI]
         public string power => (Power ?? Power.None)?.localizedName;
 
         /// <summary>The commander's powerplay merits (if pledged)</summary>
         public int? powermerits { get; set; }
 
         /// <summary>The commander's squadron name</summary>
+        [PublicAPI]
         public string squadronname { get; set; }
 
         /// <summary>The commander's squadron ID</summary>
+        [PublicAPI]
         public string squadronid { get; set; }
 
         /// <summary>The commander's squadron rank</summary>
+        [PublicAPI]
         public SquadronRank squadronrank { get; set; }
 
         /// <summary>The commander's squadron superpower</summary>
+        [PublicAPI]
         public Superpower squadronallegiance { get; set; }
 
         /// <summary>The commander's squadron power</summary>
+        [PublicAPI]
         public Power squadronpower { get; set; }
 
         /// <summary>The commander's squadron faction</summary>
+        [PublicAPI]
         public string squadronfaction { get; set; }
 
         /// <summary>The insurance excess percentage the commander has to pay</summary>
         public decimal? insurance { get; set; } = 0.05M;
 
         /// <summary>The Commander's friends</summary>
+        [PublicAPI]
         public List<Friend> friends = new List<Friend>();
 
         /// <summary>The Commander's status and progress with the various engineers</summary>
+        [PublicAPI]
         public List<Engineer> engineers => Engineer.ENGINEERS;
 
         public event PropertyChangedEventHandler PropertyChanged;

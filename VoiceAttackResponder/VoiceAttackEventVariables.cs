@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -35,13 +34,12 @@ namespace EddiVoiceAttackResponder
             foreach (var eventProperty in objectProperties)
             {
                 // We ignore some keys which we've marked in advance
-                bool passProperty = true;
+                bool passProperty = false;
                 foreach (var attribute in eventProperty.GetCustomAttributes())
                 {
-                    if (attribute is VoiceAttackIgnoreAttribute)
+                    if (attribute is PublicAPIAttribute)
                     {
-                        Logging.Debug("Ignoring key " + eventProperty.Name);
-                        passProperty = false;
+                        passProperty = true;
                         break;
                     }
                 }
@@ -49,24 +47,31 @@ namespace EddiVoiceAttackResponder
                 {
                     PrepareEventVariable(eventType, ref setVars, prefix, eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, isTopLevel);
                 }
+                else
+                {
+                    Logging.Debug("Ignoring key " + eventProperty.Name);
+                }
             }
 
             foreach (var eventField in objectFields)
             {
                 // We ignore some keys which we've marked in advance
-                bool passField = true;
+                bool passField = false;
                 foreach (var attribute in eventField.GetCustomAttributes())
                 {
-                    if (attribute is VoiceAttackIgnoreAttribute)
+                    if (attribute is PublicAPIAttribute)
                     {
-                        Logging.Debug("Ignoring key " + eventField.Name);
-                        passField = false;
+                        passField = true;
                         break;
                     }
                 }
                 if (passField)
                 {
                     PrepareEventVariable(eventType, ref setVars, prefix, eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, isTopLevel);
+                }
+                else
+                {
+                    Logging.Debug("Ignoring key " + eventField.Name);
                 }
             }
         }

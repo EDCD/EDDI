@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,10 +18,13 @@ namespace EddiEvents
             VARIABLES.Add("role", "The role to which the crewmember is being assigned");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long crewid { get; private set; }
 
+        [PublicAPI]
         public string role { get; private set; }
 
         public CrewAssignedEvent(DateTime timestamp, string name, long crewid, string role) : base(timestamp, NAME)

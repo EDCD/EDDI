@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,8 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("materials", "Types and amounts of materials used in the synthesis (as an object)");
         }
 
+        [PublicAPI]
         public string synthesis { get; private set; }
 
+        [PublicAPI]
         public List<MaterialAmount> materials { get; private set; }
 
         public SynthesisedEvent(DateTime timestamp, string synthesis, List<MaterialAmount> materials) : base(timestamp, NAME)

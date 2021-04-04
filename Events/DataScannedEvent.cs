@@ -1,6 +1,7 @@
 using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("datalinktype", "The type of Data Link scanned");
         }
 
+        [PublicAPI]
         public string datalinktype { get; private set; }
 
         public DataScannedEvent(DateTime timestamp, DataScan datalinktype) : base(timestamp, NAME)

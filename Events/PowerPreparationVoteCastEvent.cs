@@ -20,15 +20,17 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The number of votes cast for the system");
         }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
         public PowerPreparationVoteCast(DateTime timestamp, Power Power, string system, int amount) : base(timestamp, NAME)

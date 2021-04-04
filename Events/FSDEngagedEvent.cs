@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,10 +18,13 @@ namespace EddiEvents
             VARIABLES.Add("stellarclass", "The class of the destination primary star (only if type is Hyperspace)");
         }
 
+        [PublicAPI]
         public string target { get; private set; }
 
+        [PublicAPI]
         public string stellarclass { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
         public FSDEngagedEvent(DateTime timestamp, string jumptype, string system, string stellarclass) : base(timestamp, NAME)

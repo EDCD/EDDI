@@ -23,38 +23,38 @@ namespace EddiShipMonitor
             VARIABLES.Add("storedship", "The ship that was stored as part of the swap");
         }
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
+        [PublicAPI]
         public int? soldshipid { get; private set; }
 
+        [PublicAPI]
         public string soldship => soldShipDefinition?.model;
 
+        [PublicAPI]
         public int? storedshipid { get; private set; }
 
+        [PublicAPI]
         public string storedship => storedShipDefinition?.model;
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        [VoiceAttackIgnore]
         public Ship storedShipDefinition => string.IsNullOrEmpty(storedEdModel) ? null : ShipDefinitions.FromEDModel(storedEdModel);
 
-        [VoiceAttackIgnore]
         public Ship soldShipDefinition => string.IsNullOrEmpty(soldEdModel) ? null : ShipDefinitions.FromEDModel(soldEdModel);
 
-        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
-        [VoiceAttackIgnore]
         public string storedEdModel { get; private set; }
 
-        [VoiceAttackIgnore]
         public string soldEdModel { get; private set; }
         
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid, long marketId) : base(timestamp, NAME)

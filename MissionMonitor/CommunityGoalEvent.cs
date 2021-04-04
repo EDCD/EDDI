@@ -50,43 +50,59 @@ namespace EddiEvents
             VARIABLES.Add("toptierreward", "The reward on offer for the top tier");
         }
 
+        [PublicAPI]
         public List<CGUpdate> updates { get; private set; }
 
+        [PublicAPI]
         public long cgid => goal.cgid;
 
+        [PublicAPI]
         public string name => goal.name;
 
+        [PublicAPI]
         public string system => goal.system;
 
+        [PublicAPI]
         public string station => goal.station;
 
+        [PublicAPI]
         public long expiry => goal.expiry;
 
+        [PublicAPI]
         public bool iscomplete => goal.iscomplete;
 
+        [PublicAPI]
         public long total => goal.total;
 
+        [PublicAPI]
         public long contribution => goal.contribution;
 
+        [PublicAPI]
         public int contributors => goal.contributors;
 
+        [PublicAPI]
         public int percentileband => goal.percentileband;
 
+        [PublicAPI]
         public int? topranksize => goal.topranksize;
 
+        [PublicAPI]
         public bool? toprank => goal.toprank;
 
+        [PublicAPI]
         public int? tier => goal.tier;
 
+        [PublicAPI]
         public long? tierreward => goal.tierreward;
 
+        [PublicAPI]
         public int? toptier => goal.toptier;
 
+        [PublicAPI]
         public string toptierreward => goal.toptierreward;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommunityGoal goal { get; private set; }
 
         public CommunityGoalEvent(DateTime timestamp, List<CGUpdate> cgupdates, CommunityGoal goal) : base(timestamp, NAME)
@@ -98,7 +114,10 @@ namespace EddiEvents
 
     public class CGUpdate
     {
+        [PublicAPI]
         public string type { get; private set; }
+
+        [PublicAPI]
         public string direction { get; private set; }
 
         public CGUpdate(string updateType, string updateDirection)

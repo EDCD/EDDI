@@ -24,28 +24,33 @@ namespace EddiShipMonitor
             VARIABLES.Add("time", "The time in seconds to complete transferring the ship");
         }
 
+        [PublicAPI]
         public int? shipid => Ship.LocalId;
 
+        [PublicAPI]
         public string ship => Ship.model;
 
+        [PublicAPI]
         public string phoneticname => Ship.phoneticname;
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public decimal distance { get; private set; }
 
+        [PublicAPI]
         public long? price { get; private set; }
 
+        [PublicAPI]
         public long? time { get; private set; }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public long fromMarketId { get; private set; }
 
-        [VoiceAttackIgnore]
         public long toMarketId { get; private set; }
         
-        [VoiceAttackIgnore]
         public Ship Ship { get; private set; }
 
         public ShipTransferInitiatedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)

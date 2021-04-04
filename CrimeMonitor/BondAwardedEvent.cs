@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -19,10 +20,13 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("reward", "The number of credits received");
         }
 
+        [PublicAPI]
         public string awardingfaction { get; private set; }
 
+        [PublicAPI]
         public string victimfaction { get; private set; }
 
+        [PublicAPI]
         public long reward { get; private set; }
 
         public BondAwardedEvent(DateTime timestamp, string awardingfaction, string victimfaction, long reward) : base(timestamp, NAME)

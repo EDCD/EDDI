@@ -33,28 +33,58 @@ namespace EddiShipMonitor
             VARIABLES.Add("hardpoints", "The hardpoints (objects) of the ship");
         }
 
+        [PublicAPI]
         public int? shipid { get; private set; }
+
+        [PublicAPI]
         public string ship => shipDefinition?.model;
+
+        [PublicAPI]
         public string shipname { get; private set; }
+
+        [PublicAPI]
         public string shipident { get; private set; }
+
+        [PublicAPI]
         public long? value => hullvalue + modulesvalue;
+
+        [PublicAPI]
         public long? hullvalue { get; private set; }
+
+        [PublicAPI]
         public long? modulesvalue { get; private set; }
+
+        [PublicAPI]
         public decimal unladenmass { get; private set; }
+
+        [PublicAPI]
         public decimal maxjumprange { get; private set; }
+
+        [PublicAPI]
         public decimal optimalmass { get; private set; }
+
+        [PublicAPI]
         public long rebuy { get; private set; }
+
+        [PublicAPI]
         public decimal hullhealth { get; private set; }
+
+        [PublicAPI]
         public bool hot { get; private set; }
+
+        [PublicAPI]
         public string paintjob { get; private set; }
+
+        [PublicAPI]
         public List<Hardpoint> hardpoints { get; private set; }
+
+        [PublicAPI]
         public List<Compartment> compartments { get; private set; }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, decimal unladenmass, decimal maxjumprange, decimal optimalmass, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)

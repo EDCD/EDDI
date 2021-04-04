@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -22,18 +23,25 @@ namespace EddiEvents
             VARIABLES.Add("power", "The power of the NPC carrying out the interdiction");
         }
 
+        [PublicAPI]
         public bool succeeded { get; private set; }
 
+        [PublicAPI]
         public bool submitted { get; private set; }
 
+        [PublicAPI]
         public bool iscommander { get; private set; }
 
+        [PublicAPI]
         public string interdictor { get; private set; }
 
+        [PublicAPI]
         public string rating { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public string power { get; private set; }
 
         public ShipInterdictedEvent(DateTime timestamp, bool succeeded, bool submitted, bool iscommander, string interdictor, CombatRating rating, string faction, string power) : base(timestamp, NAME)

@@ -23,25 +23,31 @@ namespace EddiEvents
             VARIABLES.Add("message", "The message");
         }
 
+        [PublicAPI]
         public string from { get; private set; }
 
+        [PublicAPI]
         public string source => Source.localizedName;
 
+        [PublicAPI]
         public string source_invariant => Source.invariantName;
 
+        [PublicAPI]
         public bool player { get; private set; }
 
+        [PublicAPI]
         public string channel => Channel.localizedName;
 
+        [PublicAPI]
         public string channel_invariant => Channel.invariantName;
 
+        [PublicAPI]
         public string message { get; private set; }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public MessageChannel Channel { get; }
 
-        [VoiceAttackIgnore]
         public MessageSource Source { get; }
 
         public MessageReceivedEvent(DateTime timestamp, string from, MessageSource source, bool player, MessageChannel channel, string message) : base(timestamp, NAME)

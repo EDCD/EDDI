@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the discovered material");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
         public MaterialDiscoveredEvent(DateTime timestamp, Material material) : base(timestamp, NAME)

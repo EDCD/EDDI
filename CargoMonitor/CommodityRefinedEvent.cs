@@ -15,14 +15,14 @@ namespace EddiCargoMonitor
 
         static CommodityRefinedEvent()
         {
-            VARIABLES.Add("commodity", "The name of the commodity refined");
+            VARIABLES.Add("commodity", "The name of the refined commodity");
         }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; }
 
         public CommodityRefinedEvent(DateTime timestamp, CommodityDefinition commodity) : base(timestamp, NAME)

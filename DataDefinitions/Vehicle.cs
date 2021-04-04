@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -7,7 +8,11 @@ namespace EddiDataDefinitions
     {
         // Definition of the vehicle
         public int subslot { get; private set; }
+
+        [PublicAPI]
         public string loadout { get; private set; }
+
+        [PublicAPI]
         public int rebuilds { get; private set; }
 
         public string vehicleDefinition
@@ -29,8 +34,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string invariantName => vehicleDef?.invariantName;
 
-        [JsonIgnore]
-        [Obsolete("Please be explicit and use localizedName or invariantName")]
+        [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName ?? string.Empty;
 
         public string loadoutDescription

@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -21,14 +22,19 @@ namespace EddiCrimeMonitor
             VARIABLES.Add("bounty", "The number of credits issued as the bounty");
         }
 
+        [PublicAPI]
         public string crimetype { get; private set; }
 
+        [PublicAPI]
         public string crime { get; private set; }
 
+        [PublicAPI]
         public string victim { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public long bounty { get; private set; }
 
         public BountyIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long bounty) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -14,15 +15,18 @@ namespace EddiCrimeMonitor
 
         static BountyRedeemedEvent()
         {
-            VARIABLES.Add("rewards", "The rewards obtained broken down by faction");
+            VARIABLES.Add("rewards", "The rewards obtained broken down by faction with properties 'faction' and 'amount'");
             VARIABLES.Add("amount", "The amount rewarded (after any broker fees)");
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }
 
+        [PublicAPI]
         public List<Reward> rewards { get; private set; }
 
+        [PublicAPI]
         public long amount { get; private set; }
 
+        [PublicAPI]
         public decimal? brokerpercentage { get; private set; }
 
         public BountyRedeemedEvent(DateTime timestamp, List<Reward> rewards, long amount, decimal? brokerpercentage) : base(timestamp, NAME)

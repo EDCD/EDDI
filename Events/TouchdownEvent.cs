@@ -24,21 +24,32 @@ namespace EddiEvents
             VARIABLES.Add("nearestdestination", "The nearest location from where the ship has touched down");
         }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
 
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
+        [PublicAPI]
+        public bool? taxi { get; private set; }
+
+        [PublicAPI]
+        public bool? multicrew { get; private set; }
+
+        [PublicAPI]
         public bool playercontrolled { get; private set; }
 
+        [PublicAPI]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public SignalSource nearestDestination { get; private set; }
 
         public long? systemAddress { get; private set; }

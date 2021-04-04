@@ -40,36 +40,71 @@ namespace EddiMissionMonitor
             VARIABLES.Add("reputation", "The increase in the commander's reputation with the faction gained when completing this mission, if any");
         }
 
+        [PublicAPI]
         public long? missionid { get; private set; }
+
+        [PublicAPI]
         public string name { get; private set; }
+
+        [PublicAPI]
         public string localisedname { get; private set; }
+
+        [PublicAPI]
         public string faction { get; private set; }
+
+        [PublicAPI]
         public int? reward { get; private set; }
+
+        [PublicAPI]
         public string influence { get; private set; }
+
+        [PublicAPI]
         public string reputation { get; private set; }
+
+        [PublicAPI]
         public bool wing { get; private set; }
+
+        [PublicAPI]
         public DateTime? expiry { get; private set; }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName;
+
+        [PublicAPI]
         public string microresource => microResource?.localizedName;
+
+        [PublicAPI]
         public int? amount { get; private set; }
 
+        [PublicAPI]
         public string destinationsystem { get; private set; }
+
+        [PublicAPI]
         public string destinationstation { get; private set; }
 
+        [PublicAPI]
         public string passengertype { get; private set; }
+
+        [PublicAPI]
         public bool? passengerwanted { get; private set; }
+
+        [PublicAPI]
         public bool? passengervips { get; private set; }
 
+        [PublicAPI]
         public string target { get; private set; }
+
+        [PublicAPI]
         public string targettype { get; private set; }
+
+        [PublicAPI]
         public string targetfaction { get; private set; }
 
+        [PublicAPI]
         public bool communal { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public MicroResource microResource { get; }

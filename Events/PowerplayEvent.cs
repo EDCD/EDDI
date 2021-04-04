@@ -22,19 +22,28 @@ namespace EddiEvents
             VARIABLES.Add("timepledgedweeks", "The amount of time that you've been pledged, in weeks");
         }
 
+        [PublicAPI]
         public string power => Power?.localizedName;
+
+        [PublicAPI]
         public int rank { get; private set; }
+
+        [PublicAPI]
         public int merits { get; private set; }
+
+        [PublicAPI]
         public int votes { get; private set; }
+
+        [PublicAPI]
         public int timepledgeddays => (int)Math.Floor(timePledged.TotalDays);
+
+        [PublicAPI]
         public decimal timepledgedweeks => (decimal)Math.Round((double)timepledgeddays / 7, 1);
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
         
-        [VoiceAttackIgnore]
         public TimeSpan timePledged { get; private set; }
 
         public PowerplayEvent(DateTime timestamp, Power Power, int rank, int merits, int votes, TimeSpan timePledged) : base(timestamp, NAME)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -23,20 +24,28 @@ namespace EddiEvents
             VARIABLES.Add("missionids", "The mission ID(s) associated with the destination system, if applicable");
         }
 
+        [PublicAPI]
         public string routetype { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string station { get; private set; }
 
+        [PublicAPI]
         public string route { get; private set; }
 
+        [PublicAPI]
         public long count { get; private set; }
 
+        [PublicAPI]
         public decimal distance { get; private set; }
 
+        [PublicAPI]
         public decimal routedistance { get; private set; }
 
+        [PublicAPI]
         public List<long> missionids { get; private set; }
 
         public RouteDetailsEvent(DateTime timestamp, string routetype, string system, string station, string route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)

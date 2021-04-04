@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -19,7 +20,7 @@ namespace EddiDataDefinitions
 
         public string localizedName => commodityDef?.localizedName ?? "";
         
-        [Obsolete("Please use localizedName or invariantName")]
+        [PublicAPI, Obsolete("Please use localizedName or invariantName")]
         public string name => localizedName;
 
         [JsonProperty("edname")]
@@ -33,8 +34,11 @@ namespace EddiDataDefinitions
         }
 
         // The number of stolen items
+
         [JsonProperty("stolen")]
         private int _stolen;
+        
+        [PublicAPI]
         public int stolen
         {
             get => _stolen;
@@ -51,6 +55,8 @@ namespace EddiDataDefinitions
         // The number of items related to a mission
         [JsonProperty("haulage")]
         private int _haulage;
+
+        [PublicAPI]
         public int haulage
         {
             get => _haulage;
@@ -65,8 +71,11 @@ namespace EddiDataDefinitions
         }
 
         // The number of collected/purchased items
+
         [JsonProperty("owned")]
         private int _owned;
+
+        [PublicAPI]
         public int owned
         {
             get => _owned;
@@ -84,8 +93,11 @@ namespace EddiDataDefinitions
         public int other => owned;
 
         // The number of items needed for missions
+
         [JsonProperty("need")]
         private int _need;
+
+        [PublicAPI]
         public int need
         {
             get => _need;
@@ -100,19 +112,23 @@ namespace EddiDataDefinitions
         }
 
         // Total amount of the commodity
+        
+        [PublicAPI]
         public int total => haulage + stolen + owned;
 
         // How much we actually paid for it (per unit)
+
+        [PublicAPI]
         public int price => decimal.ToInt32(weightedAvgPrice);
 
         [JsonProperty("price")]
         private decimal weightedAvgPrice;
 
         // The commodity category, localized
-        public string localizedCategory => commodityDef?.category?.localizedName ?? null;
+        public string localizedCategory => commodityDef?.Category?.localizedName ?? null;
 
         // deprecated commodity category (exposed to Cottle and VA)
-        [Obsolete("Please use localizedCategory instead")]
+        [PublicAPI, Obsolete("Please use localizedCategory instead")]
         public string category => localizedCategory;
 
         private CommodityDefinition _commodityDef;
@@ -128,10 +144,10 @@ namespace EddiDataDefinitions
             }
         }
 
-        [Obsolete]
+        [PublicAPI, Obsolete]
         public CommodityDefinition commodity => commodityDef;
 
-        [JsonProperty("haulageData")]
+        [PublicAPI, JsonProperty("haulageData")]
         public List<Haulage> haulageData { get; set; } = new List<Haulage>();
 
         [JsonExtensionData]

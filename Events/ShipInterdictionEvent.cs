@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,16 +22,22 @@ namespace EddiEvents
             VARIABLES.Add("power", "The power of the commander being interdicted");
         }
 
+        [PublicAPI]
         public bool succeeded { get; private set; }
 
+        [PublicAPI]
         public bool iscommander { get; private set; }
 
+        [PublicAPI]
         public string interdictee { get; private set; }
 
+        [PublicAPI]
         public string rating { get; private set; }
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public string power { get; private set; }
 
 

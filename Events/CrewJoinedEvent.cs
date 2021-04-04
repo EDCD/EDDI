@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("captain", "The name of the captain of the crew you have joined");
         }
 
+        [PublicAPI]
         public string captain { get; private set; }
 
         public CrewJoinedEvent(DateTime timestamp, string captain) : base(timestamp, NAME)

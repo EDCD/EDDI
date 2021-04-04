@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("message", "Datalink message");
         }
 
+        [PublicAPI]
         public string message { get; private set; }
 
         public DatalinkMessageEvent(DateTime timestamp, string message) : base(timestamp, NAME)

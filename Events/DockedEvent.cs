@@ -27,7 +27,6 @@ namespace EddiEvents
             VARIABLES.Add("economy", "The economy of the station at which the commander has docked");
             VARIABLES.Add("secondeconomy", "The secondary economy of the station at which the commander has docked");
             VARIABLES.Add("government", "The government of the station at which the commander has docked");
-            VARIABLES.Add("security", "The security of the station at which the commander has docked");
             VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
             VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader");
             VARIABLES.Add("cockpitbreach", "True if landing with a breached cockpit");
@@ -35,22 +34,31 @@ namespace EddiEvents
             VARIABLES.Add("activefine", "True if landing at a station where you have active fines");
         }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string station { get; private set; }
 
+        [PublicAPI]
         public long? marketId { get; private set; }
 
+        [PublicAPI]
         public string state { get; private set; }
 
+        [PublicAPI]
         public string model => stationModel.localizedName;
 
+        [PublicAPI]
         public string economy => economyShares.Count > 0 ? (economyShares[0]?.economy ?? Economy.None).localizedName : Economy.None.localizedName;
 
+        [PublicAPI]
         public string secondeconomy => economyShares.Count > 1 ? (economyShares[1]?.economy ?? Economy.None).localizedName : Economy.None.localizedName;
 
+        [PublicAPI]
         public decimal? distancefromstar { get; private set; }
 
+        [PublicAPI]
         public List<string> stationservices
         {
             get
@@ -64,34 +72,40 @@ namespace EddiEvents
             }
         }
 
+        [PublicAPI]
         public bool cockpitbreach { get; private set; }
+
+        [PublicAPI]
         public bool wanted { get; private set; }
+
+        [PublicAPI]
         public bool activefine { get; private set; }
 
         // Faction properties
+        [PublicAPI]
         public string faction => controllingfaction?.name;
+
+        [PublicAPI]
         public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
+       
+        [PublicAPI]
         public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
+
+        [PublicAPI]
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // These properties are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public StationModel stationModel { get; private set; } = StationModel.None;
 
-        [VoiceAttackIgnore]
         public Faction controllingfaction { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<StationService> stationServices { get; private set; } = new List<StationService>();
 
-        [VoiceAttackIgnore]
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        [VoiceAttackIgnore]
         public List<EconomyShare> economyShares { get; private set; } = new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };
 
         public DockedEvent(DateTime timestamp, string system, long? systemAddress, long? marketId, string station, string state, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)

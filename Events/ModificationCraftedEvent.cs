@@ -24,31 +24,36 @@ namespace EddiEvents
             VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object)");
         }
 
+        [PublicAPI]
         public string engineer { get; private set; }
 
+        [PublicAPI]
         public string blueprint { get; private set; }
 
+        [PublicAPI]
         public string module => compartment?.module?.localizedName;
 
+        [PublicAPI]
         public int level { get; private set; }
 
+        [PublicAPI]
         public decimal? quality { get; private set; }
 
+        [PublicAPI]
         public string experimentaleffect { get; private set; }
 
+        [PublicAPI]
         public List<MaterialAmount> materials { get; private set; }
 
+        [PublicAPI]
         public List<CommodityAmount> commodities { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long engineerId { get; private set; }
 
-        [VoiceAttackIgnore]
         public long blueprintId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Compartment compartment { get; private set; }
 
         public ModificationCraftedEvent(DateTime timestamp, string engineer, long engineerId, string blueprint, long blueprintId, int level, decimal? quality, string experimentalEffect, List<MaterialAmount> materials, List<CommodityAmount> commodities, Compartment compartment) : base(timestamp, NAME)

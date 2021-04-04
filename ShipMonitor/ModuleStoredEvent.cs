@@ -24,20 +24,31 @@ namespace EddiShipMonitor
             VARIABLES.Add("replacementmodule", "The module (object) replacement (if a core module)");
         }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
+
+        [PublicAPI]
         public int? shipid { get; private set; }
+
+        [PublicAPI]
         public string slot { get; private set; }
+
+        [PublicAPI]
         public Module module { get; private set; }
+
+        [PublicAPI]
         public long? cost { get; private set; }
+
+        [PublicAPI]
         public string engineermodifications { get; private set; }
+
+        [PublicAPI]
         public Module replacementmodule { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
-        [VoiceAttackIgnore]
         public Ship shipDefinition { get; private set; }
 
         public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule, long marketId) : base(timestamp, NAME)

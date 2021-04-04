@@ -16,11 +16,11 @@ namespace EddiEvents
             VARIABLES.Add("numbodies", "The number of bodies included in the scan dump");
         }
 
+        [PublicAPI]
         public int numbodies { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public NavBeaconScanEvent(DateTime timestamp, long systemAddress, int numbodies) : base(timestamp, NAME)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("boost", "the value of the boost");
         }
 
+        [PublicAPI]
         public decimal boost { get; private set; }
 
         public JetConeBoostEvent(DateTime timestamp, decimal boost) : base(timestamp, NAME)

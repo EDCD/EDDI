@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -19,10 +20,13 @@ namespace EddiShipMonitor
         }
 
 
+        [PublicAPI]
         public List<string> items { get; private set; } = new List<string>();
 
+        [PublicAPI]
         public List<Module> modules { get; private set; } = new List<Module>();
 
+        [PublicAPI]
         public long price { get; private set; }
 
         // Legacy variables

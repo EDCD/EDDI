@@ -20,28 +20,30 @@ namespace EddiEvents
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
         }
 
+        [PublicAPI]
         public bool gliding { get; private set; }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
 
-        [Obsolete("Use systemname instead"), VoiceAttackIgnore]
+        [Obsolete("Use systemname instead")]
         public string system => systemname;
 
-        [Obsolete("Use bodyname instead"), VoiceAttackIgnore]
+        [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public BodyType bodyType { get; private set; } = BodyType.None;
 
         public GlideEvent(DateTime timestamp, bool gliding, string systemName, long? systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)

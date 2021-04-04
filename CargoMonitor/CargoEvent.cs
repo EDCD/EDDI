@@ -2,7 +2,6 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
-using Utilities;
 
 namespace EddiCargoMonitor
 {
@@ -20,16 +19,12 @@ namespace EddiCargoMonitor
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public bool update { get; private set; }
 
-        [VoiceAttackIgnore]
         public string vessel { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<CargoInfo> inventory { get; private set; }
 
-        [VoiceAttackIgnore]
         public int cargocarried { get; private set; }
 
         public CargoEvent(DateTime timestamp, bool update, string vessel, List<CargoInfo> inventory, int cargocarried) : base(timestamp, NAME)

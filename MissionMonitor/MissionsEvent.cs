@@ -20,7 +20,6 @@ namespace EddiMissionMonitor
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public List<Mission> missions { get; private set; }
 
         public MissionsEvent(DateTime timestamp, List<Mission> missions) : base(timestamp, NAME)

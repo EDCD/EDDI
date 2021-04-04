@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -21,18 +22,25 @@ namespace EddiEvents
             VARIABLES.Add("latitude", "The latitude where the screenshot was taken (if applicable)");
         }
 
+        [PublicAPI]
         public string filename { get; private set; }
 
+        [PublicAPI]
         public int width { get; private set; }
 
+        [PublicAPI]
         public int height { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string body { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
 
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
         public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, decimal? longitude, decimal? latitude) : base(timestamp, NAME)

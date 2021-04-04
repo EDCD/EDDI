@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -8,25 +9,33 @@ namespace EddiDataDefinitions
     /// </summary>
     public class MaterialPresence
     {
-        [JsonIgnore, VoiceAttackIgnore]
+        [PublicAPI, JsonProperty("material")]
+        public string name { get; private set; }
+
+        [PublicAPI]
+        public string category => definition?.category;
+
+        [PublicAPI]
+        public string rarity => definition?.Rarity.localizedName;   
+
+        [PublicAPI]
+        public decimal percentage { get; private set; }   
+        
+        // Not intended to be user facing
+        
+        [JsonIgnore]
         public Material definition { get; private set; }
 
-        // We merged this with MaterialPercentage (which is now gone) but old scripts used different keys for the material's name so put them both here
-        public string material { get; private set; }
-        // ....but we prefer 'material' so ignore this for JSON
-        [JsonIgnore]
-        public string name => material;
+        [JsonIgnore, Obsolete("We merged this with MaterialPercentage (which is now gone) but old scripts used different keys for the material's name so put them both here")]
+        public string material => name;
+        
 
-        [JsonIgnore]
-        public Rarity rarity { get; private set; }
 
-        public decimal percentage { get; private set; }
 
         public MaterialPresence(Material definition, decimal percentage)
         {
             this.definition = definition;
-            this.material = definition?.localizedName;
-            this.rarity = definition?.rarity;
+            this.name = definition?.localizedName;
             this.percentage = percentage;
         }
 

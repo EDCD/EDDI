@@ -21,16 +21,17 @@ namespace EddiEvents
             VARIABLES.Add("nonbodies", "The number of non-body signals");
         }
 
+        [PublicAPI]
         public int totalbodies { get; private set; }
-        
+
+        [PublicAPI]
         public int nonbodies { get; private set; }
 
         // Not intended to be user facing
 
-        [Obsolete("Please use `totalbodies` instead"), VoiceAttackIgnore]
+        [Obsolete("Please use `totalbodies` instead")]
         public int bodies => totalbodies;
 
-        [VoiceAttackIgnore]
         public int progress { get; private set; }
 
         public DiscoveryScanEvent(DateTime timestamp, decimal progress, int totalbodies, int nonbodies) : base(timestamp, NAME)

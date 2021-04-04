@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -18,10 +19,13 @@ namespace EddiMissionMonitor
             VARIABLES.Add("fine", "The fine levied");
         }
 
+        [PublicAPI]
         public long? missionid { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long fine { get; private set; }
 
         public MissionAbandonedEvent(DateTime timestamp, long? missionid, string name, long fine) : base(timestamp, NAME)

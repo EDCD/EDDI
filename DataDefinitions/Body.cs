@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary>The localized type of the body </summary>
-        [JsonIgnore, Obsolete("For use with Cottle. Please use bodyType instead.")]
+        [PublicAPI, JsonIgnore, Obsolete("For use with Cottle. Please use bodyType instead.")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         /// <summary>The body type of the body (e.g. Star or Planet)</summary>
@@ -30,74 +30,90 @@ namespace EddiDataDefinitions
         public BodyType bodyType { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
-        [JsonProperty("name"), JsonRequired]
+        [PublicAPI, JsonProperty("name"), JsonRequired]
         public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string shortname => GetShortName(bodyname, systemname);
 
         /// <summary>The name of the system in which the body resides</summary>
+        [PublicAPI]
         public string systemname { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
-        
+
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
+        [PublicAPI]
         public decimal? distance { get; set; }
 
         /// <summary>The surface temperature of the body, in Kelvin</summary>
+        [PublicAPI]
         public decimal? temperature { get; set; }
 
         /// <summary>The radius of the body, in km</summary>
+        [PublicAPI]
         public decimal? radius { get; set; }
 
         /// <summary>The body's rings</summary>
+        [PublicAPI]
         public List<Ring> rings { get; set; }
 
         // Scan data
 
         /// <summary>Whether we're the first commander to discover this body</summary>
+        [PublicAPI]
         public bool? alreadydiscovered { get; set; }
 
         /// <summary>When we scanned this object, if we have (DateTime)</summary>
+        [PublicAPI]
         public DateTime? scanned { get; set; }
 
         /// <summary>Whether we're the first commander to map this body</summary>
+        [PublicAPI]
         public bool? alreadymapped { get; set; }
 
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
+        [PublicAPI]
         public DateTime? mapped { get; set; }
 
         /// <summary>Whether we received an efficiency bonus when mapping this body</summary>
         public bool mappedEfficiently { get; set; }
 
         /// <summary>The estimated value of the body</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public long estimatedvalue => scanned == null ? 0 :
             solarmass == null ? estimateBodyValue() : estimateStarValue();
 
         // Orbital characteristics
 
         /// <summary>The argument of periapsis, in degrees</summary>
+        [PublicAPI]
         public decimal? periapsis { get; set; }
 
         /// <summary>The axial tilt, in degrees</summary>
+        [PublicAPI]
         public decimal? tilt { get; set; }
 
         /// <summary>The orbital eccentricity of the planet</summary>
+        [PublicAPI]
         public decimal? eccentricity { get; set; }
 
         /// <summary>The orbital inclination of the body, in degrees</summary>
+        [PublicAPI]
         public decimal? inclination { get; set; }
 
         /// <summary>The orbital period of the body, in days</summary>
+        [PublicAPI]
         public decimal? orbitalperiod { get; set; }
 
         /// <summary>The rotational period of the body, in days</summary>
+        [PublicAPI]
         public decimal? rotationalperiod { get; set; }
 
         /// <summary>The semi-major axis of the body, in light seconds</summary>
+        [PublicAPI]
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The parent bodies to this body, if any</summary>
@@ -132,7 +148,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> Density in Kg per cubic meter </summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? density
         {
             get { return GetDensity(); }
@@ -148,72 +164,94 @@ namespace EddiDataDefinitions
         private List<IDictionary<string, object>> _parents;
 
         // Additional calculated statistics
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public decimal? massprobability => Probability.CumulativeP(starClass == null ? planetClass.massdistribution : starClass.massdistribution, starClass == null ? earthmass : solarmass);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? radiusprobability => Probability.CumulativeP(starClass == null ? planetClass.radiusdistribution : starClass.radiusdistribution, starClass == null ? radius : solarradius);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? tempprobability => Probability.CumulativeP(starClass == null ? planetClass.tempdistribution : starClass.tempdistribution, temperature);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? orbitalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.orbitalperioddistribution : starClass.orbitalperioddistribution, orbitalperiod);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? semimajoraxisprobability => Probability.CumulativeP(starClass == null ? planetClass.semimajoraxisdistribution : starClass.semimajoraxisdistribution, semimajoraxis);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? eccentricityprobability => Probability.CumulativeP(starClass == null ? planetClass.eccentricitydistribution : starClass.eccentricitydistribution, eccentricity);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? inclinationprobability => Probability.CumulativeP(starClass == null ? planetClass.inclinationdistribution : starClass.inclinationdistribution, inclination);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? periapsisprobability => Probability.CumulativeP(starClass == null ? planetClass.periapsisdistribution : starClass.periapsisdistribution, periapsis);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? rotationalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.rotationalperioddistribution : starClass.rotationalperioddistribution, rotationalperiod);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? tiltprobability => Probability.CumulativeP(starClass == null ? planetClass.tiltdistribution : starClass.tiltdistribution, tilt);
-        [JsonIgnore]
+        
+        [PublicAPI, JsonIgnore]
         public decimal? densityprobability => Probability.CumulativeP(starClass == null ? planetClass.densitydistribution : starClass.densitydistribution, density);
 
         // Star-specific items
 
         /// <summary>The age of the body, in millions of years</summary>
+        [PublicAPI]
         public long? age { get; set; }
 
         /// <summary>If this body is the main star</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public bool? mainstar => distance == 0 ? true : false;
 
         /// <summary>The stellar class of the star</summary>
+        [PublicAPI]
         public string stellarclass { get; set; }
 
         /// <summary>The stellar subclass of the star (0-9)</summary>
+        [PublicAPI]
         public int? stellarsubclass { get; set; }
 
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
         public string luminosityclass { get; set; }
 
         /// <summary>The solar mass of the star</summary>
+        [PublicAPI]
         public decimal? solarmass { get; set; }
 
         /// <summary>The absolute magnitude of the star</summary> 
+        [PublicAPI]
         public decimal? absolutemagnitude { get; set; }
 
         /// <summary>Class information about the star</summary> 
         public StarClass starClass => StarClass.FromEDName(stellarclass);
 
         // Additional calculated star information
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public bool scoopable => !string.IsNullOrEmpty(stellarclass) && "KGBFOAM".Contains(stellarclass);
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public decimal? luminosity => StarClass.luminosity(absolutemagnitude);
+
         /// <summary>The solar radius of the star, compared to Sol</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? solarradius => StarClass.solarradius(radius);
+
         /// <summary>Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
+
         /// <summary>Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)</summary>
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
@@ -261,10 +299,10 @@ namespace EddiDataDefinitions
         }
 
         // Additional calculated star statistics
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? absolutemagnitudeprobability => starClass == null ? null : Probability.CumulativeP(starClass.absolutemagnitudedistribution, absolutemagnitude);
 
         private long estimateStarValue()
@@ -311,49 +349,57 @@ namespace EddiDataDefinitions
         public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.None;
 
         /// <summary>The atmosphere</summary>
-        [JsonIgnore, Obsolete("Please use AtmosphereClass instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use AtmosphereClass instead")]
         public string atmosphere => (atmosphereclass ?? AtmosphereClass.None).localizedName;
 
         /// <summary>The atmosphere's composition</summary>
+        [PublicAPI]
         public List<AtmosphereComposition> atmospherecompositions { get; set; } = new List<AtmosphereComposition>();
 
         /// <summary>If this body can be landed upon</summary>
+        [PublicAPI]
         public bool? landable { get; set; }
 
         /// <summary>If this body is tidally locked</summary>
+        [PublicAPI]
         public bool? tidallylocked { get; set; }
 
         /// <summary>The earth mass of the planet</summary>
+        [PublicAPI]
         public decimal? earthmass { get; set; }
 
         /// <summary>The gravity of the planet, in G's</summary>
+        [PublicAPI]
         public decimal? gravity { get; set; }
 
         /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>
+        [PublicAPI]
         public decimal? pressure { get; set; }
 
         /// <summary>The terraform state (localized name)</summary>
-        [JsonIgnore, Obsolete("Please use TerraformState instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use TerraformState instead")]
         public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName;
 
         /// <summary>The terraform state</summary>
         public TerraformState terraformState { get; set; } = TerraformState.NotTerraformable;
 
         /// <summary>The planet type (localized name)</summary>
-        [JsonIgnore, Obsolete("Please use PlanetClass instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use PlanetClass instead")]
         public string planettype => (planetClass ?? PlanetClass.None).localizedName;
 
         /// <summary>The planet type</summary>
         public PlanetClass planetClass { get; set; } = PlanetClass.None;
 
         /// <summary>The volcanism</summary>
-        [JsonConverter(typeof(VolcanismConverter))]
+        [PublicAPI, JsonConverter(typeof(VolcanismConverter))]
         public Volcanism volcanism { get; set; }
 
         /// <summary>The solid body composition of the body</summary>
+        [PublicAPI]
         public List<SolidComposition> solidcompositions { get; set; } = new List<SolidComposition>();
 
         /// <summary>The materials present at the surface of the body</summary>
+        [PublicAPI]
         public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
 
         /// <summary>The reserve level (localized name)</summary>
@@ -414,13 +460,16 @@ namespace EddiDataDefinitions
         }
 
         // Additional calculated planet and moon statistics
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
-        [JsonIgnore]
+
+        [PublicAPI, JsonIgnore]
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
-        [JsonIgnore] // The duration of a solar day on the body, in Earth days
+
+        [PublicAPI, JsonIgnore] // The duration of a solar day on the body, in Earth days
         public decimal? solarday => (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
-        [JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
+
+        [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
         public decimal? solarsurfacevelocity => (2 * (decimal)Math.PI * radius * 1000) / (solarday * 86400);
 
         private long estimateBodyValue()

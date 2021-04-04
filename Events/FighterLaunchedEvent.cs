@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("playercontrolled", "True if the fighter is controlled by the player");
         }
 
+        [PublicAPI]
         public string loadout { get; private set; }
 
+        [PublicAPI]
         public int id { get; private set; }
 
+        [PublicAPI]
         public bool playercontrolled { get; private set; }
 
         public FighterLaunchedEvent(DateTime timestamp, string loadout, int id, bool playercontrolled) : base(timestamp, NAME)

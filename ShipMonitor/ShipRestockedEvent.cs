@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -16,6 +17,7 @@ namespace EddiShipMonitor
             VARIABLES.Add("price", "The price of restocking");
         }
 
+        [PublicAPI]
         public long price { get; private set; }
 
         public ShipRestockedEvent(DateTime timestamp, long price) : base(timestamp, NAME)

@@ -23,23 +23,29 @@ namespace EddiEvents
             VARIABLES.Add("totaltodeliver", "The total amount of cargo to deliver to complete the mission");
         }
 
+        [PublicAPI]
         public long? missionid { get; private set; }
 
+        [PublicAPI]
         public string updatetype { get; private set; }
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName ?? "Unknown commodity";
 
+        [PublicAPI]
         public int? amount { get; private set; }
 
+        [PublicAPI]
         public int collected { get; private set; }
 
+        [PublicAPI]
         public int delivered { get; private set; }
 
+        [PublicAPI]
         public int totaltodeliver { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public CargoWingUpdateEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)

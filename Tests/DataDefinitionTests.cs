@@ -37,7 +37,7 @@ namespace UnitTests
         {
             Material material = Material.FromName("Cracked Industrial Firmware");
             Assert.AreEqual("Cracked Industrial Firmware", material.invariantName);
-            Assert.IsNotNull(material.rarity);
+            Assert.IsNotNull(material.Rarity);
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace UnitTests
         {
             Material material = Material.FromName("Niobium");
             Assert.AreEqual("Niobium", material.invariantName);
-            Assert.IsNotNull(material.rarity);
+            Assert.IsNotNull(material.Rarity);
             Assert.AreEqual("Element", material.Category.invariantName);
         }
 
@@ -79,7 +79,7 @@ namespace UnitTests
             Material efc = Material.FromName("Exquisite Focus Crystals");
             Assert.AreEqual("exquisitefocuscrystals", efc.basename);
             Assert.AreEqual("Exquisite Focus Crystals", efc.localizedName);
-            Assert.AreEqual("very rare", efc.rarity.invariantName);
+            Assert.AreEqual("very rare", efc.Rarity.invariantName);
         }
 
         [TestMethod]
@@ -96,7 +96,7 @@ namespace UnitTests
             CommodityDefinition trinket = CommodityDefinition.FromEDName("Drones");
             Assert.AreEqual("Drones", trinket.edname);
             Assert.AreEqual("Limpet", trinket.invariantName);
-            Assert.AreEqual("Non-marketable", trinket.category.invariantName);
+            Assert.AreEqual("Non-marketable", trinket.Category.invariantName);
         }
 
         [TestMethod]
@@ -477,7 +477,7 @@ namespace UnitTests
             var quote = eddnQuote.ToCommodityMarketQuote();
             Assert.AreEqual(128066403, quote.definition.EliteID);
             Assert.AreEqual("Drones", quote.definition.edname);
-            Assert.AreEqual("Non-marketable", quote.definition.category.invariantName);
+            Assert.AreEqual("Non-marketable", quote.definition.Category.invariantName);
             Assert.AreEqual(101, quote.buyprice);
             Assert.AreEqual(101, quote.sellprice);
             Assert.AreEqual(101, quote.avgprice);
@@ -519,7 +519,7 @@ namespace UnitTests
             var quote = info.Items[0].ToCommodityMarketQuote();
             Assert.AreEqual(128668550, quote.definition.EliteID);
             Assert.AreEqual("Painite", quote.definition.edname);
-            Assert.AreEqual("Minerals", quote.definition.category.invariantName);
+            Assert.AreEqual("Minerals", quote.definition.Category.invariantName);
             Assert.AreEqual(0, quote.buyprice);
             Assert.AreEqual(500096, quote.sellprice);
             Assert.AreEqual(CommodityDefinition.FromEDName("painite")?.avgprice, quote.avgprice); // Carriers always return an average price of zero. Verify this marches our commodity definition instead. 

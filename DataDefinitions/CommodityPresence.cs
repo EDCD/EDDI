@@ -1,11 +1,20 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class CommodityPresence
     {
-        public CommodityDefinition commodityDefinition { get; }
+        [PublicAPI]
         public string commodity => commodityDefinition.localizedName;
-        public string edname => commodityDefinition.edname;
+
+        [PublicAPI]
         public decimal percentage { get; } // Out of 100
+
+        // Not intended to be user facing
+
+        public CommodityDefinition commodityDefinition { get; }
+
+        public string edname => commodityDefinition.edname;
 
         public CommodityPresence(CommodityDefinition commodity, decimal percentage)
         {

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,8 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("rating", "The combat rating of the player killed");
         }
 
+        [PublicAPI]
         public string victim { get; private set; }
 
+        [PublicAPI]
         public string rating { get; private set; }
 
         public KilledEvent(DateTime timestamp, string victim, CombatRating rating) : base(timestamp, NAME)

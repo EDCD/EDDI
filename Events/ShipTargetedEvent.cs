@@ -29,41 +29,51 @@ namespace EddiEvents
             VARIABLES.Add("subsystemhealth", "The health of the subsystem targeted");
         }
 
+        [PublicAPI]
         public bool targetlocked { get; private set; }
 
+        [PublicAPI]
         public string ship { get; private set; }
 
+        [PublicAPI]
         public int? scanstage { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string rank => CombatRank?.localizedName ?? "unknown combat rank";
 
+        [PublicAPI]
         public string faction { get; private set; }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
+        [PublicAPI]
         public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
+        [PublicAPI]
         public int? bounty { get; private set; }
 
+        [PublicAPI]
         public decimal? shieldhealth { get; private set; }
 
+        [PublicAPI]
         public decimal? hullhealth { get; private set; }
 
+        [PublicAPI]
         public string subsystem { get; private set; }
 
+        [PublicAPI]
         public decimal? subsystemhealth { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public CombatRating CombatRank { get; }
 
-        [VoiceAttackIgnore]
         public LegalStatus LegalStatus { get; }
 
-        [VoiceAttackIgnore]
         public Power Power { get; }
 
         public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, Power power, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)

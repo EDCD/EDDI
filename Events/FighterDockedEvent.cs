@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("id", "The fighter's id");
         }
 
+        [PublicAPI]
         public int id { get; private set; }
 
         public FighterDockedEvent(DateTime timestamp, int id) : base(timestamp, NAME)

@@ -2,6 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiMaterialMonitor
 {
@@ -21,10 +22,19 @@ namespace EddiMaterialMonitor
             VARIABLES.Add("change", "The change to the inventory (Increase/Reduction)");
         }
 
+        [PublicAPI]
         public Material material { get; private set; }
+
+        [PublicAPI]
         public string level { get; private set; }
+
+        [PublicAPI]
         public int limit { get; private set; }
+
+        [PublicAPI]
         public int amount { get; private set; }
+
+        [PublicAPI]
         public string change { get; private set; }
 
         public MaterialThresholdEvent(DateTime timestamp, Material material, string level, int limit, int amount, string change) : base(timestamp, NAME)

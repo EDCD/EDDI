@@ -7,6 +7,89 @@ namespace EddiDataDefinitions
 {
     public partial class Module : ResourceBasedLocalizedEDName<Module>
     {
+        // Definition of the module
+
+        [PublicAPI, JsonProperty]
+        public int @class { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public string grade { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public long value { get; set; } // The undiscounted value
+
+        // Additional definition for some items
+
+        [PublicAPI, JsonProperty]
+        public int? ShipId { get; set; } // Only for bulkheads
+
+        ///<summary>The localized name of the weapon mount</summary>
+        [PublicAPI, JsonIgnore]
+        public string mount => Mount != null ? Properties.Modules.ResourceManager.GetString(Mount.ToString()) : "";
+
+        [PublicAPI, JsonProperty]
+        public int? clipcapacity { get; set; } // Only for weapons
+
+        [PublicAPI, JsonProperty]
+        public int? hoppercapacity { get; set; } // Only for weapons
+
+        [PublicAPI, JsonProperty]
+        public int? ammoinclip { get; set; } // Only for weapons
+
+        [PublicAPI, JsonProperty]
+        public int? ammoinhopper { get; set; } // Only for weapons
+
+        // State of the module
+
+        [PublicAPI, JsonProperty]
+        public long price { get; set; } // How much we actually paid for it
+
+        [PublicAPI, JsonProperty]
+        public bool enabled { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public int priority { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public int position { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public decimal power { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public decimal health { get; set; } = 100M;
+
+        [PublicAPI, JsonProperty]
+        public bool hot { get; set; } // False = `clean', true = `hot`
+
+        // Engineering modification properties
+        [PublicAPI, JsonProperty]
+        public bool modified { get; set; } // If the module has been modified
+
+        [PublicAPI, JsonProperty]
+        public int engineerlevel { get; set; }
+
+        [PublicAPI, JsonProperty]
+        public decimal engineerquality { get; set; }
+
+        // deprecated commodity category (exposed to Cottle and VA)
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedModification instead")]
+        public string modification => localizedModification;
+
+        // Not intended to be user facing
+        
+        [JsonProperty]
+        public long EDID { get; set; } // The ID in Elite: Dangerous' database
+
+        [JsonProperty]
+        public long EDDBID { get; set; } // The ID in eddb.io
+
+        [JsonIgnore]
+        public string EDName { get => edname; }
+
+        [JsonProperty("mount")]
+        public ModuleMount? Mount { get; set; } // Only for weapons
+
         public enum ModuleMount
         {
             Fixed,
@@ -14,53 +97,10 @@ namespace EddiDataDefinitions
             Turreted
         }
 
-        // Definition of the module
-        [JsonProperty]
-        public int @class { get; set; }
-        [JsonProperty]
-        public string grade { get; set; }
-        [JsonProperty]
-        public long value { get; set; } // The undiscounted value
-
-        // Additional definition for some items
-        [JsonProperty]
-        public int? ShipId { get; set; } // Only for bulkheads
-        [JsonProperty("mount")]
-        public ModuleMount? Mount { get; set; } // Only for weapons
-        ///<summary>The localized name of the weapon mount</summary>
-        [JsonIgnore]
-        public string mount => Mount != null ? Properties.Modules.ResourceManager.GetString(Mount.ToString()) : "";
-        [JsonProperty]
-        public int? clipcapacity { get; set; } // Only for weapons
-        [JsonProperty]
-        public int? hoppercapacity { get; set; } // Only for weapons
-        [JsonProperty]
-        public int? ammoinclip { get; set; } // Only for weapons
-        [JsonProperty]
-        public int? ammoinhopper { get; set; } // Only for weapons
-
-        // State of the module
-        [JsonProperty]
-        public long price { get; set; } // How much we actually paid for it
-        [JsonProperty]
-        public bool enabled { get; set; }
-        [JsonProperty]
-        public int priority { get; set; }
-        [JsonProperty]
-        public int position { get; set; }
-        [JsonProperty]
-        public decimal power { get; set; }
-        [JsonProperty]
-        public decimal health { get; set; } = 100M;
-        [JsonProperty]
-        public bool hot { get; set; } // False = `clean', true = `hot`
-
-        // Engineering modification properties
-        [JsonProperty]
-        public bool modified { get; set; } // If the module has been modified
         [JsonProperty]
         public string modificationEDName { get; set; }
-        [JsonIgnore, VoiceAttackIgnore]
+
+        [JsonIgnore]
         public Blueprint engineermodification
         {
             get
@@ -72,36 +112,21 @@ namespace EddiDataDefinitions
                 engineerModification = value;
             }
         }
-        [JsonIgnore, VoiceAttackIgnore]
+
+        [JsonIgnore]
         private Blueprint engineerModification;
+
         [JsonProperty]
         public long blueprintId { get; set; }
-        [JsonProperty]
-        public int engineerlevel { get; set; }
-        [JsonProperty]
-        public decimal engineerquality { get; set; }
+
         [JsonProperty]
         public string engineerExperimentalEffectEDName { get; set; }
+
         [JsonProperty]
         public List<EngineeringModifier> modifiers { get; set; } = new List<EngineeringModifier>();
+
         [JsonIgnore]
         public string localizedModification => engineermodification?.localizedName ?? null;
-
-        // deprecated commodity category (exposed to Cottle and VA)
-        [JsonIgnore, Obsolete("Please use localizedModification instead")]
-        public string modification => localizedModification;
-
-        // Admin
-        // The ID in Elite: Dangerous' database
-        [JsonProperty]
-        public long EDID { get; set; }
-        // The ID in eddb.io
-        [JsonProperty]
-        public long EDDBID { get; set; }
-
-        [JsonIgnore]
-        public string EDName { get => edname; }
-
 
         public Module() : base("", "")
         { }

@@ -23,21 +23,26 @@ namespace EddiShipMonitor
             VARIABLES.Add("tomodule", "The module (object) to which the swap was finalised");
         }
 
+        [PublicAPI]
         public string ship { get; private set; }
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string fromslot { get; private set; }
 
+        [PublicAPI]
         public Module frommodule { get; private set; }
 
+        [PublicAPI]
         public string toslot { get; private set; }
 
+        [PublicAPI]
         public Module tomodule { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long marketId { get; private set; }
 
         public ModuleSwappedEvent(DateTime timestamp, string ship, int? shipid, string fromslot, Module frommodule, string toslot, Module tomodule, long marketId) : base(timestamp, NAME)

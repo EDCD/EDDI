@@ -18,11 +18,13 @@ namespace EddiEvents
             VARIABLES.Add("by_invariant", "The invariant source of the interdiction (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
         }
 
+        [PublicAPI]
         public string by => Source.localizedName;
+
+        [PublicAPI]
         public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
         public MessageSource Source { get; }
 
         public NPCInterdictionCommencedEvent(DateTime timestamp, MessageSource source) : base(timestamp, NAME)

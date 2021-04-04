@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The amount paid to the crewmember");
         }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public long crewid { get; private set; }
 
+        [PublicAPI]
         public long amount { get; private set; }
 
         public CrewPaidWageEvent(DateTime timestamp, string name, long crewid, long amount) : base(timestamp, NAME)

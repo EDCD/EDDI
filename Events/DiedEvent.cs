@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -17,6 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("killers", "A list of objects describing your killers");
         }
 
+        [PublicAPI]
         public List<Killer> killers { get; private set; }
 
         public DiedEvent(DateTime timestamp, List<Killer> killers) : base(timestamp, NAME)

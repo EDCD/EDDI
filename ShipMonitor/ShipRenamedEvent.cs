@@ -21,19 +21,22 @@ namespace EddiShipMonitor
             VARIABLES.Add("ident", "The new ident of the ship");
         }
 
+        [PublicAPI]
         public string ship => shipDefinition?.model;
 
+        [PublicAPI]
         public int? shipid { get; private set; }
 
+        [PublicAPI]
         public string name { get; private set; }
 
+        [PublicAPI]
         public string ident { get; private set; }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        [VoiceAttackIgnore]
         public string edModel { get; private set; }
 
         public ShipRenamedEvent(DateTime timestamp, string ship, int shipid, string name, string ident) : base(timestamp, NAME)

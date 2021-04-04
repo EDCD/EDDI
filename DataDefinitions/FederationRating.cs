@@ -30,6 +30,7 @@ namespace EddiDataDefinitions
             var Admiral = new FederationRating("Admiral", 14);
         }
 
+        [PublicAPI]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

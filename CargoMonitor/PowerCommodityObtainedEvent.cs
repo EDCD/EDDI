@@ -21,18 +21,19 @@ namespace EddiCargoMonitor
             VARIABLES.Add("amount", "The amount of the commodity the commander is obtaining");
         }
 
+        [PublicAPI]
         public string power => (Power ?? Power.None).localizedName;
 
+        [PublicAPI]
         public string commodity => commodityDefinition?.localizedName;
 
+        [PublicAPI]
         public int amount { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public Power Power { get; private set; }
 
-        [VoiceAttackIgnore]
         public CommodityDefinition commodityDefinition { get; private set; }
 
         public PowerCommodityObtainedEvent(DateTime timestamp, Power Power, CommodityDefinition commodity, int amount) : base(timestamp, NAME)

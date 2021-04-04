@@ -21,26 +21,26 @@ namespace EddiEvents
             VARIABLES.Add("latitude", "The latitude coordinate of the settlement (if given)");
         }
 
+        [PublicAPI]
         public string name => settlementName.localizedName;
 
+        [PublicAPI]
         public string bodyname { get; private set; }
 
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long? marketId { get; private set; }
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? bodyId { get; private set; }
 
-        [VoiceAttackIgnore]
         public SignalSource settlementName { get; private set; }
 
         public SettlementApproachedEvent(DateTime timestamp, SignalSource settlementName, long? marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)

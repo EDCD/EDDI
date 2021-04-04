@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using Utilities;
 
 namespace EddiEvents
 {
@@ -17,7 +16,7 @@ namespace EddiEvents
         }
 
         // Not intended to be user facing
-        [VoiceAttackIgnore]
+
         public List<CommunityGoal> goals { get; private set; }
 
         public CommunityGoalsEvent(DateTime timestamp, List<CommunityGoal> goals) : base(timestamp, NAME)

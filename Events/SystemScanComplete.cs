@@ -17,13 +17,14 @@ namespace EddiEvents
             VARIABLES.Add("count", "The count of bodies from the scanned system");
         }
 
+        [PublicAPI]
         public string systemname { get; private set; }
 
+        [PublicAPI]
         public int count { get; private set; }
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public long systemAddress { get; private set; }
 
         public SystemScanComplete(DateTime timestamp, string systemname, long systemAddress, int count) : base(timestamp, NAME)

@@ -30,45 +30,57 @@ namespace EddiEvents
             VARIABLES.Add("startdead", "True if the commander is starting dead / at the rebuy screen");
         }
 
+        [PublicAPI]
         public string commander { get; private set; }
 
+        [PublicAPI]
         public bool horizons { get; private set; }
 
+        [PublicAPI]
         public bool odyssey { get; private set; }
 
+        [PublicAPI]
         public string ship => shipEDModel == "TestBuggy" ? Utilities.Constants.VEHICLE_SRV
             : shipEDModel.ToLowerInvariant().Contains("fighter") ? Utilities.Constants.VEHICLE_FIGHTER
             : shipEDModel.ToLowerInvariant().Contains("suit") ? Utilities.Constants.VEHICLE_LEGS
             : shipEDModel.ToLowerInvariant().Contains("taxi") ? Utilities.Constants.VEHICLE_TAXI
             : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;
 
+        [PublicAPI]
         public long? shipid { get; private set; } // shipid serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
+
+        [PublicAPI]
+        public string mode { get; private set; }
+
+        [PublicAPI]
+        public string group { get; private set; }
+
+        [PublicAPI]
+        public long credits { get; private set; }
+
+        [PublicAPI]
+        public long loan { get; private set; }
+
+        [PublicAPI]
+        public decimal? fuel { get; private set; }
+
+        [PublicAPI]
+        public decimal? fuelcapacity { get; private set; }
+
+        [PublicAPI]
+        public bool? startlanded { get; private set; }
+
+        [PublicAPI]
+        public bool? startdead { get; private set; }
+
+        // Not intended to be user facing
 
         public string shipname { get; private set; }
 
         public string shipident { get; private set; }
 
-        public bool? startlanded { get; private set; }
-
-        public bool? startdead { get; private set; }
-
-        public string mode { get; private set; }
-
-        public string group { get; private set; }
-
-        public long credits { get; private set; }
-
-        public long loan { get; private set; }
-
-        public decimal? fuel { get; private set; }
-
-        public decimal? fuelcapacity { get; private set; }
-
-        // Not intended to be user facing
-        [VoiceAttackIgnore]
         public string frontierID { get; private set; }
 
-        [VoiceAttackIgnore]
         public string shipEDModel { get; private set; }
 
         public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)

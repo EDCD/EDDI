@@ -18,41 +18,32 @@ namespace EddiEvents
             VARIABLES.Add("updates", "A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'");
         }
 
+        [PublicAPI]
         public HashSet<string> updates { get; private set; } = new HashSet<string>();
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         public bool inHorizons { get; private set; }
 
-        [VoiceAttackIgnore]
         public bool inOdyssey { get; private set; }
 
-        [VoiceAttackIgnore]
         public bool? allowCobraMkIV { get; private set; }
 
-        [VoiceAttackIgnore]
         public string starSystem { get; private set; }
 
-        [VoiceAttackIgnore]
         public string stationName { get; private set; }
 
-        [VoiceAttackIgnore]
         public long? marketId { get; private set; }
 
         // The properties below must be easily convertible to the EDDN commodities schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
-        [VoiceAttackIgnore]
         public List<MarketInfoItem> commodityQuotes { get; private set; }
 
-        [VoiceAttackIgnore]
         public List<string> prohibitedCommodities { get; private set; }
 
         // The property below must be easily convertible to the EDDN outfitting schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
-        [VoiceAttackIgnore]
         public List<string> outfittingModules { get; private set; }
 
         // The property below must be easily convertible to the EDDN shipyard schema (ref. https://github.com/EDCD/EDDN/tree/master/schemas) and must not introduce any data from local definitions
-        [VoiceAttackIgnore]
         public List<string> shipyardModels { get; private set; }
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.

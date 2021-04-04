@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("commander", "The commander's name");
         }
 
+        [PublicAPI]
         public string commander { get; private set; }
 
         public EnteredCQCEvent(DateTime timestamp, string commander) : base(timestamp, NAME)

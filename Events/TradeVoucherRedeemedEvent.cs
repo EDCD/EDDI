@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }
 
+        [PublicAPI]
         public List<Reward> rewards { get; private set; }
 
+        [PublicAPI]
         public long amount { get; private set; }
 
+        [PublicAPI]
         public decimal? brokerpercentage { get; private set; }
 
         public TradeVoucherRedeemedEvent(DateTime timestamp, List<Reward> rewards, long amount, decimal? brokerpercentage) : base(timestamp, NAME)

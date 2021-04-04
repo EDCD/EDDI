@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -16,6 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("deployed", "A boolean value. True if your landing gear is deployed.");
         }
 
+        [PublicAPI]
         public bool deployed { get; private set; }
 
         public ShipLandingGearEvent(DateTime timestamp, bool deployed) : base(timestamp, NAME)

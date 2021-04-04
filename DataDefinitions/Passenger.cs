@@ -1,16 +1,24 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Passenger
     {
-        public long missionid { get; set; }
-
+        [PublicAPI]
         public string type { get; set; }
 
+        [PublicAPI]
         public bool vip { get; set; }
 
+        [PublicAPI]
         public bool wanted { get; set; }
 
+        [PublicAPI]
         public int amount { get; set; }
+
+        // Not intended to be user facing
+
+        public long missionid { get; set; }
 
         public Passenger() { }
 

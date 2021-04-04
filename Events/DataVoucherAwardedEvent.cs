@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("payeefaction", "The name of the faction awarding the voucher");
         }
 
+        [PublicAPI]
         public long reward { get; private set; }
 
+        [PublicAPI]
         public string victimfaction { get; private set; }
 
+        [PublicAPI]
         public string payeefaction { get; private set; }
 
         public DataVoucherAwardedEvent(DateTime timestamp, string payeefaction, string victimfaction, long reward) : base(timestamp, NAME)
@@ -34,7 +38,10 @@ namespace EddiEvents
 
     public class Reward
     {
+        [PublicAPI]
         public string faction { get; private set; }
+        
+        [PublicAPI]
         public long amount { get; private set; }
 
         public Reward(string faction, long amount)

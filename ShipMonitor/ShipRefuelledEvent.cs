@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -21,14 +22,19 @@ namespace EddiShipMonitor
             VARIABLES.Add("full", "Whether this is a full refuel");
         }
 
+        [PublicAPI]
         public string source { get; private set; }
 
+        [PublicAPI]
         public long? price { get; private set; }
 
+        [PublicAPI]
         public decimal amount { get; private set; }
 
+        [PublicAPI]
         public decimal? total { get; private set; }
 
+        [PublicAPI]
         public bool full { get; private set; }
 
         public ShipRefuelledEvent(DateTime timestamp, string source, long? price, decimal amount, decimal? total, bool full = false) : base(timestamp, NAME)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -13,6 +14,8 @@ namespace EddiDataDefinitions
         // The faction associated with the claim, fine, or bounty
         [JsonIgnore]
         private string _faction;
+
+        [PublicAPI]
         public string faction
         {
             get => _faction;
@@ -26,7 +29,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonProperty("allegiance")]
+        [PublicAPI, JsonProperty("allegiance")]
         public string allegiance
         {
 
@@ -37,8 +40,10 @@ namespace EddiDataDefinitions
                 this.Allegiance = aDef;
             }
         }
+
         [JsonIgnore]
         private Superpower _Allegiance = Superpower.None;
+
         [JsonIgnore]
         public Superpower Allegiance
         {
@@ -49,6 +54,8 @@ namespace EddiDataDefinitions
         // The home system of the faction
         [JsonIgnore]
         private string _system;
+
+        [PublicAPI]
         public string system
         {
             get => _system;
@@ -65,6 +72,8 @@ namespace EddiDataDefinitions
         // The home station of the faction
         [JsonIgnore]
         private string _station;
+
+        [PublicAPI]
         public string station
         {
             get => _station;
@@ -81,6 +90,8 @@ namespace EddiDataDefinitions
         // The total credit value of claims
         [JsonIgnore]
         private long _claims;
+
+        [PublicAPI]
         public long claims
         {
             get => _claims;
@@ -97,6 +108,8 @@ namespace EddiDataDefinitions
         // The total credit value of fines
         [JsonIgnore]
         private long _fines;
+
+        [PublicAPI]
         public long fines
         {
             get => _fines;
@@ -113,6 +126,8 @@ namespace EddiDataDefinitions
         // The total credit value of bounties
         [JsonIgnore]
         private long _bounties;
+
+        [PublicAPI]
         public long bounties
         {
             get => _bounties;
@@ -130,8 +145,8 @@ namespace EddiDataDefinitions
         public List<string> interstellarBountyFactions { get; set; } = new List<string>();
         public List<FactionReport> factionReports { get; set; } = new List<FactionReport>();
 
-        [JsonIgnore]
         // All bonds awareded, excluding the discrepancy report
+        [PublicAPI, JsonIgnore]
         public List<FactionReport> bondsAwarded => factionReports
             .Where(r => !r.bounty && r.crimeDef == Crime.None)
             .ToList();
@@ -139,8 +154,8 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public long bondsAmount => bondsAwarded.Sum(r => r.amount);
 
-        [JsonIgnore]
         // All bounties awarded, excluding the discrepancy report
+        [PublicAPI, JsonIgnore]
         public List<FactionReport> bountiesAwarded => factionReports
             .Where(r => r.bounty && r.crimeDef == Crime.None)
             .ToList();
@@ -148,13 +163,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public long bountiesAmount => bountiesAwarded.Sum(r => r.amount);
 
-        [JsonIgnore]
         // All fines incurred, excluding the discrepancy report
+        [PublicAPI, JsonIgnore]
         public List<FactionReport> finesIncurred => factionReports
             .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
             .ToList();
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         // All bounties incurred, excluding the discrepancy report
         public List<FactionReport> bountiesIncurred => factionReports
             .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)

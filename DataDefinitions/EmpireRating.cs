@@ -48,7 +48,11 @@ namespace EddiDataDefinitions
         public FemaleRank femaleRank { get; }
 
         // Included for consistency with other `Rating` type object definitions as defined by Variables.md
+
+        [PublicAPI]
         public string name => maleRank.localizedName;
+        
+        [PublicAPI]
         public string femininename => femaleRank.localizedName;
 
         private EmpireRating(string edname, int rank)

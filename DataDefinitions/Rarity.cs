@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Rarity : ResourceBasedLocalizedEDName<Rarity>
     {
@@ -22,6 +24,7 @@
         public static readonly Rarity Rare;
         public static readonly Rarity VeryRare;
 
+        [PublicAPI]
         public int level { get; }
 
         // dummy used to ensure that the static constructor has run

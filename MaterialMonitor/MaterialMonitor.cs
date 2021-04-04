@@ -455,7 +455,7 @@ namespace EddiMaterialMonitor
                         // Set material maximums if they aren't already defined
                         if (ma2.maximum == null || !ma2.maximum.HasValue)
                         {
-                            int rarityLevel = Material.FromEDName(ma2.edname).rarity.level;
+                            int rarityLevel = Material.FromEDName(ma2.edname).Rarity.level;
                             if (rarityLevel > 0)
                             {
                                 ma2.maximum = -50 * (rarityLevel) + 350;

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -13,9 +14,10 @@ namespace EddiEvents
 
         static MaterialInventoryEvent()
         {
-            VARIABLES.Add("inventory", "The materials in your inventory");
+            VARIABLES.Add("inventory", "The materials in your inventory (as MaterialAmount objects)");
         }
 
+        [PublicAPI]
         public List<MaterialAmount> inventory { get; private set; }
 
         public MaterialInventoryEvent(DateTime timestamp, List<MaterialAmount> inventory) : base(timestamp, NAME)

@@ -104,25 +104,53 @@ namespace EddiEvents
             VARIABLES.Add("cqc.winlossratio", "The ratio of wins to losses in CQC combat");
         }
 
+        [PublicAPI]
         public BankAccountStats bankaccount => statistics.bankaccount;
+
+        [PublicAPI]
         public CombatStats combat => statistics.combat;
+
+        [PublicAPI]
         public CrimeStats crime => statistics.crime;
+
+        [PublicAPI]
         public SmugglingStats smuggling => statistics.smuggling;
+
+        [PublicAPI]
         public ThargoidEncounterStats thargoidencounters => statistics.thargoidencounters;
+
+        [PublicAPI]
         public TradingStats trading => statistics.trading;
+
+        [PublicAPI]
         public MiningStats mining => statistics.mining;
+
+        [PublicAPI]
         public ExplorationStats exploration => statistics.exploration;
+
+        [PublicAPI]
         public PassengerStats passengers => statistics.passengers;
+
+        [PublicAPI]
         public SearchAndRescueStats searchandrescue => statistics.searchandrescue;
+
+        [PublicAPI]
         public CraftingStats crafting => statistics.crafting;
+
+        [PublicAPI]
         public NpcCrewStats npccrew => statistics.npccrew;
+
+        [PublicAPI]
         public MulticrewStats multicrew => statistics.multicrew;
+
+        [PublicAPI]
         public MaterialTraderStats materialTrader => statistics.materialtrader;
+
+        [PublicAPI]
         public CQCstats cqc => statistics.cqc;
 
         // Not intended to be user facing
 
-        [VoiceAttackIgnore]
         private Statistics statistics { get; set; }
 
         public StatisticsEvent(DateTime timestamp, Statistics statistics) : base(timestamp, NAME)
