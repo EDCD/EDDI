@@ -15,7 +15,7 @@ namespace GalnetMonitor
 
         static GalnetNewsPublishedEvent()
         {
-            VARIABLES.Add("items", "The published news items");
+            VARIABLES.Add("items", "The published news items (as objects)");
         }
 
         [PublicAPI]

@@ -445,7 +445,6 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonProperty("category")]
         public readonly CommodityCategory Category;
 
-        [PublicAPI]
         public string category => Category.localizedName;
 
         [PublicAPI]

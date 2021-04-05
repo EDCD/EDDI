@@ -32,8 +32,8 @@ namespace EddiEvents
             VARIABLES.Add("tidallylocked", "True if the body is tidally locked (only available if DSS equipped)");
             VARIABLES.Add("landable", "True if the body is landable (only available if DSS equipped)");
             VARIABLES.Add("atmosphere", "The atmosphere of the body that has been scanned (only available if DSS equipped)");
-            VARIABLES.Add("atmospherecompositions", "The composition of the atmosphere of the body that has been scanned (array of AtmosphereComposition objects) (only available if DSS equipped)");
-            VARIABLES.Add("solidcompositions", "The composition of the body's solids that has been scanned (array of SolidComposition objects) (only available if DSS equipped)");
+            VARIABLES.Add("atmospherecompositions", "The composition of the atmosphere of the body that has been scanned (array of objects) (only available if DSS equipped)");
+            VARIABLES.Add("solidcompositions", "The composition of the body's solids that has been scanned (array of objects) (only available if DSS equipped)");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("density", "The average density of the body, in kg per cubic meter");
             VARIABLES.Add("densityprobability", "The cumulative probability describing the body's density, relative to other bodies of the same planet type");

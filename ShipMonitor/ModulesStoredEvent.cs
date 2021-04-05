@@ -18,7 +18,7 @@ namespace EddiShipMonitor
             VARIABLES.Add("ship", "The ship from which the modules were stored");
             VARIABLES.Add("shipid", "The ID of the ship from which the module were stored");
             VARIABLES.Add("slots", "The outfitting slots");
-            VARIABLES.Add("modules", "The stored modules (as Module objects)");
+            VARIABLES.Add("modules", "The stored modules (as objects)");
         }
 
         [PublicAPI]

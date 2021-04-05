@@ -15,7 +15,7 @@ namespace EddiEvents
         static SynthesisedEvent()
         {
             VARIABLES.Add("synthesis", "The thing that has been synthesised");
-            VARIABLES.Add("materials", "Types and amounts of materials used in the synthesis (as an object)");
+            VARIABLES.Add("materials", "Materials used in the synthesis (as objects)");
         }
 
         [PublicAPI]

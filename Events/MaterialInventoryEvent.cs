@@ -14,7 +14,7 @@ namespace EddiEvents
 
         static MaterialInventoryEvent()
         {
-            VARIABLES.Add("inventory", "The materials in your inventory (as MaterialAmount objects)");
+            VARIABLES.Add("inventory", "The materials in your inventory (as objects)");
         }
 
         [PublicAPI]

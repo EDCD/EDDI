@@ -15,7 +15,7 @@ namespace EddiEvents
         static SurfaceSignalsEvent()
         {
             VARIABLES.Add("bodyname", "The body where surface signals were detected");
-            VARIABLES.Add("surfacesignals", "A list of SignalAmount objects (with properties 'source' and 'amount')");
+            VARIABLES.Add("surfacesignals", "A list of signals (as objects)");
         }
 
         [PublicAPI]

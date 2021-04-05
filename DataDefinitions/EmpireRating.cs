@@ -44,16 +44,24 @@ namespace EddiDataDefinitions
         public static List<EmpireRating> AllOfThem = new List<EmpireRating>();
         public string edname { get; }
         public int rank { get; }
+
         public MaleRank maleRank { get; }
+
         public FemaleRank femaleRank { get; }
 
         // Included for consistency with other `Rating` type object definitions as defined by Variables.md
 
         [PublicAPI]
         public string name => maleRank.localizedName;
-        
+
+        [PublicAPI]
+        public string invariantName => maleRank.invariantName;
+
         [PublicAPI]
         public string femininename => femaleRank.localizedName;
+
+        [PublicAPI]
+        public string feminineInvariantName => femaleRank.invariantName;
 
         private EmpireRating(string edname, int rank)
         {

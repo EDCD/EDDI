@@ -14,14 +14,14 @@ namespace EddiEvents
 
         static CommanderRatingsEvent()
         {
-            VARIABLES.Add("combat", "The commander's combat rating");
-            VARIABLES.Add("trading", "The commander's trading rating");
-            VARIABLES.Add("exploration", "The commander's exploration rating");
-            VARIABLES.Add("cqc", "The commander's CQC rating");
-            VARIABLES.Add("empire", "The commander's empire rating");
-            VARIABLES.Add("federation", "The commander's federation rating");
-            VARIABLES.Add("mercenary", "The commander's mercenary rating");
-            VARIABLES.Add("exobiologist", "The commander's exobiologist rating");
+            VARIABLES.Add("combat", "The commander's combat rating (this is an object)");
+            VARIABLES.Add("trade", "The commander's trading rating (this is an object)");
+            VARIABLES.Add("exploration", "The commander's exploration rating (this is an object)");
+            VARIABLES.Add("cqc", "The commander's CQC rating (this is an object)");
+            VARIABLES.Add("empire", "The commander's empire rating (this is an object)");
+            VARIABLES.Add("federation", "The commander's federation rating (this is an object)");
+            VARIABLES.Add("mercenary", "The commander's mercenary rating  (this is an object)");
+            VARIABLES.Add("exobiologist", "The commander's exobiologist rating  (this is an object)");
         }
 
         [PublicAPI]

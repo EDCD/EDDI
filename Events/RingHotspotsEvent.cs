@@ -15,7 +15,7 @@ namespace EddiEvents
         static RingHotspotsEvent()
         {
             VARIABLES.Add("bodyname", "The body where surface signals were detected");
-            VARIABLES.Add("hotspots", "A list of CommodityAmount objects (with properties 'commodity' and 'amount')");
+            VARIABLES.Add("hotspots", "A list of hotspots (as objects)");
         }
 
         [PublicAPI]

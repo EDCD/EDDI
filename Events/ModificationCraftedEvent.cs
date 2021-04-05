@@ -20,8 +20,8 @@ namespace EddiEvents
             VARIABLES.Add("level", "The level of the blueprint being crafted");
             VARIABLES.Add("quality", "The progression of the blueprint at the current level, expressed as a percentage");
             VARIABLES.Add("experimentaleffect", "The experimental effect being crafted, if applicable");
-            VARIABLES.Add("materials", "The materials and quantities used in the crafting (MaterialAmount object)");
-            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object)");
+            VARIABLES.Add("materials", "The materials and quantities used in the crafting (as objects)");
+            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (as objects)");
         }
 
         [PublicAPI]

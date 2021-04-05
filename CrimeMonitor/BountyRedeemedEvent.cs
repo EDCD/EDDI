@@ -15,7 +15,7 @@ namespace EddiCrimeMonitor
 
         static BountyRedeemedEvent()
         {
-            VARIABLES.Add("rewards", "The rewards obtained broken down by faction with properties 'faction' and 'amount'");
+            VARIABLES.Add("rewards", "The rewards obtained broken down by faction");
             VARIABLES.Add("amount", "The amount rewarded (after any broker fees)");
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
         }

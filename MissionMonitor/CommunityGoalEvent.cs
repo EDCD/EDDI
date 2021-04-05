@@ -31,8 +31,8 @@ namespace EddiEvents
 
         static CommunityGoalEvent()
         {
-            VARIABLES.Add("updates", "a list of objects with sub-properties \"type\" (either \"Tier\" or \"Percentile\") and direction (either \"Increase\" or \"Decrease\")");
-            VARIABLES.Add("cgid", "the unique id of the goal");
+            VARIABLES.Add("updates", "The updates that triggered the event (as objects)");
+            VARIABLES.Add("cgid", "The unique id of the goal");
             VARIABLES.Add("name", "The description of the goal");
             VARIABLES.Add("system", "The star system where the goal is located");
             VARIABLES.Add("station", "The station where the goal is located");

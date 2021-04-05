@@ -15,7 +15,7 @@ namespace EddiEvents
 
         static AsteroidProspectedEvent()
         {
-            VARIABLES.Add("commodities", "A list of `CommodityPresence` objects describing the contents of the asteroid (each with properties of `commodity` and `percentage`)");
+            VARIABLES.Add("commodities", "A list of objects describing the contents of the asteroid");
             VARIABLES.Add("materialcontent", "The material content of the asteroid (high, medium, or low)");
             VARIABLES.Add("remaining", "The percentage of the asteroid's contents which remain available for surface mining");
             VARIABLES.Add("motherlode", "The asteroid's motherlode (if any)");

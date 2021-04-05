@@ -15,7 +15,7 @@ namespace EddiMaterialMonitor
 
         static MaterialThresholdEvent()
         {
-            VARIABLES.Add("material", "The material");
+            VARIABLES.Add("material", "The material (as an object)");
             VARIABLES.Add("level", "The level that has been triggered (Minimum/Desired/Maximum)");
             VARIABLES.Add("limit", "The amount of the limit that has been passed");
             VARIABLES.Add("amount", "The current amount of the material");

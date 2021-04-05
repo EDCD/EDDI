@@ -15,9 +15,9 @@ namespace EddiEvents
         static TechnologyBrokerEvent()
         {
             VARIABLES.Add("brokertype", "The technology broker's type (e.g. \"Human\")");
-            VARIABLES.Add("items", "The items unlocked in the transaction (this is a list of Module objects)");
-            VARIABLES.Add("materials", "The materials and quantities used in the crafting (MaterialAmount object with keys \"material\" and \"amount\", consisting of a material object and an amount)");
-            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object with keys \"commodity\" and \"amount\", consisting of a commodity object and an amount)");
+            VARIABLES.Add("items", "The items unlocked in the transaction (as objects)");
+            VARIABLES.Add("materials", "The materials and quantities used in the crafting (as objects)");
+            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (as objects)");
         }
 
         [PublicAPI]

@@ -15,7 +15,7 @@ namespace EddiMissionMonitor
 
         static PassengersEvent()
         {
-            VARIABLES.Add("passengers", "The manifest of passengers on your ship (as a list of objects)");
+            VARIABLES.Add("passengers", "The manifest of passengers on your ship (as objects)");
         }
 
         [PublicAPI]
