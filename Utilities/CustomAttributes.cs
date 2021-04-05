@@ -15,12 +15,12 @@ namespace Utilities
         public PublicAPIAttribute() 
         { }
 
-        public PublicAPIAttribute([NotNull] string comment)
+        public PublicAPIAttribute([NotNull] string description)
         {
-            Comment = comment;
+            Description = description;
         }
 
         [CanBeNull]
-        public string Comment { get; }
+        public string Description { get; }
     }
 }
