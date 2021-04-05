@@ -255,9 +255,10 @@ namespace EddiVoiceAttackResponder
                 currentVariables = currentVariables.Where(v => v.eventType != @event.type).ToList();
 
                 // Prepare and update this event's variable values
-                var eventVariables = new List<VoiceAttackVariable>();
-                PrepareEventVariables(@event.type, $"EDDI {@event.type.ToLowerInvariant()}", @event.GetType(), ref eventVariables, true, @event);
-                SetEventVariables(vaProxy, eventVariables);
+                var eventVariables = new MetaVariables(@event.GetType(), @event)
+                    .Results
+                    .AsVoiceAttackVariables(@event.type);
+                foreach (var @var in eventVariables) { @var.Set(vaProxy); }
 
                 // Save the updated state of our event variables
                 currentVariables.AddRange(eventVariables);
@@ -278,12 +279,12 @@ namespace EddiVoiceAttackResponder
             {
                 // We set all values in our list from a prior version of the same event to null
                 foreach (var variable in eventVariables
-                    .Where(v => v.eventType == eventType && v.Value != null))
+                    .Where(v => v.eventType == eventType && v.value != null))
                 {
-                    variable.Value = null;
+                    variable.value = null;
                 }
                 // We clear variable values by swapping the values to null and then instructing VA to set them again
-                SetEventVariables(vaProxy, eventVariables);
+                foreach (var @var in eventVariables) { @var.Set(vaProxy); }
             }
             catch (Exception ex)
             {

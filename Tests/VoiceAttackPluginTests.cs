@@ -1,15 +1,13 @@
 ﻿using EddiCargoMonitor;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiVoiceAttackResponder;
 using GalnetMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace UnitTests
 {
@@ -73,9 +71,10 @@ namespace UnitTests
             Assert.AreEqual(3, ev.nonbodies);
             Assert.AreEqual(44, ev.progress);
 
-            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(DiscoveryScanEvent), ref setVars, true, ev);
-            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+            var setVars = new MetaVariables(ev.GetType(), ev)
+                .Results
+                .AsVoiceAttackVariables(ev.type);
+            foreach (var @var in setVars) { @var.Set(vaProxy); }
 
             Assert.AreEqual(2, setVars.Count);
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
@@ -84,7 +83,7 @@ namespace UnitTests
             Assert.AreEqual(setVars.Count, vaProxy.vaVars.Count, "The 'setVars' list should match the keys set in the 'vaProxy.vaVars' list");
             foreach (VoiceAttackVariable variable in setVars)
             {
-                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
             }
         }
 
@@ -97,20 +96,15 @@ namespace UnitTests
             Assert.IsInstanceOfType(events[0], typeof(AsteroidProspectedEvent));
             AsteroidProspectedEvent ev = events[0] as AsteroidProspectedEvent;
 
-            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(AsteroidProspectedEvent), ref setVars, true, ev);
-            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+            var setVars = new MetaVariables(ev.GetType(), ev)
+                .Results
+                .AsVoiceAttackVariables(ev.type);
+            foreach (var @var in setVars) { @var.Set(vaProxy); }
 
-            Assert.AreEqual(26, setVars.Count);
+            Assert.AreEqual(8, setVars.Count);
             Assert.AreEqual(90M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected remaining").Value);
             Assert.AreEqual("Alexandrite", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected motherlode").Value);
             Assert.AreEqual("Low Temperature Diamonds", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity").Value);
-            Assert.AreEqual(57445M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition avgprice").Value);
-            Assert.IsNull(vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition category fallback localized name").Value);
-            Assert.AreEqual("Minerals", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition category invariant name").Value);
-            Assert.AreEqual(128673848M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition elite id").Value);
-            Assert.AreEqual("Low Temperature Diamonds", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition invariant name").Value);
-            Assert.IsFalse((bool)vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity definition rare").Value);
             Assert.AreEqual(26.078022M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 percentage").Value);
             Assert.AreEqual("Hydrogen Peroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 commodity").Value);
             Assert.AreEqual(10.189009M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 percentage").Value);
@@ -118,7 +112,7 @@ namespace UnitTests
             Assert.AreEqual("Low", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected materialcontent").Value);
             foreach (VoiceAttackVariable variable in setVars)
             {
-                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
             }
         }
 
@@ -129,15 +123,16 @@ namespace UnitTests
             // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
             ShipFsdEvent ev = new ShipFsdEvent (DateTime.UtcNow, "ready");
 
-            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(ShipFsdEvent), ref setVars, true, ev);
-            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+            var setVars = new MetaVariables(ev.GetType(), ev)
+                .Results
+                .AsVoiceAttackVariables(ev.type);
+            foreach (var @var in setVars) { @var.Set(vaProxy); }
 
             Assert.AreEqual(1, setVars.Count);
             Assert.AreEqual("ready", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI ship fsd status").Value);
             foreach (VoiceAttackVariable variable in setVars)
             {
-                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
             }
         }
 
@@ -148,9 +143,10 @@ namespace UnitTests
             // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
             CommodityEjectedEvent ev = new CommodityEjectedEvent(DateTime.UtcNow, CommodityDefinition.FromEDName("Water"), 5, null, true);
 
-            List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-            VoiceAttackVariables.PrepareEventVariables(ev.type, $"EDDI {ev.type.ToLowerInvariant()}", typeof(CommodityEjectedEvent), ref setVars, true, ev);
-            VoiceAttackVariables.SetEventVariables(vaProxy, setVars);
+            var setVars = new MetaVariables(ev.GetType(), ev)
+                .Results
+                .AsVoiceAttackVariables(ev.type);
+            foreach (var @var in setVars) { @var.Set(vaProxy); }
 
             Assert.AreEqual(4, setVars.Count);
             Assert.AreEqual("Water", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected commodity").Value);
@@ -159,37 +155,42 @@ namespace UnitTests
             Assert.AreEqual(true, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected abandoned").Value);
             foreach (VoiceAttackVariable variable in setVars)
             {
-                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.Key), "Unmatched key");
+                Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
             }
         }
 
         [TestMethod]
         public void TestGalnetNewsPublishedEvent()
         {
-            var setVars = new List<VoiceAttackVariable>();
             var entry = new KeyValuePair<string, Type>("Galnet news published", typeof(GalnetNewsPublishedEvent));
-            VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
 
+            var temp = new MetaVariables(entry.Value, null).Results;
+
+            var setVars = new MetaVariables(entry.Value, null)
+                .Results
+                .AsVoiceAttackVariables(entry.Key);
+            
             Assert.AreEqual(7, setVars.Count);
-            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* category")?.Type);
-            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* content")?.Type);
-            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* id")?.Type);
-            Assert.AreEqual(typeof(DateTime), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* published")?.Type);
-            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* read")?.Type);
-            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items *\<index\>* title")?.Type);
-            Assert.AreEqual(typeof(int), setVars.FirstOrDefault(k => k.Key == @"EDDI galnet news published items entries")?.Type);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* category")?.variableType);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* content")?.variableType);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* id")?.variableType);
+            Assert.AreEqual(typeof(DateTime), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* published")?.variableType);
+            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* read")?.variableType);
+            Assert.AreEqual(typeof(string), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items *\<index\>* title")?.variableType);
+            Assert.AreEqual(typeof(int), setVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items entries")?.variableType);
         }
-
 
         [TestMethod]
         public void TestSRVTurretDeployableEvent()
         {
-            var setVars = new List<VoiceAttackVariable>();
             var entry = new KeyValuePair<string, Type>("SRV turret deployable", typeof(SRVTurretDeployableEvent));
-            VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
+
+            var setVars = new MetaVariables(entry.Value, null)
+                .Results
+                .AsVoiceAttackVariables(entry.Key);
 
             Assert.AreEqual(1, setVars.Count);
-            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.Key == @"EDDI srv turret deployable")?.Type);
+            Assert.AreEqual(typeof(bool), setVars.FirstOrDefault(k => k.key == @"EDDI srv turret deployable")?.variableType);
         }
     }
 }

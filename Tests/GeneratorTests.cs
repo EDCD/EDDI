@@ -1,13 +1,13 @@
 ﻿using Cottle.Stores;
 using EddiEvents;
 using EddiSpeechResponder.Service;
-using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Utilities;
 
 namespace GeneratorTests
 {
@@ -37,95 +37,100 @@ namespace GeneratorTests
             {
                 List<string> output = new List<string>
                 {
-                    Events.DESCRIPTIONS[entry.Key] + "."
+                    Events.DESCRIPTIONS[entry.Key] + ".",
+                    ""
                 };
 
-                if (Events.VARIABLES.TryGetValue(entry.Key, out IDictionary<string, string> variables))
+                var vars = new MetaVariables(entry.Value).Results;
+
+                foreach (var variable in vars)
                 {
-                    if (variables.Count == 0)
+                    // Get descriptions for our top level variables
+                    foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[entry.Key])
                     {
-                        output.Add("This event has no variables.");
-                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")).");
+                        if (variable.keysPath.Count == 1 && variableDescription.Key == variable.keysPath[0])
+                        {
+                            variable.value = variableDescription.Value;
+                            break;
+                        }
                     }
-                    else
-                    {
-                        output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
-                        output.Add("");
-                        output.Add("");
-                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key].OrderBy(v => v.Key))
-                        {
-                            output.Add("  * `" + variable.Key + "` " + variable.Value);
-                            output.Add("");
-                        }
-
-                        List<VoiceAttackVariable> setVars = new List<VoiceAttackVariable>();
-                        VoiceAttackVariables.PrepareEventVariables(entry.Key, $"EDDI {entry.Key.ToLowerInvariant()}", entry.Value, ref setVars);
-                        foreach (var variable in setVars)
-                        {
-                            // Get descriptions for our top level variables
-                            if (variable.IsTopLevel)
-                            {
-                                string lastWord = variable.Key.Split(' ').Last();
-                                foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[entry.Key])
-                                {
-                                    if (variableDescription.Key == lastWord)
-                                    {
-                                        variable.Value = variableDescription.Value;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!setVars.Any()) { output.Add(""); }
-                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
-                        if (setVars.Any(v => v.Key.Contains(@"<index")))
-                        {
-                            output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*' and a value ending in 'entries' will identify the total number of entries in that index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
-                        }
-                        output.Add("The following VoiceAttack variables are available for this event:");
-                        output.Add("");
-                        output.Add("");
-
-                        void WriteVariableToOutput(VoiceAttackVariable variable)
-                        {
-                            if (variable.Type == typeof(string))
-                            {
-                                output.Add("  * {TXT:" + variable.Key + "} " + variable.Value);
-                            }
-                            else if (variable.Type == typeof(int))
-                            {
-                                output.Add("  * {INT:" + variable.Key + "} " + variable.Value);
-                            }
-                            else if (variable.Type == typeof(bool))
-                            {
-                                output.Add("  * {BOOL:" + variable.Key + "} " + variable.Value);
-                            }
-                            else if (variable.Type == typeof(decimal))
-                            {
-                                output.Add("  * {DEC:" + variable.Key + "} " + variable.Value);
-                            }
-                            else if (variable.Type == typeof(DateTime))
-                            {
-                                output.Add("  * {DATE:" + variable.Key + "} " + variable.Value);
-                            }
-                            output.Add("");
-                        }
-                        foreach (var variable in setVars.Where(v => v.Value != null).OrderBy(i => i.Key))
-                        {
-                            // Write variables with descriptions first
-                            WriteVariableToOutput(variable);
-                        }
-                        foreach (var variable in setVars.Where(v => v.Value == null).OrderBy(i => i.Key))
-                        {
-                            // Write variables without descriptions second
-                            WriteVariableToOutput(variable);
-                        }
-                        output.Add("");
-                    }
-                    output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
                 }
-                output.Add("");
+
+                var CottleVars = vars.AsCottleVariables();
+                var VoiceAttackVars = vars.AsVoiceAttackVariables(entry.Key);
+
+                if (!vars.Any())
+                {
+                    output.Add("This event has no variables.");
+                    output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")).");
+                    output.Add("");
+                }
+
+                if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
+                {
+                    output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*'.");
+                    if (VoiceAttackVars.Any(v => v.key.Contains(@"<index")))
+                    {
+                        output.Add("For VoiceAttack, a value ending in 'entries' will identify the total number of entries in each index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
+                    }
+                    output.Add("");
+                }
+
+                if (CottleVars.Any())
+                {
+                    output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
+                    output.Add("");
+                    output.Add("");
+
+                    foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
+                    {
+                        output.Add($"  * {{event.{cottleVariable.key}}} {cottleVariable.value}");
+                        output.Add("");
+                    }
+                }
+
+                if (VoiceAttackVars.Any())
+                {
+                    output.Add("");
+                    output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
+                    output.Add("");
+                    output.Add("The following VoiceAttack variables are available for this event:");
+                    output.Add("");
+                    output.Add("");
+
+                    void WriteVariableToOutput(VoiceAttackVariable variable)
+                    {
+                        if (variable.variableType == typeof(string))
+                        {
+                            output.Add("  * {TXT:" + variable.key + "} " + variable.value);
+                        }
+                        else if (variable.variableType == typeof(int))
+                        {
+                            output.Add("  * {INT:" + variable.key + "} " + variable.value);
+                        }
+                        else if (variable.variableType == typeof(bool))
+                        {
+                            output.Add("  * {BOOL:" + variable.key + "} " + variable.value);
+                        }
+                        else if (variable.variableType == typeof(decimal))
+                        {
+                            output.Add("  * {DEC:" + variable.key + "} " + variable.value);
+                        }
+                        else if (variable.variableType == typeof(DateTime))
+                        {
+                            output.Add("  * {DATE:" + variable.key + "} " + variable.value);
+                        }
+                        output.Add("");
+                    }
+
+                    foreach (var variable in VoiceAttackVars.OrderBy(i => i.key))
+                    {
+                        WriteVariableToOutput(variable);
+                    }
+
+                    output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
+                    output.Add("");
+                }
                 Directory.CreateDirectory(@"Wiki\events\");
                 File.WriteAllLines(@"Wiki\events\" + entry.Key.Replace(" ", "-") + "-event.md", output);
             }

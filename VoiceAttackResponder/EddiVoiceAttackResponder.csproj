@@ -78,7 +78,6 @@
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VoiceAttackResponder.cs" />
-    <Compile Include="VoiceAttackEventVariables.cs" />
     <Compile Include="VoiceAttackStandardVariables.cs" />
   </ItemGroup>
   <ItemGroup>
