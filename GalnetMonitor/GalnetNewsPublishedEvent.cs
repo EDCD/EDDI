@@ -1,6 +1,7 @@
 ﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace GalnetMonitor
 {
@@ -17,6 +18,7 @@ namespace GalnetMonitor
             VARIABLES.Add("items", "The published news items");
         }
 
+        [PublicAPI]
         public List<News> items { get; private set; }
 
         public GalnetNewsPublishedEvent(DateTime timestamp, List<News> items) : base(timestamp, NAME)
