@@ -29,27 +29,30 @@ namespace EddiDataDefinitions
             COMPOSITIONS.Add("water", "Water");
         }
         
-        [PublicAPI, Obsolete("Please use localizedType or invariantType")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedType or invariantType")]
         public string type => localizedType;
 
-        [PublicAPI, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => localizedComposition;
 
-        [PublicAPI, Obsolete("Please use localizedAmount or invariantAmount")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use localizedAmount or invariantAmount")]
         public string amount => localizedAmount;
 
         // Not intended to be user facing
 
         public static readonly ResourceManager resourceManager;
 
+        [JsonProperty("type")]
         public string edType { get; set; } // Geysers/Magma
         public string invariantType => GetInvariantString(edType);
         public string localizedType => GetLocalizedString(edType);
 
+        [JsonProperty("composition")]
         public string edComposition { get; set; } // Iron, Silicate, etc.
         public string invariantComposition => GetInvariantString(edComposition);
         public string localizedComposition => GetLocalizedString(edComposition);
 
+        [JsonProperty("amount")]
         public string edAmount { get; set; } // Minor, Major, null (for normal)
         public string invariantAmount => GetInvariantString(edAmount);
         public string localizedAmount => GetLocalizedString(edAmount);
