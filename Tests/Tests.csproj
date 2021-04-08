@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="CapiTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="MetaVariablesTests.cs" />
     <Compile Include="HumanizeTests.cs" />
     <Compile Include="CustomFunctions.cs" />
     <Compile Include="UtilityTests.cs" />
