@@ -112,9 +112,11 @@ namespace EddiBgsService
         {
             try
             {
+                Logging.Debug($"Response from Elite BGS eddbRestClient endpoint {systemEndpoint} is: ", response);
+
                 IDictionary<string, object> systemJson = Deserializtion.DeserializeData(response.ToString());
                 StarSystem system = new StarSystem
-                {
+                {   
                     systemname = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(JsonParsing.getString(systemJson, "name")), // This is lower case by default from the API
                     systemAddress = long.Parse(JsonParsing.getString(systemJson, "ed_system_address")), // Stored in this API as a string
                     EDSMID = JsonParsing.getOptionalLong(systemJson, "edsm_id"),

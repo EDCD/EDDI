@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
-
+     
 namespace EddiBgsService
 {
     partial class BgsService
@@ -111,6 +111,8 @@ namespace EddiBgsService
         {
             try
             {
+                Logging.Debug($"Response from EliteBGS bgsRestClient endpoint {factionEndpoint} is: ", response);
+
                 IDictionary<string, object> factionJson = Deserializtion.DeserializeData(response.ToString());
                 Faction faction = new Faction
                 {
@@ -119,7 +121,7 @@ namespace EddiBgsService
                     updatedAt = (DateTime)factionJson["updated_at"],
                     Government = Government.FromName((string)factionJson["government"]),
                     Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
-                };
+                };                          
 
                 foreach (object presence in (List<object>)factionJson["faction_presence"])
                 {
