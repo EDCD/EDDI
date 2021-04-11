@@ -1,48 +1,310 @@
 {
+  "docs": [
+    {
+      "_id": "59e7a599d22c775be0fe08df",
+      "__v": 0,
+      "allegiance": "independent",
+      "eddb_id": 41917,
+      "faction_presence": [
+        {
+          "system_name": "Shinrarta Dezhra",
+          "system_name_lower": "shinrarta dezhra",
+          "system_id": "59e7a599d22c775be0fe08d7",
+          "state": "civilunrest",
+          "influence": 0.280719,
+          "happiness": "$faction_happinessband1;",
+          "active_states": [
+            {
+              "state": "civilunrest"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T06:48:25.000Z"
+        },
+        {
+          "system_name": "LFT 926",
+          "system_name_lower": "lft 926",
+          "system_id": "59e82a4ad22c775be000d3ab",
+          "state": "civilunrest",
+          "influence": 0.448448,
+          "happiness": "$faction_happinessband3;",
+          "active_states": [
+            {
+              "state": "boom"
+            },
+            {
+              "state": "civilunrest"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T22:53:56.000Z"
+        },
+        {
+          "system_name": "Anyanwu",
+          "system_name_lower": "anyanwu",
+          "system_id": "59e909e7d22c775be032bb92",
+          "state": "boom",
+          "influence": 0.635636,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "boom"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [
+            {
+              "state": "publicholiday",
+              "trend": 0
+            }
+          ],
+          "conflicts": [],
+          "updated_at": "2021-04-10T16:35:25.000Z"
+        },
+        {
+          "system_name": "LTT 5455",
+          "system_name_lower": "ltt 5455",
+          "system_id": "59e7c2b7d22c775be0feefc0",
+          "state": "boom",
+          "influence": 0.649194,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "boom"
+            },
+            {
+              "state": "civilliberty"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T16:34:31.000Z"
+        },
+        {
+          "system_name": "HR 4979",
+          "system_name_lower": "hr 4979",
+          "system_id": "59e7d058d22c775be0ff47c8",
+          "state": "boom",
+          "influence": 0.619192,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "boom"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-11T00:07:00.000Z"
+        },
+        {
+          "system_name": "LHS 397",
+          "system_name_lower": "lhs 397",
+          "system_id": "59e7bf61d22c775be0fec82d",
+          "state": "investment",
+          "influence": 0.459132,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "investment"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [
+            {
+              "state": "publicholiday",
+              "trend": 0
+            }
+          ],
+          "conflicts": [],
+          "updated_at": "2021-04-11T00:03:08.000Z"
+        },
+        {
+          "system_name": "Arque",
+          "system_name_lower": "arque",
+          "system_id": "59e7c43ed22c775be0fefac4",
+          "state": "civilunrest",
+          "influence": 0.178788,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "civilunrest"
+            },
+            {
+              "state": "infrastructurefailure"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-11T00:08:01.000Z"
+        },
+        {
+          "system_name": "Phra Lak",
+          "system_name_lower": "phra lak",
+          "system_id": "59e7dd1ad22c775be0ffa1e6",
+          "state": "boom",
+          "influence": 0.569277,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "boom"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T23:58:14.000Z"
+        },
+        {
+          "system_name": "Turdetani",
+          "system_name_lower": "turdetani",
+          "system_id": "59e7a932d22c775be0fe50d1",
+          "state": "boom",
+          "influence": 0.531406,
+          "happiness": "$faction_happinessband1;",
+          "active_states": [
+            {
+              "state": "boom"
+            },
+            {
+              "state": "civilliberty"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T19:55:16.000Z"
+        },
+        {
+          "system_name": "Lave",
+          "system_name_lower": "lave",
+          "system_id": "59e7a9c2d22c775be0fe594c",
+          "state": "civilunrest",
+          "influence": 0.129388,
+          "happiness": "$faction_happinessband3;",
+          "active_states": [],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-10T19:39:43.000Z"
+        },
+        {
+          "system_name": "Wolf 433",
+          "system_name_lower": "wolf 433",
+          "system_id": "59e846c6d22c775be0012356",
+          "state": "war",
+          "influence": 0.106533,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "war"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [
+            {
+              "type": "war",
+              "status": "active",
+              "opponent_name": "Crimson Comms Services",
+              "opponent_name_lower": "crimson comms services",
+              "opponent_faction_id": "59e846c6d22c775be001236b",
+              "station_id": "5a6dfb15d1b6a37c3c8d2604",
+              "stake": "Romanenko Port",
+              "stake_lower": "romanenko port",
+              "days_won": 0
+            }
+          ],
+          "updated_at": "2021-04-10T23:41:12.000Z"
+        },
+        {
+          "system_name": "LP 787-52",
+          "system_name_lower": "lp 787-52",
+          "system_id": "59e80703d22c775be000659c",
+          "state": "boom",
+          "influence": 0.608782,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "boom"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [],
+          "updated_at": "2021-04-11T00:27:33.000Z"
+        },
+        {
+          "system_name": "Ross 154",
+          "system_name_lower": "ross 154",
+          "system_id": "59e7a716d22c775be0fe2bed",
+          "state": "investment",
+          "influence": 0.382034,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "investment"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [
+            {
+              "state": "civilliberty",
+              "trend": 0
+            }
+          ],
+          "conflicts": [],
+          "updated_at": "2021-04-11T00:53:43.000Z"
+        },
+        {
+          "system_name": "86 Mu Herculis",
+          "system_name_lower": "86 mu herculis",
+          "system_id": "59e7c362d22c775be0fef596",
+          "state": "war",
+          "influence": 0.054945,
+          "happiness": "$faction_happinessband2;",
+          "active_states": [
+            {
+              "state": "war"
+            }
+          ],
+          "pending_states": [],
+          "recovering_states": [],
+          "conflicts": [
+            {
+              "type": "war",
+              "status": "active",
+              "opponent_name": "Independents of Midgcut",
+              "opponent_name_lower": "independents of midgcut",
+              "opponent_faction_id": "59e87f01d22c775be001afec",
+              "station_id": null,
+              "stake": "",
+              "stake_lower": "",
+              "days_won": 3
+            }
+          ],
+          "updated_at": "2021-04-11T00:24:07.000Z"
+        }
+      ],
+      "government": "democracy",
+      "name": "The Dark Wheel",
+      "name_lower": "the dark wheel",
+      "updated_at": "2021-04-11T00:53:43.000Z"
+    }
+  ],
+  "total": 1,
+  "limit": 10,
   "page": 1,
   "pages": 1,
-  "limit": 10,
-  "docs": [{
-    "_id": "59e7a599d22c775be0fe08df",
-    "name": "The Dark Wheel",
-    "__v": 0,
-    "name_lower": "the dark wheel",
-    "updated_at": "2019-04-13T03:37:17.000Z",
-    "government": "democracy",
-    "allegiance": "independent",
-    "eddb_id": 41917,
-    "faction_presence": [
-      {
-        "system_name": "Shinrarta Dezhra",
-        "system_name_lower": "shinrarta dezhra",
-        "state": "boom",
-        "influence": 0.289,
-        "happiness": "$faction_happinessband2;",
-        "active_states": [
-         {
-            "state": "boom"
-          }
-        ],
-        "pending_states": [],
-        "recovering_states": [],
-        "updated_at": "2019-04-13T03:37:17.000Z"
-      },
-      {
-        "system_name": "LFT 926",
-        "system_name_lower": "lft 926",
-        "state": "boom",
-        "influence": 0.112983,
-        "happiness": "$faction_happinessband2;",
-        "active_states": [],
-        "pending_states": [],
-        "recovering_states": [
-          {
-            "state": "war",
-            "trend": 0
-          }
-        ],
-        "updated_at": "2019-04-13T03:27:28.000Z"
-      }
-    ]
-  }]
+  "pagingCounter": 1,
+  "hasPrevPage": false,
+  "hasNextPage": false,
+  "prevPage": null,
+  "nextPage": null
 }

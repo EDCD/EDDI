@@ -9,21 +9,48 @@ namespace EddiBgsService
     partial class BgsService
     {
         /// <summary> The endpoint we will use for faction queries (using the BGS rest client) </summary>
-        public const string factionEndpoint = "v4/factions?";
+        public const string factionEndpoint = "v5/factions?";
 
         public static class FactionParameters
         {
             /// <summary> Faction name. </summary>
             public const string factionName = "name";
 
+            /// <summary> Faction EDDB ID. </summary>
+            public const string eddbId = "eddbid";
+
             /// <summary> Partial faction name begins with... (at least 1 additional parameter is required) </summary>
-            public const string beginsWith = "beginswith";
+            public const string beginsWith = "beginsWith";
 
             /// <summary> Name of the allegiance. </summary>
             public const string allegiance = "allegiance";
 
             /// <summary> Name of the government type. </summary>
             public const string government = "government";
+
+            /// <summary> Name of the star system. </summary>
+            public const string starSystem = "system";
+
+            /// <summary> Whether to apply the system filter in the history too (input a bool). </summary>
+            public const string filterSystemInHistory = "filterSystemInHistory";
+
+            /// <summary> Name of the active state of the faction. </summary>
+            public const string activeState = "activeState";
+
+            /// <summary> Name of the pending state of the faction. </summary>
+            public const string pendingState = "pendingState";
+
+            /// <summary> Name of the recovering state of the faction. </summary>
+            public const string recoveringState = "recoveringState";
+
+            /// <summary> Factions with influence greater than the stated value (input a string value from 0 to 1). </summary>
+            public const string influenceGreaterThan = "influenceGT";
+
+            /// <summary> Factions with influence less than the stated value (input a string value from 0 to 1). </summary>
+            public const string influenceLessThan = "influenceLT";
+
+            /// <summary> Get minimal data of the faction (input a bool). </summary>
+            public const string minimal = "minimal";
         }
 
         // Faction data from EliteBGS (allows search by faction name - EDSM can only search by system name). 

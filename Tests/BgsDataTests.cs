@@ -109,7 +109,7 @@ namespace UnitTests
         public void TestBgsFactionFromName()
         {
             // Setup
-            string resource = "v4/factions?";
+            string resource = "v5/factions?";
             string json = Encoding.UTF8.GetString(Resources.bgsFactionResponse);
             RestRequest data = new RestRequest();
             fakeBgsRestClient.Expect(resource, json, data);
@@ -124,6 +124,16 @@ namespace UnitTests
             Assert.AreEqual("Independent", faction1.Allegiance.invariantName);
             Assert.AreEqual(41917, faction1.EDDBID);
             Assert.AreNotEqual(DateTime.MinValue, faction1.updatedAt);
+            Assert.AreEqual(14, faction1.presences.Count);
+            var presence = faction1.presences.FirstOrDefault(p => p.systemName == "Shinrarta Dezhra");
+            Assert.IsNotNull(presence);
+            Assert.AreEqual(FactionState.FromEDName("civilunrest"), presence.FactionState);
+            Assert.AreEqual(28.0719M, presence.influence);
+            Assert.AreEqual(Happiness.FromEDName("$Faction_HappinessBand1"), presence.Happiness);
+            Assert.AreEqual(1, presence.ActiveStates.Count);
+            Assert.AreEqual(FactionState.FromEDName("civilunrest"), presence.ActiveStates[0]);
+            Assert.AreEqual(0, presence.PendingStates.Count);
+            Assert.AreEqual(0, presence.RecoveringStates.Count);
 
             // Even if the faction does not exist, we should return a basic object
             Faction faction2 = fakeBgsService.GetFactionByName("No such faction");
@@ -132,13 +142,14 @@ namespace UnitTests
             Assert.AreEqual(Government.None, faction2.Government);
             Assert.AreEqual(Superpower.None, faction2.Allegiance);
             Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
+            Assert.AreEqual(0, faction2.presences.Count);
         }
 
         [TestMethod]
         public void TestParseNoFactions()
         {
             // Setup
-            string endpoint = "v4/factions?";
+            string endpoint = "v5/factions?";
             string json = "";
             RestRequest data = new RestRequest();
             fakeBgsRestClient.Expect(endpoint, json, data);
