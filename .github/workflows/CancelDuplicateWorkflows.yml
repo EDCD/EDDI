@@ -8,12 +8,52 @@ on:
 
 jobs:
   cancel-duplicate-workflow-runs:
-    name: "Cancel duplicate workflow runs"
-    runs-on: ubuntu-latest
+    continue-on-error: true # Set to true to allow the workflow to pass if the job fails or finds no duplicate runs to cancel'
+    name: "Cancelling duplicate workflow runs"
+    runs-on: windows-latest
     steps:
-      - uses: potiuk/cancel-workflow-runs@v4_8
-        name: "Cancel duplicate workflow runs"
-        with:
-          cancelMode: allDuplicates
-          token: ${{ secrets.GITHUB_TOKEN }}
-          sourceRunId: ${{ github.event.workflow_run.id }}
+    - name: "Cancelling duplicate workflow runs"
+      id: cancel-runs
+      uses: potiuk/cancel-workflow-runs@v4_8
+      with:
+        cancelMode: allDuplicates
+        token: ${{ secrets.GITHUB_TOKEN }}
+        sourceRunId: ${{ github.event.workflow_run.id }}
+    - name: "Getting cancelled runs"
+      id: get-cancelled-runs 
+      run: |
+        if ('${{ steps.cancel-runs.outputs.cancelledRuns }}' -ne '[]') { echo "::set-output name=cleanup::true" } else { echo "::set-output name=cleanup::false" }
+        if ('${{ steps.cancel-runs.outputs.cancelledRuns }}' -ne '[]') { echo "::set-output name=matrix::{""cancelledRuns"":${{ steps.cancel-runs.outputs.cancelledRuns }}}" } else { echo "::set-output name=matrix::{""cancelledRuns"":[-1]}" }
+    outputs:
+      cleanup: ${{ steps.get-cancelled-runs.outputs.cleanup }}
+      matrix: ${{ steps.get-cancelled-runs.outputs.matrix }}
+  remove-cancelled-workflow-runs:
+    continue-on-error: false # Whether or not to fail silently
+    name: "Removing duplicate workflow runs"
+    needs: cancel-duplicate-workflow-runs
+    runs-on: windows-latest
+    if: needs.cancel-duplicate-workflow-runs.outputs.cleanup == 'true'
+    strategy:
+      matrix: ${{ fromJson(needs.cancel-duplicate-workflow-runs.outputs.matrix) }}
+    steps:
+    - name: Get the workflow run object
+      id: get-workflow-run
+      shell: powershell 
+      run: |
+        $workflowRun = Invoke-WebRequest "https://api.github.com/repos/EDCD/EDDI/actions/runs/${{ matrix.cancelledRuns }}" | ConvertFrom-Json
+        echo "::set-output name=checkSuiteId::$($workflowRun.check_suite_id)"
+    - name: Get the check run id
+      id: get-check-run
+      run: |
+        $checkRuns = Invoke-WebRequest "https://api.github.com/repos/EDCD/EDDI/check-suites/${{ steps.get-workflow-run.outputs.checkSuiteId }}/check-runs" | ConvertFrom-Json
+        $checkRunId = $checkRuns.check_runs[$checkRuns.total_count - 1].id
+        echo "::set-output name=checkRunId::$checkRunId"
+    - name: "Cleaning up cancelled run"   
+      uses: octokit/request-action@v2.x
+      with:
+#        route: DELETE /repos/EDCD/EDDI/actions/runs/${{ matrix.cancelledRuns }} #Option if we want to delete the workflow run instead
+        route: PATCH /repos/EDCD/EDDI/check-runs/${{ steps.get-check-run.outputs.checkRunId }}
+        conclusion: neutral
+        status: completed
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
