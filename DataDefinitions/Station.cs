@@ -147,11 +147,11 @@ namespace EddiDataDefinitions
                 {
                     return _LargestPad ?? LandingPadSize.None;
                 }
-                if (Model.edname == "None")
+                if (Model?.edname == "None")
                 {
                     return LandingPadSize.None;
                 }
-                if (Model.edname == "Outpost")
+                if (Model?.edname == "Outpost")
                 {
                     return LandingPadSize.Medium;
                 }
