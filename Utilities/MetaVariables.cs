@@ -181,9 +181,9 @@ namespace Utilities
                                 i++;
                             }
                         }
-                        if (i == 0)
+                        else
                         {
-                            // Handle empty collections (for when we're generating wiki documentation)
+                            // Handle empty collections (for example when we're generating wiki documentation)
 
                             // Add an object to represent the root name for the collection in our docs
                             Results.Add(new MetaVariable(keysPath, typeof(object)));
@@ -191,9 +191,9 @@ namespace Utilities
                             // Get the current list element's underlying variable data
                             var elementKeysPath = keysPath.Copy();
                             elementKeysPath.Add(indexMarker);
-                            GetVariables(underlyingType, value, elementKeysPath);
+                            GetVariables(underlyingType, null, elementKeysPath);
 
-                            // Set i to null so that no value is written to the wiki documentation when i is zero
+                            // Set i to null so that no value is written to the wiki documentation
                             i = null;
                         }
                         var entriesPath = keysPath.Copy();
@@ -276,8 +276,8 @@ namespace Utilities
         /// <summary> The full key used to access the variable in VoiceAttack, including any applicable prefix </summary>
         public string key { get; }
 
-        /// <summary> One of "string", "int", "bool", "decimal", "double", "long", or "DateTime" </summary>
-        public Type variableType { get; }
+        /// <summary> The variable type </summary>
+        public Type variableType { get; set; }
 
         /// <summary> The value to write (if any) </summary>
         public object value { get; set; }
@@ -298,19 +298,9 @@ namespace Utilities
             this.key = key
                 .Replace(MetaVariables.indexMarker, @"*\<index\>*"); // Format index values for VoiceAttack
 
-            // Convert doubles, floats, and longs to decimals, since they must be decimals in VoiceAttack
-            // (Anything larger than Int32 to be passed as a decimal)
-            if (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long))
-            {
-                this.variableType = typeof(decimal);
-            }
-            else
-            {
-                this.variableType = variableType;
-            }
-
             this.eventType = eventType;
             this.value = value;
+            this.variableType = variableType;
         }
 
         private static string AddSpacesToTitleCasedName(string text)
@@ -349,8 +339,31 @@ namespace Utilities
 
         public void Set(dynamic vaProxy)
         {
+            // Variable type must be one of "string", "int", "bool", "decimal", "double", "long", or "DateTime"
             try
             {
+                // Convert doubles, floats, and longs to decimals
+                if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long)))
+                {
+                    variableType = typeof(decimal);
+                }
+                else if (value is double d)
+                {
+                    value = Convert.ToDecimal(d);
+                    variableType = typeof(decimal);
+                }
+                else if (value is float f)
+                {
+                    value = Convert.ToDecimal(f);
+                    variableType = typeof(decimal);
+                }
+                else if (value is long l)
+                {
+                    value = Convert.ToDecimal(l);
+                    variableType = typeof(decimal);
+                }
+
+                // Set final values
                 if (variableType is null)
                 {
                     // No idea what it might have been so reset everything
@@ -363,27 +376,27 @@ namespace Utilities
                 }
                 else if (variableType == typeof(string))
                 {
-                    Logging.Debug($"Setting string value '{key}' to: {(string)value}");
+                    Logging.Debug($"Setting string value '{key}' to: {value}");
                     vaProxy.SetText(key, (string)value);
                 }
                 else if (variableType == typeof(int))
                 {
-                    Logging.Debug($"Setting integer value '{key}' to: {(int?)value}");
+                    Logging.Debug($"Setting integer value '{key}' to: {value}");
                     vaProxy.SetInt(key, (int?)value);
                 }
                 else if (variableType == typeof(bool))
                 {
-                    Logging.Debug($"Setting boolean value '{key}' to: {(bool?)value}");
+                    Logging.Debug($"Setting boolean value '{key}' to: {value}");
                     vaProxy.SetBoolean(key, (bool?)value);
                 }
                 else if (variableType == typeof(decimal))
                 {
-                    Logging.Debug($"Setting decimal value '{key}' to: {(decimal?)value}");
+                    Logging.Debug($"Setting decimal value '{key}' to: {value}");
                     vaProxy.SetDecimal(key, (decimal?)value);
                 }
                 else if (variableType == typeof(DateTime))
                 {
-                    Logging.Debug($"Setting date value '{key} to {(DateTime?)value}");
+                    Logging.Debug($"Setting date value '{key} to {value}");
                     vaProxy.SetDate(key, (DateTime?)value);
                 }
                 else
