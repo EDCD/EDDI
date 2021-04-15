@@ -124,6 +124,8 @@ namespace EddiSpeechService
             // List EDDI event types of where stale event data should be removed in favor of more recent data
             string[] eventTypes = new string[]
                 {
+                    "Docking denied",
+                    "Docking requested",
                     "Next jump",
                     "Heat damage",
                     "Heat warning",
