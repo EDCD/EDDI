@@ -822,6 +822,7 @@ namespace EddiDataDefinitions
                 new Module(128671337, "Int_ShieldGenerator_Size7_Class3_Fast", 1536, "Bi-Weave Shield Generator", 7, "C", 8548200),
                 new Module(128671338, "Int_ShieldGenerator_Size8_Class3_Fast", 1537, "Bi-Weave Shield Generator", 8, "C", 27097750),
                 new Module(128672317, "Int_PlanetApproachSuite", 1538, "PlanetaryApproachSuite", 1, "I", 500),
+                new Module(128975719, "Int_PlanetApproachSuite_Advanced", -1, "PlanetaryApproachSuite", 1, "I", 500),
                 new Module(128049384, "Hpt_PulseLaser_Fixed_Huge", 1539, "PulseLaser", 4, "A", 0, ModuleMount.Fixed),
                 new Module(128049431, "Hpt_BeamLaser_Fixed_Huge", 1540, "BeamLaser", 4, "A", 0, ModuleMount.Fixed),
                 new Module(128049457, "Hpt_MultiCannon_Fixed_Large", 1541, "Multi_Cannon", 3, "C", 0, ModuleMount.Fixed),
