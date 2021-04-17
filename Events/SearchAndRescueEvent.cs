@@ -27,10 +27,10 @@ namespace EddiEvents
         public long reward { get; }
 
         [PublicAPI]
-        public string localizedcommodityname => Commodity.localizedName;
+        public string localizedcommodityname => commodity.localizedName;
 
         [PublicAPI]
-        public CommodityDefinition Commodity { get; }
+        public CommodityDefinition commodity { get; }
 
         // Not intended to be user facing
 
@@ -40,7 +40,7 @@ namespace EddiEvents
         {
             this.amount = amount;
             this.reward = reward;
-            this.Commodity = commodity;
+            this.commodity = commodity;
             this.marketId = marketId;
         }
     }
