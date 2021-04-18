@@ -68,10 +68,10 @@ namespace GeneratorTests
 
                 if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
                 {
-                    output.Add("Where values are indexed (the compartments on a ship for example), the zero-based index will be represented by '*\\<index\\>*'.");
+                    output.Add("Where values are indexed (the compartments on a ship for example), the index will be represented by '*\\<index\\>*'.");
                     if (VoiceAttackVars.Any(v => v.key.Contains(@"<index")))
                     {
-                        output.Add("For VoiceAttack, a value ending in 'entries' will identify the total number of entries in each index. For example, if index values of 0 and 1 are available then the value of the corresponding 'entries' variable will be 2.");
+                        output.Add("For VoiceAttack, a variable with the root name of the indexed array shall identify the total number of entries in the array. For example, if compartments 1 and 2 are available then the value of the corresponding 'compartments' variable will be 2.");
                     }
                     output.Add("");
                 }

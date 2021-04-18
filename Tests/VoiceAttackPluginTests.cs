@@ -71,18 +71,18 @@ namespace UnitTests
             var vaVars = vars.AsVoiceAttackVariables(ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(15, vaVars.Count);
-            Assert.AreEqual("Gamma Tucanae", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 0").Value);
-            Assert.AreEqual("Rho Capricorni", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 1").Value);
-            Assert.AreEqual("Dain", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 2").Value);
-            Assert.AreEqual("Col 285 Sector BR-S b18-0", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 3").Value);
-            Assert.AreEqual("LP 571-80", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 4").Value);
-            Assert.AreEqual("Kawilocidi", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 5").Value);
-            Assert.AreEqual("Irulachan", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 6").Value);
-            Assert.AreEqual("Alrai Sector MC-M a7-0", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 7").Value);
-            Assert.AreEqual("Col 285 Sector FX-Q b19-5", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 8").Value);
-            Assert.AreEqual("Col 285 Sector EX-Q b19-7", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 9").Value);
-            Assert.AreEqual("Alrai Sector FB-O a6-3", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 10").Value);
-            Assert.AreEqual(11, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems entries").Value);
+            Assert.AreEqual("Gamma Tucanae", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 1").Value);
+            Assert.AreEqual("Rho Capricorni", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 2").Value);
+            Assert.AreEqual("Dain", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 3").Value);
+            Assert.AreEqual("Col 285 Sector BR-S b18-0", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 4").Value);
+            Assert.AreEqual("LP 571-80", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 5").Value);
+            Assert.AreEqual("Kawilocidi", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 6").Value);
+            Assert.AreEqual("Irulachan", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 7").Value);
+            Assert.AreEqual("Alrai Sector MC-M a7-0", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 8").Value);
+            Assert.AreEqual("Col 285 Sector FX-Q b19-5", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 9").Value);
+            Assert.AreEqual("Col 285 Sector EX-Q b19-7", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 10").Value);
+            Assert.AreEqual("Alrai Sector FB-O a6-3", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 11").Value);
+            Assert.AreEqual(11, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems").Value);
             Assert.AreEqual(63573M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold reward").Value);
             Assert.AreEqual(1445M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold bonus").Value);
             Assert.AreEqual(65018M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold total").Value);
@@ -135,11 +135,11 @@ namespace UnitTests
             Assert.AreEqual(8, vaVars.Count);
             Assert.AreEqual(90M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected remaining").Value);
             Assert.AreEqual("Alexandrite", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected motherlode").Value);
-            Assert.AreEqual("Low Temperature Diamonds", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 commodity").Value);
-            Assert.AreEqual(26.078022M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 0 percentage").Value);
-            Assert.AreEqual("Hydrogen Peroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 commodity").Value);
-            Assert.AreEqual(10.189009M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 percentage").Value);
-            Assert.AreEqual(2, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities entries").Value);
+            Assert.AreEqual("Low Temperature Diamonds", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 commodity").Value);
+            Assert.AreEqual(26.078022M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 1 percentage").Value);
+            Assert.AreEqual("Hydrogen Peroxide", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 2 commodity").Value);
+            Assert.AreEqual(10.189009M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities 2 percentage").Value);
+            Assert.AreEqual(2, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected commodities").Value);
             Assert.AreEqual("Low", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected materialcontent").Value);
             foreach (VoiceAttackVariable variable in vaVars)
             {

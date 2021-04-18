@@ -174,19 +174,15 @@ namespace Utilities
                             foreach (object item in (IEnumerable)value)
                             {
                                 // Handle filled collections
-                                Logging.Debug("Handling element " + i);
+                                Logging.Debug("Handling element " + i++);
                                 var elementKeysPath = keysPath.Copy();
                                 elementKeysPath.Add(i.ToString());
                                 GetVariables(underlyingType, item, elementKeysPath);
-                                i++;
                             }
                         }
                         else
                         {
                             // Handle empty collections (for example when we're generating wiki documentation)
-
-                            // Add an object to represent the root name for the collection in our docs
-                            Results.Add(new MetaVariable(keysPath, typeof(object)));
 
                             // Get the current list element's underlying variable data
                             var elementKeysPath = keysPath.Copy();
@@ -196,8 +192,9 @@ namespace Utilities
                             // Set i to null so that no value is written to the wiki documentation
                             i = null;
                         }
+
+                        // Write the root element name with (if available) the number of associated entries from the collection
                         var entriesPath = keysPath.Copy();
-                        entriesPath.Add("entries");
                         Results.Add(new MetaVariable(entriesPath, typeof(int), i));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
@@ -422,7 +419,6 @@ namespace Utilities
         public static List<CottleVariable> AsCottleVariables(this List<MetaVariable> source)
         {
             return source
-                .Where(v => v.keysPath.Last() != "entries") // Exclude "entries" values in Cottle
                 .Where(v => v.keysPath.Last() != MetaVariables.indexMarker) // Exclude index values in Cottle
                 .Select(v => new CottleVariable(v.keysPath, v.value))
                 .ToList();
