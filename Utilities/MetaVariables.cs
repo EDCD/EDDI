@@ -279,11 +279,12 @@ namespace Utilities
         /// <summary> The value to write (if any) </summary>
         public object value { get; set; }
 
-        public VoiceAttackVariable(string eventType, List<string> keysPath, Type variableType, object value = null)
+        public VoiceAttackVariable(string startingPrefix, string eventType, List<string> keysPath, Type variableType, object value = null)
         {
             // Build the full key
-            this.key = $"EDDI {eventType.ToLowerInvariant()}"; // Set our starting prefix
-            keysPath.RemoveAll(k => k == ""); // Remove any empty keys from the path
+            this.key = startingPrefix; // Set our starting prefix
+            keysPath = keysPath.Prepend(eventType?.ToLowerInvariant()).ToList();
+            keysPath.RemoveAll(k => string.IsNullOrEmpty(k)); // Remove any empty keys from the path
             foreach (var keySegment in keysPath)
             {
                 // Generate a variable name from the prefix and key. 
@@ -424,11 +425,11 @@ namespace Utilities
                 .ToList();
         }
 
-        public static List<VoiceAttackVariable> AsVoiceAttackVariables(this List<MetaVariable> source, string eventType)
+        public static List<VoiceAttackVariable> AsVoiceAttackVariables(this List<MetaVariable> source, string startingPrefix, string eventType = null)
         {
             return source
                 .Where(v => v.type != typeof(object))
-                .Select(v => new VoiceAttackVariable(eventType, v.keysPath, v.type, v.value))
+                .Select(v => new VoiceAttackVariable(startingPrefix, eventType, v.keysPath, v.type, v.value))
                 .ToList();
         }
     }

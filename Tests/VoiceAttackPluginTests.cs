@@ -68,7 +68,7 @@ namespace UnitTests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables(ev.type);
+            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(15, vaVars.Count);
             Assert.AreEqual("Gamma Tucanae", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI exploration data sold systems 1").Value);
@@ -107,7 +107,7 @@ namespace UnitTests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables(ev.type);
+            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(2, vaVars.Count);
             Assert.AreEqual(7, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI discovery scan totalbodies").Value);
@@ -130,7 +130,7 @@ namespace UnitTests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables(ev.type);
+            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(8, vaVars.Count);
             Assert.AreEqual(90M, vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI asteroid prospected remaining").Value);
@@ -155,7 +155,7 @@ namespace UnitTests
             ShipFsdEvent ev = new ShipFsdEvent (DateTime.UtcNow, "ready");
             var vars = new MetaVariables(ev.GetType(), ev).Results;
             
-            var vaVars = vars.AsVoiceAttackVariables(ev.type);
+            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(1, vaVars.Count);
             Assert.AreEqual("ready", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI ship fsd status").Value);
@@ -181,7 +181,7 @@ namespace UnitTests
             Assert.IsNull(cottleVars.FirstOrDefault(k => k.key == "missionid").value);
             Assert.AreEqual(true, cottleVars.FirstOrDefault(k => k.key == "abandoned").value);
 
-            var vaVars = vars.AsVoiceAttackVariables(ev.type);
+            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
             Assert.AreEqual(4, vaVars.Count);
             Assert.AreEqual("Water", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI commodity ejected commodity").Value);

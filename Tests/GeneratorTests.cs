@@ -57,7 +57,7 @@ namespace GeneratorTests
                 }
 
                 var CottleVars = vars.AsCottleVariables();
-                var VoiceAttackVars = vars.AsVoiceAttackVariables(entry.Key);
+                var VoiceAttackVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
 
                 if (!vars.Any())
                 {

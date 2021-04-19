@@ -257,7 +257,7 @@ namespace EddiVoiceAttackResponder
                 // Prepare and update this event's variable values
                 var eventVariables = new MetaVariables(@event.GetType(), @event)
                     .Results
-                    .AsVoiceAttackVariables(@event.type);
+                    .AsVoiceAttackVariables("EDDI", @event.type);
                 foreach (var @var in eventVariables) { @var.Set(vaProxy); }
 
                 // Save the updated state of our event variables
