@@ -79,8 +79,6 @@ namespace EddiDataProviderService
                     }
                     starSystem = new BgsService().GetSystemPowerplay(starSystem);
                 }
-
-                starSystem = LegacyEddpService.SetLegacyData(starSystem, showInformation, showBodies, showStations);
             }
             return starSystem;
         }

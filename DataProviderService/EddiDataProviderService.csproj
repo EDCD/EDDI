@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseStarSystem.cs" />
-    <Compile Include="LegacyEddpService.cs" />
     <Compile Include="DataProviderService.cs" />
     <Compile Include="StarSystemCache.cs" />
     <Compile Include="StarSystemSqLiteRepository.cs" />
