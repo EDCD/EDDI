@@ -102,7 +102,7 @@ namespace EddiSpeechResponder.Service
             string scriptName,
             string scriptDescription,
             bool isResponder,
-            int priority,
+            int? priority,
             string defaultScript)
         {
             lock (_lockRoot)

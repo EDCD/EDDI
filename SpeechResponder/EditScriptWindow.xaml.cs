@@ -47,9 +47,9 @@ namespace EddiSpeechResponder
             set { responder = value; OnPropertyChanged("Responder"); }
         }
 
-        private int _priority;
+        private int? _priority;
 
-        public int Priority
+        public int? Priority
         {
             get { return _priority; }
             set

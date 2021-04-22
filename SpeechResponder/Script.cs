@@ -16,7 +16,7 @@ namespace EddiSpeechResponder
         [JsonProperty("enabled")]
         private bool enabled;
         [JsonProperty("priority")]
-        private int priority = 3;
+        private int? priority = 3;
         [JsonProperty("responder")]
         private bool responder;
         [JsonProperty("script")]
@@ -32,9 +32,9 @@ namespace EddiSpeechResponder
         }
 
         [JsonIgnore]
-        public int Priority
+        public int? Priority
         {
-            get { return priority; }
+            get { return responder ? priority : null; }
             set { priority = value; OnPropertyChanged("Priority"); }
         }
 
@@ -80,16 +80,16 @@ namespace EddiSpeechResponder
         }
 
         [JsonIgnore]
-        public IList<int> Priorities
+        public IList<int?> Priorities
         {
             get { return priorities; }
             set { if (priorities != value) { priorities = value; OnPropertyChanged("Priorities"); }; }
         }
 
         [JsonIgnore]
-        private IList<int> priorities;
+        private IList<int?> priorities;
 
-        public Script(string name, string description, bool responder, string script, int priority = 3, string defaultScript = null)
+        public Script(string name, string description, bool responder, string script, int? priority = 3, string defaultScript = null)
         {
             Name = name;
             Description = description;
@@ -99,7 +99,7 @@ namespace EddiSpeechResponder
             Enabled = true;
             defaultValue = defaultScript;
 
-            Priorities = new List<int>();
+            Priorities = new List<int?>();
             for (int i = 1; i <= SpeechService.Instance.speechQueue.priorityQueues.Count - 1; i++)
             {
                 if (i > 0) { Priorities.Add(i); }
