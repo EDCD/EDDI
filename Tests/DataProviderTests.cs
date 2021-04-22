@@ -166,14 +166,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestNullLegacy()
-        {
-            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system" });
-            Assert.IsNotNull(starSystem);
-            Assert.AreEqual("No such system", starSystem.systemname);
-        }
-
-        [TestMethod]
         public void TestPreservedProperties()
         {
             // Set up our original star systems
