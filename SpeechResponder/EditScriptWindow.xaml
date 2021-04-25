@@ -100,9 +100,22 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"/>
-            <TextBox Margin="10, 5, 10, 0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
-            <TextBlock Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"/>
-            <TextBox Margin="10, 5, 10, 0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
+            <TextBox Margin="10, 5, 10, 0" 
+                     Grid.Row="0" 
+                     Grid.Column="1" 
+                     Text="{Binding Path=editorScript.Name, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window }}" 
+                     IsReadOnly="{Binding Path=editorScript.Responder, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window }}"
+                     />
+            <TextBlock Margin="10, 5, 10, 0" 
+                       Grid.Row="1" 
+                       Grid.Column="0" 
+                       Text="{x:Static resx:SpeechResponder.header_description}"
+                       />
+            <TextBox Margin="10, 5, 10, 0" 
+                     Grid.Row="1" 
+                     Grid.Column="1" 
+                     Text="{Binding Path=editorScript.Description, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window }}" 
+                     IsReadOnly="{Binding Path=editorScript.Responder, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window }}"/>
             <avalonEdit:TextEditor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" 
                                    Name="scriptView"
                                    Foreground="DarkSlateGray"

@@ -10,7 +10,14 @@ namespace EddiSpeechResponder
     public class Script : INotifyPropertyChanged
     {
         [JsonProperty("name")]
-        public string Name { get; private set; }
+        public string Name
+        {
+            get => name;
+            set
+            {
+                name = value; OnPropertyChanged();
+            }
+        }
 
         [JsonProperty("description")]
         public string Description
@@ -70,6 +77,8 @@ namespace EddiSpeechResponder
         public bool IsResettable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
         [JsonIgnore]
         public bool HasValue => script != null;
+        [JsonIgnore]
+        private string name;
         [JsonIgnore]
         private string description;
         [JsonIgnore]

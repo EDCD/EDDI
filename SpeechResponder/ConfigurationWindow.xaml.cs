@@ -162,14 +162,15 @@ namespace EddiSpeechResponder
 
         private void OpenEditScriptWindow(Script script)
         {
-            EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(script, Personality.Scripts);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
             if (editScriptWindow.DialogResult ?? false)
             {
+                Personality.Scripts[script.Name] = editScriptWindow.script;
                 updateScriptsConfiguration();
-                scriptsData.Items.Refresh();
+                scriptsView.Refresh();
             }
         }
 
@@ -224,8 +225,7 @@ namespace EddiSpeechResponder
                     // Remove the script from the list
                     Personality.Scripts.Remove(script.Name);
                     updateScriptsConfiguration();
-                    // We updated a property of the personality but not the personality itself so need to manually update items
-                    scriptsData.Items.Refresh();
+                    scriptsView.Refresh();
                     break;
             }
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -274,29 +274,15 @@ namespace EddiSpeechResponder
 
         private void newScriptClicked(object sender, RoutedEventArgs e)
         {
-            string baseName = "New function";
-            string scriptName = baseName;
-            int i = 2;
-            while (Personality.Scripts.ContainsKey(scriptName))
-            {
-                scriptName = baseName + " " + i++;
-            }
-            Script script = new Script(scriptName, null, false, null);
-            Personality.Scripts.Add(script.Name, script);
-
-            // Now fire up an edit
             EDDI.Instance.SpeechResponderModalWait = true;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(null, Personality.Scripts);
             if (editScriptWindow.ShowDialog() == true)
             {
-                Personality.ToFile();
-                EDDI.Instance.Reload("Speech responder");
+                var newScript = editScriptWindow.script;
+                Personality.Scripts[newScript.Name] = newScript;
+                updateScriptsConfiguration();
+                scriptsView.Refresh();
             }
-            else
-            {
-                Personality.Scripts.Remove(script.Name);
-            }
-            scriptsData.Items.Refresh();
             EDDI.Instance.SpeechResponderModalWait = false;
         }
 
@@ -445,7 +431,6 @@ namespace EddiSpeechResponder
 
         private void EnableOrDisableAll(Personality targetPersonality, bool desiredState)
         {
-            EDDI.Instance.SpeechResponderModalWait = true;
             foreach (var kvScript in targetPersonality.Scripts)
             {
                 var script = kvScript.Value;
@@ -454,9 +439,7 @@ namespace EddiSpeechResponder
                     script.Enabled = desiredState;
                 }
             }
-            Personality.ToFile();
-            EDDI.Instance.Reload("Speech responder");
-            EDDI.Instance.SpeechResponderModalWait = false;
+            updateScriptsConfiguration();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
