@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -329,10 +330,14 @@ namespace EddiSpeechResponder
             {
                 case MessageBoxResult.Yes:
                     // Remove the personality from the list and the local filesystem
-                    Personality oldPersonality = Personality;
-                    Personalities.Remove(oldPersonality);
-                    Personality = Personalities[0];
-                    oldPersonality.RemoveFile();
+                    LockManager.GetLock("DeletePersonality", () => 
+                    {
+                        Personality oldPersonality = Personality;
+                        Personality = null; // Forces bindings to update
+                        Personalities.Remove(oldPersonality);
+                        oldPersonality.RemoveFile();
+                        Personality = Personalities[0];
+                    });
                     break;
             }
             EDDI.Instance.SpeechResponderModalWait = false;
