@@ -245,4 +245,10 @@
   <data name="search_filter" xml:space="preserve">
     <value>Filter:</value>
   </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Enable all event-based scripts</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Disable all event-based scripts</value>
+  </data>
 </root>

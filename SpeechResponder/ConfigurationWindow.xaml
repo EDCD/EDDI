@@ -90,9 +90,20 @@
             </Grid>
         </DockPanel>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView}">
+            <DataGrid.Resources>
+                <ContextMenu x:Key="HeaderEnableAllContextMenu" DisplayMemberPath="Header">
+                    <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_enable_all}" Click="EnableAll_Clicked"/>
+                    <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_disable_all}" Click="DisableAll_Clicked"/>
+                </ContextMenu>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
                 <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_enabled}" CanUserSort="True" SortMemberPath="Value.Enabled">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ContextMenu" Value="{DynamicResource HeaderEnableAllContextMenu}"/>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border IsEnabled="{Binding Path=Value.Responder}">

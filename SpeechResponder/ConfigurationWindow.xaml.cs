@@ -425,6 +425,32 @@ namespace EddiSpeechResponder
             }
         }
 
+        private void EnableAll_Clicked(object sender, RoutedEventArgs e) 
+        {
+            EnableOrDisableAll(true);
+        }
+
+        private void DisableAll_Clicked(object sender, RoutedEventArgs e)
+        {
+            EnableOrDisableAll(false);
+        }
+
+        private void EnableOrDisableAll(bool desiredState)
+        {
+            EDDI.Instance.SpeechResponderModalWait = true;
+            foreach (var kvScript in Personality.Scripts)
+            {
+                var script = kvScript.Value;
+                if (script.Responder)
+                {
+                    script.Enabled = desiredState;
+                }
+            }
+            Personality.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+            EDDI.Instance.SpeechResponderModalWait = false;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
