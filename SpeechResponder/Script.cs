@@ -30,9 +30,9 @@ namespace EddiSpeechResponder
         }
 
         [JsonProperty("priority")]
-        public int Priority
+        public int? Priority
         {
-            get => priority;
+            get => responder ? priority : null;
             set { priority = value; OnPropertyChanged(); }
         }
 
@@ -75,7 +75,7 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private bool enabled;
         [JsonIgnore]
-        private int priority = 3;
+        private int? priority = 3;
         [JsonIgnore]
         private bool responder;
         [JsonIgnore]
@@ -83,7 +83,7 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private bool resettableOrDeletable;
         
-        public Script(string name, string description, bool responder, string script, int priority = 3, string defaultScript = null)
+        public Script(string name, string description, bool responder, string script, int? priority = 3, string defaultScript = null)
         {
             Name = name;
             Description = description;
