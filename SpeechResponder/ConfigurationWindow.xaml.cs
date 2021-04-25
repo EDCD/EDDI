@@ -34,10 +34,10 @@ namespace EddiSpeechResponder
 
         public Personality Personality
         {
-            get => personality ?? Personalities.FirstOrDefault(p => p.Name == configuration.Personality) ?? defaultPersonality;
+            get => personality ?? Personalities.FirstOrDefault(p => p.Name == configuration.Personality) ?? Personalities[0];
             set
             {
-                personality = value;
+                personality = value ?? personalities[0] ?? defaultPersonality;
                 InitializeView(personality.Scripts);
                 OnPropertyChanged();
             }
@@ -120,6 +120,7 @@ namespace EddiSpeechResponder
         {
             return Personality
                 ?? Personalities.SingleOrDefault(p => p.Name == configuration.Personality)
+                ?? personalities[0]
                 ?? defaultPersonality;
         }
 
@@ -309,7 +310,9 @@ namespace EddiSpeechResponder
             {
                 string PersonalityName = window.PersonalityName?.Trim();
                 string PersonalityDescription = window.PersonalityDescription?.Trim();
+                bool disableScripts = window.PersonalityDisableScripts;
                 Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
+                if (disableScripts) { EnableOrDisableAll(newPersonality, false); }
                 Personalities.Add(newPersonality);
                 Personality = newPersonality;
             }
@@ -427,18 +430,18 @@ namespace EddiSpeechResponder
 
         private void EnableAll_Clicked(object sender, RoutedEventArgs e) 
         {
-            EnableOrDisableAll(true);
+            EnableOrDisableAll(Personality, true);
         }
 
         private void DisableAll_Clicked(object sender, RoutedEventArgs e)
         {
-            EnableOrDisableAll(false);
+            EnableOrDisableAll(Personality, false);
         }
 
-        private void EnableOrDisableAll(bool desiredState)
+        private void EnableOrDisableAll(Personality targetPersonality, bool desiredState)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            foreach (var kvScript in Personality.Scripts)
+            foreach (var kvScript in targetPersonality.Scripts)
             {
                 var script = kvScript.Value;
                 if (script.Responder)

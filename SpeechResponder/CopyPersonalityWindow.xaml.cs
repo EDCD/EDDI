@@ -36,6 +36,17 @@ namespace EddiSpeechResponder
             }
         }
 
+        private bool personalityDisableScripts;
+        public bool PersonalityDisableScripts
+        {
+            get => personalityDisableScripts;
+            set
+            {
+                personalityDisableScripts = value;
+                OnPropertyChanged(nameof(PersonalityDisableScripts));
+            }
+        }
+
         bool CanAccept()
         {
             return string.IsNullOrWhiteSpace(Error);

@@ -38,7 +38,12 @@
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
             <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
-            <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
+            <ComboBox 
+                Margin="5,0" 
+                ItemsSource="{Binding Personalities, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                SelectedValue="{Binding Personality, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                DisplayMemberPath="Name" 
+                SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
         <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
@@ -89,7 +94,7 @@
                 </TextBlock>
             </Grid>
         </DockPanel>
-        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView}">
+        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
             <DataGrid.Resources>
                 <ContextMenu x:Key="HeaderEnableAllContextMenu" DisplayMemberPath="Header">
                     <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_enable_all}" Click="EnableAll_Clicked"/>

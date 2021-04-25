@@ -32,6 +32,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -53,7 +54,11 @@
                     <Binding Path="PersonalityDescription" Mode="TwoWay" />
                 </TextBox.Text>
             </TextBox>
-            <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Margin="10">
+                <CheckBox Name="DisableScripts" VerticalAlignment="Center" HorizontalAlignment="Stretch" Width="Auto" Margin="5, 0" IsChecked="{Binding PersonalityDisableScripts}" />
+                <TextBlock Text="{x:Static resx:SpeechResponder.context_menu_disable_all}"/>
+            </StackPanel>
+            <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="20, 0" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
                 <Button x:Name="acceptButton" IsDefault="True" FontSize="18" 
                         Content="{x:Static resx:SpeechResponder.button_ok}" 
                         VerticalAlignment="Top" 
