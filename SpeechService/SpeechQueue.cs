@@ -36,6 +36,21 @@ namespace EddiSpeechService
             }
         }
 
+        public List<int?> priorities => PreparePrioritiesList();
+
+        private List<int?> PreparePrioritiesList()
+        {
+            List<int?> result = new List<int?>();
+            for (int i = 1; i <= priorityQueues.Count - 1; i++)
+            {
+                if (i > 0)
+                {
+                    result.Add(i);
+                }
+            }
+            return result;
+        }
+
         private void PrepareSpeechQueues()
         {
             priorityQueues = new List<ConcurrentQueue<EddiSpeech>>();

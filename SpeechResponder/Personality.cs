@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Utilities;
 
@@ -13,23 +15,53 @@ namespace EddiSpeechResponder
     /// <summary>
     /// A personality is a combination of scripts used to respond to specific events
     /// </summary>
-    public class Personality
+    public class Personality : INotifyPropertyChanged
     {
         [JsonProperty("name")]
-        public string Name { get; private set; }
+        public string Name
+        {
+            get => _name;
+            private set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         [JsonProperty("description")]
-        public string Description { get; private set; }
-
-        [JsonIgnore]
-        public bool IsDefault { get; set; } = false;
-
-        [JsonIgnore]
-        public bool IsCustom => !IsDefault;
+        public string Description
+        {
+            get => _description;
+            private set
+            {
+                _description = value;
+                OnPropertyChanged();
+            }
+        }
 
         [JsonProperty("scripts")]
-        public Dictionary<string, Script> Scripts { get; private set; }
+        public Dictionary<string, Script> Scripts
+        {
+            get => _scripts;
+            private set
+            {
+                _scripts = value;
+                OnPropertyChanged();
+            }
+        }
 
+        [JsonIgnore]
+        private string _name;
+
+        [JsonIgnore]
+        private string _description;
+
+        [JsonIgnore]
+        public bool IsCustom { get; set; }
+
+        [JsonIgnore]
+        private Dictionary<string, Script> _scripts;
+        
         [JsonIgnore]
         private string dataPath;
 
@@ -47,14 +79,7 @@ namespace EddiSpeechResponder
             Description = description;
             Scripts = scripts;
         }
-
-        [JsonIgnore]
-        public bool IsEditable
-        {
-            get { return (Name != "EDDI"); }
-            set { }
-        }
-
+        
         /// <summary>
         /// Obtain all personalities from a directory.  If the directory name is not supplied the
         /// default of Constants.Data_DIR\personalities is used
@@ -136,7 +161,7 @@ namespace EddiSpeechResponder
             if (personality != null)
             {
                 personality.dataPath = filename;
-                personality.IsDefault = isDefault;
+                personality.IsCustom = !isDefault;
                 fixPersonalityInfo(personality);
             }
 
@@ -203,9 +228,9 @@ namespace EddiSpeechResponder
         private static void fixPersonalityInfo(Personality personality)
         {
             // Default personality for reference scripts
-            Personality defaultPersonality = personality.IsDefault ? null : Default();
+            var defaultPersonality = !personality.IsCustom ? null : Default();
 
-            Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
+            var fixedScripts = new ObservableConcurrentDictionary<string, Script>();
             // Ensure that every required event is present
             List<string> missingScripts = new List<string>();
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
@@ -233,7 +258,7 @@ namespace EddiSpeechResponder
                     fixedScripts.Add(kv.Key, script);
                 }
             }
-            if (!personality.IsDefault)
+            if (personality.IsCustom)
             {
                 // Remove deprecated scripts from the list
                 List<string> scriptHolder = new List<string>();
@@ -306,10 +331,8 @@ namespace EddiSpeechResponder
                 Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
             }
 
-            // Re-order the scripts by name
-            fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
-
-            personality.Scripts = fixedScripts;
+            // Re-order the scripts by name and save to file
+            personality.Scripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
             personality.ToFile();
         }
 
@@ -340,5 +363,20 @@ namespace EddiSpeechResponder
 
             return script;
         }
+
+        #region INotifyPropertyChanged
+        /// <summary>
+        /// Raised when a property on this object has a new value.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises this object's PropertyChanged event.
+        /// </summary>
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }

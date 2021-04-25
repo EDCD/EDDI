@@ -340,6 +340,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter:.
+        /// </summary>
+        public static string search_filter {
+            get {
+                return ResourceManager.GetString("search_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read about the speech responder&apos;s functions.
         /// </summary>
         public static string speechResponderHelp {
