@@ -95,7 +95,7 @@ namespace EddiSpeechResponder
         {
             ScriptsView = CollectionViewSource.GetDefaultView(source);
             ScriptsView.SortDescriptions.Add(new SortDescription("Value.Name", ListSortDirection.Ascending));
-            searchFilterText.Text = null; // Clear any active filters
+            searchFilterText.Text = string.Empty; // Clear any active filters
         }
 
         private ObservableCollection<Personality> GetPersonalities()
