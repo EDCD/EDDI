@@ -237,7 +237,7 @@ namespace EddiSpeechResponder
             // Default personality for reference scripts
             var defaultPersonality = !personality.IsCustom ? null : Default();
 
-            var fixedScripts = new ObservableConcurrentDictionary<string, Script>();
+            var fixedScripts = new Dictionary<string, Script>();
             // Ensure that every required event is present
             List<string> missingScripts = new List<string>();
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
