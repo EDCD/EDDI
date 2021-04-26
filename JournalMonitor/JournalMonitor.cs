@@ -4055,6 +4055,14 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "BackpackMaterials":
+                            case "BookDropship":
+                            case "BookTaxi":
+                            case "BuyMicroResources":
+                            case "BuySuit":
+                            case "BuyWeapon":
+                            case "CancelDropship":
+                            case "CancelTaxi":
                             case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":
@@ -4071,14 +4079,32 @@ namespace EddiJournalMonitor
                             case "CarrierTradeOrder":
                             case "CodexDiscovery":
                             case "CodexEntry":
+                            case "CollectItems":
+                            case "CreateSuitLoadout":
                             case "CrimeVictim":
+                            case "DeleteSuitLoadout":
                             case "DiscoveryScan":
+                            case "DropItems":
                             case "EngineerLegacyConvert":
+                            case "LoadoutEquipModule":
+                            case "LoadoutRemoveModule":
                             case "NavRoute":
+                            case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
+                            case "ScanOrganic":
+                            case "SellMicroResources":
+                            case "SellOrganicData":
+                            case "SellSuit":
+                            case "SellWeapon":
                             case "SharedBookmarkToSquadron":
+                            case "ShipLockerMaterials":
+                            case "SwitchSuitLoadout":
+                            case "TradeMicroResources":
+                            case "UpgradeSuit":
+                            case "UpgradeWeapon":
+                            case "UseConsumable":
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
