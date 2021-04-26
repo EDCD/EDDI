@@ -1563,9 +1563,12 @@ namespace EddiCore
 
         private bool eventTouchdown(TouchdownEvent theEvent)
         {
-            // Only pass on this event if our location is set
+            updateCurrentSystem(theEvent.systemname);
+            updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+
+            // If playercontrolled, only pass on this event if our longitude and lattitude are set
             // (if not then this is probably being written prior to a `Location` event))
-            if (theEvent.latitude != null && theEvent.longitude != null)
+            if (theEvent.playercontrolled && theEvent.latitude != null && theEvent.longitude != null)
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
                 Vehicle = theEvent.playercontrolled ? Constants.VEHICLE_SHIP : Constants.VEHICLE_SRV;
@@ -1576,6 +1579,9 @@ namespace EddiCore
 
         private bool eventLiftoff(LiftoffEvent theEvent)
         {
+            updateCurrentSystem(theEvent.systemname);
+            updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             if (theEvent.playercontrolled)
             {
