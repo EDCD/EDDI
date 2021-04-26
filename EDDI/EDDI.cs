@@ -1312,6 +1312,25 @@ namespace EddiCore
         {
             Logging.Info("Location StarSystem: " + theEvent.systemname);
 
+            // Set our vehicle
+            if (theEvent.taxi)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            else if (theEvent.inSRV)
+            {
+                Vehicle = Constants.VEHICLE_SRV;
+            }
+            else if (theEvent.onFoot)
+            {
+                Vehicle = Constants.VEHICLE_LEGS;
+            }
+            // If none of these are true we may either be in our ship or in a fighter.
+            
             updateCurrentSystem(theEvent.systemname);
             // Our data source may not include the system address
             CurrentStarSystem.systemAddress = theEvent.systemAddress;

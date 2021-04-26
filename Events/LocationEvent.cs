@@ -122,7 +122,12 @@ namespace EddiEvents
         public long? bodyId { get; private set; }
         public Power Power { get; private set; }
         public PowerplayState powerState { get; private set; }
-        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions, Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
+        public bool taxi { get; private set; }
+        public bool multicrew { get; private set; }
+        public bool inSRV { get; private set; }
+        public bool onFoot { get; private set; }
+
+        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions, Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.x = x;
@@ -148,6 +153,10 @@ namespace EddiEvents
             this.factions = factions;
             this.Power = powerplayPower;
             this.powerState = powerplayState;
+            this.taxi = taxi;
+            this.multicrew = multicrew;
+            this.inSRV = inSRV;
+            this.onFoot = onFoot;
         }
     }
 }
