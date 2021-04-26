@@ -4040,7 +4040,18 @@ namespace EddiJournalMonitor
                                     bool fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
                                     int? fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
-                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId) { raw = line, fromLoad = fromLogLoad });
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
+
+                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4051,7 +4062,18 @@ namespace EddiJournalMonitor
                                     bool toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
                                     int? toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
-                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId) { raw = line, fromLoad = fromLogLoad });
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
+
+                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
