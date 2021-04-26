@@ -2387,7 +2387,8 @@ namespace EddiJournalMonitor
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
                                     string frontierID = JsonParsing.getString(data, "FID");
-                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
+                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
+                                    bool odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
 
                                     data.TryGetValue("ShipID", out object val);
                                     int? shipId = (int?)(long?)val;
@@ -2415,7 +2416,7 @@ namespace EddiJournalMonitor
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

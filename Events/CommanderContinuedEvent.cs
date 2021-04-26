@@ -15,7 +15,8 @@ namespace EddiEvents
         static CommanderContinuedEvent()
         {
             VARIABLES.Add("commander", "The commander's name");
-            VARIABLES.Add("horizons", "The game version is 'Horizons'");
+            VARIABLES.Add("horizons", "The game version includes the 'Horizons' DLC");
+            VARIABLES.Add("odyssey", "The game version includes the 'Odyssey' DLC");
             VARIABLES.Add("ship", "The commander's ship");
             VARIABLES.Add("shipid", "The ID of the commander's ship");
             VARIABLES.Add("mode", "The game mode (Open, Group or Solo)");
@@ -33,6 +34,9 @@ namespace EddiEvents
 
         [JsonProperty("horizons")]
         public bool horizons { get; private set; }
+
+        [JsonProperty("odyssey")]
+        public bool odyssey { get; private set; }
 
         [JsonProperty("ship")]
         public string ship => shipEDModel == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(shipEDModel).model;
@@ -74,11 +78,12 @@ namespace EddiEvents
         public string frontierID { get; private set; }
         public string shipEDModel { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, int shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.frontierID = frontierID;
             this.horizons = horizons;
+            this.odyssey = odyssey;
             this.shipid = shipId;
             this.shipEDModel = shipEdModel;
             this.shipname = shipName;
