@@ -134,7 +134,7 @@ namespace EddiBgsService
                     };
 
                     // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
-                    factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")) ?? Happiness.None;
+                    factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")?.Replace("none", "")) ?? Happiness.None;
                     presenceJson.TryGetValue("updated_at", out object updatedVal);
                     factionPresence.updatedAt = (DateTime?)updatedVal ?? DateTime.MinValue;
 
