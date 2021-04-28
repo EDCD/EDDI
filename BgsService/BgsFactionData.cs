@@ -116,12 +116,13 @@ namespace EddiBgsService
                 IDictionary<string, object> factionJson = Deserializtion.DeserializeData(response.ToString());
                 Faction faction = new Faction
                 {
-                    EDDBID = (long)factionJson["eddb_id"],
                     name = (string)factionJson["name"],
                     updatedAt = (DateTime)factionJson["updated_at"],
                     Government = Government.FromName((string)factionJson["government"]),
                     Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
-                };                          
+                };
+                // EDDB ID may not be present for new / unknown factions
+                faction.EDDBID = JsonParsing.getOptionalLong(factionJson, "eddb_id");
 
                 foreach (object presence in (List<object>)factionJson["faction_presence"])
                 {
