@@ -38,69 +38,89 @@
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
             <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
-            <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
+            <ComboBox 
+                Margin="5,0" 
+                ItemsSource="{Binding Personalities, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                SelectedValue="{Binding Personality, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                DisplayMemberPath="Name" 
+                SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
-        <Grid DockPanel.Dock="Bottom" Margin="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="0" Click="copyPersonalityClicked" Content="{x:Static resx:SpeechResponder.button_copy}"></Button>
-            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="1" Click="newScriptClicked" Content="{x:Static resx:SpeechResponder.button_new}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Visibility"  Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="False">
-                                <Setter Property="Visibility"  Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="2" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_delete}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Visibility"  Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="False">
-                                <Setter Property="Visibility"  Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <TextBlock x:Name="defaultText" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Width="Auto" Margin="10, 0" Text="{x:Static resx:SpeechResponder.default_is_read_only}" FontWeight="Bold" FontStyle="Italic" FontSize="13">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Visibility"  Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="True">
-                                <Setter Property="Visibility"  Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Grid>
-        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
+        <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
+            <Label x:Name ="searchLabel" VerticalContentAlignment="Center" Content="{x:Static resx:SpeechResponder.search_filter}" />
+            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged"/>
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Margin="10" HorizontalAlignment="Center" Grid.Column="0" Click="copyPersonalityClicked" Content="{x:Static resx:SpeechResponder.button_copy}"></Button>
+                <Button Margin="10" HorizontalAlignment="Center" Grid.Column="1" Click="newScriptClicked" Content="{x:Static resx:SpeechResponder.button_new}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Visibility"  Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Personality.IsCustom}" Value="False">
+                                    <Setter Property="Visibility"  Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Margin="10" HorizontalAlignment="Center" Grid.Column="2" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsCustom}" Content="{x:Static resx:SpeechResponder.button_delete}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Visibility"  Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Personality.IsCustom}" Value="False">
+                                    <Setter Property="Visibility"  Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <TextBlock x:Name="defaultText" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Width="Auto" Margin="10, 0" Text="{x:Static resx:SpeechResponder.default_is_read_only}" FontWeight="Bold" FontStyle="Italic" FontSize="13">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility"  Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Personality.IsCustom}" Value="True">
+                                    <Setter Property="Visibility"  Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </DockPanel>
+        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+            <DataGrid.Resources>
+                <ContextMenu x:Key="HeaderEnableAllContextMenu" DisplayMemberPath="Header">
+                    <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_enable_all}" Click="EnableAll_Clicked"/>
+                    <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_disable_all}" Click="DisableAll_Clicked"/>
+                </ContextMenu>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
-                <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_enabled}">
+                <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_enabled}" CanUserSort="True" SortMemberPath="Value.Enabled">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ContextMenu" Value="{DynamicResource HeaderEnableAllContextMenu}"/>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border IsEnabled="{Binding Path=Value.Responder}">
-                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsEnabledUpdated" Unchecked="eddiScriptsEnabledUpdated" />
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsCustom}" Checked="eddiScriptsEnabledUpdated" Unchecked="eddiScriptsEnabledUpdated" />
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="Priorities" Header="{x:Static resx:SpeechResponder.header_priority}">
+                <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_priority}" CanUserSort="True" SortMemberPath="Value.Priority">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsPriorityUpdated">
+                            <ComboBox SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Priorities, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" SelectionChanged="eddiScriptsPriorityUpdated">
                                 <ComboBox.Style>
                                     <Style TargetType="{x:Type ComboBox}">
                                         <Setter Property="Opacity"  Value="1" />
@@ -109,7 +129,7 @@
                                             <DataTrigger Binding="{Binding Path=Value.Responder}" Value="False">
                                                 <Setter Property="Opacity"  Value="0" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Value="False">
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsCustom}" Value="False">
                                                 <Setter Property="IsEnabled"  Value="False" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -137,7 +157,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="editScript" Content="{x:Static resx:SpeechResponder.edit_script}" />
+                            <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsCustom}" Click="editScript" Content="{x:Static resx:SpeechResponder.edit_script}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

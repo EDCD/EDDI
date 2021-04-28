@@ -20,7 +20,7 @@ namespace EddiSpeechResponder.Service
 
         private static readonly string WorkingDirectory;
         private string _tempFileName;
-        private EditScriptWindow _scriptWindow;
+        private readonly EditScriptWindow _scriptWindow;
         private bool _scriptSaveCallGuard;
         private readonly object _lockRoot;
 
@@ -54,12 +54,12 @@ namespace EddiSpeechResponder.Service
                 File.Delete(_tempFileName);
             }
 
-            _scriptWindow.PropertyChanged += _scriptWindow_PropertyChanged;
+            _scriptWindow.editorScript.PropertyChanged += _scriptWindow_PropertyChanged;
         }
 
         private void _scriptWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(EditScriptWindow.ScriptValue))
+            if (e.PropertyName == nameof(EditScriptWindow.editorScript.Value))
             {
                 //the script value has changed. Begin the callguard and save the script value
                 BeginScriptSave(_scriptWindow);
@@ -81,12 +81,7 @@ namespace EddiSpeechResponder.Service
                 try
                 {
                     await Task.Delay(TimeSpan.FromSeconds(3));
-                    SaveRecoveryScript(window.ScriptValue,
-                        window.ScriptName,
-                        window.ScriptDescription,
-                        window.Responder,
-                        window.Priority,
-                        window.ScriptDefaultValue);
+                    SaveRecoveryScript(window.editorScript);
                 }
                 finally
                 {
@@ -98,16 +93,10 @@ namespace EddiSpeechResponder.Service
         /// <summary>
         ///        Should be called periodically and saves the script into the temp file
         /// </summary>
-        public void SaveRecoveryScript(string scriptValue,
-            string scriptName,
-            string scriptDescription,
-            bool isResponder,
-            int priority,
-            string defaultScript)
+        public void SaveRecoveryScript(Script script)
         {
             lock (_lockRoot)
             {
-                var script = new Script(scriptName, scriptDescription, isResponder, scriptValue, priority, defaultScript);
                 var serializeObject = JsonConvert.SerializeObject(script);
                 File.WriteAllText(_tempFileName, serializeObject);
             }
@@ -122,7 +111,7 @@ namespace EddiSpeechResponder.Service
             {
                 File.Delete(_tempFileName);
             }
-            _scriptWindow.PropertyChanged -= _scriptWindow_PropertyChanged;
+            _scriptWindow.editorScript.PropertyChanged -= _scriptWindow_PropertyChanged;
         }
     }
 }

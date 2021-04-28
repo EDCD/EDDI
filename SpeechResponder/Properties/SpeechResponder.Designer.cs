@@ -133,6 +133,24 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable all event-based scripts.
+        /// </summary>
+        public static string context_menu_disable_all {
+            get {
+                return ResourceManager.GetString("context_menu_disable_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable all event-based scripts.
+        /// </summary>
+        public static string context_menu_enable_all {
+            get {
+                return ResourceManager.GetString("context_menu_enable_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The default personality cannot be modified. If you wish to make changes, create a copy..
         /// </summary>
         public static string default_is_read_only {
@@ -336,6 +354,15 @@ namespace EddiSpeechResponder.Properties {
         public static string script_variables_button {
             get {
                 return ResourceManager.GetString("script_variables_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter:.
+        /// </summary>
+        public static string search_filter {
+            get {
+                return ResourceManager.GetString("search_filter", resourceCulture);
             }
         }
         

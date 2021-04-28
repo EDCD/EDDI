@@ -5,10 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -17,63 +20,58 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged
     {
-        private ObservableCollection<Personality> personalities;
+        private SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+        private readonly Personality defaultPersonality = Personality.Default();
+
         public ObservableCollection<Personality> Personalities
         {
-            get { return personalities; }
-            set { personalities = value; OnPropertyChanged("Personalities"); }
-        }
-        private Personality personality;
-        public Personality Personality
-        {
-            get { return personality; }
+            get => personalities;
             set
             {
-                personality = value;
-                viewEditContent = value != null && value.IsEditable ? "Edit" : "View";
-                OnPropertyChanged("Personality");
+                personalities = value;
+                OnPropertyChanged();
             }
         }
-        public string viewEditContent = "View";
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name)
+        public Personality Personality
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            get => personality ?? Personalities.FirstOrDefault(p => p.Name == configuration.Personality) ?? Personalities[0];
+            set
+            {
+                personality = value ?? personalities[0] ?? defaultPersonality;
+                InitializeView(personality.Scripts);
+                OnPropertyChanged();
+            }
         }
+
+        public ICollectionView ScriptsView
+        {
+            get => scriptsView;
+            private set
+            {
+                scriptsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
+
+        private ObservableCollection<Personality> personalities;
+        private Personality personality;
+        private ICollectionView scriptsView;
 
         public ConfigurationWindow()
         {
             InitializeComponent();
             DataContext = this;
 
-            ObservableCollection<Personality> personalities = new ObservableCollection<Personality>
-            {
-                // Add our default personality
-                Personality.Default()
-            };
-            // Add local personalities
-            foreach (Personality personality in Personality.AllFromDirectory())
-            {
-                if (personality != null)
-                {
-                    personalities.Add(personality);
-                }
-            }
-            Personalities = personalities;
+            Personalities = GetPersonalities();
+            Personality = GetPersonality();
 
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            InitializeView(Personality.Scripts);
+
             subtitlesCheckbox.IsChecked = configuration.Subtitles;
             subtitlesOnlyCheckbox.IsChecked = configuration.SubtitlesOnly;
-
-            foreach (Personality personality in Personalities)
-            {
-                if (personality.Name == configuration.Personality)
-                {
-                    Personality = personality;
-                    break;
-                }
-            }
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -93,6 +91,39 @@ namespace EddiSpeechResponder
             }), DispatcherPriority.ApplicationIdle);
         }
 
+        private void InitializeView(object source)
+        {
+            ScriptsView = CollectionViewSource.GetDefaultView(source);
+            ScriptsView.SortDescriptions.Add(new SortDescription("Value.Name", ListSortDirection.Ascending));
+            searchFilterText.Text = string.Empty; // Clear any active filters
+        }
+
+        private ObservableCollection<Personality> GetPersonalities()
+        {
+            if (personalities is null)
+            {
+                // Initialize our collection and add our default personality
+                personalities = new ObservableCollection<Personality> { defaultPersonality };
+
+                // Add our custom personalities
+                foreach (var customPersonality in Personality.AllFromDirectory())
+                {
+                    if (customPersonality != null)
+                    {
+                        personalities.Add(customPersonality);
+                    }
+                }
+            }
+            return personalities;
+        }
+
+        private Personality GetPersonality()
+        {
+            return Personality
+                ?? Personalities.SingleOrDefault(p => p.Name == configuration.Personality)
+                ?? personalities[0]
+                ?? defaultPersonality;
+        }
 
         private void eddiScriptsEnabledUpdated(object sender, RoutedEventArgs e)
         {
@@ -116,28 +147,36 @@ namespace EddiSpeechResponder
             }
         }
 
+        private static Script getScriptFromContext(object sender)
+        {
+            if (!(sender is FrameworkElement element)) { return null; }
+            if (!(element.DataContext is KeyValuePair<string, Script> kvp)) { return null; }
+            return kvp.Value;
+        }
+
         private void editScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            var script = getScriptFromContext(sender);
             OpenEditScriptWindow(script);
         }
 
         private void OpenEditScriptWindow(Script script)
         {
-            EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(script, Personality.Scripts);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
-            if ((bool)editScriptWindow.DialogResult)
+            if (editScriptWindow.DialogResult ?? false)
             {
+                Personality.Scripts[script.Name] = editScriptWindow.script;
                 updateScriptsConfiguration();
-                scriptsData.Items.Refresh();
+                scriptsView.Refresh();
             }
         }
 
         private void viewScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            var script = getScriptFromContext(sender);
             ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script);
             viewScriptWindow.Show();
         }
@@ -146,7 +185,7 @@ namespace EddiSpeechResponder
         {
             if (!SpeechService.Instance.eddiSpeaking)
             {
-                Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+                var script = getScriptFromContext(sender);
                 SpeechResponder responder = new SpeechResponder();
                 responder.Start();
                 responder.TestScript(script.Name, Personality.Scripts);
@@ -159,7 +198,7 @@ namespace EddiSpeechResponder
 
         private void resetOrDeleteScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            var script = getScriptFromContext(sender);
             if (script != null)
             {
                 if (script.IsResettable)
@@ -176,7 +215,7 @@ namespace EddiSpeechResponder
         private void deleteScript(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            var script = getScriptFromContext(sender);
             string messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
             string caption = Properties.SpeechResponder.delete_script_caption;
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -186,15 +225,14 @@ namespace EddiSpeechResponder
                     // Remove the script from the list
                     Personality.Scripts.Remove(script.Name);
                     updateScriptsConfiguration();
-                    // We updated a property of the personality but not the personality itself so need to manually update items
-                    scriptsData.Items.Refresh();
+                    scriptsView.Refresh();
                     break;
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }
         private void resetScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            var script = getScriptFromContext(sender);
             // Resetting the script resets it to its value in the default personality
             if (Personality.Scripts.ContainsKey(script.Name))
             {
@@ -224,9 +262,10 @@ namespace EddiSpeechResponder
 
         private void personalityChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (sender is ComboBox comboBox && !comboBox.IsLoaded) { return; }
             if (Personality != null)
             {
-                SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+                configuration = SpeechResponderConfiguration.FromFile();
                 configuration.Personality = Personality.Name;
                 configuration.ToFile();
                 EDDI.Instance.Reload("Speech responder");
@@ -235,29 +274,15 @@ namespace EddiSpeechResponder
 
         private void newScriptClicked(object sender, RoutedEventArgs e)
         {
-            string baseName = "New function";
-            string scriptName = baseName;
-            int i = 2;
-            while (Personality.Scripts.ContainsKey(scriptName))
-            {
-                scriptName = baseName + " " + i++;
-            }
-            Script script = new Script(scriptName, null, false, null);
-            Personality.Scripts.Add(script.Name, script);
-
-            // Now fire up an edit
             EDDI.Instance.SpeechResponderModalWait = true;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(null, Personality.Scripts);
             if (editScriptWindow.ShowDialog() == true)
             {
-                Personality.ToFile();
-                EDDI.Instance.Reload("Speech responder");
+                var newScript = editScriptWindow.script;
+                Personality.Scripts[newScript.Name] = newScript;
+                updateScriptsConfiguration();
+                scriptsView.Refresh();
             }
-            else
-            {
-                Personality.Scripts.Remove(script.Name);
-            }
-            scriptsData.Items.Refresh();
             EDDI.Instance.SpeechResponderModalWait = false;
         }
 
@@ -272,7 +297,9 @@ namespace EddiSpeechResponder
             {
                 string PersonalityName = window.PersonalityName?.Trim();
                 string PersonalityDescription = window.PersonalityDescription?.Trim();
+                bool disableScripts = window.PersonalityDisableScripts;
                 Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
+                if (disableScripts) { EnableOrDisableAll(newPersonality, false); }
                 Personalities.Add(newPersonality);
                 Personality = newPersonality;
             }
@@ -289,10 +316,14 @@ namespace EddiSpeechResponder
             {
                 case MessageBoxResult.Yes:
                     // Remove the personality from the list and the local filesystem
-                    Personality oldPersonality = Personality;
-                    Personalities.Remove(oldPersonality);
-                    Personality = Personalities[0];
-                    oldPersonality.RemoveFile();
+                    LockManager.GetLock("DeletePersonality", () => 
+                    {
+                        Personality oldPersonality = Personality;
+                        Personality = null; // Forces bindings to update
+                        Personalities.Remove(oldPersonality);
+                        oldPersonality.RemoveFile();
+                        Personality = Personalities[0];
+                    });
                     break;
             }
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -304,7 +335,7 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = SpeechResponderConfiguration.FromFile();
                     configuration.Subtitles = true;
                     configuration.ToFile();
                     EDDI.Instance.Reload("Speech responder");
@@ -318,7 +349,7 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = SpeechResponderConfiguration.FromFile();
                     configuration.Subtitles = false;
                     configuration.ToFile();
                     EDDI.Instance.Reload("Speech responder");
@@ -332,7 +363,7 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = SpeechResponderConfiguration.FromFile();
                     configuration.SubtitlesOnly = true;
                     configuration.ToFile();
                     EDDI.Instance.Reload("Speech responder");
@@ -346,7 +377,7 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = SpeechResponderConfiguration.FromFile();
                     configuration.SubtitlesOnly = false;
                     configuration.ToFile();
                     EDDI.Instance.Reload("Speech responder");
@@ -358,6 +389,63 @@ namespace EddiSpeechResponder
         {
             MarkdownWindow speechResponderHelpWindow = new MarkdownWindow("speechResponderHelp.md");
             speechResponderHelpWindow.Show();
+        }
+
+        private void SearchFilterText_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            using (ScriptsView.DeferRefresh())
+            {
+                ScriptsView.Filter = o => { return scriptsData_Filter(o); };
+            }
+        }
+
+        private bool scriptsData_Filter(object sender)
+        {
+            if (string.IsNullOrEmpty(searchFilterText.Text)) { return true; }
+            if (!(sender is KeyValuePair<string, Script> kvp)) { return true; }
+            var script = kvp.Value;
+            var filterTxt = searchFilterText.Text;
+
+            // If filter applies, filter items.
+            if ((script.Name?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
+                || (script.Description?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
+                || (script.Value?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void EnableAll_Clicked(object sender, RoutedEventArgs e) 
+        {
+            EnableOrDisableAll(Personality, true);
+        }
+
+        private void DisableAll_Clicked(object sender, RoutedEventArgs e)
+        {
+            EnableOrDisableAll(Personality, false);
+        }
+
+        private void EnableOrDisableAll(Personality targetPersonality, bool desiredState)
+        {
+            foreach (var kvScript in targetPersonality.Scripts)
+            {
+                var script = kvScript.Value;
+                if (script.Responder)
+                {
+                    script.Enabled = desiredState;
+                }
+            }
+            updateScriptsConfiguration();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

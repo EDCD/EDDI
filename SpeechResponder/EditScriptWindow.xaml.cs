@@ -3,7 +3,6 @@ using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 
 namespace EddiSpeechResponder
@@ -11,103 +10,44 @@ namespace EddiSpeechResponder
     /// <summary>
     /// Interaction logic for EditScriptWindow.xaml
     /// </summary>
-    public partial class EditScriptWindow : Window, INotifyPropertyChanged
+    public partial class EditScriptWindow : Window
     {
+        public Script script { get; private set; }
+        public Script editorScript { get; private set; }
+
         private readonly Dictionary<string, Script> _scripts;
-        private Script _script;
-        private readonly string originalName;
-
-        private string scriptName;
-        public string ScriptName
-        {
-            get { return scriptName; }
-            set { scriptName = value; OnPropertyChanged("ScriptName"); }
-        }
-        private string scriptDescription;
-        public string ScriptDescription
-        {
-            get { return scriptDescription; }
-            set { scriptDescription = value; OnPropertyChanged("ScriptDescription"); }
-        }
-        private string scriptValue;
-        public string ScriptValue
-        {
-            get { return scriptValue; }
-            set
-            {
-                scriptValue = string.IsNullOrWhiteSpace(value) ? null : value;
-                OnPropertyChanged("ScriptValue");
-            }
-        }
-
-        private bool responder;
-        public bool Responder
-        {
-            get { return responder; }
-            set { responder = value; OnPropertyChanged("Responder"); }
-        }
-
-        private int _priority;
-
-        public int Priority
-        {
-            get { return _priority; }
-            set
-            {
-                _priority = value;
-                OnPropertyChanged(nameof(Priority));
-            }
-        }
-
-        public string ScriptDefaultValue;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         public ScriptRecoveryService ScriptRecoveryService { get; set; }
 
-        public EditScriptWindow(Dictionary<string, Script> scripts, string name)
+        public EditScriptWindow(Script script, Dictionary<string, Script> scripts)
         {
             InitializeComponent();
             DataContext = this;
             SearchPanel.Install(scriptView);
 
             this._scripts = scripts;
-            this.originalName = name;
+            this.script = script;
 
-            scripts.TryGetValue(name, out _script);
-            if (_script == null)
+            if (script == null)
             {
                 // This is a new script
-                ScriptName = "New script";
-                ScriptDescription = null;
-                ScriptValue = null;
-                Responder = false;
-                Priority = 3;
+                editorScript = new Script("New script", null, false, null);
             }
             else
             {
                 // This is an existing script
-                ScriptName = _script.Name;
-                ScriptDescription = _script.Description;
-                ScriptValue = _script.Value;
-                ScriptDefaultValue = _script.defaultValue;
-                Responder = _script.Responder;
-                Priority = _script.Priority;
+                editorScript = script.Copy();
             }
 
             // See if there is the default value for this script is empty
-            if (string.IsNullOrWhiteSpace(ScriptDefaultValue))
+            if (string.IsNullOrWhiteSpace(editorScript.defaultValue))
             {
                 // No default; disable reset and show
                 showDiffButton.IsEnabled = false;
                 resetToDefaultButton.IsEnabled = false;
             }
 
-            scriptView.Text = scriptValue;
+            scriptView.Text = editorScript.Value;
             ScriptRecoveryService = new ScriptRecoveryService(this);
             ScriptRecoveryService.BeginScriptRecovery();
             scriptView.TextChanged += ScriptView_TextChanged;
@@ -115,7 +55,7 @@ namespace EddiSpeechResponder
 
         private void ScriptView_TextChanged(object sender, System.EventArgs e)
         {
-            ScriptValue = scriptView.Text;
+            editorScript.Value = scriptView.Text;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -126,29 +66,15 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            // Update the script
-            string newScriptText = string.IsNullOrWhiteSpace(scriptView.Text) ? null : scriptView.Text;
-            if (_script != null)
-            {
-                Script newScript = new Script(scriptName,
-                    scriptDescription,
-                    _script?.Responder ?? false,
-                    newScriptText,
-                    Priority,
-                    _script.defaultValue);
-                _script = newScript;
-            }
+            // Update the output script
+            script = editorScript;
 
+            // Make sure default values are set as required
             Script defaultScript = null;
-            if (Personality.Default().Scripts?.TryGetValue(_script.Name, out defaultScript) ?? false)
+            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
             {
-                _script = Personality.UpgradeScript(_script, defaultScript);
+                script = Personality.UpgradeScript(script, defaultScript);
             }
-
-            // Might be updating an existing script so remove it from the list before adding
-            _scripts.Remove(originalName);
-
-            _scripts.Add(_script.Name, _script);
 
             DialogResult = true;
             this.Close();
@@ -168,38 +94,33 @@ namespace EddiSpeechResponder
 
         private void variablesButtonClick(object sender, RoutedEventArgs e)
         {
-            VariablesWindow variablesWindow = new VariablesWindow(ScriptName);
+            VariablesWindow variablesWindow = new VariablesWindow(editorScript.Name);
             variablesWindow.Show();
         }
 
         private void resetButtonClick(object sender, RoutedEventArgs e)
         {
             // Resetting the script resets it to its value in the default personality
-            ScriptValue = ScriptDefaultValue;
-            scriptView.Text = ScriptValue;
+            editorScript.Value = editorScript.defaultValue;
+            scriptView.Text = editorScript.Value;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
             if (!SpeechService.Instance.eddiSpeaking)
             {
-                ScriptRecoveryService.SaveRecoveryScript(ScriptValue,
-                    ScriptName,
-                    ScriptDescription,
-                    Responder,
-                    Priority,
-                    _script.defaultValue);
+                ScriptRecoveryService.SaveRecoveryScript(editorScript);
 
                 // Splice the new script in to the existing scripts
-                ScriptValue = scriptView.Text;
+                editorScript.Value = scriptView.Text;
                 Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
-                Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
-                newScripts.Remove(ScriptName);
-                newScripts.Add(ScriptName, testScript);
+                Script testScript = new Script(editorScript.Name, editorScript.Description, false, editorScript.Value);
+                newScripts.Remove(editorScript.Name);
+                newScripts.Add(editorScript.Name, testScript);
 
                 SpeechResponder speechResponder = new SpeechResponder();
                 speechResponder.Start();
-                speechResponder.TestScript(ScriptName, newScripts);
+                speechResponder.TestScript(editorScript.Name, newScripts);
             }
             else
             {
@@ -209,10 +130,10 @@ namespace EddiSpeechResponder
 
         private void showDiffButtonClick(object sender, RoutedEventArgs e)
         {
-            ScriptValue = scriptView.Text;
-            if (!string.IsNullOrWhiteSpace(ScriptDefaultValue))
+            editorScript.Value = scriptView.Text;
+            if (!string.IsNullOrWhiteSpace(editorScript.defaultValue))
             {
-                new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();
+                new ShowDiffWindow(editorScript.defaultValue, editorScript.Value).Show();
             }
         }
     }
