@@ -936,7 +936,9 @@ namespace EddiCrimeMonitor
             Faction faction = bgsService.GetFactionByName(record.faction);
             if (faction.EDDBID == null)
             {
-                record.faction = Properties.CrimeMonitor.blank_faction;
+                record.faction = !string.IsNullOrEmpty(record.faction) 
+                    ? record.faction 
+                    : Properties.CrimeMonitor.blank_faction;
                 record.system = null;
                 record.station = null;
                 return;
