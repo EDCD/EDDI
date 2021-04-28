@@ -280,7 +280,7 @@ namespace Utilities
         // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
-        const string rollbarWriteToken = "5c2ec62308d748e8afa59af48f0e126c";
+        const string rollbarWriteToken = "0fff472c87f245709bf622ce01c2a3b9";
         public static bool TelemetryEnabled {
             get => RollbarLocator.RollbarInstance.Config.Enabled;
             // ReSharper disable once ValueParameterNotUsed
@@ -296,13 +296,13 @@ namespace Utilities
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
-                Environment = Constants.EDDI_VERSION + (fromVA ? " VA" : ""),
+                Environment = Constants.EDDI_VERSION.ToString(),
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
                 },
                 // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
-                Person = new Person(uniqueId),
+                Person = new Person(uniqueId + (fromVA ? " VA" : "")),
                 // Set server info
                 Server = new Server
                 {
@@ -311,10 +311,11 @@ namespace Utilities
                 },
                 MaxReportsPerMinute = 1,
                 IpAddressCollectionPolicy = IpAddressCollectionPolicy.DoNotCollect,
-                PayloadPostTimeout = TimeSpan.FromSeconds(10), 
+                PayloadPostTimeout = TimeSpan.FromSeconds(10)
             };
             RollbarLocator.RollbarInstance.Configure(config);
             TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 50));
+
         }
 
         public static void ExceptionHandler(Exception exception)
