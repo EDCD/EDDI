@@ -10,6 +10,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that had broken access to the `category` property in material objects. 
     * "Conflict zone" signal sources are no longer described as "Combat zone" signal sources.
     * `Starsystem` object properties updated to add `scannedbodies` and `mappedbodies` counts.
+  * Crime Monitor
+    * Fixed a bug that caused us to forget the names of known factions when we couldn't connect to a server providing faction data.
+    * Fixed a parsing error that could occur when trying to parse data for new factions not present in EDDB data dumps. 
   * Galnet Monitor
     * Reduced Galnet article polling from 30s / 2min to 5min / 15min.
     * Delayed active monitoring until 5 minutes after we become active in game rather than 5 minutes after EDDI is launched.
@@ -42,6 +45,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship rebooted` event updated to provide localized and invariant module names rather than ship slots.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
       * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
+    * User Interface
+      * It is now possible to sort scripts by priority and enabled status.
+      * It is now possible to search script names, descriptions, and contents with a new filter box.
+      * It is now possible to disable all scripts at once (either when copying a personality or by accessing a context menu on the `Enabled` column header)
+      * Fixed the selected personality combo box losing track of the current selected item when a personality was deleted.
   * VoiceAttack
     * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
 
