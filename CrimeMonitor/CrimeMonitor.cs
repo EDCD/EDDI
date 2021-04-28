@@ -934,34 +934,7 @@ namespace EddiCrimeMonitor
 
             // Get the faction from Elite BGS and set faction record values
             Faction faction = bgsService.GetFactionByName(record.faction);
-            if (faction.EDDBID == null)
-            {
-                record.faction = !string.IsNullOrEmpty(record.faction) 
-                    ? record.faction 
-                    : Properties.CrimeMonitor.blank_faction;
-                record.system = null;
-                record.station = null;
-                return;
-            }
             record.Allegiance = faction.Allegiance ?? Superpower.None;
-            List<string> factionSystems = faction.presences.Select(p => p.systemName).ToList();
-            factionSystems = faction.presences
-                .OrderByDescending(p => p.influence)
-                .Select(p => p.systemName).ToList();
-            record.factionSystems = factionSystems;
-
-            // If 'home system' is desiginated, check if system is part of faction presence
-            if (homeSystem != null && factionSystems.Contains(homeSystem))
-            {
-                record.system = homeSystem;
-                record.station = GetFactionStation(homeSystem);
-                if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
-                {
-                    // Save home system if not part of faction name and not previously saved
-                    homeSystems.Add(record.faction, homeSystem);
-                }
-                return;
-            }
 
             // Check faction with archived home systems
             if (homeSystems.TryGetValue(record.faction, out string result))
@@ -971,36 +944,58 @@ namespace EddiCrimeMonitor
                 return;
             }
 
-            // Find 'home system' by matching faction name with presence and check for qualifying station
-            homeSystem = FindHomeSystem(record.faction, factionSystems);
-            if (homeSystem != null)
+            if (faction.presences.Any())
             {
-                string factionStation = GetFactionStation(homeSystem);
+                List<string> factionSystems = faction.presences.Select(p => p.systemName).ToList();
+                factionSystems = faction.presences
+                    .OrderByDescending(p => p.influence)
+                    .Select(p => p.systemName).ToList();
+                record.factionSystems = factionSystems;
 
-                // Station found meeting game/user requirements
-                if (factionStation != null)
+                // If 'home system' is desiginated, check if system is part of faction presence
+                if (homeSystem != null && factionSystems.Contains(homeSystem))
                 {
                     record.system = homeSystem;
-                    record.station = factionStation;
+                    record.station = GetFactionStation(homeSystem);
+                    if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
+                    {
+                        // Save home system if not part of faction name and not previously saved
+                        homeSystems.Add(record.faction, homeSystem);
+                    }
                     return;
                 }
-            }
 
-            // Check faction presences, by order of influence, for qualifying station
-            foreach (string system in factionSystems)
-            {
-                string factionStation = GetFactionStation(system);
-                if (factionStation != null)
+                // Find 'home system' by matching faction name with presence and check for qualifying station
+                homeSystem = FindHomeSystem(record.faction, factionSystems);
+                if (homeSystem != null)
                 {
-                    record.system = system;
-                    record.station = factionStation;
-                    return;
-                }
-            }
+                    string factionStation = GetFactionStation(homeSystem);
 
-            // Settle for highest influence faction presence, with no station found
-            record.system = factionSystems.FirstOrDefault();
-            record.station = null;
+                    // Station found meeting game/user requirements
+                    if (factionStation != null)
+                    {
+                        record.system = homeSystem;
+                        record.station = factionStation;
+                        return;
+                    }
+                }
+
+                // Check faction presences, by order of influence, for qualifying station
+                foreach (string system in factionSystems)
+                {
+                    string factionStation = GetFactionStation(system);
+                    if (factionStation != null)
+                    {
+                        record.system = system;
+                        record.station = factionStation;
+                        return;
+                    }
+                }
+
+                // Settle for highest influence faction presence, with no station found
+                record.system = factionSystems.FirstOrDefault();
+                record.station = null;
+            }
         }
 
         public string GetFactionStation(string factionSystem)
