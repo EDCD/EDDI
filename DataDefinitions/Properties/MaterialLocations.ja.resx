@@ -343,7 +343,10 @@
   
   
   
-  
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>輸送船の残骸から得られる。有人星系付近の無政府星系で顕著である。</value>
+    <comment>Material location Conductive Components</comment>
+  </data>
   
   
   
