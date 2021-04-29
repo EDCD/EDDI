@@ -212,6 +212,13 @@ namespace EddiStatusMonitor
                         return status;
                     }
 
+                    status.flags2 = (Status.Flags2)(JsonParsing.getOptionalLong(data, "Flags2") ?? 0);
+                    if (status.flags == Status.Flags.None)
+                    {
+                        // No flags are set. We aren't in game.
+                        return status;
+                    }
+
                     data.TryGetValue("Pips", out object val);
                     List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
                     status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
@@ -300,6 +307,13 @@ namespace EddiStatusMonitor
                     status.bodyname = JsonParsing.getString(data, "BodyName");
                     status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
 
+                    // When on foot
+                    status.oxygen = JsonParsing.getOptionalDecimal(data, "Oxygen") * 100; // Convert Oxygen to a 0-100 percent scale
+                    status.health = JsonParsing.getOptionalDecimal(data, "Health") * 100; // Convert Health to a 0-100 percent scale
+                    status.temperature = JsonParsing.getOptionalDecimal(data, "Temperature"); // In Kelvin
+                    status.selected_weapon = JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
+                    status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
+
                     // Calculated data
                     SetFuelExtras(status);
                     SetSlope(status);
@@ -335,7 +349,10 @@ namespace EddiStatusMonitor
                 }
 
                 // Update vehicle information
-                EDDI.Instance.Vehicle = thisStatus.vehicle;
+                if (!string.IsNullOrEmpty(thisStatus.vehicle))
+                {
+                    EDDI.Instance.Vehicle = thisStatus.vehicle;
+                }
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.shields_up != lastStatus.shields_up && thisStatus.vehicle == lastStatus.vehicle)

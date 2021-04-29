@@ -721,7 +721,7 @@ Information about your current status is available under the `status` object.
 
 Any values might be missing, depending on EDDI's configuration.
 
-    - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+    - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV", "Fighter", "On Foot", "Taxi", and "Multicrew"
     - `being_interdicted` a boolean value indicating whether the commander is currently being interdicted
     - `in_danger` a boolean value indicating whether the commander is currently in danger
     - `near_surface` a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
@@ -783,8 +783,14 @@ Any values might be missing, depending on EDDI's configuration.
     - `bodyname` the name of the current body (if landed or in an srv)
     - `planetradius` the radius of the current body (if landed or in an srv)
     - `altitude_from_average_radius` true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
-    - `hyperspace` true if jumping between star systems
+    - `hyperspace` true if jumping between star systems.
     - `srv_highbeam` true if the lights in your SRV are set to the high beam mode.
+    - `on_foot_in_station` true if you've disembarked at a station.
+    - `on_foot_on_planet` true if you've disembarked on a planet surface.
+    - `true` if you are on foot and aiming through a scope.
+    - `low_oxygen` true if you are on foot and oxygen is running low.
+    - `low_health` true if you are on foot and health is running low.
+    - `on_foot_temperature` the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
 
 ---
 ## Traffic
