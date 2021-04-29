@@ -242,4 +242,7 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Este nombre de usuario ya está en uso. Por favor, elige otro</value>
   </data>
+  
+  
+  
 </root>

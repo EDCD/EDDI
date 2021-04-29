@@ -242,4 +242,13 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>その名前はすでに使用されています。他の名前を入力してください。</value>
   </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>フィルター：</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>全てのイベントに基づくスクリプトを有効化</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>全てのイベントに基づくスクリプトを無効化</value>
+  </data>
 </root>

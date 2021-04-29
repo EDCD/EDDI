@@ -242,4 +242,13 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Esse nome de usuário já está sendo usado. Por favor, tente outro</value>
   </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>Filtro:</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Habilitar todos os scripts baseados em eventos</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Desabilitar todos os scripts baseados em eventos</value>
+  </data>
 </root>
