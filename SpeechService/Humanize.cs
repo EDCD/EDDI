@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Globalization;
 
 namespace EddiSpeechService
 {
     public partial class Translations
     {
-        public static string Humanize(decimal? rawValue)
+        /// <summary>
+        /// Present a number's approximate value in a format suitable for text-to-speech
+        /// </summary>
+        /// <param name="rawValue">The value to be formatted. If null, returns null.</param>
+        /// <param name="forceIntegerMantissa">true: always express the mantissa as an integer; false: allow the mantissa to be a short decimal; null: lookup behavior from localized resource</param>
+        /// <returns>A string being the number's approximate value in a format suitable for text-to-speech</returns>
+        public static string Humanize(decimal? rawValue, bool? forceIntegerMantissa = null)
         {
             if (rawValue == null) {return null;}
-            decimal value = (decimal) rawValue;
+            decimal value = (decimal)rawValue;
             if (value == 0) {return Properties.Phrases.zero;}
+
+            bool wantIntegerMantissa = forceIntegerMantissa ?? Properties.FormatOverrides.forceIntegerMantissa.Equals("true");
 
             bool isNegative = value < 0;
             if (isNegative)
@@ -45,7 +54,7 @@ namespace EddiSpeechService
 
             if (number < 100)
             {
-                return FormatWith2SignificantDigits(number, isNegative, orderMultiplier, nextDigit, value);
+                return FormatWith2SignificantDigits(number, isNegative, orderMultiplier, nextDigit, value, wantIntegerMantissa);
             }
             else // Describe (less precisely) values for numbers where the largest order number exceeds one hundred
             {
@@ -58,21 +67,29 @@ namespace EddiSpeechService
             return (number: (int) (inputValue / orderMultiplierVal), nextDigit: (int) ((inputValue % orderMultiplierVal) / (orderMultiplierVal / 10)));
         }
 
-        private static string FormatWith2SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit, decimal value)
+        private static string FormatWith2SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit, decimal value, bool wantIntegerMantissa)
         {
             // See if we have a number whose value can be expressed with a short decimal (i.e 1.3 million)
             var shortDecimal = (number + ((decimal) nextDigit / 10));
             if (shortDecimal == Math.Round(value / orderMultiplier, 2))
             {
-                if (nextDigit == 0)
+                switch (wantIntegerMantissa)
                 {
+                case true when orderMultiplier >= 1000:
+                    // borrow a factor of 1000 from orderMultiplier and multiply the mantissa by it
+                    number = number * 1000 + nextDigit * 100;
+                    orderMultiplier /= 1000;
                     return FormatVerbatim(number, isNegative, orderMultiplier);
+                default:
+                    if (nextDigit == 0)
+                    {
+                        return FormatVerbatim(number, isNegative, orderMultiplier);
+                    }
+                    return FormatAsShortDecimal(shortDecimal, isNegative, orderMultiplier);
                 }
-
-                return FormatAsShortDecimal(shortDecimal, isNegative, orderMultiplier);
             }
 
-            // Describe values for numbers where the largest order number does not exceed one hundred
+            // Describe values for numbers where the mantissa does not exceed one hundred
             switch (nextDigit)
             {
             case 1:
@@ -101,7 +118,7 @@ namespace EddiSpeechService
         private static string FormatWith3SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit,
             decimal value)
         {
-            // Round largest order numbers in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
+            // Round mantissas in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
             if (number - (int)((decimal)number / 100) * 100 >= 20)
             {
                 (number, nextDigit) = Normalize(number, 10);
@@ -128,9 +145,29 @@ namespace EddiSpeechService
             }
         }
 
+        private static CultureInfo _formattingCultureInfo;
+        private static CultureInfo formattingCultureInfo
+        {
+            get
+            {
+                if (_formattingCultureInfo == null)
+                {
+                    _formattingCultureInfo = (CultureInfo)CultureInfo.CurrentUICulture.Clone();
+                    if (Properties.FormatOverrides.overrideThousandsSeparator.Equals("true"))
+                    {
+                        _formattingCultureInfo.NumberFormat.NumberGroupSeparator = Properties.FormatOverrides.thousandsSeparator;
+                    }
+                }
+
+                return _formattingCultureInfo;
+            }
+        }
+
         private static string FormatVerbatim(int number, bool isNegative, long orderMultiplier)
         {
-            return (isNegative ? Properties.Phrases.minus + " " : "") + (number * orderMultiplier);
+            long value = number * orderMultiplier;
+            // some TTS voices need the thousands separators, so use format string "N0" (numeric, zero decimal places)
+            return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0", formattingCultureInfo);
         }
 
         private static string FormatAsShortDecimal(decimal shortDecimal, bool isNegative, long orderMultiplier)
