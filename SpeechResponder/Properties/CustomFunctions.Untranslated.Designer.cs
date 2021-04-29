@@ -685,7 +685,7 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///ShipCallsign() takes an optional ship ID for which to provide the callsign. If no argument is supplied then it provides the callsign for your current ship.
         ///
-        ///This will only work if EDDI is connected to the Frontier API..
+        ///ShipCallsign() takes an optional second argument to permit variations in callsign format. If no second argument is provided then it will provide a callsign from the ship manufacturer and  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ShipCallsign {
             get {
