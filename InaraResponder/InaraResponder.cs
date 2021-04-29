@@ -79,15 +79,9 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (EDDI.Instance.inCQC)
+            if (EDDI.Instance.inTelepresence)
             {
                 // We don't do anything whilst in CQC
-                return;
-            }
-
-            if (EDDI.Instance.inCrew)
-            {
-                // We don't do anything whilst in multicrew
                 return;
             }
 

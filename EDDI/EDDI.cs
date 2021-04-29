@@ -38,8 +38,7 @@ namespace EddiCore
         private static bool allowOutfittingUpdate = false;
         private static bool allowShipyardUpdate = false;
 
-        public bool inCQC { get; private set; } = false;
-        public bool inCrew { get; private set; } = false;
+        public bool inTelepresence { get; private set; } = false;
 
         public bool inHorizons { get; private set; } = true;
         public bool gameIsBeta { get; private set; } = false;
@@ -710,6 +709,10 @@ namespace EddiCore
                     {
                         passEvent = eventMarket(marketEvent);
                     }
+                    else if (@event is MusicEvent musicEvent)
+                    {
+                        passEvent = eventMusic(musicEvent);
+                    }
                     else if (@event is OutfittingEvent outfittingEvent)
                     {
                         passEvent = eventOutfitting(outfittingEvent);
@@ -762,6 +765,14 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped(carrierJumpedEvent);
                     }
+                    else if (@event is DisembarkEvent disembarkEvent)
+                    {
+                        passEvent = eventDisembark(disembarkEvent);
+                    }
+                    else if (@event is EmbarkEvent embarkEvent)
+                    {
+                        passEvent = eventEmbark(embarkEvent);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -785,6 +796,33 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventDisembark(DisembarkEvent disembarkEvent) 
+        {
+            Vehicle = Constants.VEHICLE_LEGS;
+            return true;
+        }
+
+        private bool eventEmbark(EmbarkEvent embarkEvent) 
+        {
+            if (embarkEvent.tomulticrew)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            if (embarkEvent.toship)
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+            if (embarkEvent.tosrv)
+            {
+                Vehicle = Constants.VEHICLE_SRV;
+            }
+            if (embarkEvent.totaxi)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            return true;
         }
 
         private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)
@@ -1553,6 +1591,15 @@ namespace EddiCore
             return true;
         }
 
+        private bool eventMusic(MusicEvent theEvent)
+        {
+            if (theEvent.musictrack == "OnFoot")
+            {
+                Vehicle = Constants.VEHICLE_LEGS;
+            }
+            return true;
+        }
+
         private bool eventOutfitting(OutfittingEvent theEvent)
         {
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
@@ -1864,14 +1911,16 @@ namespace EddiCore
 
         private bool eventCrewJoined(CrewJoinedEvent theEvent)
         {
-            inCrew = true;
+            inTelepresence = true;
+            Vehicle = Constants.VEHICLE_MULTICREW;
             Logging.Info("Entering multicrew session");
             return true;
         }
 
         private bool eventCrewLeft(CrewLeftEvent theEvent)
         {
-            inCrew = false;
+            inTelepresence = false;
+            Vehicle = Constants.VEHICLE_SHIP;
             Logging.Info("Leaving multicrew session");
             return true;
         }
@@ -1891,7 +1940,11 @@ namespace EddiCore
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // Set Vehicle state for commander from ship model
-            if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel == "SRV")
+            if (theEvent.shipEDModel.Contains("Suit"))
+            {
+                Vehicle = Constants.VEHICLE_LEGS;
+            }
+            else if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel == "SRV")
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }
@@ -1910,8 +1963,8 @@ namespace EddiCore
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             }
 
-            // If we see this it means that we aren't in CQC
-            inCQC = false;
+            // If we see this it means that we aren't in Telepresence
+            inTelepresence = false;
 
             // Set our commander name and ID
             if (Cmdr.name != theEvent.commander)
@@ -2147,8 +2200,8 @@ namespace EddiCore
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
-            // In CQC we don't want to report anything, so set our CQC flag
-            inCQC = true;
+            // In CQC we don't want to report anything, so set our Telepresence flag
+            inTelepresence = true;
             return true;
         }
 

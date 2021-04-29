@@ -67,6 +67,8 @@
     <Compile Include="CarrierPadsLockedEvent.cs" />
     <Compile Include="CarrierJumpEngagedEvent.cs" />
     <Compile Include="CarrierCooldownEvent.cs" />
+    <Compile Include="DisembarkEvent.cs" />
+    <Compile Include="EmbarkEvent.cs" />
     <Compile Include="CommanderReputationEvent.cs" />
     <Compile Include="CarrierJumpedEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
