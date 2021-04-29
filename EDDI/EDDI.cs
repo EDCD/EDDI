@@ -1460,6 +1460,7 @@ namespace EddiCore
 
         private bool eventDockingRequested(DockingRequestedEvent theEvent)
         {
+            bool passEvent = !string.IsNullOrEmpty(theEvent.station);
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (station == null)
             {
@@ -1474,12 +1475,12 @@ namespace EddiCore
                 CurrentStarSystem.stations.Add(station);
             }
             station.Model = theEvent.stationDefinition;
-            return true;
+            return passEvent;
         }
 
         private bool eventDocked(DockedEvent theEvent)
         {
-            bool passEvent = true;
+            bool passEvent = !string.IsNullOrEmpty(theEvent.station);
             updateCurrentSystem(theEvent.system);
 
             // Upon docking, allow manual station updates once
