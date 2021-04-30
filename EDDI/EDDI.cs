@@ -1567,7 +1567,7 @@ namespace EddiCore
             updateCurrentSystem(theEvent.systemname);
             updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
 
-            // If playercontrolled, only pass on this event if our longitude and lattitude are set
+            // If playercontrolled, only pass on this event if our longitude and latitude are set
             // (if not then this is probably being written prior to a `Location` event))
             if (theEvent.playercontrolled && theEvent.latitude != null && theEvent.longitude != null)
             {
