@@ -242,7 +242,13 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Это название уже занято; выберите другое</value>
   </data>
-  
-  
-  
+  <data name="search_filter" xml:space="preserve">
+    <value>Фильтр:</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Включить все скрипты событий</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Отключить все скрипты событий</value>
+  </data>
 </root>
