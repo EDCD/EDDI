@@ -465,6 +465,7 @@ namespace EddiStatusMonitor
                 // Reset our fuel log if we change vehicles or refuel
                 if (thisStatus.vehicle != lastStatus.vehicle || thisStatus.fuel > lastStatus.fuel)
                 {
+                    Logging.Info($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}");
                     fuelLog = null;
                 }
 

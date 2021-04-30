@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -68,6 +69,7 @@ namespace EddiEvents
             this.onplanet = onPlanet;
             this.playercontrolled = playercontrolled;
             this.nearestDestination = nearestDestination;
+            Logging.Info($"Liftoff event: onStation = {onStation}; onPlanet = {onPlanet}");
         }
     }
 }

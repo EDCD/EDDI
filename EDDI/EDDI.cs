@@ -801,6 +801,7 @@ namespace EddiCore
         private bool eventDisembark(DisembarkEvent disembarkEvent) 
         {
             Vehicle = Constants.VEHICLE_LEGS;
+            Logging.Info($"Disembarked to {Vehicle}");
             return true;
         }
 
@@ -822,6 +823,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
+            Logging.Info($"Embarked to {Vehicle}");
             return true;
         }
 
@@ -1330,7 +1332,8 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_LEGS;
             }
             // If none of these are true we may either be in our ship or in a fighter.
-            
+            Logging.Info($"Vehicle mode is {Vehicle}");
+
             updateCurrentSystem(theEvent.systemname);
             // Our data source may not include the system address
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
@@ -1573,8 +1576,10 @@ namespace EddiCore
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
                 Vehicle = theEvent.playercontrolled ? Constants.VEHICLE_SHIP : Constants.VEHICLE_SRV;
+                Logging.Info($"Touchdown in {Vehicle}");
                 return true;
             }
+            Logging.Info($"Touchdown in {Vehicle}");
             return false;
         }
 
@@ -1592,6 +1597,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }
+            Logging.Info($"Liftoff in {Vehicle}");
             return true;
         }
 
@@ -1623,6 +1629,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_LEGS;
             }
+            Logging.Info($"Music event for vehicle {Vehicle}");
             return true;
         }
 
@@ -1947,7 +1954,7 @@ namespace EddiCore
         {
             inTelepresence = false;
             Vehicle = Constants.VEHICLE_SHIP;
-            Logging.Info("Leaving multicrew session");
+            Logging.Info($"Leaving multicrew session to vehicle {Vehicle}");
             return true;
         }
 
@@ -1978,6 +1985,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_SHIP;
             }
+            Logging.Info($"Commander Continued: vehicle is {Vehicle}");
 
             // Set Environment state for the ship if 'startlanded' is present in the event
             if (theEvent.startlanded ?? false)
