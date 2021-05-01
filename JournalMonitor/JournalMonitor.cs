@@ -4077,7 +4077,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "BackpackMaterials":
+                            case "BackPackMaterials":
                             case "BookDropship":
                             case "BookTaxi":
                             case "BuyMicroResources":
