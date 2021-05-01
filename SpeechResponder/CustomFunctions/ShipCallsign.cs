@@ -60,24 +60,31 @@ namespace EddiSpeechResponder.CustomFunctions
             var sb = new StringBuilder();
             switch (ship.manufacturer)
             {
-                case "Core Dynamics":
-                case "Gutamaya":
-                case "Saud Kruger":
-                case "Zorgon Peterson":
-                    // Full names
-                    foreach (Translation item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
-                    break;
                 case "Lakon Spaceways":
-                    // First word names
-                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.First().to + "\">" + phoneticmanufacturer.First().from + "</phoneme> ");
+                    // First word names (e.g. Lakon ...)
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
+                    {
+                        sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.First().to + "\">" + phoneticmanufacturer.First().from + "</phoneme> ");
+                    }
+                    else
+                    {
+                        sb.Append($"{ship.manufacturer.Split(' ').First()} ");
+                    }
                     break;
                 case "Faulcon DeLacy":
-                    // Last word names
-                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.Last().to + "\">" + phoneticmanufacturer.Last().from + "</phoneme> ");
+                    // Last word names (e.g. DeLacy ...)
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
+                    {
+                        sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.Last().to + "\">" + phoneticmanufacturer.Last().from + "</phoneme> ");
+                    }
+                    else
+                    {
+                        sb.Append($"{ship.manufacturer.Split(' ').Last()} ");
+                    }
                     break;
                 default:
-                    // Ship model isn't here
-                    if (ship.phoneticmanufacturer != null && ship.phoneticmanufacturer.Any())
+                    // Full names (e.g. Core Dynamics ..., Gutamaya ..., Saud Kruger ..., Zorgon Peterson ...)
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
                     {
                         foreach (Translation item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
                     }
