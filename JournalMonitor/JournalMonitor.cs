@@ -4124,6 +4124,7 @@ namespace EddiJournalMonitor
                             case "ShipLockerMaterials":
                             case "SwitchSuitLoadout":
                             case "TradeMicroResources":
+                            case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":
                             case "UseConsumable":
