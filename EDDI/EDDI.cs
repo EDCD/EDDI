@@ -1510,11 +1510,10 @@ namespace EddiCore
                 }
             }
 
-            // We are docked and in the ship
+            // We are docked
             if (station != null)
             {
                 Environment = Constants.ENVIRONMENT_DOCKED;
-                Vehicle = Constants.VEHICLE_SHIP;
 
                 // Not all stations in our database will have a system address or market id, so we set them here
                 station.systemAddress = theEvent.systemAddress;
