@@ -155,6 +155,7 @@ namespace EddiDataDefinitions
         public Flags2 flags2;
         public DateTime timestamp = DateTime.UtcNow;
         public LegalStatus legalStatus;
+        public string raw;
 
         public Status(Flags flags = Flags.None, Flags2 flags2 = Flags2.None)
         {

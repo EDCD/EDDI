@@ -186,7 +186,7 @@ namespace EddiStatusMonitor
 
         public Status ParseStatusEntry(string line)
         {
-            Status status = new Status();
+            Status status = new Status() { raw = line };
             try
             {
                 Match match = JsonRegex.Match(line);
