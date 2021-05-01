@@ -1399,9 +1399,11 @@ namespace EddiCore
 
                 if (theEvent.docked)
                 {
-                    // We are docked and in the ship
+                    // We are docked
                     Environment = Constants.ENVIRONMENT_DOCKED;
-                    Vehicle = Constants.VEHICLE_SHIP;
+
+                    // If we're not in a taxi or multicrew then we're in our own ship.
+                    if (!theEvent.taxi && !theEvent.multicrew) { Vehicle = Constants.VEHICLE_SHIP; }
 
                     // Update station properties known from this event
                     station.marketId = theEvent.marketId;
