@@ -116,8 +116,8 @@ namespace EddiJournalMonitor
                             case "Docked":
                                 {
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    long? marketId = JsonParsing.getLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
