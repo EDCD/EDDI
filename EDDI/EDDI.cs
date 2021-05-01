@@ -1759,10 +1759,7 @@ namespace EddiCore
             {
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
             }
-
-            // We are in the ship
-            Vehicle = Constants.VEHICLE_SHIP;
-
+            
             // Remove information about the current station and stellar body 
             CurrentStation = null;
             CurrentStellarBody = null;
@@ -1894,10 +1891,7 @@ namespace EddiCore
 
             // No longer in 'station instance'
             CurrentStation = null;
-
-            // We are in the ship
-            Vehicle = Constants.VEHICLE_SHIP;
-
+            
             return true;
         }
 
