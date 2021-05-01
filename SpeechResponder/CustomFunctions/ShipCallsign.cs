@@ -7,6 +7,7 @@ using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
 
@@ -56,7 +57,7 @@ namespace EddiSpeechResponder.CustomFunctions
             // First, obtain the phonetic manufacturer. This may be the complete name or only a partial name, depending on the manufacturer.
             var phoneticmanufacturer = ShipDefinitions.ManufacturerPhoneticNames.FirstOrDefault(m => m.Key == ship.manufacturer).Value;
 
-            string result = "";
+            var sb = new StringBuilder();
             switch (ship.manufacturer)
             {
                 case "Core Dynamics":
@@ -64,32 +65,30 @@ namespace EddiSpeechResponder.CustomFunctions
                 case "Saud Kruger":
                 case "Zorgon Peterson":
                     // Full names
-                    foreach (Translation item in phoneticmanufacturer) { result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "; }
+                    foreach (Translation item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
                     break;
                 case "Lakon Spaceways":
                     // First word names
-                    result += "<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.First().to + "\">" + phoneticmanufacturer.First().from + "</phoneme> ";
+                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.First().to + "\">" + phoneticmanufacturer.First().from + "</phoneme> ");
                     break;
                 case "Faulcon DeLacy":
                     // Last word names
-                    result += "<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.Last().to + "\">" + phoneticmanufacturer.Last().from + "</phoneme> ";
+                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.Last().to + "\">" + phoneticmanufacturer.Last().from + "</phoneme> ");
                     break;
                 default:
                     // Ship model isn't here
                     if (ship.phoneticmanufacturer != null && ship.phoneticmanufacturer.Any())
                     {
-                        foreach (Translation item in phoneticmanufacturer) { result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "; }
+                        foreach (Translation item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
                     }
                     else
                     {
-                        result += ship.manufacturer;
+                        sb.Append($"{ship.manufacturer} ");
                     }
                     break;
             }
-
-            result += Get3LeadingCharacters(id);
-
-            return result;
+            sb.Append(Get3LeadingCharacters(id));
+            return sb.ToString();
         }
 
         private static string Get3LeadingCharacters(string input)
