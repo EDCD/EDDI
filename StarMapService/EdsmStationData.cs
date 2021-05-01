@@ -112,6 +112,7 @@ namespace EddiStarMapService
                 stationServices.Add(StationService.FromEDName("FlightController"));
                 stationServices.Add(StationService.FromEDName("StationOperations"));
                 stationServices.Add(StationService.FromEDName("Powerplay"));
+                stationServices.Add(StationService.FromEDName("SocialSpace"));
                 Station.stationServices = stationServices;
 
                 var updateTimes = station["updateTime"].ToObject<Dictionary<string, object>>();

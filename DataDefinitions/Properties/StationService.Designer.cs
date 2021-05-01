@@ -322,6 +322,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Social Space.
+        /// </summary>
+        public static string SocialSpace {
+            get {
+                return ResourceManager.GetString("SocialSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Station Menu.
         /// </summary>
         public static string StationMenu {
