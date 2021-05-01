@@ -320,10 +320,10 @@ namespace EddiJournalMonitor
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
-                                    bool taxi = JsonParsing.getBool(data, "Taxi");
-                                    bool multicrew = JsonParsing.getBool(data, "Multicrew");
-                                    bool inSRV = JsonParsing.getBool(data, "InSRV");
-                                    bool onFoot = JsonParsing.getBool(data, "OnFoot");
+                                    bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
+                                    bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
+                                    bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+                                    bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
                                     
                                     events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
                                 }
