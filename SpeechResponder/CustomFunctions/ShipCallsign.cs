@@ -35,13 +35,28 @@ namespace EddiSpeechResponder.CustomFunctions
             ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
             Ship ship = localId is null ? shipMonitor.GetCurrentShip() : shipMonitor.GetShip(localId);
 
-            string result = "";
+            switch (callsignType)
+            {
+                default:
+                    // CommanderName
+                    return phoneticCallsign(ship, EDDI.Instance.Cmdr.name);
+                case 1:
+                    // Variant: ShipName
+                    return phoneticCallsign(ship, ship.name);
+                case 2:
+                    // Variant: ShipID
+                    return phoneticCallsign(ship, ship.ident);
+            }
+        }, 0, 2);
 
-            if (string.IsNullOrEmpty(ship?.manufacturer)) { return result; }
+        private static string phoneticCallsign(Ship ship, string id)
+        {
+            if (string.IsNullOrEmpty(ship?.manufacturer) || string.IsNullOrEmpty(id)) { return string.Empty; }
 
             // First, obtain the phonetic manufacturer. This may be the complete name or only a partial name, depending on the manufacturer.
             var phoneticmanufacturer = ShipDefinitions.ManufacturerPhoneticNames.FirstOrDefault(m => m.Key == ship.manufacturer).Value;
 
+            string result = "";
             switch (ship.manufacturer)
             {
                 case "Core Dynamics":
@@ -72,35 +87,19 @@ namespace EddiSpeechResponder.CustomFunctions
                     break;
             }
 
-            string Get3LeadingCharacters(string input)
-            {
-                // Obtain the first three characters of the input string, zero padded and converted to ICAO (e.g. "A" becomes "Alpha Zero Zero")
-                return Translations.ICAO(new Regex("[^a-zA-Z0-9]")
-                    .Replace(input, "")
-                    .ToUpperInvariant()
-                    .PadRight(3, '0')
-                    .Substring(0, 3));
-            }
+            result += Get3LeadingCharacters(id);
 
-            switch (callsignType)
-            {
-                default:
-                    // CommanderName
-                    if (EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
-                    {
-                        result += Get3LeadingCharacters(EDDI.Instance.Cmdr.name);
-                    }
-                    break;
-                case 1:
-                    // Variant: ShipName
-                    result += Get3LeadingCharacters(ship.name);
-                    break;
-                case 2:
-                    // Variant: ShipID
-                    result += Get3LeadingCharacters(ship.ident);
-                    break;
-            }
             return result;
-        }, 0, 2);
+        }
+
+        private static string Get3LeadingCharacters(string input)
+        {
+            // Obtain the first three characters of the input string, zero padded and converted to ICAO (e.g. "A" becomes "Alpha Zero Zero")
+            return Translations.ICAO(new Regex("[^a-zA-Z0-9]")
+                .Replace(input, "")
+                .ToUpperInvariant()
+                .PadRight(3, '0')
+                .Substring(0, 3));
+        }
     }
 }
