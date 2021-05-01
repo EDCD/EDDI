@@ -657,6 +657,14 @@
       "name": "Discovery scan",
       "description": "Triggered when performing a full system scan (honk)"
     },
+    "Disembark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Disembark",
+      "description": "Triggered when you transition from a ship or SRV to on foot"
+    },
     "Docked": {
       "enabled": true,
       "priority": 3,
@@ -710,6 +718,14 @@
       "default": true,
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
+    },
+    "Embark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Embark",
+      "description": "Triggered when you transition from on foot to a ship or SRV"
     },
     "Empire honorific": {
       "enabled": true,
