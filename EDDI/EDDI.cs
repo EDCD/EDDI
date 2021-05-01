@@ -709,10 +709,6 @@ namespace EddiCore
                     {
                         passEvent = eventMarket(marketEvent);
                     }
-                    else if (@event is MusicEvent musicEvent)
-                    {
-                        passEvent = eventMusic(musicEvent);
-                    }
                     else if (@event is OutfittingEvent outfittingEvent)
                     {
                         passEvent = eventOutfitting(outfittingEvent);
@@ -1620,16 +1616,6 @@ namespace EddiCore
                 Logging.Debug("Star system information updated from remote server; updating local copy");
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
-            return true;
-        }
-
-        private bool eventMusic(MusicEvent theEvent)
-        {
-            if (theEvent.musictrack == "OnFoot")
-            {
-                Vehicle = Constants.VEHICLE_LEGS;
-            }
-            Logging.Info($"Music event for vehicle {Vehicle}");
             return true;
         }
 
