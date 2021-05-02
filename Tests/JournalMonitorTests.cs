@@ -1517,5 +1517,147 @@ namespace UnitTests
             Assert.AreEqual(10, goal.percentileband);
             Assert.AreEqual(100000000, goal.tierreward);
         }
+
+        [TestMethod]
+        public void TestCommanderContinuedOnFoot()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:50:03Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""ExplorationSuit_Class1"",
+	            ""Ship_Localised"": ""Artemis Suit"",
+	            ""ShipID"": 4293000003,
+	            ""ShipName"": """",
+	            ""ShipIdent"": """",
+	            ""FuelLevel"": 1.000000,
+	            ""FuelCapacity"": 1.000000,
+	            ""GameMode"": ""Open"",
+	            ""Credits"": 294004749,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("ExplorationSuit_Class1", @event.shipEDModel);
+            Assert.AreEqual(Constants.VEHICLE_LEGS, @event.ship);
+            Assert.AreEqual(4293000003, @event.shipid);
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipname));
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipident));
+            Assert.AreEqual(1M, @event.fuel);
+            Assert.AreEqual(1M, @event.fuelcapacity);
+            Assert.AreEqual("Open", @event.mode);
+            Assert.AreEqual(294004749, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
+        
+        [TestMethod]
+        public void TestCommanderContinuedInApexTaxi()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:59:36Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""adder_taxi"",
+	            ""Ship_Localised"": ""$ADDER_NAME;"",
+	            ""GameMode"": ""Open"",
+	            ""Credits"": 294004649,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("adder_taxi", @event.shipEDModel);
+            Assert.AreEqual(Constants.VEHICLE_TAXI, @event.ship);
+            Assert.IsNull(@event.shipid);
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipname));
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipident));
+            Assert.IsNull(@event.fuel);
+            Assert.IsNull(@event.fuelcapacity);
+            Assert.AreEqual("Open", @event.mode);
+            Assert.AreEqual(294004649, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
+
+        [TestMethod]
+        public void TestCommanderContinuedCQC()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:59:36Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+                ""Credits"": 594877206,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (EnteredCQCEvent)events[0];
+            Assert.AreEqual("John Jameson", @event.commander);
+        }
+
+        [TestMethod]
+        public void TestCommanderContinuedShip()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-05-01T03:12:27Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""DiamondBackXL"",
+	            ""Ship_Localised"": ""Diamondback Explorer"",
+	            ""ShipID"": 38,
+	            ""ShipName"": ""Resolution"",
+	            ""ShipIdent"": ""TK-28D"",
+	            ""FuelLevel"": 32.000000,
+	            ""FuelCapacity"": 32.000000,
+	            ""GameMode"": ""Solo"",
+	            ""Credits"": 7795285167,
+	            ""Loan"": 0
+            }";
+
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("DiamondBackXL", @event.shipEDModel);
+            Assert.AreEqual("Diamondback Explorer", @event.ship);
+            Assert.AreEqual(38, @event.shipid);
+            Assert.AreEqual("Resolution", @event.shipname);
+            Assert.AreEqual("TK-28D", @event.shipident);
+            Assert.AreEqual(32M, @event.fuel);
+            Assert.AreEqual(32M, @event.fuelcapacity);
+            Assert.AreEqual("Solo", @event.mode);
+            Assert.AreEqual(7795285167, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
     }
 }

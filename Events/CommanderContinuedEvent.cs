@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using MathNet.Numerics;
 
 namespace EddiEvents
 {
@@ -39,10 +40,14 @@ namespace EddiEvents
         public bool odyssey { get; private set; }
 
         [JsonProperty("ship")]
-        public string ship => shipEDModel == "TestBuggy" ? "SRV" : ShipDefinitions.FromEDModel(shipEDModel).model;
+        public string ship => shipEDModel == "TestBuggy" ? Utilities.Constants.VEHICLE_SRV
+            : shipEDModel.ToLowerInvariant().Contains("fighter") ? Utilities.Constants.VEHICLE_FIGHTER
+            : shipEDModel.ToLowerInvariant().Contains("suit") ? Utilities.Constants.VEHICLE_LEGS
+            : shipEDModel.ToLowerInvariant().Contains("taxi") ? Utilities.Constants.VEHICLE_TAXI
+            : ShipDefinitions.FromEDModel(shipEDModel).model;
 
         [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
+        public long? shipid { get; private set; } // shipid serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
 
         [JsonProperty("shipname")]
         public string shipname { get; private set; }
@@ -78,7 +83,7 @@ namespace EddiEvents
         public string frontierID { get; private set; }
         public string shipEDModel { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, int shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.frontierID = frontierID;

@@ -2409,22 +2409,30 @@ namespace EddiJournalMonitor
                                     bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
                                     bool odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
 
-                                    data.TryGetValue("ShipID", out object val);
-                                    int? shipId = (int?)(long?)val;
-
-                                    if (shipId == null)
-                                    {
-                                        // This happens if we are in CQC.  Flag it back to EDDI so that it ignores everything that happens until
-                                        // we're out of CQC again
-                                        events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
-                                        break;
-                                    }
-
-                                    string ship = JsonParsing.getString(data, "Ship");
+                                    string shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
+                                                                                       // If on foot this may be a suit & if in an SRV then this may be an SRV.
                                     string shipName = JsonParsing.getString(data, "ShipName");
                                     string shipIdent = JsonParsing.getString(data, "ShipIdent");
+                                    long? shipId = JsonParsing.getOptionalLong(data, "ShipID"); // If on foot we'll get a suit ID here, which we need to treat as a long
 
+                                    // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
+                                    if (shipId == null)
+                                    {
+                                        if (!string.IsNullOrEmpty(shipEDModel) && shipEDModel.ToLowerInvariant().Contains("taxi"))
+                                        {
+                                            // This is a taxi
+                                        }
+                                        else
+                                        {
+                                            // The LoadGame event for entering CQC contains no ship details.
+                                            // We are entering CQC. Flag it back to EDDI so we can ignore everything that happens until
+                                            // we're out of CQC again
+                                            events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
+                                            handled = true;
+                                            break;
+                                        }
+                                    }
+                                    
                                     bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
                                     bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
 
@@ -2435,7 +2443,7 @@ namespace EddiJournalMonitor
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
