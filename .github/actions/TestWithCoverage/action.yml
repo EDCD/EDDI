@@ -30,5 +30,10 @@ runs:
       $output = '-output:"${{ inputs.output-path }}"'
       $runCoverageCmd = "$openCoverConsole $openCoverArgs $target $targetArgs $output"
       ECHO Invoking... $runCoverageCmd
-      IEX $runCoverageCmd
+      try {
+        IEX $runCoverageCmd
+      } catch {
+        ECHO "Tests failed."
+        EXIT 1
+      }
     shell: pwsh
