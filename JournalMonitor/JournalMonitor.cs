@@ -169,12 +169,15 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
                                     bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
@@ -182,7 +185,7 @@ namespace EddiJournalMonitor
                                     SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
-                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -191,12 +194,15 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
                                     bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
@@ -204,7 +210,7 @@ namespace EddiJournalMonitor
                                     SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
-                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

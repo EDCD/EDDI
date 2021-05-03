@@ -1566,12 +1566,36 @@ namespace EddiCore
             updateCurrentSystem(theEvent.systemname);
             updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
 
+            if (theEvent.taxi != null && theEvent.taxi == true)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew != null && theEvent.multicrew == true)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+
             // Only pass on this event if our longitude and lattitude are set
             // (if not then this is probably being written prior to a `Location` event))
             if (theEvent.latitude != null && theEvent.longitude != null)
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
-                Vehicle = theEvent.playercontrolled ? Constants.VEHICLE_SHIP : Constants.VEHICLE_SRV;
+                if (theEvent.taxi != null && theEvent.taxi == true)
+                {
+                    Vehicle = Constants.VEHICLE_TAXI;
+                }
+                else if (theEvent.multicrew != null && theEvent.multicrew == true)
+                {
+                    Vehicle = Constants.VEHICLE_MULTICREW;
+                }
+                else if (theEvent.playercontrolled)
+                {
+                    Vehicle = Constants.VEHICLE_SHIP;
+                }
+                else
+                {
+                    Vehicle = Constants.VEHICLE_SRV;
+                }
                 Logging.Info($"Touchdown in {Vehicle}");
                 return true;
             }
@@ -1585,7 +1609,16 @@ namespace EddiCore
             updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-            if (theEvent.playercontrolled)
+
+            if (theEvent.taxi != null && theEvent.taxi == true)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew != null && theEvent.multicrew == true)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            else if (theEvent.playercontrolled)
             {
                 Vehicle = Constants.VEHICLE_SHIP;
             }
