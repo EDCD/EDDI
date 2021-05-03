@@ -30,9 +30,12 @@ runs:
       $output = '-output:"${{ inputs.output-path }}"'
       $runCoverageCmd = "$openCoverConsole $openCoverArgs $target $targetArgs $output"
       ECHO Invoking... $runCoverageCmd
-      try {
-        IEX $runCoverageCmd
-      } catch {
+
+      # Wrap the invokation so that we can act on its success or failure
+      $runCoverageCmd += ';$?'
+      $Success = Invoke-Expression $runCoverageCmd
+      if(-not $Success){
+        # seems to have failed
         ECHO "Tests failed."
         EXIT 1
       }
