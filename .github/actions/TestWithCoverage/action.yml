@@ -22,6 +22,7 @@ runs:
   using: composite
   steps:
   - name: Run tests and generate a coverage report
+    id: runTests
     run: |
       $openCoverConsole = "$HOME${{ inputs.opencover-console-path }}"
       $openCoverArgs = '${{ inputs.opencover-console-args }}'
@@ -37,7 +38,6 @@ runs:
       ECHO $result
       if(-not $result){
         # seems to have failed
-        ECHO "Tests failed."
-        EXIT 1
+        ECHO "::error::Tests failed"
       }
     shell: pwsh
