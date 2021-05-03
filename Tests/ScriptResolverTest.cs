@@ -207,7 +207,7 @@ namespace UnitTests
 
             Assert.IsFalse(upgradedScript.Default);
 
-            Assert.AreNotEqual(newDefaultScript.Description, upgradedScript.Description);
+            Assert.AreEqual(newDefaultScript.Description, upgradedScript.Description);
             Assert.AreEqual(newDefaultScript.Responder, upgradedScript.Responder);
             Assert.AreNotEqual(newDefaultScript.Value, upgradedScript.Value);
             Assert.AreEqual(newDefaultScript.defaultValue, upgradedScript.defaultValue);
