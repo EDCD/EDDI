@@ -175,7 +175,7 @@ namespace UnitTests
             Assert.AreNotEqual(script.Responder, newDefaultScript.Responder);
             Assert.AreNotEqual(script.Value, newDefaultScript.Value);
             Assert.AreNotEqual(script.defaultValue, newDefaultScript.defaultValue);
-            Assert.AreEqual(script.Priority, newDefaultScript.Priority);
+            Assert.AreNotEqual(script.Priority, newDefaultScript.Priority);
 
             Script upgradedScript = Personality.UpgradeScript(script, newDefaultScript);
 
@@ -191,8 +191,8 @@ namespace UnitTests
         [TestMethod]
         public void TestUpgradeScript_FromCustomized()
         {
-            Script script = new Script("testScript", "Test script", false, "Test script customized", 4, "Test script");
-            Script newDefaultScript = new Script("testScript", "Updated Test script Description", false, "Updated Test script", 3, "Updated Test script");
+            Script script = new Script("testScript", "Test script", true, "Test script customized", 4, "Test script");
+            Script newDefaultScript = new Script("testScript", "Updated Test script Description", true, "Updated Test script", 3, "Updated Test script");
 
             Assert.IsFalse(script.Default);
             Assert.AreEqual(script.Name, newDefaultScript.Name);

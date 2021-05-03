@@ -39,7 +39,7 @@ namespace EddiSpeechResponder
         [JsonProperty("priority")]
         public int? Priority
         {
-            get => responder ? priority : null;
+            get => responder ? priority : null; // Invoked scripts have no independent priority
             set { priority = value; OnPropertyChanged(); }
         }
 
