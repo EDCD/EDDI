@@ -19,6 +19,8 @@ namespace EddiEvents
             VARIABLES.Add("bodyname", "The nearest body to the commander when entering normal space");
             VARIABLES.Add("bodytype", "The localized type of the nearest body to the commander when entering normal space");
             VARIABLES.Add("bodytype_invariant", "The invariant type of the nearest body to the commander when entering normal space");
+            VARIABLES.Add("taxi", "True if the ship is an Apex taxi");
+            VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
         [JsonProperty("system")]
@@ -31,6 +33,12 @@ namespace EddiEvents
         [JsonProperty("body")]
         public string bodyname { get; private set; }
 
+        [JsonProperty("taxi")]
+        public bool? taxi { get; private set; }
+
+        [JsonProperty("multicrew")]
+        public bool? multicrew { get; private set; }
+
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use systemname instead")]
         public string system => systemname;
@@ -42,13 +50,15 @@ namespace EddiEvents
         public BodyType bodyType { get; private set; } = BodyType.None;
         public long? bodyId { get; private set; }
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, BodyType bodyType) : base(timestamp, NAME)
+        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.systemAddress = systemAddress;
             this.bodyType = bodyType;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
+            this.taxi = taxi;
+            this.multicrew = multicrew;
         }
     }
 }

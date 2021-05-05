@@ -1856,6 +1856,19 @@ namespace EddiCore
                 ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
             CurrentStarSystem.conflicts = theEvent.conflicts;
 
+            if (theEvent.taxi is true)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew is true)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+
             // Update system faction data if available
             if (theEvent.factions != null)
             {
@@ -1922,9 +1935,24 @@ namespace EddiCore
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system);
 
+            if (theEvent.systemAddress != null) { CurrentStarSystem.systemAddress = theEvent.systemAddress; }
+
             // No longer in 'station instance'
             CurrentStation = null;
-            
+
+            if (theEvent.taxi is true)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew is true)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+
             return true;
         }
 
@@ -1952,6 +1980,20 @@ namespace EddiCore
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
             updateCurrentSystem(theEvent.systemname);
+
+            if (theEvent.taxi is true)
+            {
+                Vehicle = Constants.VEHICLE_TAXI;
+            }
+            else if (theEvent.multicrew is true)
+            {
+                Vehicle = Constants.VEHICLE_MULTICREW;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+
             return true;
         }
 

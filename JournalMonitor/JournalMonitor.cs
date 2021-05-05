@@ -217,7 +217,10 @@ namespace EddiJournalMonitor
                             case "SupercruiseEntry":
                                 {
                                     string system = JsonParsing.getString(data, "StarySystem");
-                                    events.Add(new EnteredSupercruiseEvent(timestamp, system) { raw = line, fromLoad = fromLogLoad });
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredSupercruiseEvent(timestamp, system, systemAddress, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -228,7 +231,9 @@ namespace EddiJournalMonitor
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
-                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType) { raw = line, fromLoad = fromLogLoad });
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -272,7 +277,10 @@ namespace EddiJournalMonitor
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
