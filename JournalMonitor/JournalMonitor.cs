@@ -345,13 +345,27 @@ namespace EddiJournalMonitor
                                 break;
                             case "Bounty":
                                 {
-
                                     string target = JsonParsing.getString(data, "Target");
                                     if (target != null)
                                     {
-                                        // Target might be a ship, but if not then the string we provide is repopulated in ship.model so use it regardless
-                                        Ship ship = ShipDefinitions.FromEDModel(target);
-                                        target = !string.IsNullOrEmpty(ship.model) ? ship.model : JsonParsing.getString(data, "Target_Localised");
+                                        // Might be a ship
+                                        var targetShip = ShipDefinitions.FromEDModel(target, false);
+
+                                        // Might be a SRV or Fighter
+                                        var targetVehicle = VehicleDefinition.FromEDName(target);
+
+                                        // Might be an on foot commander
+                                        var targetCmdrSuit = Suit.FromEDName(target);
+
+                                        // Might be an on foot NPC
+                                        var targetNpcSuitLoadout = NpcSuitLoadout.FromEDName(target);
+
+                                        target = targetShip?.SpokenModel()
+                                            ?? targetCmdrSuit?.localizedName
+                                            ?? targetVehicle?.localizedName
+                                            ?? targetNpcSuitLoadout?.localizedName
+                                            ?? JsonParsing.getString(data, "Target_Localised")
+                                            ;
                                     }
 
                                     string victimFaction = getFactionName(data, "VictimFaction");
