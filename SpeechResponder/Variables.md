@@ -14,7 +14,7 @@ Information on game state is available at the top level i.e. these values can be
 
     - `environment` the commander's current environment.  Can be one of "Docked", "Landed", "Normal space", "Supercruise" or "Witch space"
     - `horizons` true when the game version is 'Horizons'
-    - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+    - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV", "Fighter", "Taxi", "Multicrew", or "On Foot"
 
 ## EDDI states
 
