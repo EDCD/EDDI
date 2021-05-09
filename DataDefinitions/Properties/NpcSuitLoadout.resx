@@ -98,12 +98,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="citizensuitai_admin" xml:space="preserve">
-    <value>Civilian Administrator</value>
+    <value>Administrator</value>
     
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="citizensuitai_scientific" xml:space="preserve">
-    <value>Civilian Scientist</value>
+    <value>Scientist</value>
     
     <comment>An on foot NPC loadout</comment>
   </data>
@@ -122,6 +122,10 @@
   </data>
   <data name="closesuitai" xml:space="preserve">
     <value>Striker</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="citizensuitai_industrial" xml:space="preserve">
+    <value>Worker</value>
     <comment>An on foot NPC loadout</comment>
   </data>
 </root>

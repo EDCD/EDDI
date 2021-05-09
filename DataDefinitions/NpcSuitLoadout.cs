@@ -12,6 +12,7 @@ namespace EddiDataDefinitions
 
         public static readonly NpcSuitLoadout CivilianAdmin = new NpcSuitLoadout("citizensuitai_admin");
         public static readonly NpcSuitLoadout CivilianScientist = new NpcSuitLoadout("citizensuitai_scientific");
+        public static readonly NpcSuitLoadout CivilianWorker = new NpcSuitLoadout("citizensuitai_industrial");
         public static readonly NpcSuitLoadout Commando = new NpcSuitLoadout("assaultsuitai");
         public static readonly NpcSuitLoadout Scout = new NpcSuitLoadout("lightassaultsuitai");
         public static readonly NpcSuitLoadout Sharpshooter = new NpcSuitLoadout("rangedsuitai");

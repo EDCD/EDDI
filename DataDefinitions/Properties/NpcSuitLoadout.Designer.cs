@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civilian Administrator.
+        ///   Looks up a localized string similar to Administrator.
         /// </summary>
         public static string citizensuitai_admin {
             get {
@@ -79,7 +79,16 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civilian Scientist.
+        ///   Looks up a localized string similar to Worker.
+        /// </summary>
+        public static string citizensuitai_industrial {
+            get {
+                return ResourceManager.GetString("citizensuitai_industrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scientist.
         /// </summary>
         public static string citizensuitai_scientific {
             get {

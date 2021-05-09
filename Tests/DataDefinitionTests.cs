@@ -554,8 +554,9 @@ namespace UnitTests
         }
 
         [DataTestMethod]
-        [DataRow("citizensuitai_admin", "Civilian Administrator", 1)]
-        [DataRow("citizensuitai_scientific", "Civilian Scientist", 1)]
+        [DataRow("citizensuitai_admin", "Administrator", 1)]
+        [DataRow("citizensuitai_industrial", "Worker", 1)]
+        [DataRow("citizensuitai_scientific", "Scientist", 1)]
         [DataRow("assaultsuitai_class1", "Commando", 1)]
         [DataRow("assaultsuitai_class3", "Commando", 3)]
         [DataRow("closesuitai_class2", "Striker", 2)]
