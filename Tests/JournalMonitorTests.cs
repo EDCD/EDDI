@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Tests.Properties;
 using Utilities;
 
@@ -1658,6 +1659,19 @@ namespace UnitTests
             Assert.AreEqual("Solo", @event.mode);
             Assert.AreEqual(7795285167, @event.credits);
             Assert.AreEqual(0, @event.loan);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2021-01-08T13:26:17Z"", ""event"":""Died"", ""KillerName"":""Xepherous"", ""KillerShip"":""federation_dropship"", ""KillerRank"":""Master"" }", @"{""killers"":[{""name"":""Xepherous"",""rating"":""Master"",""equipment"":""Federal Dropship""}],""raw"":""{ \""timestamp\"":\""2021-01-08T13:26:17Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Xepherous\"", \""KillerShip\"":\""federation_dropship\"", \""KillerRank\"":\""Master\"" }"",""timestamp"":""2021-01-08T13:26:17Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2021-05-07T11:34:12Z"", ""event"":""Died"", ""KillerName"":""Gretchen Rasmussen"", ""KillerShip"":""assaultsuitai_class1"", ""KillerRank"":""Harmless"" }", @"{""killers"":[{""name"":""Gretchen Rasmussen"",""rating"":""Harmless"",""equipment"":""Commando""}],""raw"":""{ \""timestamp\"":\""2021-05-07T11:34:12Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Gretchen Rasmussen\"", \""KillerShip\"":\""assaultsuitai_class1\"", \""KillerRank\"":\""Harmless\"" }"",""timestamp"":""2021-05-07T11:34:12Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2021-05-07T12:08:29Z"", ""event"":""Died"", ""KillerShip"":""ps_turretbasesmall_3m"" }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2021-05-07T12:08:29Z\"", \""event\"":\""Died\"", \""KillerShip\"":\""ps_turretbasesmall_3m\"" }"",""timestamp"":""2021-05-07T12:08:29Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2017-04-08T22:25:38Z"", ""event"":""Died"", ""Killers"":[ { ""Name"":""Cmdr Uno"", ""Ship"":""federation_dropship_mkii"", ""Rank"":""Elite"" }, { ""Name"":""Cmdr Dos"", ""Ship"":""cutter"", ""Rank"":""Elite"" }, { ""Name"":""Cmdr Tres"", ""Ship"":""empire_trader"", ""Rank"":""Elite"" } ] }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2017-04-08T22:25:38Z\"", \""event\"":\""Died\"", \""Killers\"":[ { \""Name\"":\""Cmdr Uno\"", \""Ship\"":\""federation_dropship_mkii\"", \""Rank\"":\""Elite\"" }, { \""Name\"":\""Cmdr Dos\"", \""Ship\"":\""cutter\"", \""Rank\"":\""Elite\"" }, { \""Name\"":\""Cmdr Tres\"", \""Ship\"":\""empire_trader\"", \""Rank\"":\""Elite\"" } ] }"",""timestamp"":""2017-04-08T22:25:38Z"",""type"":""Died"",""fromLoad"":false}")]
+        public void TestDiedEvent(string line, string expected)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (DiedEvent)events[0];
+            Assert.AreEqual(expected, JsonConvert.SerializeObject(@event));
         }
     }
 }

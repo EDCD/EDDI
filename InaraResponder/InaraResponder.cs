@@ -954,13 +954,13 @@ namespace EddiInaraResponder
             {
                 { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname }
             };
-            if (@event.commanders?.Count > 1)
+            if (@event.killers?.Count > 1)
             {
-                diedEventData.Add("wingOpponentNames", @event.commanders);
+                diedEventData.Add("wingOpponentNames", @event.killers.Select(k => k.name));
             }
-            else if (@event.commanders?.Count == 1)
+            else if (@event.killers?.Count == 1)
             {
-                diedEventData.Add("opponentName", @event.commanders[0]);
+                diedEventData.Add("opponentName", @event.killers[0].name);
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatDeath", diedEventData));
         }

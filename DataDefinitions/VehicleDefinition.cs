@@ -2,7 +2,7 @@
 
 namespace EddiDataDefinitions
 {
-    class VehicleDefinition : ResourceBasedLocalizedEDName<VehicleDefinition>
+    public class VehicleDefinition : ResourceBasedLocalizedEDName<VehicleDefinition>
     {
         static VehicleDefinition()
         {

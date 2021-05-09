@@ -552,5 +552,32 @@ namespace UnitTests
             var @event = (JumpedEvent)events[0];
             Assert.IsTrue(@event.controllingfaction.DeepEquals(expectedSystemFaction));
         }
+
+        [DataTestMethod]
+        [DataRow("citizensuitai_admin", "Civilian Administrator", 1)]
+        [DataRow("citizensuitai_scientific", "Civilian Scientist", 1)]
+        [DataRow("assaultsuitai_class1", "Commando", 1)]
+        [DataRow("assaultsuitai_class3", "Commando", 3)]
+        [DataRow("closesuitai_class2", "Striker", 2)]
+        [DataRow("lightassaultsuitai_class4", "Scout", 4)]
+        [DataRow("rangedsuitai_class5", "Sharpshooter", 5)]
+        public void TestNpcSuitLoadout(string input, string expectedInvariant, int expectedGrade)
+        {
+            var result = NpcSuitLoadout.FromEDName(input);
+            Assert.AreEqual(expectedInvariant, result.invariantName);
+            Assert.AreEqual(expectedGrade, result.grade);
+        }
+
+        [DataTestMethod]
+        [DataRow("ExplorationSuit_Class1", "Artemis Suit", 1)]
+        [DataRow("FlightSuit", "Flight Suit", 1)]
+        [DataRow("TacticalSuit_Class2", "Dominator Suit", 2)]
+        [DataRow("UtilitySuit_Class3", "Maverick Suit", 3)]
+        public void TestSuit(string input, string expectedInvariant, int expectedGrade)
+        {
+            var result = Suit.FromEDName(input);
+            Assert.AreEqual(expectedInvariant, result.invariantName);
+            Assert.AreEqual(expectedGrade, result.grade);
+        }
     }
 }

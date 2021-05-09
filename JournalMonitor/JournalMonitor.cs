@@ -2013,7 +2013,7 @@ namespace EddiJournalMonitor
                                         }
                                         else
                                         {
-                                            Ship shipDef = ShipDefinitions.FromEDModel(ship);
+                                            Ship shipDef = ShipDefinitions.FromEDModel(ship, false);
                                             if (shipDef != null)
                                             {
                                                 ship = shipDef.model;
@@ -2054,31 +2054,32 @@ namespace EddiJournalMonitor
                                 break;
                             case "Died":
                                 {
+                                    Killer parseKiller(IDictionary<string, object> killerData, bool singleKiller)
+                                    {
+                                        // Property names differ if there is a single killer vs. multiple killers
+                                        var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
+                                        var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
+                                        var rating = CombatRating.FromEDName(JsonParsing.getString(killerData, singleKiller ? "KillerRank" : "Rank"));
+                                        return new Killer(name, equipment, rating);
+                                    }
 
-                                    List<string> names = new List<string>();
-                                    List<string> ships = new List<string>();
-                                    List<CombatRating> ratings = new List<CombatRating>();
-
+                                    var killers = new List<Killer>();
                                     if (data.ContainsKey("KillerName"))
                                     {
                                         // Single killer
-                                        names.Add(JsonParsing.getString(data, "KillerName"));
-                                        ships.Add(JsonParsing.getString(data, "KillerShip"));
-                                        ratings.Add(CombatRating.FromEDName(JsonParsing.getString(data, "KillerRank")));
+                                        killers.Add(parseKiller(data, true));
                                     }
                                     if (data.ContainsKey("killers"))
                                     {
                                         // Multiple killers
                                         data.TryGetValue("Killers", out object val);
-                                        List<object> killers = (List<object>)val;
-                                        foreach (IDictionary<string, object> killer in killers)
+                                        List<object> killersData = (List<object>)val;
+                                        foreach (IDictionary<string, object> killerData in killersData)
                                         {
-                                            names.Add(JsonParsing.getString(killer, "Name"));
-                                            ships.Add(JsonParsing.getString(killer, "Ship"));
-                                            ratings.Add(CombatRating.FromEDName(JsonParsing.getString(killer, "Rank")));
+                                            killers.Add(parseKiller(killerData, false));
                                         }
                                     }
-                                    events.Add(new DiedEvent(timestamp, names, ships, ratings) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DiedEvent(timestamp, killers) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4539,7 +4540,7 @@ namespace EddiJournalMonitor
             }
             else if (slot.Contains("Military"))
             {
-                var slotSize = ShipDefinitions.FromEDModel(ship)?.militarysize;
+                var slotSize = ShipDefinitions.FromEDModel(ship, false)?.militarysize;
                 if (slotSize is null)
                 {
                     // We didn't expect to have a military slot on this ship.

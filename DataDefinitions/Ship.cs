@@ -546,7 +546,7 @@ namespace EddiDataDefinitions
 
         public static Ship FromShipyardInfo(ShipyardInfoItem item)
         {
-            Ship ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel);
+            Ship ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel, false);
             if (ship == null)
             {
                 // Unknown ship; report the full object so that we can update the definitions 

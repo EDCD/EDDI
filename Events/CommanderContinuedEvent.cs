@@ -44,7 +44,7 @@ namespace EddiEvents
             : shipEDModel.ToLowerInvariant().Contains("fighter") ? Utilities.Constants.VEHICLE_FIGHTER
             : shipEDModel.ToLowerInvariant().Contains("suit") ? Utilities.Constants.VEHICLE_LEGS
             : shipEDModel.ToLowerInvariant().Contains("taxi") ? Utilities.Constants.VEHICLE_TAXI
-            : ShipDefinitions.FromEDModel(shipEDModel).model;
+            : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;
 
         [JsonProperty("shipid")]
         public long? shipid { get; private set; } // shipid serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).

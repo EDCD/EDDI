@@ -62,7 +62,7 @@ namespace EddiShipMonitor
             }
 
             string edName = (string)json["name"];
-            Ship Ship = ShipDefinitions.FromEDModel(edName);
+            Ship Ship = ShipDefinitions.FromEDModel(edName, false);
             if (Ship == null)
             {
                 // Unknown ship; report the full object so that we can update the definitions 
