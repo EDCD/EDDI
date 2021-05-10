@@ -119,6 +119,8 @@ namespace EddiCore
         private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
         private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
 
+        private string multicrewVehicleHolder;
+
         private EDDI(bool safeMode)
         {
             running = !safeMode;
@@ -2000,6 +2002,7 @@ namespace EddiCore
         private bool eventCrewJoined(CrewJoinedEvent theEvent)
         {
             inTelepresence = true;
+            multicrewVehicleHolder = Vehicle;
             Vehicle = Constants.VEHICLE_MULTICREW;
             Logging.Info("Entering multicrew session");
             return true;
@@ -2008,7 +2011,7 @@ namespace EddiCore
         private bool eventCrewLeft(CrewLeftEvent theEvent)
         {
             inTelepresence = false;
-            Vehicle = Constants.VEHICLE_SHIP;
+            Vehicle = multicrewVehicleHolder;
             Logging.Info($"Leaving multicrew session to vehicle {Vehicle}");
             return true;
         }
