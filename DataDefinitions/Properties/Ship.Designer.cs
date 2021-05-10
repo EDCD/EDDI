@@ -349,11 +349,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to your ship.
+        /// </summary>
+        public static string yourShip {
+            get {
+                return ResourceManager.GetString("yourShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
         public static string yourSidewinder {
             get {
                 return ResourceManager.GetString("yourSidewinder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your taxi.
+        /// </summary>
+        public static string yourTaxi {
+            get {
+                return ResourceManager.GetString("yourTaxi", resourceCulture);
             }
         }
         
