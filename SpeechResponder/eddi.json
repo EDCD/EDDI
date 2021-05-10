@@ -132,7 +132,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Bond awarded }\r\n{_ Triggered when you are awarded a combat bond }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.awardingfaction)}\r\n\r\n{P(event.victimfaction, \"faction\")} ship {OneOf(\"destroyed\",\"eliminated\",\"down\")},\r\n\r\n{Humanise(event.reward)} credits awarded from {P(event.awardingfaction, \"faction\")}.\r\n",
+      "script": "{_ Bond awarded }\r\n{_ Triggered when you are awarded a combat bond }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.awardingfaction)}\r\n\r\n{P(event.victimfaction, \"faction\")} target {OneOf(\"destroyed\",\"eliminated\",\"down\")},\r\n\r\n{Humanise(event.reward)} credits awarded from {P(event.awardingfaction, \"faction\")}.\r\n",
       "default": true,
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
