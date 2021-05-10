@@ -67,13 +67,12 @@ namespace EddiDataDefinitions
 
         // Variables set from status flags (when not signed in, this is set to '0')
         public string vehicle =>
-                ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP
-                : ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
+                  ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
                 : ((flags & Flags.InFighter) != 0) ? Constants.VEHICLE_FIGHTER
                 : ((flags2 & Flags2.OnFoot) != 0) ? Constants.VEHICLE_LEGS 
                 : ((flags2 & Flags2.InTaxi) != 0) ? Constants.VEHICLE_TAXI
                 : ((flags2 & Flags2.InMultiCrew) != 0) ? Constants.VEHICLE_MULTICREW
-                : "";
+                : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP : ""; // "InMainShip" can be set when other flags are also set so we check "InMainShip" last.
         public bool being_interdicted => (flags & Flags.BeingInterdicted) != 0;
         public bool in_danger => (flags & Flags.IsInDanger) != 0;
         public bool near_surface => (flags & Flags.HasLatLong) != 0;
