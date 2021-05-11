@@ -367,11 +367,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to your taxi.
+        ///   Looks up a localized string similar to your transport.
         /// </summary>
-        public static string yourTaxi {
+        public static string yourTransport {
             get {
-                return ResourceManager.GetString("yourTaxi", resourceCulture);
+                return ResourceManager.GetString("yourTransport", resourceCulture);
             }
         }
         

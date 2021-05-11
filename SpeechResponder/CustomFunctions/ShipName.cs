@@ -23,7 +23,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
                 {
-                    return EddiDataDefinitions.Properties.Ship.yourTaxi;
+                    return EddiDataDefinitions.Properties.Ship.yourTransport;
                 }
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW)
                 {
