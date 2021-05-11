@@ -73,6 +73,7 @@ namespace EddiDataDefinitions
                 : ((flags2 & Flags2.InTaxi) != 0) ? Constants.VEHICLE_TAXI
                 : ((flags2 & Flags2.InMultiCrew) != 0) ? Constants.VEHICLE_MULTICREW
                 : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP : ""; // "InMainShip" can be set when other flags are also set so we check "InMainShip" last.
+                // Per private comments from Howard Chalkey, `InMainShip` means a FSD-capable ship, as against a SRV or Fighter: it will be set when in a Taxi
         public bool being_interdicted => (flags & Flags.BeingInterdicted) != 0;
         public bool in_danger => (flags & Flags.IsInDanger) != 0;
         public bool near_surface => (flags & Flags.HasLatLong) != 0;
