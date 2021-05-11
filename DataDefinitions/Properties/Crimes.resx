@@ -201,4 +201,52 @@
     <value>Mission fine</value>
     <comment>Crime missionFine</comment>
   </data>
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Assault</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
+  <data name="onFoot_breakingAndEntering" xml:space="preserve">
+    <value>Breaking and entering</value>
+    <comment>Crime onFoot_breakingAndEntering</comment>
+  </data>
+  <data name="onFoot_damagingDefences" xml:space="preserve">
+    <value>Damaging defense systems</value>
+    <comment>Crime onFoot_damagingDefences</comment>
+  </data>
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Revealing your weapon</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
+  <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
+    <value>Evading local authorities</value>
+    <comment>Crime onFoot_failureToSubmitToPolice</comment>
+  </data>
+  <data name="onFoot_identityTheft" xml:space="preserve">
+    <value>Identity theft</value>
+    <comment>Crime onFoot_identityTheft</comment>
+  </data>
+  <data name="onFoot_murder" xml:space="preserve">
+    <value>Murder</value>
+    <comment>Crime onFoot_murder</comment>
+  </data>
+  <data name="onFoot_profileCloningIntent" xml:space="preserve">
+    <value>Attempted identity theft</value>
+    <comment>Crime onFoot_profileCloningIntent</comment>
+  </data>
+  <data name="onFoot_propertyTheft" xml:space="preserve">
+    <value>Theft</value>
+    <comment>Crime onFoot_propertyTheft</comment>
+  </data>
+  <data name="onFoot_recklessEndangerment" xml:space="preserve">
+    <value>Reckless endangerment</value>
+    <comment>Crime onFoot_recklessEndangerment</comment>
+  </data>
+  <data name="onFoot_theft" xml:space="preserve">
+    <value>Theft</value>
+    <comment>Crime onFoot_theft</comment>
+  </data>
+  <data name="onFoot_trespass" xml:space="preserve">
+    <value>Trespass</value>
+    <comment>Crime onFoot_trespass</comment>
+  </data>
 </root>

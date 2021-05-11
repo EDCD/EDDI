@@ -223,6 +223,114 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assault.
+        /// </summary>
+        public static string onFoot_assault {
+            get {
+                return ResourceManager.GetString("onFoot_assault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breaking and entering.
+        /// </summary>
+        public static string onFoot_breakingAndEntering {
+            get {
+                return ResourceManager.GetString("onFoot_breakingAndEntering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damaging defense systems.
+        /// </summary>
+        public static string onFoot_damagingDefences {
+            get {
+                return ResourceManager.GetString("onFoot_damagingDefences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Revealing your weapon.
+        /// </summary>
+        public static string onFoot_detectionOfWeapon {
+            get {
+                return ResourceManager.GetString("onFoot_detectionOfWeapon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evading local authorities.
+        /// </summary>
+        public static string onFoot_failureToSubmitToPolice {
+            get {
+                return ResourceManager.GetString("onFoot_failureToSubmitToPolice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identity theft.
+        /// </summary>
+        public static string onFoot_identityTheft {
+            get {
+                return ResourceManager.GetString("onFoot_identityTheft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Murder.
+        /// </summary>
+        public static string onFoot_murder {
+            get {
+                return ResourceManager.GetString("onFoot_murder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempted identity theft.
+        /// </summary>
+        public static string onFoot_profileCloningIntent {
+            get {
+                return ResourceManager.GetString("onFoot_profileCloningIntent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theft.
+        /// </summary>
+        public static string onFoot_propertyTheft {
+            get {
+                return ResourceManager.GetString("onFoot_propertyTheft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reckless endangerment.
+        /// </summary>
+        public static string onFoot_recklessEndangerment {
+            get {
+                return ResourceManager.GetString("onFoot_recklessEndangerment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theft.
+        /// </summary>
+        public static string onFoot_theft {
+            get {
+                return ResourceManager.GetString("onFoot_theft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trespass.
+        /// </summary>
+        public static string onFoot_trespass {
+            get {
+                return ResourceManager.GetString("onFoot_trespass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carrying a wanted person.
         /// </summary>
         public static string passengerWanted {

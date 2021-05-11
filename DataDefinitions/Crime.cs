@@ -36,6 +36,19 @@
             var RecklessWeaponsDischarge = new Crime("recklessWeaponsDischarge");
             var PassengerWanted = new Crime("passengerWanted");
             var MissionFine = new Crime("missionFine");
+
+            var onFootAssault = new Crime("onFoot_assault");
+            var onFootBreakingAndEntering = new Crime("onFoot_breakingAndEntering");
+            var onFootDamagingDefences = new Crime("onFoot_damagingDefences");
+            var onFootDetectionOfWeapon = new Crime("onFoot_detectionOfWeapon");
+            var onFootfailureToSubmitToPolice = new Crime("onFoot_failureToSubmitToPolice");
+            var onFootIdentityTheft = new Crime("onFoot_identityTheft");
+            var onFootMurder = new Crime("onFoot_murder");
+            var onFootProfileCloningIntent = new Crime("onFoot_profileCloningIntent");
+            var onFootPropertyTheft = new Crime("onFoot_propertyTheft");
+            var onFootRecklessEndangerment = new Crime("onFoot_recklessEndangerment");
+            var onFootTheft = new Crime("onFoot_theft");
+            var onFootTrespass = new Crime("onFoot_trespass");
         }
 
         // Faction report definition
