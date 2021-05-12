@@ -4144,6 +4144,7 @@ namespace EddiJournalMonitor
                             case "DeleteSuitLoadout":
                             case "DiscoveryScan":
                             case "DropItems":
+                            case "DropshipDeploy":
                             case "EngineerLegacyConvert":
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
