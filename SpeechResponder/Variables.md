@@ -13,7 +13,8 @@ Details of the objects available are as follows:
 Information on game state is available at the top level i.e. these values can be accessed directly.
 
     - `environment` the commander's current environment.  Can be one of "Docked", "Landed", "Normal space", "Supercruise" or "Witch space"
-    - `horizons` true when the game version is 'Horizons'
+    - `horizons` true when the game version includes 'Horizons' content
+    - `odyssey` true when the game version includes 'Odyssey' content
     - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV", "Fighter", "Taxi", "Multicrew", or "On Foot"
 
 ## EDDI states

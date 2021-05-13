@@ -157,6 +157,7 @@ namespace EddiSpeechResponder.Service
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,
+                ["odyssey"] = EDDI.Instance.inOdyssey,
                 ["va_active"] = App.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle,
                 ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,

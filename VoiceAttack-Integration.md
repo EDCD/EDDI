@@ -320,6 +320,8 @@ Note: "Tiny" hardpoints are utility slots.
   * {BOOL:cAPI active}: true if the cAPI is currently active 
   * {BOOL:icao active}: true if use of ICAO text replacements are currently enabled 
   * {BOOL:ipa active}: true if phonetic speech ssml tags are currently enabled
+  * {BOOL:horizons}: true if the Horizons expansion is currently active
+  * {BOOL:odyssey}: true if the Odyssey expansion is currently active
   * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
   * {BOOL:EDDI speaking}: true if EDDI is currently speaking
 
