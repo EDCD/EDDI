@@ -41,6 +41,8 @@ namespace EddiCore
         public bool inTelepresence { get; private set; } = false;
 
         public bool inHorizons { get; private set; } = true;
+        public bool inOdyssey { get; private set; } = true;
+
         public bool gameIsBeta { get; private set; } = false;
 
         static EDDI()
@@ -1637,8 +1639,11 @@ namespace EddiCore
             // Don't proceed if we've already viewed the market while docked or when loading pre-existing logs
             if (!allowMarketUpdate || theEvent.fromLoad) { return false; }
 
+            // Don't proceed if the event data isn't what we expect
+            if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
+
             // Post an update event for new market data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons, inOdyssey));
 
             // Update the current station commodities
             if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
@@ -1659,8 +1664,11 @@ namespace EddiCore
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
             if (!allowOutfittingUpdate || theEvent.fromLoad) { return false; }
 
+            // Don't proceed if the event data isn't what we expect
+            if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
+
             // Post an update event for new outfitting data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.edName).ToList(), null, inHorizons));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.edName).ToList(), null, inHorizons, inOdyssey));
 
             var modules = theEvent.info.Items
                 .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
@@ -1689,8 +1697,11 @@ namespace EddiCore
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
             if (!allowShipyardUpdate || theEvent.fromLoad) { return false; }
 
+            // Don't proceed if the event data isn't what we expect
+            if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
+
             // Post an update event for new shipyard data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.edModel).ToList(), inHorizons, theEvent.info.AllowCobraMkIV));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, theEvent.info.AllowCobraMkIV));
 
             var ships = theEvent.info.PriceList
                 .Select(s => Ship.FromShipyardInfo(s))
@@ -2066,8 +2077,9 @@ namespace EddiCore
             }
             Cmdr.EDID = theEvent.frontierID;
 
-            // Set game version
+            // Identify active game version
             inHorizons = theEvent.horizons;
+            inOdyssey = theEvent.odyssey;
 
             return true;
         }
@@ -2787,7 +2799,7 @@ namespace EddiCore
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemAddress, CurrentStarSystem.systemname);
 
                                 // Post an update event
-                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemName, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.eddnCommodityMarketQuotes, stationProfile.LastStation.prohibitedCommodities?.Select(p => p.Value).ToList(), stationProfile.LastStation.outfitting?.Select(m => m.edName).ToList(), stationProfile.LastStation.ships?.Select(s => s.edModel).ToList(), profile.contexts.inHorizons, profile.contexts.allowCobraMkIV);
+                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemName, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.eddnCommodityMarketQuotes, stationProfile.LastStation.prohibitedCommodities?.Select(p => p.Value).ToList(), stationProfile.LastStation.outfitting?.Select(m => m.edName).ToList(), stationProfile.LastStation.ships?.Select(s => s.edModel).ToList(), profile.contexts.inHorizons, profile.contexts.inOdyssey, profile.contexts.allowCobraMkIV);
                                 enqueueEvent(@event);
 
                                 // See if we need to update our current station

@@ -21,6 +21,8 @@ namespace EddiEvents
 
         public bool inHorizons { get; private set; }
 
+        public bool inOdyssey { get; private set; }
+
         public bool? allowCobraMkIV { get; private set; }
 
         public string starSystem { get; private set; }
@@ -42,9 +44,10 @@ namespace EddiEvents
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.
         /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>
-        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<MarketInfoItem> commodityQuotes, List<string> prohibitedCommodities, List<string> outfittingModules, List<string> shipyardModels, bool inHorizons, bool? allowCobraMkIV = null) : base(timestamp, NAME)
+        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, List<MarketInfoItem> commodityQuotes, List<string> prohibitedCommodities, List<string> outfittingModules, List<string> shipyardModels, bool inHorizons, bool inOdyssey, bool? allowCobraMkIV = null) : base(timestamp, NAME)
         {
             this.inHorizons = inHorizons;
+            this.inOdyssey = inOdyssey;
             this.allowCobraMkIV = allowCobraMkIV;
             this.starSystem = starSystem;
             this.stationName = stationName;
