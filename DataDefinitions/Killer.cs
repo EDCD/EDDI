@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -41,13 +43,22 @@ namespace EddiDataDefinitions
             killerShip = ShipDefinitions.FromEDModel(edModel, false);
 
             // Might be a SRV or Fighter
-            killerVehicle = VehicleDefinition.FromEDName(edModel);
+            if (VehicleDefinition.AllOfThem.Any(v => string.Equals(v.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                killerVehicle = VehicleDefinition.FromEDName(edModel);
+            }
 
             // Might be an on foot commander
-            killerCmdrSuit = Suit.FromEDName(edModel);
+            if (Suit.AllOfThem.Any(s => string.Equals(s.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                killerCmdrSuit = Suit.FromEDName(edModel);
+            }
 
             // Might be an on foot NPC
-            killerNpcSuitLoadout = NpcSuitLoadout.FromEDName(edModel);
+            if (NpcSuitLoadout.AllOfThem.Any(s => string.Equals(s.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                killerNpcSuitLoadout = NpcSuitLoadout.FromEDName(edModel);
+            }
         }
     }
 }

@@ -352,13 +352,25 @@ namespace EddiJournalMonitor
                                         var targetShip = ShipDefinitions.FromEDModel(target, false);
 
                                         // Might be a SRV or Fighter
-                                        var targetVehicle = VehicleDefinition.FromEDName(target);
+                                        VehicleDefinition targetVehicle = null;
+                                        if (VehicleDefinition.AllOfThem.Any(v => string.Equals(v.edname, target, StringComparison.InvariantCultureIgnoreCase)))
+                                        {
+                                            targetVehicle = VehicleDefinition.FromEDName(target);
+                                        }
 
                                         // Might be an on foot commander
-                                        var targetCmdrSuit = Suit.FromEDName(target);
+                                        Suit targetCmdrSuit = null;
+                                        if (Suit.AllOfThem.Any(s => string.Equals(s.edname, target, StringComparison.InvariantCultureIgnoreCase)))
+                                        {
+                                            targetCmdrSuit = Suit.FromEDName(target);
+                                        }
 
                                         // Might be an on foot NPC
-                                        var targetNpcSuitLoadout = NpcSuitLoadout.FromEDName(target);
+                                        NpcSuitLoadout targetNpcSuitLoadout = null;
+                                        if (NpcSuitLoadout.AllOfThem.Any(s => string.Equals(s.edname, target, StringComparison.InvariantCultureIgnoreCase)))
+                                        {
+                                            targetNpcSuitLoadout = NpcSuitLoadout.FromEDName(target);
+                                        }
 
                                         target = targetShip?.SpokenModel()
                                             ?? targetCmdrSuit?.localizedName
