@@ -505,6 +505,75 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestParseStatusFlagsOnFootOnStationOdyssey()
+        {
+            string line = "{ \"timestamp\":\"2021-05-01T21:00:10Z\", \"event\":\"Status\", \"Flags\":0, \"Flags2\":9, \"Oxygen\":1.000000, \"Health\":1.000000, \"Temperature\":293.000000, \"SelectedWeapon\":\"\", \"LegalState\":\"Clean\", \"BodyName\":\"Savitskaya Vision\" }";
+            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+
+            // Variables set from status flags (when not signed in, flags are set to '0')
+            DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 00, 10, DateTimeKind.Utc);
+            Assert.AreEqual(expectedTimestamp, status.timestamp);
+            Assert.AreEqual((Status.Flags)0, status.flags);
+            Assert.AreEqual((Status.Flags2)9, status.flags2);
+            Assert.AreEqual(Constants.VEHICLE_LEGS, status.vehicle);
+            Assert.IsFalse(status.being_interdicted);
+            Assert.IsFalse(status.in_danger);
+            Assert.IsFalse(status.near_surface);
+            Assert.IsFalse(status.overheating);
+            Assert.IsFalse(status.low_fuel);
+            Assert.AreEqual("ready", status.fsd_status);
+            Assert.IsFalse(status.srv_drive_assist);
+            Assert.IsFalse(status.srv_under_ship);
+            Assert.IsFalse(status.srv_turret_deployed);
+            Assert.IsFalse(status.srv_handbrake_activated);
+            Assert.IsFalse(status.srv_high_beams);
+            Assert.IsFalse(status.scooping_fuel);
+            Assert.IsFalse(status.silent_running);
+            Assert.IsFalse(status.cargo_scoop_deployed);
+            Assert.IsFalse(status.lights_on);
+            Assert.IsFalse(status.in_wing);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.IsFalse(status.flight_assist_off);
+            Assert.IsFalse(status.supercruise);
+            Assert.IsFalse(status.hyperspace);
+            Assert.IsFalse(status.shields_up);
+            Assert.IsFalse(status.landing_gear_down);
+            Assert.IsFalse(status.landed);
+            Assert.IsFalse(status.docked);
+            Assert.IsFalse(status.analysis_mode);
+            Assert.IsFalse(status.night_vision);
+            Assert.IsFalse(status.altitude_from_average_radius);
+            Assert.IsTrue(status.on_foot_in_station);
+            Assert.IsFalse(status.on_foot_on_planet);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.IsFalse(status.low_oxygen);
+            Assert.IsFalse(status.low_health);
+            Assert.AreEqual("temperate", status.on_foot_temperature);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.IsNull(status.pips_sys);
+            Assert.IsNull(status.pips_eng);
+            Assert.IsNull(status.pips_wea);
+            Assert.IsNull(status.firegroup);
+            Assert.AreEqual("none", status.gui_focus);
+            Assert.IsNull(status.fuelInTanks);
+            Assert.IsNull(status.fuelInReservoir);
+            Assert.IsNull(status.cargo_carried);
+            Assert.AreEqual("Clean", status.legalstatus);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.IsNull(status.latitude);
+            Assert.IsNull(status.longitude);
+            Assert.IsNull(status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.AreEqual("Savitskaya Vision", status.bodyname);
+            Assert.IsNull(status.planetradius);
+            Assert.AreEqual(100M, status.oxygen);
+            Assert.AreEqual(100M, status.health);
+            Assert.AreEqual(293M, status.temperature);
+            Assert.AreEqual("", status.selected_weapon);
+            Assert.IsNull(status.gravity);
+        }
+
+        [TestMethod]
         public void TestParseStatusFlagsNormalSpace()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777320, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0 }";

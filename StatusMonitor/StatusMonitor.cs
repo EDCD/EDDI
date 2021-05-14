@@ -206,14 +206,9 @@ namespace EddiStatusMonitor
                     }
 
                     status.flags = (Status.Flags)(JsonParsing.getOptionalLong(data, "Flags") ?? 0);
-                    if (status.flags == Status.Flags.None)
-                    {
-                        // No flags are set. We aren't in game.
-                        return status;
-                    }
-
                     status.flags2 = (Status.Flags2)(JsonParsing.getOptionalLong(data, "Flags2") ?? 0);
-                    if (status.flags == Status.Flags.None)
+                    
+                    if (status.flags == Status.Flags.None && status.flags2 == Status.Flags2.None)
                     {
                         // No flags are set. We aren't in game.
                         return status;
@@ -305,7 +300,7 @@ namespace EddiStatusMonitor
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
                     status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
-                    status.bodyname = JsonParsing.getString(data, "BodyName");
+                    status.bodyname = JsonParsing.getString(data, "BodyName"); // Might be a station name if we're in an orbital station
                     status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
 
                     // When on foot
