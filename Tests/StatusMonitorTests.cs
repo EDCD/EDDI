@@ -436,6 +436,75 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestParseStatusFlagsOnFootOnPlanetOdyssey()
+        {
+            string line = "{ \"timestamp\":\"2021-05-01T21:30:38Z\", \"event\":\"Status\", \"Flags\":2097152, \"Flags2\":273, \"Oxygen\":1.000000, \"Health\":1.000000, \"Temperature\":163.527100, \"SelectedWeapon\":\"$humanoid_fists_name;\", \"SelectedWeapon_Localised\":\"Unarmed\", \"Gravity\":0.101595, \"LegalState\":\"Clean\", \"Latitude\":40.741016, \"Longitude\":65.076881, \"Heading\":-165, \"BodyName\":\"Nervi 2 a\" }";
+            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+
+            // Variables set from status flags (when not signed in, flags are set to '0')
+            DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 30, 38, DateTimeKind.Utc);
+            Assert.AreEqual(expectedTimestamp, status.timestamp);
+            Assert.AreEqual((Status.Flags)2097152, status.flags);
+            Assert.AreEqual((Status.Flags2)273, status.flags2);
+            Assert.AreEqual(Constants.VEHICLE_LEGS, status.vehicle);
+            Assert.IsFalse(status.being_interdicted);
+            Assert.IsFalse(status.in_danger);
+            Assert.IsTrue(status.near_surface);
+            Assert.IsFalse(status.overheating);
+            Assert.IsFalse(status.low_fuel);
+            Assert.AreEqual("ready", status.fsd_status);
+            Assert.IsFalse(status.srv_drive_assist);
+            Assert.IsFalse(status.srv_under_ship);
+            Assert.IsFalse(status.srv_turret_deployed);
+            Assert.IsFalse(status.srv_handbrake_activated);
+            Assert.IsFalse(status.srv_high_beams);
+            Assert.IsFalse(status.scooping_fuel);
+            Assert.IsFalse(status.silent_running);
+            Assert.IsFalse(status.cargo_scoop_deployed);
+            Assert.IsFalse(status.lights_on);
+            Assert.IsFalse(status.in_wing);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.IsFalse(status.flight_assist_off);
+            Assert.IsFalse(status.supercruise);
+            Assert.IsFalse(status.hyperspace);
+            Assert.IsFalse(status.shields_up);
+            Assert.IsFalse(status.landing_gear_down);
+            Assert.IsFalse(status.landed);
+            Assert.IsFalse(status.docked);
+            Assert.IsFalse(status.analysis_mode);
+            Assert.IsFalse(status.night_vision);
+            Assert.IsFalse(status.altitude_from_average_radius);
+            Assert.IsFalse(status.on_foot_in_station);
+            Assert.IsTrue(status.on_foot_on_planet);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.IsFalse(status.low_oxygen);
+            Assert.IsFalse(status.low_health);
+            Assert.AreEqual("cold", status.on_foot_temperature);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.IsNull(status.pips_sys);
+            Assert.IsNull(status.pips_eng);
+            Assert.IsNull(status.pips_wea);
+            Assert.IsNull(status.firegroup);
+            Assert.AreEqual("none", status.gui_focus);
+            Assert.IsNull(status.fuelInTanks);
+            Assert.IsNull(status.fuelInReservoir);
+            Assert.IsNull(status.cargo_carried);
+            Assert.AreEqual("Clean", status.legalstatus);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.AreEqual(40.741016M, status.latitude);
+            Assert.AreEqual(65.076881M, status.longitude);
+            Assert.AreEqual(-165M, status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.AreEqual("Nervi 2 a", status.bodyname);
+            Assert.IsNull(status.planetradius);
+            Assert.AreEqual(100M, status.oxygen);
+            Assert.AreEqual(100M, status.health);
+            Assert.AreEqual(163.527100M, status.temperature);
+            Assert.AreEqual("Unarmed", status.selected_weapon);
+            Assert.AreEqual(0.101595M, status.gravity);
+        }
+
+        [TestMethod]
         public void TestParseStatusFlagsNormalSpace()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777320, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0 }";

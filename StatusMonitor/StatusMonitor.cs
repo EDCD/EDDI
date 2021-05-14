@@ -229,6 +229,7 @@ namespace EddiStatusMonitor
                     int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
                     switch (gui_focus)
                     {
+                        case null:
                         case 0: // No focus
                             {
                                 status.gui_focus = "none";
@@ -311,7 +312,8 @@ namespace EddiStatusMonitor
                     status.oxygen = JsonParsing.getOptionalDecimal(data, "Oxygen") * 100; // Convert Oxygen to a 0-100 percent scale
                     status.health = JsonParsing.getOptionalDecimal(data, "Health") * 100; // Convert Health to a 0-100 percent scale
                     status.temperature = JsonParsing.getOptionalDecimal(data, "Temperature"); // In Kelvin
-                    status.selected_weapon = JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
+                    status.selected_weapon = JsonParsing.getString(data, "SelectedWeapon_Localised") 
+                        ?? JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
                     status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
 
                     // Calculated data
