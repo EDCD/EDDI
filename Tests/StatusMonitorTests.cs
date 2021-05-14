@@ -107,7 +107,12 @@ namespace UnitTests
             Assert.AreEqual(0, status.cargo_carried);
             Assert.AreEqual("Clean", status.legalstatus);
             Assert.IsFalse(status.aim_down_sight);
-            Assert.AreEqual(null, status.altitude);
+            Assert.IsNull(status.latitude);
+            Assert.IsNull(status.longitude);
+            Assert.IsNull(status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.IsNull(status.bodyname);
+            Assert.IsNull(status.planetradius);
         }
 
         [TestMethod]
@@ -166,7 +171,12 @@ namespace UnitTests
             Assert.AreEqual(0, status.cargo_carried);
             Assert.AreEqual("Clean", status.legalstatus);
             Assert.IsFalse(status.aim_down_sight);
-            Assert.AreEqual(null, status.altitude);
+            Assert.IsNull(status.latitude);
+            Assert.IsNull(status.longitude);
+            Assert.IsNull(status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.IsNull(status.bodyname);
+            Assert.IsNull(status.planetradius);
         }
 
         [TestMethod]
@@ -225,7 +235,12 @@ namespace UnitTests
             Assert.AreEqual(0, status.cargo_carried);
             Assert.AreEqual("Clean", status.legalstatus);
             Assert.IsFalse(status.aim_down_sight);
-            Assert.AreEqual(null, status.altitude);
+            Assert.IsNull(status.latitude);
+            Assert.IsNull(status.longitude);
+            Assert.IsNull(status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.IsNull(status.bodyname);
+            Assert.IsNull(status.planetradius);
         }
 
         [TestMethod]
@@ -284,7 +299,76 @@ namespace UnitTests
             Assert.AreEqual(0, status.cargo_carried);
             Assert.AreEqual("Clean", status.legalstatus);
             Assert.IsFalse(status.aim_down_sight);
-            Assert.AreEqual(null, status.altitude);
+            Assert.IsNull(status.latitude);
+            Assert.IsNull(status.longitude);
+            Assert.IsNull(status.heading);
+            Assert.IsNull(status.altitude);
+            Assert.IsNull(status.bodyname);
+            Assert.IsNull(status.planetradius);
+        }
+
+        [TestMethod]
+        public void TestParseStatusFlagsLandedInShipOdyssey()
+        {
+            string line = "{ \"timestamp\":\"2021-05-01T21:24:57Z\", \"event\":\"Status\", \"Flags\":153157646, \"Flags2\":0, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":32.000000, \"FuelReservoir\":0.384769 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":40.761524, \"Longitude\":65.103111, \"Heading\":32, \"Altitude\":0, \"BodyName\":\"Nervi 2 a\", \"PlanetRadius\":866740.562500 }";
+            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+
+            // Variables set from status flags (when not signed in, flags are set to '0')
+            DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 24, 57, DateTimeKind.Utc);
+            Assert.AreEqual(expectedTimestamp, status.timestamp);
+            Assert.AreEqual((Status.Flags)153157646, status.flags);
+            Assert.AreEqual((Status.Flags2)0, status.flags2);
+            Assert.AreEqual(Constants.VEHICLE_SHIP, status.vehicle);
+            Assert.IsFalse(status.being_interdicted);
+            Assert.IsFalse(status.in_danger);
+            Assert.IsTrue(status.near_surface);
+            Assert.IsFalse(status.overheating);
+            Assert.IsFalse(status.low_fuel);
+            Assert.AreEqual("masslock", status.fsd_status);
+            Assert.IsFalse(status.srv_drive_assist);
+            Assert.IsFalse(status.srv_under_ship);
+            Assert.IsFalse(status.srv_turret_deployed);
+            Assert.IsFalse(status.srv_handbrake_activated);
+            Assert.IsFalse(status.srv_high_beams);
+            Assert.IsFalse(status.scooping_fuel);
+            Assert.IsFalse(status.silent_running);
+            Assert.IsFalse(status.cargo_scoop_deployed);
+            Assert.IsFalse(status.lights_on);
+            Assert.IsFalse(status.in_wing);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.IsFalse(status.flight_assist_off);
+            Assert.IsFalse(status.supercruise);
+            Assert.IsFalse(status.hyperspace);
+            Assert.IsTrue(status.shields_up);
+            Assert.IsTrue(status.landing_gear_down);
+            Assert.IsTrue(status.landed);
+            Assert.IsFalse(status.docked);
+            Assert.IsTrue(status.analysis_mode);
+            Assert.IsFalse(status.night_vision);
+            Assert.IsFalse(status.altitude_from_average_radius);
+            Assert.IsFalse(status.on_foot_in_station);
+            Assert.IsFalse(status.on_foot_on_planet);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.IsFalse(status.low_oxygen);
+            Assert.IsFalse(status.low_health);
+            Assert.AreEqual("temperate", status.on_foot_temperature);
+            Assert.IsFalse(status.hardpoints_deployed);
+            Assert.AreEqual(2M, status.pips_sys);
+            Assert.AreEqual(4M, status.pips_eng);
+            Assert.AreEqual(0M, status.pips_wea);
+            Assert.AreEqual(0, status.firegroup);
+            Assert.AreEqual("none", status.gui_focus);
+            Assert.AreEqual(32M, status.fuelInTanks);
+            Assert.AreEqual(0.384769M, status.fuelInReservoir);
+            Assert.AreEqual(0, status.cargo_carried);
+            Assert.AreEqual("Clean", status.legalstatus);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.AreEqual(40.761524M, status.latitude);
+            Assert.AreEqual(65.103111M, status.longitude);
+            Assert.AreEqual(32M, status.heading);
+            Assert.AreEqual(0M, status.altitude);
+            Assert.AreEqual("Nervi 2 a", status.bodyname);
+            Assert.AreEqual(866740.562500M, status.planetradius);
         }
 
         [TestMethod]
