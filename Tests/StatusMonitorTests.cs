@@ -170,6 +170,65 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestParseStatusFlagsInFighterOdyssey()
+        {
+            string line = "{ \"timestamp\":\"2021-05-01T21:15:30Z\", \"event\":\"Status\", \"Flags\":34078792, \"Flags2\":0, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":0.000000, \"FuelReservoir\":0.240000 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\" }";
+            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+
+            // Variables set from status flags (when not signed in, flags are set to '0')
+            DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 15, 30, DateTimeKind.Utc);
+            Assert.AreEqual(expectedTimestamp, status.timestamp);
+            Assert.AreEqual((Status.Flags)34078792, status.flags);
+            Assert.AreEqual((Status.Flags2)0, status.flags2);
+            Assert.AreEqual(Constants.VEHICLE_FIGHTER, status.vehicle);
+            Assert.IsFalse(status.being_interdicted);
+            Assert.IsFalse(status.in_danger);
+            Assert.IsFalse(status.near_surface);
+            Assert.IsFalse(status.overheating);
+            Assert.IsTrue(status.low_fuel); // Always true in a fighter since the fighter has no main fuel tank
+            Assert.AreEqual("ready", status.fsd_status);
+            Assert.IsFalse(status.srv_drive_assist);
+            Assert.IsFalse(status.srv_under_ship);
+            Assert.IsFalse(status.srv_turret_deployed);
+            Assert.IsFalse(status.srv_handbrake_activated);
+            Assert.IsFalse(status.srv_high_beams);
+            Assert.IsFalse(status.scooping_fuel);
+            Assert.IsFalse(status.silent_running);
+            Assert.IsFalse(status.cargo_scoop_deployed);
+            Assert.IsFalse(status.lights_on);
+            Assert.IsFalse(status.in_wing);
+            Assert.IsTrue(status.hardpoints_deployed);
+            Assert.IsFalse(status.flight_assist_off);
+            Assert.IsFalse(status.supercruise);
+            Assert.IsFalse(status.hyperspace);
+            Assert.IsTrue(status.shields_up);
+            Assert.IsFalse(status.landing_gear_down);
+            Assert.IsFalse(status.landed);
+            Assert.IsFalse(status.docked);
+            Assert.IsFalse(status.analysis_mode);
+            Assert.IsFalse(status.night_vision);
+            Assert.IsFalse(status.altitude_from_average_radius);
+            Assert.IsFalse(status.on_foot_in_station);
+            Assert.IsFalse(status.on_foot_on_planet);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.IsFalse(status.low_oxygen);
+            Assert.IsFalse(status.low_health);
+            Assert.AreEqual("temperate", status.on_foot_temperature);
+            Assert.IsTrue(status.hardpoints_deployed);
+            Assert.AreEqual(1M, status.pips_sys);
+            Assert.AreEqual(4M, status.pips_eng);
+            Assert.AreEqual(1M, status.pips_wea);
+            Assert.AreEqual(0, status.firegroup);
+            Assert.AreEqual("none", status.gui_focus);
+            Assert.AreEqual(0M, status.fuelInTanks);
+            Assert.AreEqual(0.24M, status.fuelInReservoir);
+            Assert.AreEqual(0, status.cargo_carried);
+            Assert.AreEqual("Clean", status.legalstatus);
+            Assert.IsFalse(status.aim_down_sight);
+            Assert.AreEqual(null, status.altitude);
+        }
+
+        [TestMethod]
         public void TestParseStatusFlagsNormalSpace()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777320, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0 }";
