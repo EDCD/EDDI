@@ -352,25 +352,13 @@ namespace EddiJournalMonitor
                                         var targetShip = ShipDefinitions.FromEDModel(target, false);
 
                                         // Might be a SRV or Fighter
-                                        VehicleDefinition targetVehicle = null;
-                                        if (VehicleDefinition.AllOfThem.Any(v => string.Equals(v.edname, target, StringComparison.InvariantCultureIgnoreCase)))
-                                        {
-                                            targetVehicle = VehicleDefinition.FromEDName(target);
-                                        }
+                                        var targetVehicle = VehicleDefinition.EDNameExists(target) ? VehicleDefinition.FromEDName(target) : null;
 
                                         // Might be an on foot commander
-                                        Suit targetCmdrSuit = null;
-                                        if (Suit.AllOfThem.Any(s => string.Equals(s.edname, target, StringComparison.InvariantCultureIgnoreCase)))
-                                        {
-                                            targetCmdrSuit = Suit.FromEDName(target);
-                                        }
+                                        var targetCmdrSuit = Suit.EDNameExists(target) ? Suit.FromEDName(target) : null;
 
                                         // Might be an on foot NPC
-                                        NpcSuitLoadout targetNpcSuitLoadout = null;
-                                        if (NpcSuitLoadout.AllOfThem.Any(s => string.Equals(s.edname, target, StringComparison.InvariantCultureIgnoreCase)))
-                                        {
-                                            targetNpcSuitLoadout = NpcSuitLoadout.FromEDName(target);
-                                        }
+                                        var targetNpcSuitLoadout = NpcSuitLoadout.EDNameExists(target) ? NpcSuitLoadout.FromEDName(target) : null;
 
                                         target = targetShip?.SpokenModel()
                                             ?? targetCmdrSuit?.localizedName

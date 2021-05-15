@@ -43,22 +43,13 @@ namespace EddiDataDefinitions
             killerShip = ShipDefinitions.FromEDModel(edModel, false);
 
             // Might be a SRV or Fighter
-            if (VehicleDefinition.AllOfThem.Any(v => string.Equals(v.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                killerVehicle = VehicleDefinition.FromEDName(edModel);
-            }
+            killerVehicle = VehicleDefinition.EDNameExists(edModel) ? VehicleDefinition.FromEDName(edModel) : null;
 
             // Might be an on foot commander
-            if (Suit.AllOfThem.Any(s => string.Equals(s.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                killerCmdrSuit = Suit.FromEDName(edModel);
-            }
+            killerCmdrSuit = Suit.EDNameExists(edModel) ? Suit.FromEDName(edModel) : null;
 
             // Might be an on foot NPC
-            if (NpcSuitLoadout.AllOfThem.Any(s => string.Equals(s.edname, edModel, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                killerNpcSuitLoadout = NpcSuitLoadout.FromEDName(edModel);
-            }
+            killerNpcSuitLoadout = NpcSuitLoadout.EDNameExists(edModel) ? NpcSuitLoadout.FromEDName(edModel) : null;
         }
     }
 }
