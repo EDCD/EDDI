@@ -346,7 +346,7 @@ namespace EddiStatusMonitor
                 }
 
                 // Update vehicle information
-                if (!string.IsNullOrEmpty(thisStatus.vehicle) && thisStatus.vehicle != EDDI.Instance.Vehicle)
+                if (!string.IsNullOrEmpty(thisStatus.vehicle) && thisStatus.vehicle != lastStatus.vehicle && lastStatus.vehicle == EDDI.Instance.Vehicle)
                 {
                     var statusSummary = new Dictionary<string, Status> { { "isStatus", thisStatus }, { "wasStatus", lastStatus } };
                     Logging.Info($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}", statusSummary);
