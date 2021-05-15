@@ -61,13 +61,13 @@ namespace EddiEvents
 
         public long systemAddress { get; }
 
-        public long? bodyId { get; }
+        public int? bodyId { get; }
 
         public long? marketId { get; }
 
         public StationModel stationModel { get; }
 
-        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTaxi, bool fromMultiCrew, int? fromLocalId, string system, long systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, string station, long? marketId, StationModel stationModel) : base(timestamp, NAME)
+        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTaxi, bool fromMultiCrew, int? fromLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station, long? marketId, StationModel stationModel) : base(timestamp, NAME)
         {
             this.fromsrv = fromSRV;
             this.fromtaxi = fromTaxi;

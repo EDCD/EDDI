@@ -4080,7 +4080,7 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
 
@@ -4102,7 +4102,7 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
 
