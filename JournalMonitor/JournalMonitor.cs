@@ -4086,7 +4086,7 @@ namespace EddiJournalMonitor
 
                                     string station = JsonParsing.getString(data, "StationName"); // if at a station
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
 
                                     events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4108,7 +4108,7 @@ namespace EddiJournalMonitor
 
                                     string station = JsonParsing.getString(data, "StationName"); // if at a station
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
 
                                     events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
