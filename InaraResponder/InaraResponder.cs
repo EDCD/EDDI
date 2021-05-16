@@ -79,15 +79,9 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (EDDI.Instance.inCQC)
+            if (EDDI.Instance.inTelepresence)
             {
                 // We don't do anything whilst in CQC
-                return;
-            }
-
-            if (EDDI.Instance.inCrew)
-            {
-                // We don't do anything whilst in multicrew
                 return;
             }
 
@@ -522,11 +516,15 @@ namespace EddiInaraResponder
                     { "stationName", @event.station },
                     { "marketID", @event.marketId }
                 };
-                Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
-                if (!string.IsNullOrEmpty(currentShip?.EDName))
+
+                if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    eventData.Add("shipType", currentShip.EDName);
-                    eventData.Add("shipGameID", currentShip.LocalId);
+                    Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                    if (!string.IsNullOrEmpty(currentShip?.EDName))
+                    {
+                        eventData.Add("shipType", currentShip.EDName);
+                        eventData.Add("shipGameID", currentShip.LocalId);
+                    }
                 }
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelDock", eventData));
             }
@@ -960,13 +958,13 @@ namespace EddiInaraResponder
             {
                 { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname }
             };
-            if (@event.commanders?.Count > 1)
+            if (@event.killers?.Count > 1)
             {
-                diedEventData.Add("wingOpponentNames", @event.commanders);
+                diedEventData.Add("wingOpponentNames", @event.killers.Select(k => k.name));
             }
-            else if (@event.commanders?.Count == 1)
+            else if (@event.killers?.Count == 1)
             {
-                diedEventData.Add("opponentName", @event.commanders[0]);
+                diedEventData.Add("opponentName", @event.killers[0].name);
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatDeath", diedEventData));
         }
@@ -1108,11 +1106,15 @@ namespace EddiInaraResponder
                     { "starsystemName", @event.system },
                     { "jumpDistance", @event.distance }
                 };
-            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
-            if (!string.IsNullOrEmpty(currentShip?.EDName))
+
+            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
-                eventData.Add("shipType", currentShip.EDName);
-                eventData.Add("shipGameID", currentShip.LocalId);
+                Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                if (!string.IsNullOrEmpty(currentShip?.EDName))
+                {
+                    eventData.Add("shipType", currentShip.EDName);
+                    eventData.Add("shipGameID", currentShip.LocalId);
+                }
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelFSDJump", eventData));
         }

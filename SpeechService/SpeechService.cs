@@ -105,16 +105,7 @@ namespace EddiSpeechService
 
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
         {
-            if (message == null)
-            {
-                return;
-            }
-
-            if (ship == null)
-            {
-                // Provide basic ship definition
-                ship = ShipDefinitions.FromModel("Sidewinder");
-            }
+            if (message == null) { return; }
 
             Thread speechQueueHandler = new Thread(() =>
             {

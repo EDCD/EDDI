@@ -47,6 +47,7 @@ namespace EddiDataDefinitions
             var Livery = new StationService("Livery");
             var ModulePacks = new StationService("ModulePacks");
             var VoucherRedemption = new StationService("VoucherRedemption");
+            var SocialSpace = new StationService("SocialSpace");
         }
 
         public static readonly StationService None;

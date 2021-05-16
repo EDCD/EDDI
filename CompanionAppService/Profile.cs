@@ -43,6 +43,9 @@ namespace EddiCompanionAppService
 
         /// <summary>Whether this profile describes a commander with the Horizons expanion running</summary>
         public bool inHorizons { get; set; }
+
+        /// <summary>Whether this profile describes a commander with the Horizons expanion running</summary>
+        public bool inOdyssey { get; set; }
     }
 
     public class ProfileStarSystem

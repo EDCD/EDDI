@@ -116,8 +116,8 @@ namespace EddiJournalMonitor
                             case "Docked":
                                 {
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
@@ -166,38 +166,61 @@ namespace EddiJournalMonitor
                                 break;
                             case "Touchdown":
                                 {
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
-                                    string nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
-                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "Liftoff":
                                 {
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
-                                    string nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
-                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "SupercruiseEntry":
                                 {
                                     string system = JsonParsing.getString(data, "StarySystem");
-                                    events.Add(new EnteredSupercruiseEvent(timestamp, system) { raw = line, fromLoad = fromLogLoad });
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredSupercruiseEvent(timestamp, system, systemAddress, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -208,7 +231,9 @@ namespace EddiJournalMonitor
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
-                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType) { raw = line, fromLoad = fromLogLoad });
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -252,7 +277,10 @@ namespace EddiJournalMonitor
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -306,19 +334,38 @@ namespace EddiJournalMonitor
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
+                                    bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
+                                    bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+                                    bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
+                                    
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "Bounty":
                                 {
-
                                     string target = JsonParsing.getString(data, "Target");
                                     if (target != null)
                                     {
-                                        // Target might be a ship, but if not then the string we provide is repopulated in ship.model so use it regardless
-                                        Ship ship = ShipDefinitions.FromEDModel(target);
-                                        target = !string.IsNullOrEmpty(ship.model) ? ship.model : JsonParsing.getString(data, "Target_Localised");
+                                        // Might be a ship
+                                        var targetShip = ShipDefinitions.FromEDModel(target, false);
+
+                                        // Might be a SRV or Fighter
+                                        var targetVehicle = VehicleDefinition.EDNameExists(target) ? VehicleDefinition.FromEDName(target) : null;
+
+                                        // Might be an on foot commander
+                                        var targetCmdrSuit = Suit.EDNameExists(target) ? Suit.FromEDName(target) : null;
+
+                                        // Might be an on foot NPC
+                                        var targetNpcSuitLoadout = NpcSuitLoadout.EDNameExists(target) ? NpcSuitLoadout.FromEDName(target) : null;
+
+                                        target = targetShip?.SpokenModel()
+                                            ?? targetCmdrSuit?.localizedName
+                                            ?? targetVehicle?.localizedName
+                                            ?? targetNpcSuitLoadout?.localizedName
+                                            ?? JsonParsing.getString(data, "Target_Localised")
+                                            ;
                                     }
 
                                     string victimFaction = getFactionName(data, "VictimFaction");
@@ -1980,7 +2027,7 @@ namespace EddiJournalMonitor
                                         }
                                         else
                                         {
-                                            Ship shipDef = ShipDefinitions.FromEDModel(ship);
+                                            Ship shipDef = ShipDefinitions.FromEDModel(ship, false);
                                             if (shipDef != null)
                                             {
                                                 ship = shipDef.model;
@@ -2021,31 +2068,32 @@ namespace EddiJournalMonitor
                                 break;
                             case "Died":
                                 {
+                                    Killer parseKiller(IDictionary<string, object> killerData, bool singleKiller)
+                                    {
+                                        // Property names differ if there is a single killer vs. multiple killers
+                                        var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
+                                        var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
+                                        var rating = CombatRating.FromEDName(JsonParsing.getString(killerData, singleKiller ? "KillerRank" : "Rank"));
+                                        return new Killer(name, equipment, rating);
+                                    }
 
-                                    List<string> names = new List<string>();
-                                    List<string> ships = new List<string>();
-                                    List<CombatRating> ratings = new List<CombatRating>();
-
+                                    var killers = new List<Killer>();
                                     if (data.ContainsKey("KillerName"))
                                     {
                                         // Single killer
-                                        names.Add(JsonParsing.getString(data, "KillerName"));
-                                        ships.Add(JsonParsing.getString(data, "KillerShip"));
-                                        ratings.Add(CombatRating.FromEDName(JsonParsing.getString(data, "KillerRank")));
+                                        killers.Add(parseKiller(data, true));
                                     }
                                     if (data.ContainsKey("killers"))
                                     {
                                         // Multiple killers
                                         data.TryGetValue("Killers", out object val);
-                                        List<object> killers = (List<object>)val;
-                                        foreach (IDictionary<string, object> killer in killers)
+                                        List<object> killersData = (List<object>)val;
+                                        foreach (IDictionary<string, object> killerData in killersData)
                                         {
-                                            names.Add(JsonParsing.getString(killer, "Name"));
-                                            ships.Add(JsonParsing.getString(killer, "Ship"));
-                                            ratings.Add(CombatRating.FromEDName(JsonParsing.getString(killer, "Rank")));
+                                            killers.Add(parseKiller(killerData, false));
                                         }
                                     }
-                                    events.Add(new DiedEvent(timestamp, names, ships, ratings) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DiedEvent(timestamp, killers) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2387,24 +2435,33 @@ namespace EddiJournalMonitor
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
                                     string frontierID = JsonParsing.getString(data, "FID");
-                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
+                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
+                                    bool odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
 
-                                    data.TryGetValue("ShipID", out object val);
-                                    int? shipId = (int?)(long?)val;
-
-                                    if (shipId == null)
-                                    {
-                                        // This happens if we are in CQC.  Flag it back to EDDI so that it ignores everything that happens until
-                                        // we're out of CQC again
-                                        events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
-                                        break;
-                                    }
-
-                                    string ship = JsonParsing.getString(data, "Ship");
+                                    string shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
+                                                                                       // If on foot this may be a suit & if in an SRV then this may be an SRV.
                                     string shipName = JsonParsing.getString(data, "ShipName");
                                     string shipIdent = JsonParsing.getString(data, "ShipIdent");
+                                    long? shipId = JsonParsing.getOptionalLong(data, "ShipID"); // If on foot we'll get a suit ID here, which we need to treat as a long
 
+                                    // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
+                                    if (shipId == null)
+                                    {
+                                        if (!string.IsNullOrEmpty(shipEDModel) && shipEDModel.ToLowerInvariant().Contains("taxi"))
+                                        {
+                                            // This is a taxi
+                                        }
+                                        else
+                                        {
+                                            // The LoadGame event for entering CQC contains no ship details.
+                                            // We are entering CQC. Flag it back to EDDI so we can ignore everything that happens until
+                                            // we're out of CQC again
+                                            events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
+                                            handled = true;
+                                            break;
+                                        }
+                                    }
+                                    
                                     bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
                                     bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
 
@@ -2415,7 +2472,7 @@ namespace EddiJournalMonitor
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4013,6 +4070,58 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "Disembark":
+                                {
+                                    bool fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
+                                    bool fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a taxi transport ship 
+                                    bool fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
+                                    int? fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
+
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string body = JsonParsing.getString(data, "Body");
+                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+
+                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Embark":
+                                {
+                                    bool toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
+                                    bool toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a taxi transport ship 
+                                    bool toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
+                                    int? toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
+
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string body = JsonParsing.getString(data, "Body");
+                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+
+                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "BackPackMaterials":
+                            case "BookDropship":
+                            case "BookTaxi":
+                            case "BuyMicroResources":
+                            case "BuySuit":
+                            case "BuyWeapon":
+                            case "CancelDropship":
+                            case "CancelTaxi":
                             case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":
@@ -4029,14 +4138,34 @@ namespace EddiJournalMonitor
                             case "CarrierTradeOrder":
                             case "CodexDiscovery":
                             case "CodexEntry":
+                            case "CollectItems":
+                            case "CreateSuitLoadout":
                             case "CrimeVictim":
+                            case "DeleteSuitLoadout":
                             case "DiscoveryScan":
+                            case "DropItems":
+                            case "DropshipDeploy":
                             case "EngineerLegacyConvert":
+                            case "LoadoutEquipModule":
+                            case "LoadoutRemoveModule":
                             case "NavRoute":
+                            case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
+                            case "ScanOrganic":
+                            case "SellMicroResources":
+                            case "SellOrganicData":
+                            case "SellSuit":
+                            case "SellWeapon":
                             case "SharedBookmarkToSquadron":
+                            case "ShipLockerMaterials":
+                            case "SwitchSuitLoadout":
+                            case "TradeMicroResources":
+                            case "TransferMicroResources":
+                            case "UpgradeSuit":
+                            case "UpgradeWeapon":
+                            case "UseConsumable":
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
@@ -4426,7 +4555,7 @@ namespace EddiJournalMonitor
             }
             else if (slot.Contains("Military"))
             {
-                var slotSize = ShipDefinitions.FromEDModel(ship)?.militarysize;
+                var slotSize = ShipDefinitions.FromEDModel(ship, false)?.militarysize;
                 if (slotSize is null)
                 {
                     // We didn't expect to have a military slot on this ship.

@@ -75,6 +75,16 @@ namespace EDDNResponder
         public string stationName { get; private set; }
         public long? marketId { get; private set; }
 
+        // We also keep track of game version and active expansions locally
+        public string gameVersion { get; private set; }
+
+        public string gameBuild { get; private set; }
+
+        public bool inHorizons { get; private set; }
+
+        public bool inOdyssey { get; private set; }
+
+        // Are we in an invalid state?
         public bool invalidState { get; private set; }
 
         private StarSystemRepository starSystemRepository;
@@ -105,15 +115,9 @@ namespace EDDNResponder
 
         public void Handle(Event theEvent)
         {
-            if (EDDI.Instance.inCQC)
+            if (EDDI.Instance.inTelepresence)
             {
-                // We don't do anything whilst in CQC
-                return;
-            }
-
-            if (EDDI.Instance.inCrew)
-            {
-                // We don't do anything whilst in multicrew
+                // We don't do anything whilst in Telepresence
                 return;
             }
 
@@ -163,6 +167,9 @@ namespace EDDNResponder
                 ClearLocation();
             }
 
+            // Except as noted above, always attempt to obtain available game version data from the active event 
+            GetGameVersionData(edType, data);
+
             // Except as noted above, always attempt to obtain available location data from the active event 
             GetLocationData(data);
 
@@ -180,6 +187,7 @@ namespace EDDNResponder
                     {
                         data = StripPersonalData(data);
                         data = EnrichLocationData(edType, data);
+                        data = AddGameVersionData(data);
 
                         if (data != null) 
                         { 
@@ -199,6 +207,30 @@ namespace EDDNResponder
             systemZ = null;
             stationName = null;
             marketId = null;
+        }
+
+        private void GetGameVersionData(string eventType, IDictionary<string, object> data)
+        {
+            try
+            {
+                if (string.Equals("FileHeader", eventType, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    gameVersion = JsonParsing.getString(data, "gameversion") ?? gameVersion;
+                    gameBuild = JsonParsing.getString(data, "build") ?? gameBuild;
+                }
+
+                if (string.Equals("LoadGame", eventType, StringComparison.InvariantCultureIgnoreCase) 
+                    || string.Equals("Outfitting", eventType, StringComparison.InvariantCultureIgnoreCase) 
+                    || string.Equals("Shipyard", eventType, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
+                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to parse Elite Dangerous version data for EDDN", ex);
+            }
         }
 
         private void GetLocationData(IDictionary<string, object> data)
@@ -226,9 +258,7 @@ namespace EDDNResponder
             }
             catch (Exception ex)
             {
-                data.Add("exception", ex.Message);
-                data.Add("stacktrace", ex.StackTrace);
-                Logging.Error("Failed to parse EDDN location data", data);
+                Logging.Error("Failed to parse location data for EDDN", ex);
             }
         }
 
@@ -280,6 +310,10 @@ namespace EDDNResponder
                     // Identify and catch a possible FDev bug that can allow incomplete `Docked` messages
                     // missing a MarketID and many other properties.
                     if (!data.ContainsKey("MarketID")) { passed = false; }
+
+                    // Don't allow messages with a missing StationName.
+                    if (data.ContainsKey("StationName") && string.IsNullOrEmpty(JsonParsing.getString(data, "StationName"))) { passed = false; }
+
                     break;
                 case "SAASignalsFound":
                     if (!data.ContainsKey("Signals")) { passed = false; }
@@ -353,6 +387,19 @@ namespace EDDNResponder
                     systemZ.Value
                 };
                 data.Add("StarPos", starpos);
+            }
+            return data;
+        }
+
+        private IDictionary<string, object> AddGameVersionData(IDictionary<string, object> data)
+        {
+            if (!data.ContainsKey("horizons"))
+            {
+                data.Add("horizons", inHorizons);
+            }
+            if (!data.ContainsKey("odyssey"))
+            {
+                data.Add("odyssey", inOdyssey);
             }
             return data;
         }

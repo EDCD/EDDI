@@ -257,4 +257,12 @@
     <value>your</value>
     <comment>e.g. *your* Mamba</comment>
   </data>
+  <data name="yourTransport" xml:space="preserve">
+    <value>your transport</value>
+    <comment>If transporting via taxi</comment>
+  </data>
+  <data name="yourShip" xml:space="preserve">
+    <value>your ship</value>
+    <comment>If transporting via a generic ship (e.g. multicrew)</comment>
+  </data>
 </root>

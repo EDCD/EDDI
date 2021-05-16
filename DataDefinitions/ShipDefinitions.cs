@@ -113,20 +113,20 @@ namespace EddiDataDefinitions
                 {
                     model = edModel;
                 }
-                Ship = FromEDModel(model);
+                Ship = FromEDModel(model, false);
             }
             return Ship;
         }
 
         /// <summary>Obtain details of a ship given its Elite:Dangerous model</summary>
-        public static Ship FromEDModel(string model)
+        public static Ship FromEDModel(string edModel, bool createIfMissing = true)
         {
-            if (model == null)
+            if (edModel == null)
             {
                 return null;
             }
             Ship Ship = new Ship();
-            if (ShipsByEDModel.TryGetValue(model.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Ship Template))
+            if (ShipsByEDModel.TryGetValue(edModel.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Ship Template))
             {
                 Ship.EDID = Template.EDID;
                 Ship.EDName = Template.EDName;
@@ -137,12 +137,14 @@ namespace EddiDataDefinitions
                 Ship.Size = Template.Size;
                 Ship.militarysize = Template.militarysize;
                 Ship.activeFuelReservoirCapacity = Template.activeFuelReservoirCapacity;
+                return Ship;
             }
-            else
+            if (createIfMissing)
             {
-                Ship.model = model;
+                Ship.EDName = edModel;
+                return Ship;
             }
-            return Ship;
+            return null;
         }
 
         // EDDB model names may not match either EDDI's model name strings or FDev's EDName strings. 

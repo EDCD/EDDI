@@ -25,6 +25,9 @@ namespace Utilities
         public static readonly string VEHICLE_SHIP = "Ship";
         public static readonly string VEHICLE_SRV = "SRV";
         public static readonly string VEHICLE_FIGHTER = "Fighter";
+        public static readonly string VEHICLE_LEGS = "On Foot";
+        public static readonly string VEHICLE_TAXI = "Taxi";
+        public static readonly string VEHICLE_MULTICREW = "Multicrew";
 
         //Option defaults
         public const int maxStationDistanceDefault = 10000;

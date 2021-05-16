@@ -66,6 +66,7 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="Killer.cs" />
     <Compile Include="CommunityGoal.cs" />
     <Compile Include="MessageChannel.cs" />
     <Compile Include="MessageSource.cs" />
@@ -79,6 +80,16 @@
       <DependentUpon>MessageChannels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Suit.Designer.cs">
+      <DependentUpon>Suit.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\NpcSuitLoadout.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NpcSuitLoadout.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -105,6 +116,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="NpcSuitLoadout.cs" />
+    <Compile Include="Suit.cs" />
     <Compile Include="ShipyardInfo.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="SignalAmount.cs" />
@@ -650,6 +663,31 @@
     <EmbeddedResource Include="Properties\Modules.cs.resx" />
     <EmbeddedResource Include="Properties\Modules.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modules.ru.resx" />
+    <EmbeddedResource Include="Properties\Suit.cs.resx" />
+    <EmbeddedResource Include="Properties\Suit.de.resx" />
+    <EmbeddedResource Include="Properties\Suit.es.resx" />
+    <EmbeddedResource Include="Properties\Suit.fr.resx" />
+    <EmbeddedResource Include="Properties\Suit.hu.resx" />
+    <EmbeddedResource Include="Properties\Suit.it.resx" />
+    <EmbeddedResource Include="Properties\Suit.ja.resx" />
+    <EmbeddedResource Include="Properties\Suit.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\Suit.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Suit.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.cs.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.de.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.es.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.fr.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.hu.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.it.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.ja.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NpcSuitLoadout.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\NpcSuitLoadout.ru.resx" />
     <EmbeddedResource Include="Properties\PassengerType.cs.resx" />
     <EmbeddedResource Include="Properties\PassengerType.pt-BR.resx" />
     <EmbeddedResource Include="Properties\PassengerType.ru.resx" />
@@ -1019,6 +1057,7 @@
     <EmbeddedResource Include="Properties\StationService.ja.resx" />
     <EmbeddedResource Include="Properties\StationService.pt-BR.resx" />
     <EmbeddedResource Include="Properties\StationService.ru.resx" />
+    <EmbeddedResource Include="Properties\Suit.ru.resx" />
     <EmbeddedResource Include="Properties\Superpowers.cs.resx" />
     <EmbeddedResource Include="Properties\Superpowers.de.resx" />
     <EmbeddedResource Include="Properties\Superpowers.hu.resx" />

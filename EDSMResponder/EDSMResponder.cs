@@ -85,15 +85,9 @@ namespace EddiEdsmResponder
 
         public void Handle(Event theEvent)
         {
-            if (EDDI.Instance.inCQC)
+            if (EDDI.Instance.inTelepresence)
             {
                 // We don't do anything whilst in CQC
-                return;
-            }
-
-            if (EDDI.Instance.inCrew)
-            {
-                // We don't do anything whilst in multicrew
                 return;
             }
 

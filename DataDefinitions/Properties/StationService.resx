@@ -257,4 +257,8 @@
     <value>Redemption Office</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Social Space</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>

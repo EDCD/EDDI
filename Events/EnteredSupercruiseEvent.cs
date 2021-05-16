@@ -14,14 +14,29 @@ namespace EddiEvents
         static EnteredSupercruiseEvent()
         {
             VARIABLES.Add("system", "The system at which the commander has entered supercruise");
+            VARIABLES.Add("taxi", "True if the ship is an Apex taxi");
+            VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
         [JsonProperty("system")]
         public string system { get; private set; }
 
-        public EnteredSupercruiseEvent(DateTime timestamp, string system) : base(timestamp, NAME)
+        [JsonProperty("taxi")]
+        public bool? taxi { get; private set; }
+
+        [JsonProperty("multicrew")]
+        public bool? multicrew { get; private set; }
+
+        // Not intended to be user facing
+
+        public long? systemAddress { get; private set; }
+
+        public EnteredSupercruiseEvent(DateTime timestamp, string system, long? systemAddress, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.system = system;
+            this.systemAddress = systemAddress;
+            this.taxi = taxi;
+            this.multicrew = multicrew;
         }
     }
 }

@@ -186,7 +186,7 @@ namespace EddiStatusMonitor
 
         public Status ParseStatusEntry(string line)
         {
-            Status status = new Status();
+            Status status = new Status() { raw = line };
             try
             {
                 Match match = JsonRegex.Match(line);
@@ -206,7 +206,9 @@ namespace EddiStatusMonitor
                     }
 
                     status.flags = (Status.Flags)(JsonParsing.getOptionalLong(data, "Flags") ?? 0);
-                    if (status.flags == Status.Flags.None)
+                    status.flags2 = (Status.Flags2)(JsonParsing.getOptionalLong(data, "Flags2") ?? 0);
+                    
+                    if (status.flags == Status.Flags.None && status.flags2 == Status.Flags2.None)
                     {
                         // No flags are set. We aren't in game.
                         return status;
@@ -222,6 +224,7 @@ namespace EddiStatusMonitor
                     int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
                     switch (gui_focus)
                     {
+                        case null:
                         case 0: // No focus
                             {
                                 status.gui_focus = "none";
@@ -297,8 +300,16 @@ namespace EddiStatusMonitor
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
                     status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
-                    status.bodyname = JsonParsing.getString(data, "BodyName");
+                    status.bodyname = JsonParsing.getString(data, "BodyName"); // Might be a station name if we're in an orbital station
                     status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
+
+                    // When on foot
+                    status.oxygen = JsonParsing.getOptionalDecimal(data, "Oxygen") * 100; // Convert Oxygen to a 0-100 percent scale
+                    status.health = JsonParsing.getOptionalDecimal(data, "Health") * 100; // Convert Health to a 0-100 percent scale
+                    status.temperature = JsonParsing.getOptionalDecimal(data, "Temperature"); // In Kelvin
+                    status.selected_weapon = JsonParsing.getString(data, "SelectedWeapon_Localised") 
+                        ?? JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
+                    status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
 
                     // Calculated data
                     SetFuelExtras(status);
@@ -335,7 +346,13 @@ namespace EddiStatusMonitor
                 }
 
                 // Update vehicle information
-                EDDI.Instance.Vehicle = thisStatus.vehicle;
+                if (!string.IsNullOrEmpty(thisStatus.vehicle) && thisStatus.vehicle != lastStatus.vehicle && lastStatus.vehicle == EDDI.Instance.Vehicle)
+                {
+                    var statusSummary = new Dictionary<string, Status> { { "isStatus", thisStatus }, { "wasStatus", lastStatus } };
+                    Logging.Debug($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}", statusSummary);
+
+                    EDDI.Instance.Vehicle = thisStatus.vehicle;
+                }
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.shields_up != lastStatus.shields_up && thisStatus.vehicle == lastStatus.vehicle)

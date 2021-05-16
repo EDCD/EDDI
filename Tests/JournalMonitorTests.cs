@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Tests.Properties;
 using Utilities;
 
@@ -1258,7 +1259,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTouchdownEventBio()
         {
-            string line = "{ \"timestamp\":\"2019 - 09 - 26T06: 42:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.165684, \"Longitude\":-123.219307, \"NearestDestination\":\"$SAA_Unknown_Signal:#type=$SAA_SignalType_Biological;:#index=15;\", \"NearestDestination_Localised\":\"Surface signal: Biological (15)\" }";
+            string line = "{ \"timestamp\":\"2019 - 09 - 26T06: 42:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Nervi\", \"SystemAddress\":2518721481067, \"Body\":\"Nervi 2 a\", \"BodyID\":17, \"OnStation\":false, \"OnPlanet\":true, \"Latitude\":-44.165684, \"Longitude\":-123.219307, \"NearestDestination\":\"$SAA_Unknown_Signal:#type=$SAA_SignalType_Biological;:#index=15;\", \"NearestDestination_Localised\":\"Surface signal: Biological (15)\" }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             TouchdownEvent @event = (TouchdownEvent)events[0];
             Assert.IsTrue(@event.playercontrolled);
@@ -1270,7 +1271,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTouchdownEventGuardian()
         {
-            string line = "{ \"timestamp\":\"2019 - 09 - 26T04: 55:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.464405, \"Longitude\":-95.072144, \"NearestDestination\":\"$Ancient_Tiny_003:#index=1;\", \"NearestDestination_Localised\":\"Guardian Structure\" }";
+            string line = "{ \"timestamp\":\"2019 - 09 - 26T04: 55:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Nervi\", \"SystemAddress\":2518721481067, \"Body\":\"Nervi 2 a\", \"BodyID\":17, \"OnStation\":false, \"OnPlanet\":true, \"Latitude\":-44.464405, \"Longitude\":-95.072144, \"NearestDestination\":\"$Ancient_Tiny_003:#index=1;\", \"NearestDestination_Localised\":\"Guardian Structure\" }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             TouchdownEvent @event = (TouchdownEvent)events[0];
             Assert.IsTrue(@event.playercontrolled);
@@ -1516,6 +1517,211 @@ namespace UnitTests
             Assert.AreEqual(5, goal.tier);
             Assert.AreEqual(10, goal.percentileband);
             Assert.AreEqual(100000000, goal.tierreward);
+        }
+
+        [TestMethod]
+        public void TestCommanderContinuedOnFoot()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:50:03Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""ExplorationSuit_Class1"",
+	            ""Ship_Localised"": ""Artemis Suit"",
+	            ""ShipID"": 4293000003,
+	            ""ShipName"": """",
+	            ""ShipIdent"": """",
+	            ""FuelLevel"": 1.000000,
+	            ""FuelCapacity"": 1.000000,
+	            ""GameMode"": ""Open"",
+	            ""Credits"": 294004749,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("ExplorationSuit_Class1", @event.shipEDModel);
+            Assert.AreEqual(Constants.VEHICLE_LEGS, @event.ship);
+            Assert.AreEqual(4293000003, @event.shipid);
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipname));
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipident));
+            Assert.AreEqual(1M, @event.fuel);
+            Assert.AreEqual(1M, @event.fuelcapacity);
+            Assert.AreEqual("Open", @event.mode);
+            Assert.AreEqual(294004749, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
+        
+        [TestMethod]
+        public void TestCommanderContinuedInApexTaxi()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:59:36Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""adder_taxi"",
+	            ""Ship_Localised"": ""$ADDER_NAME;"",
+	            ""GameMode"": ""Open"",
+	            ""Credits"": 294004649,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("adder_taxi", @event.shipEDModel);
+            Assert.AreEqual(Constants.VEHICLE_TAXI, @event.ship);
+            Assert.IsNull(@event.shipid);
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipname));
+            Assert.IsTrue(string.IsNullOrEmpty(@event.shipident));
+            Assert.IsNull(@event.fuel);
+            Assert.IsNull(@event.fuelcapacity);
+            Assert.AreEqual("Open", @event.mode);
+            Assert.AreEqual(294004649, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
+
+        [TestMethod]
+        public void TestCommanderContinuedCQC()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-04-30T21:59:36Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+                ""Credits"": 594877206,
+	            ""Loan"": 0
+            }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (EnteredCQCEvent)events[0];
+            Assert.AreEqual("John Jameson", @event.commander);
+        }
+
+        [TestMethod]
+        public void TestCommanderContinuedShip()
+        {
+            string line = @"{
+	            ""timestamp"": ""2021-05-01T03:12:27Z"",
+	            ""event"": ""LoadGame"",
+	            ""FID"": ""F100000"",
+	            ""Commander"": ""John Jameson"",
+	            ""Horizons"": true,
+	            ""Odyssey"": true,
+	            ""Ship"": ""DiamondBackXL"",
+	            ""Ship_Localised"": ""Diamondback Explorer"",
+	            ""ShipID"": 38,
+	            ""ShipName"": ""Resolution"",
+	            ""ShipIdent"": ""TK-28D"",
+	            ""FuelLevel"": 32.000000,
+	            ""FuelCapacity"": 32.000000,
+	            ""GameMode"": ""Solo"",
+	            ""Credits"": 7795285167,
+	            ""Loan"": 0
+            }";
+
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Commander continued", @event.type);
+            Assert.AreEqual("F100000", @event.frontierID);
+            Assert.AreEqual("John Jameson", @event.commander);
+            Assert.IsTrue(@event.horizons);
+            Assert.IsTrue(@event.odyssey);
+            Assert.AreEqual("DiamondBackXL", @event.shipEDModel);
+            Assert.AreEqual("Diamondback Explorer", @event.ship);
+            Assert.AreEqual(38, @event.shipid);
+            Assert.AreEqual("Resolution", @event.shipname);
+            Assert.AreEqual("TK-28D", @event.shipident);
+            Assert.AreEqual(32M, @event.fuel);
+            Assert.AreEqual(32M, @event.fuelcapacity);
+            Assert.AreEqual("Solo", @event.mode);
+            Assert.AreEqual(7795285167, @event.credits);
+            Assert.AreEqual(0, @event.loan);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2021-01-08T13:26:17Z"", ""event"":""Died"", ""KillerName"":""Xepherous"", ""KillerShip"":""federation_dropship"", ""KillerRank"":""Master"" }", @"{""killers"":[{""name"":""Xepherous"",""rating"":""Master"",""equipment"":""Federal Dropship""}],""raw"":""{ \""timestamp\"":\""2021-01-08T13:26:17Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Xepherous\"", \""KillerShip\"":\""federation_dropship\"", \""KillerRank\"":\""Master\"" }"",""timestamp"":""2021-01-08T13:26:17Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2021-05-07T11:34:12Z"", ""event"":""Died"", ""KillerName"":""Gretchen Rasmussen"", ""KillerShip"":""assaultsuitai_class1"", ""KillerRank"":""Harmless"" }", @"{""killers"":[{""name"":""Gretchen Rasmussen"",""rating"":""Harmless"",""equipment"":""Commando""}],""raw"":""{ \""timestamp\"":\""2021-05-07T11:34:12Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Gretchen Rasmussen\"", \""KillerShip\"":\""assaultsuitai_class1\"", \""KillerRank\"":\""Harmless\"" }"",""timestamp"":""2021-05-07T11:34:12Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2021-05-07T12:08:29Z"", ""event"":""Died"", ""KillerShip"":""ps_turretbasesmall_3m"" }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2021-05-07T12:08:29Z\"", \""event\"":\""Died\"", \""KillerShip\"":\""ps_turretbasesmall_3m\"" }"",""timestamp"":""2021-05-07T12:08:29Z"",""type"":""Died"",""fromLoad"":false}")]
+        [DataRow(@"{ ""timestamp"":""2017-04-08T22:25:38Z"", ""event"":""Died"", ""Killers"":[ { ""Name"":""Cmdr Uno"", ""Ship"":""federation_dropship_mkii"", ""Rank"":""Elite"" }, { ""Name"":""Cmdr Dos"", ""Ship"":""cutter"", ""Rank"":""Elite"" }, { ""Name"":""Cmdr Tres"", ""Ship"":""empire_trader"", ""Rank"":""Elite"" } ] }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2017-04-08T22:25:38Z\"", \""event\"":\""Died\"", \""Killers\"":[ { \""Name\"":\""Cmdr Uno\"", \""Ship\"":\""federation_dropship_mkii\"", \""Rank\"":\""Elite\"" }, { \""Name\"":\""Cmdr Dos\"", \""Ship\"":\""cutter\"", \""Rank\"":\""Elite\"" }, { \""Name\"":\""Cmdr Tres\"", \""Ship\"":\""empire_trader\"", \""Rank\"":\""Elite\"" } ] }"",""timestamp"":""2017-04-08T22:25:38Z"",""type"":""Died"",""fromLoad"":false}")]
+        public void TestDiedEvent(string line, string expected)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (DiedEvent)events[0];
+            Assert.AreEqual(expected, JsonConvert.SerializeObject(@event));
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2021-05-03T22:22:12Z"", ""event"":""Embark"", ""SRV"":false, ""Taxi"":false, ""Multicrew"":false, ""ID"":6, ""StarSystem"":""Sumod"", ""SystemAddress"":3961847269739, ""Body"":""Sharp Dock"", ""BodyID"":56, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Sharp Dock"", ""StationType"":""Coriolis"", ""MarketID"":32239521286 }", false, true, false, false, 6, "Sumod", 3961847269739, "Sharp Dock", 56, "Sharp Dock", "Coriolis Starport", 32239521286, true, false)] // Embarking from an orbital station to your ship
+        [DataRow(@"{ ""timestamp"":""2021-05-02T22:51:54Z"", ""event"":""Embark"", ""SRV"":true, ""Taxi"":false, ""Multicrew"":false, ""ID"":53, ""StarSystem"":""Nervi"", ""SystemAddress"":2518721481067, ""Body"":""Nervi 2 a"", ""BodyID"":17, ""OnStation"":false, ""OnPlanet"":true }", false, false, true, false, 53, "Nervi", 2518721481067, "Nervi 2 a", 17, null, null, null, false, true )] // Embarking from a surface to an SRV
+        [DataRow(@"{ ""timestamp"":""2021-05-03T21:51:47Z"", ""event"":""Embark"", ""SRV"":false, ""Taxi"":true, ""Multicrew"":false, ""StarSystem"":""Firenses"", ""SystemAddress"":2868635379121, ""Body"":""Roberts Gateway"", ""BodyID"":44, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Roberts Gateway"", ""StationType"":""Coriolis"", ""MarketID"":32216360961 }", false, false, false, true, null, "Firenses", 2868635379121, "Roberts Gateway", 44, "Roberts Gateway", "Coriolis Starport", 32216360961, true, false)] // Embarking from an orbital station to a taxi
+        public void TestEmbarkEvent(string line, bool toMulticrew, bool toShip, bool toSRV, bool toTaxi, int? toLocalId, string systemName, long systemAddress, string bodyName, int? bodyId, string station, string stationType, long? marketId, bool onStation, bool onPlanet)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (EmbarkEvent)events[0];
+            Assert.AreEqual(toMulticrew, @event.tomulticrew);
+            Assert.AreEqual(toShip, @event.toship);
+            Assert.AreEqual(toSRV, @event.tosrv);
+            Assert.AreEqual(toTaxi, @event.totaxi);
+            Assert.AreEqual(toLocalId, @event.toLocalId);
+            Assert.AreEqual(systemName, @event.systemname);
+            Assert.AreEqual(systemAddress, @event.systemAddress);
+            Assert.AreEqual(bodyName, @event.bodyname);
+            Assert.AreEqual(bodyId, @event.bodyId);
+            Assert.AreEqual(station, @event.station);
+            Assert.AreEqual(stationType, @event.stationModel?.invariantName);
+            Assert.AreEqual(marketId, @event.marketId);
+            Assert.AreEqual(onPlanet, @event.onplanet);
+            Assert.AreEqual(onStation, @event.onstation);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2021-05-03T21:57:16Z"", ""event"":""Disembark"", ""SRV"":false, ""Taxi"":true, ""Multicrew"":false, ""StarSystem"":""Sumod"", ""SystemAddress"":3961847269739, ""Body"":""Sharp Dock"", ""BodyID"":56, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Sharp Dock"", ""StationType"":""Coriolis"", ""MarketID"":32239521286 }", false, false, false, true, null, "Sumod", 3961847269739, "Sharp Dock", 56, "Sharp Dock", "Coriolis Starport", 32239521286, true, false)] // Disembarking from a taxi to an orbital station
+        [DataRow(@"{ ""timestamp"":""2021-05-03T21:47:38Z"", ""event"":""Disembark"", ""SRV"":false, ""Taxi"":false, ""Multicrew"":false, ""ID"":6, ""StarSystem"":""Firenses"", ""SystemAddress"":2868635379121, ""Body"":""Roberts Gateway"", ""BodyID"":44, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Roberts Gateway"", ""StationType"":""Coriolis"", ""MarketID"":32216360961 }", false, true, false, false, 6, "Firenses", 2868635379121, "Roberts Gateway", 44, "Roberts Gateway", "Coriolis Starport", 32216360961, true, false)] // Disembarking from your ship to an orbital station
+        [DataRow(@"{ ""timestamp"":""2021-05-02T22:52:25Z"", ""event"":""Disembark"", ""SRV"":true, ""Taxi"":false, ""Multicrew"":false, ""ID"":53, ""StarSystem"":""Nervi"", ""SystemAddress"":2518721481067, ""Body"":""Nervi 2 a"", ""BodyID"":17, ""OnStation"":false, ""OnPlanet"":true }", false, false, true, false, 53, "Nervi", 2518721481067, "Nervi 2 a", 17, null, null, null, false, true )] // Disembarking to an SRV from on foot
+        public void TestDisembarkEvent(string line, bool fromMulticrew, bool fromShip, bool fromSRV, bool fromTaxi, int? fromLocalId, string systemName, long systemAddress, string bodyName, int? bodyId, string station, string stationType, long? marketId, bool onStation, bool onPlanet)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (DisembarkEvent)events[0];
+            Assert.AreEqual(fromMulticrew, @event.frommulticrew);
+            Assert.AreEqual(fromShip, @event.fromship);
+            Assert.AreEqual(fromSRV, @event.fromsrv);
+            Assert.AreEqual(fromTaxi, @event.fromtaxi);
+            Assert.AreEqual(fromLocalId, @event.fromLocalId);
+            Assert.AreEqual(systemName, @event.systemname);
+            Assert.AreEqual(systemAddress, @event.systemAddress);
+            Assert.AreEqual(bodyName, @event.bodyname);
+            Assert.AreEqual(bodyId, @event.bodyId);
+            Assert.AreEqual(station, @event.station);
+            Assert.AreEqual(stationType, @event.stationModel?.invariantName);
+            Assert.AreEqual(marketId, @event.marketId);
+            Assert.AreEqual(onPlanet, @event.onplanet);
+            Assert.AreEqual(onStation, @event.onstation);
         }
     }
 }

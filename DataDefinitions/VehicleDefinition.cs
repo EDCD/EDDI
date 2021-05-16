@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
-    class VehicleDefinition : ResourceBasedLocalizedEDName<VehicleDefinition>
+    public class VehicleDefinition : ResourceBasedLocalizedEDName<VehicleDefinition>
     {
         static VehicleDefinition()
         {
@@ -27,13 +28,20 @@ namespace EddiDataDefinitions
 
         public new static VehicleDefinition FromEDName(string edName)
         {
-            if (edName == null)
-            {
-                return null;
-            }
+            if (edName == null) { return null; }
 
-            string tidiedName = edName.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
-            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedName);
+            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == titiedEDName(edName));
+        }
+
+        public static bool EDNameExists(string edName)
+        {
+            if (edName == null) { return false; }
+            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static string titiedEDName(string edName)
+        {
+            return edName?.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
         }
     }
 }

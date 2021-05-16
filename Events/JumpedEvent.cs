@@ -34,6 +34,8 @@ namespace EddiEvents
             VARIABLES.Add("conflicts", "A list of conflict objects describing any conflicts between factions in the star system");
             VARIABLES.Add("power", "(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty");
             VARIABLES.Add("powerstate", "(Only when pledged) The state of powerplay efforts within the star system");
+            VARIABLES.Add("taxi", "True if the ship is an Apex taxi");
+            VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
         }
 
         public string system { get; private set; }
@@ -66,6 +68,10 @@ namespace EddiEvents
 
         public List<Conflict> conflicts { get; private set; }
 
+        public bool? taxi { get; private set; }
+
+        public bool? multicrew { get; private set; }
+
         // Controlling faction properties
         public string faction => controllingfaction?.name;
         public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
@@ -86,7 +92,7 @@ namespace EddiEvents
         public Power Power { get; private set; }
         public PowerplayState powerState { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -107,6 +113,8 @@ namespace EddiEvents
             this.population = population;
             this.Power = powerplayPower;
             this.powerState = powerplayState;
+            this.taxi = taxi;
+            this.multicrew = multicrew;
         }
     }
 }

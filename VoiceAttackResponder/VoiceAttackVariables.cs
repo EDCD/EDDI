@@ -421,6 +421,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance?.active ?? false);
                 vaProxy.SetBoolean("ipa active", !(SpeechService.Instance?.Configuration.DisableIpa ?? false));
                 vaProxy.SetBoolean("icao active", SpeechService.Instance?.Configuration.EnableIcao ?? false);
+                vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons);
+                vaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey);
                 vaProxy.SetText("Environment", EDDI.Instance.Environment);
                 vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
                 vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());

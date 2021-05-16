@@ -15,35 +15,14 @@ namespace EddiEvents
 
         static DiedEvent()
         {
-            VARIABLES.Add("commanders", "The names of the commanders who killed you");
-            VARIABLES.Add("ships", "The ships the commanders who killed you were flying");
-            VARIABLES.Add("ratings", "The ratings of the commanders who killed you");
+            VARIABLES.Add("killers", "A list of objects describing your killers");
         }
 
-        [JsonProperty("commanders")]
-        public List<string> commanders { get; private set; }
+        public List<Killer> killers { get; private set; }
 
-        [JsonProperty("ships")]
-        public List<string> ships { get; private set; }
-
-        [JsonProperty("ratings")]
-        public List<string> ratings { get; private set; }
-
-        public DiedEvent(DateTime timestamp, List<string> commanders, List<string> ships, List<CombatRating> ratings) : base(timestamp, NAME)
+        public DiedEvent(DateTime timestamp, List<Killer> killers) : base(timestamp, NAME)
         {
-            this.commanders = commanders;
-            this.ships = killerShipModels(ships);
-            this.ratings = ratings.ConvertAll(x => x.localizedName);
-        }
-
-        public static List<string> killerShipModels(List<string> ships)
-        {
-            List<string> shipModels = new List<string>();
-            foreach (string shipName in ships)
-            {
-                shipModels.Add(ShipDefinitions.FromEDModel(shipName).model);
-            }
-            return shipModels;
+            this.killers = killers;
         }
     }
 }

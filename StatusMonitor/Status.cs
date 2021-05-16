@@ -47,12 +47,33 @@ namespace EddiDataDefinitions
             SrvHighBeam = 0x80000000,               // srvHighBeam
         }
 
+        [Flags]
+        public enum Flags2 : uint
+        {
+            None = 0,
+            OnFoot = 0x00000001,                    // OnFoot
+            InTaxi = 0x00000002,                    // InTaxi (or dropship/shuttle)
+            InMultiCrew = 0x00000004,               // InMulticrew (ie in someone else’s ship)
+            OnFootInStation = 0x00000008,           // OnFootInStation
+            OnFootOnPlanet = 0x00000010,            // OnFootOnPlanet
+            AimDownSight = 0x00000020,              // AimDownSight
+            LowOxygen = 0x00000040,                 // LowOxygen
+            LowHealth = 0x00000080,                 // LowHealth
+            Cold = 0x00000100,                      // Cold
+            Hot = 0x00000200,                       // Hot
+            VeryCold = 0x00000400,                  // Very Cold,
+            VeryHot = 0x00000800,                   // Very Hot
+        }
+
         // Variables set from status flags (when not signed in, this is set to '0')
         public string vehicle =>
-                ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
+                  ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
                 : ((flags & Flags.InFighter) != 0) ? Constants.VEHICLE_FIGHTER
-                : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP
-                : "";
+                : ((flags2 & Flags2.OnFoot) != 0) ? Constants.VEHICLE_LEGS 
+                : ((flags2 & Flags2.InTaxi) != 0) ? Constants.VEHICLE_TAXI
+                : ((flags2 & Flags2.InMultiCrew) != 0) ? Constants.VEHICLE_MULTICREW
+                : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP : ""; // "InMainShip" can be set when other flags are also set so we check "InMainShip" last.
+                // Per private comments from Howard Chalkey, `InMainShip` means a FSD-capable ship, as against a SRV or Fighter: it will be set when in a Taxi
         public bool being_interdicted => (flags & Flags.BeingInterdicted) != 0;
         public bool in_danger => (flags & Flags.IsInDanger) != 0;
         public bool near_surface => (flags & Flags.HasLatLong) != 0;
@@ -83,11 +104,22 @@ namespace EddiDataDefinitions
         public bool analysis_mode => (flags & Flags.HudAnalysisMode) != 0;
         public bool night_vision => (flags & Flags.NightVision) != 0;
         public bool altitude_from_average_radius => (flags & Flags.AltitudeFromAverageRadius) != 0;
+        public bool on_foot_in_station => (flags2 & Flags2.OnFootInStation) != 0;
+        public bool on_foot_on_planet => (flags2 & Flags2.OnFootOnPlanet) != 0;
+        public bool aim_down_sight => (flags2 & Flags2.AimDownSight) != 0;
+        public bool low_oxygen => (flags2 & Flags2.LowOxygen) != 0;
+        public bool low_health => (flags2 & Flags2.LowHealth) != 0;
+        public string on_foot_temperature =>
+            (flags2 & Flags2.VeryCold) != 0 ? "very cold" :
+            (flags2 & Flags2.Cold) != 0 ? "cold" :
+            (flags2 & Flags2.Hot) != 0 ? "hot" :
+            (flags2 & Flags2.VeryHot) != 0 ? "very hot" :
+            "temperate";
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise or hyperspace.
         public bool hardpoints_deployed => ((flags & Flags.HardpointsDeployed) != 0) && !supercruise && !hyperspace;
-
+        
         // Variables set from pips (these are not always present in the event)
         public decimal? pips_sys = 0;
         public decimal? pips_eng = 0;
@@ -106,7 +138,12 @@ namespace EddiDataDefinitions
         public string legalstatus => (legalStatus ?? LegalStatus.Clean).localizedName;
         public string bodyname;
         public decimal? planetradius;
-
+        public decimal? oxygen; // 0..100, when on foot
+        public decimal? health; // 0..100, when on foot
+        public decimal? temperature; // kelvin, when on foot
+        public string selected_weapon; // name, when on foot
+        public decimal? gravity; // relative to 1G, when on foot
+        
         // Variables calculated from event data
         public decimal? slope { get; set; }
         public decimal? fuel => fuelInTanks + fuelInReservoir;
@@ -115,12 +152,15 @@ namespace EddiDataDefinitions
 
         // Admin values
         public Flags flags;
+        public Flags2 flags2;
         public DateTime timestamp = DateTime.UtcNow;
         public LegalStatus legalStatus;
+        public string raw;
 
-        public Status(Flags flags = Flags.None)
+        public Status(Flags flags = Flags.None, Flags2 flags2 = Flags2.None)
         {
             this.flags = flags;
+            this.flags2 = flags2;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
