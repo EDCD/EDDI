@@ -16,9 +16,7 @@ namespace EddiEvents
         static TouchdownEvent()
         {
             VARIABLES.Add("systemname", "The name of the star system where the ship has touched down");
-            VARIABLES.Add("bodyname", "The name of the body where the ship has touched down");
-            //VARIABLES.Add("onstation", "True if the ship has touched down at a settlement or station"); // Not sure how to interpret this yet.
-            //VARIABLES.Add("onplanet", "True if the ship has touched down in an unsettled region"); // Not sure how to interpret this yet.
+            VARIABLES.Add("bodyname", "The name of the body where the ship has touched down"); 
             VARIABLES.Add("longitude", "The longitude from where the ship has touched down");
             VARIABLES.Add("latitude", "The latitude from where the ship has touched down");
             VARIABLES.Add("playercontrolled", "True if the ship is controlled by the player");
@@ -38,12 +36,6 @@ namespace EddiEvents
 
         [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }
-
-        [JsonProperty("onstation")]
-        public bool? onstation { get; private set; }
-
-        [JsonProperty("onplanet")]
-        public bool? onplanet { get; private set; }
 
         [JsonProperty("taxi")]
         public bool? taxi { get; private set; }
@@ -65,6 +57,10 @@ namespace EddiEvents
 
         public long? bodyId { get; private set; }
 
+        public bool? onstation { get; private set; } // Always false, since `Touchdown` is currently only ever triggered when touching down on a body
+
+        public bool? onplanet { get; private set; } // Always true, since `Touchdown` is currently only ever triggered when touching down on a body
+
         public TouchdownEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, long? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
@@ -79,7 +75,6 @@ namespace EddiEvents
             this.multicrew = multicrew;
             this.playercontrolled = playercontrolled;
             this.nearestDestination = nearestDestination;
-            Logging.Info($"Touchdown event: onStation = {onStation}; onPlanet = {onPlanet}");
         }
     }
 }

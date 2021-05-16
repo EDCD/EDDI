@@ -2054,7 +2054,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_SHIP;
             }
-            Logging.Info($"Commander Continued: vehicle is {Vehicle}");
+            Logging.Debug($"Commander Continued: vehicle is {Vehicle}");
 
             // Set Environment state for the ship if 'startlanded' is present in the event
             if (theEvent.startlanded ?? false)

@@ -17,8 +17,6 @@ namespace EddiEvents
         {
             VARIABLES.Add("starsystem", "The name of the star system from where the ship has lifted off");
             VARIABLES.Add("bodyname", "The name of the body from where the ship has lifted off");
-            //VARIABLES.Add("onstation", "True if the ship has lifted off from a settlement or station"); // Not sure how to interpret this yet.
-            //VARIABLES.Add("onplanet", "True if the ship has lifted off from an unsettled region"); // Not sure how to interpret this yet.
             VARIABLES.Add("longitude", "The longitude from where the ship has lifted off");
             VARIABLES.Add("latitude", "The latitude from where the ship has lifted off");
             VARIABLES.Add("playercontrolled", "True if the ship is controlled by the player");
@@ -39,12 +37,6 @@ namespace EddiEvents
         [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }
 
-        [JsonProperty("onstation")]
-        public bool? onstation { get; private set; }
-
-        [JsonProperty("onplanet")]
-        public bool? onplanet { get; private set; }
-
         [JsonProperty("taxi")]
         public bool? taxi { get; private set; }
 
@@ -63,6 +55,10 @@ namespace EddiEvents
 
         public long? systemAddress { get; private set; }
 
+        public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
+
+        public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
+
         public long? bodyId { get; private set; }
 
         public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, long? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
@@ -79,7 +75,6 @@ namespace EddiEvents
             this.multicrew = multicrew;
             this.playercontrolled = playercontrolled;
             this.nearestDestination = nearestDestination;
-            Logging.Info($"Liftoff event: onStation = {onStation}; onPlanet = {onPlanet}");
         }
     }
 }
