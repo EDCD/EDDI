@@ -166,23 +166,23 @@ namespace EddiJournalMonitor
                                 break;
                             case "Touchdown":
                                 {
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-                                    bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
 
-                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
-                                    string nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
                                     events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
@@ -191,23 +191,23 @@ namespace EddiJournalMonitor
                                 break;
                             case "Liftoff":
                                 {
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-                                    bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
 
-                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
                                     // The nearest destination may be a specific destination name or a generic signal source.
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
-                                    string nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    SignalSource nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
 
                                     events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
