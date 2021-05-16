@@ -242,7 +242,13 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Dieser Name ist vergeben; Bitte versuchen Sie einen anderen</value>
   </data>
-  
-  
-  
+  <data name="search_filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Aktiviere alle Event-basierte Skripte</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Deaktiviere alle Event-basierte Skripte</value>
+  </data>
 </root>
