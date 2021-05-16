@@ -85,7 +85,7 @@ namespace EddiSpeechService
         private int echoDelayForShip(Ship ship)
         {
             // this is affected by ship size
-            int echoDelay = 50; // Default
+            int echoDelay = 0; // Default
             if (ship != null)
             {
                 if (ship.Size == LandingPadSize.Small)

@@ -129,7 +129,7 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                Say(testScriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), scriptName, sampleEvent, testScriptResolver.priority(scriptName));
+                Say(testScriptResolver, null, scriptName, sampleEvent, testScriptResolver.priority(scriptName));
             }
         }
 
@@ -199,7 +199,12 @@ namespace EddiSpeechResponder
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, SayOutLoud());
+            Ship ship = null;
+            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+            {
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+            }
+            Say(scriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
         }
 
         public bool SayOutLoud()
