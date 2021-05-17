@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MicroResourceCategory.cs" />
+    <Compile Include="MicroResource.cs" />
     <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="AsteroidMaterialContent.cs" />
@@ -80,6 +82,16 @@
       <DependentUpon>MessageChannels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\MicroResourceCategories.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MicroResourceCategories.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MicroResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MicroResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
@@ -641,6 +653,24 @@
     <EmbeddedResource Include="Properties\MessageSources.ja.resx" />
     <EmbeddedResource Include="Properties\MessageSources.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MessageSources.ru.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.cs.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.de.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.es.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.fr.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.hu.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.it.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.ja.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.ru.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.cs.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.de.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.es.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.fr.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.hu.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.it.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.ja.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\MicroResources.ru.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.cs.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.ru.resx" />
@@ -663,6 +693,14 @@
     <EmbeddedResource Include="Properties\Modules.cs.resx" />
     <EmbeddedResource Include="Properties\Modules.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modules.ru.resx" />
+    <EmbeddedResource Include="Properties\MicroResourceCategories.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MicroResourceCategories.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MicroResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MicroResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Suit.cs.resx" />
     <EmbeddedResource Include="Properties\Suit.de.resx" />
     <EmbeddedResource Include="Properties\Suit.es.resx" />

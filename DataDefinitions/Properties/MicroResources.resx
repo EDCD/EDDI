@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Accident Logs</value>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Air Quality Reports</value>
+  </data>
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Shield Disruptor</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Frag Grenade</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Shield Projector</value>
+  </data>
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Atmospheric Data</value>
+  </data>
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Biochemical Agent</value>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Blacklist Data</value>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Blood Test Results</value>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Building Schematic</value>
+  </data>
+  <data name="Bypass" xml:space="preserve">
+    <value>E-Breach</value>
+  </data>
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Campaign Plans</value>
+  </data>
+  <data name="CatMedia" xml:space="preserve">
+    <value>Cat Media</value>
+  </data>
+  <data name="CensusData" xml:space="preserve">
+    <value>Census Data</value>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Chemical Experiment Data</value>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Chemical Formulae</value>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Chemical Inventory</value>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Chemical Patents</value>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Combatant Performance</value>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Combat Training Material</value>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Compact Library</value>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Degraded Power Regulator</value>
+  </data>
+  <data name="DutyRota" xml:space="preserve">
+    <value>Duty Rotations</value>
+  </data>
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Employee Directory</value>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Employee Genetic Data</value>
+  </data>
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Energy Cell</value>
+  </data>
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Evacuation Protocols</value>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Exploration Journals</value>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Faction Associates</value>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Faction Donator List</value>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Faction News</value>
+  </data>
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Financial Projections</value>
+  </data>
+  <data name="GeographicalData" xml:space="preserve">
+    <value>Geographical Data</value>
+  </data>
+  <data name="HealthPack" xml:space="preserve">
+    <value>Medkit</value>
+  </data>
+  <data name="Hush" xml:space="preserve">
+    <value>Hush</value>
+  </data>
+  <data name="Infinity" xml:space="preserve">
+    <value>Infinity</value>
+  </data>
+  <data name="Insight" xml:space="preserve">
+    <value>Insight</value>
+  </data>
+  <data name="InsightEntertainmentSuite" xml:space="preserve">
+    <value>Insight Entertainment Suite</value>
+  </data>
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Internal Correspondence</value>
+  </data>
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Power Regulator</value>
+  </data>
+  <data name="Lazarus" xml:space="preserve">
+    <value>Lazarus</value>
+  </data>
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Literary Fiction</value>
+  </data>
+  <data name="MaintenanceLogs" xml:space="preserve">
+    <value>Maintenance Logs</value>
+  </data>
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Meeting Minutes</value>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Mineral Survey</value>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Multimedia Entertainment</value>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>Network Access History</value>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Next of Kin Records</value>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Network Operations Center Data</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Operational Manual</value>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Patrol Routes</value>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Payroll Information</value>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Personal Logs</value>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Pharmaceutical Patents</value>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Production Reports</value>
+  </data>
+  <data name="ProductionSchedule" xml:space="preserve">
+    <value>Production Schedule</value>
+  </data>
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Purchase Records</value>
+  </data>
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Purchase Requests</value>
+  </data>
+  <data name="Push" xml:space="preserve">
+    <value>Push</value>
+  </data>
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Radioactivity Data</value>
+  </data>
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Reactor Output Review</value>
+  </data>
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Residential Directory</value>
+  </data>
+  <data name="SalesRecords" xml:space="preserve">
+    <value>Sales Records</value>
+  </data>
+  <data name="SettlementDefencePlans" xml:space="preserve">
+    <value>Settlement Defence Plans</value>
+  </data>
+  <data name="ShareholderInformation" xml:space="preserve">
+    <value>Shareholder Information</value>
+  </data>
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Surveillance Logs</value>
+  </data>
+  <data name="SyntheticPathogen" xml:space="preserve">
+    <value>Synthetic Pathogen</value>
+  </data>
+  <data name="TaxRecords" xml:space="preserve">
+    <value>Tax Records</value>
+  </data>
+  <data name="TopographicalSurveys" xml:space="preserve">
+    <value>Topographical Surveys</value>
+  </data>
+  <data name="TravelPermits" xml:space="preserve">
+    <value>Travel Permits</value>
+  </data>
+  <data name="TroopDeploymentRecords" xml:space="preserve">
+    <value>Troop Deployment Records</value>
+  </data>
+  <data name="TrueFormFossil" xml:space="preserve">
+    <value>True Form Fossil</value>
+  </data>
+  <data name="UnionMembership" xml:space="preserve">
+    <value>Union Membership</value>
+  </data>
+  <data name="UniversalTranslator" xml:space="preserve">
+    <value>Universal Translator</value>
+  </data>
+  <data name="VaccinationRecords" xml:space="preserve">
+    <value>Vaccination Records</value>
+  </data>
+  <data name="VaccineResearch" xml:space="preserve">
+    <value>Vaccine Research</value>
+  </data>
+  <data name="VirologyData" xml:space="preserve">
+    <value>Virology Data</value>
+  </data>
+  <data name="VisitorRegister" xml:space="preserve">
+    <value>Visitor Register</value>
+  </data>
+  <data name="WeaponInventory" xml:space="preserve">
+    <value>Weapon Inventory</value>
+  </data>
+</root>

@@ -580,5 +580,16 @@ namespace UnitTests
             Assert.AreEqual(expectedInvariant, result.invariantName);
             Assert.AreEqual(expectedGrade, result.grade);
         }
+
+        [DataTestMethod]
+        [DataRow("ChemicalInventory", "Chemical Inventory", "Data")]
+        [DataRow("$CompactLibrary_Name;", "Compact Library", "Item")]
+        [DataRow("$healthpack_name;", "Medkit", "Consumable")]
+        public void TestMicroResources(string input, string expectedInvariantName, string expectedInvariantCategory)
+        {
+            var result = MicroResource.FromEDName(input);
+            Assert.AreEqual(expectedInvariantName, result.invariantName);
+            Assert.AreEqual(expectedInvariantCategory, result.Category.invariantName);
+        }
     }
 }
