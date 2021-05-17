@@ -213,7 +213,10 @@
     <value>Повреждение системы защиты</value>
     <comment>Crime onFoot_damagingDefences</comment>
   </data>
-  
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Раскрытие оружия</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
   <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
     <value>Скрываться от местных властей</value>
     <comment>Crime onFoot_failureToSubmitToPolice</comment>
