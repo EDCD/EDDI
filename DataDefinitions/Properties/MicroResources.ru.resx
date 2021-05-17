@@ -117,6 +117,191 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Журналы регистрации несчастных случаев</value>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Отчеты о качестве воздуха</value>
+  </data>
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Разрушитель щита</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Осколочная граната</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Проектор щита</value>
+  </data>
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Атмосферные данные</value>
+  </data>
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Биохимический агент</value>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Данные черного списка</value>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Результаты анализа крови</value>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Схема здания</value>
+  </data>
+  <data name="Bypass" xml:space="preserve">
+    <value>Взлом электроники</value>
+  </data>
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Планы кампаний</value>
+  </data>
+  
+  <data name="CensusData" xml:space="preserve">
+    <value>Данные переписи населения</value>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Данные химического эксперимента</value>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Химические формулы</value>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Химический инвентарь</value>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Химические патенты</value>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Боевые показатели</value>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Материал для боевой подготовки</value>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Компактная библиотека</value>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Деградировавший регулятор мощности</value>
+  </data>
+  <data name="DutyRota" xml:space="preserve">
+    <value>Чередование дежурств</value>
+  </data>
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Справочник сотрудников</value>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Генетические данные сотрудников</value>
+  </data>
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Энергетическая ячейка</value>
+  </data>
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Протоколы эвакуации</value>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Журналы разведки</value>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Фракционные партнеры</value>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Список вкладчиков фракции</value>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Новости фракций</value>
+  </data>
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Финансовые прогнозы</value>
+  </data>
+  <data name="GeographicalData" xml:space="preserve">
+    <value>Географические данные</value>
+  </data>
+  <data name="HealthPack" xml:space="preserve">
+    <value>Аптечка</value>
+  </data>
+  <data name="Hush" xml:space="preserve">
+    <value>Время молчать</value>
+  </data>
+  <data name="Infinity" xml:space="preserve">
+    <value>Бесконечность</value>
+  </data>
+  <data name="Insight" xml:space="preserve">
+    <value>Озарение</value>
+  </data>
+  
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Внутренняя переписка</value>
+  </data>
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Регулятор мощности</value>
+  </data>
+  <data name="Lazarus" xml:space="preserve">
+    <value>Лазарь</value>
+  </data>
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Литературная фантастика</value>
+  </data>
+  <data name="MaintenanceLogs" xml:space="preserve">
+    <value>Журналы технического обслуживания</value>
+  </data>
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Протокол собрания</value>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Исследование полезных ископаемых</value>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Мультимедийные развлечения</value>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>История доступа к сети</value>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Записи о ближайших родственниках</value>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Данные центра сетевых операций</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Пусто</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Руководство по эксплуатации</value>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Маршруты патрулирования</value>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Информация о заработной плате</value>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Личные журналы</value>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Фармацевтические патенты</value>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Производственные отчеты</value>
+  </data>
+  <data name="ProductionSchedule" xml:space="preserve">
+    <value>График производства</value>
+  </data>
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Записи о покупках</value>
+  </data>
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Заявки на покупку</value>
+  </data>
+  <data name="Push" xml:space="preserve">
+    <value>Толкнуть</value>
+  </data>
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Данные о радиоактивности</value>
+  </data>
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Обзор мощности реактора</value>
+  </data>
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Каталог жилых помещений</value>
+  </data>
   
   
   
@@ -152,70 +337,13 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CarbonFibrePlating" xml:space="preserve">
+    <value>Покрытие из углеродного волокна</value>
+  </data>
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Покрытие из углеродного волокна</value>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Титановое покрытие</value>
+  </data>
 </root>
