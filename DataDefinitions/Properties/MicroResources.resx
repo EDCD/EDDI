@@ -357,4 +357,67 @@
   <data name="WeaponInventory" xml:space="preserve">
     <value>Weapon Inventory</value>
   </data>
+  <data name="PersonalDocuments" xml:space="preserve">
+    <value>Personal Documents</value>
+  </data>
+  <data name="TacticalPlans" xml:space="preserve">
+    <value>Tactical Plans</value>
+  </data>
+  <data name="ChemicalProcessSample" xml:space="preserve">
+    <value>Chemical Process Sample</value>
+  </data>
+  <data name="PyrolyticCatalyst" xml:space="preserve">
+    <value>Pyrolytic Catalyst</value>
+  </data>
+  <data name="WeaponSchematic" xml:space="preserve">
+    <value>Weapon Schematic</value>
+  </data>
+  <data name="Californium" xml:space="preserve">
+    <value>Californium</value>
+  </data>
+  <data name="SuitSchematic" xml:space="preserve">
+    <value>Suit Schematic</value>
+  </data>
+  <data name="Spyware" xml:space="preserve">
+    <value>Spyware</value>
+  </data>
+  <data name="EmploymentHistory" xml:space="preserve">
+    <value>Employment History</value>
+  </data>
+  <data name="AgriculturalProcessSample" xml:space="preserve">
+    <value>Agricultural Process Sample</value>
+  </data>
+  <data name="SurveillanceEquipment" xml:space="preserve">
+    <value>Surveillance Equipment</value>
+  </data>
+  <data name="InsightDataBank" xml:space="preserve">
+    <value>Insight Data Bank</value>
+  </data>
+  <data name="ShipSchematic" xml:space="preserve">
+    <value>Ship Schematic</value>
+  </data>
+  <data name="VehicleSchematic" xml:space="preserve">
+    <value>Vehicle Schematic</value>
+  </data>
+  <data name="Virus" xml:space="preserve">
+    <value>Virus</value>
+  </data>
+  <data name="ChemicalSample" xml:space="preserve">
+    <value>Chemical Sample</value>
+  </data>
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Ionised Gas</value>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Aerogel</value>
+  </data>
+  <data name="CarbonFibrePlating" xml:space="preserve">
+    <value>Carbon Fiber Plating</value>
+  </data>
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Micro Supercapacitor</value>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Titanium Plating</value>
+  </data>
 </root>

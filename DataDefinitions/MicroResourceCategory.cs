@@ -9,6 +9,7 @@
             missingEDNameHandler = (edname) => new MicroResourceCategory(edname);
         }
 
+        public static readonly MicroResourceCategory Component = new MicroResourceCategory("Component");
         public static readonly MicroResourceCategory Consumable = new MicroResourceCategory("Consumable");
         public static readonly MicroResourceCategory Data = new MicroResourceCategory("Data");
         public static readonly MicroResourceCategory Item = new MicroResourceCategory("Item");

@@ -13,6 +13,12 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new MicroResource(edname, MicroResourceCategory.Unknown);
         }
 
+        // Components
+        public static readonly MicroResource Aerogel = new MicroResource("Aerogel", MicroResourceCategory.Component);
+        public static readonly MicroResource CarbonFibrePlating = new MicroResource("CarbonFibrePlating", MicroResourceCategory.Component);
+        public static readonly MicroResource MicroSuperCapacitor = new MicroResource("MicroSuperCapacitor", MicroResourceCategory.Component);
+        public static readonly MicroResource TitaniumPlating = new MicroResource("TitaniumPlating", MicroResourceCategory.Component);
+
         // Consumables
         public static readonly MicroResource Amm_Grenade_Frag = new MicroResource("Amm_Grenade_Frag", MicroResourceCategory.Consumable);
         public static readonly MicroResource Amm_Grenade_EMP = new MicroResource("Amm_Grenade_EMP", MicroResourceCategory.Consumable);
@@ -39,6 +45,7 @@ namespace EddiDataDefinitions
         public static readonly MicroResource DutyRota = new MicroResource("DutyRota", MicroResourceCategory.Data);
         public static readonly MicroResource EmployeeDirectory = new MicroResource("EmployeeDirectory", MicroResourceCategory.Data);
         public static readonly MicroResource EmployeeGeneticData = new MicroResource("EmployeeGeneticData", MicroResourceCategory.Data);
+        public static readonly MicroResource EmploymentHistory = new MicroResource("EmploymentHistory", MicroResourceCategory.Data);
         public static readonly MicroResource EvacuationProtocols = new MicroResource("EvacuationProtocols", MicroResourceCategory.Data);
         public static readonly MicroResource ExplorationJournals = new MicroResource("ExplorationJournals", MicroResourceCategory.Data);
         public static readonly MicroResource FactionAssociates = new MicroResource("FactionAssociates", MicroResourceCategory.Data);
@@ -70,7 +77,9 @@ namespace EddiDataDefinitions
         public static readonly MicroResource SalesRecords = new MicroResource("SalesRecords", MicroResourceCategory.Data);
         public static readonly MicroResource SettlementDefencePlans = new MicroResource("SettlementDefencePlans", MicroResourceCategory.Data);
         public static readonly MicroResource ShareholderInformation = new MicroResource("ShareholderInformation", MicroResourceCategory.Data);
+        public static readonly MicroResource Spyware = new MicroResource("Spyware", MicroResourceCategory.Data);
         public static readonly MicroResource SurveilleanceLogs = new MicroResource("SurveilleanceLogs", MicroResourceCategory.Data);
+        public static readonly MicroResource TacticalPlans = new MicroResource("TacticalPlans", MicroResourceCategory.Data);
         public static readonly MicroResource TaxRecords = new MicroResource("TaxRecords", MicroResourceCategory.Data);
         public static readonly MicroResource TopographicalSurveys = new MicroResource("TopographicalSurveys", MicroResourceCategory.Data);
         public static readonly MicroResource TravelPermits = new MicroResource("TravelPermits", MicroResourceCategory.Data);
@@ -79,24 +88,38 @@ namespace EddiDataDefinitions
         public static readonly MicroResource VaccinationRecords = new MicroResource("VaccinationRecords", MicroResourceCategory.Data);
         public static readonly MicroResource VaccineResearch = new MicroResource("VaccineResearch", MicroResourceCategory.Data);
         public static readonly MicroResource VirologyData = new MicroResource("VirologyData", MicroResourceCategory.Data);
+        public static readonly MicroResource Virus = new MicroResource("Virus", MicroResourceCategory.Data);
         public static readonly MicroResource VisitorRegister = new MicroResource("VisitorRegister", MicroResourceCategory.Data);
         public static readonly MicroResource WeaponInventory = new MicroResource("WeaponInventory", MicroResourceCategory.Data);
 
         // Items
+        public static readonly MicroResource AgriculturalProcessSample = new MicroResource("AgriculturalProcessSample", MicroResourceCategory.Item);
         public static readonly MicroResource BiochemicalAgent = new MicroResource("BiochemicalAgent", MicroResourceCategory.Item);
         public static readonly MicroResource BuildingSchematic = new MicroResource("BuildingSchematic", MicroResourceCategory.Item);
+        public static readonly MicroResource Californium = new MicroResource("Californium", MicroResourceCategory.Item);
+        public static readonly MicroResource ChemicalProcessSample = new MicroResource("ChemicalProcessSample", MicroResourceCategory.Item);
+        public static readonly MicroResource ChemicalSample = new MicroResource("ChemicalSample", MicroResourceCategory.Item);
         public static readonly MicroResource CompactLibrary = new MicroResource("CompactLibrary", MicroResourceCategory.Item);
         public static readonly MicroResource DegradedPowerRegulator = new MicroResource("DegradedPowerRegulator", MicroResourceCategory.Item);
         public static readonly MicroResource Hush = new MicroResource("Hush", MicroResourceCategory.Item);
         public static readonly MicroResource Infinity = new MicroResource("Infinity", MicroResourceCategory.Item);
         public static readonly MicroResource Insight = new MicroResource("Insight", MicroResourceCategory.Item);
+        public static readonly MicroResource InsightDataBank = new MicroResource("InsightDataBank", MicroResourceCategory.Item);
         public static readonly MicroResource InsightEntertainmentSuite = new MicroResource("InsightEntertainmentSuite", MicroResourceCategory.Item);
+        public static readonly MicroResource IonisedGas = new MicroResource("IonisedGas", MicroResourceCategory.Item);
         public static readonly MicroResource LargeCapacityPowerRegulator = new MicroResource("LargeCapacityPowerRegulator", MicroResourceCategory.Item);
         public static readonly MicroResource Lazarus = new MicroResource("Lazarus", MicroResourceCategory.Item);
+        public static readonly MicroResource PersonalDocuments = new MicroResource("PersonalDocuments", MicroResourceCategory.Item);
         public static readonly MicroResource Push = new MicroResource("Push", MicroResourceCategory.Item);
+        public static readonly MicroResource PyrolyticCatalyst = new MicroResource("PyrolyticCatalyst", MicroResourceCategory.Item);
+        public static readonly MicroResource ShipSchematic = new MicroResource("ShipSchematic", MicroResourceCategory.Item);
+        public static readonly MicroResource SuitSchematic = new MicroResource("SuitSchematic", MicroResourceCategory.Item);
+        public static readonly MicroResource SurveillanceEquipment = new MicroResource("SurveillanceEquipment", MicroResourceCategory.Item);
         public static readonly MicroResource SyntheticPathogen = new MicroResource("SyntheticPathogen", MicroResourceCategory.Item);
         public static readonly MicroResource TrueFormFossil = new MicroResource("TrueFormFossil", MicroResourceCategory.Item);
         public static readonly MicroResource UniversalTranslator = new MicroResource("UniversalTranslator", MicroResourceCategory.Item);
+        public static readonly MicroResource VehicleSchematic = new MicroResource("VehicleSchematic", MicroResourceCategory.Item);
+        public static readonly MicroResource WeaponSchematic = new MicroResource("WeaponSchematic", MicroResourceCategory.Item);
 
         // Unknown / Miscellaneous
         public static readonly MicroResource None = new MicroResource("None", MicroResourceCategory.Unknown);

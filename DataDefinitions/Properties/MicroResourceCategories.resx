@@ -129,4 +129,7 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="Component" xml:space="preserve">
+    <value>Component</value>
+  </data>
 </root>
