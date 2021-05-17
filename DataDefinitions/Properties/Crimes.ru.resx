@@ -201,16 +201,49 @@
     <value>Штраф за миссию</value>
     <comment>Crime missionFine</comment>
   </data>
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Штурм</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
+  <data name="onFoot_breakingAndEntering" xml:space="preserve">
+    <value>Взлом и проникновение</value>
+    <comment>Crime onFoot_breakingAndEntering</comment>
+  </data>
+  <data name="onFoot_damagingDefences" xml:space="preserve">
+    <value>Повреждение системы защиты</value>
+    <comment>Crime onFoot_damagingDefences</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
+    <value>Скрываться от местных властей</value>
+    <comment>Crime onFoot_failureToSubmitToPolice</comment>
+  </data>
+  <data name="onFoot_identityTheft" xml:space="preserve">
+    <value>Кража личных данных</value>
+    <comment>Crime onFoot_identityTheft</comment>
+  </data>
+  <data name="onFoot_murder" xml:space="preserve">
+    <value>Убийство</value>
+    <comment>Crime onFoot_murder</comment>
+  </data>
+  <data name="onFoot_profileCloningIntent" xml:space="preserve">
+    <value>Попытка кражи личных данных</value>
+    <comment>Crime onFoot_profileCloningIntent</comment>
+  </data>
+  <data name="onFoot_propertyTheft" xml:space="preserve">
+    <value>Кража</value>
+    <comment>Crime onFoot_propertyTheft</comment>
+  </data>
+  <data name="onFoot_recklessEndangerment" xml:space="preserve">
+    <value>Безрассудная угроза</value>
+    <comment>Crime onFoot_recklessEndangerment</comment>
+  </data>
+  <data name="onFoot_theft" xml:space="preserve">
+    <value>Кража</value>
+    <comment>Crime onFoot_theft</comment>
+  </data>
+  <data name="onFoot_trespass" xml:space="preserve">
+    <value>Проникновение</value>
+    <comment>Crime onFoot_trespass</comment>
+  </data>
 </root>
