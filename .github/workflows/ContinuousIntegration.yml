@@ -37,11 +37,6 @@ jobs:
     name: Analyze
     runs-on: windows-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ csharp ]
-
     steps:
     - name: Check out the repository on the workflow runner
       uses: actions/checkout@v2.3.4
@@ -72,7 +67,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
-        languages: ${{ matrix.language }}
+        languages: csharp
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
@@ -90,10 +85,6 @@ jobs:
       with:
         name: build-artifact
         path: build-artifact.zip
-
-    # Analyze our build for security vulnerabilities
-    - name: Perform CodeQL Security Analysis
-      uses: github/codeql-action/analyze@v1
 
     # Test and generate coverage report
     - name: Make a TestResults directory
@@ -113,3 +104,7 @@ jobs:
       with:
         files: TestResults/coverage.xml
         fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false
+
+    # Analyze our build for security vulnerabilities
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v1

@@ -31,13 +31,15 @@ runs:
       $output = '-output:"${{ inputs.output-path }}"'
       $runCoverageCmd = "$openCoverConsole $openCoverArgs $target $targetArgs $output"
       ECHO Invoking... $runCoverageCmd
-
       # Wrap the invokation so that we can act on its success or failure
       $runCoverageCmd += ';$?'
-      $result = Invoke-Expression $runCoverageCmd
+      $result = Invoke-Expression $runCoverageCmd -ErrorVariable errVar
       ECHO $result
       if(-not $result){
         # seems to have failed
         ECHO "::error::Tests failed"
       }
+      ECHO LASTEXITCODE $LASTEXITCODE
+      ECHO Error $Error
+      ECHO ErrorVariable $errVar[0]
     shell: pwsh
