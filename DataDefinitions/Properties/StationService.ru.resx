@@ -257,5 +257,8 @@
     <value>Офис выкупа</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
-  
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Социальное пространство</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>
