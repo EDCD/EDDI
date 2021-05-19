@@ -4169,6 +4169,35 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "BuyMicroResources":
+                                {
+                                    var edname = JsonParsing.getString(data, "Name");
+                                    var fallbackName = JsonParsing.getString(data, "Name_Localised");
+                                    var category = JsonParsing.getString(data, "Category");
+                                    var fallbackCategoryName = JsonParsing.getString(data, "Category_Localised");
+                                    var amount = JsonParsing.getInt(data, "Count");
+                                    var price = JsonParsing.getInt(data, "Price");
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+
+                                    switch (category)
+                                    {
+                                        case "Item":
+                                        case "Component":
+                                        case "Data":
+                                        case "Consumable":
+                                            {
+                                                var microResource = MicroResource.FromEDName(edname);
+                                                microResource.fallbackLocalizedName = fallbackName;
+                                                microResource.Category.fallbackLocalizedName = fallbackCategoryName;
+                                                events.Add(new MicroResourcesPurchasedEvent(timestamp, microResource, amount, price, marketId) { raw = line, fromLoad = fromLogLoad });
+                                                handled = true;
+                                            }
+                                            break;
+                                        default:
+                                            // Unhandled category
+                                            break;
+                                    }
+                                }
+                                break;
                             case "BuySuit":
                             case "BuyWeapon":
                             case "CargoTransfer":

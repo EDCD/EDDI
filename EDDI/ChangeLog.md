@@ -38,6 +38,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Embark` event added
       * `Liftoff` event, new properties added from Odyssey data
       * `Location` event, new properties added from Odyssey data
+      * `Micro resources purchased` event added
       * `Touchdown` event, new properties added from Odyssey data
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.

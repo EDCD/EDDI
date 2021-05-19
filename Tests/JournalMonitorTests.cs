@@ -1775,5 +1775,20 @@ namespace UnitTests
             Assert.AreEqual(expectedType, @event.transporttype);
             Assert.AreEqual(expectedRefund, @event.refund);
         }
+
+        [TestMethod]
+        public void TestBuyMicroResourcesEvent()
+        {
+            var line = @"{ ""timestamp"":""2021-04-30T21:41:34Z"", ""event"":""BuyMicroResources"", ""Name"":""healthpack"", ""Name_Localised"":""Medkit"", ""Category"":""Consumable"", ""Count"":2, ""Price"":2000, ""MarketID"":3221524992 }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (MicroResourcesPurchasedEvent)events[0];
+
+            Assert.AreEqual("Medkit", @event.microResource?.invariantName);
+            Assert.AreEqual("Consumable", @event.microResource?.Category?.invariantName);
+            Assert.AreEqual(2, @event.amount);
+            Assert.AreEqual(2000, @event.price);
+            Assert.AreEqual(3221524992, @event.marketid);
+        }
     }
 }

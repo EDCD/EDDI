@@ -20,13 +20,13 @@ namespace EddiEvents
             VARIABLES.Add("destination", "The destination location name");
         }
 
-        [JsonProperty("type")]
+        [JsonProperty("transporttype")]
         public string transporttype { get; }
 
         [JsonProperty("price")]
         public int? price { get; }
 
-        [JsonProperty("system")]
+        [JsonProperty("starsystem")]
         public string starsystem { get; }
 
         [JsonProperty("destination")]

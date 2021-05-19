@@ -1366,6 +1366,15 @@
       "name": "Message sent",
       "description": "Triggered when you send a message"
     },
+    "Micro resources purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Micro resources purchased",
+      "description": "Triggered when you buy micro resources"
+    },
     "Mission abandoned": {
       "enabled": true,
       "priority": 3,

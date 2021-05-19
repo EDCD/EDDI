@@ -18,7 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("refund", "The credits that you were refunded for the cancelled transport)");
         }
 
-        [JsonProperty("type")]
+        [JsonProperty("transporttype")]
         public string transporttype { get; }
 
         [JsonProperty("refund")]
