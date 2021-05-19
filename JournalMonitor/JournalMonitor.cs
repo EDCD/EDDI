@@ -4115,6 +4115,39 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "BackPackMaterials":
+                                {
+                                    List<MicroResourceAmount> getResources (string category)
+                                    {
+                                        var result = new List<MicroResourceAmount>();
+                                        if (data.TryGetValue(category, out object val))
+                                        {
+                                            if (val is List<object> listVal)
+                                            {
+                                                foreach (IDictionary<string, object> microResourceVal in listVal)
+                                                {
+                                                    var edname = JsonParsing.getString(microResourceVal, "Name");
+                                                    var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
+                                                    var resource = MicroResource.FromEDName(edname);
+                                                    resource.fallbackLocalizedName = fallbackName;
+
+                                                    var ownerId = JsonParsing.getOptionalInt(microResourceVal, "OwnerID");
+                                                    var missionId = JsonParsing.getOptionalDecimal(microResourceVal, "MissionID");
+                                                    var amount = JsonParsing.getInt(microResourceVal, "Count");
+
+                                                    result.Add(new MicroResourceAmount(resource, ownerId, missionId, amount));
+                                                }
+                                            }
+                                        }
+                                        return result;
+                                    }
+                                    var components = getResources("Components");
+                                    var consumables = getResources("Consumables");
+                                    var backpackdata = getResources("Data");
+                                    var items = getResources("Items");
+                                    events.Add(new BackpackMaterialsEvent(timestamp, components, consumables, backpackdata, items) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "BookDropship":
                             case "BookTaxi":
                             case "BuyMicroResources":

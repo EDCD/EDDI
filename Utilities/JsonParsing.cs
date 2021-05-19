@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Numerics;
 
 namespace Utilities
 {
@@ -73,13 +74,13 @@ namespace Utilities
             {
                 throw new ArgumentNullException("Expected value for " + key + " not present");
             }
-            if (val is long)
+            if (val is long l)
             {
-                return (long)val;
+                return l;
             }
-            else if (val is double)
+            else if (val is double d)
             {
-                return (decimal)(double)val;
+                return (decimal)d;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -96,13 +97,17 @@ namespace Utilities
             {
                 return null;
             }
-            else if (val is long)
+            else if (val is long l)
             {
-                return (long?)val;
+                return l;
             }
-            else if (val is double)
+            else if (val is double d)
             {
-                return (decimal?)(double?)val;
+                return (decimal?)d;
+            }
+            else if (val is BigInteger bigInteger)
+            {
+                return (decimal?)bigInteger;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -115,13 +120,13 @@ namespace Utilities
 
         public static int getInt(string key, object val)
         {
-            if (val is long)
+            if (val is long l)
             {
-                return (int)(long)val;
+                return (int)l;
             }
-            else if (val is int)
+            else if (val is int i)
             {
-                return (int)val;
+                return i;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -138,13 +143,13 @@ namespace Utilities
             {
                 return null;
             }
-            else if (val is long)
+            else if (val is long l)
             {
-                return (int?)(long?)val;
+                return (int?)l;
             }
-            else if (val is int)
+            else if (val is int i)
             {
-                return (int?)val;
+                return i;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -157,9 +162,9 @@ namespace Utilities
 
         public static long getLong(string key, object val)
         {
-            if (val is long)
+            if (val is long l)
             {
-                return (long)val;
+                return l;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -171,9 +176,39 @@ namespace Utilities
             {
                 return null;
             }
-            else if (val is long)
+            else if (val is long l)
             {
-                return (long?)val;
+                return l;
+            }
+
+            throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
+        }
+
+        public static BigInteger getBigInteger(IDictionary<string, object> data, string key)
+        {
+            data.TryGetValue(key, out object val);
+            return getBigInteger(key, val);
+        }
+
+        public static BigInteger getBigInteger(string key, object val)
+        {
+            if (val is BigInteger bigInteger)
+            {
+                return bigInteger;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        public static BigInteger? getOptionalBigInteger(IDictionary<string, object> data, string key)
+        {
+            data.TryGetValue(key, out object val);
+            if (val == null)
+            {
+                return null;
+            }
+            else if (val is BigInteger bigInteger)
+            {
+                return bigInteger;
             }
 
             throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
@@ -212,7 +247,7 @@ namespace Utilities
             return (string)val;
         }
 
-        public static bool compareJsonEquality<T>(T self, T to, bool jsonIgnore, out string mutatedPropertyName, string[] ignore = null) where T : class
+        public static bool compareJsonEquality<T>(T self, T to, bool jsonIgnore, out string mutatedPropertyName, string[] ignore) where T : class
         {
             mutatedPropertyName = string.Empty;
             if (self != null && to != null)
@@ -235,8 +270,8 @@ namespace Utilities
 
                     if (!ignoreList.Contains(pi.Name))
                     {
-                        object selfValue = type.GetProperty(pi.Name).GetValue(self, null);
-                        object toValue = type.GetProperty(pi.Name).GetValue(to, null);
+                        object selfValue = type.GetProperty(pi.Name)?.GetValue(self, null);
+                        object toValue = type.GetProperty(pi.Name)?.GetValue(to, null);
 
                         if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
                         {

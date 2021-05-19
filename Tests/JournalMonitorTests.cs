@@ -1723,5 +1723,29 @@ namespace UnitTests
             Assert.AreEqual(onPlanet, @event.onplanet);
             Assert.AreEqual(onStation, @event.onstation);
         }
+
+        [TestMethod]
+        public void TestBackpackMaterials()
+        {
+            string line = @"{ ""timestamp"":""2021-05-03T13:31:45Z"", ""event"":""BackPackMaterials"", ""Items"":[  ], ""Components"":[ { ""Name"":""circuitswitch"", ""Name_Localised"":""Circuit Switch"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""encryptedmemorychip"", ""Name_Localised"":""Encrypted Memory Chip"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""epoxyadhesive"", ""Name_Localised"":""Epoxy Adhesive"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""memorychip"", ""Name_Localised"":""Memory Chip"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":2 } ], ""Consumables"":[ { ""Name"":""healthpack"", ""Name_Localised"":""Medkit"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":3 }, { ""Name"":""energycell"", ""Name_Localised"":""Energy Cell"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":3 }, { ""Name"":""amm_grenade_emp"", ""Name_Localised"":""Shield Disruptor"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""amm_grenade_frag"", ""Name_Localised"":""Frag Grenade"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":2 }, { ""Name"":""amm_grenade_shield"", ""Name_Localised"":""Shield Projector"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 } ], ""Data"":[  ] }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (BackpackMaterialsEvent)events[0];
+
+            Assert.AreEqual(4, @event.components.Count);
+            Assert.AreEqual(5, @event.consumables.Count);
+            Assert.AreEqual(0, @event.data.Count);
+            Assert.AreEqual(0, @event.items.Count);
+
+            Assert.AreEqual("Circuit Switch", @event.components[0].microResource?.invariantName);
+            Assert.AreEqual(0, @event.components[0].ownerId);
+            Assert.AreEqual(18446744073709551615M, @event.components[0].missionId);
+            Assert.AreEqual(1, @event.components[0].amount);
+
+            Assert.AreEqual("Energy Cell", @event.consumables[1].microResource?.invariantName);
+            Assert.AreEqual(0, @event.consumables[1].ownerId);
+            Assert.AreEqual(18446744073709551615M, @event.consumables[1].missionId);
+            Assert.AreEqual(3, @event.consumables[1].amount);
+        }
     }
 }

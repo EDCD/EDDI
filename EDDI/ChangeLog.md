@@ -29,6 +29,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that prevented community goal missions from sometimes being identified as community goal missions. 
   * Speech Responder
     * Events
+      * `Backpack materials` event added
       * `Commander continued` event, new properties added from Odyssey data
       * `Died` event, revised properties structure
       * `Disembark` event added

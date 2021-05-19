@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackpackMaterialsEvent.cs" />
     <Compile Include="AsteroidProspectedEvent.cs" />
     <Compile Include="AsteroidCrackedEvent.cs" />
     <Compile Include="CarrierJumpCancelledEvent.cs" />
