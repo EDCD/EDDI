@@ -63,6 +63,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
       * `Ship rebooted` event updated to provide localized and invariant module names rather than ship slots.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
+      * `SRV docked` script revised to add a context variable.
+      * `SRV launched` script revised to add a context variable.
       * `Swapout check` script revised to clarify that swapping out the module will reduce your re-buy.
     * User Interface
       * It is now possible to sort scripts by priority and enabled status.
