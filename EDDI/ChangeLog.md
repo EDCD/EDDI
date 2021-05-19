@@ -41,6 +41,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Touchdown` event, new properties added from Odyssey data
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
+      * Updated the ShipCallSign() function to improve formatting and use an optional second parameter to customize the response.
       * Updated the ShipName() function to provide appropriate responses when in a taxi or similar, and to document its second argument (which is optional).
     * Personalities
       * Portuguese default personality updated (thanks to @Kenjiro). 
