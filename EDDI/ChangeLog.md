@@ -4,6 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.7.4-b1
   * Core
+    * Added 3 new vehicle types:
+      * On Foot
+      * MultiCrew
+      * Taxi
     * EDDI beta releases no longer send to test endpoints for EDDN or the EDSM Responder.
     * Fixed a bug that could double-count signal sources when re-logging. 
     * Fixed a bug that could cause undockable approached settlements to be counted as stations.
@@ -24,17 +28,29 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that temporarily stripped community goal missions from the mission list.
     * Fixed a bug that prevented community goal missions from sometimes being identified as community goal missions. 
   * Speech Responder
+    * Events
+      * `Commander continued` event, new properties added from Odyssey data
+      * `Died` event, revised properties structure
+      * `Disembark` event added
+      * `Embark` event added
+      * `Liftoff` event, new properties added from Odyssey data
+      * `Location` event, new properties added from Odyssey data
+      * `Touchdown` event, new properties added from Odyssey data
     * Functions
       * Revised the `EngineerDetails` function to accept a system name as an input.
-      * Updated the ShipName() function to document its second argument (which is optional).
+      * Updated the ShipName() function to provide appropriate responses when in a taxi or similar, and to document its second argument (which is optional).
     * Personalities
       * Portuguese default personality updated (thanks to @Kenjiro). 
     * Scripts
+      * `Bond awarded` script revised to more gracefully handle Odyssey contexts.
+      * `Bounty awarded` script revised to more gracefully handle Odyssey contexts.
       * `Carrier jumped` script updated to announce engineer systems.
       * `Community goal` script revised and re-enabled. The event is now written only in response to specific changes in community goal status.
       * `Community goals` script added, updated whenever the game provides updated information on community goals.
+      * `Died` script revised to more gracefully handle Odyssey contexts.
       * `Engineer report` script added.
       * `Entered normal space` script updated to provide easier access to invariant bodytype names and to correct a bug around filtering unknown station types.
+      * `Fuel check` script revised to more gracefully handle Odyssey contexts.
       * `Material threshold` script updated for expanded triggering conditions.
       * `Message received` script and properties updated to better support localization.
       * `Mission check galaxy` script updated to more gracefully handle community goals.
@@ -50,8 +66,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * It is now possible to search script names, descriptions, and contents with a new filter box.
       * It is now possible to disable all scripts at once (either when copying a personality or by accessing a context menu on the `Enabled` column header)
       * Fixed the selected personality combo box losing track of the current selected item when a personality was deleted.
+    * Variables
+      * Added boolean values for `odyssey` and `horizons` game states.
+  * Status Monitor
+    * Updated the Status Monitor for Odyssey data and 
+    * Updated status documentation in Variables.md
   * VoiceAttack
     * Added system variables `{INT:System scanned bodies}` and `{INT:System mapped bodies}`.
+    * Added boolean values for `odyssey` and `horizons` game states.
 
 ### 3.7.3
   * Treat alpha game clients just the same as beta game clients, i.e. do not upload data to live endpoints.
