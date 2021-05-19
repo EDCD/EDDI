@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,313 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Registros de Acidente</value>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Relatórios de Qualidade do Ar</value>
+  </data>
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Disruptor de Escudo</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Granada de Fragmentação</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Projetor de Escudo</value>
+  </data>
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Dados Atmosféricos</value>
+  </data>
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Agente Bioquímico</value>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Dados de Lista Negra</value>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Resultados de Exâme de Sangue</value>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Planta de Prédio</value>
+  </data>
+  
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Planos de Campanha</value>
+  </data>
+  
+  <data name="CensusData" xml:space="preserve">
+    <value>Dados de Censo</value>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Dados de Experimento Químico</value>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Fórmula Química</value>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Inventário Químico</value>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Patentes Químicas</value>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Performance de Combatente</value>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Material de Treinamento de Combate</value>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Biblioteca Compacta</value>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Regulador de Energia Degradado</value>
+  </data>
+  <data name="DutyRota" xml:space="preserve">
+    <value>Escalas de Serviço</value>
+  </data>
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Lista de Funcionários</value>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Dados Genéticos de Funcionários</value>
+  </data>
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Célula de Energia</value>
+  </data>
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Protocolos de Evacuação</value>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Diários de Exploração</value>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Associados de Facção</value>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Lista de Doadores de Facção</value>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Notícias de Facção</value>
+  </data>
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Projeções Financeiras</value>
+  </data>
+  <data name="GeographicalData" xml:space="preserve">
+    <value>Dados Geográficos</value>
+  </data>
+  <data name="HealthPack" xml:space="preserve">
+    <value>Kitmédico</value>
+  </data>
+  
+  
+  <data name="Insight" xml:space="preserve">
+    <value>Insight</value>
+  </data>
+  <data name="InsightEntertainmentSuite" xml:space="preserve">
+    <value>Traje de Entretenimento Insight</value>
+  </data>
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Correspondência Interna</value>
+  </data>
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Regulador de Energia</value>
+  </data>
+  
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Ficção Literária</value>
+  </data>
+  <data name="MaintenanceLogs" xml:space="preserve">
+    <value>Registros de Manutenção</value>
+  </data>
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Minutos de Reunião</value>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Pesquisa Mineral</value>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Entretenimento Multimídia</value>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>Histórico de Acesso à Rede</value>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Registros de Parentêsco</value>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Dados do Centro de Operações de Rede</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Manual Operacional</value>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Rotas de Patrulhas</value>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Informação de Folha de Pagamento</value>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Registros Pessoais</value>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Patentes Farmacêuticas</value>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Relatórios de Produção</value>
+  </data>
+  <data name="ProductionSchedule" xml:space="preserve">
+    <value>Cronograma de Produção</value>
+  </data>
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Registro de Compras</value>
+  </data>
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Requisições de Compra</value>
+  </data>
+  
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Dados de Radioatividade</value>
+  </data>
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Análise de Saída do Reator</value>
+  </data>
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Lista Residencial</value>
+  </data>
+  <data name="SalesRecords" xml:space="preserve">
+    <value>Registros de Vendas</value>
+  </data>
+  <data name="SettlementDefencePlans" xml:space="preserve">
+    <value>Planos de Defesa do Assentamento</value>
+  </data>
+  <data name="ShareholderInformation" xml:space="preserve">
+    <value>Informação de Acionista</value>
+  </data>
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Registros de Vigilância</value>
+  </data>
+  <data name="SyntheticPathogen" xml:space="preserve">
+    <value>Patogênico Sintético</value>
+  </data>
+  <data name="TaxRecords" xml:space="preserve">
+    <value>Registros de Imposto</value>
+  </data>
+  <data name="TopographicalSurveys" xml:space="preserve">
+    <value>Levantamentos Topográficos</value>
+  </data>
+  <data name="TravelPermits" xml:space="preserve">
+    <value>Permissões de Viagem</value>
+  </data>
+  <data name="TroopDeploymentRecords" xml:space="preserve">
+    <value>Registros de Destacamento de Tropa</value>
+  </data>
+  
+  <data name="UnionMembership" xml:space="preserve">
+    <value>Filiação Sindical</value>
+  </data>
+  <data name="UniversalTranslator" xml:space="preserve">
+    <value>Tradutor Universal</value>
+  </data>
+  <data name="VaccinationRecords" xml:space="preserve">
+    <value>Registros de Vacinação</value>
+  </data>
+  <data name="VaccineResearch" xml:space="preserve">
+    <value>Pesquisa de Vacina</value>
+  </data>
+  <data name="VirologyData" xml:space="preserve">
+    <value>Dados de Virologia</value>
+  </data>
+  <data name="VisitorRegister" xml:space="preserve">
+    <value>Registro de Visitante</value>
+  </data>
+  <data name="WeaponInventory" xml:space="preserve">
+    <value>Inventário de Armas</value>
+  </data>
+  <data name="PersonalDocuments" xml:space="preserve">
+    <value>Documentos Pessoais</value>
+  </data>
+  <data name="TacticalPlans" xml:space="preserve">
+    <value>Planos Táticos</value>
+  </data>
+  <data name="ChemicalProcessSample" xml:space="preserve">
+    <value>Amostra de Processo Químico</value>
+  </data>
+  <data name="PyrolyticCatalyst" xml:space="preserve">
+    <value>Catalisador Pirolítico</value>
+  </data>
+  <data name="WeaponSchematic" xml:space="preserve">
+    <value>Esquema de Arma</value>
+  </data>
+  <data name="Californium" xml:space="preserve">
+    <value>Californium</value>
+  </data>
+  <data name="SuitSchematic" xml:space="preserve">
+    <value>Esquema de Traje</value>
+  </data>
+  <data name="Spyware" xml:space="preserve">
+    <value>Software Espião</value>
+  </data>
+  <data name="EmploymentHistory" xml:space="preserve">
+    <value>Histórico de Emprego</value>
+  </data>
+  <data name="AgriculturalProcessSample" xml:space="preserve">
+    <value>Amostra de Processo Agricultural</value>
+  </data>
+  <data name="SurveillanceEquipment" xml:space="preserve">
+    <value>Equipamento de Vigilância</value>
+  </data>
+  <data name="InsightDataBank" xml:space="preserve">
+    <value>Banco de Dados de Insight</value>
+  </data>
+  <data name="ShipSchematic" xml:space="preserve">
+    <value>Esquema de Nave</value>
+  </data>
+  <data name="VehicleSchematic" xml:space="preserve">
+    <value>Esquema de Veículo</value>
+  </data>
+  <data name="Virus" xml:space="preserve">
+    <value>Vírus</value>
+  </data>
+  <data name="ChemicalSample" xml:space="preserve">
+    <value>Amostra Química</value>
+  </data>
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Gás Ionizado</value>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Aerogel</value>
+  </data>
+  <data name="CarbonFibrePlating" xml:space="preserve">
+    <value>Revestimento de Fibra de Carbono</value>
+  </data>
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Micro Supercapacitor</value>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Revestimento de Titânio</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

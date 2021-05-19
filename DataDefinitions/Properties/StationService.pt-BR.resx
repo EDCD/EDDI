@@ -257,5 +257,8 @@
     <value>Escritório de Resgate</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
-  
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Espaço social</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>

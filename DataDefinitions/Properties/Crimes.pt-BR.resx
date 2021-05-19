@@ -201,16 +201,52 @@
     <value>Multa de missão</value>
     <comment>Crime missionFine</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Ataque</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
+  <data name="onFoot_breakingAndEntering" xml:space="preserve">
+    <value>Arrombamento e invasão</value>
+    <comment>Crime onFoot_breakingAndEntering</comment>
+  </data>
+  <data name="onFoot_damagingDefences" xml:space="preserve">
+    <value>Danificar sistemas de defesa</value>
+    <comment>Crime onFoot_damagingDefences</comment>
+  </data>
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Mostrar sua arma</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
+  <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
+    <value>Fugir das autoridades locais</value>
+    <comment>Crime onFoot_failureToSubmitToPolice</comment>
+  </data>
+  <data name="onFoot_identityTheft" xml:space="preserve">
+    <value>Roubo de identidade</value>
+    <comment>Crime onFoot_identityTheft</comment>
+  </data>
+  <data name="onFoot_murder" xml:space="preserve">
+    <value>Assassinato</value>
+    <comment>Crime onFoot_murder</comment>
+  </data>
+  <data name="onFoot_profileCloningIntent" xml:space="preserve">
+    <value>Tentativa de roubo de identidade</value>
+    <comment>Crime onFoot_profileCloningIntent</comment>
+  </data>
+  <data name="onFoot_propertyTheft" xml:space="preserve">
+    <value>Roubo</value>
+    <comment>Crime onFoot_propertyTheft</comment>
+  </data>
+  <data name="onFoot_recklessEndangerment" xml:space="preserve">
+    <value>Imprudência perigosa</value>
+    <comment>Crime onFoot_recklessEndangerment</comment>
+  </data>
+  <data name="onFoot_theft" xml:space="preserve">
+    <value>Roubo</value>
+    <comment>Crime onFoot_theft</comment>
+  </data>
+  <data name="onFoot_trespass" xml:space="preserve">
+    <value>Invasão</value>
+    <comment>Crime onFoot_trespass</comment>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,319 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Журналы регистрации несчастных случаев</value>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Отчеты о качестве воздуха</value>
+  </data>
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Разрушитель щита</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Осколочная граната</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Проектор щита</value>
+  </data>
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Атмосферные данные</value>
+  </data>
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Биохимический агент</value>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Данные черного списка</value>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Результаты анализа крови</value>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Схема здания</value>
+  </data>
+  <data name="Bypass" xml:space="preserve">
+    <value>Взлом электроники</value>
+  </data>
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Планы кампаний</value>
+  </data>
+  
+  <data name="CensusData" xml:space="preserve">
+    <value>Данные переписи населения</value>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Данные химического эксперимента</value>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Химические формулы</value>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Химический инвентарь</value>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Химические патенты</value>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Боевые показатели</value>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Материал для боевой подготовки</value>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Компактная библиотека</value>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Деградировавший регулятор мощности</value>
+  </data>
+  <data name="DutyRota" xml:space="preserve">
+    <value>Чередование дежурств</value>
+  </data>
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Справочник сотрудников</value>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Генетические данные сотрудников</value>
+  </data>
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Энергетическая ячейка</value>
+  </data>
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Протоколы эвакуации</value>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Журналы разведки</value>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Фракционные партнеры</value>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Список вкладчиков фракции</value>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Новости фракций</value>
+  </data>
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Финансовые прогнозы</value>
+  </data>
+  <data name="GeographicalData" xml:space="preserve">
+    <value>Географические данные</value>
+  </data>
+  <data name="HealthPack" xml:space="preserve">
+    <value>Аптечка</value>
+  </data>
+  <data name="Hush" xml:space="preserve">
+    <value>Время молчать</value>
+  </data>
+  <data name="Infinity" xml:space="preserve">
+    <value>Бесконечность</value>
+  </data>
+  <data name="Insight" xml:space="preserve">
+    <value>Озарение</value>
+  </data>
+  
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Внутренняя переписка</value>
+  </data>
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Регулятор мощности</value>
+  </data>
+  <data name="Lazarus" xml:space="preserve">
+    <value>Лазарь</value>
+  </data>
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Литературная фантастика</value>
+  </data>
+  <data name="MaintenanceLogs" xml:space="preserve">
+    <value>Журналы технического обслуживания</value>
+  </data>
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Протокол собрания</value>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Исследование полезных ископаемых</value>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Мультимедийные развлечения</value>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>История доступа к сети</value>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Записи о ближайших родственниках</value>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Данные центра сетевых операций</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Пусто</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Руководство по эксплуатации</value>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Маршруты патрулирования</value>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Информация о заработной плате</value>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Личные журналы</value>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Фармацевтические патенты</value>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Производственные отчеты</value>
+  </data>
+  <data name="ProductionSchedule" xml:space="preserve">
+    <value>График производства</value>
+  </data>
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Записи о покупках</value>
+  </data>
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Заявки на покупку</value>
+  </data>
+  <data name="Push" xml:space="preserve">
+    <value>Толкнуть</value>
+  </data>
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Данные о радиоактивности</value>
+  </data>
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Обзор мощности реактора</value>
+  </data>
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Каталог жилых помещений</value>
+  </data>
+  <data name="SalesRecords" xml:space="preserve">
+    <value>Отчет по продажам</value>
+  </data>
+  <data name="SettlementDefencePlans" xml:space="preserve">
+    <value>Планы защиты поселений</value>
+  </data>
+  <data name="ShareholderInformation" xml:space="preserve">
+    <value>Информация об акционерах</value>
+  </data>
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Журналы мониторинга</value>
+  </data>
+  <data name="SyntheticPathogen" xml:space="preserve">
+    <value>Синтетический патоген</value>
+  </data>
+  <data name="TaxRecords" xml:space="preserve">
+    <value>Налоговые записи</value>
+  </data>
+  <data name="TopographicalSurveys" xml:space="preserve">
+    <value>Топографическая съемка</value>
+  </data>
+  <data name="TravelPermits" xml:space="preserve">
+    <value>Разрешения на поездки</value>
+  </data>
+  <data name="TroopDeploymentRecords" xml:space="preserve">
+    <value>Учет развертывания войск</value>
+  </data>
+  
+  <data name="UnionMembership" xml:space="preserve">
+    <value>Членство в профсоюзе</value>
+  </data>
+  <data name="UniversalTranslator" xml:space="preserve">
+    <value>Универсальный переводчик</value>
+  </data>
+  <data name="VaccinationRecords" xml:space="preserve">
+    <value>Записи о вакцинации</value>
+  </data>
+  <data name="VaccineResearch" xml:space="preserve">
+    <value>Исследование вакцин</value>
+  </data>
+  <data name="VirologyData" xml:space="preserve">
+    <value>Данные по вирусологии</value>
+  </data>
+  <data name="VisitorRegister" xml:space="preserve">
+    <value>Реестр посетителей</value>
+  </data>
+  <data name="WeaponInventory" xml:space="preserve">
+    <value>Оружейный инвентарь</value>
+  </data>
+  <data name="PersonalDocuments" xml:space="preserve">
+    <value>Документы, подтверждающие личность</value>
+  </data>
+  <data name="TacticalPlans" xml:space="preserve">
+    <value>Тактические планы</value>
+  </data>
+  <data name="ChemicalProcessSample" xml:space="preserve">
+    <value>Образец химического процесса</value>
+  </data>
+  <data name="PyrolyticCatalyst" xml:space="preserve">
+    <value>Пиролитический катализатор</value>
+  </data>
+  <data name="WeaponSchematic" xml:space="preserve">
+    <value>Схема оружия</value>
+  </data>
+  <data name="Californium" xml:space="preserve">
+    <value>Калифорний</value>
+  </data>
+  <data name="SuitSchematic" xml:space="preserve">
+    <value>Схема костюма</value>
+  </data>
+  <data name="Spyware" xml:space="preserve">
+    <value>Шпионские программы</value>
+  </data>
+  <data name="EmploymentHistory" xml:space="preserve">
+    <value>История трудоустройства</value>
+  </data>
+  <data name="AgriculturalProcessSample" xml:space="preserve">
+    <value>Образец сельскохозяйственного процесса</value>
+  </data>
+  <data name="SurveillanceEquipment" xml:space="preserve">
+    <value>Оборудование для видеонаблюдения</value>
+  </data>
+  
+  <data name="ShipSchematic" xml:space="preserve">
+    <value>Схема корабля</value>
+  </data>
+  <data name="VehicleSchematic" xml:space="preserve">
+    <value>Схема автомобиля</value>
+  </data>
+  <data name="Virus" xml:space="preserve">
+    <value>Вирус</value>
+  </data>
+  <data name="ChemicalSample" xml:space="preserve">
+    <value>Химическая проба</value>
+  </data>
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Ионизированный газ</value>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Аэрогель</value>
+  </data>
+  <data name="CarbonFibrePlating" xml:space="preserve">
+    <value>Покрытие из углеродного волокна</value>
+  </data>
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Покрытие из углеродного волокна</value>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Титановое покрытие</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
