@@ -55,12 +55,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Engineer report` script added.
       * `Entered normal space` script updated to provide easier access to invariant bodytype names and to correct a bug around filtering unknown station types.
       * `Fuel check` script revised to more gracefully handle Odyssey contexts.
+      * `Jumped` script updated to announce engineer systems.
       * `Material threshold` script updated for expanded triggering conditions.
       * `Message received` script and properties updated to better support localization.
       * `Mission check galaxy` script updated to more gracefully handle community goals.
       * `Mission check station` script updated to more gracefully handle community goals.
       * `Mission check system` script updated to more gracefully handle community goals.
-      * `Jumped` script updated to announce engineer systems.
+      * `Ring hotspots detected` script updated to correct a bug preventing the script from triggering for miners.
       * `Ship arrived` event updated to use the `ShipName()` function and provide improved phonetics. 
       * `Ship rebooted` event updated to provide localized and invariant module names rather than ship slots.
       * `Signal detected` script revised to reference `conflict zone` signal sources rather than `combat zone` signal sources.
