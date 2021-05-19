@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Embark";
         public const string DESCRIPTION = "Triggered when you transition from on foot to a ship or SRV";
-        public const string SAMPLE = "{ \"timestamp\":\"2020-10-12T09:06:17Z\", \"event\":\"Embark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":36 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2021-05-03T22:22:12Z\", \"event\":\"Embark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":6, \"StarSystem\":\"Sumod\", \"SystemAddress\":3961847269739, \"Body\":\"Sharp Dock\", \"BodyID\":56, \"OnStation\":true, \"OnPlanet\":false, \"StationName\":\"Sharp Dock\", \"StationType\":\"Coriolis\", \"MarketID\":3223952128 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static EmbarkEvent()
