@@ -556,7 +556,11 @@ Common usage of this is to keep track of the cumulative or persistent informatio
 
 ShipCallsign() takes an optional ship ID for which to provide the callsign. If no argument is supplied then it provides the callsign for your current ship.
 
-This will only work if EDDI is connected to the Frontier API.</value>
+ShipCallsign() takes an optional second argument to permit variations in callsign format. If no second argument is provided then it will provide a callsign from the ship manufacturer and the commander name. Variations are specified in integer format, as follows:
+- 1: a callsign from the ship manufacturer and the ship name.
+- 2: a callsign from the ship manufacturer and the ship id.
+
+This works best if EDDI is connected to the Frontier API.</value>
   </data>
   <data name="ShipDetails" xml:space="preserve">
     <value>This function will provide full information for a ship given its name.
