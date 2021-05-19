@@ -154,6 +154,15 @@
 			"description": "Triggered when you redeem a combat bond",
 			"default": true
 		},
+		"Book transport": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Book transport",
+			"description": "Triggered when booking a taxi or deployment for on foot combat"
+		},
 		"Bounty awarded": {
 			"enabled": true,
 			"priority": 3,
@@ -189,6 +198,15 @@
 			"name": "Bounty redeemed",
 			"description": "Triggered when you redeem a bounty voucher",
 			"default": true
+		},
+		"Cancel transport": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Cancel transport",
+			"description": "Triggered when canceling a taxi or deployment for on foot combat"
 		},
 		"Cargo depot": {
 			"enabled": true,
@@ -658,6 +676,14 @@
 			"description": "Triggered when performing a full system scan (honk)",
 			"default": true
 		},
+		"Disembark": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"name": "Disembark",
+			"description": "Triggered when you transition from a ship or SRV to on foot"
+		},
 		"Docked": {
 			"enabled": true,
 			"priority": 3,
@@ -711,6 +737,14 @@
 			"name": "Docking timed out",
 			"description": "Triggered when your docking request times out",
 			"default": true
+		},
+		"Embark": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+			"name": "Embark",
+			"description": "Triggered when you transition from on foot to a ship or SRV"
 		},
 		"Empire honorific": {
 			"enabled": true,
@@ -1413,6 +1447,15 @@
 			"name": "Message sent",
 			"description": "Triggered when you send a message",
 			"default": true
+		},
+		"Micro resources purchased": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Micro resources purchased",
+			"description": "Triggered when you buy micro resources"
 		},
 		"Mission abandoned": {
 			"enabled": true,

@@ -140,6 +140,15 @@
       "name": "Bond redeemed",
       "description": "Se activa cuando canjeas un bono de combate"
     },
+    "Book transport": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Book transport",
+      "description": "Triggered when booking a taxi or deployment for on foot combat"
+    },
     "Bounty awarded": {
       "enabled": true,
       "priority": 5,
@@ -171,6 +180,15 @@
       "script": "{_ Context }\n{SetState('eddi_context_last_subject', 'bond')}\n{SetState('eddi_context_last_action', 'redeem')}\n{SetState('eddi_context_bond_amount', event.amount)}\n\n\n{OneOf(\"Otorgados\", \"Reclamados\")} \nbonos de combate por valor de {(event.amount)} créditos \n\n{Occasionally(2, \"\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\n    de {P(event.rewards[0].faction)}\n  |else:\n    . \n    {set cur to 0}\n    {while cur < len(event.rewards):\n      {if len(event.rewards[cur].faction) > 0:\n        {if cur = 0:\n        |elif cur < len(event.rewards) - 1:\n            , \n        |else:\n            y\n        }\n        {(event.rewards[cur].amount)} créditos de \n        {P(event.rewards[cur].faction)} \n        {set cur to cur + 1}\n      } \n    } \n  } \n\")} \n\n{if event.brokerpercentage && event.brokerpercentage > 0:\n    después de deducir \n    {OneOf(\"un pago\", \"una recompensa\")} de\n    {round((event.amount / (100 - event.brokerpercentage)) * event.brokerpercentage, 0)} créditos\n}.",
       "name": "Bounty redeemed",
       "description": "Se activa cuando cobras una recompensa (TEST)"
+    },
+    "Cancel transport": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Cancel transport",
+      "description": "Triggered when canceling a taxi or deployment for on foot combat"
     },
     "Cargo depot": {
       "enabled": true,
@@ -578,6 +596,14 @@
       "name": "Discovery scan",
       "description": "Triggered when performing a full system scan (honk)"
     },
+    "Disembark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Disembark",
+      "description": "Triggered when you transition from a ship or SRV to on foot"
+    },
     "Docked": {
       "enabled": false,
       "priority": 3,
@@ -625,6 +651,14 @@
       "script": "{OneOf ('No recibimos respuesta a nuestra solicitud de aterrizaje','la estación no ha respondido a nuestra solicitud de aterrizaje')}.",
       "name": "Docking timed out",
       "description": "Se activa cuando tu solicitud de aterrizaje expira"
+    },
+    "Embark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "name": "Embark",
+      "description": "Triggered when you transition from on foot to a ship or SRV"
     },
     "Empire honorific": {
       "enabled": true,
@@ -1259,6 +1293,15 @@
       "script": "{_ Context }\n{SetState('eddi_context_last_subject', 'message')}\n{SetState('eddi_context_last_action', 'send')}\n{SetState('eddi_context_message_name', event.to)}\n{SetState('eddi_context_message_content', event.message)}\n\n{OneOf(\"Lanzando mensaje\", \"Mensaje enviado\", \"Enviado\")}.",
       "name": "Message sent",
       "description": "Se activa cuando envías un mensaje"
+    },
+    "Micro resources purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Micro resources purchased",
+      "description": "Triggered when you buy micro resources"
     },
     "Mission abandoned": {
       "enabled": true,
