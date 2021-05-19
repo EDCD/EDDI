@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MicroResourceAmount.cs" />
     <Compile Include="MicroResourceCategory.cs" />
     <Compile Include="MicroResource.cs" />
     <Compile Include="AtmosphereComposition.cs" />

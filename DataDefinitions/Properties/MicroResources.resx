@@ -420,4 +420,64 @@
   <data name="TitaniumPlating" xml:space="preserve">
     <value>Titanium Plating</value>
   </data>
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Circuit Switch</value>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Encrypted Memory Chip</value>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Epoxy Adhesive</value>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Memory Chip</value>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Manufacturing Instructions</value>
+  </data>
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Stellar Activity Logs</value>
+  </data>
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Electrical Wiring</value>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Micro Transformer</value>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Electrical Fuse</value>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Optical Fiber</value>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Circuit Board</value>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Metal Coil</value>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Motor</value>
+  </data>
+  <data name="MicroElectrode" xml:space="preserve">
+    <value>Micro Electrode</value>
+  </data>
+  <data name="Graphene" xml:space="preserve">
+    <value>Graphene</value>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Micro Hydraulics</value>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Scrambler</value>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>Tungsten Carbide</value>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Electromagnet</value>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Transmitter</value>
+  </data>
 </root>

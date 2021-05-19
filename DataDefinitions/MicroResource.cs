@@ -16,8 +16,26 @@ namespace EddiDataDefinitions
         // Components
         public static readonly MicroResource Aerogel = new MicroResource("Aerogel", MicroResourceCategory.Component);
         public static readonly MicroResource CarbonFibrePlating = new MicroResource("CarbonFibrePlating", MicroResourceCategory.Component);
+        public static readonly MicroResource CircuitBoard = new MicroResource("CircuitBoard", MicroResourceCategory.Component);
+        public static readonly MicroResource CircuitSwitch = new MicroResource("CircuitSwitch", MicroResourceCategory.Component);
+        public static readonly MicroResource ElectricalFuse = new MicroResource("ElectricalFuse", MicroResourceCategory.Component);
+        public static readonly MicroResource ElectricalWiring = new MicroResource("ElectricalWiring", MicroResourceCategory.Component);
+        public static readonly MicroResource Electromagnet = new MicroResource("Electromagnet", MicroResourceCategory.Component);
+        public static readonly MicroResource EncryptedMemoryChip = new MicroResource("EncryptedMemoryChip", MicroResourceCategory.Component);
+        public static readonly MicroResource EpoxyAdhesive = new MicroResource("EpoxyAdhesive", MicroResourceCategory.Component);
+        public static readonly MicroResource Graphene = new MicroResource("Graphene", MicroResourceCategory.Component);
+        public static readonly MicroResource MemoryChip = new MicroResource("MemoryChip", MicroResourceCategory.Component);
+        public static readonly MicroResource MetalCoil = new MicroResource("MetalCoil", MicroResourceCategory.Component);
+        public static readonly MicroResource MicroElectrode = new MicroResource("MicroElectrode", MicroResourceCategory.Component);
+        public static readonly MicroResource MicroHydraulics = new MicroResource("MicroHydraulics", MicroResourceCategory.Component);
         public static readonly MicroResource MicroSuperCapacitor = new MicroResource("MicroSuperCapacitor", MicroResourceCategory.Component);
+        public static readonly MicroResource MicroTransformer = new MicroResource("MicroTransformer", MicroResourceCategory.Component);
+        public static readonly MicroResource Motor = new MicroResource("Motor", MicroResourceCategory.Component);
+        public static readonly MicroResource OpticalFibre = new MicroResource("OpticalFibre", MicroResourceCategory.Component);
+        public static readonly MicroResource Scrambler = new MicroResource("Scrambler", MicroResourceCategory.Component);
         public static readonly MicroResource TitaniumPlating = new MicroResource("TitaniumPlating", MicroResourceCategory.Component);
+        public static readonly MicroResource Transmitter = new MicroResource("Transmitter", MicroResourceCategory.Component);
+        public static readonly MicroResource TungstenCarbide = new MicroResource("TungstenCarbide", MicroResourceCategory.Component);
 
         // Consumables
         public static readonly MicroResource Amm_Grenade_Frag = new MicroResource("Amm_Grenade_Frag", MicroResourceCategory.Consumable);
@@ -56,6 +74,7 @@ namespace EddiDataDefinitions
         public static readonly MicroResource InternalCorrespondence = new MicroResource("InternalCorrespondence", MicroResourceCategory.Data);
         public static readonly MicroResource LiteraryFiction = new MicroResource("LiteraryFiction", MicroResourceCategory.Data);
         public static readonly MicroResource MaintenanceLogs = new MicroResource("MaintenanceLogs", MicroResourceCategory.Data);
+        public static readonly MicroResource ManufacturingInstructions = new MicroResource("ManufacturingInstructions", MicroResourceCategory.Data);
         public static readonly MicroResource MeetingMinutes = new MicroResource("MeetingMinutes", MicroResourceCategory.Data);
         public static readonly MicroResource MineralSurvey = new MicroResource("MineralSurvey", MicroResourceCategory.Data);
         public static readonly MicroResource MultimediaEntertainment = new MicroResource("MultimediaEntertainment", MicroResourceCategory.Data);
@@ -78,6 +97,7 @@ namespace EddiDataDefinitions
         public static readonly MicroResource SettlementDefencePlans = new MicroResource("SettlementDefencePlans", MicroResourceCategory.Data);
         public static readonly MicroResource ShareholderInformation = new MicroResource("ShareholderInformation", MicroResourceCategory.Data);
         public static readonly MicroResource Spyware = new MicroResource("Spyware", MicroResourceCategory.Data);
+        public static readonly MicroResource StellarActivityLogs = new MicroResource("StellarActivityLogs", MicroResourceCategory.Data);
         public static readonly MicroResource SurveilleanceLogs = new MicroResource("SurveilleanceLogs", MicroResourceCategory.Data);
         public static readonly MicroResource TacticalPlans = new MicroResource("TacticalPlans", MicroResourceCategory.Data);
         public static readonly MicroResource TaxRecords = new MicroResource("TaxRecords", MicroResourceCategory.Data);
