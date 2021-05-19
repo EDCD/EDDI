@@ -29,15 +29,6 @@
       "name": "Asteroid prospected",
       "description": "Triggered when using a prospecting drone"
     },
-    "Backpack materials": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Backpack materials",
-      "description": "Lists the contents of your backpack when you disembark"
-    },
     "Blueprint make report": {
       "enabled": true,
       "priority": 3,
