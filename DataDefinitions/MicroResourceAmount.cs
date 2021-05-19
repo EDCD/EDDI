@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class MicroResourceAmount
     {
