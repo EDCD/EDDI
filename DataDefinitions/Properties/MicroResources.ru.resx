@@ -149,8 +149,6 @@
   </data>
   <data name="Bypass" xml:space="preserve">
     <value>Взлом электроники</value>
-    <comment>Bypass
-A single-use device used to circumvent security systems. (The Spanish version of the game calls it "Fisura")</comment>
   </data>
   <data name="CampaignPlans" xml:space="preserve">
     <value>Планы кампаний</value>
@@ -414,4 +412,24 @@ A single-use device used to circumvent security systems. (The Spanish version of
   <data name="TitaniumPlating" xml:space="preserve">
     <value>Титановое покрытие</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
