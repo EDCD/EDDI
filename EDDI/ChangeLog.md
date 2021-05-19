@@ -30,6 +30,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Events
       * `Backpack materials` event added
+      * `Book transport` event added
+      * `Cancel transport` event added
       * `Commander continued` event, new properties added from Odyssey data
       * `Died` event, revised properties structure
       * `Disembark` event added

@@ -4150,11 +4150,27 @@ namespace EddiJournalMonitor
                                 break;
                             case "BookDropship":
                             case "BookTaxi":
+                                {
+                                    var type = edType.Replace("Book", "");
+                                    var price = JsonParsing.getOptionalInt(data, "Cost");
+                                    var system = JsonParsing.getString(data, "DestinationSystem");
+                                    var destination = JsonParsing.getString(data, "DestinationLocation");
+                                    events.Add(new BookTransportEvent(timestamp, type, price, system, destination) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CancelDropship":
+                            case "CancelTaxi":
+                                {
+                                    var type = edType.Replace("Cancel", "");
+                                    var refund = JsonParsing.getOptionalInt(data, "Refund");
+                                    events.Add(new CancelTransportEvent(timestamp, type, refund) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "BuyMicroResources":
                             case "BuySuit":
                             case "BuyWeapon":
-                            case "CancelDropship":
-                            case "CancelTaxi":
                             case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":

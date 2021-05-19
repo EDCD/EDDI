@@ -1747,5 +1747,33 @@ namespace UnitTests
             Assert.AreEqual(18446744073709551615M, @event.consumables[1].missionId);
             Assert.AreEqual(3, @event.consumables[1].amount);
         }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2020-10-05T11:17:50Z"", ""event"":""BookTaxi"", ""Cost"":23200, ""DestinationSystem"":""Opala"", ""DestinationLocation"":""Onizuka's Hold"" }", "Taxi", 23200, "Opala", "Onizuka's Hold")]
+        [DataRow(@"{ ""timestamp"":""2021-04-10T10:42:04Z"", ""event"":""BookDropship"", ""Cost"":0, ""DestinationSystem"":""Nervi"", ""DestinationLocation"":""Al-Kashi Terminal"" }", "Dropship", 0, "Nervi", "Al-Kashi Terminal")]
+        public void TestBookTransport(string line, string expectedType, int expectedPrice, string expectedStarSystem, string expectedDestination)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (BookTransportEvent)events[0];
+
+            Assert.AreEqual(expectedType, @event.transporttype);
+            Assert.AreEqual(expectedPrice, @event.price);
+            Assert.AreEqual(expectedStarSystem, @event.starsystem);
+            Assert.AreEqual(expectedDestination, @event.destination);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2020-10-05T11:17:50Z"", ""event"":""CancelTaxi"", ""Refund"":100 }", "Taxi", 100)]
+        [DataRow(@"{ ""timestamp"":""2021-04-10T10:42:04Z"", ""event"":""CancelDropship"", ""Refund"":0 }", "Dropship", 0)]
+        public void TestCancelTransport(string line, string expectedType, int expectedRefund)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (CancelTransportEvent)events[0];
+
+            Assert.AreEqual(expectedType, @event.transporttype);
+            Assert.AreEqual(expectedRefund, @event.refund);
+        }
     }
 }

@@ -155,6 +155,15 @@
       "name": "Bond redeemed",
       "description": "Triggered when you redeem a combat bond"
     },
+    "Book transport": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Book transport",
+      "description": "Triggered when booking a taxi or deployment for on foot combat"
+    },
     "Bounty awarded": {
       "enabled": true,
       "priority": 3,
@@ -190,6 +199,15 @@
       "default": true,
       "name": "Bounty redeemed",
       "description": "Triggered when you redeem a bounty voucher"
+    },
+    "Cancel transport": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Cancel transport",
+      "description": "Triggered when canceling a taxi or deployment for on foot combat"
     },
     "Cargo depot": {
       "enabled": true,
