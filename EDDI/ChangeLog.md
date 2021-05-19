@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.7.4-b1
+### 4.0.0-b1
   * Core
     * Added 3 new vehicle types:
       * On Foot
