@@ -147,7 +147,9 @@
   <data name="BuildingSchematic" xml:space="preserve">
     <value>Planta de Prédio</value>
   </data>
-  
+  <data name="Bypass" xml:space="preserve">
+    <value>Brecha</value>
+  </data>
   <data name="CampaignPlans" xml:space="preserve">
     <value>Planos de Campanha</value>
   </data>
@@ -410,7 +412,7 @@
     <value>Interruptor de Circuito</value>
   </data>
   <data name="EncryptedMemoryChip" xml:space="preserve">
-    <value>Chip de Memória Encriptado</value>
+    <value>Chip de Memória Criptografado</value>
   </data>
   <data name="EpoxyAdhesive" xml:space="preserve">
     <value>Adesivo de Epóxi</value>
@@ -437,7 +439,7 @@
     <value>Fibra Ótica</value>
   </data>
   <data name="CircuitBoard" xml:space="preserve">
-    <value>Placa de Circuito</value>
+    <value>Placa de Circuitos</value>
   </data>
   <data name="MetalCoil" xml:space="preserve">
     <value>Bobina de Metal</value>
@@ -452,10 +454,10 @@
     <value>Grafeno</value>
   </data>
   <data name="MicroHydraulics" xml:space="preserve">
-    <value>Micro Hidráulica</value>
+    <value>Micro-Hidráulica</value>
   </data>
   <data name="Scrambler" xml:space="preserve">
-    <value>Bloqueador</value>
+    <value>Embaralhador</value>
   </data>
   <data name="TungstenCarbide" xml:space="preserve">
     <value>Carboneto de Tungstênio</value>
