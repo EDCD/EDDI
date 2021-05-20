@@ -442,7 +442,7 @@
     <value>Placa de Circuitos</value>
   </data>
   <data name="MetalCoil" xml:space="preserve">
-    <value>Bobina de Metal</value>
+    <value>Mola de Metal</value>
   </data>
   <data name="Motor" xml:space="preserve">
     <value>Motor</value>
