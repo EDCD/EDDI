@@ -445,27 +445,28 @@ namespace UnitTests
         [TestMethod]
         public void TestFighterLoadoutEvent()
         {
-            var privateObject = new PrivateObject(new ShipMonitor());
-            privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
-            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
-
             string data = DeserializeJsonResource<string>(Resources.loadout);
-
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
             object[] loadoutArgs = new object[] { loadoutEvent };
-            privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
 
             string data2 = DeserializeJsonResource<string>(Resources.fighterLoadout);
             events = JournalMonitor.ParseJournalEntry(data2);
             ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
             object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };
+
+            var privateObject = new PrivateObject(new ShipMonitor());
+            privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
+            privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
             privateObject.Invoke("handleShipLoadoutEvent", fighterLoadoutArgs);
+
+            var currentShip = (Ship)privateObject.Invoke("GetCurrentShip", null);
 
             // After a loadout event generated from a fighter, 
             // we still want to track the ship we launched from as our current ship.
-            Assert.AreEqual(loadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
-            Assert.AreNotEqual(fighterLoadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
+            Assert.AreEqual(loadoutEvent.shipid, currentShip.LocalId);
+            Assert.AreNotEqual(fighterLoadoutEvent.shipid, currentShip.LocalId);
         }
 
 
