@@ -26,12 +26,14 @@ namespace EddiDataDefinitions
 
         public int grade { get; private set; }
 
-        public new static Suit FromEDName(string edname)
+        public long? suitId { get; private set; }
+
+        public static Suit FromEDName(string edname, long? suitId = null)
         {
             if (string.IsNullOrEmpty(edname)) { return null; }
             var (tidiedName, grade) = titiedEDName(edname);
             var result = ResourceBasedLocalizedEDName<Suit>.FromEDName(tidiedName);
-            if (result != null) { result.grade = grade; }
+            if (result != null) { result.grade = grade; result.suitId = suitId; }
             return result;
         }
 

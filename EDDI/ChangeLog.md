@@ -5,6 +5,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 4.0.0-b2
   * Inara Responder
     * Fixed a missing .dll file that caused the Inara Responder not to load. 
+  * Speech Responder
+    * Events
+      * `Suit purchased` event added
 
 ### 4.0.0-b1
   * Core

@@ -2185,6 +2185,15 @@
       "name": "Statistics",
       "description": "Statistics provided at the beginning of a game session"
     },
+    "Suit purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Suit purchased",
+      "description": "Triggered when you buy a space suit"
+    },
     "Surface signals detected": {
       "enabled": true,
       "priority": 3,

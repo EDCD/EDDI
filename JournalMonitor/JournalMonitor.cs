@@ -4164,6 +4164,19 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 break;
+                            case "BuySuit":
+                                {
+                                    var edname = JsonParsing.getString(data, "Name");
+                                    var fallbackName = JsonParsing.getString(data, "Name_Localised");
+                                    var suitId = JsonParsing.getOptionalLong(data, "SuitID");
+                                    var price = JsonParsing.getOptionalInt(data, "Price");
+                                    var suit = Suit.FromEDName(edname, suitId);
+                                    suit.fallbackLocalizedName = fallbackName;
+                                    events.Add(new SuitPurchasedEvent(timestamp, suit, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "BuyWeapon":
                             case "Backpack":
                             case "BackpackChange":
                             //case "BackPackMaterials":
@@ -4200,8 +4213,6 @@ namespace EddiJournalMonitor
                             //    }
                             //    handled = true;
                             //    break;
-                            case "BuySuit":
-                            case "BuyWeapon":
                             case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":
