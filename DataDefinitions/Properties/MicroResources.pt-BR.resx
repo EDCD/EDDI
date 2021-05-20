@@ -406,24 +406,64 @@
   <data name="TitaniumPlating" xml:space="preserve">
     <value>Revestimento de Titânio</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Interruptor de Circuito</value>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Chip de Memória Encriptado</value>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Adesivo Epox</value>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Chip de Memória</value>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Instruções de Fabricação</value>
+  </data>
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Registros de Atividade Estelar</value>
+  </data>
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Fiação Elétrica</value>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Micro Transformador</value>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Fusível Elétrico</value>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Fibra Ótica</value>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Placa de Circuito</value>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Bobina de Metal</value>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Motor</value>
+  </data>
+  <data name="MicroElectrode" xml:space="preserve">
+    <value>Micro Eletrôdo</value>
+  </data>
+  <data name="Graphene" xml:space="preserve">
+    <value>Grafeno</value>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Micro Hidráulica</value>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Bloqueador</value>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>Carboneto de Tungstênio</value>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Eletroímã</value>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Transmissor</value>
+  </data>
 </root>
