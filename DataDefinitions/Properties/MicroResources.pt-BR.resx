@@ -377,7 +377,7 @@
     <value>Equipamento de Vigilância</value>
   </data>
   <data name="InsightDataBank" xml:space="preserve">
-    <value>Banco de Dados de Insight</value>
+    <value>Banco de Dados Insight</value>
   </data>
   <data name="ShipSchematic" xml:space="preserve">
     <value>Esquema de Nave</value>
@@ -413,7 +413,7 @@
     <value>Chip de Memória Encriptado</value>
   </data>
   <data name="EpoxyAdhesive" xml:space="preserve">
-    <value>Adesivo Epox</value>
+    <value>Adesivo de Epóxi</value>
   </data>
   <data name="MemoryChip" xml:space="preserve">
     <value>Chip de Memória</value>
@@ -446,7 +446,7 @@
     <value>Motor</value>
   </data>
   <data name="MicroElectrode" xml:space="preserve">
-    <value>Micro Eletrôdo</value>
+    <value>Microeletrôdo</value>
   </data>
   <data name="Graphene" xml:space="preserve">
     <value>Grafeno</value>
