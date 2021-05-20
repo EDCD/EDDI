@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.0-b2
+  * Inara Responder
+    * Fixed a missing .dll file that caused the Inara Responder not to load. 
+
 ### 4.0.0-b1
   * Core
     * Added 3 new vehicle types:
