@@ -36,18 +36,20 @@ namespace EddiCompanionAppService
                 {
                     // Caution: The "id" property here may not match the FID returned from the player journal
                     name = (string)json["commander"]["name"],
-                    combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]),
-                    traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]),
-                    explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]),
-                    cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]),
-                    empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]),
-                    federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]),
-                    crimerating = (int)json["commander"]["rank"]["crime"],
-                    servicerating = (int)json["commander"]["rank"]["service"],
-                    powerrating = (int)json["commander"]["rank"]["power"],
+                    combatrating = CombatRating.FromRank((int?)json["commander"]["rank"]["combat"] ?? 0),
+                    traderating = TradeRating.FromRank((int?)json["commander"]["rank"]["trade"] ?? 0),
+                    explorationrating = ExplorationRating.FromRank((int?)json["commander"]["rank"]["explore"] ?? 0),
+                    cqcrating = CQCRating.FromRank((int?)json["commander"]["rank"]["cqc"] ?? 0),
+                    empirerating = EmpireRating.FromRank((int?)json["commander"]["rank"]["empire"] ?? 0),
+                    federationrating = FederationRating.FromRank((int?)json["commander"]["rank"]["federation"] ?? 0),
+                    mercenaryrating = MercenaryRating.FromRank((int?)json["commander"]["rank"]["soldier"] ?? 0),
+                    exobiologistrating = ExobiologistRating.FromRank((int?)json["commander"]["rank"]["exobiologist"] ?? 0),
+                    crimerating = (int?)json["commander"]["rank"]["crime"] ?? 0,
+                    servicerating = (int?)json["commander"]["rank"]["service"] ?? 0,
+                    powerrating = (int?)json["commander"]["rank"]["power"] ?? 0,
 
-                    credits = (long)json["commander"]["credits"],
-                    debt = (long)json["commander"]["debt"]
+                    credits = (long?)json["commander"]["credits"] ?? 0,
+                    debt = (long?)json["commander"]["debt"] ?? 0
                 };
                 Profile.Cmdr = Commander;
                 Profile.docked = (bool)json["commander"]["docked"];

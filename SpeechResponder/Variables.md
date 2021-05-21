@@ -39,6 +39,8 @@ Any values might be missing, depending on EDDI's configuration.
     - `explorationrating` the exploration combat rating of the commander (this is a Rating object)
     - `empirerating` the current Empire rating of the commander (this is a Rating object)
     - `federationrating` the current Federation rating of the commander (this is a Rating object)
+    - `mercenaryrating` the current Mercenary rating of the commander (this is a Rating object)
+    - `exobiologistrating` the current Exobiologist rating of the commander (this is a Rating object)
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
     - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male', 'Female' or 'Neither')

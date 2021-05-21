@@ -37,6 +37,10 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Empire rank}: the empire rating of the commander, from None to King
   * {INT:Federation rating}: the federation rating of the commander, with 0 being None and 14 being Admiral
   * {TXT:Federation rank}: the federation rating of the commander, from None to Admiral
+  * {INT:Mercenary rating}: the mercenary rating of the commander, with 0 being Defenceless and 8 being Elite
+  * {TXT:Mercenary rank}: the mercenary rating of the commander, from Defenceless to Elite
+  * {INT:Exobiologist rating}: the exobiologist rating of the commander, with 0 being Directionless and 8 being Elite
+  * {TXT:Exobiologist rank}: the exobiologist rating of the commander, from Directionless to Elite
   * {DEC:Credits}: the number of credits owned by the commander
   * {TXT:Credits (spoken)}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
   * {DEC:Debt}: the number of credits owed by the commander

@@ -337,6 +337,8 @@ namespace UnitTests
                 cqcrating = CQCRating.FromRank(2),
                 empirerating = EmpireRating.FromRank(2),
                 federationrating = FederationRating.FromRank(1),
+                mercenaryrating = MercenaryRating.Defenceless,
+                exobiologistrating = ExobiologistRating.Directionless,
                 crimerating = 0,
                 servicerating = 0,
                 powerrating = 2,
@@ -352,6 +354,8 @@ namespace UnitTests
                 cqcrating = CQCRating.FromRank(2),
                 empirerating = EmpireRating.FromRank(4),
                 federationrating = FederationRating.FromRank(2),
+                mercenaryrating = MercenaryRating.Rookie,
+                exobiologistrating = ExobiologistRating.Directionless,
                 crimerating = 2,
                 servicerating = 2,
                 powerrating = 3,
@@ -367,6 +371,8 @@ namespace UnitTests
                 cqcrating = CQCRating.FromRank(0),
                 empirerating = EmpireRating.FromRank(1),
                 federationrating = FederationRating.FromRank(2),
+                mercenaryrating = MercenaryRating.Defenceless,
+                exobiologistrating = ExobiologistRating.Geneticist,
                 crimerating = 1,
                 servicerating = 1,
                 powerrating = 7,
@@ -391,6 +397,8 @@ namespace UnitTests
             Assert.AreEqual(2, test1.cqcrating.rank);
             Assert.AreEqual(4, test1.empirerating.rank);
             Assert.AreEqual(2, test1.federationrating.rank);
+            Assert.AreEqual(2, test1.mercenaryrating.rank);
+            Assert.AreEqual(0, test1.exobiologistrating.rank);
             Assert.AreEqual(2, test1.crimerating);
             Assert.AreEqual(2, test1.servicerating);
             // Since the journal timestamp is greater than the api timestamp, power rating is based off of the journal timestamp
@@ -417,6 +425,8 @@ namespace UnitTests
             Assert.AreEqual(2, test3.cqcrating.rank);
             Assert.AreEqual(2, test3.empirerating.rank);
             Assert.AreEqual(1, test3.federationrating.rank);
+            Assert.AreEqual(0, test3.mercenaryrating.rank);
+            Assert.AreEqual(0, test3.exobiologistrating.rank);
             Assert.AreEqual(0, test3.crimerating);
             Assert.AreEqual(0, test3.servicerating);
             Assert.AreEqual(2, test3.powerrating);
@@ -590,6 +600,22 @@ namespace UnitTests
             var result = MicroResource.FromEDName(input);
             Assert.AreEqual(expectedInvariantName, result.invariantName);
             Assert.AreEqual(expectedInvariantCategory, result.Category.invariantName);
+        }
+
+        [TestMethod]
+        public void TestEngineerNullLocation()
+        {
+            // Test that we can gracefully handle situations where we want to look up an engineer location and not all known engineers have a known location.
+            Engineer.AddOrUpdate(new Engineer("NoSuchEngineer", 999999, "Known", null, null));
+            try
+            {
+                var engineer = Engineer.FromSystemName("NoSuchSystem");
+                Assert.IsNull(engineer);
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
     }
 }

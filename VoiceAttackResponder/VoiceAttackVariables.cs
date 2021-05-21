@@ -524,6 +524,10 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Empire rank", cmdr?.empirerating?.maleRank.localizedName);
                 vaProxy.SetInt("Federation rating", cmdr?.federationrating?.rank);
                 vaProxy.SetText("Federation rank", cmdr?.federationrating?.localizedName);
+                vaProxy.SetInt("Mercenary rating", cmdr?.mercenaryrating?.rank);
+                vaProxy.SetText("Mercenary rank", cmdr?.mercenaryrating?.localizedName);
+                vaProxy.SetInt("Exobiologist rating", cmdr?.exobiologistrating?.rank);
+                vaProxy.SetText("Exobiologist rank", cmdr?.exobiologistrating?.localizedName);
                 vaProxy.SetDecimal("Credits", cmdr?.credits);
                 vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
                 vaProxy.SetDecimal("Debt", cmdr?.debt);

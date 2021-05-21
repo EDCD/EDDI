@@ -35,6 +35,12 @@ namespace EddiDataDefinitions
         /// <summary>The commander's federation rating</summary>
         public FederationRating federationrating { get; set; }
 
+        /// <summary>The commander's mercenary rating</summary>
+        public MercenaryRating mercenaryrating { get; set; }
+
+        /// <summary>The commander's exobiologist rating</summary>
+        public ExobiologistRating exobiologistrating { get; set; }
+
         /// <summary>The commander's crime rating</summary>
         public int crimerating { get; set; }
 
@@ -141,7 +147,9 @@ namespace EddiDataDefinitions
             combatrating = commander.combatrating;
             traderating = commander.traderating;
             explorationrating = commander.explorationrating;
-            cqcrating = CQCRating.FromRank(commander.cqcrating.rank);
+            cqcrating = commander.cqcrating;
+            mercenaryrating = commander.mercenaryrating;
+            exobiologistrating = commander.exobiologistrating;
         }
 
         public static Commander FromFrontierApiCmdr(Commander currentCmdr, FrontierApiCommander frontierApiCommander, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool cmdrMatches)
@@ -172,18 +180,22 @@ namespace EddiDataDefinitions
 
             // Update our commander object with information obtainable from the journal
             // Since the parameters below only increase, we will take any that are higher in rank than we had before
-            Cmdr.combatrating = frontierApiCommander.combatrating?.rank > Cmdr.combatrating?.rank
+            Cmdr.combatrating = (frontierApiCommander.combatrating?.rank ?? 0) >= (Cmdr.combatrating?.rank ?? 0)
                 ? frontierApiCommander.combatrating : Cmdr.combatrating;
-            Cmdr.traderating = frontierApiCommander.traderating?.rank > Cmdr.traderating?.rank
+            Cmdr.traderating = (frontierApiCommander.traderating?.rank ?? 0) >= (Cmdr.traderating?.rank ?? 0)
                 ? frontierApiCommander.traderating : Cmdr.traderating;
-            Cmdr.explorationrating = frontierApiCommander.explorationrating?.rank > Cmdr.explorationrating?.rank
+            Cmdr.explorationrating = (frontierApiCommander.explorationrating?.rank ?? 0) >= (Cmdr.explorationrating?.rank ?? 0)
                 ? frontierApiCommander.explorationrating : Cmdr.explorationrating;
-            Cmdr.cqcrating = frontierApiCommander.cqcrating?.rank > Cmdr.cqcrating?.rank
+            Cmdr.cqcrating = (frontierApiCommander.cqcrating?.rank ?? 0) >= (Cmdr.cqcrating?.rank ?? 0)
                 ? frontierApiCommander.cqcrating : Cmdr.cqcrating;
-            Cmdr.empirerating = frontierApiCommander.empirerating?.rank > Cmdr.empirerating?.rank
+            Cmdr.empirerating = (frontierApiCommander.empirerating?.rank ?? 0) >= (Cmdr.empirerating?.rank ?? 0)
                 ? frontierApiCommander.empirerating : Cmdr.empirerating;
-            Cmdr.federationrating = frontierApiCommander.federationrating?.rank > Cmdr.federationrating?.rank
+            Cmdr.federationrating = (frontierApiCommander.federationrating?.rank ?? 0) >= (Cmdr.federationrating?.rank ?? 0)
                 ? frontierApiCommander.federationrating : Cmdr.federationrating;
+            Cmdr.mercenaryrating = (frontierApiCommander.mercenaryrating?.rank ?? 0) >= (Cmdr.mercenaryrating?.rank ?? 0)
+                ? frontierApiCommander.mercenaryrating : Cmdr.mercenaryrating;
+            Cmdr.exobiologistrating = (frontierApiCommander.exobiologistrating?.rank ?? 0) >= (Cmdr.exobiologistrating?.rank ?? 0)
+                ? frontierApiCommander.exobiologistrating : Cmdr.exobiologistrating;
             // Power rating is also updated from the journal but may decrease so we check the timestamp
             if (apiTimeStamp > journalTimeStamp)
             {

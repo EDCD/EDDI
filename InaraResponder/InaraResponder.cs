@@ -1230,6 +1230,16 @@ namespace EddiInaraResponder
                 {
                     { "rankName", "cqc" },
                     { "rankProgress", @event.cqc / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "soldier" },
+                    { "rankProgress", @event.mercenary / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "exobiologist" },
+                    { "rankProgress", @event.exobiologist / 100 }
                 }
             };
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
@@ -1270,6 +1280,16 @@ namespace EddiInaraResponder
                 {
                     { "rankName", "cqc" },
                     { "rankValue", @event.cqc?.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "soldier" },
+                    { "rankValue", @event.mercenary?.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "exobiologist" },
+                    { "rankValue", @event.exobiologist?.rank }
                 }
             };
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
