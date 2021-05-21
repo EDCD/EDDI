@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExobiologistRating.cs" />
+    <Compile Include="MercenaryRating.cs" />
     <Compile Include="MicroResourceAmount.cs" />
     <Compile Include="MicroResourceCategory.cs" />
     <Compile Include="MicroResource.cs" />
@@ -93,6 +95,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MicroResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MercenaryRatings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MercenaryRatings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\ExobiologistRatings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExobiologistRatings.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
@@ -521,6 +533,15 @@
     <EmbeddedResource Include="Properties\EngineerSpecialty.ja.resx" />
     <EmbeddedResource Include="Properties\EngineerSpecialty.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EngineerSpecialty.ru.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.cs.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.de.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.es.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.fr.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.hu.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.it.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.ja.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\ExobiologistRatings.ru.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.cs.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.ru.resx" />
@@ -632,6 +653,15 @@
     <EmbeddedResource Include="Properties\Materials.cs.resx" />
     <EmbeddedResource Include="Properties\Materials.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Materials.ru.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.cs.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.de.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.es.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.fr.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.hu.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.it.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.ja.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\MercenaryRatings.ru.resx" />
     <EmbeddedResource Include="Properties\MessageChannels.cs.resx" />
     <EmbeddedResource Include="Properties\MessageChannels.de.resx" />
     <EmbeddedResource Include="Properties\MessageChannels.es.resx" />
@@ -701,6 +731,14 @@
     <EmbeddedResource Include="Properties\MicroResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MicroResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MercenaryRatings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MercenaryRatings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ExobiologistRatings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExobiologistRatings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Suit.cs.resx" />
     <EmbeddedResource Include="Properties\Suit.de.resx" />
