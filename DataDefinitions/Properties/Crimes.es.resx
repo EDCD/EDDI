@@ -201,7 +201,10 @@
     <value>Multa de misión</value>
     <comment>Crime missionFine</comment>
   </data>
-  
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Asalto</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
   
   
   
