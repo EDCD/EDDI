@@ -467,40 +467,42 @@ namespace EddiJournalMonitor
                                 break;
                             case "Promotion":
                                 {
-                                    object val;
-                                    if (data.ContainsKey("Combat"))
+                                    object rating = null;
+                                    if (data.TryGetValue("Combat", out object val))
                                     {
-                                        data.TryGetValue("Combat", out val);
-                                        CombatRating rating = CombatRating.FromRank(Convert.ToInt32(val));
-                                        events.Add(new CombatPromotionEvent(timestamp, rating) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        rating = CombatRating.FromRank(Convert.ToInt32(val));
                                     }
-                                    else if (data.ContainsKey("Trade"))
+                                    else if (data.TryGetValue("CQC", out val))
                                     {
-                                        data.TryGetValue("Trade", out val);
-                                        TradeRating rating = TradeRating.FromRank(Convert.ToInt32(val));
-                                        events.Add(new TradePromotionEvent(timestamp, rating) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        rating = CQCRating.FromRank(Convert.ToInt32(val));
                                     }
-                                    else if (data.ContainsKey("Explore"))
+                                    else if (data.TryGetValue("Trade", out val))
                                     {
-                                        data.TryGetValue("Explore", out val);
-                                        ExplorationRating rating = ExplorationRating.FromRank(Convert.ToInt32(val));
-                                        events.Add(new ExplorationPromotionEvent(timestamp, rating) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        rating = TradeRating.FromRank(Convert.ToInt32(val));
                                     }
-                                    else if (data.ContainsKey("Federation"))
+                                    else if (data.TryGetValue("Explore", out val))
                                     {
-                                        data.TryGetValue("Federation", out val);
-                                        FederationRating rating = FederationRating.FromRank(Convert.ToInt32(val));
-                                        events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        rating = ExplorationRating.FromRank(Convert.ToInt32(val));
                                     }
-                                    else if (data.ContainsKey("Empire"))
+                                    else if (data.TryGetValue("Federation", out val))
                                     {
-                                        data.TryGetValue("Empire", out val);
-                                        EmpireRating rating = EmpireRating.FromRank(Convert.ToInt32(val));
-                                        events.Add(new EmpirePromotionEvent(timestamp, rating) { raw = line, fromLoad = fromLogLoad });
+                                        rating = FederationRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Empire", out val))
+                                    {
+                                        rating = EmpireRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Soldier", out val))
+                                    {
+                                        rating = MercenaryRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Exobiologist", out val))
+                                    {
+                                        rating = ExobiologistRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    if (rating != null)
+                                    {
+                                        events.Add(new CommanderPromotionEvent(timestamp, rating, EDDI.Instance.Cmdr.gender) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                 }
@@ -2664,8 +2666,12 @@ namespace EddiJournalMonitor
                                     decimal empire = (long)val;
                                     data.TryGetValue("Federation", out val);
                                     decimal federation = (long)val;
+                                    data.TryGetValue("Soldier", out val);
+                                    decimal soldier = (long)val;
+                                    data.TryGetValue("Exobiologist", out val);
+                                    decimal exobiologist = (long)val;
 
-                                    events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2683,8 +2689,12 @@ namespace EddiJournalMonitor
                                     EmpireRating empire = EmpireRating.FromRank((int)((long)val));
                                     data.TryGetValue("Federation", out val);
                                     FederationRating federation = FederationRating.FromRank((int)((long)val));
+                                    data.TryGetValue("Soldier", out val);
+                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long)val));
+                                    data.TryGetValue("Exobiologist", out val);
+                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long)val));
 
-                                    events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

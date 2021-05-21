@@ -292,6 +292,16 @@ namespace EddiSpeechResponder
                     {
                         scriptHolder.Add(kv.Key);
                     }
+                    else if ( // Replaced by "Commander promotion" script
+                        kv.Value.Name == "Combat promotion" ||
+                        kv.Value.Name == "Empire promotion" ||
+                        kv.Value.Name == "Exploration promotion" ||
+                        kv.Value.Name == "Federation promotion" ||
+                        kv.Value.Name == "Trade promotion"
+                        ) 
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
                 }
                 foreach (string script in scriptHolder)
                 {

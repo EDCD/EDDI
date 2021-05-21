@@ -22,33 +22,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestPromotionCombat()
+        public void TestCommanderPromotion()
         {
-            ParseSampleByName("Combat promotion");
-        }
-
-        [TestMethod]
-        public void TestPromotionTrade()
-        {
-            ParseSampleByName("Trade promotion");
-        }
-
-        [TestMethod]
-        public void TestPromotionExploration()
-        {
-            ParseSampleByName("Exploration promotion");
-        }
-
-        [TestMethod]
-        public void TestPromotionFederation()
-        {
-            ParseSampleByName("Federation promotion");
-        }
-
-        [TestMethod]
-        public void TestPromotionEmpire()
-        {
-            ParseSampleByName("Empire promotion");
+            ParseSampleByName("Commander promotion");
         }
     }
 }
