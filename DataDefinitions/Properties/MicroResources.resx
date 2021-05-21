@@ -262,7 +262,8 @@
     <value>Next of Kin Records</value>
   </data>
   <data name="NOCData" xml:space="preserve">
-    <value>Network Operations Center Data</value>
+    <value>NOC Data</value>
+    <comment>"Non-Official Cover" - data about spies</comment>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>

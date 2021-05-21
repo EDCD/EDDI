@@ -718,7 +718,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Network Operations Center Data.
+        ///   Looks up a localized string similar to NOC Data.
         /// </summary>
         public static string NOCData {
             get {
