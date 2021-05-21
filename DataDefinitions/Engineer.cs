@@ -92,7 +92,7 @@ namespace EddiDataDefinitions
 
         public static readonly Engineer JudeNavarro = new Engineer(400001, "Jude Navarro", null, -1, null, -1, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer DominoGreen = new Engineer(400002, "Domino Green", null, -1, null, -1, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer HeroFerrari = new Engineer(400003, "Hero Ferrari", null, -1, null, -1, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer HeroFerrari = new Engineer(400003, "Hero Ferrari", "Siris", 7269634614689, "Nevermore Terrace", 128973415, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
 
         public static Engineer FromName(string from)
         {
