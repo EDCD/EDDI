@@ -2435,8 +2435,11 @@ namespace EddiJournalMonitor
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
                                     string frontierID = JsonParsing.getString(data, "FID");
+
+                                    // Active expansions
                                     bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
                                     bool odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
+                                    Logging.Info($"Active expansions... Horizons: {horizons}, Odyssey: {odyssey}.");
 
                                     string shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
                                                                                        // If on foot this may be a suit & if in an SRV then this may be an SRV.
@@ -3542,7 +3545,7 @@ namespace EddiJournalMonitor
                                     string filename = journalFileName;
                                     string version = JsonParsing.getString(data, "gameversion");
                                     string build = JsonParsing.getString(data, "build").Replace(" ", "");
-
+                                    Logging.Info($"GameVersion: {version}, Build {build}.");
                                     events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
