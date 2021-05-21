@@ -4193,7 +4193,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "BuyWeapon":
-                            case "Backpack":
+                            case "BackPack":
                             case "BackpackChange":
                             //case "BackPackMaterials":
                             //    {
@@ -4267,6 +4267,7 @@ namespace EddiJournalMonitor
                             case "SellWeapon":
                             case "SharedBookmarkToSquadron":
                             case "ShipLockerMaterials":
+                            case "SuitLoadout":
                             case "SwitchSuitLoadout":
                             case "TradeMicroResources":
                             case "TransferMicroResources":
