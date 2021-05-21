@@ -90,8 +90,8 @@ namespace EddiDataDefinitions
         public static readonly Engineer EtienneDorn = new Engineer(300290, "Etienne Dorn", "Los", 11887629902418, "Kraken's Retreat", 128681351, new HashSet<EngineerSpecialty> { EngineerSpecialty.PlasmaAccelerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners, EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.PowerPlants, EngineerSpecialty.PowerDistributors, EngineerSpecialty.RailGuns}, new HashSet<EngineerSpecialty> { EngineerSpecialty.Scanners});
         public static readonly Engineer ChloeSedesi = new Engineer(300300, "Chloe Sedesi", "Shenve", 594676730147, "Cinder Dock", 128954244, new HashSet<EngineerSpecialty> { EngineerSpecialty.Thrusters }, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives } );
 
-        public static readonly Engineer JudeNavarro = new Engineer(400001, "Jude Navarro", null, -1, null, -1, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer DominoGreen = new Engineer(400002, "Domino Green", null, -1, null, -1, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer JudeNavarro = new Engineer(400001, "Jude Navarro", "Aurai", 7268024067513, "Marshall's Drift", 128972903, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer DominoGreen = new Engineer(400002, "Domino Green", "Orishis", 5068464399785, "The Jackrabbit", 128973159, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer HeroFerrari = new Engineer(400003, "Hero Ferrari", "Siris", 7269634614689, "Nevermore Terrace", 128973415, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
 
         public static Engineer FromName(string from)

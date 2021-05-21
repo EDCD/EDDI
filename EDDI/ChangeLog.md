@@ -14,6 +14,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Exploration promotion` event removed (obsolete)
       * `Federation promotion` event removed (obsolete)
       * `Trade promotion` event removed (obsolete)
+    * Scripts
+      * `Engineer report` script updated to more gracefully handle engineers without defined specialties.
 
 ### 4.0.0-b2
   * Inara Responder
