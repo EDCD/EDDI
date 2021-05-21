@@ -2,6 +2,19 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.0-b3
+  * Core
+    * Fixed a bug that caused EDDI to fail to look up engineer systems after new engineers were added to the game.
+    * Added new microbiologist and mercenary ranks
+  * Speech Responder
+    * Events
+      * `Commander promotion` event added
+      * `Combat promotion` event removed (obsolete)
+      * `Empire promotion` event removed (obsolete)
+      * `Exploration promotion` event removed (obsolete)
+      * `Federation promotion` event removed (obsolete)
+      * `Trade promotion` event removed (obsolete)
+
 ### 4.0.0-b2
   * Inara Responder
     * Fixed a missing .dll file that caused the Inara Responder not to load. 
