@@ -257,9 +257,7 @@
   <data name="NextOfKinRecords" xml:space="preserve">
     <value>Записи о ближайших родственниках</value>
   </data>
-  <data name="NOCData" xml:space="preserve">
-    <value>Данные центра сетевых операций</value>
-  </data>
+  
   <data name="None" xml:space="preserve">
     <value>Пусто</value>
   </data>
