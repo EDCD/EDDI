@@ -253,9 +253,7 @@
   <data name="NextOfKinRecords" xml:space="preserve">
     <value>Registros de Parentêsco</value>
   </data>
-  <data name="NOCData" xml:space="preserve">
-    <value>Dados do Centro de Operações de Rede</value>
-  </data>
+  
   <data name="None" xml:space="preserve">
     <value>Nenhum</value>
   </data>
