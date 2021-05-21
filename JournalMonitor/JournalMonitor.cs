@@ -2408,7 +2408,10 @@ namespace EddiJournalMonitor
                                         foreach (IDictionary<string, object> engineerData in engineers)
                                         {
                                             Engineer engineer = parseEngineer(engineerData);
-                                            Engineer.AddOrUpdate(engineer);
+                                            if (!string.IsNullOrEmpty(engineer.name))
+                                            {
+                                                Engineer.AddOrUpdate(engineer);
+                                            }
                                         }
                                         // Generate an event to pass the data
                                         events.Add(new EngineerProgressedEvent(timestamp, null, null) { raw = line, fromLoad = fromLogLoad });
