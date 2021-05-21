@@ -45,7 +45,7 @@ namespace EDDNResponder
         {
             "CarrierJumpRequest", // CarrierJumpRequest events describing the system the carrier is jumping too rather than the system we are in
             "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
-            "StartJump"  // Scan events can register after StartJump and before we actually leave the originating system
+            "FSSSignalDiscovered"  // Scan events from the destination system can register after StartJump and before we actually leave the originating system
         };
 
         // We will strip these personal keys (plus any localized properties) before sending data to EDDN
