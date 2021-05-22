@@ -842,27 +842,6 @@ namespace EddiCore
         {
             Vehicle = Constants.VEHICLE_LEGS;
             Logging.Info($"Disembarked to {Vehicle}");
-
-            if (disembarkEvent.onstation ?? false)
-            {
-                // Kick off the profile refresh if the companion API is available
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
-                {
-                    // Refresh station data
-                    if (disembarkEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() =>
-                    {
-                        Thread.Sleep(5000);
-                        conditionallyRefreshProfile();
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    updateThread.Start();
-                }
-            }
             return true;
         }
 
