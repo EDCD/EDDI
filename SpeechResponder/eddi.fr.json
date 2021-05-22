@@ -308,15 +308,6 @@
       "name": "Cockpit breached",
       "description": "Triggered when your ship's cockpit is broken"
     },
-    "Combat promotion": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'combat')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\n{OneOf(\"Vos compétances aux combats sont reconnues dans toute la galaxie, vous êtes prommu au rang \",\"Vous êtes reconnu pour vos compétences de combat, vous prennez le grade de:\")} {event.rating}",
-      "default": true,
-      "name": "Combat promotion",
-      "description": "Triggered when your combat rank increases"
-    },
     "Commander continued": {
       "enabled": true,
       "priority": 3,
@@ -343,6 +334,15 @@
       "default": true,
       "name": "Commander progress",
       "description": "Triggered when your progress is reported"
+    },
+    "Commander promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', lower(event.rank_type))}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\n{if event.rank_type = \"Combat\":\r\n    You have been recognised for your valor as a combat pilot, {F(\"Honorific\")}.\r\n|elif event.rank_type = \"CQC\":\r\n    You have been recognised for your valor as a close quarters combat pilot, {F(\"Honorific\")}.\r\n|elif event.rank_type = \"Trade\":\r\n    You have been recognised for your trading acumen, {F(\"Honorific\")}.\r\n|elif event.rank_type = \"Exploration\":\r\n    You have been recognised for your work as an explorer, {F(\"Honorific\")}.\r\n|elif event.rank_type = \"Federation\":\r\n    {set plainHonorific to when(cmdr.gender = 'Female', 'Madam', 'Sir')}\r\n    Congratulations {OneOf('Commander {CommanderName()}', plainHonorific)}! You have\r\n    {OneOf('achieved', 'been promoted to', 'been granted')}\r\n    the rank of {event.rank}\r\n    {Occasionally(2, OneOf('within the Federal Navy', 'for your service to the Federation'))}.\r\n    {if event.rating = 3:\r\n        You now qualify to purchase the Federal Dropship.\r\n    |elif event.rating = 4:\r\n        This grants you access to the {P('Sol', 'starsystem')} system.\r\n    |elif event.rating = 5:\r\n        You now qualify to purchase the Federal Assault Ship, and have access to the {P('Vega', 'starsystem')} and {P('Beta Hydri', 'starsystem')} systems.\r\n    |elif event.rating = 6:\r\n        This grants you access to the {P('PLX 695', 'starsystem')} system.\r\n    |elif event.rating = 7:\r\n        You now qualify to purchase the Federal Gunship, and have access to the {P('Ross 128', 'starsystem')} system.\r\n    |elif event.rating = 8:\r\n        This grants you access to the {P('Exbeur', 'starsystem')} system.\r\n    |elif event.rating = 10:\r\n        This grants you access to the {P('Hors', 'starsystem')} system.\r\n    |elif event.rating = 12:\r\n        You now qualify to purchase the Federal Corvette.\r\n    |elif event.rating = 14:\r\n        This is the highest rank available to a member of the Federal Naval Reserve.\r\n    }   \r\n|elif event.rank_type = \"Empire\":\r\n    Congratulations {F(\"Empire honorific\")},\r\n    the Imperial Navy has \r\n    {OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\n    to the rank of {event.rank}\r\n    {Occasionally(2, OneOf(\"within the Imperial Navy\", \"for your service to the Empire\"))}.\r\n    {if event.rating = 1:\r\n        You may now purchase the Imperial Eagle.\r\n    |elif event.rating = 3:\r\n        You may now purchase the Imperial Courier.\r\n    |elif event.rating = 4:\r\n        This grants you the honour of entering the {P(\"Achenar\", \"starsystem\")} system.\r\n    |elif event.rating = 7:\r\n        This allows you to purchase the Imperial Clipper, and the honour of entering the {P(\"Summerland\", \"starsystem\")} system.\r\n    |elif event.rating = 10:\r\n        This grants you the honour of entering the {P(\"Facece\", \"starsystem\")} system\r\n    |elif event.rating = 12:\r\n        You may now purchase the Imperial Cutter.\r\n    |elif event.rating = 14:\r\n        This is the highest {OneOf(\"rank\", \"honor\")} available to a member of the Imperial Naval Reserve.\r\n    }\r\n|elif event.rank_type = \"Mercenary\":\r\n    You have been recognised for your skills as a mercenary, {F(\"Honorific\")}.\r\n|elif event.rank_type = \"Exobiologist\":\r\n    You have been recognised for your work as an exobiologist, {F(\"Honorific\")}.\r\n}",
+      "default": true,
+      "name": "Commander promotion",
+      "description": "Triggered when one of your commander ranks increases"
     },
     "Commander ratings": {
       "enabled": true,
@@ -756,15 +756,6 @@
       "name": "Empire honorific",
       "description": "Function to provide a suitable honorific for your commander when in the empire"
     },
-    "Empire promotion": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if event.rank = \"Chevalier\":\r\n    sieur\r\n|elif event.rank = \"Banneret\":\r\n    monseigneur\r\n|elif event.rank = \"Baron\":\r\n    monseigneur\r\n|elif event.rank = \"Vicomte\":\r\n    monseigneur\r\n|elif event.rank = \"Comte\":\r\n    monseigneur\r\n|elif event.rank = \"Earl\":\r\n    monseigneur\r\n|elif event.rank = \"Duc\":\r\n    monseigneur\r\n|elif event.rank = \"Archiduc\":\r\n    votre grace\r\n|elif event.rank = \"Prince\":\r\n    Votre altesse royale\r\n|elif event.rank = \"Roi\":\r\n    Votre majesté\r\n|else:\r\n    commandeur\r\n},\r\nLa flotte impériale \r\n{OneOf(\"vous a accordé une promotion pour le\", \"vous a promu au\", \"vous a gratifié du\", \"vous a nommé au\")}\r\ntitre honorifique de \r\n{event.rank}\r\n{Occasionally(2, \"suite aux services rendu à l'empire\")}.",
-      "default": true,
-      "name": "Empire promotion",
-      "description": "Triggered when your rank increases with the Empire"
-    },
     "Engineer contributed": {
       "enabled": true,
       "priority": 3,
@@ -836,24 +827,6 @@
       "default": true,
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
-    },
-    "Exploration promotion": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'combat')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\n{OneOf(\"Tribulations au travers de la galaxie\",\"Vos recherches de linconnu en divers endroits de la galaxie\",\"Le différentes routes que vous avez ouverts au travers de la galaxie\",\"L'ensemble de vos découvertes\")} vous ont ammené au titre de {event.rating} en exploration.\r\n",
-      "default": true,
-      "name": "Exploration promotion",
-      "description": "Triggered when your exploration rank increases"
-    },
-    "Federation promotion": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{Occasionally(2,\"Félicitation, officier!\")}\r\n\r\nLa marine fédérale  \r\n{OneOf(\"vous a accordé une promotion pour le\", \"vous a promu au\", \"vous a gratifié du\", \"vous a nommé au\")}\r\ngrade de\r\n{event.rank}\r\n{Occasionally(2, \"suite aux services rendu à la Fédération\")}.",
-      "default": true,
-      "name": "Federation promotion",
-      "description": "Triggered when your rank increases with the Federation"
     },
     "Fighter docked": {
       "enabled": true,
@@ -2276,15 +2249,6 @@
       "default": true,
       "name": "Trade data purchased",
       "description": "Triggered when you purchase trade data"
-    },
-    "Trade promotion": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'trade')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\n{OneOf('Vos capacités commerciales vous ont portées au titre de','Grace à vos bénéfices commerciaux, vous avez gagné le rang de')} {event.rating}.",
-      "default": true,
-      "name": "Trade promotion",
-      "description": "Triggered when your trade rank increases"
     },
     "Trade voucher redeemed": {
       "enabled": true,
