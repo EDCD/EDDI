@@ -290,7 +290,7 @@ namespace EddiShipMonitor
             if (@event.timestamp > updatedAt)
             {
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.shipEDModel) && !inBuggy(@event.shipEDModel) && !onFoot(@event.shipEDModel))
+                if (!inFighter(@event.shipEDModel) && !inBuggy(@event.shipEDModel) && !onFoot(@event.shipEDModel) && !inTaxi(@event.shipEDModel))
                 {
                     SetCurrentShip((int?)@event.shipid, @event.shipEDModel);
                     Ship ship = GetCurrentShip();
@@ -1867,6 +1867,11 @@ namespace EddiShipMonitor
         private bool onFoot(string edModel)
         {
             return edModel.Contains("Suit");
+        }
+
+        private bool inTaxi(string edModel)
+        {
+            return edModel.Contains("adder_taxi");
         }
 
         private Task _refreshProfileDelayed;
