@@ -45,7 +45,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             catch (Exception e)
             {
-                return $"The SystemDetails function is used incorrectly. {e.Message}."
+                return $"The SystemDetails function is used incorrectly. {e.Message}.";
             }
         }, 1);
     }
