@@ -407,7 +407,7 @@
     <value>Revestimento de Titânio</value>
   </data>
   <data name="CircuitSwitch" xml:space="preserve">
-    <value>Interruptor de Circuito</value>
+    <value>Chave de Circuito</value>
   </data>
   <data name="EncryptedMemoryChip" xml:space="preserve">
     <value>Chip de Memória Criptografado</value>
