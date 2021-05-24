@@ -58,27 +58,27 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -99,130 +99,100 @@
   </resheader>
   <data name="SquadronMate" xml:space="preserve">
     <value>Squadron mate</value>
-    
   </data>
   <data name="WingMate" xml:space="preserve">
     <value>Wing mate</value>
-    
   </data>
   <data name="CrewMate" xml:space="preserve">
     <value>Crew mate</value>
-    
   </data>
   <data name="Commander" xml:space="preserve">
     <value>Commander</value>
-    
   </data>
   <data name="AmbushedPilot" xml:space="preserve">
     <value>Ambushed pilot</value>
-    
   </data>
   <data name="BountyHunter" xml:space="preserve">
     <value>Bounty hunter</value>
-    
   </data>
   <data name="CapShip" xml:space="preserve">
     <value>Capital ship</value>
-    
   </data>
   <data name="CargoHunter" xml:space="preserve">
     <value>Cargo hunter</value>
-    
   </data>
   <data name="ConvoyExplorers" xml:space="preserve">
     <value>Exploration convoy</value>
-    
   </data>
   <data name="ConvoyWedding" xml:space="preserve">
     <value>Wedding convoy</value>
-    
   </data>
   <data name="CruiseLiner" xml:space="preserve">
     <value>Cruise liner</value>
-    
   </data>
   <data name="Escort" xml:space="preserve">
     <value>Escort</value>
-    
   </data>
   <data name="Hitman" xml:space="preserve">
     <value>Hitman</value>
-    
   </data>
   <data name="Messenger" xml:space="preserve">
     <value>Messenger</value>
-    
   </data>
   <data name="Military" xml:space="preserve">
     <value>Military</value>
-    
   </data>
   <data name="Miner" xml:space="preserve">
     <value>Miner</value>
-    
   </data>
   <data name="PassengerHunter" xml:space="preserve">
     <value>Passenger hunter</value>
-    
   </data>
   <data name="PassengerLiner" xml:space="preserve">
     <value>Passenger liner</value>
-    
   </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirate</value>
-    
   </data>
   <data name="Police" xml:space="preserve">
     <value>Police</value>
-    
   </data>
   <data name="PowersAssassin" xml:space="preserve">
     <value>Rival power's agent</value>
-    
   </data>
   <data name="PowersPirate" xml:space="preserve">
     <value>Rival power's agent</value>
-    
   </data>
   <data name="PowersSecurity" xml:space="preserve">
     <value>Rival power's agent</value>
-    
   </data>
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandist</value>
-    
   </data>
   <data name="Protester" xml:space="preserve">
     <value>Protester</value>
-    
   </data>
   <data name="Refugee" xml:space="preserve">
     <value>Refugee</value>
-    
   </data>
   <data name="StarshipOne" xml:space="preserve">
     <value>Starship One</value>
-    
+    <comment>StarshipOne
+The Federation presidential flagship, like "Airforce One" in real life.</comment>
   </data>
   <data name="SearchandRescue" xml:space="preserve">
     <value>Search and rescue</value>
-    
   </data>
   <data name="NPC" xml:space="preserve">
     <value>NPC</value>
-    
   </data>
   <data name="Station" xml:space="preserve">
     <value>Station</value>
-    
   </data>
   <data name="CivilianPilot" xml:space="preserve">
     <value>Civilian pilot</value>
-    
   </data>
   <data name="ConflictZone" xml:space="preserve">
     <value>Conflict zone</value>
-    
   </data>
 </root>
