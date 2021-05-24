@@ -98,10 +98,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="citizensuitai_scientific" xml:space="preserve">
+    <value>Wissenschaftler</value>
+    
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="assaultsuitai" xml:space="preserve">
+    <value>Kommando</value>
+    
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="lightassaultsuitai" xml:space="preserve">
+    <value>Scout</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="rangedsuitai" xml:space="preserve">
+    <value>Scharfschütze</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="citizensuitai_industrial" xml:space="preserve">
+    <value>Arbeiter</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
 </root>
