@@ -158,7 +158,7 @@
     <value>Dados de Censo</value>
   </data>
   <data name="ChemicalExperimentData" xml:space="preserve">
-    <value>Dados de Experimentos Químico</value>
+    <value>Dados de Experimentos Químicos</value>
   </data>
   <data name="ChemicalFormulae" xml:space="preserve">
     <value>Fórmula Química</value>
@@ -182,7 +182,7 @@
     <value>Regulador de Energia Degradado</value>
   </data>
   <data name="DutyRota" xml:space="preserve">
-    <value>Escalas de Serviço</value>
+    <value>Escala de Trabalho</value>
   </data>
   <data name="EmployeeDirectory" xml:space="preserve">
     <value>Lista de Funcionários</value>
@@ -286,7 +286,7 @@
   </data>
   
   <data name="RadioactivityData" xml:space="preserve">
-    <value>Dados de Radioatividade</value>
+    <value>Dados Sobre Radioatividade</value>
   </data>
   <data name="ReactorOutputReview" xml:space="preserve">
     <value>Análise de Saída do Reator</value>
@@ -313,7 +313,7 @@
     <value>Registros de Imposto</value>
   </data>
   <data name="TopographicalSurveys" xml:space="preserve">
-    <value>Levantamentos Topográficos</value>
+    <value>Estudos Topográficos</value>
   </data>
   <data name="TravelPermits" xml:space="preserve">
     <value>Permissões de Viagem</value>
@@ -338,7 +338,7 @@
     <value>Dados de Virologia</value>
   </data>
   <data name="VisitorRegister" xml:space="preserve">
-    <value>Registro de Visitante</value>
+    <value>Registro de Visitantes</value>
   </data>
   <data name="WeaponInventory" xml:space="preserve">
     <value>Inventário de Armas</value>
