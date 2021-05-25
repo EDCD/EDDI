@@ -119,6 +119,12 @@
   </resheader>
   
   
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Schildunterbrecher</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Splittergranate</value>
+  </data>
   
   
   
@@ -140,9 +146,9 @@
   
   
   
-  
-  
-  
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Energiezelle</value>
+  </data>
   
   
   
@@ -158,7 +164,9 @@
   
   
   
-  
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Energieregulator</value>
+  </data>
   
   
   <data name="MaintenanceLogs" xml:space="preserve">
