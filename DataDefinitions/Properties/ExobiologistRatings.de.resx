@@ -125,5 +125,8 @@
   
   
   
-  
+  <data name="Taxonomist" xml:space="preserve">
+    <value>Shuttle-Betreiber</value>
+    <comment>Exobiologist rating Taxonomist</comment>
+  </data>
 </root>
