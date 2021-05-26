@@ -3,7 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 4.0.0-b4
-
+  * Speech Responder
+    * Scripts
+      * `Carrier jumped` script revised to correct missing `"Information:"` when the engineer report is the only applicable report.
+      * `Jumped` script revised to correct missing `"Information:"` when the engineer report is the only applicable report.
 
 ### 4.0.0-b3
   * Core
