@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
       * `Engineer report` script, revised to refine grammar.
       * `Jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
+      * `Mission check system` script, fixed a bug that could prevent the station model from being referenced.
 
 ### 4.0.0-b3
   * Core
