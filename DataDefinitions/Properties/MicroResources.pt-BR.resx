@@ -219,7 +219,9 @@
   <data name="HealthPack" xml:space="preserve">
     <value>Kitmédico</value>
   </data>
-  
+  <data name="Hush" xml:space="preserve">
+    <value>Silêncio</value>
+  </data>
   <data name="Infinity" xml:space="preserve">
     <value>Infinidade</value>
   </data>
