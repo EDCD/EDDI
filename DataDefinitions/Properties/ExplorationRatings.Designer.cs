@@ -79,6 +79,51 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elite 1.
+        /// </summary>
+        public static string EliteI {
+            get {
+                return ResourceManager.GetString("EliteI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite 2.
+        /// </summary>
+        public static string EliteII {
+            get {
+                return ResourceManager.GetString("EliteII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite 3.
+        /// </summary>
+        public static string EliteIII {
+            get {
+                return ResourceManager.GetString("EliteIII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite 4.
+        /// </summary>
+        public static string EliteIV {
+            get {
+                return ResourceManager.GetString("EliteIV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite 5.
+        /// </summary>
+        public static string EliteV {
+            get {
+                return ResourceManager.GetString("EliteV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mostly Aimless.
         /// </summary>
         public static string MostlyAimless {

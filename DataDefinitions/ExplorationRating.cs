@@ -22,6 +22,11 @@ namespace EddiDataDefinitions
             var Ranger = new ExplorationRating("Ranger", 6);
             var Pioneer = new ExplorationRating("Pioneer", 7);
             var Elite = new ExplorationRating("Elite", 8);
+            var EliteI = new ExplorationRating("EliteI", 9);
+            var EliteII = new ExplorationRating("EliteII", 10);
+            var EliteIII = new ExplorationRating("EliteIII", 11);
+            var EliteIV = new ExplorationRating("EliteIV", 12);
+            var EliteV = new ExplorationRating("EliteV", 13);
         }
 
         public int rank { get; private set; }

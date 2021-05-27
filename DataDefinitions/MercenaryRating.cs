@@ -23,6 +23,11 @@ namespace EddiDataDefinitions
         public static readonly MercenaryRating Gladiator = new MercenaryRating("Gladiator", 6);
         public static readonly MercenaryRating Deadeye = new MercenaryRating("Deadeye", 7);
         public static readonly MercenaryRating Elite = new MercenaryRating("Elite", 8);
+        public static readonly MercenaryRating EliteI = new MercenaryRating("EliteI", 9);
+        public static readonly MercenaryRating EliteII = new MercenaryRating("EliteII", 10);
+        public static readonly MercenaryRating EliteIII = new MercenaryRating("EliteIII", 11);
+        public static readonly MercenaryRating EliteIV = new MercenaryRating("EliteIV", 12);
+        public static readonly MercenaryRating EliteV = new MercenaryRating("EliteV", 13);
 
         public int rank { get; private set; }
 

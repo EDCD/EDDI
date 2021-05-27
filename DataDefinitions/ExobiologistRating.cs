@@ -23,7 +23,11 @@ namespace EddiDataDefinitions
         public static readonly ExobiologistRating Ecologist = new ExobiologistRating("Ecologist", 6);
         public static readonly ExobiologistRating Geneticist = new ExobiologistRating("Geneticist", 7);
         public static readonly ExobiologistRating Elite = new ExobiologistRating("Elite", 8);
-
+        public static readonly ExobiologistRating EliteI = new ExobiologistRating("EliteI", 9);
+        public static readonly ExobiologistRating EliteII = new ExobiologistRating("EliteII", 10);
+        public static readonly ExobiologistRating EliteIII = new ExobiologistRating("EliteIII", 11);
+        public static readonly ExobiologistRating EliteIV = new ExobiologistRating("EliteIV", 12);
+        public static readonly ExobiologistRating EliteV = new ExobiologistRating("EliteV", 13);
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

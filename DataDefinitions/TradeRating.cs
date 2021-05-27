@@ -22,6 +22,11 @@ namespace EddiDataDefinitions
             var Entrepreneur = new TradeRating("Entrepreneur", 6);
             var Tycoon = new TradeRating("Tycoon", 7);
             var Elite = new TradeRating("Elite", 8);
+            var EliteI = new TradeRating("EliteI", 9);
+            var EliteII = new TradeRating("EliteII", 10);
+            var EliteIII = new TradeRating("EliteIII", 11);
+            var EliteIV = new TradeRating("EliteIV", 12);
+            var EliteV = new TradeRating("EliteV", 13);
         }
 
         public int rank { get; private set; }

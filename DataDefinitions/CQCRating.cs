@@ -22,6 +22,11 @@ namespace EddiDataDefinitions
             var Hero = new CQCRating("Hero", 6);
             var Legend = new CQCRating("Legend", 7);
             var Elite = new CQCRating("Elite", 8);
+            var EliteI = new CQCRating("EliteI", 9);
+            var EliteII = new CQCRating("EliteII", 10);
+            var EliteIII = new CQCRating("EliteIII", 11);
+            var EliteIV = new CQCRating("EliteIV", 12);
+            var EliteV = new CQCRating("EliteV", 13);
         }
 
         public int rank { get; private set; }

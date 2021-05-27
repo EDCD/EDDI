@@ -22,6 +22,11 @@ namespace EddiDataDefinitions
             var Dangerous = new CombatRating("Dangerous", 6);
             var Deadly = new CombatRating("Deadly", 7);
             var Elite = new CombatRating("Elite", 8);
+            var EliteI = new CombatRating("EliteI", 9);
+            var EliteII = new CombatRating("EliteII", 10);
+            var EliteIII = new CombatRating("EliteIII", 11);
+            var EliteIV = new CombatRating("EliteIV", 12);
+            var EliteV = new CombatRating("EliteV", 13);
         }
 
         public int rank { get; private set; }
