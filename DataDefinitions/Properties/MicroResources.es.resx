@@ -119,6 +119,23 @@
   </resheader>
   
   
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Supresor de escudo</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Granada de fragmentación</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Proyector de escudo</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Bypass" xml:space="preserve">
+    <value>Fisura</value>
+  </data>
   
   
   
@@ -133,6 +150,9 @@
   
   
   
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Célula de energía</value>
+  </data>
   
   
   
@@ -140,17 +160,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="HealthPack" xml:space="preserve">
+    <value>Botiquín</value>
+  </data>
   
   
   
