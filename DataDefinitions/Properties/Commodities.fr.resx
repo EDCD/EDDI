@@ -1669,14 +1669,26 @@
     <value>Matière biologique Thargoïde</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
-  
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Engrais Rockforth</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
   <data name="agronomictreatment" xml:space="preserve">
     <value>Traitement agronomique</value>
     <comment>Commodity agronomictreatment</comment>
   </data>
-  
-  
-  
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>Greebles cuites</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>Prototypes de processeurs ultra-compacts</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>Fesh argenté de Crom</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
   <data name="Tritium" xml:space="preserve">
     <value>Tritium</value>
     <comment>Commodity Tritium</comment>
@@ -1693,14 +1705,26 @@
     <value>Tissu cérébral de mollusque</value>
     <comment>Commodity M_TissueSample_Nerves</comment>
   </data>
-  
-  
-  
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>Tissu de noyau de cosse</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>Tissu mort de cosse</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>Tissu de surface de cosse</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
   <data name="P_ParticulateSample" xml:space="preserve">
     <value>Particules d'anomalie</value>
     <comment>Commodity P_ParticulateSample</comment>
   </data>
-  
+  <data name="S9_TissueSample_Shell" xml:space="preserve">
+    <value>Tissu de cosse</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+  </data>
   <data name="M3_TissueSample_Membrane" xml:space="preserve">
     <value>Membrane de mollusque</value>
     <comment>Commodity M3_TissueSample_Membrane</comment>
@@ -1713,12 +1737,36 @@
     <value>Spores de mollusque</value>
     <comment>Commodity M3_TissueSample_Spores</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="S6_TissueSample_Mesoglea" xml:space="preserve">
+    <value>Mésoglée de cosse</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+  </data>
+  <data name="S6_TissueSample_Cells" xml:space="preserve">
+    <value>Tissu extérieur de cosse</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+  </data>
+  <data name="S6_TissueSample_Coenosarc" xml:space="preserve">
+    <value>Tissu de coque de cosse</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+  </data>
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Viande ornementale de Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Wolf fesh</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Café Kitten CD-75</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Pommes d'eden d'Aerial</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Ailes à faible gravité Uzumoku</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>
