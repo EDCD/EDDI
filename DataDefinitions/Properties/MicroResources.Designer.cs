@@ -133,6 +133,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Logs.
+        /// </summary>
+        public static string AudioLogs {
+            get {
+                return ResourceManager.GetString("AudioLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AX Combat Logs.
+        /// </summary>
+        public static string AXCombatLogs {
+            get {
+                return ResourceManager.GetString("AXCombatLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ballistics Data.
+        /// </summary>
+        public static string BallisticsData {
+            get {
+                return ResourceManager.GetString("BallisticsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Biochemical Agent.
         /// </summary>
         public static string BiochemicalAgent {
@@ -205,6 +232,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cast Fossil.
+        /// </summary>
+        public static string CastFossil {
+            get {
+                return ResourceManager.GetString("CastFossil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cat Media.
         /// </summary>
         public static string CatMedia {
@@ -219,6 +255,15 @@ namespace EddiDataDefinitions.Properties {
         public static string CensusData {
             get {
                 return ResourceManager.GetString("CensusData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chemical Catalyst.
+        /// </summary>
+        public static string ChemicalCatalyst {
+            get {
+                return ResourceManager.GetString("ChemicalCatalyst", resourceCulture);
             }
         }
         
@@ -277,6 +322,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A highly soluble chemical with a wide range of applications..
+        /// </summary>
+        public static string ChemicalSuperbase {
+            get {
+                return ResourceManager.GetString("ChemicalSuperbase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chemical Weapon Data.
+        /// </summary>
+        public static string ChemicalWeaponData {
+            get {
+                return ResourceManager.GetString("ChemicalWeaponData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Circuit Board.
         /// </summary>
         public static string CircuitBoard {
@@ -291,6 +354,24 @@ namespace EddiDataDefinitions.Properties {
         public static string CircuitSwitch {
             get {
                 return ResourceManager.GetString("CircuitSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classic Entertainment.
+        /// </summary>
+        public static string ClassicEntertainment {
+            get {
+                return ResourceManager.GetString("ClassicEntertainment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cocktail Recipes.
+        /// </summary>
+        public static string CocktailRecipes {
+            get {
+                return ResourceManager.GetString("CocktailRecipes", resourceCulture);
             }
         }
         
@@ -318,6 +399,60 @@ namespace EddiDataDefinitions.Properties {
         public static string CompactLibrary {
             get {
                 return ResourceManager.GetString("CompactLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compression-Liquefied Gas.
+        /// </summary>
+        public static string CompressionLiquefiedGas {
+            get {
+                return ResourceManager.GetString("CompressionLiquefiedGas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conflict History.
+        /// </summary>
+        public static string ConflictHistory {
+            get {
+                return ResourceManager.GetString("ConflictHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Criminal Records.
+        /// </summary>
+        public static string CriminalRecords {
+            get {
+                return ResourceManager.GetString("CriminalRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crop Yield Analysis.
+        /// </summary>
+        public static string CropYieldAnalysis {
+            get {
+                return ResourceManager.GetString("CropYieldAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Culinary Recipes.
+        /// </summary>
+        public static string CulinaryRecipes {
+            get {
+                return ResourceManager.GetString("CulinaryRecipes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deep Mantle Sample.
+        /// </summary>
+        public static string DeepMantleSample {
+            get {
+                return ResourceManager.GetString("DeepMantleSample", resourceCulture);
             }
         }
         
@@ -376,6 +511,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee Expenses.
+        /// </summary>
+        public static string EmployeeExpenses {
+            get {
+                return ResourceManager.GetString("EmployeeExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Genetic Data.
         /// </summary>
         public static string EmployeeGeneticData {
@@ -412,11 +556,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enhanced Interrogation Recordings.
+        /// </summary>
+        public static string EnhancedInterrogationRecordings {
+            get {
+                return ResourceManager.GetString("EnhancedInterrogationRecordings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Epinephrine.
+        /// </summary>
+        public static string Epinephrine {
+            get {
+                return ResourceManager.GetString("Epinephrine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Epoxy Adhesive.
         /// </summary>
         public static string EpoxyAdhesive {
             get {
                 return ResourceManager.GetString("EpoxyAdhesive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Espionage Material.
+        /// </summary>
+        public static string EspionageMaterial {
+            get {
+                return ResourceManager.GetString("EspionageMaterial", resourceCulture);
             }
         }
         
@@ -435,6 +606,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ExplorationJournals {
             get {
                 return ResourceManager.GetString("ExplorationJournals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extraction Yield Data.
+        /// </summary>
+        public static string ExtractionYieldData {
+            get {
+                return ResourceManager.GetString("ExtractionYieldData", resourceCulture);
             }
         }
         
@@ -475,6 +655,51 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fleet Registry.
+        /// </summary>
+        public static string FleetRegistry {
+            get {
+                return ResourceManager.GetString("FleetRegistry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gene Sequencing Data.
+        /// </summary>
+        public static string GeneSequencingData {
+            get {
+                return ResourceManager.GetString("GeneSequencingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genetic Repair Meds.
+        /// </summary>
+        public static string GeneticRepairMeds {
+            get {
+                return ResourceManager.GetString("GeneticRepairMeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genetic Research.
+        /// </summary>
+        public static string GeneticResearch {
+            get {
+                return ResourceManager.GetString("GeneticResearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biological Sample.
+        /// </summary>
+        public static string GeneticSample {
+            get {
+                return ResourceManager.GetString("GeneticSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geographical Data.
         /// </summary>
         public static string GeographicalData {
@@ -484,11 +709,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geological Data.
+        /// </summary>
+        public static string GeologicalData {
+            get {
+                return ResourceManager.GetString("GeologicalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-Meds.
+        /// </summary>
+        public static string GMeds {
+            get {
+                return ResourceManager.GetString("GMeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Graphene.
         /// </summary>
         public static string Graphene {
             get {
                 return ResourceManager.GetString("Graphene", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Monitor.
+        /// </summary>
+        public static string HealthMonitor {
+            get {
+                return ResourceManager.GetString("HealthMonitor", resourceCulture);
             }
         }
         
@@ -511,11 +763,56 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hydroponic Data.
+        /// </summary>
+        public static string HydroponicData {
+            get {
+                return ResourceManager.GetString("HydroponicData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incident Logs.
+        /// </summary>
+        public static string IncidentLogs {
+            get {
+                return ResourceManager.GetString("IncidentLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inertia Canister.
+        /// </summary>
+        public static string InertiaCanister {
+            get {
+                return ResourceManager.GetString("InertiaCanister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Infinity.
         /// </summary>
         public static string Infinity {
             get {
                 return ResourceManager.GetString("Infinity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Influence Projections.
+        /// </summary>
+        public static string InfluenceProjections {
+            get {
+                return ResourceManager.GetString("InfluenceProjections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inorganic Contaminant.
+        /// </summary>
+        public static string InorganicContaminant {
+            get {
+                return ResourceManager.GetString("InorganicContaminant", resourceCulture);
             }
         }
         
@@ -556,11 +853,56 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interrogation Recordings.
+        /// </summary>
+        public static string InterrogationRecordings {
+            get {
+                return ResourceManager.GetString("InterrogationRecordings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interview Recordings.
+        /// </summary>
+        public static string InterviewRecordings {
+            get {
+                return ResourceManager.GetString("InterviewRecordings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ion Battery.
+        /// </summary>
+        public static string IonBattery {
+            get {
+                return ResourceManager.GetString("IonBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ionised Gas.
         /// </summary>
         public static string IonisedGas {
             get {
                 return ResourceManager.GetString("IonisedGas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Applications.
+        /// </summary>
+        public static string JobApplications {
+            get {
+                return ResourceManager.GetString("JobApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kompromat.
+        /// </summary>
+        public static string Kompromat {
+            get {
+                return ResourceManager.GetString("Kompromat", resourceCulture);
             }
         }
         
@@ -610,6 +952,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Medical Records.
+        /// </summary>
+        public static string MedicalRecords {
+            get {
+                return ResourceManager.GetString("MedicalRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medical Trial Records.
+        /// </summary>
+        public static string MedicalTrialRecords {
+            get {
+                return ResourceManager.GetString("MedicalTrialRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meeting Minutes.
         /// </summary>
         public static string MeetingMinutes {
@@ -633,6 +993,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MetalCoil {
             get {
                 return ResourceManager.GetString("MetalCoil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microbial Inhibitor.
+        /// </summary>
+        public static string MicrobialInhibitor {
+            get {
+                return ResourceManager.GetString("MicrobialInhibitor", resourceCulture);
             }
         }
         
@@ -664,6 +1033,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Micro Thrusters.
+        /// </summary>
+        public static string MicroThrusters {
+            get {
+                return ResourceManager.GetString("MicroThrusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Micro Transformer.
         /// </summary>
         public static string MicroTransformer {
@@ -678,6 +1056,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MineralSurvey {
             get {
                 return ResourceManager.GetString("MineralSurvey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mining Analytics.
+        /// </summary>
+        public static string MiningAnalytics {
+            get {
+                return ResourceManager.GetString("MiningAnalytics", resourceCulture);
             }
         }
         
@@ -700,11 +1087,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mutagenic Catalyst.
+        /// </summary>
+        public static string MutagenicCatalyst {
+            get {
+                return ResourceManager.GetString("MutagenicCatalyst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Network Access History.
         /// </summary>
         public static string NetworkAccessHistory {
             get {
                 return ResourceManager.GetString("NetworkAccessHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network Security Protocols.
+        /// </summary>
+        public static string NetworkSecurityProtocols {
+            get {
+                return ResourceManager.GetString("NetworkSecurityProtocols", resourceCulture);
             }
         }
         
@@ -736,6 +1141,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nutritional Concentrate.
+        /// </summary>
+        public static string NutritionalConcentrate {
+            get {
+                return ResourceManager.GetString("NutritionalConcentrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operational Manual.
         /// </summary>
         public static string OperationalManual {
@@ -745,11 +1159,47 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opinion Polls.
+        /// </summary>
+        public static string OpinionPolls {
+            get {
+                return ResourceManager.GetString("OpinionPolls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Optical Fiber.
         /// </summary>
         public static string OpticalFibre {
             get {
                 return ResourceManager.GetString("OpticalFibre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optical Lens.
+        /// </summary>
+        public static string OpticalLens {
+            get {
+                return ResourceManager.GetString("OpticalLens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oxygenic Bacteria.
+        /// </summary>
+        public static string OxygenicBacteria {
+            get {
+                return ResourceManager.GetString("OxygenicBacteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patient History.
+        /// </summary>
+        public static string PatientHistory {
+            get {
+                return ResourceManager.GetString("PatientHistory", resourceCulture);
             }
         }
         
@@ -772,6 +1222,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personal Computer.
+        /// </summary>
+        public static string PersonalComputer {
+            get {
+                return ResourceManager.GetString("PersonalComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Personal Documents.
         /// </summary>
         public static string PersonalDocuments {
@@ -790,11 +1249,65 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Petrified Fossil.
+        /// </summary>
+        public static string PetrifiedFossil {
+            get {
+                return ResourceManager.GetString("PetrifiedFossil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pharmaceutical Patents.
         /// </summary>
         public static string PharmaceuticalPatents {
             get {
                 return ResourceManager.GetString("PharmaceuticalPatents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pH Neutraliser.
+        /// </summary>
+        public static string pHNeutraliser {
+            get {
+                return ResourceManager.GetString("pHNeutraliser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo Albums.
+        /// </summary>
+        public static string PhotoAlbums {
+            get {
+                return ResourceManager.GetString("PhotoAlbums", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plant Growth Charts.
+        /// </summary>
+        public static string PlantGrowthCharts {
+            get {
+                return ResourceManager.GetString("PlantGrowthCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Political Affiliations.
+        /// </summary>
+        public static string PoliticalAffiliations {
+            get {
+                return ResourceManager.GetString("PoliticalAffiliations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prisoner Logs.
+        /// </summary>
+        public static string PrisonerLogs {
+            get {
+                return ResourceManager.GetString("PrisonerLogs", resourceCulture);
             }
         }
         
@@ -813,6 +1326,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ProductionSchedule {
             get {
                 return ResourceManager.GetString("ProductionSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Propaganda.
+        /// </summary>
+        public static string Propaganda {
+            get {
+                return ResourceManager.GetString("Propaganda", resourceCulture);
             }
         }
         
@@ -862,6 +1384,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RDX.
+        /// </summary>
+        public static string RDX {
+            get {
+                return ResourceManager.GetString("RDX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reactor Output Review.
         /// </summary>
         public static string ReactorOutputReview {
@@ -871,11 +1402,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recycling Logs.
+        /// </summary>
+        public static string RecyclingLogs {
+            get {
+                return ResourceManager.GetString("RecyclingLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refinement Process Sample.
+        /// </summary>
+        public static string RefinementProcessSample {
+            get {
+                return ResourceManager.GetString("RefinementProcessSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Residential Directory.
         /// </summary>
         public static string ResidentialDirectory {
             get {
                 return ResourceManager.GetString("ResidentialDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Risk Assessments.
+        /// </summary>
+        public static string RiskAssessments {
+            get {
+                return ResourceManager.GetString("RiskAssessments", resourceCulture);
             }
         }
         
@@ -894,6 +1452,33 @@ namespace EddiDataDefinitions.Properties {
         public static string Scrambler {
             get {
                 return ResourceManager.GetString("Scrambler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security Expenses.
+        /// </summary>
+        public static string SecurityExpenses {
+            get {
+                return ResourceManager.GetString("SecurityExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seed Geneaology.
+        /// </summary>
+        public static string SeedGeneaology {
+            get {
+                return ResourceManager.GetString("SeedGeneaology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Assault Plans.
+        /// </summary>
+        public static string SettlementAssaultPlans {
+            get {
+                return ResourceManager.GetString("SettlementAssaultPlans", resourceCulture);
             }
         }
         
@@ -921,6 +1506,33 @@ namespace EddiDataDefinitions.Properties {
         public static string ShipSchematic {
             get {
                 return ResourceManager.GetString("ShipSchematic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slush Fund Logs.
+        /// </summary>
+        public static string SlushFundLogs {
+            get {
+                return ResourceManager.GetString("SlushFundLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smear Campaign Plans.
+        /// </summary>
+        public static string SmearCampaignPlans {
+            get {
+                return ResourceManager.GetString("SmearCampaignPlans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectral Analysis Data.
+        /// </summary>
+        public static string SpectralAnalysisData {
+            get {
+                return ResourceManager.GetString("SpectralAnalysisData", resourceCulture);
             }
         }
         
@@ -966,6 +1578,15 @@ namespace EddiDataDefinitions.Properties {
         public static string SurveilleanceLogs {
             get {
                 return ResourceManager.GetString("SurveilleanceLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synthetic Genome.
+        /// </summary>
+        public static string SyntheticGenome {
+            get {
+                return ResourceManager.GetString("SyntheticGenome", resourceCulture);
             }
         }
         
@@ -1105,6 +1726,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VIP Security Detail.
+        /// </summary>
+        public static string VIPSecurityDetail {
+            get {
+                return ResourceManager.GetString("VIPSecurityDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Virology Data.
         /// </summary>
         public static string VirologyData {
@@ -1123,11 +1753,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Viscoelastic Polymer.
+        /// </summary>
+        public static string ViscoelasticPolymer {
+            get {
+                return ResourceManager.GetString("ViscoelasticPolymer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visitor Register.
         /// </summary>
         public static string VisitorRegister {
             get {
                 return ResourceManager.GetString("VisitorRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weapon Component.
+        /// </summary>
+        public static string WeaponComponent {
+            get {
+                return ResourceManager.GetString("WeaponComponent", resourceCulture);
             }
         }
         
@@ -1146,6 +1794,24 @@ namespace EddiDataDefinitions.Properties {
         public static string WeaponSchematic {
             get {
                 return ResourceManager.GetString("WeaponSchematic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weapon Test Data.
+        /// </summary>
+        public static string WeaponTestData {
+            get {
+                return ResourceManager.GetString("WeaponTestData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xeno-Defence Protocols.
+        /// </summary>
+        public static string XenoDefenceProtocols {
+            get {
+                return ResourceManager.GetString("XenoDefenceProtocols", resourceCulture);
             }
         }
     }
