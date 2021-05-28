@@ -119,6 +119,23 @@
   </resheader>
   
   
+  <data name="Amm_Grenade_EMP" xml:space="preserve">
+    <value>Neutralisateur de bouclier</value>
+  </data>
+  <data name="Amm_Grenade_Frag" xml:space="preserve">
+    <value>Grenade à fragmentation</value>
+  </data>
+  <data name="Amm_Grenade_Shield" xml:space="preserve">
+    <value>Générateur de bouclier</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Bypass" xml:space="preserve">
+    <value>Omnipasse</value>
+  </data>
   
   
   
@@ -133,6 +150,9 @@
   
   
   
+  <data name="EnergyCell" xml:space="preserve">
+    <value>Cellule d'énergie</value>
+  </data>
   
   
   
@@ -140,17 +160,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="HealthPack" xml:space="preserve">
+    <value>Médikit</value>
+  </data>
   
   
   
