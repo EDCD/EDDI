@@ -117,11 +117,11 @@
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="rangedsuitai" xml:space="preserve">
-    <value>Atirador de elite</value>
+    <value>Atirador</value>
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="closesuitai" xml:space="preserve">
-    <value>Atacante</value>
+    <value>Ataque</value>
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="citizensuitai_industrial" xml:space="preserve">
