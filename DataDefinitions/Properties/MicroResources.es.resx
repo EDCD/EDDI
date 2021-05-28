@@ -121,12 +121,15 @@
   
   <data name="Amm_Grenade_EMP" xml:space="preserve">
     <value>Supresor de escudo</value>
+    <comment>A deployable device that temporarily disrupts shields with an electromagnetic pulse.</comment>
   </data>
   <data name="Amm_Grenade_Frag" xml:space="preserve">
     <value>Granada de fragmentación</value>
+    <comment>An explosive weapon that damages nearby targets upon detonation.</comment>
   </data>
   <data name="Amm_Grenade_Shield" xml:space="preserve">
     <value>Proyector de escudo</value>
+    <comment>A deployable device that generates a barrier designed to absorb incoming attacks.</comment>
   </data>
   
   
@@ -135,6 +138,7 @@
   
   <data name="Bypass" xml:space="preserve">
     <value>Fisura</value>
+    <comment>A single-use device used to circumvent security systems.</comment>
   </data>
   
   
@@ -152,6 +156,7 @@
   
   <data name="EnergyCell" xml:space="preserve">
     <value>Célula de energía</value>
+    <comment>A single-use item that restores energy to suit batteries.</comment>
   </data>
   
   
@@ -162,7 +167,82 @@
   
   <data name="HealthPack" xml:space="preserve">
     <value>Botiquín</value>
+    <comment>A portable medical kit used to treat wounds.</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
