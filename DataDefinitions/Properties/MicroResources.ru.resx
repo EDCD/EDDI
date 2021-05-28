@@ -119,143 +119,188 @@
   </resheader>
   <data name="AccidentLogs" xml:space="preserve">
     <value>Журналы регистрации несчастных случаев</value>
+    <comment>A record of settlement incidents which resulted in some degree of physical injury.</comment>
   </data>
   <data name="AirQualityReports" xml:space="preserve">
     <value>Отчеты о качестве воздуха</value>
+    <comment>Chemical analyses of atmospheric recycling systems in surface settlements.</comment>
   </data>
   <data name="Amm_Grenade_EMP" xml:space="preserve">
     <value>Разрушитель щита</value>
+    <comment>A deployable device that temporarily disrupts shields with an electromagnetic pulse.</comment>
   </data>
   <data name="Amm_Grenade_Frag" xml:space="preserve">
     <value>Осколочная граната</value>
+    <comment>An explosive weapon that damages nearby targets upon detonation.</comment>
   </data>
   <data name="Amm_Grenade_Shield" xml:space="preserve">
     <value>Проектор щита</value>
+    <comment>A deployable device that generates a barrier designed to absorb incoming attacks.</comment>
   </data>
   <data name="AtmosphericData" xml:space="preserve">
     <value>Атмосферные данные</value>
+    <comment>Scientific observations and measurements of a planet's atmosphere.</comment>
   </data>
   <data name="BiochemicalAgent" xml:space="preserve">
     <value>Биохимический агент</value>
+    <comment>A compound designed to break down organic tissue.</comment>
   </data>
   <data name="BlacklistData" xml:space="preserve">
     <value>Данные черного списка</value>
+    <comment>Sensitive information regarding individuals and/or groups deemed untrustworthy or dangerous.</comment>
   </data>
   <data name="BloodTestResults" xml:space="preserve">
     <value>Результаты анализа крови</value>
+    <comment>Blood test data related to settlement health checks and policy adherence.</comment>
   </data>
   <data name="BuildingSchematic" xml:space="preserve">
     <value>Схема здания</value>
+    <comment>A technical blueprint detailing the architectural design of a building.</comment>
   </data>
   <data name="Bypass" xml:space="preserve">
     <value>Взлом электроники</value>
+    <comment>A single-use device used to circumvent security systems.</comment>
   </data>
   <data name="CampaignPlans" xml:space="preserve">
     <value>Планы кампаний</value>
+    <comment>Information, schedules and objectives for a large-scale public initiative.</comment>
   </data>
   
   <data name="CensusData" xml:space="preserve">
     <value>Данные переписи населения</value>
+    <comment>Detailed information and statistics on the size and composition of a population.</comment>
   </data>
   <data name="ChemicalExperimentData" xml:space="preserve">
     <value>Данные химического эксперимента</value>
+    <comment>Proposals and research results related to various chemical experiments.</comment>
   </data>
   <data name="ChemicalFormulae" xml:space="preserve">
     <value>Химические формулы</value>
+    <comment>Data related to the classification and research applications of newly developed chemicals.</comment>
   </data>
   <data name="ChemicalInventory" xml:space="preserve">
     <value>Химический инвентарь</value>
+    <comment>A detailed log of active and inert chemical materials stored within a facility.</comment>
   </data>
   <data name="ChemicalPatents" xml:space="preserve">
     <value>Химические патенты</value>
+    <comment>A list of registered patent applications for chemical inventions.</comment>
   </data>
   <data name="CombatantPerformance" xml:space="preserve">
     <value>Боевые показатели</value>
+    <comment>Observational data on a subject's proficiency in ground-based combat operations.</comment>
   </data>
   <data name="CombatTrainingMaterial" xml:space="preserve">
     <value>Материал для боевой подготовки</value>
+    <comment>Training plans and exercises designed to improve overall battlefield effectiveness.</comment>
   </data>
   <data name="CompactLibrary" xml:space="preserve">
     <value>Компактная библиотека</value>
+    <comment>A large selection of literary classics and reference works in digital form.</comment>
   </data>
   <data name="DegradedPowerRegulator" xml:space="preserve">
     <value>Деградировавший регулятор мощности</value>
+    <comment>A non-functional fuel regulator used in power plants.</comment>
   </data>
   <data name="DutyRota" xml:space="preserve">
     <value>Чередование дежурств</value>
+    <comment>Details of the activities and schedules of all personnel at a settlement.</comment>
   </data>
   <data name="EmployeeDirectory" xml:space="preserve">
     <value>Справочник сотрудников</value>
+    <comment>A complete list of staff members with their relevant personal details.</comment>
   </data>
   <data name="EmployeeGeneticData" xml:space="preserve">
     <value>Генетические данные сотрудников</value>
+    <comment>Unique genetic data records for a settlement's past and current personnel.</comment>
   </data>
   <data name="EnergyCell" xml:space="preserve">
     <value>Энергетическая ячейка</value>
+    <comment>A single-use item that restores energy to suit batteries.</comment>
   </data>
   <data name="EvacuationProtocols" xml:space="preserve">
     <value>Протоколы эвакуации</value>
+    <comment>Detailed instructions for the abandonment of a settlement by all registered personnel.</comment>
   </data>
   <data name="ExplorationJournals" xml:space="preserve">
     <value>Журналы разведки</value>
+    <comment>Collected first-hand accounts of the author’s experiences and discoveries in deep space.</comment>
   </data>
   <data name="FactionAssociates" xml:space="preserve">
     <value>Фракционные партнеры</value>
+    <comment>Information on a faction's political allies and related beneficial relationships.</comment>
   </data>
   <data name="FactionDonatorList" xml:space="preserve">
     <value>Список вкладчиков фракции</value>
+    <comment>A record of individuals or organsiations that have made financial contributions to a faction.</comment>
   </data>
   <data name="FactionNews" xml:space="preserve">
     <value>Новости фракций</value>
+    <comment>Publicly available press releases and ongoing news stories related to a faction.</comment>
   </data>
   <data name="FinancialProjections" xml:space="preserve">
     <value>Финансовые прогнозы</value>
+    <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
   </data>
   <data name="GeographicalData" xml:space="preserve">
     <value>Географические данные</value>
   </data>
   <data name="HealthPack" xml:space="preserve">
     <value>Аптечка</value>
+    <comment>A portable medical kit used to treat wounds.</comment>
   </data>
   <data name="Hush" xml:space="preserve">
     <value>Время молчать</value>
+    <comment>A recreational drug that induces a state of extreme relaxation while limiting auditory input.</comment>
   </data>
   <data name="Infinity" xml:space="preserve">
     <value>Бесконечность</value>
+    <comment>A brand of exotic cologne that chemically adapts to please the olfactory system.</comment>
   </data>
   <data name="Insight" xml:space="preserve">
     <value>Озарение</value>
+    <comment>A wearable device designed to provide the user with real-time information about their immediate environment.</comment>
   </data>
   
   <data name="InternalCorrespondence" xml:space="preserve">
     <value>Внутренняя переписка</value>
+    <comment>A record of communications by members within an organisation's network.</comment>
   </data>
   <data name="LargeCapacityPowerRegulator" xml:space="preserve">
     <value>Регулятор мощности</value>
+    <comment>A complex device designed to regulate the energy generated by a settlement's power reactor.</comment>
   </data>
   <data name="Lazarus" xml:space="preserve">
     <value>Лазарь</value>
+    <comment>A recreational drug that places the user in state of euphoric oblivion, sometimes for as long as four days.</comment>
   </data>
   <data name="LiteraryFiction" xml:space="preserve">
     <value>Литературная фантастика</value>
+    <comment>Text-based fictional entertainment in a range of genres and styles.</comment>
   </data>
   <data name="MaintenanceLogs" xml:space="preserve">
     <value>Журналы технического обслуживания</value>
+    <comment>Records of routine tasks to maintain settlement equipment or infrastructure.</comment>
   </data>
   <data name="MeetingMinutes" xml:space="preserve">
     <value>Протокол собрания</value>
+    <comment>A record of discussion topics and action points from a meeting of settlement personnel.</comment>
   </data>
   <data name="MineralSurvey" xml:space="preserve">
     <value>Исследование полезных ископаемых</value>
+    <comment>Results from a study of mineral deposits hidden beneath the surface of a planet.</comment>
   </data>
   <data name="MultimediaEntertainment" xml:space="preserve">
     <value>Мультимедийные развлечения</value>
+    <comment>A range of popular entertainment products available in multiple formats.</comment>
   </data>
   <data name="NetworkAccessHistory" xml:space="preserve">
     <value>История доступа к сети</value>
+    <comment>Access records detailing individual user activity on specific networks.</comment>
   </data>
   <data name="NextOfKinRecords" xml:space="preserve">
     <value>Записи о ближайших родственниках</value>
+    <comment>Details of an individual's closest living relatives, partners and designated contacts.</comment>
   </data>
   
   <data name="None" xml:space="preserve">
@@ -263,153 +308,276 @@
   </data>
   <data name="OperationalManual" xml:space="preserve">
     <value>Руководство по эксплуатации</value>
+    <comment>Instructive texts for the use and maintenance of a mechanism, system or vehicle.</comment>
   </data>
   <data name="PatrolRoutes" xml:space="preserve">
     <value>Маршруты патрулирования</value>
+    <comment>Deployment schedules and paths used in routine security operations.</comment>
   </data>
   <data name="PayrollInformation" xml:space="preserve">
     <value>Информация о заработной плате</value>
+    <comment>Staff members' past and present salary payments and financial transfer methods.</comment>
   </data>
   <data name="PersonalLogs" xml:space="preserve">
     <value>Личные журналы</value>
+    <comment>Private text or audio/visual recordings made by an individual.</comment>
   </data>
   <data name="PharmaceuticalPatents" xml:space="preserve">
     <value>Фармацевтические патенты</value>
+    <comment>A list of registered patent applications each relating to a specific drug.</comment>
   </data>
   <data name="ProductionReports" xml:space="preserve">
     <value>Производственные отчеты</value>
+    <comment>Work logs that collate information on cost, output and requirements.</comment>
   </data>
   <data name="ProductionSchedule" xml:space="preserve">
     <value>График производства</value>
+    <comment>A detailed timetable outlining machine allocations, worker requirements and associated deadlines.</comment>
   </data>
   <data name="PurchaseRecords" xml:space="preserve">
     <value>Записи о покупках</value>
+    <comment>A list of purchased items and materials including total costs and supplier details.</comment>
   </data>
   <data name="PurchaseRequests" xml:space="preserve">
     <value>Заявки на покупку</value>
+    <comment>Requisition orders for specific items or materials submitted for authorisation.</comment>
   </data>
   <data name="Push" xml:space="preserve">
     <value>Толкнуть</value>
+    <comment>A recreational drug that temporarily increases cognitive function.</comment>
   </data>
   <data name="RadioactivityData" xml:space="preserve">
     <value>Данные о радиоактивности</value>
+    <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
   </data>
   <data name="ReactorOutputReview" xml:space="preserve">
     <value>Обзор мощности реактора</value>
+    <comment>Analysis and measurement of energy production from a settlement's power centre.</comment>
   </data>
   <data name="ResidentialDirectory" xml:space="preserve">
     <value>Каталог жилых помещений</value>
+    <comment>Current occupants and registered contact information for a specific residential area.</comment>
   </data>
   <data name="SalesRecords" xml:space="preserve">
     <value>Отчет по продажам</value>
+    <comment>Information of a settlement's gross and profit, stock exports and outstanding invoices.</comment>
   </data>
   <data name="SettlementDefencePlans" xml:space="preserve">
     <value>Планы защиты поселений</value>
+    <comment>Defensive tactics intended to protect a specific settlement from a hostile force.</comment>
   </data>
   <data name="ShareholderInformation" xml:space="preserve">
     <value>Информация об акционерах</value>
+    <comment>A list of individuals and groups who have a financial stake in a settlement or organisation.</comment>
   </data>
   <data name="SurveilleanceLogs" xml:space="preserve">
     <value>Журналы мониторинга</value>
+    <comment>Audiovisual data gathered using technological monitoring and/or tracking techniques.</comment>
   </data>
   <data name="SyntheticPathogen" xml:space="preserve">
     <value>Синтетический патоген</value>
+    <comment>A synthesised virus created by splicing together several different diseases.</comment>
   </data>
   <data name="TaxRecords" xml:space="preserve">
     <value>Налоговые записи</value>
+    <comment>Details of an organisation's tax payments and related documentation.</comment>
   </data>
   <data name="TopographicalSurveys" xml:space="preserve">
     <value>Топографическая съемка</value>
+    <comment>Measurements and analysis of a specific area of a planetary body's surface.</comment>
   </data>
   <data name="TravelPermits" xml:space="preserve">
     <value>Разрешения на поездки</value>
+    <comment>A registry of all travel permits assigned to the personnel of a company or facility.</comment>
   </data>
   <data name="TroopDeploymentRecords" xml:space="preserve">
     <value>Учет развертывания войск</value>
+    <comment>Details of personnel and equipment used during a military or security operation.</comment>
   </data>
   
   <data name="UnionMembership" xml:space="preserve">
     <value>Членство в профсоюзе</value>
+    <comment>Personnel who have signed up to a trade or labour union or political lobby</comment>
   </data>
   <data name="UniversalTranslator" xml:space="preserve">
     <value>Универсальный переводчик</value>
+    <comment>A wearable device capable of instantaneously translating any of the most common human languages.</comment>
   </data>
   <data name="VaccinationRecords" xml:space="preserve">
     <value>Записи о вакцинации</value>
+    <comment>A list of vaccinations issued to each member of a settlement's personnel.</comment>
   </data>
   <data name="VaccineResearch" xml:space="preserve">
     <value>Исследование вакцин</value>
+    <comment>Results of clinical experiments and efficacy tests of a particular vaccine.</comment>
   </data>
   <data name="VirologyData" xml:space="preserve">
     <value>Данные по вирусологии</value>
+    <comment>Genetic analysis of a virus and research into its composition, symptoms and transmission.</comment>
   </data>
   <data name="VisitorRegister" xml:space="preserve">
     <value>Реестр посетителей</value>
+    <comment>A list of non-employee personnel logged at a settlement within a certain time period.</comment>
   </data>
   <data name="WeaponInventory" xml:space="preserve">
     <value>Оружейный инвентарь</value>
+    <comment>A comprehensive record of all weaponry and ammunition stored at a facility.</comment>
   </data>
   <data name="PersonalDocuments" xml:space="preserve">
     <value>Документы, подтверждающие личность</value>
+    <comment>An assortment of personal data.</comment>
   </data>
   <data name="TacticalPlans" xml:space="preserve">
     <value>Тактические планы</value>
+    <comment>An outline for a military or security operation intended to achieve a stated objective.</comment>
   </data>
   <data name="ChemicalProcessSample" xml:space="preserve">
     <value>Образец химического процесса</value>
+    <comment>A sample of an unidentified substance used in a settlement's chemical production line.</comment>
   </data>
   <data name="PyrolyticCatalyst" xml:space="preserve">
     <value>Пиролитический катализатор</value>
+    <comment>A substance that greatly alters the chemical properties of material it interacts with.</comment>
   </data>
   <data name="WeaponSchematic" xml:space="preserve">
     <value>Схема оружия</value>
+    <comment>A technical blueprint detailing the design and mechanism of a personal firearm.</comment>
   </data>
   <data name="Californium" xml:space="preserve">
     <value>Калифорний</value>
+    <comment>A highly radioactive chemical element.</comment>
   </data>
   <data name="SuitSchematic" xml:space="preserve">
     <value>Схема костюма</value>
+    <comment>A technical blueprint detailing the design of a protective suit.</comment>
   </data>
   <data name="Spyware" xml:space="preserve">
     <value>Шпионские программы</value>
+    <comment>A program designed to infiltrate digital networks and collect data without detection.</comment>
   </data>
   <data name="EmploymentHistory" xml:space="preserve">
     <value>История трудоустройства</value>
+    <comment>A detailed list of an individual’s prior employment, roles and professional experience.</comment>
   </data>
   <data name="AgriculturalProcessSample" xml:space="preserve">
     <value>Образец сельскохозяйственного процесса</value>
+    <comment>A sample of an unidentified substance used in a settlement's agricultural production line.</comment>
   </data>
   <data name="SurveillanceEquipment" xml:space="preserve">
     <value>Оборудование для видеонаблюдения</value>
+    <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
   </data>
   
   <data name="ShipSchematic" xml:space="preserve">
     <value>Схема корабля</value>
+    <comment>A technical blueprint detailing the internal and external design of a starship.</comment>
   </data>
   <data name="VehicleSchematic" xml:space="preserve">
     <value>Схема автомобиля</value>
+    <comment>A technical blueprint detailing the internal and external design of a surface vehicle.</comment>
   </data>
   <data name="Virus" xml:space="preserve">
     <value>Вирус</value>
+    <comment>A program designed to infect digital networks and cause targeted or systemic damage.</comment>
   </data>
   <data name="ChemicalSample" xml:space="preserve">
     <value>Химическая проба</value>
+    <comment>An unidentified chemical compound.</comment>
   </data>
   <data name="IonisedGas" xml:space="preserve">
     <value>Ионизированный газ</value>
+    <comment>A quantity of ionised gas.</comment>
   </data>
   <data name="Aerogel" xml:space="preserve">
     <value>Аэрогель</value>
+    <comment>An extremely lightweight thermal insulator.</comment>
   </data>
   <data name="CarbonFibrePlating" xml:space="preserve">
     <value>Покрытие из углеродного волокна</value>
+    <comment>A flexible, lightweight material made of organic polymers.</comment>
   </data>
   <data name="MicroSuperCapacitor" xml:space="preserve">
     <value>Покрытие из углеродного волокна</value>
+    <comment>A device designed to store an electric charge.</comment>
   </data>
   <data name="TitaniumPlating" xml:space="preserve">
     <value>Титановое покрытие</value>
+    <comment>A strong, low-density metal that is highly resistant to corrosion.</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
