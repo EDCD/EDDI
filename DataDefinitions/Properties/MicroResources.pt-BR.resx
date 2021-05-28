@@ -237,7 +237,9 @@
   <data name="LargeCapacityPowerRegulator" xml:space="preserve">
     <value>Regulador de Energia</value>
   </data>
-  
+  <data name="Lazarus" xml:space="preserve">
+    <value>Lázaro</value>
+  </data>
   <data name="LiteraryFiction" xml:space="preserve">
     <value>Ficção Literária</value>
   </data>
@@ -259,7 +261,10 @@
   <data name="NextOfKinRecords" xml:space="preserve">
     <value>Registros de Parentêsco</value>
   </data>
-  
+  <data name="NOCData" xml:space="preserve">
+    <value>Dados Operacionais Sigilosos</value>
+    <comment>"Non-Official Cover" - data about spies</comment>
+  </data>
   <data name="None" xml:space="preserve">
     <value>Nenhum</value>
   </data>
@@ -329,7 +334,9 @@
   <data name="TroopDeploymentRecords" xml:space="preserve">
     <value>Registros de Destacamento de Tropa</value>
   </data>
-  
+  <data name="TrueFormFossil" xml:space="preserve">
+    <value>Fóssil Exemplar</value>
+  </data>
   <data name="UnionMembership" xml:space="preserve">
     <value>Filiação Sindical</value>
   </data>
