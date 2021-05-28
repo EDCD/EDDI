@@ -583,5 +583,8 @@
   </data>
   
   
-  
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Rayon calorifique</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>
