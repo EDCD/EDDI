@@ -117,122 +117,478 @@
     <value>zéro</value>
     <comment/>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="shortDecimalThousand" xml:space="preserve">
+    <value>{0} mille</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 thousand</comment>
+  </data>
+  <data name="shortDecimalMillion" xml:space="preserve">
+    <value>{0} million</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 million</comment>
+  </data>
+  <data name="shortDecimalBillion" xml:space="preserve">
+    <value>{0} milliard</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 billion</comment>
+  </data>
+  <data name="shortDecimalTrillion" xml:space="preserve">
+    <value>{0} billion</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 trillion</comment>
+  </data>
+  <data name="shortDecimalQuadrillion" xml:space="preserve">
+    <value>{0} billiard</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quadrillion</comment>
+  </data>
+  <data name="shortDecimalQuintillion" xml:space="preserve">
+    <value>{0} trillion</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quintillion</comment>
+  </data>
+  <data name="justOverMinusThousand" xml:space="preserve">
+    <value>Un peu moins de {0} mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="justOverThousand" xml:space="preserve">
+    <value>Un peu plus de {0} mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="justOver" xml:space="preserve">
+    <value>Un peu plus de {0}</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="justOverMinus" xml:space="preserve">
+    <value>Un peu moins de {0}</value>
+    <comment>Where {0} is a negative whole number	</comment>
+  </data>
+  <data name="justOverMinusMillion" xml:space="preserve">
+    <value>Un peu moins de {0} million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="justOverMillion" xml:space="preserve">
+    <value>Un peu plus de {0} million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="justOverBillion" xml:space="preserve">
+    <value>Un peu plus de {0} milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="justOverMinusBillion" xml:space="preserve">
+    <value>Un peu moins de {0} milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="justOverTrillion" xml:space="preserve">
+    <value>Un peu plus de {0} billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="justOverMinusTrillion" xml:space="preserve">
+    <value>Un peu moins de {0} billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="justOverMinusQuadrillion" xml:space="preserve">
+    <value>Un peu moins de {0} billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="justOverQuadrillion" xml:space="preserve">
+    <value>Un peu plus de {0} billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="justOverMinusQuintillion" xml:space="preserve">
+    <value>Un peu moins de {0} trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="justOverQuintillion" xml:space="preserve">
+    <value>Un peu plus de {0} trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="over" xml:space="preserve">
+    <value>plus de {0}</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="overMinus" xml:space="preserve">
+    <value>moins de {0}</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="overThousand" xml:space="preserve">
+    <value>plus de {0} mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="overMinusThousand" xml:space="preserve">
+    <value>moins de {0} mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="overMinusMillion" xml:space="preserve">
+    <value>moins de {0} million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="overMillion" xml:space="preserve">
+    <value>plus de {0} million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="overBillion" xml:space="preserve">
+    <value>plus de {0} milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="overMinusBillion" xml:space="preserve">
+    <value>moins de {0} milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="overTrillion" xml:space="preserve">
+    <value>plus de {0} billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="overMinusTrillion" xml:space="preserve">
+    <value>moins de {0} billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="overQuadrillion" xml:space="preserve">
+    <value>plus de {0} billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="overMinusQuadrillion" xml:space="preserve">
+    <value>moins de {0} billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="overMinusQuintillion" xml:space="preserve">
+    <value>moins de {0} trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="overQuintillion" xml:space="preserve">
+    <value>plus de {0} trillion</value>
+    
+    <comment>Where {0} is a whole number in the quintillions order
+</comment>
+  </data>
+  <data name="wellOverMinus" xml:space="preserve">
+    <value>bien moins de {0}</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="wellOver" xml:space="preserve">
+    <value>bien plus de {0}</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="wellOverMinusThousand" xml:space="preserve">
+    <value>bien moins de {0} mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="wellOverThousand" xml:space="preserve">
+    <value>bien plus de {0} mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="wellOverMinusMillion" xml:space="preserve">
+    <value>bien moins de {0} million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="wellOverMillion" xml:space="preserve">
+    <value>bien plus de {0} million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="wellOverMinusBillion" xml:space="preserve">
+    <value>bien moins de {0} milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="wellOverBillion" xml:space="preserve">
+    <value>bien plus de {0} milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="wellOverMinusTrillion" xml:space="preserve">
+    <value>bien moins de {0} billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="wellOverTrillion" xml:space="preserve">
+    <value>bien plus de {0} billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="wellOverMinusQuadrillion" xml:space="preserve">
+    <value>bien moins de {0} billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="wellOverQuadrillion" xml:space="preserve">
+    <value>bien plus de {0} billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="wellOverMinusQuintillion" xml:space="preserve">
+    <value>bien moins de {0} trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="wellOverQuintillion" xml:space="preserve">
+    <value>bien plus de {0} trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="nearly" xml:space="preserve">
+    <value>proche de {0}</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="nearlyMinus" xml:space="preserve">
+    <value>proche de moins de {0}</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="nearlyThousand" xml:space="preserve">
+    <value>presque {0} mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="nearlyMinusThousand" xml:space="preserve">
+    <value>presque moins de {0} mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="nearlyMillion" xml:space="preserve">
+    <value>presque {0} million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="nearlyMinusMillion" xml:space="preserve">
+    <value>presque moins de {0} million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="nearlyBillion" xml:space="preserve">
+    <value>presque {0} millard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="nearlyMinusBillion" xml:space="preserve">
+    <value>presque moins de {0} milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="nearlyTrillion" xml:space="preserve">
+    <value>presque {0} billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="nearlyMinusTrillion" xml:space="preserve">
+    <value>presque moins de {0} billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="nearlyMinusQuadrillion" xml:space="preserve">
+    <value>presque moins de {0} billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="nearlyQuadrillion" xml:space="preserve">
+    <value>presque {0} billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="nearlyMinusQuintillion" xml:space="preserve">
+    <value>presque moins de {0} trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="nearlyQuintillion" xml:space="preserve">
+    <value>presque {0} trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="nearlyMinusAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et demi</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="nearlyAndAHalf" xml:space="preserve">
+    <value>presque {0} et demi</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="nearlyMinusThousandAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et un demi-mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="nearlyThousandAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="nearlyMinusMillionAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et un demi-million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="nearlyMillionAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="nearlyMinusBillionAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et un demi-milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="nearlyBillionAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="nearlyMinusTrillionAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et un demi-billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="nearlyTrillionAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="nearlyMinusQuadrillionAndAHalf" xml:space="preserve">
+    <value>presque moins de {0} et un demi-billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="nearlyQuadrillionAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="nearlyMinusQuintillionAndAHalf" xml:space="preserve">
+    <value>preque moins de {0} et un demi-trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="nearlyQuintillionAndAHalf" xml:space="preserve">
+    <value>presque {0} et un demi-trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="aroundMinusAndAHalf" xml:space="preserve">
+    <value>environ moins de {0} et demi</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="aroundAndAHalf" xml:space="preserve">
+    <value>environ {0} et demi</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="aroundMinusAndAHalfThousand" xml:space="preserve">
+    <value>environ moins de {0} et un demi-mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="aroundAndAHalfThousand" xml:space="preserve">
+    <value>environ {0} et un demi-mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="aroundMinusAndAHalfMillion" xml:space="preserve">
+    <value>environ moins de {0} et un demi-million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="aroundAndAHalfMillion" xml:space="preserve">
+    <value>environ {0} et un demi-million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="aroundMinusAndAHalfBillion" xml:space="preserve">
+    <value>environ moins de {0} et un demi-milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="aroundAndAHalfBillion" xml:space="preserve">
+    <value>environ {0} et un demi-milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="aroundMinusAndAHalfTrillion" xml:space="preserve">
+    <value>environ moins de {0} et un demi-billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="aroundAndAHalfTrillion" xml:space="preserve">
+    <value>environ {0} et un demi-billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="aroundMinusAndAHalfQuadrillion" xml:space="preserve">
+    <value>environ moins de {0} et un demi-billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="aroundAndAHalfQuadrillion" xml:space="preserve">
+    <value>environ {0} et un demi-billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="aroundMinusAndAHalfQuintillion" xml:space="preserve">
+    <value>environ moins de {0} et un demi-trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="aroundAndAHalfQuintillion" xml:space="preserve">
+    <value>environ {0} et un demi-trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="overMinusAndAHalf" xml:space="preserve">
+    <value>moins de {0} et demi</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="overMinusAndAHalfThousand" xml:space="preserve">
+    <value>moins de {0} et un demi-mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="overMinusAndAHalfMillion" xml:space="preserve">
+    <value>moins de {0} et un demi-million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="overMinusAndAHalfBillion" xml:space="preserve">
+    <value>moins de {0} et un demi-milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="overMinusAndAHalfTrillion" xml:space="preserve">
+    <value>moins de {0} et un demi-billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="overMinusAndAHalfQuadrillion" xml:space="preserve">
+    <value>moins de {0} et un demi-billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="overMinusAndAHalfQuintillion" xml:space="preserve">
+    <value>moins de {0} et un demi-trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="overAndAHalf" xml:space="preserve">
+    <value>plus de {0} et demi</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="overAndAHalfThousand" xml:space="preserve">
+    <value>plus de {0} et un demi-mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="overAndAHalfMillion" xml:space="preserve">
+    <value>plus de {0} et un demi-million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="overAndAHalfBillion" xml:space="preserve">
+    <value>plus de {0} et un demi-milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="overAndAHalfTrillion" xml:space="preserve">
+    <value>plus de {0} et un demi-billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="overAndAHalfQuadrillion" xml:space="preserve">
+    <value>plus de {0} et un demi-billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="overAndAHalfQuintillion" xml:space="preserve">
+    <value>plus de {0} et un demi-trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalf" xml:space="preserve">
+    <value>bien moins de {0} et demi</value>
+    <comment>Where {0} is a negative whole number</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfThousand" xml:space="preserve">
+    <value>bien moins de {0} et un demi-mille</value>
+    <comment>Where {0} is a negative whole number in the thousands order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfMillion" xml:space="preserve">
+    <value>bien moins de {0} et un demi-million</value>
+    <comment>Where {0} is a negative whole number in the millions order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfBillion" xml:space="preserve">
+    <value>bien moins de {0} et un demi-milliard</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfTrillion" xml:space="preserve">
+    <value>bien moins de {0} et un demi-billion</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfQuadrillion" xml:space="preserve">
+    <value>bien moins de {0} et un demi-billiard</value>
+    <comment>Where {0} is a negative whole number in the quadrillions order</comment>
+  </data>
+  <data name="wellOverMinusAndAHalfQuintillion" xml:space="preserve">
+    <value>bien moins de {0} et un demi-trillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="wellOverAndAHalf" xml:space="preserve">
+    <value>bien plus de {0} et demi</value>
+    <comment>Where {0} is a whole number</comment>
+  </data>
+  <data name="wellOverAndAHalfThousand" xml:space="preserve">
+    <value>bien plus de {0} et un demi-mille</value>
+    <comment>Where {0} is a whole number in the thousands order</comment>
+  </data>
+  <data name="wellOverAndAHalfMillion" xml:space="preserve">
+    <value>bien plus de {0} et un demi-million</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
+  <data name="wellOverAndAHalfBillion" xml:space="preserve">
+    <value>bien plus de {0} et un demi-milliard</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="wellOverAndAHalfTrillion" xml:space="preserve">
+    <value>bien plus de {0} et un demi-billion</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="wellOverAndAHalfQuadrillion" xml:space="preserve">
+    <value>bien plus de {0} et un demi-billiard</value>
+    <comment>Where {0} is a whole number in the quadrillions order</comment>
+  </data>
+  <data name="wellOverAndAHalfQuintillion" xml:space="preserve">
+    <value>bien plus de {0} et un demi-trillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
 </root>
