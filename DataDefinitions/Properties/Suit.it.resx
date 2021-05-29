@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="ExplorationSuit" xml:space="preserve">
+    <value>Tuta Artemis</value>
+    <comment>A player suit (Artemis)</comment>
+  </data>
+  <data name="FlightSuit" xml:space="preserve">
+    <value>Tuta di Volo</value>
+    <comment>A player suit (Flight)</comment>
+  </data>
+  <data name="TacticalSuit" xml:space="preserve">
+    <value>Tuta Dominator</value>
+    <comment>A player suit (Dominator)</comment>
+  </data>
+  <data name="UtilitySuit" xml:space="preserve">
+    <value>Tuta Maverick</value>
+    <comment>A player suit (Maverick)</comment>
+  </data>
 </root>
