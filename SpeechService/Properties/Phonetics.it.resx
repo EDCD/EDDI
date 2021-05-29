@@ -213,26 +213,86 @@
     <value>Blɑnko</value>
     <comment>Optional phonetic pronunciation for Blanco</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Bleae" xml:space="preserve">
+    <value>bliːiː</value>
+    <comment>Optional phonetic pronunciation for Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Bleae" xml:space="preserve">
+    <value>bliːiː</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Thaa" xml:space="preserve">
+    <value>θɑː</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
+  </data>
+  <data name="BleaeThua_Thua" xml:space="preserve">
+    <value>θuːə</value>
+    <comment>Optional phonetic pronunciation for BleaeThua_Thua</comment>
+  </data>
+  <data name="bootis" xml:space="preserve">
+    <value>bəʊˈəʊtɪs</value>
+    <comment>Optional phonetic pronunciation for bootis</comment>
+  </data>
+  <data name="bunda" xml:space="preserve">
+    <value>ˈbuːndə</value>
+    <comment>Optional phonetic pronunciation for bunda</comment>
+  </data>
+  <data name="Capricorni" xml:space="preserve">
+    <value>ˌkæprɪˈkɔːnaɪ</value>
+    <comment>Optional phonetic pronunciation for Capricorni</comment>
+  </data>
+  <data name="Carina" xml:space="preserve">
+    <value>kəˈriːnə</value>
+    <comment>Optional phonetic pronunciation for Carina</comment>
+  </data>
+  <data name="cayutorme" xml:space="preserve">
+    <value>ˈkaɪətɔːm</value>
+    <comment>Optional phonetic pronunciation for cayutorme</comment>
+  </data>
+  <data name="celaeno" xml:space="preserve">
+    <value>sᵻˈliːnoʊ</value>
+    <comment>Optional phonetic pronunciation for celaeno</comment>
+  </data>
+  <data name="ceos" xml:space="preserve">
+    <value>ˈkeɪɒs</value>
+    <comment>Optional phonetic pronunciation for ceos</comment>
+  </data>
+  <data name="Cephei" xml:space="preserve">
+    <value>ˈsiːfɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for Cephei</comment>
+  </data>
+  <data name="Cepheus" xml:space="preserve">
+    <value>ˈsiːfjuːs</value>
+    <comment>Optional phonetic pronunciation for Cepheus</comment>
+  </data>
+  <data name="Ceti" xml:space="preserve">
+    <value>ˈsiːtaɪ</value>
+    <comment>Optional phonetic pronunciation for Ceti</comment>
+  </data>
+  <data name="Chi" xml:space="preserve">
+    <value>kaɪ</value>
+    <comment>Optional phonetic pronunciation for Chi</comment>
+  </data>
+  <data name="ChiPersei_Chi" xml:space="preserve">
+    <value>kaɪ</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Chi</comment>
+  </data>
+  <data name="ChiPersei_Persei" xml:space="preserve">
+    <value>ˈpɜːsɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Persei</comment>
+  </data>
+  <data name="Crucis" xml:space="preserve">
+    <value>ˈkruːsɪs</value>
+    <comment>Optional phonetic pronunciation for Crucis</comment>
+  </data>
+  <data name="Cygni" xml:space="preserve">
+    <value>ˈsɪɡnaɪ</value>
+    <comment>Optional phonetic pronunciation for Cygni</comment>
+  </data>
+  <data name="cygnus" xml:space="preserve">
+    <value>ˈsɪɡnəs</value>
+    <comment>Optional phonetic pronunciation for cygnus</comment>
+  </data>
   
   <data name="delaine" xml:space="preserve">
     <value>diˈleɪn</value>
@@ -405,12 +465,24 @@
     <value>ˈzakərɪ</value>
     <comment>Optional phonetic pronunciation for zachary</comment>
   </data>
-  
+  <data name="zaonce" xml:space="preserve">
+    <value>ˈzeɪɒns</value>
+    <comment>Optional phonetic pronunciation for zaonce</comment>
+  </data>
   <data name="zemina" xml:space="preserve">
     <value>zəˈmiːnə</value>
     <comment>Optional phonetic pronunciation for zemina</comment>
   </data>
-  
-  
-  
+  <data name="zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhang</comment>
+  </data>
+  <data name="zhangfei_fei" xml:space="preserve">
+    <value>feɪ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_fei</comment>
+  </data>
+  <data name="zhangfei_zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
+  </data>
 </root>
