@@ -149,5 +149,8 @@
     <value>Elite 4</value>
     <comment>Trade rating Elite IV</comment>
   </data>
-  
+  <data name="EliteV" xml:space="preserve">
+    <value>Elite 5</value>
+    <comment>Trade rating Elite V</comment>
+  </data>
 </root>
