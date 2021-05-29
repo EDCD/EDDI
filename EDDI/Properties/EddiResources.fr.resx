@@ -194,7 +194,9 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Lancement de la mise à jour.</value>
   </data>
-  
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Eddi n'a pas pu se connecter au serveur de mise à jour. Si cela se reproduit, veuillez consulter le forum pour voir s'il s'agit d'un problème connu.</value>
+  </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Une seule instance d'EDDI peut s'exécuter à la fois.
 
