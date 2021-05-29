@@ -165,7 +165,10 @@
     <value>Планы кампаний</value>
     <comment>Information, schedules and objectives for a large-scale public initiative.</comment>
   </data>
-  
+  <data name="CatMedia" xml:space="preserve">
+    <value>Видео про котиков</value>
+    <comment>A collection of amusing, sharable digital media often spanning several centuries.</comment>
+  </data>
   <data name="CensusData" xml:space="preserve">
     <value>Данные переписи населения</value>
     <comment>Detailed information and statistics on the size and composition of a population.</comment>
@@ -261,7 +264,10 @@
     <value>Озарение</value>
     <comment>A wearable device designed to provide the user with real-time information about their immediate environment.</comment>
   </data>
-  
+  <data name="InsightEntertainmentSuite" xml:space="preserve">
+    <value>Развлекательный костюм Insight</value>
+    <comment>A selection of augmented-reality games for use with an Insight device.</comment>
+  </data>
   <data name="InternalCorrespondence" xml:space="preserve">
     <value>Внутренняя переписка</value>
     <comment>A record of communications by members within an organisation's network.</comment>
@@ -302,7 +308,10 @@
     <value>Записи о ближайших родственниках</value>
     <comment>Details of an individual's closest living relatives, partners and designated contacts.</comment>
   </data>
-  
+  <data name="NOCData" xml:space="preserve">
+    <value>Неофициальные данные</value>
+    <comment>Non-official cover information related to covert agents active in various organisations.</comment>
+  </data>
   <data name="None" xml:space="preserve">
     <value>Пусто</value>
   </data>
@@ -394,7 +403,10 @@
     <value>Учет развертывания войск</value>
     <comment>Details of personnel and equipment used during a military or security operation.</comment>
   </data>
-  
+  <data name="TrueFormFossil" xml:space="preserve">
+    <value>Истинная форма окаменелости</value>
+    <comment>The perfectly preserved remains of a long-dead organism.</comment>
+  </data>
   <data name="UnionMembership" xml:space="preserve">
     <value>Членство в профсоюзе</value>
     <comment>Personnel who have signed up to a trade or labour union or political lobby</comment>
@@ -467,7 +479,10 @@
     <value>Оборудование для видеонаблюдения</value>
     <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
   </data>
-  
+  <data name="InsightDataBank" xml:space="preserve">
+    <value>Банк данных Insight</value>
+    <comment>A device designed to store audio-visual data recorded via Insight.</comment>
+  </data>
   <data name="ShipSchematic" xml:space="preserve">
     <value>Схема корабля</value>
     <comment>A technical blueprint detailing the internal and external design of a starship.</comment>
@@ -504,29 +519,98 @@
     <value>Титановое покрытие</value>
     <comment>A strong, low-density metal that is highly resistant to corrosion.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Контурный выключатель</value>
+    <comment>A simple device designed to close an electronic circuit.</comment>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Зашифрованный чип памяти</value>
+    <comment>An integrated circuit designed to securely store software data.</comment>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Эпоксидный клей</value>
+    <comment>A multipurpose polymer adhesive.</comment>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Микросхема памяти</value>
+    <comment>An integrated circuit designed to store software data.</comment>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Инструкции по изготовлению</value>
+    <comment>Detailed construction guidance, ranging from individual items to mass production requirements.</comment>
+  </data>
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Журналы активности звезд</value>
+    <comment>Measurements of a star’s characteristics and related phenomena.</comment>
+  </data>
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Электропроводка</value>
+    <comment>Multipurpose wiring for use in a variety of electronic devices.</comment>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Микро трансформатор</value>
+    <comment>A compact transformer designed to transfer electrical energy between two circuits.</comment>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Электрический предохранитель</value>
+    <comment>A simple device designed to protect an electrical circuit from excess current.</comment>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Оптическое волокно</value>
+    <comment>A length of fine cable designed to transfer data in the form of light.</comment>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Электросхемы</value>
+    <comment>A component from an electrical system.</comment>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Металлическая катушка</value>
+    <comment>Commonplace metal for use in electrical circuits and hydraulic systems.</comment>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Привод</value>
+    <comment>A machine designed to transform electrical energy into kinetic energy.</comment>
+  </data>
+  <data name="MicroElectrode" xml:space="preserve">
+    <value>Микроэлектрод</value>
+    <comment>A simple device designed to create a small electric arc.</comment>
+  </data>
+  <data name="Graphene" xml:space="preserve">
+    <value>Графен</value>
+    <comment>A multipurpose carbon allotrope.</comment>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Микрогидравлика</value>
+    <comment>Small, powerful hydraulic devices.</comment>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Исказитель электромагнитных волн</value>
+    <comment>A device designed to distort electromagnetic waves.</comment>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>карбид вольфрама</value>
+    <comment>A compound of tungsten and carbon. </comment>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Электромагнит</value>
+    <comment>A magnet in which the magnetic field is produced by an electric current.</comment>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Передатчик</value>
+    
+    <comment>An electronic device designed to produce electromagnetic waves.</comment>
+  </data>
+  <data name="AudioLogs" xml:space="preserve">
+    <value>Аудио журналы</value>
+  </data>
+  <data name="AXCombatLogs" xml:space="preserve">
+    <value>Журналы боевых действий AX</value>
+    <comment>Data related to anti-xeno operations and encounters with hostile Thargoid forces.</comment>
+  </data>
+  <data name="BallisticsData" xml:space="preserve">
+    <value>Баллистические данные</value>
+    <comment>Projectile weapon research including launch mechanisms, accuracy and impact damage.</comment>
+  </data>
   
   
   
