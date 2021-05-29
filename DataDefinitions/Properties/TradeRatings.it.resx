@@ -133,9 +133,21 @@
     <value>Elite</value>
     <comment>Trade rating Elite</comment>
   </data>
-  
-  
-  
-  
+  <data name="EliteI" xml:space="preserve">
+    <value>Elite 1</value>
+    <comment>Trade rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>Elite 2</value>
+    <comment>Trade rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>Elite 3</value>
+    <comment>Trade rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>Elite 4</value>
+    <comment>Trade rating Elite IV</comment>
+  </data>
   
 </root>
