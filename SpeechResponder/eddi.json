@@ -1372,7 +1372,7 @@
       "responder": false,
       "script": "{_ Mission check station }\r\n{_ Check what missions you have for the current station }\r\n{if missionsCount + goalsCount > 0:\r\n    {set current_station to state.eddi_context_body_name}\r\n    {set active to 0}\r\n    {set claim to 0}\r\n\r\n    {if current_station && current_station != \"\":\r\n        {for mission in missions:\r\n            {if mission.destinationstation = current_station ||\r\n                (mission.originstation = current_station && find(mission.type, \"Delivery\") > -1):\r\n                {if mission.status = \"Active\":\r\n                    {set active to active + 1}\r\n                |elif mission.status = \"Claim\":\r\n                    {set claim to claim + 1}\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    {if active + claim > 0:\r\n        {set description to []}\r\n        {if active > 0:\r\n            {set activeDescription to:\r\n                 {active} {OneOf(\"pending\", \"active\")}\r\n            }\r\n            {set description to cat(description, [activeDescription])}\r\n        }\r\n        {if claim > 0:\r\n            {set claimDescription to:\r\n                {claim} claimable\r\n            }\r\n            {set description to cat(description, [claimDescription])}\r\n        }\r\n    \r\n        You have {List(description)} \r\n        {if active + claim = 1: mission |else: missions}\r\n        {Occasionally(3,\"located\")} at this station\r\n    }\r\n}\r\n",
       "default": true,
-      "name": "Mission check station","
+      "name": "Mission check station",
       "description": "Check what missions you have for the current station"
     },
     "Mission check system": {
