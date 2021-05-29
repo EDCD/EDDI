@@ -108,8 +108,8 @@ namespace EddiCore
         public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
-        // Information from the last jump we initiated (for reference)
-        public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
+        // Information from the last events of each type that we've received (for reference)
+        private SortedDictionary<string, Event> lastEvents { get; set; } = new SortedDictionary<string, Event>();
 
         // Current vehicle of player
         public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
@@ -757,6 +757,10 @@ namespace EddiCore
                     {
                         passEvent = eventCommanderPromotion(commanderPromotionEvent);
                     }
+                    else if (@event is UnderAttackEvent underAttackEvent)
+                    {
+                        passEvent = eventUnderAttack(underAttackEvent);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -780,6 +784,26 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventUnderAttack(UnderAttackEvent underAttackEvent)
+        {
+            bool passEvent = true;
+            // Suppress repetitious `Under attack` events when loading or
+            // when the target has already been reported as under attack within the last 10 seconds.
+            var lastEvent = lastEvents.TryGetValue(nameof(UnderAttackEvent), out Event ev) 
+                ? (UnderAttackEvent)ev 
+                : null;
+            if (underAttackEvent.fromLoad || (
+                lastEvent != null 
+                && lastEvent.target == underAttackEvent.target 
+                && (underAttackEvent.timestamp - lastEvent.timestamp).TotalSeconds < 10 
+                ))
+            {
+                passEvent = false;
+            }
+            lastEvents[nameof(UnderAttackEvent)] = underAttackEvent;
+            return passEvent;
         }
 
         private bool eventCommanderPromotion(CommanderPromotionEvent commanderPromotionEvent)
@@ -1854,7 +1878,7 @@ namespace EddiCore
             updateCurrentSystem(@event.system);
 
             // Save a copy of this event for later reference
-            LastFSDEngagedEvent = @event;
+            lastEvents[nameof(FSDEngagedEvent)] = @event;;
 
             return true;
         }
@@ -1960,7 +1984,10 @@ namespace EddiCore
                 {
                     bodyname = theEvent.star,
                     bodyType = BodyType.FromEDName("Star"),
-                    stellarclass = LastFSDEngagedEvent?.stellarclass,
+                    stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out Event ev) 
+                        ? (FSDEngagedEvent)ev 
+                        : null)
+                        ?.stellarclass,
                 };
                 CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
