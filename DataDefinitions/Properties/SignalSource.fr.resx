@@ -136,7 +136,10 @@
     <value>Émissions dégradées</value>
     <comment>Salvage signal</comment>
   </data>
-  
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Site d'affrontement récent</value>
+    <comment>Aftermatch signal</comment>
+  </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
     <comment>Anomaly signal</comment>
@@ -314,6 +317,12 @@
   
   
   
-  
-  
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Appel de détresse</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Appel de détresse</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>
