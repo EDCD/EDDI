@@ -4,6 +4,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 4.0.0-b4
   * Speech Responder
+    * Events
+      * `Backpack` event added
     * Scripts
       * `Carrier jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
       * `Engineer report` script, revised to refine grammar.
