@@ -4193,7 +4193,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "BuyWeapon":
-                            case "BackPack":
+                            case "Backpack":
                             case "BackpackChange":
                             //case "BackPackMaterials":
                             //    {
