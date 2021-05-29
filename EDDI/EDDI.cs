@@ -1066,8 +1066,12 @@ namespace EddiCore
                 }
 
                 // (When pledged) Powerplay information
-                CurrentStarSystem.Power = @event.Power ?? CurrentStarSystem.Power;
-                CurrentStarSystem.powerState = @event.powerState ?? CurrentStarSystem.powerState;
+                CurrentStarSystem.Power = @event.Power != null && @event.Power != Power.None
+                    ? @event.Power
+                    : CurrentStarSystem.Power;
+                CurrentStarSystem.powerState = @event.powerState != null && @event.powerState != PowerplayState.None
+                    ? @event.powerState
+                    : CurrentStarSystem.powerState;
 
                 // Update to most recent information
                 CurrentStarSystem.visitLog.Add(@event.timestamp);
