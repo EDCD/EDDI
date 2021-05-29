@@ -117,18 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Cataloguer" xml:space="preserve">
+    <value>Каталогизатор</value>
+    <comment>Exobiologist rating Cataloguer</comment>
+  </data>
+  <data name="Collector" xml:space="preserve">
+    <value>Коллекционер</value>
+    <comment>Exobiologist rating Collector</comment>
+  </data>
+  <data name="Compiler" xml:space="preserve">
+    <value>Составитель</value>
+    <comment>Exobiologist rating Compiler</comment>
+  </data>
+  <data name="Directionless" xml:space="preserve">
+    <value>Бесцельный</value>
+    <comment>Exobiologist rating Directionless</comment>
+  </data>
+  <data name="Ecologist" xml:space="preserve">
+    <value>Эколог</value>
+    <comment>Exobiologist rating Ecologist</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Элита</value>
+    <comment>Exobiologist rating Elite</comment>
+  </data>
+  <data name="Geneticist" xml:space="preserve">
+    <value>Генетик</value>
+    <comment>Exobiologist rating Geneticist</comment>
+  </data>
+  <data name="MostlyDirectionless" xml:space="preserve">
+    <value>В основном бесцельный</value>
+    <comment>Exobiologist rating Mostly Directionless</comment>
+  </data>
+  <data name="Taxonomist" xml:space="preserve">
+    <value>Таксономист</value>
+    <comment>Exobiologist rating Taxonomist</comment>
+  </data>
+  <data name="EliteI" xml:space="preserve">
+    <value>Элита 1</value>
+    <comment>Exobiologist rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>Элита 2</value>
+    <comment>Exobiologist rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>Элита 3</value>
+    <comment>Exobiologist rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>Элита 4</value>
+    <comment>Exobiologist rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>Элита 5</value>
+    <comment>Exobiologist rating Elite V</comment>
+  </data>
 </root>
