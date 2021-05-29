@@ -119,6 +119,14 @@
   </resheader>
   
   
+  <data name="Cannons" xml:space="preserve">
+    <value>Canons</value>
+  </data>
+  
+  
+  <data name="FragCannons" xml:space="preserve">
+    <value>Canons à fragmentation</value>
+  </data>
   
   
   
@@ -128,11 +136,9 @@
   
   
   
-  
-  
-  
-  
-  
+  <data name="MultiCannons" xml:space="preserve">
+    <value>Multi-canons</value>
+  </data>
   
   
   
