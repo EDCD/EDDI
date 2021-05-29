@@ -792,8 +792,8 @@
     <comment>A compound used to accelerate chemical reactions.</comment>
   </data>
   <data name="ChemicalSuperbase" xml:space="preserve">
-    <value>A highly soluble chemical with a wide range of applications.</value>
-    <comment>Chemical Superbase</comment>
+    <value>Chemical Superbase</value>
+    <comment>A highly soluble chemical with a wide range of applications.</comment>
   </data>
   <data name="Epinephrine" xml:space="preserve">
     <value>Epinephrine</value>

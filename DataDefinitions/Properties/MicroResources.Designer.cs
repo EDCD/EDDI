@@ -322,7 +322,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A highly soluble chemical with a wide range of applications..
+        ///   Looks up a localized string similar to Chemical Superbase.
         /// </summary>
         public static string ChemicalSuperbase {
             get {
