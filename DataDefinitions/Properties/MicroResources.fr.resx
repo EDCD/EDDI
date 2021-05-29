@@ -201,7 +201,10 @@
   
   
   
-  
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Journaux de surveillance</value>
+    <comment>Audiovisual data gathered using technological monitoring and/or tracking techniques.</comment>
+  </data>
   
   
   
