@@ -147,10 +147,14 @@
   <data name="Trader" xml:space="preserve">
     <value>Commerçant</value>
   </data>
-  
+  <data name="VenerableGeneral" xml:space="preserve">
+    <value>Vénérable Général</value>
+  </data>
   <data name="DeserterASS" xml:space="preserve">
     <value>Déserteur</value>
     <comment>Assassination mission target: Deserter</comment>
   </data>
-  
+  <data name="TerroristLeader" xml:space="preserve">
+    <value>Leader terroriste</value>
+  </data>
 </root>
