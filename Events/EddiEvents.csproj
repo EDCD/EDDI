@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackpackChangedEvent.cs" />
     <Compile Include="CancelTransportEvent.cs" />
     <Compile Include="BookTransportEvent.cs" />
     <Compile Include="BackpackEvent.cs" />

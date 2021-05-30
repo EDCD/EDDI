@@ -4150,6 +4150,34 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "Backpack":
+                                {
+                                    var components = getMicroResources("Components", data, "Component");
+                                    var consumables = getMicroResources("Consumables", data, "Consumable");
+                                    var backpackdata = getMicroResources("Data", data, "Data");
+                                    var items = getMicroResources("Items", data, "Item");
+
+                                    // Flatten the list
+                                    var backpack = new List<MicroResourceAmount>();
+                                    backpack.AddRange(components);
+                                    backpack.AddRange(consumables);
+                                    backpack.AddRange(backpackdata);
+                                    backpack.AddRange(items);
+
+                                    // Note: Also updates backpack.json
+                                    events.Add(new BackpackEvent(timestamp, backpack) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "BackpackChange":
+                                {
+                                    // Note: Also updates backpack.json
+                                    var added = getMicroResources("Added", data);
+                                    var removed = getMicroResources("Removed", data);
+                                    events.Add(new BackpackChangedEvent(timestamp, added, removed) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "BuyMicroResources":
                                 {
                                     var edname = JsonParsing.getString(data, "Name");
@@ -4192,42 +4220,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            //case "BuyWeapon":
-                            case "Backpack":
-                                {
-                                    List<MicroResourceAmount> getResources(string category)
-                                    {
-                                        var result = new List<MicroResourceAmount>();
-                                        if (data.TryGetValue(category, out object val))
-                                        {
-                                            if (val is List<object> listVal)
-                                            {
-                                                foreach (IDictionary<string, object> microResourceVal in listVal)
-                                                {
-                                                    var edname = JsonParsing.getString(microResourceVal, "Name");
-                                                    var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
-                                                    var resource = MicroResource.FromEDName(edname);
-                                                    resource.fallbackLocalizedName = fallbackName;
-
-                                                    var ownerId = JsonParsing.getOptionalInt(microResourceVal, "OwnerID");
-                                                    var missionId = JsonParsing.getOptionalDecimal(microResourceVal, "MissionID");
-                                                    var amount = JsonParsing.getInt(microResourceVal, "Count");
-
-                                                    result.Add(new MicroResourceAmount(resource, ownerId, missionId, amount));
-                                                }
-                                            }
-                                        }
-                                        return result;
-                                    }
-                                    var components = getResources("Components");
-                                    var consumables = getResources("Consumables");
-                                    var backpackdata = getResources("Data");
-                                    var items = getResources("Items");
-                                    events.Add(new BackpackEvent(timestamp, components, consumables, backpackdata, items) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BackpackChange":
+                            case "BuyWeapon":
                             case "CargoTransfer":
                             case "CarrierBuy":
                             case "CarrierStats":
@@ -4272,7 +4265,7 @@ namespace EddiJournalMonitor
                             case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":
-                            case "UseConsumable":
+                            case "UseConsumable": // Seems to include only medkits and energy cells. Grenades not included. We'll use `BackpackChange` instead.
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
@@ -4673,6 +4666,31 @@ namespace EddiJournalMonitor
                 compartment.size = (int)slotSize;
             }
             return compartment;
+        }
+
+        public static List<MicroResourceAmount> getMicroResources(string key, IDictionary<string, object> data, string categoryEdName = null)
+        {
+            var result = new List<MicroResourceAmount>();
+            if (data.TryGetValue(key, out object val))
+            {
+                if (val is List<object> listVal)
+                {
+                    foreach (IDictionary<string, object> microResourceVal in listVal)
+                    {
+                        var edname = JsonParsing.getString(microResourceVal, "Name");
+                        var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
+                        categoryEdName = JsonParsing.getString(microResourceVal, "Type") ?? categoryEdName ?? MicroResourceCategory.Unknown.edname;
+                        var resource = MicroResource.FromEDName(edname, fallbackName, categoryEdName);
+
+                        var ownerId = JsonParsing.getOptionalInt(microResourceVal, "OwnerID");
+                        var missionId = JsonParsing.getOptionalDecimal(microResourceVal, "MissionID");
+                        var amount = JsonParsing.getInt(microResourceVal, "Count");
+
+                        result.Add(new MicroResourceAmount(resource, ownerId, missionId, amount));
+                    }
+                }
+            }
+            return result;
         }
 
         private static readonly string[] ignoredLogLoadEvents = new string[]

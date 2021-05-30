@@ -15,30 +15,15 @@ namespace EddiEvents
 
         static BackpackEvent()
         {
-            VARIABLES.Add("components", "The components that you are carrying (as a list of objects with `name` and `amount` properties)");
-            VARIABLES.Add("consumables", "The consumables that you are carrying (as a list of objects with `name` and `amount` properties)");
-            VARIABLES.Add("data", "The data that you are carrying (as a list of objects with `name` and `amount` properties)");
-            VARIABLES.Add("items", "The items that you are carrying (as a list of objects with `name` and `amount` properties)");
+            VARIABLES.Add("backpack", "The backpack items that you are carrying (as a list of objects with `name`, `category`, and `amount` properties)");
         }
 
-        [JsonProperty("components")]
-        public List<MicroResourceAmount> components { get; }
+        [JsonProperty("backpack")]
+        public List<MicroResourceAmount> backpack { get; }
 
-        [JsonProperty("consumables")]
-        public List<MicroResourceAmount> consumables { get; }
-
-        [JsonProperty("data")]
-        public List<MicroResourceAmount> data { get; }
-
-        [JsonProperty("items")]
-        public List<MicroResourceAmount> items { get; }
-
-        public BackpackEvent(DateTime timestamp, List<MicroResourceAmount> components, List<MicroResourceAmount> consumables, List<MicroResourceAmount> data, List<MicroResourceAmount> items) : base(timestamp, NAME)
+        public BackpackEvent(DateTime timestamp, List<MicroResourceAmount> backpack) : base(timestamp, NAME)
         {
-            this.components = components;
-            this.consumables = consumables;
-            this.data = data;
-            this.items = items;
+            this.backpack = backpack;
         }
     }
 }

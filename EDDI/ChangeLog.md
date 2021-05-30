@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Events
       * `Backpack` event added
+      * `Backpack changed` event added
     * Scripts
       * `Carrier jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
       * `Engineer report` script, revised to refine grammar.

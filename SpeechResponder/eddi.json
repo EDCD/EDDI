@@ -38,6 +38,15 @@
       "name": "Backpack",
       "description": "Lists the contents of your backpack when you disembark"
     },
+    "Backpack changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Backpack changed",
+      "description": "Triggered when there is any change to the contents of the suit backpack"
+    },
     "Blueprint make report": {
       "enabled": true,
       "priority": 3,

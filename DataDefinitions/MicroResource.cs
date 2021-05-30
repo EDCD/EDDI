@@ -235,14 +235,17 @@ namespace EddiDataDefinitions
             this.EDID = EDID;
         }
 
-        public new static MicroResource FromEDName(string edname)
+        public static MicroResource FromEDName(string edname, string fallbackName = null, string categoryEdName = null)
         {
             if (edname == null) { return None; }
             string normalizedEDName = edname
                 .ToLowerInvariant()
                 .Replace("$", "")
                 .Replace("_name;", "");
-            return ResourceBasedLocalizedEDName<MicroResource>.FromEDName(normalizedEDName);
+            var result = ResourceBasedLocalizedEDName<MicroResource>.FromEDName(normalizedEDName);
+            result.fallbackLocalizedName = fallbackName;
+            if (!string.IsNullOrEmpty(categoryEdName)) { result.Category = MicroResourceCategory.FromEDName(categoryEdName); }
+            return result;
         }
     }
 }
