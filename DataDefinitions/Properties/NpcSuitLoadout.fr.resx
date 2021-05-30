@@ -120,7 +120,10 @@
     <value>Tireur d'élite</value>
     <comment>An on foot NPC loadout</comment>
   </data>
-  
+  <data name="closesuitai" xml:space="preserve">
+    <value>Assaillant</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
   <data name="citizensuitai_industrial" xml:space="preserve">
     <value>Travailleur</value>
     <comment>An on foot NPC loadout</comment>
