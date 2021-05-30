@@ -136,7 +136,7 @@
     <value>Ruolo</value>
   </data>
   <data name="header_ship_ID" xml:space="preserve">
-    <value>I D Nave</value>
+    <value>ID Nave</value>
   </data>
   <data name="header_spoken_name" xml:space="preserve">
     <value>Nome (fonetico)</value>
