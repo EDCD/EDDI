@@ -319,6 +319,9 @@ namespace EddiInaraResponder
             var eventData = new Dictionary<string, object>()
             {
                 { "starsystemName", @event.systemname },
+                { "starsystemCoords", new [] { @event.x, @event.y, @event.z } },
+                { "stationName", @event.carriername },
+                { "marketID", @event.carrierId }
             };
             Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
             if (!string.IsNullOrEmpty(currentShip?.EDName))
@@ -1104,6 +1107,7 @@ namespace EddiInaraResponder
             var eventData = new Dictionary<string, object>()
                 {
                     { "starsystemName", @event.system },
+                    { "starsystemCoords", new [] { @event.x, @event.y, @event.z } },
                     { "jumpDistance", @event.distance }
                 };
 
