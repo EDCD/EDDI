@@ -161,7 +161,7 @@
     <value>E' disponibile la versione {0}</value>
   </data>
   <data name="voice_test_damage" xml:space="preserve">
-    <value>Danni importanti al tuo {0}.</value>
+    <value>Danni importanti alla sua {0}.</value>
   </data>
   <data name="voice_test_ship" xml:space="preserve">
     <value>Ecco come suonerò nel tuo {0}.</value>
