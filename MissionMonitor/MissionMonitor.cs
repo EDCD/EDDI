@@ -501,30 +501,32 @@ namespace EddiMissionMonitor
                     missions.Add(mission);
                 }
 
-                // Raise events for the notable changes in community goal status.
-                var cgUpdates = new List<CGUpdate>();
-                if (mission.communalTier < goal.tier)
+                if (!@event.fromLoad)
                 {
-                    // Did the goal's current tier change?
-                    cgUpdates.Add(new CGUpdate("Tier", "Increase"));
-                }
-                if (goal.contribution > 0)
-                {
-                    if (mission.communalPercentileBand < goal.percentileband)
+                    // Raise events for the notable changes in community goal status.
+                    var cgUpdates = new List<CGUpdate>();
+                    if (mission.communalTier < goal.tier)
                     {
-                        // Did the player's percentile band increase?
-                        cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
+                        // Did the goal's current tier change?
+                        cgUpdates.Add(new CGUpdate("Tier", "Increase"));
                     }
-                    if (mission.communalPercentileBand > goal.percentileband)
+                    if (goal.contribution > 0)
                     {
-                        // Did the player's percentile band decrease?
-                        cgUpdates.Add(new CGUpdate("Percentile", "Decrease"));
+                        if (mission.communalPercentileBand < goal.percentileband)
+                        {
+                            // Did the player's percentile band increase?
+                            cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
+                        }
+                        if (mission.communalPercentileBand > goal.percentileband)
+                        {
+                            // Did the player's percentile band decrease?
+                            cgUpdates.Add(new CGUpdate("Percentile", "Decrease"));
+                        }
                     }
-                }
-
-                if (cgUpdates.Any())
-                {
-                    EDDI.Instance.enqueueEvent(new CommunityGoalEvent(DateTime.UtcNow, cgUpdates, goal));
+                    if (cgUpdates.Any())
+                    {
+                        EDDI.Instance.enqueueEvent(new CommunityGoalEvent(DateTime.UtcNow, cgUpdates, goal));
+                    }
                 }
 
                 // Update our mission records
