@@ -112,7 +112,9 @@
   <data name="HomeSystem" xml:space="preserve">
     <value>Système résidentiel</value>
   </data>
-  
+  <data name="InPrepareRadius" xml:space="preserve">
+    <value>Dans le rayon de préparation</value>
+  </data>
   <data name="Prepared" xml:space="preserve">
     <value>Préparé</value>
   </data>
