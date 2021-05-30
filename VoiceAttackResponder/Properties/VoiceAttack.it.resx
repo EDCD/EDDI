@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Un risponditore che genera un elevato numero di variabili all'interno di VoiceAttack e di azioni scatenanti definite dall'utente.</value>
+    <value>Un risponditore che genera un elevato numero di variabili all'interno di VoiceAttack, oltre al lanciare azioni definite dall'utente.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Assistente VoiceAttack</value>
