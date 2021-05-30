@@ -146,7 +146,7 @@
     <comment>Salvage signal</comment>
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
-    <value>Postumi di Combattimento</value>
+    <value>Conseguenze di Combattimento</value>
     <comment>Aftermatch signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
