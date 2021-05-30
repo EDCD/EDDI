@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Component.
+        ///   Looks up a localized string similar to Assets.
         /// </summary>
         public static string Component {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Consumable.
+        ///   Looks up a localized string similar to Consumables.
         /// </summary>
         public static string Consumable {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item.
+        ///   Looks up a localized string similar to Goods.
         /// </summary>
         public static string Item {
             get {
