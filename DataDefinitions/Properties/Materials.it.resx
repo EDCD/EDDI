@@ -534,7 +534,7 @@
     <comment>Material fedproprietarycomposites</comment>
   </data>
   <data name="protolightalloys" xml:space="preserve">
-    <value>Leghe Proto Alleggerite</value>
+    <value>Protoleghe leggere</value>
     <comment>Material protolightalloys</comment>
   </data>
   <data name="refinedfocuscrystals" xml:space="preserve">
