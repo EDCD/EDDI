@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="your" xml:space="preserve">
-    <value>il tuo</value>
+    <value>la sua</value>
     <comment>e.g. *your* ship</comment>
   </data>
   <data name="_ship" xml:space="preserve">
