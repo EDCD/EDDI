@@ -233,11 +233,32 @@
     <value>Boutique</value>
     <comment>Station Service: Shop</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="CarrierFuel" xml:space="preserve">
+    <value>Dépôt de Tritium</value>
+    <comment>Station Service: CarrierFuel</comment>
+  </data>
+  <data name="CarrierManagement" xml:space="preserve">
+    <value>Gestion des transporteurs</value>
+    <comment>Station Service: CarrierManagement</comment>
+  </data>
+  <data name="CarrierVendor" xml:space="preserve">
+    <value>Vendeur de transporteurs de flotte</value>
+    <comment>Station Service: CarrierVendor</comment>
+  </data>
+  <data name="Livery" xml:space="preserve">
+    <value>Livrée</value>
+    <comment>Station Service: Livery</comment>
+  </data>
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Packs de modules</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
+  <data name="VoucherRedemption" xml:space="preserve">
+    <value>Bureau de rachat</value>
+    <comment>Station Service: VoucherRedemption</comment>
+  </data>
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Espace social</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>
