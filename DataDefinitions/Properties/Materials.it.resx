@@ -570,7 +570,7 @@
     <comment>Material improvisedcomponents</comment>
   </data>
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Leghe di Qualità Materiale</value>
+    <value>Leghe di grado militare</value>
     <comment>Material militarygradealloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
@@ -582,11 +582,11 @@
     <comment>Material pharmaceuticalisolators</comment>
   </data>
   <data name="protoheatradiators" xml:space="preserve">
-    <value>Radiatori Anti-Calore</value>
+    <value>Protoradiatori</value>
     <comment>Material protoheatradiators</comment>
   </data>
   <data name="protoradiolicalloys" xml:space="preserve">
-    <value>Leghe Proto Irradiate</value>
+    <value>Protoleghe irradiate</value>
     <comment>Material protoradiolicalloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
