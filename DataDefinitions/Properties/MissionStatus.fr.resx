@@ -121,7 +121,10 @@
     <value>Actif</value>
     <comment>MissionStatus Active</comment>
   </data>
-  
+  <data name="Claim" xml:space="preserve">
+    <value>Réclamer</value>
+    <comment>MissionStatus Claim</comment>
+  </data>
   <data name="Complete" xml:space="preserve">
     <value>Terminé</value>
     <comment>MissionStatus Complete</comment>
