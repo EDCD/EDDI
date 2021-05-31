@@ -388,7 +388,7 @@
     <comment>A synthesised virus created by splicing together several different diseases.</comment>
   </data>
   <data name="TaxRecords" xml:space="preserve">
-    <value>Registros de Imposto</value>
+    <value>Registros de Tributários</value>
     <comment>Details of an organisation's tax payments and related documentation.</comment>
   </data>
   <data name="TopographicalSurveys" xml:space="preserve">
@@ -408,7 +408,7 @@
     <comment>The perfectly preserved remains of a long-dead organism.</comment>
   </data>
   <data name="UnionMembership" xml:space="preserve">
-    <value>Filiação Sindical</value>
+    <value>Pessoal Sindicalizado</value>
     <comment>Personnel who have signed up to a trade or labour union or political lobby</comment>
   </data>
   <data name="UniversalTranslator" xml:space="preserve">
