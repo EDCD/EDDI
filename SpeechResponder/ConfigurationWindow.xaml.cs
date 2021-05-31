@@ -170,7 +170,12 @@ namespace EddiSpeechResponder
             {
                 Personality.Scripts[script.Name] = editScriptWindow.script;
                 updateScriptsConfiguration();
+
+                // Refresh, then refocus on the current selected script
+                var i = scriptsData.SelectedIndex;
                 scriptsView.Refresh();
+                scriptsData.Focus();
+                scriptsData.SelectedIndex = i;
             }
         }
 

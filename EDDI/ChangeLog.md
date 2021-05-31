@@ -17,6 +17,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission check system` script, fixed a bug that could prevent the station model from being referenced.
       * `Mission completed` script, updated to include micro-resources (on foot items)
       * `System report` script, updated to indicate the security level of the system.
+    * User Interface
+      * The current selection is no longer lost when accepting an edited script.
 
 ### 4.0.0-b3
   * Core
