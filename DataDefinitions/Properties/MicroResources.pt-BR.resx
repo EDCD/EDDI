@@ -305,7 +305,7 @@
     <comment>Access records detailing individual user activity on specific networks.</comment>
   </data>
   <data name="NextOfKinRecords" xml:space="preserve">
-    <value>Registros de Parentêsco</value>
+    <value>Registros Familiares</value>
     <comment>Details of an individual's closest living relatives, partners and designated contacts.</comment>
   </data>
   <data name="NOCData" xml:space="preserve">
