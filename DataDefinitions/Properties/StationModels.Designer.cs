@@ -151,6 +151,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settlement.
+        /// </summary>
+        public static string OnFootSettlement {
+            get {
+                return ResourceManager.GetString("OnFootSettlement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orbis Starport.
         /// </summary>
         public static string Orbis {
