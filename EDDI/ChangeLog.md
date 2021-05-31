@@ -11,11 +11,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission completed` event variables updated to include micro-resources (on foot items)
     * Scripts
       * `Carrier jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
+      * `Crime report` script, updated to resolve scripting errors.
       * `Engineer report` script, revised to refine grammar.
       * `Jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
       * `Mission check system` script, fixed a bug that could prevent the station model from being referenced.
-      * `Mission completed` script updated to include micro-resources (on foot items)
-      * `System report` script updated to indicate the security level of the system.
+      * `Mission completed` script, updated to include micro-resources (on foot items)
+      * `System report` script, updated to indicate the security level of the system.
 
 ### 4.0.0-b3
   * Core
