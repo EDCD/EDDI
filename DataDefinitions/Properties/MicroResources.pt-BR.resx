@@ -289,7 +289,7 @@
     <comment>Records of routine tasks to maintain settlement equipment or infrastructure.</comment>
   </data>
   <data name="MeetingMinutes" xml:space="preserve">
-    <value>Minutos de Reunião</value>
+    <value>Atas de Reunião</value>
     <comment>A record of discussion topics and action points from a meeting of settlement personnel.</comment>
   </data>
   <data name="MineralSurvey" xml:space="preserve">
