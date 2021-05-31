@@ -1171,6 +1171,9 @@ namespace EddiDataDefinitions
                 new Module(128064259, "Int_ShieldGenerator_Size1_Class2", 1805, "ShieldGenerator", 1, "D", 0),
                 new Module(128064260, "Int_ShieldGenerator_Size1_Class3", 1806, "ShieldGenerator", 1, "C", 0),
                 new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
+                
+                // Needs confirmation of localized name, class, and grade
+                new Module(128808878, "Hpt_XenoScannerMk2_Basic_Tiny", -1, "XenoScanner", 0, "E", 745950),
             };
         }
 
