@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Backpack changed` event added
       * `Mission accepted` event variables updated to include micro-resources (on foot items)
       * `Mission completed` event variables updated to include micro-resources (on foot items)
+    * Functions
+      * `Emphasize()` function tweaked to try to improve compatibility with more voices.
     * Scripts
       * `Carrier jumped` script, revised to correct missing "Information:" verbiage when the engineer report is the only applicable report.
       * `Crime report` script, updated to resolve scripting errors.
