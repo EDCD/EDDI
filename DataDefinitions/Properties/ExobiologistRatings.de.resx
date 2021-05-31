@@ -129,9 +129,24 @@
     <value>Shuttle-Betreiber</value>
     <comment>Exobiologist rating Taxonomist</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="EliteI" xml:space="preserve">
+    <value>Elite 1</value>
+    <comment>Exobiologist rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>Elite 2</value>
+    <comment>Exobiologist rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>Elite 3</value>
+    <comment>Exobiologist rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>Elite 4</value>
+    <comment>Exobiologist rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>Elite 5</value>
+    <comment>Exobiologist rating Elite V</comment>
+  </data>
 </root>
