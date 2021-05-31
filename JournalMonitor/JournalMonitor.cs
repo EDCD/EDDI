@@ -2895,7 +2895,7 @@ namespace EddiJournalMonitor
                                     string name = JsonParsing.getString(data, "Name");
                                     string system = JsonParsing.getString(data, "System");
 
-                                    events.Add(new MissionAcceptedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, system, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new MissionAcceptedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2915,7 +2915,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Reward", out object val);
                                     long reward = (val == null ? 0 : (long)val);
 
-                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, true, reward, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3009,28 +3009,47 @@ namespace EddiJournalMonitor
                             case "MissionAccepted":
                                 {
                                     data.TryGetValue("MissionID", out object val);
-                                    long missionid = (long)val;
+                                    var missionid = (long)val;
                                     data.TryGetValue("Expiry", out val);
                                     DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string localisedname = JsonParsing.getString(data, "LocalisedName");
-                                    string faction = getFactionName(data, "Faction");
-                                    int? reward = JsonParsing.getOptionalInt(data, "Reward");
-                                    bool wing = JsonParsing.getBool(data, "Wing");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var localisedname = JsonParsing.getString(data, "LocalisedName");
+                                    var faction = getFactionName(data, "Faction");
+                                    var reward = JsonParsing.getOptionalInt(data, "Reward");
+                                    var wing = JsonParsing.getBool(data, "Wing");
 
                                     // Missions with destinations
-                                    string destinationsystem = JsonParsing.getString(data, "DestinationSystem");
-                                    string destinationstation = JsonParsing.getString(data, "DestinationStation");
+                                    var destinationsystem = JsonParsing.getString(data, "DestinationSystem");
+                                    var destinationstation = JsonParsing.getString(data, "DestinationStation");
 
-                                    // Missions with commodities
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
+                                    // Missions with commodities (which may include on-foot micro-resources)
+                                    var c = JsonParsing.getString(data, "Commodity");
+                                    var fallbackC = JsonParsing.getString(data, "Commodity_Localised");
+                                    CommodityDefinition commodity = null;
+                                    MicroResource microResource = null;
+
+                                    if (!string.IsNullOrEmpty(c))
+                                    {
+                                        if (MicroResource.EDNameExists(c))
+                                        {
+                                            // This is an on-foot micro-resource
+                                            microResource = MicroResource.FromEDName(c);
+                                            microResource.fallbackLocalizedName = fallbackC;
+                                        }
+                                        else
+                                        {
+                                            // This is (probably) a traditional ship commodity
+                                            commodity = CommodityDefinition.FromEDName(c);
+                                            commodity.fallbackLocalizedName = fallbackC;
+                                        }
+                                    }
                                     data.TryGetValue("Count", out val);
-                                    int? amount = (int?)(long?)val;
+                                    var amount = (int?)(long?)val;
 
                                     // Missions with targets
-                                    string target = JsonParsing.getString(data, "Target");
-                                    string targettype = JsonParsing.getString(data, "TargetType");
-                                    string targetfaction = getFactionName(data, "TargetFaction");
+                                    var target = JsonParsing.getString(data, "Target");
+                                    var targettype = JsonParsing.getString(data, "TargetType");
+                                    var targetfaction = getFactionName(data, "TargetFaction");
                                     data.TryGetValue("KillCount", out val);
                                     if (val != null)
                                     {
@@ -3038,10 +3057,10 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Missions with passengers
-                                    int? passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
-                                    string passengertype = JsonParsing.getString(data, "PassengerType");
-                                    bool? passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
-                                    bool? passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
+                                    var passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
+                                    var passengertype = JsonParsing.getString(data, "PassengerType");
+                                    var passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
+                                    var passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
                                     data.TryGetValue("PassengerCount", out val);
                                     if (val != null)
                                     {
@@ -3049,31 +3068,50 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Impact on influence and reputation
-                                    string influence = JsonParsing.getString(data, "Influence");
-                                    string reputation = JsonParsing.getString(data, "Reputation");
+                                    var influence = JsonParsing.getString(data, "Influence");
+                                    var reputation = JsonParsing.getString(data, "Reputation");
 
-                                    events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "MissionCompleted":
                                 {
                                     data.TryGetValue("MissionID", out object val);
-                                    long missionid = (long)val;
-                                    string name = JsonParsing.getString(data, "Name");
+                                    var missionid = (long)val;
+                                    var name = JsonParsing.getString(data, "Name");
                                     data.TryGetValue("Reward", out val);
-                                    long reward = (val == null ? 0 : (long)val);
-                                    long donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
-                                    string faction = getFactionName(data, "Faction");
+                                    var reward = (val == null ? 0 : (long)val);
+                                    var donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
+                                    var faction = getFactionName(data, "Faction");
 
-                                    // Missions with commodities
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
+                                    // Missions with commodities (which may include on-foot micro-resources)
+                                    var c = JsonParsing.getString(data, "Commodity");
+                                    var fallbackC = JsonParsing.getString(data, "Commodity_Localised");
+                                    CommodityDefinition commodity = null;
+                                    MicroResource microResource = null;
+
+                                    if (!string.IsNullOrEmpty(c))
+                                    {
+                                        if (MicroResource.EDNameExists(c))
+                                        {
+                                            // This is an on-foot micro-resource
+                                            microResource = MicroResource.FromEDName(c);
+                                            microResource.fallbackLocalizedName = fallbackC;
+                                        }
+                                        else
+                                        {
+                                            // This is (probably) a traditional ship commodity
+                                            commodity = CommodityDefinition.FromEDName(c);
+                                            commodity.fallbackLocalizedName = fallbackC;
+                                        }
+                                    }
                                     data.TryGetValue("Count", out val);
-                                    int? amount = (int?)(long?)val;
+                                    var amount = (int?)(long?)val;
 
-                                    List<string> permitsAwarded = new List<string>();
+                                    var permitsAwarded = new List<string>();
                                     data.TryGetValue("PermitsAwarded", out val);
-                                    List<object> permitsAwardedData = (List<object>)val;
+                                    var permitsAwardedData = (List<object>)val;
                                     if (permitsAwardedData != null)
                                     {
                                         foreach (Dictionary<string, object> permitAwardedData in permitsAwardedData)
@@ -3083,9 +3121,9 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    List<CommodityAmount> commodityrewards = new List<CommodityAmount>();
+                                    var commodityrewards = new List<CommodityAmount>();
                                     data.TryGetValue("CommodityReward", out val);
-                                    List<object> commodityRewardsData = (List<object>)val;
+                                    var commodityRewardsData = (List<object>)val;
                                     if (commodityRewardsData != null)
                                     {
                                         foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
@@ -3097,21 +3135,40 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    List<MaterialAmount> materialsrewards = new List<MaterialAmount>();
+                                    var materialsrewards = new List<MaterialAmount>();
+                                    var microResourceRewards = new List<MicroResourceAmount>();
                                     data.TryGetValue("MaterialsReward", out val);
-                                    List<object> materialsRewardsData = (List<object>)val;
+                                    var materialsRewardsData = (List<object>)val;
                                     if (materialsRewardsData != null)
                                     {
                                         foreach (Dictionary<string, object> materialsRewardData in materialsRewardsData)
                                         {
-                                            Material rewardMaterial = Material.FromEDName(JsonParsing.getString(materialsRewardData, "Name"));
+                                            var m = JsonParsing.getString(materialsRewardData, "Name");
+                                            var fallbackM = JsonParsing.getString(materialsRewardData, "Name_Localised");
                                             materialsRewardData.TryGetValue("Count", out val);
                                             int count = (int)(long)val;
-                                            materialsrewards.Add(new MaterialAmount(rewardMaterial, count));
+
+                                            if (!string.IsNullOrEmpty(m))
+                                            {
+                                                if (MicroResource.EDNameExists(c))
+                                                {
+                                                    // This is an on-foot micro-resource
+                                                    var rewardMicroResource = MicroResource.FromEDName(m);
+                                                    rewardMicroResource.fallbackLocalizedName = fallbackM;
+                                                    microResourceRewards.Add(new MicroResourceAmount(rewardMicroResource, null, null, count));
+                                                }
+                                                else
+                                                {
+                                                    // This is (probably) a traditional ship material
+                                                    var rewardMaterial = Material.FromEDName(m);
+                                                    rewardMaterial.fallbackLocalizedName = fallbackM;
+                                                    materialsrewards.Add(new MaterialAmount(rewardMaterial, count));
+                                                }
+                                            }
                                         }
                                     }
 
-                                    events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, donation) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, microResource, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, microResourceRewards, donation) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

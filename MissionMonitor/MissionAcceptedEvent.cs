@@ -21,7 +21,8 @@ namespace EddiMissionMonitor
             VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
             VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
             VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
-            VARIABLES.Add("amount", "The amount of the commodity,  passengers or targets involved in the mission (if applicable)");
+            VARIABLES.Add("microresource", "The micro-resource (on foot item) involved in the mission (if applicable)");
+            VARIABLES.Add("amount", "The amount of the commodity or micro-resource, passengers, or targets involved in the mission (if applicable)");
             VARIABLES.Add("wing", "True if the mission allows wing-mates");
             VARIABLES.Add("passengercount", "The number of passengers (if applicable)");
             VARIABLES.Add("passengerwanted", "True if the passengers are wanted (if applicable)");
@@ -48,7 +49,8 @@ namespace EddiMissionMonitor
         public bool wing { get; private set; }
         public DateTime? expiry { get; private set; }
 
-        public string commodity { get; private set; }
+        public string commodity => commodityDefinition?.localizedName;
+        public string microresource => microResource?.localizedName;
         public int? amount { get; private set; }
 
         public string destinationsystem { get; private set; }
@@ -64,9 +66,13 @@ namespace EddiMissionMonitor
 
         public bool communal { get; private set; }
 
+        // Not intended to be user facing
+
         public CommodityDefinition commodityDefinition { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string localisedname, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
+        public MicroResource microResource { get; }
+
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string localisedname, string faction, string destinationsystem, string destinationstation, MicroResource microResource, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
@@ -74,7 +80,8 @@ namespace EddiMissionMonitor
             this.faction = faction;
             this.destinationsystem = destinationsystem;
             this.destinationstation = destinationstation;
-            this.commodity = commodity?.localizedName;
+            this.commodityDefinition = commodity;
+            this.microResource = microResource;
             this.amount = amount;
             this.passengertype = passengertype;
             this.passengerwanted = passengerwanted;
@@ -88,7 +95,6 @@ namespace EddiMissionMonitor
             this.reputation = reputation;
             this.reward = reward;
             this.wing = wing;
-            this.commodityDefinition = commodity;
         }
     }
 }

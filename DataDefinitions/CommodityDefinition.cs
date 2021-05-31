@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -538,6 +540,17 @@ namespace EddiDataDefinitions
         {
             string edName = NormalizedName(rawName);
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
+        }
+
+        public static bool EDNameExists(string edName)
+        {
+            if (edName == null) { return false; }
+            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static string titiedEDName(string edName)
+        {
+            return edName?.ToLowerInvariant().Replace("$", "").Replace(";", "").Replace("_name", "");
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -246,6 +248,17 @@ namespace EddiDataDefinitions
             result.fallbackLocalizedName = fallbackName;
             if (!string.IsNullOrEmpty(categoryEdName)) { result.Category = MicroResourceCategory.FromEDName(categoryEdName); }
             return result;
+        }
+
+        public static bool EDNameExists(string edName)
+        {
+            if (edName == null) { return false; }
+            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static string titiedEDName(string edName)
+        {
+            return edName?.ToLowerInvariant().Replace("$", "").Replace(";", "").Replace("_name", "");
         }
     }
 }

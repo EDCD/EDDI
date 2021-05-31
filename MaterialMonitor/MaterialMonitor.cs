@@ -193,11 +193,24 @@ namespace EddiMaterialMonitor
                 knownNames.Add(materialAmount.edname);
             }
 
-            // Set any unlisted materials to zero
-            var unlistedMaterials = Material.AllOfThem.Select(m => m.edname).Except(knownNames).ToList();
+            // Set any unlisted materials with known definitions to zero
+            var unlistedMaterials = Material.AllOfThem
+                .Where(m => m.Category != MaterialCategory.Unknown)
+                .Select(m => m.edname).Except(knownNames).ToList();
             foreach (var unlistedMaterial in unlistedMaterials)
             {
                 setMaterial(unlistedMaterial, 0);
+            }
+
+            // Clean up any materials which are both unlisted and unknown
+            lock (inventoryLock)
+            {
+                var unknownUnlistedMaterials = inventory
+                    .Where(m => !knownNames.Contains(m.edname) && !unlistedMaterials.Contains(m.edname)).ToList();
+                foreach (var unknownUnlistedMaterial in unknownUnlistedMaterials)
+                {
+                    inventory.Remove(unknownUnlistedMaterial);
+                }
             }
 
             // Update configuration information
@@ -227,33 +240,45 @@ namespace EddiMaterialMonitor
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)
         {
-            foreach (MaterialAmount component in @event.materials)
+            if (@event.materials?.Count > 0)
             {
-                decMaterial(component.edname, component.amount, @event.fromLoad);
+                foreach (MaterialAmount component in @event.materials)
+                {
+                    decMaterial(component.edname, component.amount, @event.fromLoad);
+                }
             }
         }
 
         private void handleModificationCraftedEvent(ModificationCraftedEvent @event)
         {
-            foreach (MaterialAmount component in @event.materials)
+            if (@event.materials?.Count > 0)
             {
-                decMaterial(component.edname, component.amount, @event.fromLoad);
+                foreach (MaterialAmount component in @event.materials)
+                {
+                    decMaterial(component.edname, component.amount, @event.fromLoad);
+                }
             }
         }
 
         private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
         {
-            foreach (MaterialAmount material in @event.materials)
+            if (@event.materials?.Count > 0)
             {
-                decMaterial(material.edname, material.amount, @event.fromLoad);
+                foreach (MaterialAmount material in @event.materials)
+                {
+                    decMaterial(material.edname, material.amount, @event.fromLoad);
+                }
             }
         }
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            foreach (MaterialAmount material in @event.materialsrewards)
+            if (@event.materialsrewards?.Count > 0)
             {
-                incMaterial(material.edname, material.amount, @event.fromLoad);
+                foreach (MaterialAmount material in @event.materialsrewards)
+                {
+                    incMaterial(material.edname, material.amount, @event.fromLoad);
+                }
             }
         }
 
@@ -423,12 +448,6 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (MaterialAmount ma in configuration.materials)
                 {
-                    // Remove incorrect edname introduced in an earlier version of EDDI
-                    if (ma.edname == "tg_shipsystemdata") // Should be "shipsystemsdata"
-                    {
-                        continue;
-                    }
-
                     MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
                     // Make sure the edname is unique before adding the material to the new inventory 
                     if (newInventory.Where(inv => inv.edname == ma2.edname).Count() == 0)

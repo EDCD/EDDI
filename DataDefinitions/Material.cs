@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -284,6 +285,17 @@ namespace EddiDataDefinitions
                 }
             }
             return bestBody;
+        }
+
+        public static bool EDNameExists(string edName)
+        {
+            if (edName == null) { return false; }
+            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private static string titiedEDName(string edName)
+        {
+            return edName?.ToLowerInvariant().Replace("$", "").Replace(";", "").Replace("_name", "");
         }
     }
 }

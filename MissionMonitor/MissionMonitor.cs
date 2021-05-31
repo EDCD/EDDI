@@ -827,14 +827,23 @@ namespace EddiMissionMonitor
         public bool _postHandleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             bool update = false;
-            if (@event.missionid != null)
+
+            try
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                if (mission != null)
+                if (@event.missionid != null)
                 {
-                    RemoveMissionWithMissionId(@event.missionid ?? 0);
-                    update = true;
+                    Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission != null)
+                    {
+                        RemoveMissionWithMissionId(@event.missionid ?? 0);
+                        update = true;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Logging.Error(e.Message, e);
+                throw;
             }
             return update;
         }
