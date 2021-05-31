@@ -593,8 +593,8 @@ namespace UnitTests
 
         [DataTestMethod]
         [DataRow("ChemicalInventory", "Chemical Inventory", "Data")]
-        [DataRow("$CompactLibrary_Name;", "Compact Library", "Item")]
-        [DataRow("$healthpack_name;", "Medkit", "Consumable")]
+        [DataRow("$CompactLibrary_Name;", "Compact Library", "Goods")]
+        [DataRow("$healthpack_name;", "Medkit", "Consumables")]
         public void TestMicroResources(string input, string expectedInvariantName, string expectedInvariantCategory)
         {
             var result = MicroResource.FromEDName(input);
