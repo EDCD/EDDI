@@ -17,7 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("tomulticrew", "True if embarking to another player's ship");
             VARIABLES.Add("toship", "True if embarking to your own ship");
             VARIABLES.Add("tosrv", "True if embarking to an SRV");
-            VARIABLES.Add("totaxi", "True if embarking to a taxi transport ship");
+            VARIABLES.Add("totransport", "True if embarking to a transport ship (e.g. taxi or dropship)");
             VARIABLES.Add("systemname", "The name of the star system in which the commander is embarking");
             VARIABLES.Add("bodyname", "The name of the body from which the commander is embarking (if any)");
             VARIABLES.Add("station", "The name of the station from which the commander is embarking (if any)");
@@ -42,13 +42,13 @@ namespace EddiEvents
         public bool tomulticrew { get; }
 
         [PublicAPI]
-        public bool toship => toLocalId != null && !tosrv && !totaxi && !tomulticrew;
+        public bool toship => toLocalId != null && !tosrv && !totransport && !tomulticrew;
 
         [PublicAPI]
         public bool tosrv { get; }
 
         [PublicAPI]
-        public bool totaxi { get; }
+        public bool totransport { get; }
 
         [PublicAPI]
         public bool? onstation { get; }
@@ -67,10 +67,10 @@ namespace EddiEvents
 
         public StationModel stationModel { get; }
 
-        public EmbarkEvent(DateTime timestamp, bool toSRV, bool toTaxi, bool toMultiCrew, int? toLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station, long? marketId, StationModel stationModel) : base(timestamp, NAME)
+        public EmbarkEvent(DateTime timestamp, bool toSRV, bool toTransport, bool toMultiCrew, int? toLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station, long? marketId, StationModel stationModel) : base(timestamp, NAME)
         {
             this.tosrv = toSRV;
-            this.totaxi = toTaxi;
+            this.totransport = toTransport;
             this.tomulticrew = toMultiCrew;
             this.toLocalId = toLocalId;
             this.systemname = system;

@@ -883,7 +883,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }
-            if (embarkEvent.totaxi)
+            if (embarkEvent.totransport)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }

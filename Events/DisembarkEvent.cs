@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Disembark";
         public const string DESCRIPTION = "Triggered when you transition from a ship or SRV to on foot";
-        public const string SAMPLE = "{ \"timestamp\":\"2021-05-03T21:47:38Z\", \"event\":\"Disembark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":6, \"StarSystem\":\"Firenses\", \"SystemAddress\":2868635379121, \"Body\":\"Roberts Gateway\", \"BodyID\":44, \"OnStation\":true, \"OnPlanet\":false, \"StationName\":\"Roberts Gateway\", \"StationType\":\"Coriolis\", \"MarketID\":3221636096 }\r\n";
+        public const string SAMPLE = "{ \"timestamp\":\"2021-05-03T21:47:38Z\", \"event\":\"Disembark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":6, \"StarSystem\":\"Firenses\", \"SystemAddress\":2868635379121, \"Body\":\"Roberts Gateway\", \"BodyID\":44, \"OnStation\":true, \"OnPlanet\":false, \"StationName\":\"Roberts Gateway\", \"StationType\":\"Coriolis\", \"MarketID\":3221636096 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DisembarkEvent()
@@ -17,7 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("frommulticrew", "True if disembarking from another player's ship");
             VARIABLES.Add("fromship", "True if disembarking from your own ship");
             VARIABLES.Add("fromsrv", "True if disembarking from an SRV");
-            VARIABLES.Add("fromtaxi", "True if disembarking from a taxi transport ship");
+            VARIABLES.Add("fromtransport", "True if disembarking from a transport ship (e.g. taxi or dropship)");
             VARIABLES.Add("systemname", "The name of the star system where the commander is disembarking");
             VARIABLES.Add("bodyname", "The name of the body where the commander is disembarking (if any)");
             VARIABLES.Add("station", "The name of the station where the commander is disembarking (if any)");
@@ -42,13 +42,13 @@ namespace EddiEvents
         public bool frommulticrew { get; }
 
         [PublicAPI]
-        public bool fromship => fromLocalId != null && !fromsrv && !fromtaxi && !frommulticrew;
+        public bool fromship => fromLocalId != null && !fromsrv && !fromtransport && !frommulticrew;
 
         [PublicAPI]
         public bool fromsrv { get; }
 
         [PublicAPI]
-        public bool fromtaxi { get; }
+        public bool fromtransport { get; }
 
         [PublicAPI]
         public bool? onstation { get; }
@@ -67,10 +67,10 @@ namespace EddiEvents
 
         public StationModel stationModel { get; }
 
-        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTaxi, bool fromMultiCrew, int? fromLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station, long? marketId, StationModel stationModel) : base(timestamp, NAME)
+        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTransport, bool fromMultiCrew, int? fromLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station = null, long? marketId = null, StationModel stationModel = null) : base(timestamp, NAME)
         {
             this.fromsrv = fromSRV;
-            this.fromtaxi = fromTaxi;
+            this.fromtransport = fromTransport;
             this.frommulticrew = fromMultiCrew;
             this.fromLocalId = fromLocalId;
             this.systemname = system;

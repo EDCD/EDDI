@@ -4146,7 +4146,7 @@ namespace EddiJournalMonitor
                             case "Disembark":
                                 {
                                     bool fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    bool fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a taxi transport ship 
+                                    bool fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
                                     bool fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
                                     int? fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
@@ -4168,7 +4168,7 @@ namespace EddiJournalMonitor
                             case "Embark":
                                 {
                                     bool toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    bool toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a taxi transport ship 
+                                    bool toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
                                     bool toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
                                     int? toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 

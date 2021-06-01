@@ -7,7 +7,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Events
       * `Backpack` event added
       * `Backpack changed` event added
+      * `Disembark` event, revised the `fromtaxi` property to `fromtransport` (since it will be true for both Apex taxis and Frontline dropships)
       * `Dropship deployment` event added
+      * `Embark` event, revised the `totaxi` property to `totransport` (since it will be true for both Apex taxis and Frontline dropships)
       * `Mission accepted` event variables updated to include micro-resources (on foot items)
       * `Mission completed` event variables updated to include micro-resources (on foot items)
     * Functions

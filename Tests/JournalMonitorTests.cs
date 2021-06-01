@@ -1686,7 +1686,7 @@ namespace UnitTests
             Assert.AreEqual(toMulticrew, @event.tomulticrew);
             Assert.AreEqual(toShip, @event.toship);
             Assert.AreEqual(toSRV, @event.tosrv);
-            Assert.AreEqual(toTaxi, @event.totaxi);
+            Assert.AreEqual(toTaxi, @event.totransport);
             Assert.AreEqual(toLocalId, @event.toLocalId);
             Assert.AreEqual(systemName, @event.systemname);
             Assert.AreEqual(systemAddress, @event.systemAddress);
@@ -1711,7 +1711,7 @@ namespace UnitTests
             Assert.AreEqual(fromMulticrew, @event.frommulticrew);
             Assert.AreEqual(fromShip, @event.fromship);
             Assert.AreEqual(fromSRV, @event.fromsrv);
-            Assert.AreEqual(fromTaxi, @event.fromtaxi);
+            Assert.AreEqual(fromTaxi, @event.fromtransport);
             Assert.AreEqual(fromLocalId, @event.fromLocalId);
             Assert.AreEqual(systemName, @event.systemname);
             Assert.AreEqual(systemAddress, @event.systemAddress);
