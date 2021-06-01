@@ -28,6 +28,24 @@
       "name": "Asteroid prospected",
       "description": "Triggered when using a prospecting drone"
     },
+    "Backpack": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Backpack",
+      "description": "Lists the contents of your backpack when you disembark"
+    },
+    "Backpack changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Backpack changed",
+      "description": "Triggered when there is any change to the contents of the suit backpack"
+    },
     "Blueprint make report": {
       "enabled": true,
       "priority": 3,
@@ -652,6 +670,14 @@
       "script": "{OneOf ('No recibimos respuesta a nuestra solicitud de aterrizaje','la estación no ha respondido a nuestra solicitud de aterrizaje')}.",
       "name": "Docking timed out",
       "description": "Se activa cuando tu solicitud de aterrizaje expira"
+    },
+    "Dropship deployment": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Dropship deployment",
+      "description": "Triggered when exiting a military dropship at an on-foot conflict zone"
     },
     "Embark": {
       "enabled": true,
@@ -1863,6 +1889,15 @@
       "script": null,
       "name": "Ship loadout",
       "description": "Se activa cuando obtienes carga a tu nave"
+    },
+    "Ship locker": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship locker",
+      "description": "Triggered when you obtain the contents of your ship's micro-resource materials locker"
     },
     "Ship purchased": {
       "enabled": true,
