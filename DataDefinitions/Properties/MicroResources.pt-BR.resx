@@ -364,7 +364,7 @@
     <comment>Analysis and measurement of energy production from a settlement's power centre.</comment>
   </data>
   <data name="ResidentialDirectory" xml:space="preserve">
-    <value>Lista Residencial</value>
+    <value>Listagem Residencial</value>
     <comment>Current occupants and registered contact information for a specific residential area.</comment>
   </data>
   <data name="SalesRecords" xml:space="preserve">
