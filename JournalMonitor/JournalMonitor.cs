@@ -4207,6 +4207,19 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "DropshipDeploy":
+                                {
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string body = JsonParsing.getString(data, "Body");
+                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    // There are `OnStation` and `OnPlanet` properties, but these are
+                                    // always false and always true so we won't bother parsing them.
+
+                                    events.Add(new DropshipDeploymentEvent(timestamp, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "Backpack":
                                 {
                                     var components = getMicroResources("Components", data, "Component");
@@ -4278,7 +4291,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "BuyWeapon":
-                            case "CargoTransfer":
+                            case "CargoTransfer": // Not needed for updating the cargo monitor, the `Cargo` event keeps us up to date.
                             case "CarrierBuy":
                             case "CarrierStats":
                             case "CarrierBankTransfer":
@@ -4300,7 +4313,6 @@ namespace EddiJournalMonitor
                             case "DeleteSuitLoadout":
                             case "DiscoveryScan":
                             case "DropItems":
-                            case "DropshipDeploy":
                             case "EngineerLegacyConvert":
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
@@ -4322,7 +4334,7 @@ namespace EddiJournalMonitor
                             case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":
-                            case "UseConsumable": // Seems to include only medkits and energy cells. Grenades not included. We'll use `BackpackChange` instead.
+                            case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":

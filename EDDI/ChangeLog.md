@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Events
       * `Backpack` event added
       * `Backpack changed` event added
+      * `Dropship deployment` event added
       * `Mission accepted` event variables updated to include micro-resources (on foot items)
       * `Mission completed` event variables updated to include micro-resources (on foot items)
     * Functions

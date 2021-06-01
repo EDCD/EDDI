@@ -755,6 +755,14 @@
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
     },
+    "Dropship deployment": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Dropship deployment",
+      "description": "Triggered when exiting a military dropship at an on-foot conflict zone"
+    },
     "Embark": {
       "enabled": true,
       "priority": 3,
