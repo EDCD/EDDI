@@ -493,15 +493,15 @@ namespace EddiMissionMonitor
             // Update missions status
             foreach (var goal in @event.goals)
             {
-                // Find or create our mission
+                // Find or create our mission (excluding completed goals without contributions)
                 Mission mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
-                if (mission == null)
+                if (mission == null && (!goal.iscomplete || goal.iscomplete && goal.contribution > 0))
                 {
                     mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.FromEDName("Active"));
-                    missions.Add(mission);
+                    AddMission(mission);
                 }
 
-                if (!@event.fromLoad)
+                if (!@event.fromLoad && mission != null)
                 {
                     // Raise events for the notable changes in community goal status.
                     var cgUpdates = new List<CGUpdate>();
@@ -527,28 +527,28 @@ namespace EddiMissionMonitor
                     {
                         EDDI.Instance.enqueueEvent(new CommunityGoalEvent(DateTime.UtcNow, cgUpdates, goal));
                     }
-                }
 
-                // Update our mission records
-                mission.localisedname = goal.name;
-                mission.originsystem = goal.system;
-                mission.originstation = goal.station;
-                mission.destinationsystem = goal.system;
-                mission.destinationstation = goal.station;
-                mission.reward = goal.tierreward;
-                mission.communal = true;
-                mission.communalPercentileBand = goal.percentileband;
-                mission.communalTier = goal.tier;
-                mission.expiry = goal.expiryDateTime;
-                if (goal.iscomplete)
-                {
-                    if (goal.contribution > 0)
+                    // Update our mission records
+                    mission.localisedname = goal.name;
+                    mission.originsystem = goal.system;
+                    mission.originstation = goal.station;
+                    mission.destinationsystem = goal.system;
+                    mission.destinationstation = goal.station;
+                    mission.reward = goal.tierreward;
+                    mission.communal = true;
+                    mission.communalPercentileBand = goal.percentileband;
+                    mission.communalTier = goal.tier;
+                    mission.expiry = goal.expiryDateTime;
+                    if (goal.iscomplete)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Claim");
-                    }
-                    else
-                    {
-                        RemoveMissionWithMissionId(mission.missionid);
+                        if (goal.contribution > 0)
+                        {
+                            mission.statusDef = MissionStatus.FromEDName("Claim");
+                        }
+                        else
+                        {
+                            RemoveMissionWithMissionId(mission.missionid);
+                        }
                     }
                 }
             }
@@ -866,8 +866,16 @@ namespace EddiMissionMonitor
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
-                    mission.statusDef = MissionStatus.FromEDName("Failed");
-                    update = true;
+                    if (mission.communal && mission.communalPercentileBand != 100)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Claim");
+                        update = true;
+                    }
+                    else
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                        update = true;
+                    }
                 }
             }
             return update;
