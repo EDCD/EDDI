@@ -146,7 +146,7 @@
     <comment>Salvage signal</comment>
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
-    <value>Postumi di Combattimento</value>
+    <value>Conseguenze di Combattimento</value>
     <comment>Aftermatch signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
@@ -329,7 +329,10 @@
     <value>Segnali di superficie di altro tipo</value>
     <comment>Other Surface Signal</comment>
   </data>
-  
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Relitto di Nave Thargoid</value>
+    <comment>Thargoid crash site</comment>
+  </data>
   <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
     <value>Rottami Recuperabili</value>
     <comment>Salvageable Wreckage signal source</comment>
@@ -342,5 +345,8 @@
     <value>Chiamata di Soccorso</value>
     <comment>Distress Call</comment>
   </data>
-  
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Chiamata di Soccorso</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>

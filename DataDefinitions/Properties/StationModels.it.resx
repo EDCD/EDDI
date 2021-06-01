@@ -173,4 +173,8 @@
     <value>Trasporto Navi</value>
     <comment>A Fleet Carrier</comment>
   </data>
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>Insediamento</value>
+    <comment>An Odyssey style Settlement</comment>
+  </data>
 </root>

@@ -117,13 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Deadeye" xml:space="preserve">
+    <value>Меткий глаз</value>
+    <comment>Mercenary rank Deadeye</comment>
+  </data>
+  <data name="Defenceless" xml:space="preserve">
+    <value>Беззащитный</value>
+    <comment>Mercenary rank Defenceless</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Элита</value>
+    <comment>Mercenary rank Elite</comment>
+  </data>
+  <data name="Gladiator" xml:space="preserve">
+    <value>Гладиатор</value>
+    <comment>Mercenary rank Gladiator</comment>
+  </data>
+  <data name="Gunslinger" xml:space="preserve">
+    <value>Стрелок</value>
+    <comment>Mercenary rank Gunslinger</comment>
+  </data>
+  <data name="Mercenary" xml:space="preserve">
+    <value>Наемник</value>
+    <comment>Mercenary rank Mercenary</comment>
+  </data>
+  <data name="MostlyDefenceless" xml:space="preserve">
+    <value>В основном беззащитный</value>
+    <comment>Mercenary rank Mostly Defenceless</comment>
+  </data>
+  <data name="Rookie" xml:space="preserve">
+    <value>Новичок</value>
+    <comment>Mercenary rank Rookie</comment>
+  </data>
+  <data name="Warrior" xml:space="preserve">
+    <value>Боец</value>
+    <comment>Mercenary rank Warrior</comment>
+  </data>
+  <data name="EliteI" xml:space="preserve">
+    <value>Элита 1</value>
+    <comment>Mercenary rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>Элита 2</value>
+    <comment>Mercenary rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>Элита 3</value>
+    <comment>Mercenary rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>Элита 4</value>
+    <comment>Mercenary rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>Элита 5</value>
+    <comment>Mercenary rating Elite V</comment>
+  </data>
 </root>

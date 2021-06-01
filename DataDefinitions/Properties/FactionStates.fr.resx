@@ -181,7 +181,10 @@
     <value>Attaque pirate</value>
     <comment>Faction state PirateAttack</comment>
   </data>
-  
+  <data name="Drought" xml:space="preserve">
+    <value>Sécheresse</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+  </data>
   <data name="Blight" xml:space="preserve">
     <value>Fléau</value>
     <comment>Faction state Blight</comment>
@@ -198,20 +201,32 @@
     <value>Événement historique</value>
     <comment>Faction state HistoricEvent</comment>
   </data>
-  
+  <data name="InfrastructureFailure" xml:space="preserve">
+    <value>Infrastructure défaillante</value>
+    <comment>Faction state InfrastructureFailure</comment>
+  </data>
   <data name="NaturalDisaster" xml:space="preserve">
     <value>Catastrophe naturelle</value>
     <comment>Faction state NaturalDisaster</comment>
   </data>
-  
+  <data name="PublicHoliday" xml:space="preserve">
+    <value>Jour Férié</value>
+    <comment>Faction state PublicHoliday</comment>
+  </data>
   <data name="Revolution" xml:space="preserve">
     <value>Révolution</value>
     <comment>Faction state Revolution</comment>
   </data>
-  
+  <data name="TechnologicalLeap" xml:space="preserve">
+    <value>Bond Technologique</value>
+    <comment>Faction state TechnologicalLeap</comment>
+  </data>
   <data name="Terrorism" xml:space="preserve">
     <value>Terrorisme</value>
     <comment>Faction state Terrorism</comment>
   </data>
-  
+  <data name="TradeWar" xml:space="preserve">
+    <value>Guerre Commerciale</value>
+    <comment>Faction state TradeWar</comment>
+  </data>
 </root>

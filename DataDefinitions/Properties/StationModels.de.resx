@@ -173,4 +173,8 @@
     <value>Carrier</value>
     <comment>A Fleet Carrier</comment>
   </data>
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>Siedlung</value>
+    <comment>An Odyssey style Settlement</comment>
+  </data>
 </root>

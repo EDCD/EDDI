@@ -120,6 +120,17 @@
   
   
   
+  <data name="Directionless" xml:space="preserve">
+    <value>Sin rumbo</value>
+    <comment>Exobiologist rating Directionless</comment>
+  </data>
+  
+  <data name="Elite" xml:space="preserve">
+    <value>Élite</value>
+    <comment>Exobiologist rating Elite</comment>
+  </data>
+  
+  
   
   
   

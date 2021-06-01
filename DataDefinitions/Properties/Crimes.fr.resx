@@ -201,16 +201,52 @@
     <value>Amende de mission</value>
     <comment>Crime missionFine</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Agression</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
+  <data name="onFoot_breakingAndEntering" xml:space="preserve">
+    <value>Introduction par effraction</value>
+    <comment>Crime onFoot_breakingAndEntering</comment>
+  </data>
+  <data name="onFoot_damagingDefences" xml:space="preserve">
+    <value>Endommager les systèmes de défense</value>
+    <comment>Crime onFoot_damagingDefences</comment>
+  </data>
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Dévoiler votre arme</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
+  <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
+    <value>Fuir les autorités locales</value>
+    <comment>Crime onFoot_failureToSubmitToPolice</comment>
+  </data>
+  <data name="onFoot_identityTheft" xml:space="preserve">
+    <value>Vol d'identité</value>
+    <comment>Crime onFoot_identityTheft</comment>
+  </data>
+  <data name="onFoot_murder" xml:space="preserve">
+    <value>Meurtre</value>
+    <comment>Crime onFoot_murder</comment>
+  </data>
+  <data name="onFoot_profileCloningIntent" xml:space="preserve">
+    <value>Tentative de vol d'identité</value>
+    <comment>Crime onFoot_profileCloningIntent</comment>
+  </data>
+  <data name="onFoot_propertyTheft" xml:space="preserve">
+    <value>Vol</value>
+    <comment>Crime onFoot_propertyTheft</comment>
+  </data>
+  <data name="onFoot_recklessEndangerment" xml:space="preserve">
+    <value>Mise en danger imprudente</value>
+    <comment>Crime onFoot_recklessEndangerment</comment>
+  </data>
+  <data name="onFoot_theft" xml:space="preserve">
+    <value>Vol</value>
+    <comment>Crime onFoot_theft</comment>
+  </data>
+  <data name="onFoot_trespass" xml:space="preserve">
+    <value>Intrusion</value>
+    <comment>Crime onFoot_trespass</comment>
+  </data>
 </root>

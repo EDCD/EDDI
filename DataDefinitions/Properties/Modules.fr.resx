@@ -130,7 +130,7 @@
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>Batterie de Missiles AX</value>
+    <value>Batterie de Missile AX</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
@@ -346,7 +346,7 @@
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
-    <value>Batterie de Missiles</value>
+    <value>Batterie de Missile</value>
     <comment>Module MissileRack</comment>
   </data>
   <data name="ModuleReinforcementPackage" xml:space="preserve">
@@ -534,7 +534,7 @@
     <comment>Modile FlechetteLauncher</comment>
   </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Batterie de missiles enzymatiques</value>
+    <value>Batterie de missile enzymatique</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
   <data name="GuardianHullReinforcement" xml:space="preserve">
@@ -582,6 +582,12 @@
     <comment>Module AdvancedDockingComputer</comment>
   </data>
   
-  
-  
+  <data name="AdvancedMissileRack" xml:space="preserve">
+    <value>Batterie de Missile Avancée</value>
+    <comment>Module Advanced Missile Rack</comment>
+  </data>
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Rayon calorifique</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>

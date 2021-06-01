@@ -1750,9 +1750,24 @@
     <value>Tejido de caparazón de vaina</value>
     <comment>Commodity S6_TissueSample_Coenosarc</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="SanumaMEAT" xml:space="preserve">
+    <value>Carne artística de Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+  </data>
+  <data name="Wolf1301Fesh" xml:space="preserve">
+    <value>Jadeo del Lobo</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+  </data>
+  <data name="CD75CatCoffee" xml:space="preserve">
+    <value>Cafe marca Kitten de CD-75</value>
+    <comment>Commodity CD75CatCoffee </comment>
+  </data>
+  <data name="AerialEdenApple" xml:space="preserve">
+    <value>Manzanas del Edén de Aerial</value>
+    <comment>Commodity AerialEdenApple </comment>
+  </data>
+  <data name="UzumokuLowGWings" xml:space="preserve">
+    <value>Alas de baja gravedad de Uzumoku</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+  </data>
 </root>

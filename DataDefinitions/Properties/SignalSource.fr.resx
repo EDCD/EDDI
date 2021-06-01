@@ -129,14 +129,26 @@
     <value>Source du signal non identifiée</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  
-  
-  
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Zone de conflit de haute intensité</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Zone de conflit d'intensité moyenne</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Zone de conflit de faible intensité</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Émissions dégradées</value>
     <comment>Salvage signal</comment>
   </data>
-  
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Site d'affrontement récent</value>
+    <comment>Aftermatch signal</comment>
+  </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
     <comment>Anomaly signal</comment>
@@ -310,10 +322,25 @@
     <value>Champ de débris</value>
     <comment>Debris field</comment>
   </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Autre signal de surface</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Vaisseau Thargoïd écrasé</value>
+    <comment>Thargoid crash site</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Centre de distribution</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Appel de détresse</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Appel de détresse</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>

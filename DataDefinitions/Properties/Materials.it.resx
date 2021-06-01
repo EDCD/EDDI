@@ -330,7 +330,7 @@
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Traiettorie Eccentriche verso Iperspazio</value>
+    <value>Traiettorie Iperspaziali Eccentriche</value>
     <comment>Material hyperspacetrajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
@@ -470,7 +470,7 @@
     <comment>Material conductiveceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
-    <value>Vettori Elettrochimici</value>
+    <value>Matrici Elettrochimiche</value>
     <comment>Material electrochemicalarrays</comment>
   </data>
   <data name="focuscrystals" xml:space="preserve">
@@ -530,11 +530,11 @@
     <comment>Material polymercapacitors</comment>
   </data>
   <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Compositi di Proprietà</value>
+    <value>Compositi registrati</value>
     <comment>Material fedproprietarycomposites</comment>
   </data>
   <data name="protolightalloys" xml:space="preserve">
-    <value>Leghe Proto Alleggerite</value>
+    <value>Protoleghe leggere</value>
     <comment>Material protolightalloys</comment>
   </data>
   <data name="refinedfocuscrystals" xml:space="preserve">
@@ -562,7 +562,7 @@
     <comment>Material exquisitefocuscrystals</comment>
   </data>
   <data name="imperialshielding" xml:space="preserve">
-    <value>Protettivi Imperiali</value>
+    <value>Schermatura Imperiale</value>
     <comment>Material imperialshielding</comment>
   </data>
   <data name="improvisedcomponents" xml:space="preserve">
@@ -570,7 +570,7 @@
     <comment>Material improvisedcomponents</comment>
   </data>
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Leghe di Qualità Materiale</value>
+    <value>Leghe di grado militare</value>
     <comment>Material militarygradealloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
@@ -582,11 +582,11 @@
     <comment>Material pharmaceuticalisolators</comment>
   </data>
   <data name="protoheatradiators" xml:space="preserve">
-    <value>Radiatori Anti-Calore</value>
+    <value>Protoradiatori</value>
     <comment>Material protoheatradiators</comment>
   </data>
   <data name="protoradiolicalloys" xml:space="preserve">
-    <value>Leghe Proto Irradiate</value>
+    <value>Protoleghe irradiate</value>
     <comment>Material protoradiolicalloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">

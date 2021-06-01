@@ -142,7 +142,7 @@
     <comment>Government type None</comment>
   </data>
   <data name="Patronage" xml:space="preserve">
-    <value>Paternalistico</value>
+    <value>Patronato</value>
     <comment>Government type Patronage</comment>
   </data>
   <data name="PrisonColony" xml:space="preserve">

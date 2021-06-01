@@ -470,7 +470,7 @@
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
-    <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia o da sorgenti di emissione degradate in sistemi anarchici vicini a sistemi popolati.</value>
+    <value>Ottenuto dai relitti di Navi da battaglia e/o delle Autorità di sistema, o dalle emissioni degradate nei sistemi anarchici vicini ad altri sistemi popolati.</value>
     <comment>Material location Electrochemical Arrays</comment>
   </data>
   <data name="focuscrystals" xml:space="preserve">

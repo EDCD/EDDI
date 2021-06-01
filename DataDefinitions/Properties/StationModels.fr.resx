@@ -169,5 +169,9 @@
     <value>Spatioport Ocellus</value>
     <comment>An Ocellus Starport</comment>
   </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>Transporteur de flotte</value>
+    <comment>A Fleet Carrier</comment>
+  </data>
   
 </root>
