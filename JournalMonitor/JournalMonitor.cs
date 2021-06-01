@@ -4221,6 +4221,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Backpack":
+                            case "ShipLockerMaterials":
                                 {
                                     var components = getMicroResources("Components", data, "Component");
                                     var consumables = getMicroResources("Consumables", data, "Consumable");
@@ -4228,16 +4229,24 @@ namespace EddiJournalMonitor
                                     var items = getMicroResources("Items", data, "Item");
 
                                     // Flatten the list
-                                    var backpack = new List<MicroResourceAmount>();
-                                    backpack.AddRange(components);
-                                    backpack.AddRange(consumables);
-                                    backpack.AddRange(backpackdata);
-                                    backpack.AddRange(items);
+                                    var inventory = new List<MicroResourceAmount>();
+                                    inventory.AddRange(components);
+                                    inventory.AddRange(consumables);
+                                    inventory.AddRange(backpackdata);
+                                    inventory.AddRange(items);
 
-                                    // Note: Also updates backpack.json
-                                    events.Add(new BackpackEvent(timestamp, backpack) { raw = line, fromLoad = fromLogLoad });
+                                    if (edType == "Backpack")
+                                    {
+                                        // Note: Also updates backpack.json
+                                        events.Add(new BackpackEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                    else if (edType == "ShipLockerMaterials")
+                                    {
+                                        events.Add(new ShipLockerEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
                                 }
-                                handled = true;
                                 break;
                             case "BackpackChange":
                                 {
@@ -4327,10 +4336,9 @@ namespace EddiJournalMonitor
                             case "SellSuit":
                             case "SellWeapon":
                             case "SharedBookmarkToSquadron":
-                            case "ShipLockerMaterials":
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
-                            case "TradeMicroResources":
+                            case "TradeMicroResources": // This is always followed by `ShipLockerMaterials`, which we can use to keep our inventory up to date
                             case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":

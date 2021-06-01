@@ -1923,6 +1923,15 @@
       "name": "Ship loadout",
       "description": "Triggered when you obtain the loadout of your ship"
     },
+    "Ship locker": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship locker",
+      "description": "Triggered when you obtain the contents of your ship's micro-resource materials locker"
+    },
     "Ship purchased": {
       "enabled": true,
       "priority": 3,

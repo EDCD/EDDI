@@ -12,6 +12,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Embark` event, revised the `totaxi` property to `totransport` (since it will be true for both Apex taxis and Frontline dropships)
       * `Mission accepted` event variables updated to include micro-resources (on foot items)
       * `Mission completed` event variables updated to include micro-resources (on foot items)
+      * `Ship locker` event added
     * Functions
       * `Emphasize()` function tweaked to try to improve compatibility with more voices.
       * `Play()` function revised to permit a wide variety of audio formats, permit asynchronous playback, and permit custom volumes.

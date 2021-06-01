@@ -1732,16 +1732,16 @@ namespace UnitTests
             Assert.AreEqual(1, events.Count);
             var @event = (BackpackEvent)events[0];
 
-            Assert.AreEqual(9, @event.backpack.Count);
+            Assert.AreEqual(9, @event.inventory.Count);
 
-            var circuitSwitch = @event.backpack.FirstOrDefault(m => m.edname == "CircuitSwitch");
+            var circuitSwitch = @event.inventory.FirstOrDefault(m => m.edname == "CircuitSwitch");
             Assert.AreEqual("Circuit Switch", circuitSwitch.microResource?.invariantName);
             Assert.AreEqual("Assets", circuitSwitch.microResource?.Category?.invariantName);
             Assert.AreEqual(0, circuitSwitch.ownerId);
             Assert.AreEqual(18446744073709551615M, circuitSwitch.missionId);
             Assert.AreEqual(1, circuitSwitch.amount);
 
-            var energyCell = @event.backpack.FirstOrDefault(m => m.edname == "EnergyCell");
+            var energyCell = @event.inventory.FirstOrDefault(m => m.edname == "EnergyCell");
             Assert.AreEqual("Energy Cell", energyCell.microResource?.invariantName);
             Assert.AreEqual("Consumables", energyCell.microResource?.Category?.invariantName);
             Assert.AreEqual(0, energyCell.ownerId);

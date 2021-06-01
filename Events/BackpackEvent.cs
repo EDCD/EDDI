@@ -15,15 +15,15 @@ namespace EddiEvents
 
         static BackpackEvent()
         {
-            VARIABLES.Add("backpack", "The backpack items that you are carrying (as a list of objects with `name`, `category`, and `amount` properties)");
+            VARIABLES.Add("inventory", "The backpack items that you are carrying (as a list of objects with `name`, `category`, and `amount` properties)");
         }
 
-        [JsonProperty("backpack")]
-        public List<MicroResourceAmount> backpack { get; }
+        [JsonProperty("inventory")]
+        public List<MicroResourceAmount> inventory { get; }
 
-        public BackpackEvent(DateTime timestamp, List<MicroResourceAmount> backpack) : base(timestamp, NAME)
+        public BackpackEvent(DateTime timestamp, List<MicroResourceAmount> inventory) : base(timestamp, NAME)
         {
-            this.backpack = backpack;
+            this.inventory = inventory;
         }
     }
 }
