@@ -361,7 +361,7 @@ namespace EddiInaraResponder
                 // but you can set it with the `isStolen` property if you'd like. 
                 eventData.Add(entry);
             };
-            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "resetCommanderInventory", eventData));
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventory", eventData));
         }
 
         private void handleDropshipDeploymentEvent(DropshipDeploymentEvent @event) 
