@@ -310,6 +310,10 @@ namespace EddiInaraResponder
                 {
                     handleDropshipDeploymentEvent(dropshipDeploymentEvent);
                 }
+                else if (theEvent is ShipLockerEvent shipLockerEvent)
+                {
+                    handleShipLockerEvent(shipLockerEvent);
+                }
             }
             catch (Exception ex)
             {
@@ -320,6 +324,41 @@ namespace EddiInaraResponder
                 };
                 Logging.Error("Failed to handle event " + theEvent.type, data);
             }
+        }
+
+        private void handleShipLockerEvent(ShipLockerEvent @event) 
+        {
+            // To be sure you always start with a "clean slate" for journal events like 'ShipLockerMaterials' when
+            // no materials present, call 'resetCommanderInventory' event before calling 'setCommanderInventory'.
+            var resetEventData = new List<Dictionary<string, object>>();
+            foreach (var microResourceCategory in MicroResourceCategory.AllOfThem
+                .Where(c => c != MicroResourceCategory.Unknown))
+            {
+                resetEventData.Add(new Dictionary<string, object>()
+                {
+                    { "itemType", microResourceCategory.edname },
+                    { "itemLocation", "ShipLocker" }
+                });
+            }
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "resetCommanderInventory", resetEventData));
+
+            // Now we can set our data
+            var eventData = new List<Dictionary<string, object>>();
+            foreach (var microResourceAmount in @event.inventory)
+            {
+                eventData.Add(new Dictionary<string, object>()
+                {
+                    { "itemName", microResourceAmount.edname },
+                    { "itemCount", microResourceAmount.amount },
+                    { "itemType", microResourceAmount.microResource?.Category?.edname },
+                    { "itemLocation", "ShipLocker" },
+                    { "missionGameID", microResourceAmount.missionId }
+
+                    // Whether is the item stolen or not. It is not used on Inara at this moment,
+                    // but you can set it with the `isStolen` property if you'd like. 
+                });
+            };
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "resetCommanderInventory", eventData));
         }
 
         private void handleDropshipDeploymentEvent(DropshipDeploymentEvent @event) 
