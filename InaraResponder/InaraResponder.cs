@@ -346,17 +346,20 @@ namespace EddiInaraResponder
             var eventData = new List<Dictionary<string, object>>();
             foreach (var microResourceAmount in @event.inventory)
             {
-                eventData.Add(new Dictionary<string, object>()
+                var entry = new Dictionary<string, object>()
                 {
                     { "itemName", microResourceAmount.edname },
                     { "itemCount", microResourceAmount.amount },
                     { "itemType", microResourceAmount.microResource?.Category?.edname },
-                    { "itemLocation", "ShipLocker" },
-                    { "missionGameID", microResourceAmount.missionId }
-
-                    // Whether is the item stolen or not. It is not used on Inara at this moment,
-                    // but you can set it with the `isStolen` property if you'd like. 
-                });
+                    { "itemLocation", "ShipLocker" }
+                };
+                if (microResourceAmount.missionId != null)
+                {
+                    entry.Add("missionGameID", microResourceAmount.missionId);
+                }
+                // Whether is the item stolen or not. It is not used on Inara at this moment,
+                // but you can set it with the `isStolen` property if you'd like. 
+                eventData.Add(entry);
             };
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "resetCommanderInventory", eventData));
         }
