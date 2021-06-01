@@ -351,6 +351,16 @@ namespace Tests.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] sqlStarSystem6 {
+            get {
+                object obj = ResourceManager.GetObject("sqlStarSystem6", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to * tet02 Orionis C
         ///1 Aurigae
         ///1 Epsilon Equulei

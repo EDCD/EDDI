@@ -261,6 +261,7 @@
     <None Include="Properties\SolStations.json" />
     <None Include="Properties\sphereAroundSol.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem5.json" />
+    <EmbeddedResource Include="Properties\sqlStarSystem6.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\starsystems.txt" />
