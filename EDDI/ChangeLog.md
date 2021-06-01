@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 4.0.0-b4
+### 4.0.0-rc1
   * Speech Responder
     * Events
       * `Backpack` event added
@@ -21,7 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission completed` script, updated to include micro-resources (on foot items)
       * `System report` script, updated to indicate the security level of the system.
     * User Interface
-      * The current selection is no longer lost when accepting an edited script.
+      * The current script selection is now remembered after accepting an edited script.
 
 ### 4.0.0-b3
   * Core
