@@ -173,5 +173,8 @@
     <value>Porta-Frota</value>
     <comment>A Fleet Carrier</comment>
   </data>
-  
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>Assentamento</value>
+    <comment>An Odyssey style Settlement</comment>
+  </data>
 </root>
