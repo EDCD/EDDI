@@ -302,6 +302,14 @@ namespace EddiInaraResponder
                 {
                     handleCommunityGoalsEvent(communityGoalsEvent);
                 }
+                else if (theEvent is TouchdownEvent touchdownEvent)
+                {
+                    handleTouchdownEvent(touchdownEvent);
+                }
+                else if (theEvent is DropshipDeploymentEvent dropshipDeploymentEvent)
+                {
+                    handleDropshipDeploymentEvent(dropshipDeploymentEvent);
+                }
             }
             catch (Exception ex)
             {
@@ -312,6 +320,27 @@ namespace EddiInaraResponder
                 };
                 Logging.Error("Failed to handle event " + theEvent.type, data);
             }
+        }
+
+        private void handleDropshipDeploymentEvent(DropshipDeploymentEvent @event) 
+        {
+            var eventData = new Dictionary<string, object>()
+            {
+                { "starsystemName", @event.systemname },
+                { "starsystemBodyName", @event.bodyname }
+            };
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
+        }
+
+        private void handleTouchdownEvent(TouchdownEvent @event) 
+        {
+            var eventData = new Dictionary<string, object>()
+            {
+                { "starsystemName", @event.systemname },
+                { "starsystemBodyName", @event.bodyname },
+                { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
+            };
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
         }
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
