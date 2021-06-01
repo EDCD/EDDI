@@ -596,11 +596,9 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function will play an audio file as supplied in the argument. This function uses SSML tags.
         ///
-        ///Play() takes one argument: the path to the file to play.  This file must be a &apos;.wav&apos; file.  Any backslashes for path separators must be escaped, so &apos;\\&apos; must be written as &apos;\\\\&apos;
+        ///Play() takes one mandatory argument: the path to the file to play.  Various common Windows file formats are supported.  Any backslashes for path separators must be escaped, so &apos;\\&apos; must be written as &apos;\\\\&apos;
         ///
-        ///Common usage of this is to provide a pre-recorded custom audio file rather than use EDDI&apos;s text-to-speech, for example:
-        ///
-        ///    {Play(&apos;C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav&apos;)}.
+        ///Play() also takes two optional arguments. The first optional argument is a boolean value which if true will play the audio file asynchronously. The second optional argument is a number representing the  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Play {
             get {

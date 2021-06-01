@@ -461,11 +461,13 @@ Common usage of this is to allow speech to sync up with in-game sounds, for exam
   <data name="Play" xml:space="preserve">
     <value>This function will play an audio file as supplied in the argument. This function uses SSML tags.
 
-Play() takes one argument: the path to the file to play.  This file must be a '.wav' file.  Any backslashes for path separators must be escaped, so '\\' must be written as '\\\\'
+Play() takes one mandatory argument: the path to the file to play.  Various common Windows file formats are supported.  Any backslashes for path separators must be escaped, so '\\' must be written as '\\\\'
+
+Play() also takes two optional arguments. The first optional argument is a boolean value which if true will play the audio file asynchronously. The second optional argument is a number representing the volume of the audio, where 100 is normal volume.
 
 Common usage of this is to provide a pre-recorded custom audio file rather than use EDDI's text-to-speech, for example:
 
-    {Play('C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav')}</value>
+    {Play('C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav', false, 125)}</value>
   </data>
   <data name="RefreshProfile" xml:space="preserve">
     <value>This function will refresh the Frontier API profile.
