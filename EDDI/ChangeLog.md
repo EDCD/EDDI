@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.0
+  * Core
+    * Promote 4.0.0-rc1 to final
+
 ### 4.0.0-rc1
   * Inara Responder
     * Incorporated Inara API updates for Odyssey (except suit loadouts will be implemented later)
