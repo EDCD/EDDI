@@ -29,7 +29,7 @@ jobs:
         # Default: "completed,success"
         workflow_conclusion: success
         # Required, commit ID
-        commit: ${{ GITHUB_SHA }}
+        commit: ${{github.event.release.head.sha}}
         # Optional, uploaded artifact name,
         # will download all artifacts if not specified
         # and extract them in respective subdirectories
