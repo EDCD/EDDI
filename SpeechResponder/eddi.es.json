@@ -31,7 +31,7 @@
     "Backpack": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": null,
       "default": true,
       "name": "Backpack",
@@ -40,7 +40,7 @@
     "Backpack changed": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": null,
       "default": true,
       "name": "Backpack changed",
