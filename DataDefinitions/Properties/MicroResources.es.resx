@@ -264,134 +264,403 @@
     <value>Ficción Literaria</value>
     <comment>Text-based fictional entertainment in a range of genres and styles.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MaintenanceLogs" xml:space="preserve">
+    <value>Registros de Mantenimiento</value>
+    <comment>Records of routine tasks to maintain settlement equipment or infrastructure.</comment>
+  </data>
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Actas de Reuniones</value>
+    <comment>A record of discussion topics and action points from a meeting of settlement personnel.</comment>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Estudio Mineral</value>
+    <comment>Results from a study of mineral deposits hidden beneath the surface of a planet.</comment>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Entretenimiento Multimedia</value>
+    <comment>A range of popular entertainment products available in multiple formats.</comment>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>Historial de Acceso a la Red</value>
+    <comment>Access records detailing individual user activity on specific networks.</comment>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Registros Familiares</value>
+    <comment>Details of an individual's closest living relatives, partners and designated contacts.</comment>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Datos del AEE</value>
+    <comment>Non-official cover information related to covert agents active in various organisations.</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Manual de Operaciones</value>
+    <comment>Instructive texts for the use and maintenance of a mechanism, system or vehicle.</comment>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Rutas de Patrulla</value>
+    <comment>Deployment schedules and paths used in routine security operations.</comment>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Información Salarial</value>
+    <comment>Staff members' past and present salary payments and financial transfer methods.</comment>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Registros Personales</value>
+    <comment>Private text or audio/visual recordings made by an individual.</comment>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Patentes Farmacéuticas</value>
+    <comment>A list of registered patent applications each relating to a specific drug.</comment>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Informes de Producción</value>
+    <comment>Work logs that collate information on cost, output and requirements.</comment>
+  </data>
+  
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Registros de Compra</value>
+    <comment>A list of purchased items and materials including total costs and supplier details.</comment>
+  </data>
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Solicitudes de Compra</value>
+    <comment>Requisition orders for specific items or materials submitted for authorisation.</comment>
+  </data>
+  
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Datos de Radioactividad</value>
+    <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
+  </data>
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Informe de Capacidad del Reactor</value>
+    <comment>Analysis and measurement of energy production from a settlement's power centre.</comment>
+  </data>
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Directorio Residencial</value>
+    <comment>Current occupants and registered contact information for a specific residential area.</comment>
+  </data>
+  <data name="SalesRecords" xml:space="preserve">
+    <value>Registros de Ventas</value>
+    <comment>Information of a settlement's gross and profit, stock exports and outstanding invoices.</comment>
+  </data>
+  <data name="SettlementDefencePlans" xml:space="preserve">
+    <value>Planes de Defensa del Asentamiento</value>
+    <comment>Defensive tactics intended to protect a specific settlement from a hostile force.</comment>
+  </data>
+  <data name="ShareholderInformation" xml:space="preserve">
+    <value>Información de Accionistas</value>
+    <comment>A list of individuals and groups who have a financial stake in a settlement or organisation.</comment>
+  </data>
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Registros de Vigilancia</value>
+    <comment>Audiovisual data gathered using technological monitoring and/or tracking techniques.</comment>
+  </data>
+  <data name="SyntheticPathogen" xml:space="preserve">
+    <value>Patógeno Sintético</value>
+    <comment>A synthesised virus created by splicing together several different diseases.</comment>
+  </data>
+  <data name="TaxRecords" xml:space="preserve">
+    <value>Registros Fiscales</value>
+    <comment>Details of an organisation's tax payments and related documentation.</comment>
+  </data>
+  <data name="TopographicalSurveys" xml:space="preserve">
+    <value>Estudios Topográficos</value>
+    <comment>Measurements and analysis of a specific area of a planetary body's surface.</comment>
+  </data>
+  <data name="TravelPermits" xml:space="preserve">
+    <value>Permisos de Viaje</value>
+    <comment>A registry of all travel permits assigned to the personnel of a company or facility.</comment>
+  </data>
+  <data name="TroopDeploymentRecords" xml:space="preserve">
+    <value>Registros de Despliegue de Tropas</value>
+    <comment>Details of personnel and equipment used during a military or security operation.</comment>
+  </data>
+  <data name="TrueFormFossil" xml:space="preserve">
+    <value>Fósil Puro</value>
+    <comment>The perfectly preserved remains of a long-dead organism.</comment>
+  </data>
+  <data name="UnionMembership" xml:space="preserve">
+    <value>Afiliación Sindical</value>
+    <comment>Personnel who have signed up to a trade or labour union or political lobby</comment>
+  </data>
+  <data name="UniversalTranslator" xml:space="preserve">
+    <value>Traductor Universal</value>
+    <comment>A wearable device capable of instantaneously translating any of the most common human languages.</comment>
+  </data>
+  <data name="VaccinationRecords" xml:space="preserve">
+    <value>Registros de Vacunación</value>
+    <comment>A list of vaccinations issued to each member of a settlement's personnel.</comment>
+  </data>
+  <data name="VaccineResearch" xml:space="preserve">
+    <value>Investigación sobre Vacunas</value>
+    <comment>Results of clinical experiments and efficacy tests of a particular vaccine.</comment>
+  </data>
+  <data name="VirologyData" xml:space="preserve">
+    <value>Datos Virológicos</value>
+    <comment>Genetic analysis of a virus and research into its composition, symptoms and transmission.</comment>
+  </data>
+  <data name="VisitorRegister" xml:space="preserve">
+    <value>Registro de Visitantes</value>
+    <comment>A list of non-employee personnel logged at a settlement within a certain time period.</comment>
+  </data>
+  <data name="WeaponInventory" xml:space="preserve">
+    <value>Inventario de Armas</value>
+    <comment>A comprehensive record of all weaponry and ammunition stored at a facility.</comment>
+  </data>
+  <data name="PersonalDocuments" xml:space="preserve">
+    <value>Documentos Personales</value>
+    <comment>An assortment of personal data.</comment>
+  </data>
+  <data name="TacticalPlans" xml:space="preserve">
+    <value>Planes Tácticos</value>
+    <comment>An outline for a military or security operation intended to achieve a stated objective.</comment>
+  </data>
+  <data name="ChemicalProcessSample" xml:space="preserve">
+    <value>Muestra de Proceso Químico</value>
+    <comment>A sample of an unidentified substance used in a settlement's chemical production line.</comment>
+  </data>
+  <data name="PyrolyticCatalyst" xml:space="preserve">
+    <value>Catalizador Pirolítico</value>
+    <comment>A substance that greatly alters the chemical properties of material it interacts with.</comment>
+  </data>
+  <data name="WeaponSchematic" xml:space="preserve">
+    <value>Esquema de Arma</value>
+    <comment>A technical blueprint detailing the design and mechanism of a personal firearm.</comment>
+  </data>
+  <data name="Californium" xml:space="preserve">
+    <value>Californio</value>
+    <comment>A highly radioactive chemical element.</comment>
+  </data>
+  <data name="SuitSchematic" xml:space="preserve">
+    <value>Esquema de Traje</value>
+    <comment>A technical blueprint detailing the design of a protective suit.</comment>
+  </data>
+  <data name="Spyware" xml:space="preserve">
+    <value>Software Espía</value>
+    <comment>A program designed to infiltrate digital networks and collect data without detection.</comment>
+  </data>
+  <data name="EmploymentHistory" xml:space="preserve">
+    <value>Historial de Empleo</value>
+    <comment>A detailed list of an individual’s prior employment, roles and professional experience.</comment>
+  </data>
+  <data name="AgriculturalProcessSample" xml:space="preserve">
+    <value>Muestra de Proceso Agrícola</value>
+    <comment>A sample of an unidentified substance used in a settlement's agricultural production line.</comment>
+  </data>
+  <data name="SurveillanceEquipment" xml:space="preserve">
+    <value>Equipo de Supervivencia</value>
+    <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
+  </data>
+  <data name="InsightDataBank" xml:space="preserve">
+    <value>Banco de Datos de Insight</value>
+    <comment>A device designed to store audio-visual data recorded via Insight.</comment>
+  </data>
+  <data name="ShipSchematic" xml:space="preserve">
+    <value>Esquema de Nave</value>
+    <comment>A technical blueprint detailing the internal and external design of a starship.</comment>
+  </data>
+  <data name="VehicleSchematic" xml:space="preserve">
+    <value>Esquema de Vehículo</value>
+    <comment>A technical blueprint detailing the internal and external design of a surface vehicle.</comment>
+  </data>
+  <data name="Virus" xml:space="preserve">
+    <value>Virus</value>
+    <comment>A program designed to infect digital networks and cause targeted or systemic damage.</comment>
+  </data>
+  <data name="ChemicalSample" xml:space="preserve">
+    <value>Muestra Química</value>
+    <comment>An unidentified chemical compound.</comment>
+  </data>
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Gas Ionizado</value>
+    <comment>A quantity of ionised gas.</comment>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Aerogel</value>
+    <comment>An extremely lightweight thermal insulator.</comment>
+  </data>
+  
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Micro Supercondensador</value>
+    <comment>A device designed to store an electric charge.</comment>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Placa de Titanio</value>
+    <comment>A strong, low-density metal that is highly resistant to corrosion.</comment>
+  </data>
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Conmutador</value>
+    <comment>A simple device designed to close an electronic circuit.</comment>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Chip de memoria Cifrado</value>
+    <comment>An integrated circuit designed to securely store software data.</comment>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Resina Epoxi</value>
+    <comment>A multipurpose polymer adhesive.</comment>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Chip de Memoria</value>
+    <comment>An integrated circuit designed to store software data.</comment>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Instrucciones de Fabricación</value>
+    <comment>Detailed construction guidance, ranging from individual items to mass production requirements.</comment>
+  </data>
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Registros de Actividad Estelar</value>
+    <comment>Measurements of a star’s characteristics and related phenomena.</comment>
+  </data>
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Cables Eléctricos</value>
+    <comment>Multipurpose wiring for use in a variety of electronic devices.</comment>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Micro Transformador</value>
+    <comment>A compact transformer designed to transfer electrical energy between two circuits.</comment>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Fusible</value>
+    <comment>A simple device designed to protect an electrical circuit from excess current.</comment>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Fibra Óptica</value>
+    <comment>A length of fine cable designed to transfer data in the form of light.</comment>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Placa Base</value>
+    <comment>A component from an electrical system.</comment>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Bobina de Metal</value>
+    <comment>Commonplace metal for use in electrical circuits and hydraulic systems.</comment>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Motor</value>
+    <comment>A machine designed to transform electrical energy into kinetic energy.</comment>
+  </data>
+  
+  <data name="Graphene" xml:space="preserve">
+    <value>Grafeno</value>
+    <comment>A multipurpose carbon allotrope.</comment>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Micro Hidráulica</value>
+    <comment>Small, powerful hydraulic devices.</comment>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Desmodulador</value>
+    <comment>A device designed to distort electromagnetic waves.</comment>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>Carburo de Tungsteno</value>
+    <comment>A compound of tungsten and carbon. </comment>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Electroimán</value>
+    <comment>A magnet in which the magnetic field is produced by an electric current.</comment>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Transmisor</value>
+    
+    <comment>An electronic device designed to produce electromagnetic waves.</comment>
+  </data>
+  <data name="AudioLogs" xml:space="preserve">
+    <value>Registros de audio</value>
+  </data>
+  <data name="AXCombatLogs" xml:space="preserve">
+    <value>Registros de combate AX</value>
+    <comment>Data related to anti-xeno operations and encounters with hostile Thargoid forces.</comment>
+  </data>
+  <data name="BallisticsData" xml:space="preserve">
+    <value>Datos Balísticos</value>
+    <comment>Projectile weapon research including launch mechanisms, accuracy and impact damage.</comment>
+  </data>
+  <data name="ChemicalWeaponData" xml:space="preserve">
+    <value>Datos de armas químicas</value>
+    <comment>Information about chemical-based armaments and their effects on both organic and non-organic targets.</comment>
+  </data>
+  <data name="ClassicEntertainment" xml:space="preserve">
+    <value>Entretenimiento clásico</value>
+    <comment>Well-known and critically acclaimed multimedia products maintained from past generations.</comment>
+  </data>
+  <data name="CocktailRecipes" xml:space="preserve">
+    <value>Recetas de Cócteles</value>
+    <comment>Instructions for mixing sophisticated alcoholic or non-alcoholic beverages from many star systems.</comment>
+  </data>
+  <data name="ConflictHistory" xml:space="preserve">
+    <value>Historial del Conflictos</value>
+    <comment>Detailed civil, political or military records relating to a faction conflict.</comment>
+  </data>
+  <data name="CriminalRecords" xml:space="preserve">
+    <value>Registros criminales</value>
+    <comment>An account of criminal convictions and other legal transgressions wthin a specific population.</comment>
+  </data>
+  <data name="CropYieldAnalysis" xml:space="preserve">
+    <value>Análisis de Producción Agrícola</value>
+    <comment>Records of crop production levels and projections for future harvest quotas.</comment>
+  </data>
+  <data name="CulinaryRecipes" xml:space="preserve">
+    <value>Recetas culinarias</value>
+    <comment>Step-by-step instructions using available ingredients to create meals from scratch.</comment>
+  </data>
+  <data name="EmployeeExpenses" xml:space="preserve">
+    <value>Gastos de Personal</value>
+    <comment>Records of business expense claims and charges made to company credit accounts.</comment>
+  </data>
+  <data name="EnhancedInterrogationRecordings" xml:space="preserve">
+    <value>Registros de Interrogatorios Mejorados</value>
+    <comment>Recordings of information gathered from a subject via non-standard interview techniques.</comment>
+  </data>
+  <data name="EspionageMaterial" xml:space="preserve">
+    <value>Material de Espionaje</value>
+    <comment>Highly sensitive data on an individual or group acquired without the target's knowledge.</comment>
+  </data>
+  <data name="ExtractionYieldData" xml:space="preserve">
+    <value>Datos de Producción Minera</value>
+    <comment>Raw data mineral production quantities from a settlement's mining operation.</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ChemicalSuperbase" xml:space="preserve">
+    <value>Superbase química</value>
+    <comment>A highly soluble chemical with a wide range of applications.</comment>
+  </data>
   
   
   
