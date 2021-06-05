@@ -790,7 +790,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `srv_highbeam` true if the lights in your SRV are set to the high beam mode.
     - `on_foot_in_station` true if you've disembarked at a station.
     - `on_foot_on_planet` true if you've disembarked on a planet surface.
-    - `true` if you are on foot and aiming through a scope.
+    - `aim_down_sight` true if you are on foot and aiming through a scope.
     - `low_oxygen` true if you are on foot and oxygen is running low.
     - `low_health` true if you are on foot and health is running low.
     - `on_foot_temperature` the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
