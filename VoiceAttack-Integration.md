@@ -91,6 +91,12 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Status body name} the name of the current body (if landed or in an srv)
   * {DEC:Status planet radius} the radius of the current body (if landed or in an srv)
   * {BOOL:Status altitude from average radius} true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
+  * {BOOL:Status on foot in station} true if you've disembarked at a station.
+  * {BOOL:Status on foot on planet} true if you've disembarked on a planet surface.
+  * {BOOL:Status aim down sight} true if you are on foot and aiming through a scope.
+  * {BOOL:Status low oxygen} true if you are on foot and oxygen is running low.
+  * {BOOL:Status low health} true if you are on foot and health is running low.
+  * {TXT:Status on foot temperature} the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
 
 ## Ship Variables
 Note: "Tiny" hardpoints are utility slots.

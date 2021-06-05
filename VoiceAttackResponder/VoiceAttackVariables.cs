@@ -967,6 +967,12 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " body name", status?.bodyname);
                 vaProxy.SetDecimal(prefix + " planet radius", status?.planetradius);
                 vaProxy.SetBoolean(prefix + " altitude from average radius", status?.altitude_from_average_radius);
+                vaProxy.SetBoolean(prefix + " on foot in station", status?.on_foot_in_station);
+                vaProxy.SetBoolean(prefix + " on foot on planet", status?.on_foot_on_planet);
+                vaProxy.SetBoolean(prefix + " aim down sight", status?.aim_down_sight);
+                vaProxy.SetBoolean(prefix + " low oxygen", status?.low_oxygen);
+                vaProxy.SetBoolean(prefix + " low health", status?.low_health);
+                vaProxy.SetText(prefix + " on foot temperature", status?.on_foot_temperature);
             }
             catch (Exception e)
             {
