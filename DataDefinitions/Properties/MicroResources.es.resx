@@ -248,8 +248,14 @@
     <comment>A portable medical kit used to treat wounds.</comment>
   </data>
   
-  
-  
+  <data name="Infinity" xml:space="preserve">
+    <value>Infinity</value>
+    <comment>A brand of exotic cologne that chemically adapts to please the olfactory system.</comment>
+  </data>
+  <data name="Insight" xml:space="preserve">
+    <value>Insight</value>
+    <comment>A wearable device designed to provide the user with real-time information about their immediate environment.</comment>
+  </data>
   
   <data name="InternalCorrespondence" xml:space="preserve">
     <value>Correspondencia Interna</value>
