@@ -623,67 +623,237 @@
     <value>Datos de Producción Minera</value>
     <comment>Raw data mineral production quantities from a settlement's mining operation.</comment>
   </data>
+  <data name="FleetRegistry" xml:space="preserve">
+    <value>Registro de Flota</value>
+    <comment>Official registration and deployment records of all ships controlled by an organisation.</comment>
+  </data>
+  <data name="GeneSequencingData" xml:space="preserve">
+    <value>Datos de Secuenciación Genética</value>
+    <comment>Molecular analysis of DNA samples to determine the nucleic acid sequence.</comment>
+  </data>
+  <data name="GeneticResearch" xml:space="preserve">
+    <value>Estudio Genético</value>
+    <comment>Scientific data and proposals related to genome study and genetic manipulation.</comment>
+  </data>
+  <data name="GeologicalData" xml:space="preserve">
+    <value>Datos Geológicos</value>
+    <comment>Information on a planet's composition, physical structure and regional arrangement.</comment>
+  </data>
+  <data name="HydroponicData" xml:space="preserve">
+    <value>Datos Hidropónicos</value>
+    <comment>Horticultural analysis and results from using soilless methods of plant growth.</comment>
+  </data>
+  <data name="IncidentLogs" xml:space="preserve">
+    <value>Registros de Incidentes</value>
+    <comment>Notable occurances or unexpected events that occurred at a settlement.</comment>
+  </data>
+  <data name="InfluenceProjections" xml:space="preserve">
+    <value>Previsiones de Influencia</value>
+    <comment>Assessments of potential changes to a company's standing with various political bodies.</comment>
+  </data>
+  <data name="InterrogationRecordings" xml:space="preserve">
+    <value>Registros de Interrogatorios</value>
+    <comment>Information acquired during one or more sessions of subject questioning.</comment>
+  </data>
+  <data name="InterviewRecordings" xml:space="preserve">
+    <value>Registros de Entrevista</value>
+    <comment>Evaluations of potential employees under consideration for employment at a facility.</comment>
+  </data>
+  <data name="JobApplications" xml:space="preserve">
+    <value>Solicitudes de Empleo</value>
+    <comment>Media submitted to demonstrate a candidate's suitability for a given vacancy.</comment>
+  </data>
+  <data name="Kompromat" xml:space="preserve">
+    <value>Material Comprometedor</value>
+    <comment>Highly sensitive material used to compromise, blackmail or manipulate individuals or groups.</comment>
+  </data>
+  <data name="MedicalRecords" xml:space="preserve">
+    <value>Historiales Médicos</value>
+    <comment>A collection of medical data related to a specific group or population.</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MiningAnalytics" xml:space="preserve">
+    <value>Análisis de Minería</value>
+    <comment>Scientific data used to increase the safety and efficiency of a specific mining operation.</comment>
+  </data>
+  <data name="NetworkSecurityProtocols" xml:space="preserve">
+    <value>Protocolos de Seguridad de Red</value>
+    <comment>Listed cryptographic methods for a network's data and connected channels.</comment>
+  </data>
+  <data name="OpinionPolls" xml:space="preserve">
+    <value>Sondeos de Opinión</value>
+    <comment>Statistics and viewpoints gathered from surveys of a population sample.</comment>
+  </data>
+  <data name="PatientHistory" xml:space="preserve">
+    <value>Historial Clínico</value>
+    <comment>Personal records of an individual's health including illnesses, surgeries and prescriptions.</comment>
+  </data>
+  <data name="PhotoAlbums" xml:space="preserve">
+    <value>Álbumes de Fotos</value>
+    <comment>A personal collection of static images in digital or holographic formats.</comment>
+  </data>
+  <data name="PlantGrowthCharts" xml:space="preserve">
+    <value>Gráficos de Crecimiento de Plantas</value>
+    <comment>Analytical data presented in graph format that catalogues horticultural development.</comment>
+  </data>
+  <data name="PoliticalAffiliations" xml:space="preserve">
+    <value>Afiliciaciones Políticas</value>
+    <comment>A faction's alliances and relationships with other organisations based on political ideologies.</comment>
+  </data>
+  <data name="PrisonerLogs" xml:space="preserve">
+    <value>Registros de Prisioneros</value>
+    <comment>Detailed records of all individuals held incarcerated at a given facility.</comment>
+  </data>
+  <data name="Propaganda" xml:space="preserve">
+    <value>Propaganda</value>
+    <comment>Promotional material designed to publicise a specific claim or political viewpoint.</comment>
+  </data>
+  <data name="RecyclingLogs" xml:space="preserve">
+    <value>Registros de Reciclaje</value>
+    <comment>Measured output and subsequent application of a settlement's byproducts and general waste.</comment>
+  </data>
+  <data name="RiskAssessments" xml:space="preserve">
+    <value>Valoración de Riesgos</value>
+    <comment>Evaluations of safety measures and potential hazards at a facility or operation.</comment>
+  </data>
+  <data name="SecurityExpenses" xml:space="preserve">
+    <value>Gastos de Seguridad</value>
+    <comment>Financial details for equipment and personnel used to maintain a settlement's security force.</comment>
+  </data>
+  <data name="SeedGeneaology" xml:space="preserve">
+    <value>Genealogía de Simientes</value>
+    <comment>Records of the origins and genetic characteristics of plantable seeds.</comment>
+  </data>
+  <data name="SettlementAssaultPlans" xml:space="preserve">
+    <value>Planes de Ataque de Asentamiento</value>
+    <comment>Detailed military tactics designed for use at a specific settlement.</comment>
+  </data>
+  <data name="SlushFundLogs" xml:space="preserve">
+    <value>Registros de Fondos de Reptiles</value>
+    <comment>Details of credit accounts which lack proper accounting, usually for illicit reasons.</comment>
+  </data>
+  <data name="SmearCampaignPlans" xml:space="preserve">
+    <value>Planes de Campañas de Desprestigio</value>
+    <comment>A proposal to spread toxic information intended to damage a reputation.</comment>
+  </data>
+  <data name="SpectralAnalysisData" xml:space="preserve">
+    <value>Datos de Análisis de Espectro</value>
+    <comment>A collection of detailed electromagnetic measurements made using spectroscopic equipment.</comment>
+  </data>
+  <data name="VIPSecurityDetail" xml:space="preserve">
+    <value>Información de Seguridad VIP</value>
+    <comment>Assignments and deployment schedules of agents assigned to protect key personnel.</comment>
+  </data>
+  <data name="WeaponTestData" xml:space="preserve">
+    <value>Datos de Pruebas Armamentísticas</value>
+    <comment>Analysis of the performance and effectiveness of newly designed weaponry or related enhancements.</comment>
+  </data>
+  <data name="XenoDefenceProtocols" xml:space="preserve">
+    <value>Protocolos de Xenodefensa</value>
+    <comment>Combatant tactics and settlement instructions in the event of a non-human attack.</comment>
+  </data>
+  <data name="ChemicalCatalyst" xml:space="preserve">
+    <value>Catalizador Químico</value>
+    <comment>A compound used to accelerate chemical reactions.</comment>
+  </data>
   <data name="ChemicalSuperbase" xml:space="preserve">
     <value>Superbase química</value>
     <comment>A highly soluble chemical with a wide range of applications.</comment>
   </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="OxygenicBacteria" xml:space="preserve">
+    <value>Bacterias Oxigénicas</value>
+    <comment>Cultivated bacteria used to produce large amounts of oxygen.</comment>
+  </data>
+  <data name="pHNeutraliser" xml:space="preserve">
+    <value>Neutralizador de pH</value>
+    <comment>A compound designed to neutralise the pH levels of acids and alkalis.</comment>
+  </data>
+  <data name="RDX" xml:space="preserve">
+    <value>RDX</value>
+    <comment>A highly explosive nitramide compound.</comment>
+  </data>
+  <data name="ViscoelasticPolymer" xml:space="preserve">
+    <value>Polímero Viscoelástico</value>
+    <comment>An elastic material used in shock absorption and vibration dampening.</comment>
+  </data>
+  <data name="IonBattery" xml:space="preserve">
+    <value>Batería de Iones</value>
+    <comment>A portable power source for use in electronic devices.</comment>
+  </data>
+  <data name="MicroThrusters" xml:space="preserve">
+    <value>Micro Impulsores</value>
+    <comment>Small, powerful propulsive devices.</comment>
+  </data>
+  <data name="OpticalLens" xml:space="preserve">
+    <value>Lentes Ópticas</value>
+    <comment>An optical component designed to converge or diverge light.</comment>
+  </data>
+  <data name="WeaponComponent" xml:space="preserve">
+    <value>Componente de Armas</value>
+    <comment>A component from a personal firearm.</comment>
+  </data>
+  <data name="SyntheticGenome" xml:space="preserve">
+    <value>Genoma Sintético</value>
+    <comment>An artificial set of genes.</comment>
+  </data>
+  <data name="RefinementProcessSample" xml:space="preserve">
+    <value>Muestra de Proceso Refinado</value>
+    <comment>A sample of an unidentified substance used in a settlement's refinery.</comment>
+  </data>
+  <data name="PetrifiedFossil" xml:space="preserve">
+    <value>Fósil Petrificado</value>
+    <comment>The calcified remains of a long-dead organism.</comment>
+  </data>
+  <data name="PersonalComputer" xml:space="preserve">
+    <value>Ordenador Personal</value>
+    <comment>A compact personal computing device.</comment>
+  </data>
+  <data name="NutritionalConcentrate" xml:space="preserve">
+    <value>Concentrado Nutritivo</value>
+    <comment>A nutritionally rich meal-replacement product.</comment>
+  </data>
+  <data name="MutagenicCatalyst" xml:space="preserve">
+    <value>Catalizador Mutagénico</value>
+    <comment>A compound designed to induce and accelerate cellular mutation.</comment>
+  </data>
+  <data name="MicrobialInhibitor" xml:space="preserve">
+    <value>Inhibidor Microbiano</value>
+    <comment>A compound designed to hinder the growth of undesirable microorganisms.</comment>
+  </data>
+  <data name="InorganicContaminant" xml:space="preserve">
+    <value>Contaminante Inorgánico</value>
+    <comment>A toxic substance that corrodes inorganic materials.</comment>
+  </data>
+  <data name="InertiaCanister" xml:space="preserve">
+    <value>Contenedor de Inercia</value>
+    <comment>A specialised container for the safe storage of unstable agents.</comment>
+  </data>
+  <data name="HealthMonitor" xml:space="preserve">
+    <value>Monitor de Salud</value>
+    <comment>A personal device designed to monitor the user's general health.</comment>
+  </data>
+  <data name="GMeds" xml:space="preserve">
+    <value>Medicinas G</value>
+    <comment>Pharmaceuticals designed to prevent motion sickness by acclimating the user to the prevailing gravitic conditions.</comment>
+  </data>
+  <data name="GeneticRepairMeds" xml:space="preserve">
+    <value>Medicinas de Reparación Genética</value>
+    <comment>Sophisticated pharmaceuticals designed to target and replace damaged or mutated genes.</comment>
+  </data>
+  <data name="DeepMantleSample" xml:space="preserve">
+    <value>Muestra de Manto Profundo</value>
+    <comment>A sample from the innermost part of a geological body's mantle.</comment>
+  </data>
+  <data name="CompressionLiquefiedGas" xml:space="preserve">
+    <value>Gas Licuado Comprimido</value>
+    <comment>A quantity of gas highly compressed into a liquid-state.</comment>
+  </data>
+  <data name="CastFossil" xml:space="preserve">
+    <value>Molde de Fósil</value>
+    <comment>An impression of a long-dead organism.</comment>
+  </data>
+  <data name="GeneticSample" xml:space="preserve">
+    <value>Muestra Biológica</value>
+  </data>
 </root>
