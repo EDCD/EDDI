@@ -589,5 +589,8 @@
     <value>Misiles Avanzados</value>
     <comment>Module Advanced Missile Rack</comment>
   </data>
-  
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Láser de rayo Vengador</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>
