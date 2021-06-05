@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="dash" xml:space="preserve">
-    <value>guión</value>
+    <value>guion</value>
     <comment/>
   </data>
   <data name="minus" xml:space="preserve">
@@ -117,14 +117,32 @@
     <value>cero</value>
     <comment/>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="shortDecimalThousand" xml:space="preserve">
+    <value>{0} mil</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 thousand</comment>
+  </data>
+  <data name="shortDecimalMillion" xml:space="preserve">
+    <value>{0} millones</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 million</comment>
+  </data>
+  <data name="shortDecimalBillion" xml:space="preserve">
+    <value>{0} millardo</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 billion</comment>
+  </data>
+  <data name="shortDecimalTrillion" xml:space="preserve">
+    <value>{0} trillón</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 trillion</comment>
+  </data>
+  <data name="shortDecimalQuadrillion" xml:space="preserve">
+    <value>{0} cuatrillón</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quadrillion</comment>
+  </data>
+  <data name="shortDecimalQuintillion" xml:space="preserve">
+    <value>{0} quintillón</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quintillion</comment>
+  </data>
   <data name="justOverMinusThousand" xml:space="preserve">
-    <value>poco mas de menos {0} mil</value>
+    <value>poco más de menos {0} mil</value>
     <comment>Where {0} is a negative whole number in the thousands order</comment>
   </data>
   
