@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Registros de accidentes</value>
+    <comment>A record of settlement incidents which resulted in some degree of physical injury.</comment>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Registros de calidad del aire</value>
+    <comment>Chemical analyses of atmospheric recycling systems in surface settlements.</comment>
+  </data>
   <data name="Amm_Grenade_EMP" xml:space="preserve">
     <value>Supresor de escudo</value>
     <comment>A deployable device that temporarily disrupts shields with an electromagnetic pulse.</comment>
@@ -131,39 +137,111 @@
     <value>Proyector de escudo</value>
     <comment>A deployable device that generates a barrier designed to absorb incoming attacks.</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Datos Atmosféricos</value>
+    <comment>Scientific observations and measurements of a planet's atmosphere.</comment>
+  </data>
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Agente Bioquímico</value>
+    <comment>A compound designed to break down organic tissue.</comment>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Datos de Lista Negra</value>
+    <comment>Sensitive information regarding individuals and/or groups deemed untrustworthy or dangerous.</comment>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Resultados de análisis de sangre</value>
+    <comment>Blood test data related to settlement health checks and policy adherence.</comment>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Esquema de edificio</value>
+    <comment>A technical blueprint detailing the architectural design of a building.</comment>
+  </data>
   <data name="Bypass" xml:space="preserve">
     <value>Fisura</value>
     <comment>A single-use device used to circumvent security systems.</comment>
   </data>
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Planes de campaña</value>
+    <comment>Information, schedules and objectives for a large-scale public initiative.</comment>
+  </data>
+  <data name="CatMedia" xml:space="preserve">
+    <value>Catálogo de medios</value>
+    <comment>A collection of amusing, sharable digital media often spanning several centuries.</comment>
+  </data>
+  <data name="CensusData" xml:space="preserve">
+    <value>Datos Censales</value>
+    <comment>Detailed information and statistics on the size and composition of a population.</comment>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Datos de experimentos químicos</value>
+    <comment>Proposals and research results related to various chemical experiments.</comment>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Fórmulas químicas</value>
+    <comment>Data related to the classification and research applications of newly developed chemicals.</comment>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Inventario Químico</value>
+    <comment>A detailed log of active and inert chemical materials stored within a facility.</comment>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Patentes Químicas</value>
+    <comment>A list of registered patent applications for chemical inventions.</comment>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Rendimiento de Combate</value>
+    <comment>Observational data on a subject's proficiency in ground-based combat operations.</comment>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Material de Entrenamiento de Combate</value>
+    <comment>Training plans and exercises designed to improve overall battlefield effectiveness.</comment>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Biblioteca Compacta</value>
+    <comment>A large selection of literary classics and reference works in digital form.</comment>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Regulador de Potencia Degradado</value>
+    <comment>A non-functional fuel regulator used in power plants.</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Directorio de Empleados</value>
+    <comment>A complete list of staff members with their relevant personal details.</comment>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Datos Genéticos de Empleados</value>
+    <comment>Unique genetic data records for a settlement's past and current personnel.</comment>
+  </data>
   <data name="EnergyCell" xml:space="preserve">
     <value>Célula de energía</value>
     <comment>A single-use item that restores energy to suit batteries.</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Protocolos de Evacuación</value>
+    <comment>Detailed instructions for the abandonment of a settlement by all registered personnel.</comment>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Diarios de Exploración</value>
+    <comment>Collected first-hand accounts of the author’s experiences and discoveries in deep space.</comment>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Socios de Facción</value>
+    <comment>Information on a faction's political allies and related beneficial relationships.</comment>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Lista de Donantes de Facción</value>
+    <comment>A record of individuals or organsiations that have made financial contributions to a faction.</comment>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Noticias de Facción</value>
+    <comment>Publicly available press releases and ongoing news stories related to a faction.</comment>
+  </data>
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Previsiones Financieras</value>
+    <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
+  </data>
   
   <data name="HealthPack" xml:space="preserve">
     <value>Botiquín</value>
@@ -173,10 +251,19 @@
   
   
   
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Correspondencia Interna</value>
+    <comment>A record of communications by members within an organisation's network.</comment>
+  </data>
+  <data name="LargeCapacityPowerRegulator" xml:space="preserve">
+    <value>Regulador de Potencia</value>
+    <comment>A complex device designed to regulate the energy generated by a settlement's power reactor.</comment>
+  </data>
   
-  
-  
-  
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Ficción Literaria</value>
+    <comment>Text-based fictional entertainment in a range of genres and styles.</comment>
+  </data>
   
   
   
