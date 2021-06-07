@@ -14,16 +14,20 @@ namespace EddiEvents
         {
             VARIABLES.Add("loadout", "The SRV's loadout");
             VARIABLES.Add("playercontrolled", "True if the SRV is controlled by the player");
+            VARIABLES.Add("id", "The vehicle ID assigned to the SRV");
         }
 
         public string loadout { get; private set; }
 
         public bool playercontrolled { get; private set; }
 
-        public SRVLaunchedEvent(DateTime timestamp, string loadout, bool playercontrolled) : base(timestamp, NAME)
+        public int? id { get; private set; }
+
+        public SRVLaunchedEvent(DateTime timestamp, string loadout, bool playercontrolled, int? id) : base(timestamp, NAME)
         {
             this.loadout = loadout;
             this.playercontrolled = playercontrolled;
+            this.id = id;
         }
     }
 }

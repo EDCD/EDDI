@@ -767,7 +767,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },
@@ -2098,7 +2098,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed', false)}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} docked.",
+      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} docked.",
       "default": true,
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
@@ -2107,7 +2107,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed', true)}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
+      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
       "default": true,
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
@@ -2350,7 +2350,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{Pause(2000)}\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
       "default": true,
       "name": "Vehicle destroyed",
       "description": "Triggered when your vehicle is destroyed"

@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 4.0.1-b1
-
+  * Speech Responder
+    * Scripts
+      * Updated the `Embark`, `SRV docked`, `SRV launched`, and `Vehicle destroyed` events to fix a bug with th the SRV deployed warning.
 
 ### 4.0.0
   * Core

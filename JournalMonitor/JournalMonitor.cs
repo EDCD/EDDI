@@ -1615,8 +1615,9 @@ namespace EddiJournalMonitor
                                 {
                                     string loadout = JsonParsing.getString(data, "Loadout");
                                     bool playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
+                                    int? id = JsonParsing.getOptionalInt(data, "ID");
 
-                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, id) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
