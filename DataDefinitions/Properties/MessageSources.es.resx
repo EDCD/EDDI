@@ -176,9 +176,19 @@
     <value>refugiado</value>
   </data>
   
-  
-  
-  
-  
-  
+  <data name="SearchandRescue" xml:space="preserve">
+    <value>Búsqueda y rescate</value>
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>PNJ</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Estación</value>
+  </data>
+  <data name="CivilianPilot" xml:space="preserve">
+    <value>Piloto civil</value>
+  </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>Zona de conflicto</value>
+  </data>
 </root>
