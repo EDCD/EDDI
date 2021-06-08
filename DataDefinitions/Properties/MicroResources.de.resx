@@ -163,7 +163,10 @@
   
   
   
-  
+  <data name="FinancialProjections" xml:space="preserve">
+    <value>Finanzprognosen</value>
+    <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
+  </data>
   
   <data name="HealthPack" xml:space="preserve">
     <value>Medikit</value>
@@ -258,10 +261,7 @@
   
   
   
-  <data name="SurveillanceEquipment" xml:space="preserve">
-    <value>Überlebensausrüstung</value>
-    <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
-  </data>
+  
   
   
   
