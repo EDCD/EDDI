@@ -126,6 +126,9 @@
   
   
   
+  <data name="HullReinforcements" xml:space="preserve">
+    <value>Refuerzos de casco</value>
+  </data>
   
   
   
@@ -141,10 +144,19 @@
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="ShieldCellBanks" xml:space="preserve">
+    <value>Células de escudo</value>
+  </data>
+  <data name="ShieldGenerators" xml:space="preserve">
+    <value>Generadores de escudos</value>
+  </data>
+  <data name="SurfaceScanners" xml:space="preserve">
+    <value>Escáneres de superficie</value>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Impulsores</value>
+  </data>
+  <data name="Torpedos" xml:space="preserve">
+    <value>Torpedos</value>
+  </data>
 </root>
