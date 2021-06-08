@@ -257,5 +257,8 @@
     <value>Oficina de Reembolso</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
-  
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Espacio social</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>
