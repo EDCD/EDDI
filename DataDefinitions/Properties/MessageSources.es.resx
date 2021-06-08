@@ -97,32 +97,84 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SquadronMate" xml:space="preserve">
+    <value>Compañero de escuadrón</value>
+  </data>
+  <data name="WingMate" xml:space="preserve">
+    <value>Compañero de Ala</value>
+  </data>
+  <data name="CrewMate" xml:space="preserve">
+    <value>Compañero de tripulación</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Comandante</value>
+  </data>
+  <data name="AmbushedPilot" xml:space="preserve">
+    <value>Piloto capturado</value>
+  </data>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Cazarrecompenzas</value>
+  </data>
+  <data name="CapShip" xml:space="preserve">
+    <value>Nave Capital</value>
+  </data>
+  <data name="CargoHunter" xml:space="preserve">
+    <value>Cazador de carga</value>
+  </data>
+  <data name="ConvoyExplorers" xml:space="preserve">
+    <value>Convoy de exploración</value>
+  </data>
+  <data name="ConvoyWedding" xml:space="preserve">
+    <value>Convoy de bodas</value>
+  </data>
+  <data name="CruiseLiner" xml:space="preserve">
+    <value>Crucero de línea</value>
+  </data>
+  <data name="Escort" xml:space="preserve">
+    <value>Escolta</value>
+  </data>
+  <data name="Hitman" xml:space="preserve">
+    <value>Sicario</value>
+  </data>
+  <data name="Messenger" xml:space="preserve">
+    <value>Mensajero</value>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Militar</value>
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Minero</value>
+  </data>
+  <data name="PassengerHunter" xml:space="preserve">
+    <value>Cazador de pasajeros</value>
+  </data>
+  <data name="PassengerLiner" xml:space="preserve">
+    <value>Nave de pasajeros</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirata</value>
+  </data>
+  <data name="Police" xml:space="preserve">
+    <value>Policía</value>
+  </data>
+  <data name="PowersAssassin" xml:space="preserve">
+    <value>Agente de potencia rival</value>
+  </data>
+  <data name="PowersPirate" xml:space="preserve">
+    <value>Agente de potencia rival</value>
+  </data>
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>Agente de potencia rival</value>
+  </data>
+  <data name="Propagandist" xml:space="preserve">
+    <value>Propagandista</value>
+  </data>
+  <data name="Protester" xml:space="preserve">
+    <value>Protestante</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>refugiado</value>
+  </data>
   
   
   
