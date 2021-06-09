@@ -173,5 +173,8 @@
     <value>Transporteur de flotte</value>
     <comment>A Fleet Carrier</comment>
   </data>
-  
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>Installation</value>
+    <comment>An Odyssey style Settlement</comment>
+  </data>
 </root>
