@@ -3151,7 +3151,7 @@ namespace EddiJournalMonitor
 
                                             if (!string.IsNullOrEmpty(m))
                                             {
-                                                if (MicroResource.EDNameExists(c))
+                                                if (MicroResource.EDNameExists(m))
                                                 {
                                                     // This is an on-foot micro-resource
                                                     var rewardMicroResource = MicroResource.FromEDName(m);
