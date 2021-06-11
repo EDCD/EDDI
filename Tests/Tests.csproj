@@ -255,6 +255,7 @@
     <EmbeddedResource Include="Properties\bgsEddbSystem.json" />
     <EmbeddedResource Include="Properties\market.json" />
     <None Include="Properties\Libby Horizons.json" />
+    <None Include="Properties\shipLocker.json" />
     <None Include="Properties\Sol.json" />
     <None Include="Properties\SolBodies.json" />
     <None Include="Properties\SolFactions.json" />

@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExobiologistRating.cs" />
+    <Compile Include="MicroResourceInfo.cs" />
     <Compile Include="MercenaryRating.cs" />
     <Compile Include="MicroResourceAmount.cs" />
     <Compile Include="MicroResourceCategory.cs" />

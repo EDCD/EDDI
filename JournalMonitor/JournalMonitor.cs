@@ -4224,21 +4224,17 @@ namespace EddiJournalMonitor
                             case "Backpack":
                             case "ShipLocker":
                                 {
-                                    var components = getMicroResources("Components", data, "Component");
-                                    var consumables = getMicroResources("Consumables", data, "Consumable");
-                                    var backpackdata = getMicroResources("Data", data, "Data");
-                                    var items = getMicroResources("Items", data, "Item");
+                                    var info = new MicroResourceInfo().FromFile($"{edType}.json");
 
                                     // Flatten the list
                                     var inventory = new List<MicroResourceAmount>();
-                                    inventory.AddRange(components);
-                                    inventory.AddRange(consumables);
-                                    inventory.AddRange(backpackdata);
-                                    inventory.AddRange(items);
+                                    inventory.AddRange(info.Components);
+                                    inventory.AddRange(info.Consumables);
+                                    inventory.AddRange(info.Data);
+                                    inventory.AddRange(info.Items);
 
                                     if (edType == "Backpack")
                                     {
-                                        // Note: Also updates backpack.json
                                         events.Add(new BackpackEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
@@ -4252,8 +4248,8 @@ namespace EddiJournalMonitor
                             case "BackpackChange":
                                 {
                                     // Note: Also updates backpack.json
-                                    var added = getMicroResources("Added", data);
-                                    var removed = getMicroResources("Removed", data);
+                                    var added = MicroResourceInfo.ReadMicroResources("Added", data);
+                                    var removed = MicroResourceInfo.ReadMicroResources("Removed", data);
                                     events.Add(new BackpackChangedEvent(timestamp, added, removed) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -4744,31 +4740,6 @@ namespace EddiJournalMonitor
                 compartment.size = (int)slotSize;
             }
             return compartment;
-        }
-
-        public static List<MicroResourceAmount> getMicroResources(string key, IDictionary<string, object> data, string categoryEdName = null)
-        {
-            var result = new List<MicroResourceAmount>();
-            if (data.TryGetValue(key, out object val))
-            {
-                if (val is List<object> listVal)
-                {
-                    foreach (IDictionary<string, object> microResourceVal in listVal)
-                    {
-                        var edname = JsonParsing.getString(microResourceVal, "Name");
-                        var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
-                        categoryEdName = JsonParsing.getString(microResourceVal, "Type") ?? categoryEdName ?? MicroResourceCategory.Unknown.edname;
-                        var resource = MicroResource.FromEDName(edname, fallbackName, categoryEdName);
-
-                        var ownerId = JsonParsing.getOptionalInt(microResourceVal, "OwnerID");
-                        var missionId = JsonParsing.getOptionalDecimal(microResourceVal, "MissionID");
-                        var amount = JsonParsing.getInt(microResourceVal, "Count");
-
-                        result.Add(new MicroResourceAmount(resource, ownerId, missionId, amount));
-                    }
-                }
-            }
-            return result;
         }
 
         private static readonly string[] ignoredLogLoadEvents = new string[]

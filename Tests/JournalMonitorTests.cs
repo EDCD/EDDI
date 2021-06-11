@@ -1724,31 +1724,6 @@ namespace UnitTests
             Assert.AreEqual(onStation, @event.onstation);
         }
 
-        [TestMethod]
-        public void TestBackpack()
-        {
-            string line = @"{ ""timestamp"":""2021-05-03T13:31:45Z"", ""event"":""Backpack"", ""Items"":[  ], ""Components"":[ { ""Name"":""circuitswitch"", ""Name_Localised"":""Circuit Switch"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""encryptedmemorychip"", ""Name_Localised"":""Encrypted Memory Chip"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""epoxyadhesive"", ""Name_Localised"":""Epoxy Adhesive"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""memorychip"", ""Name_Localised"":""Memory Chip"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":2 } ], ""Consumables"":[ { ""Name"":""healthpack"", ""Name_Localised"":""Medkit"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":3 }, { ""Name"":""energycell"", ""Name_Localised"":""Energy Cell"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":3 }, { ""Name"":""amm_grenade_emp"", ""Name_Localised"":""Shield Disruptor"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 }, { ""Name"":""amm_grenade_frag"", ""Name_Localised"":""Frag Grenade"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":2 }, { ""Name"":""amm_grenade_shield"", ""Name_Localised"":""Shield Projector"", ""OwnerID"":0, ""MissionID"":18446744073709551615, ""Count"":1 } ], ""Data"":[  ] }";
-            var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
-            var @event = (BackpackEvent)events[0];
-
-            Assert.AreEqual(9, @event.inventory.Count);
-
-            var circuitSwitch = @event.inventory.FirstOrDefault(m => m.edname == "CircuitSwitch");
-            Assert.AreEqual("Circuit Switch", circuitSwitch.microResource?.invariantName);
-            Assert.AreEqual("Assets", circuitSwitch.microResource?.Category?.invariantName);
-            Assert.AreEqual(0, circuitSwitch.ownerId);
-            Assert.AreEqual(18446744073709551615M, circuitSwitch.missionId);
-            Assert.AreEqual(1, circuitSwitch.amount);
-
-            var energyCell = @event.inventory.FirstOrDefault(m => m.edname == "EnergyCell");
-            Assert.AreEqual("Energy Cell", energyCell.microResource?.invariantName);
-            Assert.AreEqual("Consumables", energyCell.microResource?.Category?.invariantName);
-            Assert.AreEqual(0, energyCell.ownerId);
-            Assert.AreEqual(18446744073709551615M, energyCell.missionId);
-            Assert.AreEqual(3, energyCell.amount);
-        }
-
         [DataTestMethod]
         [DataRow("{ \"timestamp\":\"2021-05-29T21:14:30Z\", \"event\":\"BackpackChange\", \"Added\":[ { \"Name\":\"viscoelasticpolymer\", \"Name_Localised\":\"Viscoelastic Polymer\", \"OwnerID\":0, \"Count\":1, \"Type\":\"Component\" } ] }", true, "Viscoelastic Polymer", "Assets", 0, -1, 1)]
         [DataRow("{ \"timestamp\":\"2021-05-29T20:40:44Z\", \"event\":\"BackpackChange\", \"Removed\":[ { \"Name\":\"largecapacitypowerregulator\", \"Name_Localised\":\"Power Regulator\", \"OwnerID\":1642695, \"MissionID\":775573921, \"Count\":1, \"Type\":\"Item\" } ] }", false, "Power Regulator", "Goods", 1642695, 775573921, 1)]
