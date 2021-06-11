@@ -4222,7 +4222,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Backpack":
-                            case "ShipLockerMaterials":
+                            case "ShipLocker":
                                 {
                                     var components = getMicroResources("Components", data, "Component");
                                     var consumables = getMicroResources("Consumables", data, "Consumable");
@@ -4242,7 +4242,7 @@ namespace EddiJournalMonitor
                                         events.Add(new BackpackEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
-                                    else if (edType == "ShipLockerMaterials")
+                                    else if (edType == "ShipLocker")
                                     {
                                         events.Add(new ShipLockerEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
