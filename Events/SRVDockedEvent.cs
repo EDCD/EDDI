@@ -17,10 +17,11 @@ namespace EddiEvents
         }
 
         [JsonProperty("id")]
-        public int id { get; private set; }
+        public int? id { get; private set; }
 
-        public SRVDockedEvent(DateTime timestamp, int id) : base(timestamp, NAME)
+        public SRVDockedEvent(DateTime timestamp, int? id) : base(timestamp, NAME)
         {
+            this.id = id;
         }
     }
 }
