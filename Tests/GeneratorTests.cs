@@ -45,7 +45,7 @@ namespace GeneratorTests
 
                 foreach (var variable in vars)
                 {
-                    // Get descriptions for our top level variables
+                    // Get descriptions for our variables
                     foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[entry.Key])
                     {
                         if (variable.keysPath.Count == 1 && variableDescription.Key == variable.keysPath[0])
@@ -84,7 +84,8 @@ namespace GeneratorTests
 
                     foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
                     {
-                        output.Add($"  * {{event.{cottleVariable.key}}} {cottleVariable.value}");
+                        var description = !string.IsNullOrEmpty((string)cottleVariable.value) ? $" - {cottleVariable.value}" : "";
+                        output.Add($"  - *{{event.{cottleVariable.key}}}* {description}");
                         output.Add("");
                     }
                 }
@@ -100,25 +101,26 @@ namespace GeneratorTests
 
                     void WriteVariableToOutput(VoiceAttackVariable variable)
                     {
+                        var description = !string.IsNullOrEmpty((string)variable.value) ? $" - {variable.value}" : "";
                         if (variable.variableType == typeof(string))
                         {
-                            output.Add("  * {TXT:" + variable.key + "} " + variable.value);
+                            output.Add($"  - *{{TXT:{variable.key}}}* {description}");
                         }
                         else if (variable.variableType == typeof(int))
                         {
-                            output.Add("  * {INT:" + variable.key + "} " + variable.value);
+                            output.Add($"  - *{{INT:{variable.key}}}* {description}");
                         }
                         else if (variable.variableType == typeof(bool))
                         {
-                            output.Add("  * {BOOL:" + variable.key + "} " + variable.value);
+                            output.Add($"  - *{{BOOL:{variable.key}}}* {description}");
                         }
                         else if (variable.variableType == typeof(decimal))
                         {
-                            output.Add("  * {DEC:" + variable.key + "} " + variable.value);
+                            output.Add($"  - *{{DEC:{variable.key}}}* {description}");
                         }
                         else if (variable.variableType == typeof(DateTime))
                         {
-                            output.Add("  * {DATE:" + variable.key + "} " + variable.value);
+                            output.Add($"  - *{{DATE:{variable.key}}}* {description}");
                         }
                         output.Add("");
                     }

@@ -94,7 +94,7 @@ namespace EddiSpeechResponder
 
         private void variablesButtonClick(object sender, RoutedEventArgs e)
         {
-            VariablesWindow variablesWindow = new VariablesWindow(editorScript.Name);
+            VariablesWindow variablesWindow = new VariablesWindow(editorScript);
             variablesWindow.Show();
         }
 

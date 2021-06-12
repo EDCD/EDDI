@@ -261,7 +261,7 @@ namespace Utilities
             keysPath.RemoveAll(k => k == ""); // Remove any empty keys from the path
             this.key = string
                 .Join(".", keysPath) // Format separators as points
-                .Replace($".{MetaVariables.indexMarker}", @"[*\<index\>*]"); // Format index values for Cottle
+                .Replace($".{MetaVariables.indexMarker}", @"[\<index\>]"); // Format index values for Cottle
             this.value = value;
         }
     }
@@ -294,7 +294,7 @@ namespace Utilities
                 this.key = ConcatOverlappingNames(this.key, childKey);
             }
             this.key = key
-                .Replace(MetaVariables.indexMarker, @"*\<index\>*"); // Format index values for VoiceAttack
+                .Replace(MetaVariables.indexMarker, @"\<index\>"); // Format index values for VoiceAttack
 
             this.eventType = eventType;
             this.value = value;

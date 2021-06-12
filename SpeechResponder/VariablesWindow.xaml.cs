@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Utilities;
@@ -13,7 +14,7 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class VariablesWindow : Window
     {
-        public VariablesWindow(string scriptName)
+        public VariablesWindow(Script script)
         {
             InitializeComponent();
 
@@ -21,7 +22,7 @@ namespace EddiSpeechResponder
             string markdown;
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
                 markdown = Files.Read(dir.FullName + @"\Variables.md");
             }
             catch (Exception ex)
@@ -30,24 +31,34 @@ namespace EddiSpeechResponder
                 markdown = "";
             }
 
-            if (Events.DESCRIPTIONS.TryGetValue(scriptName, out string description))
+            // If the user is editing an event-based script, add event-specific information
+            var @type = Events.TYPES.SingleOrDefault(t => t.Key == script.Name).Value;
+            var vars = new MetaVariables(@type).Results;
+            foreach (var variable in vars)
             {
-                // The user is editing an event, add event-specific information
-                markdown += "\n\n## " + scriptName + " event\n\n" + description + ".\n\n";
-                if (Events.VARIABLES.TryGetValue(scriptName, out IDictionary<string, string> variables))
+                // Get descriptions for our variables
+                foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[script.Name])
                 {
-                    if (variables.Count == 0)
+                    if (variable.keysPath.Count == 1 && variableDescription.Key == variable.keysPath[0])
                     {
-                        markdown += "This event has no variables.";
+                        variable.value = variableDescription.Value;
+                        break;
                     }
-                    else
-                    {
-                        markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n\n";
-                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[scriptName])
-                        {
-                            markdown += "    - " + variable.Key + " " + variable.Value + "\n";
-                        }
-                    }
+                }
+            }
+            var CottleVars = vars.AsCottleVariables();
+            if (CottleVars.Any())
+            {
+                markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n";
+                if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
+                {
+                    markdown += "Where values are indexed (the compartments on a ship for example), the index will be represented by '*\\<index\\>*'.\n\n";
+                }
+                markdown += "\n";
+                foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
+                {
+                    var description = !string.IsNullOrEmpty((string)cottleVariable.value) ? $" - {cottleVariable.value}" : "";
+                    markdown += $"  - *{cottleVariable.key}* {description}\n";
                 }
             }
 
