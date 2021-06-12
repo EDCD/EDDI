@@ -25,7 +25,7 @@ namespace GeneratorTests
         }
 
         [TestCleanup]
-        public void RestoreOutuptDirectory()
+        public void RestoreOutputDirectory()
         {
             Directory.SetCurrentDirectory(initialCurrentDirectory);
         }
