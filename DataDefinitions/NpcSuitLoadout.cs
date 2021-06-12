@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -19,6 +20,7 @@ namespace EddiDataDefinitions
         public static readonly NpcSuitLoadout Sharpshooter = new NpcSuitLoadout("rangedsuitai");
         public static readonly NpcSuitLoadout Striker = new NpcSuitLoadout("closesuitai");
 
+        [PublicAPI]
         public int grade { get; private set; }
 
         // dummy used to ensure that the static constructor has run

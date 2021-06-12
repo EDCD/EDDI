@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -19,13 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("price", "The price paid for the space suit");
         }
 
-        [JsonProperty("suit")]
+        [PublicAPI]
         public string suit => Suit?.localizedName;
 
-        [JsonProperty("suit_invariant")]
+        [PublicAPI]
         public string suit_invariant => Suit?.invariantName;
 
-        [JsonProperty("price")]
+        [PublicAPI]
         public int? price { get; }
 
         // Not intended to be user facing

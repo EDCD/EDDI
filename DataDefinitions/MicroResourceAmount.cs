@@ -1,11 +1,21 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class MicroResourceAmount
     {
+        [PublicAPI]
         public string name => microResource.localizedName;
+
+        [PublicAPI]
         public string category => microResource.category;
+
         public string edname => microResource.edname;
+
+        [PublicAPI]
         public int amount { get; }
+
+        [PublicAPI]
         public int? price { get; }
 
         // Not intended to be user facing

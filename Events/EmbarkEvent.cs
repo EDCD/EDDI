@@ -1,7 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using EddiDataDefinitions;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using EddiDataDefinitions;
 
 namespace EddiEvents
 {

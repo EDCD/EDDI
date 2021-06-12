@@ -28,6 +28,8 @@ namespace EddiDataDefinitions
         public static readonly ExobiologistRating EliteIII = new ExobiologistRating("EliteIII", 11);
         public static readonly ExobiologistRating EliteIV = new ExobiologistRating("EliteIV", 12);
         public static readonly ExobiologistRating EliteV = new ExobiologistRating("EliteV", 13);
+
+        [PublicAPI]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

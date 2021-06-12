@@ -1,8 +1,8 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiDataDefinitions;
-using EddiSpeechResponder.Service;
 using EddiDataProviderService;
+using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions

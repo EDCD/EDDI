@@ -22,7 +22,7 @@ namespace EddiMissionMonitor
             VARIABLES.Add("communal", "True if the mission is a community goal");
             VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
             VARIABLES.Add("microresource", "The micro-resource (on foot item) involved in the mission (if applicable)");
-            VARIABLES.Add("amount", "The amount of the commodity involved in the mission (if applicable)");
+            VARIABLES.Add("amount", "The amount of the commodity or micro-resource involved in the mission (if applicable)");
             VARIABLES.Add("reward", "The monetary reward for completing the mission");
             VARIABLES.Add("permitsawarded", "The permits rewarded for completing the mission");
             VARIABLES.Add("commodityrewards", "The commodity rewarded for completing the mission");
@@ -55,6 +55,7 @@ namespace EddiMissionMonitor
 
         public CommodityDefinition commodityDefinition { get; }
 
+        [PublicAPI]
         public int? amount { get; }
 
         [PublicAPI]
@@ -93,6 +94,7 @@ namespace EddiMissionMonitor
         [PublicAPI]
         public int rewardMaterialAmount { get; }
 
+        [PublicAPI]
         public string rewardMicroResource { get; }
 
         [PublicAPI]

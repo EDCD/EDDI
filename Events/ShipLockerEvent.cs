@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,7 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("inventory", "The items stored in your ship's micro-resource materials locker (as a list of objects with `name`, `category`, and `amount` properties)");
         }
 
-        [JsonProperty("inventory")]
+        [PublicAPI]
         public List<MicroResourceAmount> inventory { get; }
 
         public ShipLockerEvent(DateTime timestamp, List<MicroResourceAmount> inventory) : base(timestamp, NAME)

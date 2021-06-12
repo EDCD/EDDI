@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -20,16 +20,16 @@ namespace EddiEvents
             VARIABLES.Add("destination", "The destination location name");
         }
 
-        [JsonProperty("transporttype")]
+        [PublicAPI]
         public string transporttype { get; }
 
-        [JsonProperty("price")]
+        [PublicAPI]
         public int? price { get; }
 
-        [JsonProperty("starsystem")]
+        [PublicAPI]
         public string starsystem { get; }
 
-        [JsonProperty("destination")]
+        [PublicAPI]
         public string destination { get; }
 
         public BookTransportEvent(DateTime timestamp, string transporttype, int? price, string starsystem, string destination) : base(timestamp, NAME)

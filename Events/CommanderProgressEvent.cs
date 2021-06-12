@@ -41,10 +41,10 @@ namespace EddiEvents
         [PublicAPI]
         public decimal federation { get; private set; }
 
-        [JsonProperty("mercenary")]
+        [PublicAPI]
         public decimal mercenary { get; private set; }
 
-        [JsonProperty("exobiologist")]
+        [PublicAPI]
         public decimal exobiologist { get; private set; }
 
         public CommanderProgressEvent(DateTime timestamp, decimal combat, decimal trade, decimal exploration, decimal cqc, decimal empire, decimal federation, decimal mercenary, decimal exobiologist) : base(timestamp, NAME)

@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string localizedName => vehicleDef?.localizedName;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string invariantName => vehicleDef?.invariantName;
 
         [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
@@ -47,13 +47,13 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         private LoadoutDescription descriptionDef;
 
         [JsonIgnore]
         public string localizedDescription => descriptionDef?.localizedName;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         [Obsolete("Please be explicit and use localizedDescription")]
         public string description => localizedDescription ?? string.Empty;
 

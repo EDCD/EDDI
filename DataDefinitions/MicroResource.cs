@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -222,9 +223,11 @@ namespace EddiDataDefinitions
         // Unknown / Miscellaneous
         public static readonly MicroResource None = new MicroResource("None", MicroResourceCategory.Unknown);
 
+        [PublicAPI]
         public string category => Category?.localizedName;
 
         public long? EDID { get; private set; }
+
         public MicroResourceCategory Category { get; private set; }
 
         // dummy used to ensure that the static constructor has run

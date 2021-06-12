@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using MathNet.Numerics;
 using Utilities;
 
 namespace EddiEvents

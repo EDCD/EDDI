@@ -1,7 +1,5 @@
-﻿using Cottle.Builtins;
-using Cottle.Documents;
+﻿using Cottle.Documents;
 using Cottle.Functions;
-using Cottle.Settings;
 using Cottle.Stores;
 using EddiSpeechResponder;
 using EddiSpeechResponder.Service;

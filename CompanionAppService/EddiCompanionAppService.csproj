@@ -96,10 +96,6 @@
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EddiDataProviderService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
       <Name>EddiSpeechService</Name>

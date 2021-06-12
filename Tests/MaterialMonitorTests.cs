@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.ServiceModel.Security;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiMaterialMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace UnitTests
 {

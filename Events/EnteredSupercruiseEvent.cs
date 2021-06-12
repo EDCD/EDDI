@@ -21,10 +21,10 @@ namespace EddiEvents
         [PublicAPI]
         public string system { get; private set; }
 
-        [JsonProperty("taxi")]
+        [PublicAPI]
         public bool? taxi { get; private set; }
 
-        [JsonProperty("multicrew")]
+        [PublicAPI]
         public bool? multicrew { get; private set; }
 
         // Not intended to be user facing

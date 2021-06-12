@@ -81,8 +81,10 @@ namespace EddiEvents
         [PublicAPI]
         public List<Conflict> conflicts { get; private set; }
 
+        [PublicAPI]
         public bool? taxi { get; private set; }
 
+        [PublicAPI]
         public bool? multicrew { get; private set; }
 
         // Controlling faction properties

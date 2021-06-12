@@ -43,9 +43,11 @@ namespace EddiDataDefinitions
         public FederationRating federationrating { get; set; }
 
         /// <summary>The commander's mercenary rating</summary>
+        [PublicAPI]
         public MercenaryRating mercenaryrating { get; set; }
 
         /// <summary>The commander's exobiologist rating</summary>
+        [PublicAPI]
         public ExobiologistRating exobiologistrating { get; set; }
 
         /// <summary>The commander's crime rating</summary>

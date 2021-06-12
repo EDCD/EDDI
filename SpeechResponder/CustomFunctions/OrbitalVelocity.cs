@@ -1,11 +1,11 @@
 ﻿using Cottle.Functions;
-using EddiSpeechResponder.Service;
-using System.Linq;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiSpeechResponder.Service;
 using EddiStatusMonitor;
 using JetBrains.Annotations;
+using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {

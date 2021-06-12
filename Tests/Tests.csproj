@@ -162,14 +162,6 @@
       <Project>{9aba5418-95bb-40db-b4bc-71698a37066d}</Project>
       <Name>EddiEddnResponder</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDPMonitor\EddiEddpMonitor.csproj">
-      <Project>{c9a4f3e1-5152-4648-a409-368576975ace}</Project>
-      <Name>EddiEddpMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDSMResponder\EddiEdsmResponder.csproj">
-      <Project>{2c2f3380-781d-45de-b387-aef26b834f29}</Project>
-      <Name>EddiEdsmResponder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
@@ -177,10 +169,6 @@
     <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj">
       <Project>{93b946c8-3f78-465a-8cc4-c0fc4127b762}</Project>
       <Name>EddiGalnetMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InaraResponder\EddiInaraResponder.csproj">
-      <Project>{11bef9d3-91a4-4522-9581-bcc2a1f5eec7}</Project>
-      <Name>EddiInaraResponder</Name>
     </ProjectReference>
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>

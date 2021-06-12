@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using GalnetMonitor;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 
 namespace EddiSpeechResponder.CustomFunctions
 {

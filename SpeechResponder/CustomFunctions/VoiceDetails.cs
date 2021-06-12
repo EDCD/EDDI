@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions

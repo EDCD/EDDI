@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -24,6 +25,7 @@ namespace EddiDataDefinitions
         public static readonly Suit TacticalSuit = new Suit("TacticalSuit");
         public static readonly Suit UtilitySuit = new Suit("UtilitySuit");
 
+        [PublicAPI]
         public int grade { get; private set; }
 
         public long? suitId { get; private set; }

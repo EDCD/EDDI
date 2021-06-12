@@ -1,6 +1,4 @@
-﻿using System.Web.Security;
-using System.Windows.Input;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 

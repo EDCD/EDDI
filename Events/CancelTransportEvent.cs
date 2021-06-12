@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -18,10 +18,10 @@ namespace EddiEvents
             VARIABLES.Add("refund", "The credits that you were refunded for the cancelled transport)");
         }
 
-        [JsonProperty("transporttype")]
+        [PublicAPI]
         public string transporttype { get; }
 
-        [JsonProperty("refund")]
+        [PublicAPI]
         public int? refund { get; }
 
         public CancelTransportEvent(DateTime timestamp, string transporttype, int? refund) : base(timestamp, NAME)

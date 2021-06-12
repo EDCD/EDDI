@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,14 +15,14 @@ namespace EddiEvents
 
         static BackpackChangedEvent()
         {
-            VARIABLES.Add("added", "The items added to your backpack (as a list of objects with `name`, `category`, and `amount` properties)");
-            VARIABLES.Add("removed", "The items added to your backpack (as a list of objects with `name`, `category`, and `amount` properties)");
+            VARIABLES.Add("added", "The items added to your backpack (as a list of objects)");
+            VARIABLES.Add("removed", "The items added to your backpack (as a list of objects)");
         }
 
-        [JsonProperty("added")]
+        [PublicAPI]
         public List<MicroResourceAmount> added { get; }
 
-        [JsonProperty("removed")]
+        [PublicAPI]
         public List<MicroResourceAmount> removed { get; }
 
         public BackpackChangedEvent(DateTime timestamp, List<MicroResourceAmount> added, List<MicroResourceAmount> removed) : base(timestamp, NAME)

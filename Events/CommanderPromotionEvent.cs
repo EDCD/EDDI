@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -19,13 +19,13 @@ namespace EddiEvents
             VARIABLES.Add("rank_invariant", "The commander's new invariant rank");
         }
 
-        [JsonProperty("rank_type")]
+        [PublicAPI]
         public string rank_type { get; private set; }
 
-        [JsonProperty("rank")]
+        [PublicAPI]
         public string rank { get; private set; }
 
-        [JsonProperty("rank_invariant")]
+        [PublicAPI]
         public string rank_invariant { get; private set; }
 
         // Not intended to be user facing

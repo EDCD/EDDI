@@ -29,6 +29,7 @@ namespace EddiDataDefinitions
         public static readonly MercenaryRating EliteIV = new MercenaryRating("EliteIV", 12);
         public static readonly MercenaryRating EliteV = new MercenaryRating("EliteV", 13);
 
+        [PublicAPI]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

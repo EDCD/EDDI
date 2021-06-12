@@ -35,10 +35,10 @@ namespace EddiEvents
         [PublicAPI]
         public string bodyname { get; private set; }
 
-        [JsonProperty("taxi")]
+        [PublicAPI]
         public bool? taxi { get; private set; }
 
-        [JsonProperty("multicrew")]
+        [PublicAPI]
         public bool? multicrew { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts

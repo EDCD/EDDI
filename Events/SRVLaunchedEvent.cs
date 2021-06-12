@@ -24,6 +24,7 @@ namespace EddiEvents
         [PublicAPI]
         public bool playercontrolled { get; private set; }
 
+        [PublicAPI]
         public int? id { get; private set; }
 
         public SRVLaunchedEvent(DateTime timestamp, string loadout, bool playercontrolled, int? id) : base(timestamp, NAME)

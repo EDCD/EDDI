@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     // For use with the `Died` event
     public class Killer
     {
+        [PublicAPI]
         public string name { get; }
 
+        [PublicAPI]
         public string rating => combatRating.localizedName;
 
+        [PublicAPI]
         public string equipment => killerShip?.SpokenModel()
             ?? killerCmdrSuit?.localizedName
             ?? killerVehicle?.localizedName
