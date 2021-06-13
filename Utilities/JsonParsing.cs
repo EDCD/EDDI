@@ -166,6 +166,10 @@ namespace Utilities
             {
                 return l;
             }
+            if (val is ulong ul)
+            {
+                return Convert.ToInt64(ul);
+            }
             throw new ArgumentException("Unparseable value for " + key);
         }
 
@@ -176,11 +180,14 @@ namespace Utilities
             {
                 return null;
             }
-            else if (val is long l)
+            if (val is long l)
             {
                 return l;
             }
-
+            if (val is ulong ul)
+            {
+                return Convert.ToInt64(ul);
+            }
             throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
         }
 
