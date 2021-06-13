@@ -69,12 +69,20 @@ namespace EddiInaraService
                             foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(syncCancellationTS.Token))
                             {
                                 holdingQueue.Add(pendingEvent);
-                                if (holdingQueue.Count > 0 && queuedAPIEvents.Count == 0)
+
+                                if (queuedAPIEvents.Count == 0)
                                 {
-                                    var sendingQueue = holdingQueue.Copy();
-                                    holdingQueue = new List<InaraAPIEvent>();
-                                    await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
-                                    await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                    // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
+                                    await Task.Delay(2000, syncCancellationTS.Token).ConfigureAwait(false);
+                                    if (queuedAPIEvents.Count > 0) { continue; }
+                                    // No additional events registered, send any events we have in our holding queue
+                                    if (holdingQueue.Count > 0)
+                                    {
+                                        var sendingQueue = holdingQueue.Copy();
+                                        holdingQueue = new List<InaraAPIEvent>();
+                                        await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                        await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                    }
                                 }
                             }
                         }
