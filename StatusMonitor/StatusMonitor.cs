@@ -419,7 +419,8 @@ namespace EddiStatusMonitor
                         EDDI.Instance.enqueueEvent(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
-                if (thisStatus.landing_gear_down != lastStatus.landing_gear_down)
+                if (thisStatus.landing_gear_down != lastStatus.landing_gear_down 
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP && lastStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     EDDI.Instance.enqueueEvent(new ShipLandingGearEvent(thisStatus.timestamp, thisStatus.landing_gear_down));
                 }
