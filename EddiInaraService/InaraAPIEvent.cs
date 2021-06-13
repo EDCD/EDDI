@@ -9,29 +9,25 @@ namespace EddiInaraService
     {
         public string eventName { get; private set; }
 
-        public string eventTimestamp => Dates.FromDateTimeToString(eventTimeStamp);
-
         public object eventData { get; private set; }
 
         public int? eventCustomID { get; set; } // Optional index. May be set while processing.
 
-        // Helper properties
+        public DateTime eventTimestamp { get; set; }
 
-        [JsonIgnore] public DateTime eventTimeStamp { get; set; }
-
-        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, Dictionary<string, object> eventData,
+        public InaraAPIEvent(DateTime eventTimestamp, string eventName, Dictionary<string, object> eventData,
             int? eventCustomID = null)
         {
-            this.eventTimeStamp = eventTimeStamp;
+            this.eventTimestamp = eventTimestamp;
             this.eventName = eventName;
             this.eventData = eventData;
             this.eventCustomID = eventCustomID;
         }
 
-        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, List<Dictionary<string, object>> eventData,
+        public InaraAPIEvent(DateTime eventTimestamp, string eventName, List<Dictionary<string, object>> eventData,
             int? eventCustomID = null)
         {
-            this.eventTimeStamp = eventTimeStamp;
+            this.eventTimestamp = eventTimestamp;
             this.eventName = eventName;
             this.eventData = eventData;
             this.eventCustomID = eventCustomID;

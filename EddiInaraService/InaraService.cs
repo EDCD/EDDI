@@ -170,7 +170,7 @@ namespace EddiInaraService
                 if (invalidAPIEvents.Contains(indexedEvent.eventName)) { continue; }
 
                 // Exclude and discard old / stale events
-                if (inaraConfiguration?.lastSync > indexedEvent.eventTimeStamp) { continue; }
+                if (inaraConfiguration?.lastSync > indexedEvent.eventTimestamp) { continue; }
 
                 // Inara will ignore the "setCommunityGoal" event while EDDI is in development mode (i.e. beta).
                 if (indexedEvent.eventName == "setCommunityGoal" && eddiIsBeta) { continue; }
@@ -278,7 +278,7 @@ namespace EddiInaraService
                 var responses = SendEventBatch(queue, inaraConfiguration);
                 if (responses != null && responses.Count > 0)
                 {
-                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimeStamp);
+                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimestamp);
                     inaraConfiguration.ToFile();
                 }
             }
