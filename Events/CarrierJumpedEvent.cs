@@ -6,109 +6,79 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CarrierJumpedEvent : Event
     {
         public const string NAME = "Carrier jumped";
         public const string DESCRIPTION = "Triggered when you are docked at a fleet carrier as it completes a jump";
         public const string SAMPLE = "{\"timestamp\":\"2020-05-17T14:07:24Z\",\"event\":\"CarrierJump\",\"Docked\":true,\"StationName\":\"G53-K3Q\",\"StationType\":\"FleetCarrier\",\"MarketID\":3700571136,\"StationFaction\":{\"Name\":\"FleetCarrier\"},\"StationGovernment\":\"$government_Carrier;\",\"StationGovernment_Localised\":\"Private Ownership \",\"StationServices\":[\"dock\",\"autodock\",\"blackmarket\",\"commodities\",\"contacts\",\"exploration\",\"crewlounge\",\"rearm\",\"refuel\",\"repair\",\"engineer\",\"flightcontroller\",\"stationoperations\",\"stationMenu\",\"carriermanagement\",\"carrierfuel\",\"voucherredemption\"],\"StationEconomy\":\"$economy_Carrier;\",\"StationEconomy_Localised\":\"Private Enterprise\",\"StationEconomies\":[{\"Name\":\"$economy_Carrier;\",\"Name_Localised\":\"Private Enterprise\",\"Proportion\":1}],\"StarSystem\":\"Aparctias\",\"SystemAddress\":358797513434,\"StarPos\":[25.1875,-56.375,22.90625],\"SystemAllegiance\":\"Independent\",\"SystemEconomy\":\"$economy_Colony;\",\"SystemEconomy_Localised\":\"Colony\",\"SystemSecondEconomy\":\"$economy_Refinery;\",\"SystemSecondEconomy_Localised\":\"Refinery\",\"SystemGovernment\":\"$government_Dictatorship;\",\"SystemGovernment_Localised\":\"Dictatorship\",\"SystemSecurity\":\"$SYSTEM_SECURITY_medium;\",\"SystemSecurity_Localised\":\"Medium Security\",\"Population\":80000,\"Body\":\"Aparctias\",\"BodyID\":0,\"BodyType\":\"Star\",\"Powers\":[\"Yuri Grom\"],\"PowerplayState\":\"Exploited\",\"Factions\":[{\"Name\":\"Union of Aparctias Future\",\"FactionState\":\"None\",\"Government\":\"Democracy\",\"Influence\":0.062,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0},{\"Name\":\"Monarchy of Aparctias\",\"FactionState\":\"None\",\"Government\":\"Feudal\",\"Influence\":0.035,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0},{\"Name\":\"Aparctias Purple Council\",\"FactionState\":\"Boom\",\"Government\":\"Anarchy\",\"Influence\":0.049,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"ActiveStates\":[{\"State\":\"Boom\"}]},{\"Name\":\"Beta-3 Tucani Silver Allied Net\",\"FactionState\":\"None\",\"Government\":\"Corporate\",\"Influence\":0.096,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0.32538},{\"Name\":\"Falcons' Nest\",\"FactionState\":\"None\",\"Government\":\"Confederacy\",\"Influence\":0.078,\"Allegiance\":\"Federation\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"RecoveringStates\":[{\"State\":\"NaturalDisaster\",\"Trend\":0}]},{\"Name\":\"EG Union\",\"FactionState\":\"War\",\"Government\":\"Dictatorship\",\"Influence\":0.34,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"ActiveStates\":[{\"State\":\"Boom\"},{\"State\":\"War\"}]},{\"Name\":\"Paladin Consortium\",\"FactionState\":\"War\",\"Government\":\"Democracy\",\"Influence\":0.34,\"Allegiance\":\"Independent\",\"Happiness\":\"$Faction_HappinessBand2;\",\"Happiness_Localised\":\"Happy\",\"MyReputation\":0,\"PendingStates\":[{\"State\":\"Boom\",\"Trend\":0},{\"State\":\"CivilLiberty\",\"Trend\":0}],\"ActiveStates\":[{\"State\":\"War\"}]}],\"SystemFaction\":{\"Name\":\"EG Union\",\"FactionState\":\"War\"},\"Conflicts\":[{\"WarType\":\"war\",\"Status\":\"active\",\"Faction1\":{\"Name\":\"EG Union\",\"Stake\":\"Hancock Refinery\",\"WonDays\":1},\"Faction2\":{\"Name\":\"Paladin Consortium\",\"Stake\":\"\",\"WonDays\":0}}]}";
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static CarrierJumpedEvent()
-        {
-            // System variables
-            VARIABLES.Add("systemname", "The name of the system into which the carrier has jumped");
-            VARIABLES.Add("x", "The X co-ordinate of the system into which the carrier has jumped");
-            VARIABLES.Add("y", "The Y co-ordinate of the system into which the carrier has jumped");
-            VARIABLES.Add("z", "The Z co-ordinate of the system into which the carrier has jumped");
-            VARIABLES.Add("economy", "The economy of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("economy2", "The secondary economy of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("security", "The security of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("population", "The population of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("systemfaction", "The faction controlling the system into which the carrier has jumped, if any");
-            VARIABLES.Add("systemstate", "The state of the faction controlling the system into which the carrier has jumped, if any");
-            VARIABLES.Add("systemgovernment", "The government of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("systemallegiance", "The allegiance of the system into which the carrier has jumped, if any");
-            VARIABLES.Add("factions", "A list of faction objects describing the factions in the system, if any");
-            VARIABLES.Add("conflicts", "A list of conflict objects describing any conflicts between factions in the system, if any");
-            VARIABLES.Add("power", "(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty");
-            VARIABLES.Add("powerstate", "(Only when pledged) The state of powerplay efforts within the star system, if any");
-
-            // Body variables
-            VARIABLES.Add("bodyname", "The nearest body to the carrier, if any");
-            VARIABLES.Add("bodytype", "The type of the body nearest to the carrier, if any");
-            VARIABLES.Add("shortname", "The short name of the nearest body, if any");
-
-            // Carrier variables
-            VARIABLES.Add("carriername", "The name of the carrier");
-        }
-
         // System variables
 
-        [PublicAPI]
+        [PublicAPI("The name of the system into which the carrier has jumped")]
         public string systemname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The X co-ordinate of the system into which the carrier has jumped")]
         public decimal x { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The Y co-ordinate of the system into which the carrier has jumped")]
         public decimal y { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The Z co-ordinate of the system into which the carrier has jumped")]
         public decimal z { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The economy of the system into which the carrier has jumped, if any")]
         public string economy => systemEconomy?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The secondary economy of the system into which the carrier has jumped, if any")]
         public string economy2 => systemEconomy2?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The security of the system into which the carrier has jumped, if any")]
         public string security => securityLevel?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The population of the system into which the carrier has jumped, if any")]
         public long? population { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The faction controlling the system into which the carrier has jumped, if any")]
         public string systemfaction => controllingsystemfaction?.name;
 
-        [PublicAPI]
+        [PublicAPI("The state of the faction controlling the system into which the carrier has jumped, if any")]
         public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The government of the system into which the carrier has jumped, if any")]
         public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The allegiance of the system into which the carrier has jumped, if any")]
         public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
-        [PublicAPI]
+        [PublicAPI("A list of faction objects describing the factions in the system, if any")]
         public List<Faction> factions { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("A list of conflict objects describing any conflicts between factions in the system, if any")]
         public List<Conflict> conflicts { get; private set; }
 
         // Powerplay properties (only when pledged)
 
-        [PublicAPI]
+        [PublicAPI("(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty")]
         public string power => Power?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("(Only when pledged) The state of powerplay efforts within the star system, if any")]
         public string powerstate => powerState?.localizedName;
 
         // Body variables
 
-        [PublicAPI]
+        [PublicAPI("The nearest body to the carrier, if any")]
         public string bodyname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The type of the body nearest to the carrier, if any")]
         public string bodytype => bodyType?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The short name of the nearest body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Carrier variables
 
-        [PublicAPI]
+        [PublicAPI("The name of the carrier")]
         public string carriername { get; private set; }
 
         // These properties are not intended to be user facing

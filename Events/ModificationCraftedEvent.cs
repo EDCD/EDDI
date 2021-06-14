@@ -5,47 +5,35 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class ModificationCraftedEvent : Event
     {
         public const string NAME = "Modification crafted";
         public const string DESCRIPTION = "Triggered when you craft a modification to a module";
         public const string SAMPLE = @"{ ""timestamp"":""2018-02-07T07:49:21Z"", ""event"":""EngineerCraft"", ""Slot"":""Military01"", ""Module"":""int_hullreinforcement_size4_class2"", ""Ingredients"":[ { ""Name"":""iron"", ""Count"":1 } ], ""Engineer"":""The Dweller"", ""EngineerID"":300180, ""BlueprintID"":128673719, ""BlueprintName"":""HullReinforcement_HeavyDuty"", ""Level"":5, ""Quality"":0.499200, ""ExperimentalEffect"":""special_hullreinforcement_chunky"", ""ExperimentalEffect_Localised"":""Deep Plating"", ""Modifiers"":[ { ""Label"":""Mass"", ""Value"":11.200000, ""OriginalValue"":8.000000, ""LessIsGood"":1 }, { ""Label"":""DefenceModifierHealthAddition"", ""Value"":602.543701, ""OriginalValue"":330.000000, ""LessIsGood"":0 }, { ""Label"":""KineticResistance"", ""Value"":13.634562, ""OriginalValue"":1.999998, ""LessIsGood"":0 }, { ""Label"":""ThermicResistance"", ""Value"":13.634562, ""OriginalValue"":1.999998, ""LessIsGood"":0 }, { ""Label"":""ExplosiveResistance"", ""Value"":13.634562, ""OriginalValue"":1.999998, ""LessIsGood"":0 } ] }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ModificationCraftedEvent()
-        {
-            VARIABLES.Add("engineer", "The name of the engineer crafting the modification");
-            VARIABLES.Add("blueprint", "The blueprint being crafted");
-            VARIABLES.Add("module", "The module being crafted");
-            VARIABLES.Add("level", "The level of the blueprint being crafted");
-            VARIABLES.Add("quality", "The progression of the blueprint at the current level, expressed as a percentage");
-            VARIABLES.Add("experimentaleffect", "The experimental effect being crafted, if applicable");
-            VARIABLES.Add("materials", "The materials and quantities used in the crafting (as objects)");
-            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (as objects)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the engineer crafting the modification")]
         public string engineer { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The blueprint being crafted")]
         public string blueprint { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The module being crafted")]
         public string module => compartment?.module?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The level of the blueprint being crafted")]
         public int level { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The progression of the blueprint at the current level, expressed as a percentage")]
         public decimal? quality { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The experimental effect being crafted, if applicable")]
         public string experimentaleffect { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The materials and quantities used in the crafting (as objects)")]
         public List<MaterialAmount> materials { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commodities and quantities used in the crafting (as objects)")]
         public List<CommodityAmount> commodities { get; private set; }
 
         // Not intended to be user facing

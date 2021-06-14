@@ -6,99 +6,76 @@ using Utilities;
 
 namespace EddiMissionMonitor
 {
+    [PublicAPI]
     public class MissionCompletedEvent : Event
     {
         public const string NAME = "Mission completed";
         public const string DESCRIPTION = "Triggered when you complete a mission";
         public const string SAMPLE = @"{ ""timestamp"":""2016-12-02T13:04:35Z"", ""event"":""MissionCompleted"", ""Faction"":""Values Party of Syntec"", ""Name"":""Mission_Courier_Boom_name"", ""MissionID"":55868124, ""DestinationSystem"":""Syntec"", ""DestinationStation"":""Leavitt City"", ""Reward"":20020, ""CommodityReward"":[ { ""Name"": ""ModularTerminals"", ""Count"": 4 } ] }";
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static MissionCompletedEvent()
-        {
-            VARIABLES.Add("missionid", "The ID of the mission");
-            VARIABLES.Add("name", "The name of the mission");
-            VARIABLES.Add("faction", "The faction receiving the mission");
-            VARIABLES.Add("communal", "True if the mission is a community goal");
-            VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
-            VARIABLES.Add("microresource", "The micro-resource (on foot item) involved in the mission (if applicable)");
-            VARIABLES.Add("amount", "The amount of the commodity or micro-resource involved in the mission (if applicable)");
-            VARIABLES.Add("reward", "The monetary reward for completing the mission");
-            VARIABLES.Add("permitsawarded", "The permits rewarded for completing the mission");
-            VARIABLES.Add("commodityrewards", "The commodity rewarded for completing the mission");
-            VARIABLES.Add("materialsrewards", "The materials rewarded for completing the mission");
-            VARIABLES.Add("microresourcerewards", "The micro-resource (on foot items) rewarded for completing the mission");
-            VARIABLES.Add("donation", "The monetary donation when completing the mission");
-            VARIABLES.Add("rewardPermit", "The permit reward name (if applicable)");
-            VARIABLES.Add("rewardCommodity", "The commodity reward name (if applicable)");
-            VARIABLES.Add("rewardCommodityAmount", "The amount of the commodity reward (if applicable)");
-            VARIABLES.Add("rewardMaterial", "The material reward name (if applicable)");
-            VARIABLES.Add("rewardMaterialAmount", "The amount of the material reward (if applicable)");
-            VARIABLES.Add("rewardMicroResource", "The micro-resource (on foot item) reward name (if applicable)");
-            VARIABLES.Add("rewardMicroResourceAmount", "The amount of the micro-resource (on foot item) reward (if applicable)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ID of the mission")]
         public long? missionid { get; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the mission")]
         public string name { get; }
 
-        [PublicAPI]
+        [PublicAPI("The faction receiving the mission")]
         public string faction { get; }
 
-        [PublicAPI]
+        [PublicAPI("The commodity involved in the mission (if applicable)")]
         public string commodity => commodityDefinition?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The micro-resource (on foot item) involved in the mission (if applicable)")]
         public string microresource => microResource?.localizedName;
 
-        public CommodityDefinition commodityDefinition { get; }
-
-        [PublicAPI]
+        [PublicAPI("The amount of the commodity or micro-resource involved in the mission (if applicable)")]
         public int? amount { get; }
 
-        [PublicAPI]
+        [PublicAPI("True if the mission is a community goal")]
         public bool communal { get; }
 
-        [PublicAPI]
+        [PublicAPI("The monetary reward for completing the mission")]
         public long reward { get; }
 
-        [PublicAPI]
+        [PublicAPI("The permits rewarded for completing the mission")]
         public List<string> permitsawarded { get; }
 
-        [PublicAPI]
+        [PublicAPI("The commodity rewarded for completing the mission")]
         public List<CommodityAmount> commodityrewards { get; }
 
-        [PublicAPI]
+        [PublicAPI("The materials rewarded for completing the mission")]
         public List<MaterialAmount> materialsrewards { get; }
 
-        [PublicAPI]
+        [PublicAPI("The micro-resource (on foot items) rewarded for completing the mission")]
         public List<MicroResourceAmount> microresourcerewards { get; }
 
-        [PublicAPI]
+        [PublicAPI("The monetary donation when completing the mission")]
         public long donation { get; }
 
-        [PublicAPI]
+        [PublicAPI("The permit reward name (if applicable)")]
         public string rewardPermit { get; }
 
-        [PublicAPI]
+        [PublicAPI("The commodity reward name (if applicable)")]
         public string rewardCommodity { get; }
 
-        [PublicAPI]
+        [PublicAPI("The amount of the commodity reward (if applicable)")]
         public int rewardCommodityAmount { get; }
 
-        [PublicAPI]
+        [PublicAPI("The material reward name (if applicable)")]
         public string rewardMaterial { get; }
 
-        [PublicAPI]
+        [PublicAPI("The amount of the material reward (if applicable)")]
         public int rewardMaterialAmount { get; }
 
-        [PublicAPI]
+        [PublicAPI("The micro-resource (on foot item) reward name (if applicable)")]
         public string rewardMicroResource { get; }
 
-        [PublicAPI]
+        [PublicAPI("The amount of the micro-resource (on foot item) reward (if applicable)")]
         public int rewardMicroResourceAmount { get; }
+
+        // Not intended to be user facing
+
+        public CommodityDefinition commodityDefinition { get; }
 
         public MicroResource microResource { get; }
 

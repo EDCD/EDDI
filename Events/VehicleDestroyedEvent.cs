@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class VehicleDestroyedEvent : Event
     {
         public const string NAME = "Vehicle destroyed";
         public const string DESCRIPTION = "Triggered when your vehicle (fighter or SRV) is destroyed";
         public const string SAMPLE = "{\"timestamp\":\"2016-07-22T10:53:19Z\",\"event\":\"FighterDestroyed\", \"ID\":13}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static VehicleDestroyedEvent()
-        {
-            VARIABLES.Add("vehicle", "The vehicle that was destroyed (e.g. fighter or srv)");
-            VARIABLES.Add("id", "The vehicle's id");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The vehicle that was destroyed (e.g. fighter or srv)")]
         public string vehicle { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The vehicle's id")]
         public int id { get; private set; }
 
         public VehicleDestroyedEvent(DateTime timestamp, string vehicle, int id) : base(timestamp, NAME)

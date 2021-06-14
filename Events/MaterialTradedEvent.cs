@@ -1,39 +1,29 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class MaterialTradedEvent : Event
     {
         public const string NAME = "Material traded";
         public const string DESCRIPTION = "Triggered when you trade materials at a materials trader";
         public const string SAMPLE = "{ \"timestamp\": \"2018-04-02T05:04:45Z\", \"event\": \"MaterialTrade\", \"MarketID\": 3223343616, \"TraderType\": \"encoded\", \"Paid\": { \"Material\": \"shielddensityreports\", \"Material_Localised\": \"Untypical Shield Scans \", \"Category\": \"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\": \"Encoded\", \"Quantity\": 72 }, \"Received\": { \"Material\": \"shieldfrequencydata\", \"Material_Localised\": \"Peculiar Shield Frequency Data\", \"Category\": \"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\": \"Encoded\", \"Quantity\": 2 } }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static MaterialTradedEvent()
-        {
-            VARIABLES.Add("tradertype", "The type of material trader for the trade");
-            VARIABLES.Add("paid", "The name of the material lost in the trade");
-            VARIABLES.Add("paid_quantity", "The amount of the material lost in the trade");
-            VARIABLES.Add("received", "The name of the material gained in the trade");
-            VARIABLES.Add("received_quantity", "The amount of the material gained in the trade");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The type of material trader for the trade")]
         public string tradertype { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the material lost in the trade")]
         public string paid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The amount of the material lost in the trade")]
         public int paid_quantity { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the material gained in the trade")]
         public string received { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The amount of the material gained in the trade")]
         public int received_quantity { get; private set; }
 
         // Not intended to be user facing

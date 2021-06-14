@@ -1,36 +1,26 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class NearSurfaceEvent : Event
     {
         public const string NAME = "Near surface";
         public const string DESCRIPTION = "Triggered when you enter or depart the gravity well around a surface";
         public const string SAMPLE = null;
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static NearSurfaceEvent()
-        {
-            VARIABLES.Add("approaching_surface", "A boolean value. True if you are entering the gravity well and and false if you are leaving");
-            VARIABLES.Add("systemname", "The name of the starsystem");
-            VARIABLES.Add("bodyname", "The name of the body");
-            VARIABLES.Add("shortname", "The short name of the body, less the system name");
-        }
-
-        [PublicAPI]
+        [PublicAPI("A boolean value. True if you are entering the gravity well and and false if you are leaving")]
         public bool approaching_surface { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the starsystem")]
         public string systemname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the body")]
         public string bodyname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The short name of the body, less the system name")]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // Deprecated, maintained for compatibility with user scripts

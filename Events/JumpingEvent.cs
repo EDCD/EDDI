@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EddiEvents
 {
@@ -7,10 +6,8 @@ namespace EddiEvents
     {
         public const string NAME = "Jumping";
         public const string DESCRIPTION = "NO LONGER IN USE";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         public JumpingEvent(DateTime timestamp) : base(timestamp, NAME)
-        {
-        }
+        { }
     }
 }

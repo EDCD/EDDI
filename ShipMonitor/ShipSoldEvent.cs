@@ -1,36 +1,27 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ShipSoldEvent : Event
     {
         public const string NAME = "Ship sold";
         public const string DESCRIPTION = "Triggered when you sell a ship";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardSell\",\"ShipType\":\"Adder\",\"SellShipID\":1,\"ShipPrice\":25000, \"MarketID\": 128666762}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ShipSoldEvent()
-        {
-            VARIABLES.Add("ship", "The ship that was sold");
-            VARIABLES.Add("shipid", "The ID of the ship that was sold");
-            VARIABLES.Add("price", "The price for which the ship was sold");
-            VARIABLES.Add("system", "The system where the ship was sold");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ship that was sold")]
         public string ship => shipDefinition?.model;
 
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was sold")]
         public int? shipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The price for which the ship was sold")]
         public long price { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The system where the ship was sold")]
         public string system { get; private set; }
 
         // Not intended to be user facing

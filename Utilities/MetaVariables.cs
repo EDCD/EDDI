@@ -36,7 +36,7 @@ namespace Utilities
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType))
             {
-                GetVariable(keysPath.Copy(), "", reflectionObjectType, reflectionObject);
+                GetVariable(keysPath.Copy(), "", reflectionObjectType, string.Empty, reflectionObject);
                 return Results;
             }
 
@@ -49,10 +49,10 @@ namespace Utilities
                 bool passProperty = false;
                 foreach (var attribute in eventProperty.GetCustomAttributes())
                 {
-                    if (attribute is PublicAPIAttribute)
+                    if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passProperty = true;
-                        GetVariable(keysPath.Copy(), eventProperty.Name, eventProperty.PropertyType, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null);
+                        GetVariable(keysPath.Copy(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null);
                         break;
                     }
                 }
@@ -68,10 +68,10 @@ namespace Utilities
                 bool passField = false;
                 foreach (var attribute in eventField.GetCustomAttributes())
                 {
-                    if (attribute is PublicAPIAttribute)
+                    if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passField = true;
-                        GetVariable(keysPath.Copy(), eventField.Name, eventField.FieldType, reflectionObject != null ? eventField.GetValue(reflectionObject) : null);
+                        GetVariable(keysPath.Copy(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null);
                         break;
                     }
                 }
@@ -84,7 +84,7 @@ namespace Utilities
             return Results;
         }
 
-        private void GetVariable(List<string> keysPath, string key, Type type, object value)
+        private void GetVariable(List<string> keysPath, string key, Type type, string description, object value)
         {
             try
             {
@@ -108,45 +108,45 @@ namespace Utilities
 
                 if (type == typeof(bool))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (bool?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (bool?)value));
                 }
                 else if (type == typeof(string))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (string)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (string)value));
                 }
                 else if (type == typeof(int))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (int?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (int?)value));
                 }
                 else if (type == typeof(long))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (long?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (long?)value));
                 }
                 else if (type == typeof(double))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (double?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (double?)value));
                 }
                 else if (type == typeof(float))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (float?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (float?)value));
                 }
                 else if (type == typeof(decimal))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, value is null ? null : (decimal?)Convert.ToDecimal(value)));
+                    Results.Add(new MetaVariable(keysPath, type, description, value is null ? null : (decimal?)Convert.ToDecimal(value)));
                 }
                 else if (type == typeof(DateTime))
                 {
-                    Results.Add(new MetaVariable(keysPath, type, (DateTime?)value));
+                    Results.Add(new MetaVariable(keysPath, type, description, (DateTime?)value));
                 }
                 else if (type is null)
                 {
-                    Results.Add(new MetaVariable(keysPath, null, null));
+                    Results.Add(new MetaVariable(keysPath, null, description, null));
                 }
                 else if (!type.IsGenericType && type.IsEnum)
                 {
                     var fieldsArray = type?.GetFields(BindingFlags.Public | BindingFlags.Static);
                     var enumName = value != null ? fieldsArray[(int)value].Name : null;
-                    Results.Add(new MetaVariable(keysPath, typeof(string), enumName));
+                    Results.Add(new MetaVariable(keysPath, typeof(string), description, enumName));
                 }
                 else
                 {
@@ -157,7 +157,7 @@ namespace Utilities
                         {
                             foreach (DictionaryEntry kvp in (IDictionary)value)
                             {
-                                GetVariable(oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), kvp.Value);
+                                GetVariable(oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value);
                             }
                         }
                     }
@@ -195,14 +195,14 @@ namespace Utilities
 
                         // Write the root element name with (if available) the number of associated entries from the collection
                         var entriesPath = keysPath.Copy();
-                        Results.Add(new MetaVariable(entriesPath, typeof(int), i));
+                        Results.Add(new MetaVariable(entriesPath, typeof(int), description, i));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
                         Logging.Debug($"Found object '{type.Name}'");
 
                         // Add an object to represent the root name for the object in our docs
-                        Results.Add(new MetaVariable(keysPath, typeof(object)));
+                        Results.Add(new MetaVariable(keysPath, typeof(object), description));
 
                         // Get the object's child properties
                         GetVariables(type, value, keysPath);
@@ -237,13 +237,17 @@ namespace Utilities
         /// <summary> The variable's type </summary>
         public Type type { get; }
 
+        /// <summary> The variable's description (if any) </summary>
+        public string description { get; }
+
         /// <summary> The variable's value (if any) </summary>
         public object value { get; set;  }
 
-        public MetaVariable(List<string> keysPath, Type type, object value = null)
+        public MetaVariable(List<string> keysPath, Type type, string description = null, object value = null)
         {
             this.keysPath = keysPath;
             this.type = type;
+            this.description = description;
             this.value = value;
         }
     }
@@ -253,15 +257,19 @@ namespace Utilities
         /// <summary> The full key used to access the variable </summary>
         public string key { get; }
 
+        /// <summary> The variable's description (if any) </summary>
+        public string description { get; }
+
         /// <summary> The value to write (if any) </summary>
         public object value { get; }
 
-        public CottleVariable(List<string> keysPath, object value)
+        public CottleVariable(List<string> keysPath, string description, object value)
         {
             keysPath.RemoveAll(k => k == ""); // Remove any empty keys from the path
             this.key = string
                 .Join(".", keysPath) // Format separators as points
                 .Replace($".{MetaVariables.indexMarker}", @"[\<index\>]"); // Format index values for Cottle
+            this.description = description;
             this.value = value;
         }
     }
@@ -276,10 +284,13 @@ namespace Utilities
         /// <summary> The variable type </summary>
         public Type variableType { get; set; }
 
+        /// <summary> The variable's description (if any) </summary>
+        public string description { get; }
+
         /// <summary> The value to write (if any) </summary>
         public object value { get; set; }
 
-        public VoiceAttackVariable(string startingPrefix, string eventType, List<string> keysPath, Type variableType, object value = null)
+        public VoiceAttackVariable(string startingPrefix, string eventType, List<string> keysPath, Type variableType, string description, object value = null)
         {
             // Build the full key
             this.key = startingPrefix; // Set our starting prefix
@@ -297,8 +308,34 @@ namespace Utilities
                 .Replace(MetaVariables.indexMarker, @"\<index\>"); // Format index values for VoiceAttack
 
             this.eventType = eventType;
-            this.value = value;
-            this.variableType = variableType;
+            this.description = description;
+
+            // Convert doubles, floats, and longs to decimals
+            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long)))
+            {
+                this.value = null;
+                this.variableType = typeof(decimal);
+            }
+            else if (value is double d)
+            {
+                this.value = Convert.ToDecimal(d);
+                this.variableType = typeof(decimal);
+            }
+            else if (value is float f)
+            {
+                this.value = Convert.ToDecimal(f);
+                this.variableType = typeof(decimal);
+            }
+            else if (value is long l)
+            {
+                this.value = Convert.ToDecimal(l);
+                this.variableType = typeof(decimal);
+            }
+            else
+            {
+                this.value = value;
+                this.variableType = variableType;
+            }
         }
 
         private static string AddSpacesToTitleCasedName(string text)
@@ -340,27 +377,6 @@ namespace Utilities
             // Variable type must be one of "string", "int", "bool", "decimal", "double", "long", or "DateTime"
             try
             {
-                // Convert doubles, floats, and longs to decimals
-                if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long)))
-                {
-                    variableType = typeof(decimal);
-                }
-                else if (value is double d)
-                {
-                    value = Convert.ToDecimal(d);
-                    variableType = typeof(decimal);
-                }
-                else if (value is float f)
-                {
-                    value = Convert.ToDecimal(f);
-                    variableType = typeof(decimal);
-                }
-                else if (value is long l)
-                {
-                    value = Convert.ToDecimal(l);
-                    variableType = typeof(decimal);
-                }
-
                 // Set final values
                 if (variableType is null)
                 {
@@ -421,7 +437,7 @@ namespace Utilities
         {
             return source
                 .Where(v => v.keysPath.Last() != MetaVariables.indexMarker) // Exclude index values in Cottle
-                .Select(v => new CottleVariable(v.keysPath, v.value))
+                .Select(v => new CottleVariable(v.keysPath, v.description, v.value))
                 .ToList();
         }
 
@@ -429,7 +445,7 @@ namespace Utilities
         {
             return source
                 .Where(v => v.type != typeof(object))
-                .Select(v => new VoiceAttackVariable(startingPrefix, eventType, v.keysPath, v.type, v.value))
+                .Select(v => new VoiceAttackVariable(startingPrefix, eventType, v.keysPath, v.type, v.description, v.value))
                 .ToList();
         }
     }

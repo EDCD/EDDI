@@ -1,36 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class DiscoveryScanEvent : Event
     {
         public const string NAME = "Discovery scan";
         public const string DESCRIPTION = "Triggered when performing a full system scan (honk)";
         public const string SAMPLE = "{ \"timestamp\":\"2018-11-04T23:44:36Z\", \"event\":\"FSSDiscoveryScan\", \"Progress\":0.824540, \"BodyCount\":4, \"NonBodyCount\":8 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        // "progress" is omitted because it only reports discoveries made prior to the discovery scan 
-        // and excludes progress which is a direct result of the scan itself.
-
-        static DiscoveryScanEvent()
-        {
-            // VARIABLES.Add("progress", "The percentage of the system that has been discovered");
-            VARIABLES.Add("totalbodies", "the total number of discoverable bodies within the system");
-            VARIABLES.Add("nonbodies", "The number of non-body signals");
-        }
-
-        [PublicAPI]
+        [PublicAPI("the total number of discoverable bodies within the system")]
         public int totalbodies { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("the number of non-body signals")]
         public int nonbodies { get; private set; }
 
         // Not intended to be user facing
 
         [Obsolete("Please use `totalbodies` instead")]
         public int bodies => totalbodies;
+
+        // "progress" is omitted because it only reports discoveries made prior to the discovery scan 
+        // and excludes progress which is a direct result of the scan itself.
 
         public int progress { get; private set; }
 

@@ -5,6 +5,7 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CommunityGoalEvent : Event
     {
         public const string NAME = "Community goal";
@@ -27,78 +28,56 @@ namespace EddiEvents
             percentileband = 10, 
             tierreward = 100000000
         });
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommunityGoalEvent()
-        {
-            VARIABLES.Add("updates", "The updates that triggered the event (as objects)");
-            VARIABLES.Add("cgid", "The unique id of the goal");
-            VARIABLES.Add("name", "The description of the goal");
-            VARIABLES.Add("system", "The star system where the goal is located");
-            VARIABLES.Add("station", "The station where the goal is located");
-            VARIABLES.Add("expiry", "The expiration time for the goal in seconds");
-            VARIABLES.Add("iscomplete", "The completion status of the goal (true/false)");
-            VARIABLES.Add("total", "The community's current total contributions");
-            VARIABLES.Add("contribution", "The commander's contribution");
-            VARIABLES.Add("contributors", "The number of commanders participating");
-            VARIABLES.Add("percentileband", "the commander's current rewards percentile");
-            VARIABLES.Add("topranksize", "The number of commanders in the top rank (only for goals with a fixed size top rank)");
-            VARIABLES.Add("toprank", "Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank)");
-            VARIABLES.Add("tier", "The current tier of the goal (only once the 1st tier is reached)");
-            VARIABLES.Add("tierreward", "The reward on offer for the current tier");
-            VARIABLES.Add("toptier", "The top tier of the goal");
-            VARIABLES.Add("toptierreward", "The reward on offer for the top tier");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The updates that triggered the event (as objects)")]
         public List<CGUpdate> updates { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The unique id of the goal")]
         public long cgid => goal.cgid;
 
-        [PublicAPI]
+        [PublicAPI("The description of the goal")]
         public string name => goal.name;
 
-        [PublicAPI]
+        [PublicAPI("The star system where the goal is located")]
         public string system => goal.system;
 
-        [PublicAPI]
+        [PublicAPI("The station where the goal is located")]
         public string station => goal.station;
 
-        [PublicAPI]
+        [PublicAPI("The expiration time for the goal in seconds")]
         public long expiry => goal.expiry;
 
-        [PublicAPI]
+        [PublicAPI("The completion status of the goal (true/false)")]
         public bool iscomplete => goal.iscomplete;
 
-        [PublicAPI]
+        [PublicAPI("The community's current total contributions")]
         public long total => goal.total;
 
-        [PublicAPI]
+        [PublicAPI("The commander's contribution")]
         public long contribution => goal.contribution;
 
-        [PublicAPI]
+        [PublicAPI("The number of commanders participating")]
         public int contributors => goal.contributors;
 
-        [PublicAPI]
+        [PublicAPI("the commander's current rewards percentile")]
         public int percentileband => goal.percentileband;
 
-        [PublicAPI]
+        [PublicAPI("The number of commanders in the top rank (only for goals with a fixed size top rank)")]
         public int? topranksize => goal.topranksize;
 
-        [PublicAPI]
+        [PublicAPI("Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank)")]
         public bool? toprank => goal.toprank;
 
-        [PublicAPI]
+        [PublicAPI("The current tier of the goal (only once the 1st tier is reached)")]
         public int? tier => goal.tier;
 
-        [PublicAPI]
+        [PublicAPI("The reward on offer for the current tier")]
         public long? tierreward => goal.tierreward;
 
-        [PublicAPI]
+        [PublicAPI("The top tier of the goal")]
         public int? toptier => goal.toptier;
 
-        [PublicAPI]
+        [PublicAPI("The reward on offer for the top tier")]
         public string toptierreward => goal.toptierreward;
 
         // Not intended to be user facing

@@ -1,47 +1,35 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CargoWingUpdateEvent : Event
     {
         public const string NAME = "Cargo wingupdate";
         public const string DESCRIPTION = "Triggered when a wing-mate collects or delivers cargo for a wing mission";
         public const string SAMPLE = null;
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CargoWingUpdateEvent()
-        {
-            VARIABLES.Add("missionid", "The ID of the mission");
-            VARIABLES.Add("updatetype", "The update type. 'Collect' or 'Deliver'");
-            VARIABLES.Add("commodity", "The type of cargo (commodity)");
-            VARIABLES.Add("amount", "The amount of cargo collected or delivered for this event");
-            VARIABLES.Add("collected", "The total amount of cargo collected");
-            VARIABLES.Add("delivered", "The total amount of cargo delivered");
-            VARIABLES.Add("totaltodeliver", "The total amount of cargo to deliver to complete the mission");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ID of the mission")]
         public long? missionid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The update type. 'Collect' or 'Deliver'")]
         public string updatetype { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The type of cargo (commodity)")]
         public string commodity => commodityDefinition?.localizedName ?? "Unknown commodity";
 
-        [PublicAPI]
+        [PublicAPI("The amount of cargo collected or delivered for this event")]
         public int? amount { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The total amount of cargo collected")]
         public int collected { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The total amount of cargo delivered")]
         public int delivered { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The total amount of cargo to deliver to complete the mission")]
         public int totaltodeliver { get; private set; }
 
         // Not intended to be user facing

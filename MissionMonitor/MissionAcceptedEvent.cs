@@ -1,106 +1,78 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiMissionMonitor
 {
+    [PublicAPI]
     public class MissionAcceptedEvent : Event
     {
         public const string NAME = "Mission accepted";
         public const string DESCRIPTION = "Triggered when you accept a mission";
         public const string SAMPLE = "{ \"timestamp\":\"2018-11-10T03:25:17Z\", \"event\":\"MissionAccepted\", \"Faction\":\"HIP 20277 Party\", \"Name\":\"Mission_DeliveryWing_Boom\", \"LocalisedName\":\"Boom time delivery of 2737 units of Survival Equipment\", \"Commodity\":\"$SurvivalEquipment_Name;\", \"Commodity_Localised\":\"Survival Equipment\", \"Count\":2737, \"TargetFaction\":\"Guathiti Empire Party\", \"DestinationSystem\":\"Guathiti\", \"DestinationStation\":\"Houtman Landing\", \"Expiry\":\"2018-11-11T02:41:24Z\", \"Wing\":true, \"Influence\":\"+\", \"Reputation\":\"+\", \"Reward\":5391159, \"MissionID\":426330530 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static MissionAcceptedEvent()
-        {
-            VARIABLES.Add("missionid", "The ID of the mission");
-            VARIABLES.Add("name", "The name of the mission");
-            VARIABLES.Add("localisedname", "The localised name of the mission");
-            VARIABLES.Add("faction", "The faction issuing the mission");
-            VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
-            VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
-            VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
-            VARIABLES.Add("microresource", "The micro-resource (on foot item) involved in the mission (if applicable)");
-            VARIABLES.Add("amount", "The amount of the commodity or micro-resource, passengers, or targets involved in the mission (if applicable)");
-            VARIABLES.Add("wing", "True if the mission allows wing-mates");
-            VARIABLES.Add("passengercount", "The number of passengers (if applicable)");
-            VARIABLES.Add("passengerwanted", "True if the passengers are wanted (if applicable)");
-            VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
-            VARIABLES.Add("passengervips", "True if the passenger is a VIP (if applicable)");
-            VARIABLES.Add("target", "Name of the target of the mission (if applicable)");
-            VARIABLES.Add("targettype", "Type of the target of the mission (if applicable)");
-            VARIABLES.Add("targetfaction", "Faction of the target of the mission (if applicable)");
-            VARIABLES.Add("killcount", "The number of targets (if applicable)");
-            VARIABLES.Add("communal", "True if the mission is a community goal");
-            VARIABLES.Add("expiry", "The expiry date of the mission");
-            VARIABLES.Add("reward", "The expected cash reward from the mission");
-            VARIABLES.Add("influence", "The increase in the faction's influence in the system gained when completing this mission, if any");
-            VARIABLES.Add("reputation", "The increase in the commander's reputation with the faction gained when completing this mission, if any");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ID of the mission")]
         public long? missionid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the mission")]
         public string name { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The localised name of the mission")]
         public string localisedname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The faction issuing the mission")]
         public string faction { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The expected cash reward from the mission")]
         public int? reward { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The increase in the faction's influence in the system gained when completing this mission, if any")]
         public string influence { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The increase in the commander's reputation with the faction gained when completing this mission, if any")]
         public string reputation { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the mission allows wing-mates")]
         public bool wing { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The expiry date of the mission")]
         public DateTime? expiry { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commodity involved in the mission (if applicable)")]
         public string commodity => commodityDefinition?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The micro-resource (on foot item) involved in the mission (if applicable)")]
         public string microresource => microResource?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The amount of the commodity or micro-resource, passengers, or targets involved in the mission (if applicable)")]
         public int? amount { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The destination system for the mission (if applicable)")]
         public string destinationsystem { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The destination station for the mission (if applicable)")]
         public string destinationstation { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The type of passengers in the mission (if applicable)")]
         public string passengertype { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the passengers are wanted (if applicable)")]
         public bool? passengerwanted { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the passenger is a VIP (if applicable)")]
         public bool? passengervips { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("Name of the target of the mission (if applicable)")]
         public string target { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("Type of the target of the mission (if applicable)")]
         public string targettype { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("Faction of the target of the mission (if applicable)")]
         public string targetfaction { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the mission is a community goal")]
         public bool communal { get; private set; }
 
         // Not intended to be user facing

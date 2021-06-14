@@ -1,48 +1,36 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ModuleRetrievedEvent : Event
     {
         public const string NAME = "Module retrieved";
         public const string DESCRIPTION = "Triggered when you fetch a previously stored module";
         public const string SAMPLE = "{ \"timestamp\":\"2016-06-10T14:32:03Z\", \"event\":\"ModuleRetrieve\", \"MarketID\": 128666762, \"Slot\":\"MediumHardpoint2\", \"Ship\":\"cobramkiii\", \"ShipID\":1, \"Hot\":true, \"RetrievedItem\":\"hpt_pulselaser_fixed_medium\", \"EngineerModifications\":\"\", \"SwapOutItem\":\"hpt_multicannon_gimbal_medium\", \"Cost\":500  }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ModuleRetrievedEvent()
-        {
-            VARIABLES.Add("ship", "The ship for which the module was retrieved");
-            VARIABLES.Add("shipid", "The ID of the ship for which the module was retrieved");
-            VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("module", "The module (object) retrieved from storage");
-            VARIABLES.Add("cost", "The cost of retrieval");
-            VARIABLES.Add("engineermodifications", "The name of the modification blueprint");
-            VARIABLES.Add("swapoutmodule", "The module (object) swapped out (if the slot was not empty)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ship for which the module was retrieved")]
         public string ship => shipDefinition?.model;
 
-        [PublicAPI]
+        [PublicAPI("The ID of the ship for which the module was retrieved")]
         public int? shipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The outfitting slot")]
         public string slot { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The module (object) retrieved from storage")]
         public Module module { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The cost of retrieval")]
         public long? cost { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the modification blueprint")]
         public string engineermodifications { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The module (object) swapped out (if the slot was not empty)")]
         public Module swapoutmodule { get; private set; }
 
         // Not intended to be user facing

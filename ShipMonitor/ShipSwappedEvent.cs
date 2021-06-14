@@ -1,44 +1,33 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ShipSwappedEvent : Event
     {
         public const string NAME = "Ship swapped";
         public const string DESCRIPTION = "Triggered when you swap a ship";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardSwap\",\"ShipType\":\"Adder\",\"ShipID\":1,\"StoreOldShip\":\"Anaconda\",\"StoreShipID\":2, \"MarketID\": 128666762}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ShipSwappedEvent()
-        {
-            VARIABLES.Add("shipid", "The ID of the ship that was swapped");
-            VARIABLES.Add("ship", "The ship that was swapped");
-            VARIABLES.Add("soldshipid", "The ID of the ship that was sold as part of the swap");
-            VARIABLES.Add("soldship", "The ship that was sold as part of the swap");
-            VARIABLES.Add("storedshipid", "The ID of the ship that was stored as part of the swap");
-            VARIABLES.Add("storedship", "The ship that was stored as part of the swap");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was swapped")]
         public int? shipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The ship that was swapped")]
         public string ship => shipDefinition?.model;
 
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was sold as part of the swap")]
         public int? soldshipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The ship that was sold as part of the swap")]
         public string soldship => soldShipDefinition?.model;
 
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was stored as part of the swap")]
         public int? storedshipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The ship that was stored as part of the swap")]
         public string storedship => storedShipDefinition?.model;
 
         // Not intended to be user facing

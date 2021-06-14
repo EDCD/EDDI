@@ -6,27 +6,20 @@ using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ShipRepairedEvent : Event
     {
         public const string NAME = "Ship repaired";
         public const string DESCRIPTION = "Triggered when you repair your ship";
         public const string SAMPLE = "{ \"timestamp\":\"2020-06-11T19:29:59Z\", \"event\":\"Repair\", \"Items\":[ \"$krait_light_cockpit_name;\", \"Hull\", \"$modularcargobaydoor_name;\", \"$Hpt_BasicMissileRack_Fixed_Small_name;\" ,\"Wear\" ], \"Cost\":50830 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        static ShipRepairedEvent()
-        {
-            VARIABLES.Add("items", "The non-module items repaired (e.g. 'All', 'Ship Integrity', 'Hull', 'Paint')");
-            VARIABLES.Add("modules", "Module objects representing module items repaired");
-            VARIABLES.Add("price", "The price of the repair");
-        }
 
-
-        [PublicAPI]
+        [PublicAPI("The non-module items repaired (e.g. 'All', 'Ship Integrity', 'Hull', 'Paint')")]
         public List<string> items { get; private set; } = new List<string>();
 
-        [PublicAPI]
+        [PublicAPI("Module objects representing module items repaired")]
         public List<Module> modules { get; private set; } = new List<Module>();
 
-        [PublicAPI]
+        [PublicAPI("The price of the repair")]
         public long price { get; private set; }
 
         // Legacy variables

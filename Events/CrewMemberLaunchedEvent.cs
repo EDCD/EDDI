@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CrewMemberLaunchedEvent : Event
     {
         public const string NAME = "Crew member launched";
         public const string DESCRIPTION = "Triggered when a crew member launches the fighter";
         public const string SAMPLE = "{\"timestamp\":\"2017-03-09T12:28:10Z\", \"event\":\"CrewLaunchFighter\", \"Crew\":\"M. Volgrand\", \"ID\":13}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CrewMemberLaunchedEvent()
-        {
-            VARIABLES.Add("crew", "The name of the crew member who launched");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the crew member who launched")]
         public string crew { get; private set; }
 
         public int id { get; private set; }

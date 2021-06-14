@@ -1,51 +1,38 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class RingMappedEvent : Event
     {
         public const string NAME = "Ring mapped";
         public const string DESCRIPTION = "Triggered after mapping a ring with the Surface Area Analysis scanner";
         public const string SAMPLE = @"{ ""timestamp"":""2019-06-23T03:16:29Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Kopernik A 3 A Ring"", ""BodyID"":16, ""SystemAddress"":42324886570137, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static RingMappedEvent()
-        {
-            VARIABLES.Add("ringname", "The name of the ring that was mapped");
-            VARIABLES.Add("reserves", "The reserve level of the ring that was mapped, if the parent body has already been scanned");
-            VARIABLES.Add("composition", "The composition of the ring that was mapped (Icy, Rocky, Metallic, etc.)");
-            VARIABLES.Add("mass", "The mass of the ring that was mapped, in megatonnes");
-            VARIABLES.Add("innerradius", "The inner radius of the ring that was mapped, in kilometers");
-            VARIABLES.Add("outerradius", "The outer radius of the ring that was mapped, in kilometers");
-            VARIABLES.Add("probesused", "The number of probes used to map the ring");
-            VARIABLES.Add("efficiencytarget", "Use less probes than indicated to achieve a mapping efficiency bonus" );
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the ring that was mapped")]
         public string ringname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The reserve level of the ring that was mapped, if the parent body has already been scanned")]
         public string reserves => body?.reserveLevel?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The composition of the ring that was mapped (Icy, Rocky, Metallic, etc.)")]
         public string composition => ring?.localizedComposition;
 
-        [PublicAPI]
+        [PublicAPI("The mass of the ring that was mapped, in megatonnes")]
         public decimal? mass => ring?.mass;
 
-        [PublicAPI]
+        [PublicAPI("The inner radius of the ring that was mapped, in kilometers")]
         public decimal? innerradius => ring?.innerradius;
 
-        [PublicAPI]
+        [PublicAPI("The outer radius of the ring that was mapped, in kilometers")]
         public decimal? outerradius => ring?.outerradius;
 
-        [PublicAPI]
+        [PublicAPI("The number of probes used to map the ring")]
         public int probesused { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("Use less probes than indicated to achieve a mapping efficiency bonus")]
         public int efficiencytarget { get; private set; }
 
         // Not intended to be user facing

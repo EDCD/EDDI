@@ -34,18 +34,6 @@ namespace EddiSpeechResponder
             // If the user is editing an event-based script, add event-specific information
             var @type = Events.TYPES.SingleOrDefault(t => t.Key == script.Name).Value;
             var vars = new MetaVariables(@type).Results;
-            foreach (var variable in vars)
-            {
-                // Get descriptions for our variables
-                foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[script.Name])
-                {
-                    if (variable.keysPath.Count == 1 && variableDescription.Key == variable.keysPath[0])
-                    {
-                        variable.value = variableDescription.Value;
-                        break;
-                    }
-                }
-            }
             var CottleVars = vars.AsCottleVariables();
             if (CottleVars.Any())
             {
@@ -57,7 +45,7 @@ namespace EddiSpeechResponder
                 markdown += "\n";
                 foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
                 {
-                    var description = !string.IsNullOrEmpty((string)cottleVariable.value) ? $" - {cottleVariable.value}" : "";
+                    var description = !string.IsNullOrEmpty(cottleVariable.description) ? $" - {cottleVariable.description}" : "";
                     markdown += $"  - *{cottleVariable.key}* {description}\n";
                 }
             }

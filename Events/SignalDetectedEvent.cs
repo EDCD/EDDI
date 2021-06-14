@@ -1,47 +1,35 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class SignalDetectedEvent : Event
     {
         public const string NAME = "Signal detected";
         public const string DESCRIPTION = "Triggered when a signal source is detected";
         public const string SAMPLE = @"{ ""timestamp"":""2018-11-22T06:21:00Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":58132919110424, ""SignalName"":""$USS;"", ""SignalName_Localised"":""Unidentified signal source"", ""USSType"":""$USS_Type_Salvage;"", ""USSType_Localised"":""Degraded emissions"", ""SpawningState"":""$FactionState_None;"", ""SpawningState_Localised"":""None"", ""SpawningFaction"":""$faction_none;"", ""SpawningFaction_Localised"":""None"", ""ThreatLevel"":0, ""TimeRemaining"":1519.981689 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static SignalDetectedEvent()
-        {
-            VARIABLES.Add("source", "The signal source");
-            VARIABLES.Add("factionstate", "The faction state that triggered the signal source, if any");
-            VARIABLES.Add("faction", "The faction affected by the signal source, if any");
-            VARIABLES.Add("secondsremaining", "The time before the signal expires, in seconds");
-            VARIABLES.Add("stationsignal", "True if the signal source is a station");
-            VARIABLES.Add("threatlevel", "The risk posed by the signal source. Higher numbers are more dangerous.");
-            VARIABLES.Add("unique", "True if this is the first signal of this type detected within the star system");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The signal source")]
         public string source => signalSource.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The faction state that triggered the signal source, if any")]
         public string factionstate => signalSource.spawningState.localizedName ?? signalSource.spawningState.fallbackLocalizedName ?? signalSource.spawningState.edname;
 
-        [PublicAPI]
+        [PublicAPI("The faction affected by the signal source, if any")]
         public string faction => signalSource.spawningFaction;
 
-        [PublicAPI]
+        [PublicAPI("The time before the signal expires, in seconds")]
         public decimal? secondsremaining => signalSource.expiry is null ? null : (decimal?)((DateTime)signalSource.expiry - timestamp).TotalSeconds;
 
-        [PublicAPI]
+        [PublicAPI("The risk posed by the signal source. Higher numbers are more dangerous.")]
         public int threatlevel => Convert.ToInt32(signalSource.threatLevel);
 
-        [PublicAPI]
+        [PublicAPI("True if the signal source is a station")]
         public bool stationsignal => Convert.ToBoolean(signalSource.isStation);
 
-        [PublicAPI]
+        [PublicAPI("True if this is the first signal of this type detected within the star system")]
         public bool unique { get; }
 
         // Not intended to be user facing

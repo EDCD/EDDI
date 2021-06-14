@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CommanderStartedEvent : Event
     {
         public const string NAME = "Commander started";
         public const string DESCRIPTION = "Triggered when you start a new game";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"NewCommander\",\"FID\":\"F0000000\",\"Name\":\"HRC1\"}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommanderStartedEvent()
-        {
-            VARIABLES.Add("name", "The name of the new commander");
-            VARIABLES.Add("package", "The starting package of the new commander");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the new commander")]
         public string name { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The starting package of the new commander")]
         public string package { get; private set; }
 
         // Not intended to be user facing

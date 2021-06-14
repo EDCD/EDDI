@@ -1,51 +1,38 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class TouchdownEvent : Event
     {
         public const string NAME = "Touchdown";
         public const string DESCRIPTION = "Triggered when your ship touches down on a planet's surface";
         public const string SAMPLE = "{ \"timestamp\":\"2021-05-01T21:40:39Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Nervi\", \"SystemAddress\":2518721481067, \"Body\":\"Nervi 2 a\", \"BodyID\":17, \"OnStation\":false, \"OnPlanet\":true, \"Latitude\":40.741577, \"Longitude\":65.081482 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static TouchdownEvent()
-        {
-            VARIABLES.Add("systemname", "The name of the star system where the ship has touched down");
-            VARIABLES.Add("bodyname", "The name of the body where the ship has touched down"); 
-            VARIABLES.Add("longitude", "The longitude from where the ship has touched down");
-            VARIABLES.Add("latitude", "The latitude from where the ship has touched down");
-            VARIABLES.Add("playercontrolled", "True if the ship is controlled by the player");
-            VARIABLES.Add("taxi", "True if the ship is an Apex taxi");
-            VARIABLES.Add("multicrew", "True if the ship is belongs to another player");
-            VARIABLES.Add("nearestdestination", "The nearest location from where the ship has touched down");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the star system where the ship has touched down")]
         public string systemname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the body where the ship has touched down")]
         public string bodyname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The longitude from where the ship has touched down")]
         public decimal? longitude { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The latitude from where the ship has touched down")]
         public decimal? latitude { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the ship is a transport (e.g. taxi or dropship)")]
         public bool? taxi { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the ship is belongs to another player")]
         public bool? multicrew { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the ship is controlled by the player")]
         public bool playercontrolled { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The nearest location from where the ship has touched down")]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing

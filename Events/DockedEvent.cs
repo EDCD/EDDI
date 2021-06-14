@@ -6,59 +6,38 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class DockedEvent : Event
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
         public const string SAMPLE = @"{ ""timestamp"":""2018-11-19T01:14:18Z"", ""event"":""Docked"", ""StationName"":""Linnaeus Enterprise"", ""StationType"":""Coriolis"", ""StarSystem"":""BD+48 738"", ""SystemAddress"":908352033466, ""MarketID"":3226360576, ""StationFaction"":""Laniakea"", ""StationGovernment"":""$government_Cooperative;"", ""StationGovernment_Localised"":""Cooperative"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"", ""MaterialTrader"", ""StationMenu"" ], ""StationEconomy"":""$economy_Extraction;"", ""StationEconomy_Localised"":""Extraction"", ""StationEconomies"":[ { ""Name"":""$economy_Extraction;"", ""Name_Localised"":""Extraction"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":59.295441, ""ActiveFine"":true }";
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static DockedEvent()
-        {
-            VARIABLES.Add("station", "The station at which the commander has docked");
-            VARIABLES.Add("marketId", "The market ID of station at which the commander has docked");
-            VARIABLES.Add("system", "The system at which the commander has docked");
-            VARIABLES.Add("state", "The special state of the station, if applicable (\"Damaged\" for damaged stations for example)");
-            VARIABLES.Add("model", "The model of the station at which the commander has docked (Orbis, Coriolis, etc)");
-            VARIABLES.Add("allegiance", "The superpower allegiance of the station at which the commander has docked");
-            VARIABLES.Add("faction", "The faction controlling the station at which the commander has docked");
-            VARIABLES.Add("factionstate", "The state of the faction controlling the station at which the commander has docked");
-            VARIABLES.Add("economy", "The economy of the station at which the commander has docked");
-            VARIABLES.Add("secondeconomy", "The secondary economy of the station at which the commander has docked");
-            VARIABLES.Add("government", "The government of the station at which the commander has docked");
-            VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
-            VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader");
-            VARIABLES.Add("cockpitbreach", "True if landing with a breached cockpit");
-            VARIABLES.Add("wanted", "True if landing at a station where you are wanted");
-            VARIABLES.Add("activefine", "True if landing at a station where you have active fines");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The system at which the commander has docked")]
         public string system { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The station at which the commander has docked")]
         public string station { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The market ID of station at which the commander has docked")]
         public long? marketId { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The special state of the station, if applicable (\"Damaged\" for damaged stations for example)")]
         public string state { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The model of the station at which the commander has docked (Orbis, Coriolis, etc)")]
         public string model => stationModel.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The economy of the station at which the commander has docked")]
         public string economy => economyShares.Count > 0 ? (economyShares[0]?.economy ?? Economy.None).localizedName : Economy.None.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The secondary economy of the station at which the commander has docked")]
         public string secondeconomy => economyShares.Count > 1 ? (economyShares[1]?.economy ?? Economy.None).localizedName : Economy.None.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The distance of this station from the star (light seconds)")]
         public decimal? distancefromstar { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader")]
         public List<string> stationservices
         {
             get
@@ -72,26 +51,27 @@ namespace EddiEvents
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("True if landing with a breached cockpit")]
         public bool cockpitbreach { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if landing at a station where you are wanted")]
         public bool wanted { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if landing at a station where you have active fines")]
         public bool activefine { get; private set; }
 
         // Faction properties
-        [PublicAPI]
+
+        [PublicAPI("The faction controlling the station at which the commander has docked")]
         public string faction => controllingfaction?.name;
 
-        [PublicAPI]
+        [PublicAPI("The state of the faction controlling the station at which the commander has docked")]
         public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
        
-        [PublicAPI]
+        [PublicAPI("The superpower allegiance of the station at which the commander has docked")]
         public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The government of the station at which the commander has docked")]
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // These properties are not intended to be user facing

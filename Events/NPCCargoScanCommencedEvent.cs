@@ -1,27 +1,20 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class NPCCargoScanCommencedEvent : Event
     {
         public const string NAME = "NPC cargo scan commenced";
         public const string DESCRIPTION = "Triggered when a cargo scan on your ship by an NPC is detected";
         public static readonly NPCCargoScanCommencedEvent SAMPLE = new NPCCargoScanCommencedEvent(DateTime.UtcNow, MessageSource.Pirate);
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static NPCCargoScanCommencedEvent()
-        {
-            VARIABLES.Add("by", "The localized source of the cargo scan (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
-            VARIABLES.Add("by_invariant", "The invariant source of the cargo scan (Pirate, Military, Bounty hunter, Cargo hunter, etc)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The localized source of the cargo scan (Pirate, Military, Bounty hunter, Cargo hunter, etc)")]
         public string by => Source.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("The invariant source of the cargo scan (Pirate, Military, Bounty hunter, Cargo hunter, etc)")]
         public string by_invariant => Source.invariantName;
 
         // Not intended to be user facing

@@ -1,31 +1,23 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CommanderPromotionEvent : Event
     {
         public const string NAME = "Commander promotion";
         public const string DESCRIPTION = "Triggered when one of your commander ranks increases";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Combat\":5}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommanderPromotionEvent()
-        {
-            VARIABLES.Add("rank_type", "The type of rank being promoted");
-            VARIABLES.Add("rank", "The commander's new rank");
-            VARIABLES.Add("rank_invariant", "The commander's new invariant rank");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The type of rank being promoted")]
         public string rank_type { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's new rank")]
         public string rank { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's new invariant rank")]
         public string rank_invariant { get; private set; }
 
         // Not intended to be user facing

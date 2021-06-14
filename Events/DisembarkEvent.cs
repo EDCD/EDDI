@@ -1,59 +1,44 @@
 ﻿using EddiDataDefinitions;
-using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class DisembarkEvent : Event
     {
         public const string NAME = "Disembark";
         public const string DESCRIPTION = "Triggered when you transition from a ship or SRV to on foot";
         public const string SAMPLE = "{ \"timestamp\":\"2021-05-03T21:47:38Z\", \"event\":\"Disembark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":6, \"StarSystem\":\"Firenses\", \"SystemAddress\":2868635379121, \"Body\":\"Roberts Gateway\", \"BodyID\":44, \"OnStation\":true, \"OnPlanet\":false, \"StationName\":\"Roberts Gateway\", \"StationType\":\"Coriolis\", \"MarketID\":3221636096 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static DisembarkEvent()
-        {
-            VARIABLES.Add("frommulticrew", "True if disembarking from another player's ship");
-            VARIABLES.Add("fromship", "True if disembarking from your own ship");
-            VARIABLES.Add("fromsrv", "True if disembarking from an SRV");
-            VARIABLES.Add("fromtransport", "True if disembarking from a transport ship (e.g. taxi or dropship)");
-            VARIABLES.Add("systemname", "The name of the star system where the commander is disembarking");
-            VARIABLES.Add("bodyname", "The name of the body where the commander is disembarking (if any)");
-            VARIABLES.Add("station", "The name of the station where the commander is disembarking (if any)");
-            VARIABLES.Add("stationtype", "The type of station where the commander is disembarking (if any)");
-            VARIABLES.Add("onstation", "True if disembarking to a station");
-            VARIABLES.Add("onplanet", "True if disembarking to a planet");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the star system where the commander is disembarking")]
         public string systemname { get; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the body where the commander is disembarking (if any)")]
         public string bodyname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the station where the commander is disembarking (if any)")]
         public string station { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The type of station where the commander is disembarking (if any)")]
         public string stationtype => (stationModel ?? StationModel.None).localizedName;
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking from another player's ship")]
         public bool frommulticrew { get; }
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking from your own ship")]
         public bool fromship => fromLocalId != null && !fromsrv && !fromtransport && !frommulticrew;
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking from an SRV")]
         public bool fromsrv { get; }
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking from a transport ship (e.g. taxi or dropship)")]
         public bool fromtransport { get; }
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking to a station")]
         public bool? onstation { get; }
 
-        [PublicAPI]
+        [PublicAPI("True if disembarking to a planet")]
         public bool? onplanet { get; }
 
         // Not intended to be user facing

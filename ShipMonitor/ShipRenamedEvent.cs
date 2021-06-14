@@ -1,36 +1,27 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ShipRenamedEvent : Event
     {
         public const string NAME = "Ship renamed";
         public const string DESCRIPTION = "Triggered when you rename a ship";
         public const string SAMPLE = @"{""timestamp"":""2016-09-20T18:14:26Z"",""event"":""SetUserShipName"",""Ship"":""federation_corvette"",""ShipID"":1,""UserShipName"":""Shieldless wonder"",""UserShipId"":""NCC-1701""}";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ShipRenamedEvent()
-        {
-            VARIABLES.Add("ship", "The model of the ship that was renamed");
-            VARIABLES.Add("shipid", "The ID of the ship that was renamed");
-            VARIABLES.Add("name", "The new name of the ship");
-            VARIABLES.Add("ident", "The new ident of the ship");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The model of the ship that was renamed")]
         public string ship => shipDefinition?.model;
 
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was renamed")]
         public int? shipid { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The new name of the ship")]
         public string name { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The new ident of the ship")]
         public string ident { get; private set; }
 
         // Not intended to be user facing

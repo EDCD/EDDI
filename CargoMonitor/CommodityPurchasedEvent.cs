@@ -1,36 +1,27 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiCargoMonitor
 {
+    [PublicAPI]
     public class CommodityPurchasedEvent : Event
     {
         public const string NAME = "Commodity purchased";
         public const string DESCRIPTION = "Triggered when you buy a commodity from the markets";
         public const string SAMPLE = "{ \"timestamp\":\"2018-04-07T16:29:39Z\", \"event\":\"MarketBuy\", \"MarketID\":3224801280, \"Type\":\"coffee\", \"Count\":1, \"BuyPrice\":1198, \"TotalCost\":1198 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommodityPurchasedEvent()
-        {
-            VARIABLES.Add("marketid", "The market ID of the purchased commodity");
-            VARIABLES.Add("commodity", "The name of the purchased commodity");
-            VARIABLES.Add("amount", "The amount of the purchased commodity");
-            VARIABLES.Add("price", "The price paid per unit of the purchased commodity");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The market ID of the purchased commodity")]
         public long marketid { get; }
 
-        [PublicAPI]
+        [PublicAPI("The name of the purchased commodity")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        [PublicAPI]
+        [PublicAPI("The amount of the purchased commodity")]
         public int amount { get; }
 
-        [PublicAPI]
+        [PublicAPI("The price paid per unit of the purchased commodity")]
         public int price { get; }
 
         // Not intended to be user facing

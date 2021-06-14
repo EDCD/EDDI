@@ -42,20 +42,6 @@ namespace GeneratorTests
                 };
 
                 var vars = new MetaVariables(entry.Value).Results;
-
-                foreach (var variable in vars)
-                {
-                    // Get descriptions for our variables
-                    foreach (KeyValuePair<string, string> variableDescription in Events.VARIABLES[entry.Key])
-                    {
-                        if (variable.keysPath.Count == 1 && variableDescription.Key == variable.keysPath[0])
-                        {
-                            variable.value = variableDescription.Value;
-                            break;
-                        }
-                    }
-                }
-
                 var CottleVars = vars.AsCottleVariables();
                 var VoiceAttackVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
 
@@ -84,7 +70,7 @@ namespace GeneratorTests
 
                     foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
                     {
-                        var description = !string.IsNullOrEmpty((string)cottleVariable.value) ? $" - {cottleVariable.value}" : "";
+                        var description = !string.IsNullOrEmpty(cottleVariable.description) ? $" - {cottleVariable.description}" : "";
                         output.Add($"  - *{{event.{cottleVariable.key}}}* {description}");
                         output.Add("");
                     }
@@ -101,7 +87,7 @@ namespace GeneratorTests
 
                     void WriteVariableToOutput(VoiceAttackVariable variable)
                     {
-                        var description = !string.IsNullOrEmpty((string)variable.value) ? $" - {variable.value}" : "";
+                        var description = !string.IsNullOrEmpty(variable.description) ? $" - {variable.description}" : "";
                         if (variable.variableType == typeof(string))
                         {
                             output.Add($"  - *{{TXT:{variable.key}}}* {description}");
@@ -130,6 +116,7 @@ namespace GeneratorTests
                         WriteVariableToOutput(variable);
                     }
 
+                    output.Add("");
                     output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
                     output.Add("");
                 }
@@ -167,11 +154,13 @@ namespace GeneratorTests
         public void TestGenerateEventVariables()
         {
             SortedSet<string> eventVars = new SortedSet<string>();
-            foreach (IDictionary<string, string> variableList in Events.VARIABLES.Values)
+
+            foreach (var type in Events.TYPES)
             {
-                foreach (string variableName in variableList.Keys)
+                var vars = new MetaVariables(type.Value).Results;
+                foreach (var key in vars.SelectMany(v => v.keysPath))
                 {
-                    eventVars.Add(variableName);
+                    eventVars.Add(key);
                 }
             }
 

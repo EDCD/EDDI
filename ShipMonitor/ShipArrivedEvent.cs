@@ -1,52 +1,39 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class ShipArrivedEvent : Event
     {
         public const string NAME = "Ship arrived";
         public const string DESCRIPTION = "Triggered when you complete a ship transfer";
         public static ShipArrivedEvent SAMPLE = new ShipArrivedEvent(DateTime.Parse("2016-06-10T14:32:03Z").ToUniversalTime(), ShipDefinitions.FromEDModel("CobraMkIII"), "Eranin", 85.639145M, 580, 30, "Azeban City", 128168184, 128001536);
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ShipArrivedEvent()
-        {
-            VARIABLES.Add("shipid", "The ID of the ship that was transferred");
-            VARIABLES.Add("ship", "The (invariant) ship model that was transferred");
-            VARIABLES.Add("phoneticname", "The phonetic name of the ship that was transferred");
-            VARIABLES.Add("station", "The station at which the ship shall arrive");
-            VARIABLES.Add("system", "The system at which the ship shall arrive");
-            VARIABLES.Add("distance", "The distance that the transferred ship travelled, in light years");
-            VARIABLES.Add("price", "The price of transferring the ship");
-            VARIABLES.Add("time", "The time elapsed during the transfer (in seconds)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The ID of the ship that was transferred")]
         public int? shipid => Ship.LocalId;
 
-        [PublicAPI]
+        [PublicAPI("The (invariant) ship model that was transferred")]
         public string ship => Ship.model;
 
-        [PublicAPI]
+        [PublicAPI("The phonetic name of the ship that was transferred")]
         public string phoneticname => Ship.phoneticname;
 
-        [PublicAPI]
+        [PublicAPI("The station at which the ship shall arrive")]
         public string station { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The system at which the ship shall arrive")]
         public string system { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The distance that the transferred ship travelled, in light years")]
         public decimal distance { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The price of transferring the ship")]
         public long? price { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The time elapsed during the transfer (in seconds)")]
         public long? time { get; private set; }
 
         // Not intended to be user facing

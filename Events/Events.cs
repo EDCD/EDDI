@@ -12,7 +12,6 @@ namespace EddiEvents
         public static IDictionary<string, object> SAMPLES = new Dictionary<string, object>();
         public static IDictionary<string, string> DEFAULTS = new Dictionary<string, string>();
         public static IDictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
-        public static IDictionary<string, IDictionary<string, string>> VARIABLES = new Dictionary<string, IDictionary<string, string>>();
 
         static Events()
         {
@@ -60,15 +59,6 @@ namespace EddiEvents
                                                     if (eventDescription != null)
                                                     {
                                                         DESCRIPTIONS.Add(eventName, eventDescription);
-                                                    }
-                                                }
-
-                                                if (type.GetField("VARIABLES") != null)
-                                                {
-                                                    Dictionary<string, string> eventVariables = (Dictionary<string, string>)type.GetField("VARIABLES").GetValue(null);
-                                                    if (eventVariables != null)
-                                                    {
-                                                        VARIABLES.Add(eventName, eventVariables);
                                                     }
                                                 }
 

@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class FlightAssistEvent : Event
     {
         public const string NAME = "Flight assist";
         public const string DESCRIPTION = "Triggered when flight assist is toggled";
         public const string SAMPLE = null;
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static FlightAssistEvent()
-        {
-            VARIABLES.Add("off", "A boolean value. True if flight assist is off.");
-        }
-
-        [PublicAPI]
+        [PublicAPI("A boolean value. True if flight assist is off.")]
         public bool off { get; private set; }
 
         public FlightAssistEvent(DateTime timestamp, bool flight_assist_off) : base(timestamp, NAME)

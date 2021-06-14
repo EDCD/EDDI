@@ -2,20 +2,16 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
+    [PublicAPI]
     public class StoredModulesEvent : Event
     {
         public const string NAME = "Stored modules";
         public const string DESCRIPTION = "Triggered when the `Outfitting` screen is opened, providing a list of all stored modules";
         public const string SAMPLE = null;
-
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static StoredModulesEvent()
-        {
-        }
 
         // not intended to be user facing
 

@@ -5,23 +5,17 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class RingHotspotsEvent : Event
     {
         public const string NAME = "Ring hotspots detected";
         public const string DESCRIPTION = "Triggered when hotspots are detected in a ring";
         public const string SAMPLE = @"{ ""timestamp"":""2019-08-19T00:24:53Z"", ""event"":""SAASignalsFound"", ""BodyName"":""Oponner 6 A Ring"", ""SystemAddress"":3721345878371, ""BodyID"":29, ""Signals"":[ { ""Type"":""Bromellite"", ""Count"":3 }, { ""Type"":""Grandidierite"", ""Count"":5 }, { ""Type"":""LowTemperatureDiamond"", ""Type_Localised"":""Low Temperature Diamonds"", ""Count"":1 } ] }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static RingHotspotsEvent()
-        {
-            VARIABLES.Add("bodyname", "The body where surface signals were detected");
-            VARIABLES.Add("hotspots", "A list of hotspots (as objects)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The body where surface signals were detected")]
         public string bodyname { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("A list of hotspots (as objects)")]
         public List<CommodityAmount> hotspots { get; private set; }
 
         // Not intended to be user facing

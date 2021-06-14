@@ -5,20 +5,14 @@ using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class MarketInformationUpdatedEvent : Event
     {
         public const string NAME = "Market information updated";
         public const string DESCRIPTION = "Triggered when market information for the currently docked station has been updated";
         public const string SAMPLE = null;
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static MarketInformationUpdatedEvent()
-        {
-            VARIABLES.Add("updates", "A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'");
-        }
-
-        [PublicAPI]
+        [PublicAPI("A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'")]
         public HashSet<string> updates { get; private set; } = new HashSet<string>();
 
         // Not intended to be user facing

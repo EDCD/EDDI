@@ -1,51 +1,38 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CommanderRatingsEvent : Event
     {
         public const string NAME = "Commander ratings";
         public const string DESCRIPTION = "Triggered when your ratings are reported";
         public const string SAMPLE = "{ \"timestamp\":\"2021-05-21T02:17:37Z\", \"event\":\"Rank\", \"Combat\":7, \"Trade\":8, \"Explore\":8, \"Soldier\":0, \"Exobiologist\":0, \"Empire\":14, \"Federation\":14, \"CQC\":2 }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommanderRatingsEvent()
-        {
-            VARIABLES.Add("combat", "The commander's combat rating (this is an object)");
-            VARIABLES.Add("trade", "The commander's trading rating (this is an object)");
-            VARIABLES.Add("exploration", "The commander's exploration rating (this is an object)");
-            VARIABLES.Add("cqc", "The commander's CQC rating (this is an object)");
-            VARIABLES.Add("empire", "The commander's empire rating (this is an object)");
-            VARIABLES.Add("federation", "The commander's federation rating (this is an object)");
-            VARIABLES.Add("mercenary", "The commander's mercenary rating  (this is an object)");
-            VARIABLES.Add("exobiologist", "The commander's exobiologist rating  (this is an object)");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The commander's combat rating (this is an object)")]
         public CombatRating combat { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's trading rating (this is an object)")]
         public TradeRating trade { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's exploration rating (this is an object)")]
         public ExplorationRating exploration { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's CQC rating (this is an object)")]
         public CQCRating cqc { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's empire rating (this is an object)")]
         public EmpireRating empire { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's federation rating (this is an object)")]
         public FederationRating federation { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's mercenary rating  (this is an object)")]
         public MercenaryRating mercenary { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The commander's exobiologist rating  (this is an object)")]
         public ExobiologistRating exobiologist { get; private set; }
 
         public CommanderRatingsEvent(DateTime timestamp, CombatRating combat, TradeRating trade, ExplorationRating exploration, CQCRating cqc, EmpireRating empire, FederationRating federation, MercenaryRating mercenary, ExobiologistRating exobiologist) : base(timestamp, NAME)

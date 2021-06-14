@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
+    [PublicAPI]
     public class CommanderLoadingEvent : Event
     {
         public const string NAME = "Commander loading";
         public const string DESCRIPTION = "Triggered at the very beginning of loading a game";
         public const string SAMPLE = "{ \"timestamp\":\"2019-08-01T05:13:56Z\", \"event\":\"Commander\", \"FID\":\"F0000000\", \"Name\":\"HRC1\" }";
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static CommanderLoadingEvent()
-        {
-            VARIABLES.Add("name", "The name of the player account being loaded");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The name of the player account being loaded")]
         public string name { get; private set; }
 
         // Not intended to be user facing
