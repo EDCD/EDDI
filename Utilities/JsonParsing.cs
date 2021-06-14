@@ -170,6 +170,12 @@ namespace Utilities
             {
                 return Convert.ToInt64(ul);
             }
+            if (val is BigInteger bigInteger)
+            {
+                // Handle overflow conditions causing some very large numbers in the journal
+                var toLong = bigInteger + long.MinValue;
+                return (long)toLong;
+            }
             throw new ArgumentException("Unparseable value for " + key);
         }
 
@@ -187,6 +193,12 @@ namespace Utilities
             if (val is ulong ul)
             {
                 return Convert.ToInt64(ul);
+            }
+            if (val is BigInteger bigInteger)
+            {
+                // Handle overflow conditions causing some very large numbers in the journal
+                var toLong = bigInteger + long.MinValue;
+                return (long)toLong;
             }
             throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
         }
