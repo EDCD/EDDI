@@ -257,5 +257,8 @@
     <value>Rücknahmestelle</value>
     <comment>Station Service: VoucherRedemption</comment>
   </data>
-  
+  <data name="SocialSpace" xml:space="preserve">
+    <value>Gemeinschaftsraum</value>
+    <comment>Station Service SocialSpace</comment>
+  </data>
 </root>
