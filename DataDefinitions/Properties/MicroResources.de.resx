@@ -212,18 +212,51 @@
     <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
   </data>
   
+  <data name="ResidentialDirectory" xml:space="preserve">
+    <value>Einwohnerverzeichnis</value>
+    <comment>Current occupants and registered contact information for a specific residential area.</comment>
+  </data>
+  <data name="SalesRecords" xml:space="preserve">
+    <value>Verkaufszahlen</value>
+    <comment>Information of a settlement's gross and profit, stock exports and outstanding invoices.</comment>
+  </data>
+  <data name="SettlementDefencePlans" xml:space="preserve">
+    <value>Siedlungsverteidigungspläne</value>
+    <comment>Defensive tactics intended to protect a specific settlement from a hostile force.</comment>
+  </data>
+  <data name="ShareholderInformation" xml:space="preserve">
+    <value>Aktionärsinformationen</value>
+    <comment>A list of individuals and groups who have a financial stake in a settlement or organisation.</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SyntheticPathogen" xml:space="preserve">
+    <value>Synthetischer Erreger</value>
+    <comment>A synthesised virus created by splicing together several different diseases.</comment>
+  </data>
+  <data name="TaxRecords" xml:space="preserve">
+    <value>Steuerunterlagen</value>
+    <comment>Details of an organisation's tax payments and related documentation.</comment>
+  </data>
+  <data name="TopographicalSurveys" xml:space="preserve">
+    <value>Topographische Erhebungen</value>
+    <comment>Measurements and analysis of a specific area of a planetary body's surface.</comment>
+  </data>
+  <data name="TravelPermits" xml:space="preserve">
+    <value>Reiseerlaubnisse</value>
+    <comment>A registry of all travel permits assigned to the personnel of a company or facility.</comment>
+  </data>
+  <data name="TroopDeploymentRecords" xml:space="preserve">
+    <value>Truppeneinsatzprotokolle</value>
+    <comment>Details of personnel and equipment used during a military or security operation.</comment>
+  </data>
+  <data name="TrueFormFossil" xml:space="preserve">
+    <value>Makelloses Fossil</value>
+    <comment>The perfectly preserved remains of a long-dead organism.</comment>
+  </data>
+  <data name="UnionMembership" xml:space="preserve">
+    <value>Gewerkschaftsmitgliedschaft</value>
+    <comment>Personnel who have signed up to a trade or labour union or political lobby</comment>
+  </data>
   <data name="UniversalTranslator" xml:space="preserve">
     <value>Universalübersetzer</value>
     <comment>A wearable device capable of instantaneously translating any of the most common human languages.</comment>
@@ -233,7 +266,10 @@
     <value>Impfstoffforschung</value>
     <comment>Results of clinical experiments and efficacy tests of a particular vaccine.</comment>
   </data>
-  
+  <data name="VirologyData" xml:space="preserve">
+    <value>Virologische Daten</value>
+    <comment>Genetic analysis of a virus and research into its composition, symptoms and transmission.</comment>
+  </data>
   <data name="VisitorRegister" xml:space="preserve">
     <value>Besucherregister</value>
     <comment>A list of non-employee personnel logged at a settlement within a certain time period.</comment>
@@ -265,9 +301,15 @@
     <comment>A technical blueprint detailing the design of a protective suit.</comment>
   </data>
   
+  <data name="EmploymentHistory" xml:space="preserve">
+    <value>Beschäftigungshistorie</value>
+    <comment>A detailed list of an individual’s prior employment, roles and professional experience.</comment>
+  </data>
   
-  
-  
+  <data name="SurveillanceEquipment" xml:space="preserve">
+    <value>Überwachungsausrüstung</value>
+    <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
+  </data>
   
   
   
@@ -279,16 +321,106 @@
     <value>Chemische Probe</value>
     <comment>An unidentified chemical compound.</comment>
   </data>
-  
-  
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Ionisiertes Gas</value>
+    <comment>A quantity of ionised gas.</comment>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Aerogel</value>
+    <comment>An extremely lightweight thermal insulator.</comment>
+  </data>
   <data name="CarbonFibrePlating" xml:space="preserve">
     <value>Kohlefaserbeschichtung</value>
     <comment>A flexible, lightweight material made of organic polymers.</comment>
   </data>
-  
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Mikro-Superkondensatoren</value>
+    <comment>A device designed to store an electric charge.</comment>
+  </data>
   <data name="TitaniumPlating" xml:space="preserve">
     <value>Titanbeschichtung</value>
     <comment>A strong, low-density metal that is highly resistant to corrosion.</comment>
+  </data>
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Elektroschalter</value>
+    <comment>A simple device designed to close an electronic circuit.</comment>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Verschlüsselter Speicherchip</value>
+    <comment>An integrated circuit designed to securely store software data.</comment>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Epoxidharz Klebstoff</value>
+    <comment>A multipurpose polymer adhesive.</comment>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Speicherchip</value>
+    <comment>An integrated circuit designed to store software data.</comment>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Herstellungsanweisung</value>
+    <comment>Detailed construction guidance, ranging from individual items to mass production requirements.</comment>
+  </data>
+  
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Elektroverkabelung</value>
+    <comment>Multipurpose wiring for use in a variety of electronic devices.</comment>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Mikro-Transformator</value>
+    <comment>A compact transformer designed to transfer electrical energy between two circuits.</comment>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Elektrosicherung</value>
+    <comment>A simple device designed to protect an electrical circuit from excess current.</comment>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Optische Faser</value>
+    <comment>A length of fine cable designed to transfer data in the form of light.</comment>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Leiterplatte</value>
+    <comment>A component from an electrical system.</comment>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Metallspule</value>
+    <comment>Commonplace metal for use in electrical circuits and hydraulic systems.</comment>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Motor</value>
+    <comment>A machine designed to transform electrical energy into kinetic energy.</comment>
+  </data>
+  <data name="MicroElectrode" xml:space="preserve">
+    <value>Mikroelektrode</value>
+    <comment>A simple device designed to create a small electric arc.</comment>
+  </data>
+  <data name="Graphene" xml:space="preserve">
+    <value>Graphit</value>
+    <comment>A multipurpose carbon allotrope.</comment>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Mikrohydraulikgeräte</value>
+    <comment>Small, powerful hydraulic devices.</comment>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Störsender</value>
+    <comment>A device designed to distort electromagnetic waves.</comment>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>Wolframcarbid</value>
+    <comment>A compound of tungsten and carbon. </comment>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Elektromagnet</value>
+    <comment>A magnet in which the magnetic field is produced by an electric current.</comment>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Sender</value>
+    
+    <comment>An electronic device designed to produce electromagnetic waves.</comment>
+  </data>
+  <data name="AudioLogs" xml:space="preserve">
+    <value>Audio-Logs</value>
   </data>
   
   
@@ -329,41 +461,59 @@
   
   
   
+  <data name="SettlementAssaultPlans" xml:space="preserve">
+    <value>Siedlungsangriffspläne</value>
+    <comment>Detailed military tactics designed for use at a specific settlement.</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SmearCampaignPlans" xml:space="preserve">
+    <value>Pläne für Verleumdungskampagne</value>
+    <comment>A proposal to spread toxic information intended to damage a reputation.</comment>
+  </data>
+  <data name="SpectralAnalysisData" xml:space="preserve">
+    <value>Spektralanalyse-Daten</value>
+    <comment>A collection of detailed electromagnetic measurements made using spectroscopic equipment.</comment>
+  </data>
+  <data name="VIPSecurityDetail" xml:space="preserve">
+    <value>VIP-Sicherheitsdienst</value>
+    <comment>Assignments and deployment schedules of agents assigned to protect key personnel.</comment>
+  </data>
+  <data name="WeaponTestData" xml:space="preserve">
+    <value>Waffentestdaten</value>
+    <comment>Analysis of the performance and effectiveness of newly designed weaponry or related enhancements.</comment>
+  </data>
+  <data name="XenoDefenceProtocols" xml:space="preserve">
+    <value>Xeno-Abwehr-Protokolle</value>
+    <comment>Combatant tactics and settlement instructions in the event of a non-human attack.</comment>
+  </data>
+  <data name="ChemicalCatalyst" xml:space="preserve">
+    <value>Chemischer Katalysator</value>
+    <comment>A compound used to accelerate chemical reactions.</comment>
+  </data>
+  <data name="ChemicalSuperbase" xml:space="preserve">
+    <value>Chemische Superbase</value>
+    <comment>A highly soluble chemical with a wide range of applications.</comment>
+  </data>
+  <data name="Epinephrine" xml:space="preserve">
+    <value>Epinephrin</value>
+    <comment>A synthesised hormone that increases cardiac output and raises blood-glucose levels.</comment>
+  </data>
+  <data name="OxygenicBacteria" xml:space="preserve">
+    <value>Sauerstoffbakterien</value>
+    <comment>Cultivated bacteria used to produce large amounts of oxygen.</comment>
+  </data>
+  <data name="pHNeutraliser" xml:space="preserve">
+    <value>pH-Neutralisator</value>
+    <comment>A compound designed to neutralise the pH levels of acids and alkalis.</comment>
+  </data>
+  <data name="RDX" xml:space="preserve">
+    <value>Hexogen</value>
+    <comment>A highly explosive nitramide compound.</comment>
+  </data>
+  <data name="ViscoelasticPolymer" xml:space="preserve">
+    <value>Viskoelastisches Polymer</value>
+    <comment>An elastic material used in shock absorption and vibration dampening.</comment>
+  </data>
   
   
   
