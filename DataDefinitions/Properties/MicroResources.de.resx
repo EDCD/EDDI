@@ -206,12 +206,18 @@
     <comment>A list of purchased items and materials including total costs and supplier details.</comment>
   </data>
   
-  
+  <data name="Push" xml:space="preserve">
+    <value>Schub</value>
+    <comment>A recreational drug that temporarily increases cognitive function.</comment>
+  </data>
   <data name="RadioactivityData" xml:space="preserve">
     <value>Daten zur Radioaktivität</value>
     <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
   </data>
-  
+  <data name="ReactorOutputReview" xml:space="preserve">
+    <value>Evaluierung der Reaktorleistung</value>
+    <comment>Analysis and measurement of energy production from a settlement's power centre.</comment>
+  </data>
   <data name="ResidentialDirectory" xml:space="preserve">
     <value>Einwohnerverzeichnis</value>
     <comment>Current occupants and registered contact information for a specific residential area.</comment>
@@ -228,7 +234,10 @@
     <value>Aktionärsinformationen</value>
     <comment>A list of individuals and groups who have a financial stake in a settlement or organisation.</comment>
   </data>
-  
+  <data name="SurveilleanceLogs" xml:space="preserve">
+    <value>Überwachungs-Logs</value>
+    <comment>Audiovisual data gathered using technological monitoring and/or tracking techniques.</comment>
+  </data>
   <data name="SyntheticPathogen" xml:space="preserve">
     <value>Synthetischer Erreger</value>
     <comment>A synthesised virus created by splicing together several different diseases.</comment>
@@ -261,7 +270,10 @@
     <value>Universalübersetzer</value>
     <comment>A wearable device capable of instantaneously translating any of the most common human languages.</comment>
   </data>
-  
+  <data name="VaccinationRecords" xml:space="preserve">
+    <value>Aufzeichnungen zu Impfungen</value>
+    <comment>A list of vaccinations issued to each member of a settlement's personnel.</comment>
+  </data>
   <data name="VaccineResearch" xml:space="preserve">
     <value>Impfstoffforschung</value>
     <comment>Results of clinical experiments and efficacy tests of a particular vaccine.</comment>
@@ -286,8 +298,14 @@
     <value>Taktische Pläne</value>
     <comment>An outline for a military or security operation intended to achieve a stated objective.</comment>
   </data>
-  
-  
+  <data name="ChemicalProcessSample" xml:space="preserve">
+    <value>Chemische Prozessprobe</value>
+    <comment>A sample of an unidentified substance used in a settlement's chemical production line.</comment>
+  </data>
+  <data name="PyrolyticCatalyst" xml:space="preserve">
+    <value>Pyrolytischer Katalysator</value>
+    <comment>A substance that greatly alters the chemical properties of material it interacts with.</comment>
+  </data>
   <data name="WeaponSchematic" xml:space="preserve">
     <value>Waffenschema</value>
     <comment>A technical blueprint detailing the design and mechanism of a personal firearm.</comment>
@@ -300,7 +318,10 @@
     <value>Anzugschema</value>
     <comment>A technical blueprint detailing the design of a protective suit.</comment>
   </data>
-  
+  <data name="Spyware" xml:space="preserve">
+    <value>Spyware</value>
+    <comment>A program designed to infiltrate digital networks and collect data without detection.</comment>
+  </data>
   <data name="EmploymentHistory" xml:space="preserve">
     <value>Beschäftigungshistorie</value>
     <comment>A detailed list of an individual’s prior employment, roles and professional experience.</comment>
@@ -460,12 +481,18 @@
   
   
   
-  
+  <data name="SeedGeneaology" xml:space="preserve">
+    <value>Saatgut-Geneaologie</value>
+    <comment>Records of the origins and genetic characteristics of plantable seeds.</comment>
+  </data>
   <data name="SettlementAssaultPlans" xml:space="preserve">
     <value>Siedlungsangriffspläne</value>
     <comment>Detailed military tactics designed for use at a specific settlement.</comment>
   </data>
-  
+  <data name="SlushFundLogs" xml:space="preserve">
+    <value>Schmiergeld-Logs</value>
+    <comment>Details of credit accounts which lack proper accounting, usually for illicit reasons.</comment>
+  </data>
   <data name="SmearCampaignPlans" xml:space="preserve">
     <value>Pläne für Verleumdungskampagne</value>
     <comment>A proposal to spread toxic information intended to damage a reputation.</comment>
@@ -514,24 +541,83 @@
     <value>Viskoelastisches Polymer</value>
     <comment>An elastic material used in shock absorption and vibration dampening.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="IonBattery" xml:space="preserve">
+    <value>Ionen-Batterie</value>
+    <comment>A portable power source for use in electronic devices.</comment>
+  </data>
+  <data name="MicroThrusters" xml:space="preserve">
+    <value>Mikro-Schubdüsen</value>
+    <comment>Small, powerful propulsive devices.</comment>
+  </data>
+  <data name="OpticalLens" xml:space="preserve">
+    <value>Optische Linse</value>
+    <comment>An optical component designed to converge or diverge light.</comment>
+  </data>
+  <data name="WeaponComponent" xml:space="preserve">
+    <value>Waffenkomponente</value>
+    <comment>A component from a personal firearm.</comment>
+  </data>
+  <data name="SyntheticGenome" xml:space="preserve">
+    <value>Synthetisches Genom</value>
+    <comment>An artificial set of genes.</comment>
+  </data>
+  <data name="RefinementProcessSample" xml:space="preserve">
+    <value>Raffinerieverfahren-Probe</value>
+    <comment>A sample of an unidentified substance used in a settlement's refinery.</comment>
+  </data>
+  <data name="PetrifiedFossil" xml:space="preserve">
+    <value>Versteinertes Fossil</value>
+    <comment>The calcified remains of a long-dead organism.</comment>
+  </data>
+  <data name="PersonalComputer" xml:space="preserve">
+    <value>Personal Computer</value>
+    <comment>A compact personal computing device.</comment>
+  </data>
+  <data name="NutritionalConcentrate" xml:space="preserve">
+    <value>Nahrungskonzentrat</value>
+    <comment>A nutritionally rich meal-replacement product.</comment>
+  </data>
+  <data name="MutagenicCatalyst" xml:space="preserve">
+    <value>Mutagen-Katalysator</value>
+    <comment>A compound designed to induce and accelerate cellular mutation.</comment>
+  </data>
+  <data name="MicrobialInhibitor" xml:space="preserve">
+    <value>Mikrobieller Hemmstoff</value>
+    <comment>A compound designed to hinder the growth of undesirable microorganisms.</comment>
+  </data>
+  <data name="InorganicContaminant" xml:space="preserve">
+    <value>Anorganischer Schadstoff</value>
+    <comment>A toxic substance that corrodes inorganic materials.</comment>
+  </data>
+  <data name="InertiaCanister" xml:space="preserve">
+    <value>Trägheits-Container</value>
+    <comment>A specialised container for the safe storage of unstable agents.</comment>
+  </data>
+  <data name="HealthMonitor" xml:space="preserve">
+    <value>Gesundheitsmonitor</value>
+    <comment>A personal device designed to monitor the user's general health.</comment>
+  </data>
+  <data name="GMeds" xml:space="preserve">
+    <value>G-Medizin</value>
+    <comment>Pharmaceuticals designed to prevent motion sickness by acclimating the user to the prevailing gravitic conditions.</comment>
+  </data>
+  <data name="GeneticRepairMeds" xml:space="preserve">
+    <value>Gen-Reparatursets</value>
+    <comment>Sophisticated pharmaceuticals designed to target and replace damaged or mutated genes.</comment>
+  </data>
+  <data name="DeepMantleSample" xml:space="preserve">
+    <value>Innerer-Mantel-Probe</value>
+    <comment>A sample from the innermost part of a geological body's mantle.</comment>
+  </data>
+  <data name="CompressionLiquefiedGas" xml:space="preserve">
+    <value>Komprimiertes Flüssiggas</value>
+    <comment>A quantity of gas highly compressed into a liquid-state.</comment>
+  </data>
+  <data name="CastFossil" xml:space="preserve">
+    <value>Fossilfund</value>
+    <comment>An impression of a long-dead organism.</comment>
+  </data>
+  <data name="GeneticSample" xml:space="preserve">
+    <value>Biologische Probe</value>
+  </data>
 </root>
