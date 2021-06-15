@@ -201,10 +201,16 @@
   
   
   
+  <data name="PurchaseRecords" xml:space="preserve">
+    <value>Kaufaufzeichnungen</value>
+    <comment>A list of purchased items and materials including total costs and supplier details.</comment>
+  </data>
   
   
-  
-  
+  <data name="RadioactivityData" xml:space="preserve">
+    <value>Daten zur Radioaktivität</value>
+    <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
+  </data>
   
   
   
