@@ -6,6 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Scripts
       * Updated the `Embark`, `SRV docked`, `SRV launched`, and `Vehicle destroyed` events to fix a bug with th the SRV deployed warning.
+  * VoiceAttack Responder
+    * Fixed scripts invoked from the VoiceAttack `speech` context having priority 5 rather than priority 3 by default.
 
 ### 4.0.0
   * Core

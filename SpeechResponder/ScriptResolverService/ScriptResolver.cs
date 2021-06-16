@@ -48,7 +48,7 @@ namespace EddiSpeechResponder.Service
         public int priority(string name)
         {
             scripts.TryGetValue(name, out Script script);
-            return script?.Priority ?? 5;
+            return script?.Priority ?? 3;
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
