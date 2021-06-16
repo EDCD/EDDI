@@ -141,37 +141,106 @@
     <value>Atmosphärische Daten</value>
     <comment>Scientific observations and measurements of a planet's atmosphere.</comment>
   </data>
-  
-  
-  
-  
+  <data name="BiochemicalAgent" xml:space="preserve">
+    <value>Biochemischer Wirkstoff</value>
+    <comment>A compound designed to break down organic tissue.</comment>
+  </data>
+  <data name="BlacklistData" xml:space="preserve">
+    <value>Daten der Schwarzen Liste</value>
+    <comment>Sensitive information regarding individuals and/or groups deemed untrustworthy or dangerous.</comment>
+  </data>
+  <data name="BloodTestResults" xml:space="preserve">
+    <value>Bluttest-Ergebnisse</value>
+    <comment>Blood test data related to settlement health checks and policy adherence.</comment>
+  </data>
+  <data name="BuildingSchematic" xml:space="preserve">
+    <value>Gebäudeplan</value>
+    <comment>A technical blueprint detailing the architectural design of a building.</comment>
+  </data>
   <data name="Bypass" xml:space="preserve">
     <value>E-Breach</value>
     <comment>A single-use device used to circumvent security systems.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CampaignPlans" xml:space="preserve">
+    <value>Kampagnenpläne</value>
+    <comment>Information, schedules and objectives for a large-scale public initiative.</comment>
+  </data>
+  <data name="CatMedia" xml:space="preserve">
+    <value>Katzen-Medien</value>
+    <comment>A collection of amusing, sharable digital media often spanning several centuries.</comment>
+  </data>
+  <data name="CensusData" xml:space="preserve">
+    <value>Zensusdaten</value>
+    <comment>Detailed information and statistics on the size and composition of a population.</comment>
+  </data>
+  <data name="ChemicalExperimentData" xml:space="preserve">
+    <value>Chemieexperiment-Daten</value>
+    <comment>Proposals and research results related to various chemical experiments.</comment>
+  </data>
+  <data name="ChemicalFormulae" xml:space="preserve">
+    <value>Chemische Formeln</value>
+    <comment>Data related to the classification and research applications of newly developed chemicals.</comment>
+  </data>
+  <data name="ChemicalInventory" xml:space="preserve">
+    <value>Chemische Bestandsliste</value>
+    <comment>A detailed log of active and inert chemical materials stored within a facility.</comment>
+  </data>
+  <data name="ChemicalPatents" xml:space="preserve">
+    <value>Chemische Patente</value>
+    <comment>A list of registered patent applications for chemical inventions.</comment>
+  </data>
+  <data name="CombatantPerformance" xml:space="preserve">
+    <value>Kampfleistung</value>
+    <comment>Observational data on a subject's proficiency in ground-based combat operations.</comment>
+  </data>
+  <data name="CombatTrainingMaterial" xml:space="preserve">
+    <value>Kampftraining-Materialien</value>
+    <comment>Training plans and exercises designed to improve overall battlefield effectiveness.</comment>
+  </data>
+  <data name="CompactLibrary" xml:space="preserve">
+    <value>Kompakt-Bibliothek</value>
+    <comment>A large selection of literary classics and reference works in digital form.</comment>
+  </data>
+  <data name="DegradedPowerRegulator" xml:space="preserve">
+    <value>Ausrangierter Energieregulator</value>
+    <comment>A non-functional fuel regulator used in power plants.</comment>
+  </data>
+  <data name="DutyRota" xml:space="preserve">
+    <value>Dienstpläne</value>
+    <comment>Details of the activities and schedules of all personnel at a settlement.</comment>
+  </data>
+  <data name="EmployeeDirectory" xml:space="preserve">
+    <value>Mitarbeiterverzeichnis</value>
+    <comment>A complete list of staff members with their relevant personal details.</comment>
+  </data>
+  <data name="EmployeeGeneticData" xml:space="preserve">
+    <value>Gen-Daten von Mitarbeitern</value>
+    <comment>Unique genetic data records for a settlement's past and current personnel.</comment>
+  </data>
   <data name="EnergyCell" xml:space="preserve">
     <value>Energiezelle</value>
     <comment>A single-use item that restores energy to suit batteries.</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="EvacuationProtocols" xml:space="preserve">
+    <value>Evakuierungsprotokolle</value>
+    <comment>Detailed instructions for the abandonment of a settlement by all registered personnel.</comment>
+  </data>
+  <data name="ExplorationJournals" xml:space="preserve">
+    <value>Erkundungstagebücher</value>
+    <comment>Collected first-hand accounts of the author’s experiences and discoveries in deep space.</comment>
+  </data>
+  <data name="FactionAssociates" xml:space="preserve">
+    <value>Fraktionspartner</value>
+    <comment>Information on a faction's political allies and related beneficial relationships.</comment>
+  </data>
+  <data name="FactionDonatorList" xml:space="preserve">
+    <value>Spenderliste einer Fraktion</value>
+    <comment>A record of individuals or organsiations that have made financial contributions to a faction.</comment>
+  </data>
+  <data name="FactionNews" xml:space="preserve">
+    <value>Fraktionsnachrichten</value>
+    <comment>Publicly available press releases and ongoing news stories related to a faction.</comment>
+  </data>
   <data name="FinancialProjections" xml:space="preserve">
     <value>Finanzprognosen</value>
     <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
@@ -181,40 +250,105 @@
     <value>Medikit</value>
     <comment>A portable medical kit used to treat wounds.</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Hush" xml:space="preserve">
+    <value>Schnurr</value>
+    <comment>A recreational drug that induces a state of extreme relaxation while limiting auditory input.</comment>
+  </data>
+  <data name="Infinity" xml:space="preserve">
+    <value>Unendlichkeit</value>
+    <comment>A brand of exotic cologne that chemically adapts to please the olfactory system.</comment>
+  </data>
+  <data name="Insight" xml:space="preserve">
+    <value>Insight</value>
+    <comment>A wearable device designed to provide the user with real-time information about their immediate environment.</comment>
+  </data>
+  <data name="InsightEntertainmentSuite" xml:space="preserve">
+    <value>Insight-Entertainment-Bibliothek</value>
+    <comment>A selection of augmented-reality games for use with an Insight device.</comment>
+  </data>
+  <data name="InternalCorrespondence" xml:space="preserve">
+    <value>Interne Korrespondenz</value>
+    <comment>A record of communications by members within an organisation's network.</comment>
+  </data>
   <data name="LargeCapacityPowerRegulator" xml:space="preserve">
     <value>Energieregulator</value>
     <comment>A complex device designed to regulate the energy generated by a settlement's power reactor.</comment>
   </data>
-  
-  
+  <data name="Lazarus" xml:space="preserve">
+    <value>Lazarus</value>
+    <comment>A recreational drug that places the user in state of euphoric oblivion, sometimes for as long as four days.</comment>
+  </data>
+  <data name="LiteraryFiction" xml:space="preserve">
+    <value>Kompakt-Bibliothek</value>
+    <comment>Text-based fictional entertainment in a range of genres and styles.</comment>
+  </data>
   <data name="MaintenanceLogs" xml:space="preserve">
     <value>Wartungslogs</value>
     <comment>Records of routine tasks to maintain settlement equipment or infrastructure.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MeetingMinutes" xml:space="preserve">
+    <value>Besprechungsprotokolle</value>
+    <comment>A record of discussion topics and action points from a meeting of settlement personnel.</comment>
+  </data>
+  <data name="MineralSurvey" xml:space="preserve">
+    <value>Mineralienübersicht</value>
+    <comment>Results from a study of mineral deposits hidden beneath the surface of a planet.</comment>
+  </data>
+  <data name="MultimediaEntertainment" xml:space="preserve">
+    <value>Multimedia-Unterhaltung</value>
+    <comment>A range of popular entertainment products available in multiple formats.</comment>
+  </data>
+  <data name="NetworkAccessHistory" xml:space="preserve">
+    <value>Netzwerkzugriffshistorie</value>
+    <comment>Access records detailing individual user activity on specific networks.</comment>
+  </data>
+  <data name="NextOfKinRecords" xml:space="preserve">
+    <value>Angehörigen-Aufzeichnungen</value>
+    <comment>Details of an individual's closest living relatives, partners and designated contacts.</comment>
+  </data>
+  <data name="NOCData" xml:space="preserve">
+    <value>Geheimoperation-Daten</value>
+    <comment>Non-official cover information related to covert agents active in various organisations.</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
+  <data name="OperationalManual" xml:space="preserve">
+    <value>Bedienungsanleitung</value>
+    <comment>Instructive texts for the use and maintenance of a mechanism, system or vehicle.</comment>
+  </data>
+  <data name="PatrolRoutes" xml:space="preserve">
+    <value>Patrouillenrouten</value>
+    <comment>Deployment schedules and paths used in routine security operations.</comment>
+  </data>
+  <data name="PayrollInformation" xml:space="preserve">
+    <value>Gehaltsinformationen</value>
+    <comment>Staff members' past and present salary payments and financial transfer methods.</comment>
+  </data>
+  <data name="PersonalLogs" xml:space="preserve">
+    <value>Persönliche Logs</value>
+    <comment>Private text or audio/visual recordings made by an individual.</comment>
+  </data>
+  <data name="PharmaceuticalPatents" xml:space="preserve">
+    <value>Pharmazeutische Patente</value>
+    <comment>A list of registered patent applications each relating to a specific drug.</comment>
+  </data>
+  <data name="ProductionReports" xml:space="preserve">
+    <value>Produktionsberichte</value>
+    <comment>Work logs that collate information on cost, output and requirements.</comment>
+  </data>
+  <data name="ProductionSchedule" xml:space="preserve">
+    <value>Produktionszeitplan</value>
+    <comment>A detailed timetable outlining machine allocations, worker requirements and associated deadlines.</comment>
+  </data>
   <data name="PurchaseRecords" xml:space="preserve">
     <value>Kaufaufzeichnungen</value>
     <comment>A list of purchased items and materials including total costs and supplier details.</comment>
   </data>
-  
+  <data name="PurchaseRequests" xml:space="preserve">
+    <value>Kaufanfragen</value>
+    <comment>Requisition orders for specific items or materials submitted for authorisation.</comment>
+  </data>
   <data name="Push" xml:space="preserve">
     <value>Schub</value>
     <comment>A recreational drug that temporarily increases cognitive function.</comment>
@@ -335,12 +469,18 @@
     <value>Beschäftigungshistorie</value>
     <comment>A detailed list of an individual’s prior employment, roles and professional experience.</comment>
   </data>
-  
+  <data name="AgriculturalProcessSample" xml:space="preserve">
+    <value>Agrikulturverfahren-Probe</value>
+    <comment>A sample of an unidentified substance used in a settlement's agricultural production line.</comment>
+  </data>
   <data name="SurveillanceEquipment" xml:space="preserve">
     <value>Überwachungsausrüstung</value>
     <comment>An assortment of audio-visual and biometric monitoring devices.</comment>
   </data>
-  
+  <data name="InsightDataBank" xml:space="preserve">
+    <value>Insight-Datenbank</value>
+    <comment>A device designed to store audio-visual data recorded via Insight.</comment>
+  </data>
   
   
   <data name="Virus" xml:space="preserve">
