@@ -481,8 +481,14 @@
     <value>Insight-Datenbank</value>
     <comment>A device designed to store audio-visual data recorded via Insight.</comment>
   </data>
-  
-  
+  <data name="ShipSchematic" xml:space="preserve">
+    <value>Schiffsplan</value>
+    <comment>A technical blueprint detailing the internal and external design of a starship.</comment>
+  </data>
+  <data name="VehicleSchematic" xml:space="preserve">
+    <value>Fahrzeugplan</value>
+    <comment>A technical blueprint detailing the internal and external design of a surface vehicle.</comment>
+  </data>
   <data name="Virus" xml:space="preserve">
     <value>Virus</value>
     <comment>A program designed to infect digital networks and cause targeted or systemic damage.</comment>
@@ -531,7 +537,10 @@
     <value>Herstellungsanweisung</value>
     <comment>Detailed construction guidance, ranging from individual items to mass production requirements.</comment>
   </data>
-  
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Sternenaktivitäts-Logs</value>
+    <comment>Measurements of a star’s characteristics and related phenomena.</comment>
+  </data>
   <data name="ElectricalWiring" xml:space="preserve">
     <value>Elektroverkabelung</value>
     <comment>Multipurpose wiring for use in a variety of electronic devices.</comment>
@@ -592,44 +601,158 @@
   <data name="AudioLogs" xml:space="preserve">
     <value>Audio-Logs</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AXCombatLogs" xml:space="preserve">
+    <value>AX-Kampf-Logs</value>
+    <comment>Data related to anti-xeno operations and encounters with hostile Thargoid forces.</comment>
+  </data>
+  <data name="BallisticsData" xml:space="preserve">
+    <value>Ballistische Daten</value>
+    <comment>Projectile weapon research including launch mechanisms, accuracy and impact damage.</comment>
+  </data>
+  <data name="ChemicalWeaponData" xml:space="preserve">
+    <value>Chemiewaffen-Daten</value>
+    <comment>Information about chemical-based armaments and their effects on both organic and non-organic targets.</comment>
+  </data>
+  <data name="ClassicEntertainment" xml:space="preserve">
+    <value>Klassische Unterhaltung</value>
+    <comment>Well-known and critically acclaimed multimedia products maintained from past generations.</comment>
+  </data>
+  <data name="CocktailRecipes" xml:space="preserve">
+    <value>Cocktail-Rezepte</value>
+    <comment>Instructions for mixing sophisticated alcoholic or non-alcoholic beverages from many star systems.</comment>
+  </data>
+  <data name="ConflictHistory" xml:space="preserve">
+    <value>Konflikthistorie</value>
+    <comment>Detailed civil, political or military records relating to a faction conflict.</comment>
+  </data>
+  <data name="CriminalRecords" xml:space="preserve">
+    <value>Strafakten</value>
+    <comment>An account of criminal convictions and other legal transgressions wthin a specific population.</comment>
+  </data>
+  <data name="CropYieldAnalysis" xml:space="preserve">
+    <value>Ernteertrag-Analyse</value>
+    <comment>Records of crop production levels and projections for future harvest quotas.</comment>
+  </data>
+  <data name="CulinaryRecipes" xml:space="preserve">
+    <value>Kulinarische Rezepte</value>
+    <comment>Step-by-step instructions using available ingredients to create meals from scratch.</comment>
+  </data>
+  <data name="EmployeeExpenses" xml:space="preserve">
+    <value>Aufwendungen für Mitarbeiter</value>
+    <comment>Records of business expense claims and charges made to company credit accounts.</comment>
+  </data>
+  <data name="EnhancedInterrogationRecordings" xml:space="preserve">
+    <value>Optimierte Vernehmungsaufzeichnungen</value>
+    <comment>Recordings of information gathered from a subject via non-standard interview techniques.</comment>
+  </data>
+  <data name="EspionageMaterial" xml:space="preserve">
+    <value>Spionagematerial</value>
+    <comment>Highly sensitive data on an individual or group acquired without the target's knowledge.</comment>
+  </data>
+  <data name="ExtractionYieldData" xml:space="preserve">
+    <value>Daten zur Förderungsausbeute</value>
+    <comment>Raw data mineral production quantities from a settlement's mining operation.</comment>
+  </data>
+  <data name="FleetRegistry" xml:space="preserve">
+    <value>Flottenliste</value>
+    <comment>Official registration and deployment records of all ships controlled by an organisation.</comment>
+  </data>
+  <data name="GeneSequencingData" xml:space="preserve">
+    <value>Gen-Sequenzierungsdaten</value>
+    <comment>Molecular analysis of DNA samples to determine the nucleic acid sequence.</comment>
+  </data>
+  <data name="GeneticResearch" xml:space="preserve">
+    <value>Genforschung</value>
+    <comment>Scientific data and proposals related to genome study and genetic manipulation.</comment>
+  </data>
+  <data name="GeologicalData" xml:space="preserve">
+    <value>Geologische Daten</value>
+    <comment>Information on a planet's composition, physical structure and regional arrangement.</comment>
+  </data>
+  <data name="HydroponicData" xml:space="preserve">
+    <value>Hydrokultur-Daten</value>
+    <comment>Horticultural analysis and results from using soilless methods of plant growth.</comment>
+  </data>
+  <data name="IncidentLogs" xml:space="preserve">
+    <value>Unfall-Logs</value>
+    <comment>Notable occurances or unexpected events that occurred at a settlement.</comment>
+  </data>
+  <data name="InfluenceProjections" xml:space="preserve">
+    <value>Einfluss-Projektionen</value>
+    <comment>Assessments of potential changes to a company's standing with various political bodies.</comment>
+  </data>
+  <data name="InterrogationRecordings" xml:space="preserve">
+    <value>Vernehmungsaufzeichnungen</value>
+    <comment>Information acquired during one or more sessions of subject questioning.</comment>
+  </data>
+  <data name="InterviewRecordings" xml:space="preserve">
+    <value>Aufzeichnungen von Vorstellungsgesprächen</value>
+    <comment>Evaluations of potential employees under consideration for employment at a facility.</comment>
+  </data>
+  <data name="JobApplications" xml:space="preserve">
+    <value>Bewerbungen</value>
+    <comment>Media submitted to demonstrate a candidate's suitability for a given vacancy.</comment>
+  </data>
+  <data name="Kompromat" xml:space="preserve">
+    <value>Kompromittierendes Material</value>
+    <comment>Highly sensitive material used to compromise, blackmail or manipulate individuals or groups.</comment>
+  </data>
+  <data name="MedicalRecords" xml:space="preserve">
+    <value>Medizinische Daten</value>
+    <comment>A collection of medical data related to a specific group or population.</comment>
+  </data>
+  <data name="MedicalTrialRecords" xml:space="preserve">
+    <value>Klinische Prüfberichte</value>
+    <comment>Results of clinical research evaluating new medical procedures or inventions.</comment>
+  </data>
+  <data name="MiningAnalytics" xml:space="preserve">
+    <value>Abbau-Analytik</value>
+    <comment>Scientific data used to increase the safety and efficiency of a specific mining operation.</comment>
+  </data>
+  <data name="NetworkSecurityProtocols" xml:space="preserve">
+    <value>Netzwerksicherheitsprotokolle</value>
+    <comment>Listed cryptographic methods for a network's data and connected channels.</comment>
+  </data>
+  <data name="OpinionPolls" xml:space="preserve">
+    <value>Umfrageergebnisse</value>
+    <comment>Statistics and viewpoints gathered from surveys of a population sample.</comment>
+  </data>
+  <data name="PatientHistory" xml:space="preserve">
+    <value>Patientenhistorie</value>
+    <comment>Personal records of an individual's health including illnesses, surgeries and prescriptions.</comment>
+  </data>
+  <data name="PhotoAlbums" xml:space="preserve">
+    <value>Fotoalben</value>
+    <comment>A personal collection of static images in digital or holographic formats.</comment>
+  </data>
+  <data name="PlantGrowthCharts" xml:space="preserve">
+    <value>Diagramme zum Pflanzenwachstum</value>
+    <comment>Analytical data presented in graph format that catalogues horticultural development.</comment>
+  </data>
+  <data name="PoliticalAffiliations" xml:space="preserve">
+    <value>Politische Beziehungen</value>
+    <comment>A faction's alliances and relationships with other organisations based on political ideologies.</comment>
+  </data>
+  <data name="PrisonerLogs" xml:space="preserve">
+    <value>Gefangenen-Logs</value>
+    <comment>Detailed records of all individuals held incarcerated at a given facility.</comment>
+  </data>
+  <data name="Propaganda" xml:space="preserve">
+    <value>Propaganda</value>
+    <comment>Promotional material designed to publicise a specific claim or political viewpoint.</comment>
+  </data>
+  <data name="RecyclingLogs" xml:space="preserve">
+    <value>Recycling-Logs</value>
+    <comment>Measured output and subsequent application of a settlement's byproducts and general waste.</comment>
+  </data>
+  <data name="RiskAssessments" xml:space="preserve">
+    <value>Gefährdungsbeurteilungen</value>
+    <comment>Evaluations of safety measures and potential hazards at a facility or operation.</comment>
+  </data>
+  <data name="SecurityExpenses" xml:space="preserve">
+    <value>Aufwendungen für Sicherheit</value>
+    <comment>Financial details for equipment and personnel used to maintain a settlement's security force.</comment>
+  </data>
   <data name="SeedGeneaology" xml:space="preserve">
     <value>Saatgut-Geneaologie</value>
     <comment>Records of the origins and genetic characteristics of plantable seeds.</comment>
