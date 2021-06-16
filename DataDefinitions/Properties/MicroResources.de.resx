@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="AccidentLogs" xml:space="preserve">
+    <value>Unfall-Logs</value>
+    <comment>A record of settlement incidents which resulted in some degree of physical injury.</comment>
+  </data>
+  <data name="AirQualityReports" xml:space="preserve">
+    <value>Berichte zur Luftqualität</value>
+    <comment>Chemical analyses of atmospheric recycling systems in surface settlements.</comment>
+  </data>
   <data name="Amm_Grenade_EMP" xml:space="preserve">
     <value>Schildunterbrecher</value>
     <comment>A deployable device that temporarily disrupts shields with an electromagnetic pulse.</comment>
@@ -131,7 +137,10 @@
     <value>Schildgenerator</value>
     <comment>A deployable device that generates a barrier designed to absorb incoming attacks.</comment>
   </data>
-  
+  <data name="AtmosphericData" xml:space="preserve">
+    <value>Atmosphärische Daten</value>
+    <comment>Scientific observations and measurements of a planet's atmosphere.</comment>
+  </data>
   
   
   
