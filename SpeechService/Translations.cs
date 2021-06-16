@@ -177,7 +177,7 @@ namespace EddiSpeechService
             { "Ceos", new string[] { Properties.Phonetics.ceos } },
             { "Cygnus", new string[] { Properties.Phonetics.cygnus } },
             { "Deciat", new string[] { Properties.Phonetics.deciat } },
-            { "Diso ", new string[] { Properties.Phonetics.diso } },
+            { "Diso", new string[] { Properties.Phonetics.diso } },
             { "Djiwal", new string[] { Properties.Phonetics.djiwal } },
             { "Dvorsi", new string[] { Properties.Phonetics.dvorsi } },
             { "Electra", new string[] { Properties.Phonetics.electra } },
