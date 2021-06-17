@@ -165,10 +165,22 @@
     <value>knapp über {0} Millionen</value>
     <comment>Where {0} is a whole number in the millions order</comment>
   </data>
-  
-  
-  
-  
+  <data name="justOverBillion" xml:space="preserve">
+    <value>knapp über {0} Milliarden</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
+  <data name="justOverMinusBillion" xml:space="preserve">
+    <value>knapp über minus {0} Milliarden</value>
+    <comment>Where {0} is a negative whole number in the billions order</comment>
+  </data>
+  <data name="justOverTrillion" xml:space="preserve">
+    <value>knapp über {0} Billionen</value>
+    <comment>Where {0} is a whole number in the trillions order</comment>
+  </data>
+  <data name="justOverMinusTrillion" xml:space="preserve">
+    <value>knapp über minus {0} Billionen</value>
+    <comment>Where {0} is a negative whole number in the trillions order</comment>
+  </data>
   
   
   
