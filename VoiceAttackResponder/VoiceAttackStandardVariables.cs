@@ -30,17 +30,20 @@ namespace EddiVoiceAttackResponder
         private static decimal DestinationDistanceLy { get; set; }
 
         /// <summary>Set all values</summary>
-        public static void setStandardValues(ref dynamic vaProxy)
+        public static void setStandardValues()
         {
             // Update our nullable primary objects only if they don't match the state of the EDDI instance.    
             // (For objects that are always constructed, we prefer using event handlers).
             try
             {
-                if (!EDDI.Instance.CurrentStarSystem.DeepEquals(CurrentStarSystem))
-                {
-                    setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
-                    CurrentStarSystem = EDDI.Instance.CurrentStarSystem.Copy();
-                }
+                LockManager.GetLock(nameof(EDDI.Instance.CurrentStarSystem), () => 
+                { 
+                    if (!EDDI.Instance.CurrentStarSystem.DeepEquals(CurrentStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref Eddi.App.vaProxy);
+                        CurrentStarSystem = EDDI.Instance.CurrentStarSystem.Copy();
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -49,11 +52,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.LastStarSystem.DeepEquals(LastStarSystem))
-                {
-                    setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
-                    LastStarSystem = EDDI.Instance.LastStarSystem.Copy();
-                }
+                LockManager.GetLock(nameof(EDDI.Instance.LastStarSystem), () => 
+                { 
+                    if (!EDDI.Instance.LastStarSystem.DeepEquals(LastStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref Eddi.App.vaProxy);
+                        LastStarSystem = EDDI.Instance.LastStarSystem.Copy();
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -62,11 +68,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.NextStarSystem.DeepEquals(NextStarSystem))
+                LockManager.GetLock(nameof(EDDI.Instance.NextStarSystem), () =>
                 {
-                    setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref vaProxy);
-                    NextStarSystem = EDDI.Instance.NextStarSystem.Copy();
-                }
+                    if (!EDDI.Instance.NextStarSystem.DeepEquals(NextStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref Eddi.App.vaProxy);
+                        NextStarSystem = EDDI.Instance.NextStarSystem.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -75,11 +84,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.DestinationStarSystem.DeepEquals(DestinationStarSystem))
+                LockManager.GetLock(nameof(EDDI.Instance.DestinationStarSystem), () =>
                 {
-                    setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref vaProxy);
-                    DestinationStarSystem = EDDI.Instance.DestinationStarSystem.Copy();
-                }
+                    if (!EDDI.Instance.DestinationStarSystem.DeepEquals(DestinationStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref Eddi.App.vaProxy);
+                        DestinationStarSystem = EDDI.Instance.DestinationStarSystem.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -88,11 +100,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.DestinationDistanceLy != DestinationDistanceLy)
+                LockManager.GetLock(nameof(EDDI.Instance.DestinationDistanceLy), () => 
                 {
-                    vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
-                    DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy.Copy();
-                }
+                    if (EDDI.Instance.DestinationDistanceLy != DestinationDistanceLy)
+                    {
+                        Eddi.App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
+                        DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -101,11 +116,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.DestinationStation.DeepEquals(DestinationStation))
+                LockManager.GetLock(nameof(EDDI.Instance.DestinationStation), () => 
                 {
-                    setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref vaProxy);
-                    DestinationStation = EDDI.Instance.DestinationStation.Copy();
-                }
+                    if (!EDDI.Instance.DestinationStation.DeepEquals(DestinationStation))
+                    {
+                        setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref Eddi.App.vaProxy);
+                        DestinationStation = EDDI.Instance.DestinationStation.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -114,11 +132,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.SquadronStarSystem.DeepEquals(SquadronStarSystem))
-                {
-                    setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref vaProxy);
-                    SquadronStarSystem = EDDI.Instance.SquadronStarSystem.Copy();
-                }
+                LockManager.GetLock(nameof(EDDI.Instance.SquadronStarSystem), () => 
+                { 
+                    if (!EDDI.Instance.SquadronStarSystem.DeepEquals(SquadronStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref Eddi.App.vaProxy);
+                        SquadronStarSystem = EDDI.Instance.SquadronStarSystem.Copy();
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -127,29 +148,32 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.HomeStarSystem.DeepEquals(HomeStarSystem))
-                {
-                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
-                    HomeStarSystem = EDDI.Instance.HomeStarSystem.Copy();
+                LockManager.GetLock(nameof(EDDI.Instance.HomeStarSystem), () => 
+                { 
+                    if (!EDDI.Instance.HomeStarSystem.DeepEquals(HomeStarSystem))
+                    {
+                        setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref Eddi.App.vaProxy);
+                        HomeStarSystem = EDDI.Instance.HomeStarSystem.Copy();
 
-                    // Backwards-compatibility with 1.x documented variables
-                    try
-                    {
-                        if (EDDI.Instance.HomeStarSystem != null)
+                        // Backwards-compatibility with 1.x documented variables
+                        try
                         {
-                            vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.systemname);
-                            vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.systemname));
+                            if (EDDI.Instance.HomeStarSystem != null)
+                            {
+                                Eddi.App.vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.systemname);
+                                Eddi.App.vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.systemname));
+                            }
+                            if (EDDI.Instance.HomeStation != null)
+                            {
+                                Eddi.App.vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                            }
                         }
-                        if (EDDI.Instance.HomeStation != null)
+                        catch (Exception ex)
                         {
-                            vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                            Logging.Error("Failed to set 1.x home system values", ex);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Error("Failed to set 1.x home system values", ex);
-                    }
-                }
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -158,11 +182,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.CurrentStellarBody.DeepEquals(CurrentStellarBody))
-                {
-                    setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref vaProxy);
-                    CurrentStellarBody = EDDI.Instance.CurrentStellarBody.Copy();
-                }
+                LockManager.GetLock(nameof(EDDI.Instance.CurrentStellarBody), () => 
+                { 
+                    if (!EDDI.Instance.CurrentStellarBody.DeepEquals(CurrentStellarBody))
+                    {
+                        setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref Eddi.App.vaProxy);
+                        CurrentStellarBody = EDDI.Instance.CurrentStellarBody.Copy();
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -171,11 +198,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.CurrentStation.DeepEquals(CurrentStation))
-                {
-                    setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
-                    CurrentStation = EDDI.Instance.CurrentStation.Copy();
-                }
+                LockManager.GetLock(nameof(EDDI.Instance.CurrentStation), () => 
+                { 
+                    if (!EDDI.Instance.CurrentStation.DeepEquals(CurrentStation))
+                    {
+                        setStationValues(EDDI.Instance.CurrentStation, "Last station", ref Eddi.App.vaProxy);
+                        CurrentStation = EDDI.Instance.CurrentStation.Copy();
+                    }                
+                });
             }
             catch (Exception ex)
             {
@@ -184,11 +214,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.HomeStation.DeepEquals(HomeStation))
+                LockManager.GetLock(nameof(EDDI.Instance.HomeStation), () => 
                 {
-                    setStationValues(EDDI.Instance.HomeStation, "Home station", ref vaProxy);
-                    HomeStation = EDDI.Instance.HomeStation.Copy();
-                }
+                    if (!EDDI.Instance.HomeStation.DeepEquals(HomeStation))
+                    {
+                        setStationValues(EDDI.Instance.HomeStation, "Home station", ref Eddi.App.vaProxy);
+                        HomeStation = EDDI.Instance.HomeStation.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -198,11 +231,14 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (!EDDI.Instance.Cmdr.DeepEquals(Commander))
+                LockManager.GetLock(nameof(EDDI.Instance.Cmdr), () => 
                 {
-                    setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
-                    Commander = EDDI.Instance.Cmdr.Copy();
-                }
+                    if (!EDDI.Instance.Cmdr.DeepEquals(Commander))
+                    {
+                        setCommanderValues(EDDI.Instance.Cmdr, ref Eddi.App.vaProxy);
+                        Commander = EDDI.Instance.Cmdr.Copy();
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -213,14 +249,17 @@ namespace EddiVoiceAttackResponder
             // Set miscellaneous values
             try
             {
-                vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance?.active ?? false);
-                vaProxy.SetBoolean("ipa active", !(SpeechService.Instance?.Configuration.DisableIpa ?? false));
-                vaProxy.SetBoolean("icao active", SpeechService.Instance?.Configuration.EnableIcao ?? false);
-                vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons);
-                vaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey);
-                vaProxy.SetText("Environment", EDDI.Instance.Environment);
-                vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
-                vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
+                LockManager.GetLock("Misc", () => 
+                {
+                    Eddi.App.vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance?.active ?? false);
+                    Eddi.App.vaProxy.SetBoolean("ipa active", !(SpeechService.Instance?.Configuration.DisableIpa ?? false));
+                    Eddi.App.vaProxy.SetBoolean("icao active", SpeechService.Instance?.Configuration.EnableIcao ?? false);
+                    Eddi.App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons);
+                    Eddi.App.vaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey);
+                    Eddi.App.vaProxy.SetText("Environment", EDDI.Instance.Environment);
+                    Eddi.App.vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
+                    Eddi.App.vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
+                });
             }
             catch (Exception ex)
             {

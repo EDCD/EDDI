@@ -167,7 +167,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // Set the initial values from the main EDDI objects
-                setStandardValues(ref vaProxy);
+                setStandardValues();
 
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
@@ -263,7 +263,7 @@ namespace EddiVoiceAttackResponder
                 // Save the updated state of our event variables
                 currentVariables.AddRange(eventVariables);
                 // Update all standard values  
-                setStandardValues(ref vaProxy);
+                setStandardValues();
 
                 Logging.Debug($"Processed EDDI event {@event.type} in {(DateTime.UtcNow - startTime).Milliseconds} milliseconds:", @event);
             }
@@ -555,7 +555,7 @@ namespace EddiVoiceAttackResponder
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             EDDI.Instance.refreshProfile(true);
-            setStandardValues(ref vaProxy);
+            setStandardValues();
         }
 
         private static void OpenOrStoreURI(ref dynamic vaProxy, string systemUri)
