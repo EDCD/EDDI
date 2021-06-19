@@ -130,7 +130,7 @@
     <comment>Data scan type UnknownUplink</comment>
   </data>
   <data name="SettlementUnknown" xml:space="preserve">
-    <value>Bâtiment inconnu</value>
+    <value>Installation inconnu</value>
     <comment>Data scan type SettlementUnknown</comment>
   </data>
   <data name="AncientCodex" xml:space="preserve">

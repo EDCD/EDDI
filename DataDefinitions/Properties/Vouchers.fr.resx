@@ -130,7 +130,7 @@
     <comment>scannable voucher</comment>
   </data>
   <data name="settlement" xml:space="preserve">
-    <value>Règlement</value>
+    <value>Installation</value>
     <comment>settlement voucher</comment>
   </data>
   <data name="trade" xml:space="preserve">

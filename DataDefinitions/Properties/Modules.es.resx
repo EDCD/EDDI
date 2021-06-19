@@ -550,7 +550,7 @@
     <comment>Module GuardianShieldReinforcement</comment>
   </data>
   <data name="ShipIntegrity" xml:space="preserve">
-    <value>Integridad</value>
+    <value>Integridad de la nave</value>
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
   <data name="PulseWave" xml:space="preserve">
@@ -589,5 +589,8 @@
     <value>Misiles Avanzados</value>
     <comment>Module Advanced Missile Rack</comment>
   </data>
-  
+  <data name="RetributorBeamLaser" xml:space="preserve">
+    <value>Láser de rayo Vengador</value>
+    <comment>Module RetributorBeamLaser</comment>
+  </data>
 </root>

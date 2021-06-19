@@ -257,6 +257,13 @@
     <value>deine</value>
     <comment>e.g. *your* Mamba</comment>
   </data>
-  
-  
+  <data name="yourTransport" xml:space="preserve">
+    <value>deine Lieferung</value>
+    <comment>yourTransport
+If transporting via taxi or dropship</comment>
+  </data>
+  <data name="yourShip" xml:space="preserve">
+    <value>dein Schiff</value>
+    <comment>If transporting via a generic ship (e.g. multicrew)</comment>
+  </data>
 </root>

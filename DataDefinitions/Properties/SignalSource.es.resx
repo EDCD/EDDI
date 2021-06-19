@@ -129,9 +129,18 @@
     <value>Señal no identificada</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  
-  
-  
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Zona de combate de alta intensidad</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Zona de combate de intensidad media</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Zona de combate de baja intensidad</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Emisiones degradadas</value>
     <comment>Salvage signal</comment>
@@ -168,7 +177,10 @@
     <value>Objetivo de la misión</value>
     <comment>MissionTarget signal</comment>
   </data>
-  
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Patrón de Dispersión de Convoy</value>
+    <comment>Convoy signal</comment>
+  </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Llamada de auxilio</value>
     <comment>Distress signal</comment>
@@ -313,10 +325,28 @@
     <value>Campo de Escombros</value>
     <comment>Debris field</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Otras Señales de Superficie</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Nave Zargoide estrellada</value>
+    <comment>Thargoid crash site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Restos recuperables</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Centro de distribución</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Llamada de auxilio</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Llamada de auxilio</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>

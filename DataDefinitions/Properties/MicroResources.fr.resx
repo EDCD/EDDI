@@ -119,25 +119,16 @@
   </resheader>
   
   
-  <data name="Amm_Grenade_EMP" xml:space="preserve">
-    <value>Neutralisateur de bouclier</value>
-    <comment>A deployable device that temporarily disrupts shields with an electromagnetic pulse.</comment>
-  </data>
-  <data name="Amm_Grenade_Frag" xml:space="preserve">
-    <value>Grenade à fragmentation</value>
-    <comment>An explosive weapon that damages nearby targets upon detonation.</comment>
-  </data>
-  <data name="Amm_Grenade_Shield" xml:space="preserve">
-    <value>Générateur de bouclier</value>
-    <comment>A deployable device that generates a barrier designed to absorb incoming attacks.</comment>
-  </data>
+  
+  
+  
   
   
   
   
   
   <data name="Bypass" xml:space="preserve">
-    <value>Omnipasse</value>
+    <value>E-Breach</value>
     <comment>A single-use device used to circumvent security systems.</comment>
   </data>
   
@@ -155,7 +146,7 @@
   
   
   <data name="EnergyCell" xml:space="preserve">
-    <value>Cellule d'énergie</value>
+    <value>Cellule d'Énergie</value>
     <comment>A single-use item that restores energy to suit batteries.</comment>
   </data>
   
@@ -166,7 +157,7 @@
   
   
   <data name="HealthPack" xml:space="preserve">
-    <value>Médikit</value>
+    <value>Kit Médical</value>
     <comment>A portable medical kit used to treat wounds.</comment>
   </data>
   
@@ -234,56 +225,206 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="IonisedGas" xml:space="preserve">
+    <value>Gaz Ionisé</value>
+    <comment>A quantity of ionised gas.</comment>
+  </data>
+  <data name="Aerogel" xml:space="preserve">
+    <value>Aérogel</value>
+    <comment>An extremely lightweight thermal insulator.</comment>
+  </data>
+  <data name="CarbonFibrePlating" xml:space="preserve">
+    <value>Plaque en Fibres de Carbone</value>
+    <comment>A flexible, lightweight material made of organic polymers.</comment>
+  </data>
+  <data name="MicroSuperCapacitor" xml:space="preserve">
+    <value>Micro Supercondensateur</value>
+    <comment>A device designed to store an electric charge.</comment>
+  </data>
+  <data name="TitaniumPlating" xml:space="preserve">
+    <value>Plaque en Titane</value>
+    <comment>A strong, low-density metal that is highly resistant to corrosion.</comment>
+  </data>
+  <data name="CircuitSwitch" xml:space="preserve">
+    <value>Commutateur</value>
+    <comment>A simple device designed to close an electronic circuit.</comment>
+  </data>
+  <data name="EncryptedMemoryChip" xml:space="preserve">
+    <value>Puce Mémoire Cryptée</value>
+    <comment>An integrated circuit designed to securely store software data.</comment>
+  </data>
+  <data name="EpoxyAdhesive" xml:space="preserve">
+    <value>Colle Époxy</value>
+    <comment>A multipurpose polymer adhesive.</comment>
+  </data>
+  <data name="MemoryChip" xml:space="preserve">
+    <value>Puce Mémoire</value>
+    <comment>An integrated circuit designed to store software data.</comment>
+  </data>
+  <data name="ManufacturingInstructions" xml:space="preserve">
+    <value>Guides Industriels</value>
+    <comment>Detailed construction guidance, ranging from individual items to mass production requirements.</comment>
+  </data>
+  <data name="StellarActivityLogs" xml:space="preserve">
+    <value>Journaux d'Activité Stellaire</value>
+    <comment>Measurements of a star’s characteristics and related phenomena.</comment>
+  </data>
+  <data name="ElectricalWiring" xml:space="preserve">
+    <value>Câblage Électrique</value>
+    <comment>Multipurpose wiring for use in a variety of electronic devices.</comment>
+  </data>
+  <data name="MicroTransformer" xml:space="preserve">
+    <value>Micro Transformateur</value>
+    <comment>A compact transformer designed to transfer electrical energy between two circuits.</comment>
+  </data>
+  <data name="ElectricalFuse" xml:space="preserve">
+    <value>Fusible Électrique</value>
+    <comment>A simple device designed to protect an electrical circuit from excess current.</comment>
+  </data>
+  <data name="OpticalFibre" xml:space="preserve">
+    <value>Fibre Optique</value>
+    <comment>A length of fine cable designed to transfer data in the form of light.</comment>
+  </data>
+  <data name="CircuitBoard" xml:space="preserve">
+    <value>Circuit Imprimé</value>
+    <comment>A component from an electrical system.</comment>
+  </data>
+  <data name="MetalCoil" xml:space="preserve">
+    <value>Bobine Métallique</value>
+    <comment>Commonplace metal for use in electrical circuits and hydraulic systems.</comment>
+  </data>
+  <data name="Motor" xml:space="preserve">
+    <value>Moteur</value>
+    <comment>A machine designed to transform electrical energy into kinetic energy.</comment>
+  </data>
+  <data name="MicroElectrode" xml:space="preserve">
+    <value>Micro Électrode</value>
+    <comment>A simple device designed to create a small electric arc.</comment>
+  </data>
+  <data name="Graphene" xml:space="preserve">
+    <value>Graphène</value>
+    <comment>A multipurpose carbon allotrope.</comment>
+  </data>
+  <data name="MicroHydraulics" xml:space="preserve">
+    <value>Micro Hydraulique</value>
+    <comment>Small, powerful hydraulic devices.</comment>
+  </data>
+  <data name="Scrambler" xml:space="preserve">
+    <value>Brouilleur</value>
+    <comment>A device designed to distort electromagnetic waves.</comment>
+  </data>
+  <data name="TungstenCarbide" xml:space="preserve">
+    <value>Carbure de Tungstène</value>
+    <comment>A compound of tungsten and carbon. </comment>
+  </data>
+  <data name="Electromagnet" xml:space="preserve">
+    <value>Électroaimant</value>
+    <comment>A magnet in which the magnetic field is produced by an electric current.</comment>
+  </data>
+  <data name="Transmitter" xml:space="preserve">
+    <value>Transmetteur</value>
+    
+    <comment>An electronic device designed to produce electromagnetic waves.</comment>
+  </data>
+  <data name="AudioLogs" xml:space="preserve">
+    <value>Journaux Audio</value>
+  </data>
+  <data name="AXCombatLogs" xml:space="preserve">
+    <value>Journaux de Combat AX</value>
+    <comment>Data related to anti-xeno operations and encounters with hostile Thargoid forces.</comment>
+  </data>
+  <data name="BallisticsData" xml:space="preserve">
+    <value>Données Balistiques</value>
+    <comment>Projectile weapon research including launch mechanisms, accuracy and impact damage.</comment>
+  </data>
+  <data name="ChemicalWeaponData" xml:space="preserve">
+    <value>Données d'Armes Chimiques</value>
+    <comment>Information about chemical-based armaments and their effects on both organic and non-organic targets.</comment>
+  </data>
+  <data name="ClassicEntertainment" xml:space="preserve">
+    <value>Médiathèque Classique</value>
+    <comment>Well-known and critically acclaimed multimedia products maintained from past generations.</comment>
+  </data>
+  <data name="CocktailRecipes" xml:space="preserve">
+    <value>Recettes de Cocktails</value>
+    <comment>Instructions for mixing sophisticated alcoholic or non-alcoholic beverages from many star systems.</comment>
+  </data>
+  <data name="ConflictHistory" xml:space="preserve">
+    <value>Historique de Conflit</value>
+    <comment>Detailed civil, political or military records relating to a faction conflict.</comment>
+  </data>
+  <data name="CriminalRecords" xml:space="preserve">
+    <value>Casiers Judiciaires</value>
+    <comment>An account of criminal convictions and other legal transgressions wthin a specific population.</comment>
+  </data>
+  <data name="CropYieldAnalysis" xml:space="preserve">
+    <value>Analyse de Rendement Agricole</value>
+    <comment>Records of crop production levels and projections for future harvest quotas.</comment>
+  </data>
+  <data name="CulinaryRecipes" xml:space="preserve">
+    <value>Recettes Culinaires</value>
+    <comment>Step-by-step instructions using available ingredients to create meals from scratch.</comment>
+  </data>
+  <data name="EmployeeExpenses" xml:space="preserve">
+    <value>Notes de Frais</value>
+    <comment>Records of business expense claims and charges made to company credit accounts.</comment>
+  </data>
+  <data name="EnhancedInterrogationRecordings" xml:space="preserve">
+    <value>Enregistrements d'Interrogatoires Poussés</value>
+    <comment>Recordings of information gathered from a subject via non-standard interview techniques.</comment>
+  </data>
+  <data name="EspionageMaterial" xml:space="preserve">
+    <value>Documents Confidentiels</value>
+    <comment>Highly sensitive data on an individual or group acquired without the target's knowledge.</comment>
+  </data>
+  <data name="ExtractionYieldData" xml:space="preserve">
+    <value>Données de Rendement Minier</value>
+    <comment>Raw data mineral production quantities from a settlement's mining operation.</comment>
+  </data>
+  <data name="FleetRegistry" xml:space="preserve">
+    <value>Registre de Flotte</value>
+    <comment>Official registration and deployment records of all ships controlled by an organisation.</comment>
+  </data>
+  <data name="GeneSequencingData" xml:space="preserve">
+    <value>Données de Séquençage Génétique</value>
+    <comment>Molecular analysis of DNA samples to determine the nucleic acid sequence.</comment>
+  </data>
+  <data name="GeneticResearch" xml:space="preserve">
+    <value>Recherches Génétiques</value>
+    <comment>Scientific data and proposals related to genome study and genetic manipulation.</comment>
+  </data>
+  <data name="GeologicalData" xml:space="preserve">
+    <value>Données Géologiques</value>
+    <comment>Information on a planet's composition, physical structure and regional arrangement.</comment>
+  </data>
+  <data name="HydroponicData" xml:space="preserve">
+    <value>Données Hydroponiques</value>
+    <comment>Horticultural analysis and results from using soilless methods of plant growth.</comment>
+  </data>
+  <data name="IncidentLogs" xml:space="preserve">
+    <value>Journaux d'Incidents</value>
+    <comment>Notable occurances or unexpected events that occurred at a settlement.</comment>
+  </data>
+  <data name="InfluenceProjections" xml:space="preserve">
+    <value>Perspectives</value>
+    <comment>Assessments of potential changes to a company's standing with various political bodies.</comment>
+  </data>
+  <data name="InterrogationRecordings" xml:space="preserve">
+    <value>Enregistrements d'Interrogatoires</value>
+    <comment>Information acquired during one or more sessions of subject questioning.</comment>
+  </data>
+  <data name="InterviewRecordings" xml:space="preserve">
+    <value>Enregistrements d'Entretiens</value>
+    <comment>Evaluations of potential employees under consideration for employment at a facility.</comment>
+  </data>
+  <data name="JobApplications" xml:space="preserve">
+    <value>Candidatures Professionnelles</value>
+    <comment>Media submitted to demonstrate a candidate's suitability for a given vacancy.</comment>
+  </data>
+  <data name="Kompromat" xml:space="preserve">
+    <value>Kompromat</value>
+    <comment>Highly sensitive material used to compromise, blackmail or manipulate individuals or groups.</comment>
+  </data>
   
   
   

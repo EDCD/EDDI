@@ -117,34 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AFMUs" xml:space="preserve">
+    <value>Unidades de automantenimiento</value>
+  </data>
+  <data name="Armour" xml:space="preserve">
+    <value>Blindaje</value>
+  </data>
+  <data name="Cannons" xml:space="preserve">
+    <value>Cañones</value>
+  </data>
+  <data name="ChaffAndHeatSinkLaunchers" xml:space="preserve">
+    <value>Señuelos y Lanzador de eyectores térmicos</value>
+  </data>
+  <data name="ECMs" xml:space="preserve">
+    <value>Contramedidas electrónicas</value>
+  </data>
+  <data name="FragCannons" xml:space="preserve">
+    <value>Cañones de fragmentación</value>
+  </data>
+  <data name="FrameShiftDriveInterdictors" xml:space="preserve">
+    <value>Interdictores de motor de salto</value>
+  </data>
+  <data name="FrameShiftDrives" xml:space="preserve">
+    <value>Motores de salto</value>
+  </data>
+  <data name="FuelScoops" xml:space="preserve">
+    <value>Colectores de combustible</value>
+  </data>
+  <data name="HullReinforcements" xml:space="preserve">
+    <value>Refuerzos de casco</value>
+  </data>
+  <data name="Lasers" xml:space="preserve">
+    <value>Láseres</value>
+  </data>
+  <data name="LifeSupportSystems" xml:space="preserve">
+    <value>Sistemas de soporte vital</value>
+  </data>
+  <data name="LimpetControllers" xml:space="preserve">
+    <value>Controladoras de drones</value>
+  </data>
+  <data name="Mines" xml:space="preserve">
+    <value>Minas</value>
+  </data>
+  <data name="Missiles" xml:space="preserve">
+    <value>Misiles</value>
+  </data>
+  <data name="MultiCannons" xml:space="preserve">
+    <value>multicañones</value>
+  </data>
+  <data name="PlasmaAccelerators" xml:space="preserve">
+    <value>Aceleradores de Plasma</value>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Defensa de punto</value>
+  </data>
+  <data name="PowerDistributors" xml:space="preserve">
+    <value>Distribuidores de energía</value>
+  </data>
+  <data name="PowerPlants" xml:space="preserve">
+    <value>Plantas de energía</value>
+  </data>
+  <data name="RailGuns" xml:space="preserve">
+    <value>Cañónes de riel</value>
+  </data>
+  <data name="Refineries" xml:space="preserve">
+    <value>Refinerías</value>
+  </data>
+  <data name="Scanners" xml:space="preserve">
+    <value>Escáneres</value>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensores</value>
+  </data>
+  <data name="ShieldBoosters" xml:space="preserve">
+    <value>Potenciadores de escudos</value>
+  </data>
+  <data name="ShieldCellBanks" xml:space="preserve">
+    <value>Células de escudo</value>
+  </data>
+  <data name="ShieldGenerators" xml:space="preserve">
+    <value>Generadores de escudos</value>
+  </data>
+  <data name="SurfaceScanners" xml:space="preserve">
+    <value>Escáneres de superficie</value>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Impulsores</value>
+  </data>
+  <data name="Torpedos" xml:space="preserve">
+    <value>Torpedos</value>
+  </data>
 </root>
