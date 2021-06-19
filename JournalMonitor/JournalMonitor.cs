@@ -4224,24 +4224,34 @@ namespace EddiJournalMonitor
                             case "Backpack":
                             case "ShipLocker":
                                 {
-                                    var info = new MicroResourceInfo().FromFile($"{edType}.json");
-
-                                    // Flatten the list
-                                    var inventory = new List<MicroResourceAmount>();
-                                    inventory.AddRange(info.Components);
-                                    inventory.AddRange(info.Consumables);
-                                    inventory.AddRange(info.Data);
-                                    inventory.AddRange(info.Items);
-
-                                    if (edType == "Backpack")
+                                    MicroResourceInfo info = null;
+                                    try
                                     {
-                                        events.Add(new BackpackEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        info = new MicroResourceInfo().FromFile($"{edType}.json");
                                     }
-                                    else if (edType == "ShipLocker")
+                                    catch (JsonReaderException jsonEx)
                                     {
-                                        events.Add(new ShipLockerEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
+                                        Logging.Warn($"Failed to read malformed {edType}.json", jsonEx);
+                                    }
+                                    if (info != null)
+                                    {
+                                        // Flatten the list
+                                        var inventory = new List<MicroResourceAmount>();
+                                        inventory.AddRange(info.Components);
+                                        inventory.AddRange(info.Consumables);
+                                        inventory.AddRange(info.Data);
+                                        inventory.AddRange(info.Items);
+
+                                        if (edType == "Backpack")
+                                        {
+                                            events.Add(new BackpackEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
+                                            handled = true;
+                                        }
+                                        else if (edType == "ShipLocker")
+                                        {
+                                            events.Add(new ShipLockerEvent(timestamp, inventory) { raw = line, fromLoad = fromLogLoad });
+                                            handled = true;
+                                        }
                                     }
                                 }
                                 break;
