@@ -216,7 +216,7 @@ namespace UnitTests
             Assert.AreEqual(8, theEvent.stellarsubclass);
             Debug.Assert(theEvent.alreadydiscovered != null, "theEvent.alreadydiscovered != null");
             Assert.IsTrue((bool)theEvent.alreadydiscovered);
-            Assert.AreEqual(4916.66378995466M, theEvent.density);
+            Assert.AreEqual(3687.497842466M, theEvent.density);
             Assert.AreEqual(1204, theEvent.estimatedvalue);
             Assert.AreEqual(0.00456994738549848M, theEvent.luminosity);
             Assert.AreEqual("Va", theEvent.luminosityclass);
@@ -232,7 +232,7 @@ namespace UnitTests
             Assert.AreEqual(1, theEvent.parents.Count);
             // Stellar extras
             Assert.AreEqual(85, theEvent.absolutemagnitudeprobability);
-            Assert.AreEqual(37, theEvent.densityprobability);
+            Assert.AreEqual(14, theEvent.densityprobability);
             Assert.AreEqual(86, theEvent.eccentricityprobability);
             Assert.AreEqual(1, theEvent.inclinationprobability);
             Assert.AreEqual(52, theEvent.orbitalperiodprobability);
