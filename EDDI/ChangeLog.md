@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack Responder
     * Event object data is now documented and accessible.
     * Fixed scripts invoked from the VoiceAttack `speech` context having priority 5 rather than priority 3 by default.
+    * Standard variables (e.g. current system variables) are updated immediately after a change rather than with the next event.
 
 ### 4.0.0
   * Core

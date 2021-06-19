@@ -9,14 +9,17 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiCore
@@ -26,7 +29,7 @@ namespace EddiCore
     /// and keep them up-to-date with changes that occur.
     /// It also acts as the switchboard for passing events through all parts of the application including both responders and monitors.
     /// </summary>
-    public class EDDI
+    public class EDDI: INotifyPropertyChanged
     {
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool SpeechResponderModalWait { get; set; } = false;
@@ -40,8 +43,27 @@ namespace EddiCore
 
         public bool inTelepresence { get; private set; } = false;
 
-        public bool inHorizons { get; private set; } = true;
-        public bool inOdyssey { get; private set; } = true;
+        public bool inHorizons 
+        {
+            get => _inHorizons;
+            private set
+            {
+                _inHorizons = value;
+                OnPropertyChanged();
+            }
+        } 
+        private bool _inHorizons = true;
+
+        public bool inOdyssey 
+        { 
+            get => _inOdyssey;
+            private set
+            {
+                _inOdyssey = value;
+                OnPropertyChanged();
+            }
+        } 
+        private bool _inOdyssey = true;
 
         public bool gameIsBeta { get; private set; } = false;
 
@@ -89,30 +111,168 @@ namespace EddiCore
         public string vaVersion { get; set; }
 
         // Information obtained from the configuration
-        public StarSystem HomeStarSystem { get; private set; } // May be null when the commander hasn't set a home star system
-        public Station HomeStation { get; private set; }
-        public StarSystem SquadronStarSystem { get; private set; } // May be null when the commander hasn't set a squadron star system
+        public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
+        {
+            get => homeStarSystem;
+            private set
+            {
+                homeStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem homeStarSystem;
+        
+        public Station HomeStation
+        {
+            get => homeStation;
+            private set
+            {
+                homeStation = value;
+                OnPropertyChanged();
+            }
+        }
+        private Station homeStation;
+
+        public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
+        {
+            get => squadronStarSystem;
+            private set
+            {
+                squadronStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem squadronStarSystem;
 
         // Destination variables
-        public StarSystem DestinationStarSystem { get; private set; }
-        public Station DestinationStation { get; private set; }
-        public decimal DestinationDistanceLy { get; set; }
+        public StarSystem DestinationStarSystem
+        {
+            get => destinationStarSystem;
+            private set
+            {
+                destinationStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem destinationStarSystem;
+
+        public Station DestinationStation
+        {
+            get => destinationStation;
+            private set
+            {
+                destinationStation = value;
+                OnPropertyChanged();
+            }
+        }
+        private Station destinationStation;
+
+        public decimal DestinationDistanceLy 
+        {
+            get => destinationDistanceLy;
+            set
+            {
+                destinationDistanceLy = value;
+                OnPropertyChanged();
+            }
+        }
+        private decimal destinationDistanceLy;
 
         // Information obtained from the player journal
-        public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
-        public string Environment { get; set; }
-        public StarSystem CurrentStarSystem { get; private set; }
-        public StarSystem LastStarSystem { get; private set; }
-        public StarSystem NextStarSystem { get; private set; }
-        public Station CurrentStation { get; private set; }
-        public Body CurrentStellarBody { get; private set; }
+        public Commander Cmdr // Also includes information from the configuration and companion app service
+        {
+            get => cmdr;
+            private set
+            {
+                cmdr = value;
+                OnPropertyChanged();
+            }
+        }
+        private Commander cmdr;
+        
+        public string Environment
+        {
+            get => environment;
+            private set
+            {
+                environment = value;
+                OnPropertyChanged();
+            }
+        }
+        private string environment;
+
+        public StarSystem CurrentStarSystem 
+        { 
+            get => currentStarSystem; 
+            private set
+            {
+                currentStarSystem = value;
+                OnPropertyChanged(); 
+            } 
+        }
+        private StarSystem currentStarSystem;
+
+        public StarSystem LastStarSystem
+        {
+            get => lastStarSystem;
+            private set
+            {
+                lastStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem lastStarSystem;
+
+        public StarSystem NextStarSystem
+        {
+            get => nextStarSystem;
+            private set
+            {
+                nextStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem nextStarSystem;
+
+        public Station CurrentStation
+        {
+            get => currentStation;
+            private set
+            {
+                currentStation = value;
+                OnPropertyChanged();
+            }
+        }
+        private Station currentStation;
+
+        public Body CurrentStellarBody 
+        {
+            get => currentStellarBody;
+            private set
+            {
+                currentStellarBody = value;
+                OnPropertyChanged();
+            }
+        }
+        private Body currentStellarBody;
+
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Information from the last events of each type that we've received (for reference)
         private SortedDictionary<string, Event> lastEvents { get; set; } = new SortedDictionary<string, Event>();
 
         // Current vehicle of player
-        public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
+        public string Vehicle
+        {
+            get => vehicle;
+            set
+            {
+                vehicle = value;
+                OnPropertyChanged();
+            }
+        }
+        private string vehicle = Constants.VEHICLE_SHIP;
+
         public Ship CurrentShip { get; set; }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
@@ -3098,6 +3258,14 @@ namespace EddiCore
                 }
                 configuration.ToFile();
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        { 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

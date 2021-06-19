@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     /// <summary>
     /// A starport, outpost or port
     /// </summary>
-    public class Station
+    public class Station : INotifyPropertyChanged
     {
         /// <summary>The ID of this station in EDSM</summary>
         public long? EDSMID { get; set; }

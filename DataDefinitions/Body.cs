@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
     /// <summary>
     /// A star or planet
     /// </summary>
-    public class Body
+    public class Body : INotifyPropertyChanged
     {
         /// <summary>The ID of this body in the star system</summary>
         public long? bodyId { get; set; }
@@ -597,7 +597,7 @@ namespace EddiDataDefinitions
             }
             if (massKg > 0 && radiusM > 0)
             {
-                double cubicMeters = 4 / 3 * Math.PI * Math.Pow(radiusM, 3);
+                double cubicMeters = 4.0 / 3 * Math.PI * Math.Pow(radiusM, 3);
                 return (decimal?)(massKg / cubicMeters);
             }
             else { return null; }
@@ -625,8 +625,8 @@ namespace EddiDataDefinitions
             if (bodyType == null)
             {
                 _additionalData.TryGetValue("Type", out JToken var);
-                BodyType type = var.ToObject<BodyType>();
-                bodyType = type;
+                BodyType typ = var?.ToObject<BodyType>();
+                bodyType = typ;
             }
             if (absolutemagnitude == null)
             {

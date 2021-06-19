@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EddiCompanionAppService;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -108,8 +109,10 @@ namespace EddiVoiceAttackResponder
 
                 // Add notifiers for changes in variables we want to react to 
                 // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
+                EDDI.Instance.PropertyChanged += (s, e) => updateStandardValues(e);
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeechState(e);
+                CompanionAppService.Instance.StateChanged += (oldState, newState) => setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
@@ -145,6 +148,9 @@ namespace EddiVoiceAttackResponder
                     };
                 }
 
+                // Set initial values for standard variables
+                initializeStandardValues();
+
                 // Display instance information if available
                 if (EddiUpgrader.UpgradeRequired)
                 {
@@ -166,9 +172,6 @@ namespace EddiVoiceAttackResponder
                     SpeechService.Instance.Say(null, msg, 0);
                 }
 
-                // Set the initial values from the main EDDI objects
-                setStandardValues();
-
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
 
@@ -179,15 +182,6 @@ namespace EddiVoiceAttackResponder
                 System.Version v = vaProxy.VAVersion;
                 EDDI.Instance.vaVersion = v.ToString();
 
-                // Set a variable indicating whether EDDI is speaking
-                try
-                {
-                    setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Failed to set initial speaking status", ex);
-                }
                 Logging.Info("EDDI VoiceAttack plugin initialization complete");
             }
             catch (Exception e)
@@ -262,8 +256,6 @@ namespace EddiVoiceAttackResponder
 
                 // Save the updated state of our event variables
                 currentVariables.AddRange(eventVariables);
-                // Update all standard values  
-                setStandardValues();
 
                 Logging.Debug($"Processed EDDI event {@event.type} in {(DateTime.UtcNow - startTime).Milliseconds} milliseconds:", @event);
             }
@@ -555,7 +547,6 @@ namespace EddiVoiceAttackResponder
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             EDDI.Instance.refreshProfile(true);
-            setStandardValues();
         }
 
         private static void OpenOrStoreURI(ref dynamic vaProxy, string systemUri)

@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechService
@@ -21,7 +23,19 @@ namespace EddiSpeechService
     public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
-        public SpeechServiceConfiguration Configuration;
+        public SpeechServiceConfiguration Configuration
+        {
+            get => configuration;
+            set
+            {
+                if (configuration != value)
+                {
+                    configuration = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private SpeechServiceConfiguration configuration;
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut _activeSpeech;
@@ -47,16 +61,13 @@ namespace EddiSpeechService
         private static bool _eddiSpeaking;
         public bool eddiSpeaking
         {
-            get
-            {
-                return _eddiSpeaking;
-            }
+            get => _eddiSpeaking;
             set
             {
                 if (_eddiSpeaking != value)
                 {
                     _eddiSpeaking = value;
-                    Instance.NotifyPropertyChanged("eddiSpeaking");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -621,9 +632,10 @@ namespace EddiSpeechService
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
