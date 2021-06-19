@@ -404,7 +404,7 @@ namespace Eddi
             return result;
         }
 
-        private void ConfigureTTS()
+        public void ConfigureTTS()
         {
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
             List<string> speechOptions = new List<string>

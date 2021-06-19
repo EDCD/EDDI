@@ -431,6 +431,9 @@ namespace EddiVoiceAttackResponder
                     case "inara":
                         InvokeInaraProfileDetails(ref vaProxy);
                         break;
+                    case "volume":
+                        InvokeVolume(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
@@ -438,6 +441,25 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to invoke context " + vaProxy.Context, e);
                 vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
             }
+        }
+
+        private static void InvokeVolume(ref dynamic vaProxy)
+        {
+            int? volumeInt = vaProxy.GetInt("Volume");
+
+            if (SpeechService.Instance.Configuration == null) { return; }
+
+            // Fix any inputs outside of the expected range
+            if (volumeInt == null) { volumeInt = new SpeechServiceConfiguration().Volume; } // Default volume
+            else if (volumeInt < 0) { volumeInt = 0; } // Must be zero or greater
+            else if (volumeInt > 100) { volumeInt = 100; } // Must be 100 or less
+
+            SpeechService.Instance.Configuration.Volume = (int)volumeInt;
+            SpeechService.Instance.Configuration.ToFile();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ((MainWindow)Application.Current.MainWindow)?.ConfigureTTS();
+            });
         }
 
         private static void InvokeInaraProfileDetails(ref dynamic vaProxy)

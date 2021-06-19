@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * Updated the `Embark`, `SRV docked`, `SRV launched`, and `Vehicle destroyed` events to fix a bug with th the SRV deployed warning.
   * VoiceAttack Responder
+    * Added a new plugin context 'volume' to allow commanders to set the text to speech volume from VoiceAttack.
     * Event object data is now documented and accessible.
     * Fixed scripts invoked from the VoiceAttack `speech` context having priority 5 rather than priority 3 by default.
     * Standard variables (e.g. current system variables) are updated immediately after a change rather than with the next event.

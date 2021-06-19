@@ -421,6 +421,14 @@ Note that unlike enablespeechresponder and disablespeechresponder any changes ma
 
 To use this function in your own commands set the 'Personality' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality'.
 
+### volume
+
+This function changes the text to speech volume. It takes one mandatory variable as a parameter.
+
+- 'Volume' (integer variable) is a mandatory parameter containing the desired volume setting (from 0 - 100).
+
+To use this function in your own commands set the 'Volume' parameter then use the 'Execute an external plugin function' command with the plugin context set to 'volume'.
+
 ## Information functions
 
 ### coriolis, edshipyard, eddbsystem, or eddbstation
