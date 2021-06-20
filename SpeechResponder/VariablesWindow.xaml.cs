@@ -33,20 +33,23 @@ namespace EddiSpeechResponder
 
             // If the user is editing an event-based script, add event-specific information
             var @type = Events.TYPES.SingleOrDefault(t => t.Key == script.Name).Value;
-            var vars = new MetaVariables(@type).Results;
-            var CottleVars = vars.AsCottleVariables();
-            if (CottleVars.Any())
+            if (@type != null)
             {
-                markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n";
-                if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
+                var vars = new MetaVariables(@type).Results;
+                var CottleVars = vars.AsCottleVariables();
+                if (CottleVars.Any())
                 {
-                    markdown += "Where values are indexed (the compartments on a ship for example), the index will be represented by '*\\<index\\>*'.\n\n";
-                }
-                markdown += "\n";
-                foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
-                {
-                    var description = !string.IsNullOrEmpty(cottleVariable.description) ? $" - {cottleVariable.description}" : "";
-                    markdown += $"  - *{cottleVariable.key}* {description}\n";
+                    markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n";
+                    if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
+                    {
+                        markdown += "Where values are indexed (the compartments on a ship for example), the index will be represented by '*\\<index\\>*'.\n\n";
+                    }
+                    markdown += "\n";
+                    foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
+                    {
+                        var description = !string.IsNullOrEmpty(cottleVariable.description) ? $" - {cottleVariable.description}" : "";
+                        markdown += $"  - *{cottleVariable.key}* {description}\n";
+                    }
                 }
             }
 

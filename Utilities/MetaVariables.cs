@@ -12,7 +12,14 @@ namespace Utilities
     {
         public MetaVariables(Type reflectionObjectType, object reflectionObject = null)
         {
-            Results = GetVariables(reflectionObjectType, reflectionObject);
+            if (reflectionObjectType is null) 
+            { 
+                Results = new List<MetaVariable>(); 
+            }
+            else
+            {
+                Results = GetVariables(reflectionObjectType, reflectionObject);
+            }
         }
 
         public List<MetaVariable> Results { get; private set; }
