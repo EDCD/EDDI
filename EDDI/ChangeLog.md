@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 4.0.1-b1
   * Core
     * Richer event variable documentation (for both EDDI and VoiceAttack).
+  * Mission Monitor
+    * Revised mission expiration timers to improve sorting with longer missions and to use a more universal format.
   * Speech Responder
     * Scripts
       * Updated the `Embark`, `SRV docked`, `SRV launched`, and `Vehicle destroyed` events to fix a bug with th the SRV deployed warning.

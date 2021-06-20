@@ -132,30 +132,8 @@ namespace EddiMissionMonitor
                 {
                     foreach (Mission mission in missionsList)
                     {
-                        if (mission.expiry != null && mission.statusEDName != "Failed")
+                        if (mission.expiry != null && mission.statusEDName == "Active")
                         {
-                            // Check for mission types which have no expiry after requiremensts completed
-                            string type = mission.typeEDName.ToLowerInvariant();
-                            if (mission.statusEDName == "Claim")
-                            {
-                                mission.timeremaining = String.Empty;
-                                continue;
-                            }
-
-                            // Build the 'time remaining' notification
-                            TimeSpan span = (DateTime)mission.expiry - DateTime.UtcNow;
-                            if (span.Days > 6)
-                            {
-                                int weeks = Decimal.ToInt32(span.Days / 7);
-                                int days = span.Days - weeks * 7;
-                                mission.timeremaining = weeks.ToString() + "W " + days.ToString() + "D ";
-                            }
-                            else
-                            {
-                                mission.timeremaining = span.Days.ToString() + "D ";
-                            }
-                            mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
-
                             // Generate 'Expired' and 'Warning' events when conditions met
                             if (mission.expiry < DateTime.UtcNow)
                             {
@@ -177,10 +155,10 @@ namespace EddiMissionMonitor
                             }
                             else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? Constants.missionWarningDefault))
                             {
-                                if (!mission.expiring)
+                                if (!mission.expiring && mission.timeRemaining != null)
                                 {
                                     mission.expiring = true;
-                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.UtcNow, mission.missionid, mission.name, (int)span.TotalMinutes));
+                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.UtcNow, mission.missionid, mission.name, (int)((TimeSpan)mission.timeRemaining).TotalMinutes));
                                 }
                             }
                             else if (mission.expiring)
@@ -188,10 +166,7 @@ namespace EddiMissionMonitor
                                 mission.expiring = false;
                             }
                         }
-                        else
-                        {
-                            mission.timeremaining = String.Empty;
-                        }
+                        mission.UpdateTimeRemaining();
                     }
                 }
                 Thread.Sleep(5000);

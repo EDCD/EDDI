@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Utilities;
+using System.Runtime.CompilerServices;
 
 namespace EddiDataDefinitions
 {
@@ -57,15 +58,15 @@ namespace EddiDataDefinitions
         };
 
         // The mission ID
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long missionid { get; private set; }
 
         // The name of the mission
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string name { get; set; }
 
         // The localised name of the mission
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string localisedname;
 
         // The type of mission
@@ -88,14 +89,14 @@ namespace EddiDataDefinitions
             set
             {
                 _typeDef = value;
-                NotifyPropertyChanged("localizedType");
+                OnPropertyChanged("localizedType");
             }
         }
 
         [JsonIgnore]
         public string localizedType => typeDef?.localizedName ?? "Unknown";
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => localizedType;
 
         // Status of the mission
@@ -118,29 +119,29 @@ namespace EddiDataDefinitions
             set
             {
                 _statusDef = value;
-                NotifyPropertyChanged("localizedStatus");
+                OnPropertyChanged("localizedStatus");
             }
         }
 
         [JsonIgnore]
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string status => localizedStatus;
 
         // The system in which the mission was accepted
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string originsystem { get; set; }
 
         // The station in which the mission was accepted
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string originstation { get; set; }
 
         // Mission returns to origin
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool originreturn { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string faction { get; set; }
 
         // The state of the minor faction
@@ -164,42 +165,42 @@ namespace EddiDataDefinitions
             set { _FactionState = value; }
         }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string influence { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string reputation { get; set; }
 
         public bool chained => name.ToLowerInvariant().Contains("chained");
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool communal { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool legal => !name.ToLowerInvariant().Contains("hack")
             && !name.ToLowerInvariant().Contains("illegal")
             && !name.ToLowerInvariant().Contains("piracy")
             && !name.ToLowerInvariant().Contains("smuggle");
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool shared { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool wing { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long? reward { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string commodity { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public int? amount { get; set; }
 
         // THe destination system of the mission
         private string _destinationsystem;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string destinationsystem
         {
             get
@@ -211,7 +212,7 @@ namespace EddiDataDefinitions
                 if (_destinationsystem != value)
                 {
                     _destinationsystem = value;
-                    NotifyPropertyChanged("destinationsystem");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -219,7 +220,7 @@ namespace EddiDataDefinitions
         // The destination station of the mission
         private string _destinationstation;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string destinationstation
         {
             get
@@ -231,14 +232,14 @@ namespace EddiDataDefinitions
                 if (_destinationstation != value)
                 {
                     _destinationstation = value;
-                    NotifyPropertyChanged("destinationstation");
+                    OnPropertyChanged();
                 }
             }
         }
 
         // Destination systems for chained missions
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public List<DestinationSystem> destinationsystems { get; set; }
 
         // Community goal details, if applicable
@@ -248,51 +249,40 @@ namespace EddiDataDefinitions
         
         // The mission time remaining
         [JsonIgnore]
-        private string _timeremaining;
+        public TimeSpan? timeRemaining => expiry != null && statusEDName == "Active" ? TimeSpanNearestSecond(expiry - DateTime.UtcNow) : null;
 
-        [JsonIgnore]
-        public string timeremaining
+        private TimeSpan? TimeSpanNearestSecond(TimeSpan? utcNow)
         {
-            get
-            {
-                return _timeremaining;
-            }
-            set
-            {
-                if (_timeremaining != value)
-                {
-                    _timeremaining = value;
-                    NotifyPropertyChanged("timeremaining");
-                }
-            }
+            if (utcNow is null) { return null; }
+            return new TimeSpan(utcNow.Value.Days, utcNow.Value.Hours, utcNow.Value.Minutes, utcNow.Value.Seconds);
         }
 
         public string passengertypeEDName { get; set; }
         
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string passengertype => PassengerType.FromEDName(passengertypeEDName)?.localizedName;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool? passengerwanted { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool? passengervips { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string target { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string targetfaction { get; set; }
 
         public string targetTypeEDName;
 
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string targettype => TargetType.FromEDName(targetTypeEDName)?.localizedName;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public DateTime? expiry { get; set; }
 
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds((DateTime)expiry) : null;
 
         [JsonIgnore]
@@ -327,11 +317,17 @@ namespace EddiDataDefinitions
             this.originreturn = ORGRETURN.Contains(type);
         }
 
+        public void UpdateTimeRemaining()
+        {
+            OnPropertyChanged(nameof(timeRemaining));
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        { 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }
     }
 }

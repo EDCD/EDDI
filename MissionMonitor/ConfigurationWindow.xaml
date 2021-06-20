@@ -96,7 +96,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" Width="140" IsReadOnly="True" Binding="{Binding Path=timeremaining}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" Width="140" IsReadOnly="True" Binding="{Binding Path=timeRemaining, StringFormat={}{0:g}, Mode=OneWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
