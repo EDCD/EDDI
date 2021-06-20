@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 4.0.1-b1
   * Core
-    * Richer event variable documentation (for both EDDI and VoiceAttack).
+    * Richer event variable documentation (for both the Speech Responder and VoiceAttack).
   * Mission Monitor
     * Added a tool tip to display the name of each mission.
     * Revised mission expiration timers to improve sorting with longer missions and to use a more universal format.
