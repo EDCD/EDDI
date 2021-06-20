@@ -66,9 +66,20 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         // The localised name of the mission
-        [Utilities.PublicAPI]
-        public string localisedname;
+        [JsonIgnore]
+        private string _localisedname;
 
+        [Utilities.PublicAPI]
+        public string localisedname 
+        {
+            get => _localisedname;
+            set
+            {
+                _localisedname = value;
+                OnPropertyChanged();
+            }
+        }
+        
         // The type of mission
         public string typeEDName
         {

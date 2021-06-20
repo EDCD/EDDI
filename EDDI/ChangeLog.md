@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Richer event variable documentation (for both EDDI and VoiceAttack).
   * Mission Monitor
+    * Added a tool tip to display the name of each mission.
     * Revised mission expiration timers to improve sorting with longer missions and to use a more universal format.
   * Speech Responder
     * Scripts
