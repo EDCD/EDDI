@@ -14,6 +14,7 @@ using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.Win32;
 using Utilities;
 
 namespace EddiSpeechService
@@ -105,14 +106,44 @@ namespace EddiSpeechService
                     .ToList();
                 foreach (var voice in systemSpeechVoices)
                 {
-                    allVoices.Add(new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(), voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis)));
+                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(), voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
+                    allVoices.Add(voiceDetails);
                 }
             }
 
             // Get all available voices from Windows.Media.SpeechSynthesis
             foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
             {
-                allVoices.Add(new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis)));
+                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
+
+                // Skip voices which are not fully registered
+                if (!TryOneCoreVoice(voiceDetails)) { continue; } 
+
+                // Skip voices with a "Desktop" variant from System.Speech.Synthesis
+                if (allVoices.Exists(v => v.name == voiceDetails.name + " Desktop")) { continue; }
+
+                allVoices.Add(voiceDetails);
+            }
+
+            bool TryOneCoreVoice(VoiceDetails voiceDetails)
+            {
+                // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
+                // so we test the registry entries for each voice to see if it is really fully registered.
+                var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
+                var oneCoreVoices = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
+                if (oneCoreVoices != null)
+                {
+                    foreach (var subKeyName in oneCoreVoices.GetSubKeyNames())
+                    {
+                        var oneCoreVoice = Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
+                        var oneCoreVoiceName = oneCoreVoice?.GetValue("").ToString();
+                        if (oneCoreVoiceName?.Contains(voiceDetails.name) ?? false)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
             }
 
             // Sort results alphabetically by voice name
@@ -342,7 +373,11 @@ namespace EddiSpeechService
             {
                 voiceDetails = allVoices.SingleOrDefault(v => string.Equals(v.name, voice, StringComparison.InvariantCultureIgnoreCase));
             }
+            return speak(voiceDetails, speech);
+        }
 
+        private Stream speak(VoiceDetails voiceDetails, string speech)
+        {
             if (voiceDetails?.synthType is nameof(System.Speech.Synthesis))
             {
                 Logging.Debug($"Selecting {nameof(System.Speech.Synthesis)} synthesizer");
