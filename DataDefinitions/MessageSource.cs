@@ -119,7 +119,7 @@
             else if (message.StartsWith("$Police"))
             {
                 // Police messages appear to be re-used by bounty hunters.  Check from to see if it really is police
-                if (from.Contains("Police"))
+                if (from.Contains("Police") || from.Contains("System Authority Vessel"))
                 {
                     by = Police;
                 }
