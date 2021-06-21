@@ -788,7 +788,7 @@ namespace EddiSpeechService
         public HashSet<string> GetLexicons()
         {
             var result = new HashSet<string>();
-            HashSet<string> GetLexiconsFromDirectory(string directory)
+            HashSet<string> GetLexiconsFromDirectory(string directory, bool createIfMissing = false)
             {
                 // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
                 // Precedence means that a token is first looked up in the lexicon with highest precedence.
@@ -798,23 +798,45 @@ namespace EddiSpeechService
                 DirectoryInfo dir = new DirectoryInfo(directory);
                 if (dir.Exists)
                 {
-                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories).Where(f => f.Name.ToLowerInvariant().Contains(Culture.IetfLanguageTag.ToLowerInvariant())))
+                    // Find two letter language code lexicons
+                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
+                        .Where(f => $"{f.Name.ToLowerInvariant()}.pls" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}"))
+                    {
+                        result.Add(file.FullName);
+                    }
+                    // Find full language code lexicons
+                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
+                        .Where(f => $"{f.Name.ToLowerInvariant()}.pls" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}"))
                     {
                         result.Add(file.FullName);
                     }
                 }
-                else
+                else if (createIfMissing)
                 {
                     dir.Create();
+                    // Create a readme file to explain the directory   
+                    using (FileStream fs = File.Create($"{dir}/readme.txt"))
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendLine("If you have selected a voice which supports it, you can add a .pls style lexicon to this directory to customize EDDI's pronuncations of words. Each accent should have a different lexicon.");
+                        sb.AppendLine("");
+                        sb.AppendLine("For more information and an example of how to create a .pls style lexicon file, see https://www.w3.org/TR/pronunciation-lexicon/.");
+                        sb.AppendLine("");
+                        sb.AppendLine("Please name the file to match the culture code of the voice or voices you'd like to match and to match the value of the \"xml:lang\" attribute of the .pls file, e.g. \"en-gb.pls\" for British voices or \"en-us.pls\" for United States voices. You can also use a two letter culture code (e.g. \"en.pls\"), though the more specific language codes will be preferred.");
+                        var bytes = new UTF8Encoding(true).GetBytes(sb.ToString());
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
                 }
                 return result;
             }
+
+            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
 
             // Add lexicons from our installation directory
             result.UnionWith(GetLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons"));
 
             // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
-            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons"));
+            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons", true));
 
             return result;
         }
