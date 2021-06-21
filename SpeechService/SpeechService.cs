@@ -97,6 +97,18 @@ namespace EddiSpeechService
         {
             Configuration = SpeechServiceConfiguration.FromFile();
 
+
+            // Get all available voices from Windows.Media.SpeechSynthesis
+            foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
+            {
+                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
+
+                // Skip voices which are not fully registered
+                if (!TryOneCoreVoice(voiceDetails)) { continue; } 
+
+                allVoices.Add(voiceDetails);
+            }
+
             // Get all available voices from System.Speech.Synthesis
             using (var synth = new System.Speech.Synthesis.SpeechSynthesizer())
             {
@@ -107,22 +119,14 @@ namespace EddiSpeechService
                 foreach (var voice in systemSpeechVoices)
                 {
                     var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(), voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
+                    
+                    // Skip voices "Desktop" variant voices from System.Speech.Synthesis
+                    // where we already have a (newer) OneCore version
+                    if (allVoices.Exists(v => v.name + " Desktop" == voiceDetails.name)) { continue; }
+
+
                     allVoices.Add(voiceDetails);
                 }
-            }
-
-            // Get all available voices from Windows.Media.SpeechSynthesis
-            foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
-            {
-                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
-
-                // Skip voices which are not fully registered
-                if (!TryOneCoreVoice(voiceDetails)) { continue; } 
-
-                // Skip voices with a "Desktop" variant from System.Speech.Synthesis
-                if (allVoices.Exists(v => v.name == voiceDetails.name + " Desktop")) { continue; }
-
-                allVoices.Add(voiceDetails);
             }
 
             bool TryOneCoreVoice(VoiceDetails voiceDetails)
@@ -130,14 +134,14 @@ namespace EddiSpeechService
                 // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
                 // so we test the registry entries for each voice to see if it is really fully registered.
                 var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
-                var oneCoreVoices = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
-                if (oneCoreVoices != null)
+                var voiceKeys = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
+                if (voiceKeys != null)
                 {
-                    foreach (var subKeyName in oneCoreVoices.GetSubKeyNames())
+                    foreach (var subKeyName in voiceKeys.GetSubKeyNames())
                     {
-                        var oneCoreVoice = Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
-                        var oneCoreVoiceName = oneCoreVoice?.GetValue("").ToString();
-                        if (oneCoreVoiceName?.Contains(voiceDetails.name) ?? false)
+                        var voiceKey = Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
+                        var voiceName = voiceKey?.GetValue("").ToString();
+                        if (voiceName?.Contains(voiceDetails.name) ?? false)
                         {
                             return true;
                         }
@@ -350,6 +354,21 @@ namespace EddiSpeechService
         {
             try
             {
+                if (string.IsNullOrEmpty(voice))
+                {
+                    var wmSynth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
+                    voice = wmSynth.Voice.DisplayName;
+                }
+                if (string.IsNullOrEmpty(voice))
+                {
+                    var sysSynth = new System.Speech.Synthesis.SpeechSynthesizer();
+                    voice = sysSynth.Voice.Name;
+                }
+                if (string.IsNullOrEmpty(voice))
+                {
+                    Logging.Error("Could not obtain a voice for speaking.");
+                }
+
                 var stream = speak(voice, speech);
                 if (stream.Length == 0)
                 {
