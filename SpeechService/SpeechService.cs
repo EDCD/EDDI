@@ -681,16 +681,6 @@ namespace EddiSpeechService
             }
         }
 
-        private void WaitForCurrentSpeech()
-        {
-            Logging.Debug("Waiting for current speech to end");
-            while (activeSpeech != null)
-            {
-                Thread.Sleep(10);
-            }
-            Logging.Debug("Current speech ended");
-        }
-
         private ISoundOut GetSoundOut()
         {
             if (WasapiOut.IsSupportedOnCurrentPlatform)
