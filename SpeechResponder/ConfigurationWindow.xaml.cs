@@ -168,7 +168,19 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = false;
             if (editScriptWindow.DialogResult ?? false)
             {
-                Personality.Scripts[script.Name] = editScriptWindow.script;
+                // Non-responder scripts can be renamed, handle that here.
+                if (script.Name == editScriptWindow.script.Name)
+                {
+                    // The script name is unchanged. Update in place.
+                    Personality.Scripts[script.Name] = editScriptWindow.script;
+                }
+                else
+                {
+                    // The script has been renamed.
+                    Personality.Scripts.Remove(script.Name);
+                    Personality.Scripts.Add(editScriptWindow.script.Name, editScriptWindow.script);
+                }
+
                 updateScriptsConfiguration();
 
                 // Refresh, then refocus on the current selected script
