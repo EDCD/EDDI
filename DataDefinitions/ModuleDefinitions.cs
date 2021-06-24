@@ -835,7 +835,10 @@ namespace EddiDataDefinitions
                 new Module(128682013, "Int_Engine_Size3_Class5_Fast", 1548, "EnhancedPerformanceThrusters", 3, "A", 0),
                 new Module(128049403, "Hpt_PulseLaserBurst_Fixed_Huge", 1549, "BurstLaser", 4, "E", 0, ModuleMount.Fixed),
                 new Module(128727920, "Hpt_PulseLaserBurst_Gimbal_Huge", 1550, "BurstLaser", 4, "E", 0, ModuleMount.Gimballed),
-                new Module(128064262, "Int_ShieldGenerator_Size1_Class5", 1551, "ShieldGenerator", 1, "A", 0),
+                new Module(128064258, "Int_ShieldGenerator_Size1_Class1", 1804, "ShieldGenerator", 1, "E", 300),
+                new Module(128064259, "Int_ShieldGenerator_Size1_Class2", 1805, "ShieldGenerator", 1, "D", 1240),
+                new Module(128064260, "Int_ShieldGenerator_Size1_Class3", 1806, "ShieldGenerator", 1, "C", 5140),
+                new Module(128064262, "Int_ShieldGenerator_Size1_Class5", 1551, "ShieldGenerator", 1, "A", 88075),
                 new Module(128681992, "Int_CorrosionProofCargoRack_Size1_Class2", 1552, "CorrosionResistantCargoRack", 1, "F", 12249),
                 new Module(128681641, "Int_CorrosionProofCargoRack_Size1_Class1", 1553, "CorrosionResistantCargoRack", 1, "E", 6094),
                 new Module(128049346, "BelugaLiner_Armour_Grade1", 1554, "LightweightAlloy", 1, "I", 0, 128049345),
@@ -1167,9 +1170,6 @@ namespace EddiDataDefinitions
                 new Module(899990050, "hpt_guardianshard_fixed_gdn_fighter", -1, "ShardCannon", 1, "I", 0, -1),
 
                 // Needs pricing
-                new Module(128064258, "Int_ShieldGenerator_Size1_Class1", 1804, "ShieldGenerator", 1, "E", 0),
-                new Module(128064259, "Int_ShieldGenerator_Size1_Class2", 1805, "ShieldGenerator", 1, "D", 0),
-                new Module(128064260, "Int_ShieldGenerator_Size1_Class3", 1806, "ShieldGenerator", 1, "C", 0),
                 new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
                 
                 // Needs confirmation of localized name, class, and grade
