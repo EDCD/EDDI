@@ -72,9 +72,10 @@ namespace EddiShipMonitor
                             configuration.ToFile();
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         // There was a problem parsing the old file, just press on
+                        Logging.Error(ex.Message, ex);
                     }
                 }
             }
