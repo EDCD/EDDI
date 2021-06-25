@@ -53,7 +53,7 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.Environment), () => App.vaProxy.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => App.vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
             { nameof(EDDI.Instance.inHorizons), () => App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
-            { nameof(EDDI.Instance.inOdyssey), () => App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
+            { nameof(EDDI.Instance.inOdyssey), () => App.vaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey) },
         };
 
         protected static void updateStandardValues(PropertyChangedEventArgs eventArgs)
