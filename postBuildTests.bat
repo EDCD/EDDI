@@ -16,7 +16,7 @@ ECHO %this%: Build configuration is %buildConfiguration%
 
 :: Find our install directory
 SET "vswhere=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
-SET "vswhereArgs=-latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath"
+SET "vswhereArgs=-latest -products * -property installationPath"
 FOR /f "usebackq tokens=*" %%i IN (
    `CALL "%vswhere%" %vswhereArgs%`
  ) DO (
