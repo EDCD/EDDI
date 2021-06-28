@@ -15,7 +15,7 @@ namespace EddiCrimeMonitor
         [PublicAPI("The type of crime committed")]
         public string crimetype { get; private set; }
 
-        [PublicAPI("The decription of the crime committed")]
+        [PublicAPI("The description of the crime committed")]
         public string crime { get; private set; }
 
         [PublicAPI("The name of the victim of the crime")]
