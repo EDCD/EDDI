@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.1-b2
+  * Mission Monitor
+    * Fixed a bug that inverted community goal progression reports when moving between tiers.
+
 ### 4.0.1-b1
   * Core
     * Richer event variable documentation (for both the Speech Responder and VoiceAttack).

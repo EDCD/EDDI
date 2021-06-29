@@ -487,14 +487,15 @@ namespace EddiMissionMonitor
                     }
                     if (goal.contribution > 0)
                     {
-                        if (mission.communalPercentileBand < goal.percentileband)
-                        {
-                            // Did the player's percentile band increase?
-                            cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
-                        }
+                        // Smaller percentile bands are better, larger percentile bands are worse
                         if (mission.communalPercentileBand > goal.percentileband)
                         {
-                            // Did the player's percentile band decrease?
+                            // Did the player's percentile band increase (reach a smaller value)?
+                            cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
+                        }
+                        if (mission.communalPercentileBand < goal.percentileband)
+                        {
+                            // Did the player's percentile band decrease (reach a larger value)?
                             cgUpdates.Add(new CGUpdate("Percentile", "Decrease"));
                         }
                     }
