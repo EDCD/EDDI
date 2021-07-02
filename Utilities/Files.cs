@@ -146,7 +146,7 @@ namespace Utilities
             }
             catch (UnauthorizedAccessException ex)
             {
-                Logging.Error("Not allowed to write to " + fileName, ex);
+                Logging.Warn("Not allowed to write to " + fileName, ex);
             }
             catch (NotSupportedException ex)
             {
