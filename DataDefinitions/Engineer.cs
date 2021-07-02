@@ -104,14 +104,11 @@ namespace EddiDataDefinitions
         public static readonly Engineer DominoGreen = new Engineer(400002, "Domino Green", "Orishis", 5068464399785, "The Jackrabbit", 128973159, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer HeroFerrari = new Engineer(400003, "Hero Ferrari", "Siris", 7269634614689, "Nevermore Terrace", 128973415, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer KitFowler = new Engineer(400004, "Kit Fowler", "Capoya", 2827975936355, "The Last Call", 128973671, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        
+        public static readonly Engineer WellingtonBeck = new Engineer(400005, "Wellington Beck", "Jolapa", 2832832893634, "Beck Facility", 128973927, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer TerraVelasquez = new Engineer(400006, "Terra Velasquez", "Shou Xing", 3721329101171, "Rascal's Choice", 128974183, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-
-        // Needs engineerId
-        // public static readonly Engineer UmaLaszlo = new Engineer(null, "Uma Laszlo", "Xuane", 16065190962585, "Laszlo's Resolve", 128974439, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        // public static readonly Engineer WellingtonBeck = new Engineer(null, "Wellington Beck", "Jolapa", 2832832893634, "Beck Facility", 128973927, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        // public static readonly Engineer OdenGeiger = new Engineer(null, "Oden Geiger", "Candiaei", 8879744226018, "Ankh's Promise", 128974695, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        // public static readonly Engineer YardenBond = new Engineer(null, "Yarden Bond", null, null, null, null, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer UmaLaszlo = new Engineer(400007, "Uma Laszlo", "Xuane", 16065190962585, "Laszlo's Resolve", 128974439, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer OdenGeiger = new Engineer(400008, "Oden Geiger", "Candiaei", 8879744226018, "Ankh's Promise", 128974695, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer YardenBond = new Engineer(400009, "Yarden Bond", "Bayan", 670686455169, "Salamander Bank", 128974951, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
 
         public static Engineer FromName(string from)
         {
