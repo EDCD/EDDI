@@ -364,7 +364,7 @@ namespace EddiInaraResponder
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventory", eventData));
         }
 
-        private void handleDropshipDeploymentEvent(DropshipDeploymentEvent @event) 
+        private void handleDropshipDeploymentEvent(DropshipDeploymentEvent @event)
         {
             var eventData = new Dictionary<string, object>()
             {
@@ -374,12 +374,12 @@ namespace EddiInaraResponder
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
         }
 
-        private void handleTouchdownEvent(TouchdownEvent @event) 
+        private void handleTouchdownEvent(TouchdownEvent @event)
         {
             var eventData = new Dictionary<string, object>()
             {
-                { "starsystemName", @event.systemname },
-                { "starsystemBodyName", @event.bodyname },
+                { "starsystemName", string.IsNullOrEmpty(@event.systemname) ? EDDI.Instance.CurrentStarSystem.systemname : @event.systemname },
+                { "starsystemBodyName", string.IsNullOrEmpty(@event.bodyname) ? EDDI.Instance.CurrentStellarBody.bodyname : @event.bodyname },
                 { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
             };
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
