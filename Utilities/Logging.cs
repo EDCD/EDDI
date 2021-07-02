@@ -299,7 +299,7 @@ namespace Utilities
                 Environment = Constants.EDDI_VERSION.ToString(),
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
-                    "Commander", "apiKey", "commanderName", Constants.DATA_DIR
+                    "Commander", "apiKey", "commanderName"
                 },
                 // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
                 Person = new Person(uniqueId + (fromVA ? " VA" : "")),
