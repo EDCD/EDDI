@@ -109,6 +109,7 @@ namespace EddiInaraService
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
+            if (events is null) { return inaraResponses; }
 
             try
             {
@@ -125,9 +126,9 @@ namespace EddiInaraService
                             { "appName", "EDDI" },
                             { "appVersion", Constants.EDDI_VERSION.ToString() },
                             { "isBeingDeveloped", eddiIsBeta },
-                            { "commanderName", !string.IsNullOrEmpty(inaraConfiguration?.commanderName) ? inaraConfiguration.commanderName : (eddiIsBeta ? "TestCmdr" : null) },
-                            { "commanderFrontierID", !string.IsNullOrEmpty(inaraConfiguration?.commanderFrontierID) ? inaraConfiguration.commanderFrontierID : null },
-                            { "APIkey", !string.IsNullOrEmpty(inaraConfiguration?.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
+                            { "commanderName", inaraConfiguration.commanderName },
+                            { "commanderFrontierID", inaraConfiguration.commanderFrontierID },
+                            { "APIkey", !string.IsNullOrEmpty(inaraConfiguration.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
                         },
                         events = indexedEvents
                     };
@@ -161,12 +162,21 @@ namespace EddiInaraService
             catch (Exception ex)
             {
                 Logging.Error("Sending data to the Inara server failed.", ex);
+                ReEnqueueAPIEvents(events);
             }
             return inaraResponses;
         }
 
         private List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
         {
+            // If we don't have a commander name then only use `get` events and re-enqueue the rest.
+            if (string.IsNullOrEmpty(inaraConfiguration.commanderName))
+            {
+                var commanderUpdateEvents = events.Where(e => !e.eventName.StartsWith("get")).ToList();
+                ReEnqueueAPIEvents(commanderUpdateEvents);
+                events = events.Except(commanderUpdateEvents).ToList();
+            }
+
             // Flag each event with a unique ID we can use when processing responses
             List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
             for (int i = 0; i < events.Count; i++)
