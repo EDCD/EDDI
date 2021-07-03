@@ -109,6 +109,7 @@ namespace EddiCompanionAppService
 
             try
             {
+                // Our access token may have expired. Use our refresh token to obtain a new access token.
                 RefreshToken();
             }
             catch (Exception)
@@ -431,6 +432,7 @@ namespace EddiCompanionAppService
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
             {
+                // Our access token has expired. Use our refresh token to obtain a new access token.
                 RefreshToken();
             }
 

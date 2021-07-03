@@ -15,6 +15,7 @@ namespace EddiCompanionAppService
         [JsonProperty]
         public string refreshToken { get; set; }
 
+        /// <summary> Access token expiry </summary>
         [JsonProperty]
         public DateTime tokenExpiry { get; set; }
 
