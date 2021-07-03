@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="achenar" xml:space="preserve">
+    <value>ˈakɜːnɑ</value>
+    <comment>Optional phonetic pronunciation for achenar</comment>
+  </data>
+  <data name="acihault" xml:space="preserve">
+    <value>əˈsɪhɔːt</value>
+    <comment>Optional phonetic pronunciation for acihault</comment>
+  </data>
+  <data name="adan" xml:space="preserve">
+    <value>ˈædən</value>
+    <comment>Optional phonetic pronunciation for adan</comment>
+  </data>
   <data name="aisling" xml:space="preserve">
     <value>aysling</value>
     <comment>Optional phonetic pronunciation for aisling</comment>
   </data>
-  
+  <data name="alcyone" xml:space="preserve">
+    <value>ælˈsaɪəniː</value>
+    <comment>Optional phonetic pronunciation for alcyone</comment>
+  </data>
   
   
   
