@@ -23,9 +23,9 @@ namespace EddiCrimeMonitor
         [PublicAPI("The faction to which the bounty was paid")]
         public string faction { get; private set; }
 
-        [PublicAPI("The ship id of the ship associated with the fine")]
+        [PublicAPI("The ship id of the ship associated with the fine (if any)")]
         public int shipid { get; private set; }
-
+        
         public BountyPaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool allbounties, string faction, int shipId) : base(timestamp, NAME)
         {
             this.amount = amount;

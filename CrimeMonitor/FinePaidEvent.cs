@@ -23,7 +23,7 @@ namespace EddiCrimeMonitor
         [PublicAPI("The faction to which the fine was paid (if the payment does not cover all current fines)")]
         public string faction { get; private set; }
 
-        [PublicAPI("The ship id of the ship associated with the fine")]
+        [PublicAPI("The ship id of the ship associated with the fine (if any)")]
         public int shipid { get; private set; }
 
         public FinePaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool allFines, string faction, int shipId) : base(timestamp, NAME)
