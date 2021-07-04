@@ -52,10 +52,10 @@
         }
 
         // Faction report definition
-        public static readonly Crime None;
-        public static readonly Crime Claim;
-        public static readonly Crime Fine;
-        public static readonly Crime Bounty;
+        public static readonly Crime None;     // Claim records
+        public static readonly Crime Claim;    // Claim discrepancy report (from user edits)
+        public static readonly Crime Fine;     // Fine discrepancy report (from user edits)
+        public static readonly Crime Bounty;   // Bounty discrepancy report (from user edits)
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")
