@@ -5,6 +5,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 4.0.1-b2
   * Mission Monitor
     * Fixed a bug that inverted community goal progression reports when moving between tiers.
+  * Speech Responder
+    * Events
+      * `Safe` event added
 
 ### 4.0.1-b1
   * Core

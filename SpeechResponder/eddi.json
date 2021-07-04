@@ -1806,6 +1806,15 @@
       "name": "Route details",
       "description": "Triggered when a route has been generated or updated"
     },
+    "Safe": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Safe",
+      "description": "Triggered when you are no longer in danger"
+    },
     "Screenshot": {
       "enabled": true,
       "priority": 3,

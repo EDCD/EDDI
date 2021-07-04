@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackpackChangedEvent.cs" />
+    <Compile Include="SafeEvent.cs" />
     <Compile Include="ShipLockerEvent.cs" />
     <Compile Include="CancelTransportEvent.cs" />
     <Compile Include="BookTransportEvent.cs" />
