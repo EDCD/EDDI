@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Entered supercruise";
         public const string DESCRIPTION = "Triggered when your ship enters supercruise";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseEntry\",\"StarSystem\":\"Yuetu\"}";
+        public const string SAMPLE = "{ \"timestamp\":\"2021-07-19T05:28:08Z\", \"event\":\"SupercruiseEntry\", \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Azaladshu\", \"SystemAddress\":9467852826025 }";
 
         [PublicAPI("The system at which the commander has entered supercruise")]
         public string system { get; private set; }
