@@ -245,7 +245,9 @@
     <value>Finanzprognosen</value>
     <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
   </data>
-  
+  <data name="GeographicalData" xml:space="preserve">
+    <value>Geografische Daten</value>
+  </data>
   <data name="HealthPack" xml:space="preserve">
     <value>Medikit</value>
     <comment>A portable medical kit used to treat wounds.</comment>
