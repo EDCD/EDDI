@@ -189,8 +189,14 @@
     <value>knapp über {0} Billiarde</value>
     <comment>Where {0} is a whole number in the quadrillions order</comment>
   </data>
-  
-  
+  <data name="justOverMinusQuintillion" xml:space="preserve">
+    <value>knapp über minus {0} Quintillion</value>
+    <comment>Where {0} is a negative whole number in the quintillions order</comment>
+  </data>
+  <data name="justOverQuintillion" xml:space="preserve">
+    <value>knapp über {0} Quintillion</value>
+    <comment>Where {0} is a whole number in the quintillions order</comment>
+  </data>
   <data name="over" xml:space="preserve">
     <value>über {0}</value>
     <comment>Where {0} is a whole number</comment>
