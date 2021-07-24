@@ -207,7 +207,7 @@ namespace UnitTests
             privateObject.Invoke("_handleBountyAwardedEvent", new object[] { events[0], true });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             record.factionReports.FirstOrDefault(r => r.amount == 22265).shipId = 10;
-            Assert.AreEqual(2, record.factionReports.Where(r => r.bounty && r.crimeDef == Crime.None).Count());
+            Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef == Crime.None));
             Assert.AreEqual(127433, record.bountiesAmount);
 
             // Fine Incurred Event
@@ -217,7 +217,7 @@ namespace UnitTests
             privateObject.Invoke("_handleFineIncurredEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             record.factionReports.FirstOrDefault(r => !r.bounty && r.crimeDef != Crime.None).shipId = 10;
-            Assert.AreEqual(1, record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).Count());
+            Assert.AreEqual(1, record.factionReports.Count(r => !r.bounty && r.crimeDef != Crime.None));
             Assert.AreEqual(400, record.finesIncurred.Sum(r => r.amount));
 
             // Bounty Incurred Event
@@ -227,8 +227,9 @@ namespace UnitTests
             privateObject.Invoke("_handleBountyIncurredEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             record.factionReports.FirstOrDefault(r => r.bounty && r.crimeDef != Crime.None).shipId = 10;
-            Assert.AreEqual(1, record.factionReports.Where(r => r.bounty && r.crimeDef != Crime.None).Count());
-            Assert.AreEqual(400, record.bountiesIncurred.Sum(r => r.amount));
+            // The fine should be converted to a bounty, resulting in two bounty records.
+            Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef != Crime.None));
+            Assert.AreEqual(800, record.bountiesIncurred.Sum(r => r.amount));
 
             // Redeem Bond Event
             line = "{ \"timestamp\":\"2019-04-09T10:31:31Z\", \"event\":\"RedeemVoucher\", \"Type\":\"CombatBond\", \"Amount\":94492, \"Factions\":[ { \"Faction\":\"Constitution Party of Aerial\", \"Amount\":94492 } ] }";
@@ -236,7 +237,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBondRedeemedEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
-            Assert.AreEqual(0, record.factionReports.Where(r => !r.bounty && r.crimeDef == Crime.None).Count());
+            Assert.AreEqual(0, record.factionReports.Count(r => !r.bounty && r.crimeDef == Crime.None));
 
             // Redeem Bounty Event - Multiple
             line = "{ \"timestamp\":\"2019-04-09T10:31:31Z\", \"event\":\"RedeemVoucher\", \"Type\":\"bounty\", \"Amount\":213896, \"Factions\":[ { \"Faction\":\"Calennero State Industries\", \"Amount\":105168 }, { \"Faction\":\"HIP 20277 Inc\", \"Amount\":108728 } ] }";
@@ -245,7 +246,7 @@ namespace UnitTests
             privateObject.Invoke("_handleBountyRedeemedEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.IsNotNull(record);
-            Assert.AreEqual(0, record.factionReports.Where(r => r.bounty && r.crimeDef == Crime.None).Count());
+            Assert.AreEqual(0, record.factionReports.Count(r => r.bounty && r.crimeDef == Crime.None));
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "HIP 20277 Inc");
             Assert.IsNull(record);
 
@@ -255,17 +256,8 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleFinePaidEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
-            Assert.AreEqual(0, record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).Count());
-            Assert.AreEqual(0, record.finesIncurred.Sum(r => r.amount));
-            record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNull(record);
-
-            // Bounty Paid Event
-            line = "{ \"timestamp\":\"2019-04-14T04:43:05Z\", \"event\":\"PayBounties\", \"Amount\":400, \"Faction\":\"$faction_Empire;\", \"Faction_Localised\":\"Empire\", \"ShipID\":10, \"BrokerPercentage\":25.000000 }";
-            events = JournalMonitor.ParseJournalEntry(line);
-            Assert.IsTrue(events.Count == 1);
-            privateObject.Invoke("_handleBountyPaidEvent", new object[] { events[0] });
-            record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
+            record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNull(record);
 
             // Restore original data
