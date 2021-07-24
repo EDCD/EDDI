@@ -40,13 +40,14 @@ namespace EddiStarMapService
             if (response != null)
             {
                 string system = (string)response["name"];
+                long? systemAddress = (long?)response["id64"];
                 JArray stations = (JArray)response["stations"];
 
                 if (stations != null)
                 {
                     Stations = stations
                         .AsParallel()
-                        .Select(s => ParseStarMapStation(s.ToObject<JObject>(), system))
+                        .Select(s => ParseStarMapStation(s.ToObject<JObject>(), system, systemAddress))
                         .Where(s => s != null)
                         .ToList();
                 }
@@ -56,13 +57,14 @@ namespace EddiStarMapService
             return Stations;
         }
 
-        private Station ParseStarMapStation(JObject station, string system)
+        private Station ParseStarMapStation(JObject station, string system, long? systemAddress)
         {
             try
             {
                 Station Station = new Station
                 {
                     systemname = system,
+                    systemAddress = systemAddress,
                     name = (string)station["name"],
                     marketId = (long?)station["marketId"],
                     EDSMID = (long?)station["id"],

@@ -17,7 +17,7 @@ namespace EddiStarMapService
 
             var request = new RestRequest("api-system-v1/bodies", Method.POST);
             request.AddParameter("systemName", system);
-            request.AddParameter("systemId", edsmId);
+            if (edsmId != null) { request.AddParameter("systemId", edsmId); }
             var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
@@ -40,13 +40,14 @@ namespace EddiStarMapService
             if (response != null)
             {
                 string system = (string)response["name"];
+                long? systemAddress = (long?) response["id64"];
                 JArray bodies = (JArray)response["bodies"];
 
                 if (bodies != null)
                 {
                     Bodies = bodies
                         .AsParallel()
-                        .Select(b => ParseStarMapBody(b.ToObject<JObject>(), system))
+                        .Select(b => ParseStarMapBody(b.ToObject<JObject>(), system, systemAddress))
                         .Where(b => b != null)
                         .ToList();
                 }
@@ -54,7 +55,7 @@ namespace EddiStarMapService
             return Bodies;
         }
 
-        private Body ParseStarMapBody(JObject body, string systemName)
+        private Body ParseStarMapBody(JObject body, string systemName, long? systemAddress)
         {
             try
             {
@@ -223,7 +224,7 @@ namespace EddiStarMapService
                     ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
                     DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
-                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, null)
+                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, systemAddress)
                     {
                         EDSMID = EDSMID,
                         updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)
