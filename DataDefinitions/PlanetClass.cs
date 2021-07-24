@@ -87,7 +87,7 @@ namespace EddiDataDefinitions
             this.densitydistribution = densitydistribution;
         }
 
-        new public static PlanetClass FromEDName(string edname)
+        public new static PlanetClass FromEDName(string edname)
         {
             if (edname == null)
             {
@@ -96,6 +96,20 @@ namespace EddiDataDefinitions
 
             string normalizedEDName = edname.Replace(" ", "").Replace("-", "");
             return ResourceBasedLocalizedEDName<PlanetClass>.FromEDName(normalizedEDName);
+        }
+
+        public new static PlanetClass FromName(string name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            var normalizedName = name
+                .Replace("ammonia-based", "ammonia based")
+                .Replace("water-based", "water based");
+
+            return ResourceBasedLocalizedEDName<PlanetClass>.FromName(normalizedName);
         }
     }
 }

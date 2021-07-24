@@ -657,5 +657,30 @@ namespace UnitTests
             Assert.AreEqual(0, info.Data[0].ownerId);
             Assert.AreEqual(null, info.Data[0].price);
         }
+
+        [DataTestMethod]
+        [DataRow("Metal-rich body", "Metal-rich body")]
+        [DataRow("High metal content world", "High metal content world")]
+        [DataRow("Rocky body", "Rocky body")]
+        [DataRow("Rocky Ice world", "Rocky ice world")]
+        [DataRow("Icy body", "Icy body")]
+        [DataRow("Earth-like world", "Earth-like world")]
+        [DataRow("Water world", "Water world")]
+        [DataRow("Water giant", "Water giant")]
+        [DataRow("Water giant with life", "Water giant with life")]
+        [DataRow("Ammonia world", "Ammonia world")]
+        [DataRow("Gas giant with water-based life", "Gas giant with water based life")]
+        [DataRow("Gas giant with ammonia-based life", "Gas giant with ammonia based life")]
+        [DataRow("Class I gas giant", "Class I gas giant")]
+        [DataRow("Class II gas giant", "Class II gas giant")]
+        [DataRow("Class III gas giant", "Class III gas giant")]
+        [DataRow("Class IV gas giant", "Class IV gas giant")]
+        [DataRow("Class V gas giant", "Class V gas giant")]
+        [DataRow("Helium-rich gas giant", "Helium-rich gas giant")]
+        [DataRow("Helium gas giant", "Helium gas giant")]
+        public void EDSMPlanetClassAliases(string edsmName, string expectedInvariantName)
+        {
+            Assert.AreEqual(expectedInvariantName, PlanetClass.FromName(edsmName)?.invariantName);
+        }
     }
 }
