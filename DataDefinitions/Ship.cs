@@ -87,6 +87,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         private long? _hullvalue;
 
         /// <summary>the value of the ship's hull, in credits</summary>
@@ -111,12 +112,10 @@ namespace EddiDataDefinitions
         private long? _modulesvalue;
 
         /// <summary>the value of the ship's rebuy, in credits</summary>
-
         [PublicAPI]
         public long rebuy { get; set; }
 
         /// <summary>the name of this ship</summary>
-        /// 
         [PublicAPI]
         public string name
         {
@@ -152,6 +151,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         private string _model;
 
         /// <summary>the identifier of this ship</summary>
@@ -172,6 +172,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         private string _ident;
 
         /// <summary>the phonetic name of this ship</summary>
@@ -179,7 +180,7 @@ namespace EddiDataDefinitions
         [JsonProperty("phoneticname")]
         public string phoneticName
         {
-            get { return _phoneticName; }
+            get => _phoneticName;
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -193,8 +194,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
-
-
+        
         /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
 
         [PublicAPI, JsonIgnore]
@@ -204,6 +204,17 @@ namespace EddiDataDefinitions
         private string _phoneticName;
 
         /// <summary>the role of this ship</summary>
+
+        [JsonProperty]
+        public string roleEDName
+        {
+            get => Role.edname;
+            set
+            {
+                Role rDef = Role.FromEDName(value);
+                this.Role = rDef;
+            }
+        }
 
         [JsonIgnore]
         public Role Role
@@ -221,6 +232,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         private Role _Role = Role.MultiPurpose;
 
         [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
@@ -270,10 +282,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public bool RawIsNotNull
-        {
-            get { return !string.IsNullOrEmpty(_raw); }
-        }
+        public bool RawIsNotNull => !string.IsNullOrEmpty(_raw);
 
         /// <summary>
         /// The wanted/hot status of this ship
