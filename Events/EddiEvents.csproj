@@ -75,6 +75,7 @@
     <Compile Include="CarrierCooldownEvent.cs" />
     <Compile Include="CommanderPromotionEvent.cs" />
     <Compile Include="DropshipDeploymentEvent.cs" />
+    <Compile Include="RespawnedEvent.cs" />
     <Compile Include="SuitPurchasedEvent.cs" />
     <Compile Include="MicroResourcesPurchasedEvent.cs" />
     <Compile Include="DisembarkEvent.cs" />

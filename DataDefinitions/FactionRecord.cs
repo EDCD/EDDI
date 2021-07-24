@@ -11,10 +11,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class FactionRecord : INotifyPropertyChanged
     {
-        // The faction associated with the claim, fine, or bounty
-        [JsonIgnore]
-        private string _faction;
-
+        /// <summary> The faction associated with the claim, fine, or bounty </summary>
         [PublicAPI]
         public string faction
         {
@@ -24,7 +21,7 @@ namespace EddiDataDefinitions
                 if (_faction != value)
                 {
                     _faction = value;
-                    NotifyPropertyChanged("faction");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -42,19 +39,9 @@ namespace EddiDataDefinitions
         }
 
         [JsonIgnore]
-        private Superpower _Allegiance = Superpower.None;
+        public Superpower Allegiance { get; set; } = Superpower.None;
 
-        [JsonIgnore]
-        public Superpower Allegiance
-        {
-            get { return _Allegiance; }
-            set { _Allegiance = value; }
-        }
-
-        // The home system of the faction
-        [JsonIgnore]
-        private string _system;
-
+        /// <summary> The home system of the faction </summary>
         [PublicAPI]
         public string system
         {
@@ -64,15 +51,12 @@ namespace EddiDataDefinitions
                 if (_system != value)
                 {
                     _system = value;
-                    NotifyPropertyChanged("system");
+                    OnPropertyChanged();
                 }
             }
         }
 
-        // The home station of the faction
-        [JsonIgnore]
-        private string _station;
-
+        /// <summary> The home station of the faction </summary>
         [PublicAPI]
         public string station
         {
@@ -82,62 +66,44 @@ namespace EddiDataDefinitions
                 if (_station != value)
                 {
                     _station = value;
-                    NotifyPropertyChanged("station");
+                    OnPropertyChanged();
                 }
             }
         }
 
-        // The total credit value of claims
-        [JsonIgnore]
-        private long _claims;
-
+        /// <summary> The total credit value of claims (bounty vouchers and bonds) (including any discrepancy report) </summary>
         [PublicAPI]
         public long claims
         {
             get => _claims;
             set
             {
-                if (_claims != value)
-                {
-                    _claims = value;
-                    NotifyPropertyChanged("claims");
-                }
+                _claims = value;
+                OnPropertyChanged();
             }
         }
 
-        // The total credit value of fines
-        [JsonIgnore]
-        private long _fines;
-
+        /// <summary> The total credit value of fines incurred (including any discrepancy report) </summary>
         [PublicAPI]
         public long fines
         {
             get => _fines;
             set
             {
-                if (_fines != value)
-                {
-                    _fines = value;
-                    NotifyPropertyChanged("fines");
-                }
+                _fines = value;
+                OnPropertyChanged();
             }
         }
 
-        // The total credit value of bounties
-        [JsonIgnore]
-        private long _bounties;
-
+        /// <summary> The total credit value of bounties incurred (including any discrepancy report) </summary>
         [PublicAPI]
         public long bounties
         {
             get => _bounties;
             set
             {
-                if (_bounties != value)
-                {
-                    _bounties = value;
-                    NotifyPropertyChanged("bounties");
-                }
+                _bounties = value;
+                OnPropertyChanged();
             }
         }
 
@@ -145,32 +111,50 @@ namespace EddiDataDefinitions
         public List<string> interstellarBountyFactions { get; set; } = new List<string>();
         public List<FactionReport> factionReports { get; set; } = new List<FactionReport>();
 
-        // All bonds awareded, excluding the discrepancy report
+        [JsonIgnore]
+        private string _faction;
+
+        [JsonIgnore]
+        private string _system;
+
+        [JsonIgnore]
+        private string _station;
+
+        [JsonIgnore]
+        private long _claims;
+
+        [JsonIgnore]
+        private long _fines;
+
+        [JsonIgnore]
+        private long _bounties;
+
+        /// <summary> All bond vouchers awarded, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bondsAwarded => factionReports
             .Where(r => !r.bounty && r.crimeDef == Crime.None)
             .ToList();
 
-        [JsonIgnore]
+        [JsonIgnore] 
         public long bondsAmount => bondsAwarded.Sum(r => r.amount);
 
-        // All bounties awarded, excluding the discrepancy report
+        /// <summary> All bounty vouchers awarded, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bountiesAwarded => factionReports
             .Where(r => r.bounty && r.crimeDef == Crime.None)
             .ToList();
 
-        [JsonIgnore]
+        [JsonIgnore] 
         public long bountiesAmount => bountiesAwarded.Sum(r => r.amount);
 
-        // All fines incurred, excluding the discrepancy report
+        /// <summary> All fines incurred, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> finesIncurred => factionReports
             .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
             .ToList();
 
+        /// <summary> All bounties incurred, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
-        // All bounties incurred, excluding the discrepancy report
         public List<FactionReport> bountiesIncurred => factionReports
             .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
             .ToList();
@@ -186,9 +170,10 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        [JetBrains.Annotations.NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

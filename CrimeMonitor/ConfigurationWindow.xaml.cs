@@ -232,7 +232,7 @@ namespace EddiCrimeMonitor
                                     .Sum(r => r.amount);
                                 if (record.bounties != bounties)
                                 {
-                                    // Create/modify 'discrepancy' report if total bounties does not equal sum of bonty reports
+                                    // Create/modify 'discrepancy' report if total bounties does not equal sum of bounty reports
                                     long amount = record.bounties - bounties;
                                     var report = record.factionReports
                                         .FirstOrDefault(r => r.crimeDef == Crime.Bounty);

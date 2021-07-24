@@ -2102,34 +2102,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "Resurrect":
                                 {
-                                    string option = JsonParsing.getString(data, "Option");
-                                    long price = JsonParsing.getLong(data, "Cost");
-
-                                    switch (option)
-                                    {
-                                        case "rebuy": // Ship destroyed. Price equals the insurance rebuy plus all fines and bounties assigned to the ship.
-                                        {
-                                            events.Add(new ShipRepurchasedEvent(timestamp, price) { raw = line, fromLoad = fromLogLoad });
-                                            handled = true;
-                                            break;
-                                        }
-                                        case "recover": // Critically injured while on-foot, the price is the fines and bounties owed by the commander.
-                                        {
-                                            handled = true;
-                                            break;
-                                        }
-                                        case "rejoin": // Critically injured while on-foot or SRV destroyed, zero cost, ship rejoined.
-                                        {
-                                            handled = true;
-                                            break;
-                                        }
-                                        case "handin": // If on foot, the price is the fines and bounties owed by the commander. If in a ship, the price is the fines and bounties assigned to that ship.
-                                        {
-                                            handled = true;
-                                            break;
-                                        }
-                                    }
+                                    var option = JsonParsing.getString(data, "Option");
+                                    var price = JsonParsing.getLong(data, "Cost");
+                                    events.Add(new RespawnedEvent(timestamp, option, price) { raw = line, fromLoad = fromLogLoad });
                                 }
+                                handled = true;
                                 break;
                             case "NavBeaconScan":
                                 {
@@ -2751,16 +2728,16 @@ namespace EddiJournalMonitor
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     bool allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
-                                    int? shipId = null;
-                                    var shipIdLong = JsonParsing.getOptionalLong(data, "ShipID");
+                                    int shipId = 0;
+                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong > 4293000000)
                                     {
                                         // This is a suit loadout ID. Use a null value since bounties associated with the commander, rather than the ship, are being paid.
-                                        shipIdLong = null;
+                                        shipIdLong = -1;
                                     }
                                     else
                                     {
-                                        shipId = (int?)shipIdLong;
+                                        shipId = (int)shipIdLong;
                                     }
 
                                     events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, allBounties, faction, shipId) { raw = line, fromLoad = fromLogLoad });
@@ -2774,16 +2751,16 @@ namespace EddiJournalMonitor
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     bool allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
-                                    int? shipId = null;
-                                    var shipIdLong = JsonParsing.getOptionalLong(data, "ShipID");
-                                    if (shipIdLong > 4293000000)
+                                    int shipId = 0;
+                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
+                                    if (shipIdLong >= 4293000000)
                                     {
-                                        // This is a suit loadout ID. Use a null value since fines associated with the commander, rather than the ship, are being paid.
-                                        shipIdLong = null;
+                                        // This is a suit loadout ID. Use a -1 value to signal that fines associated with the commander, rather than the ship, are being paid.
+                                        shipIdLong = -1;
                                     }
                                     else
                                     {
-                                        shipId = (int?) shipIdLong;
+                                        shipId = (int)shipIdLong;
                                     }
 
                                     events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, allFines, faction, shipId) { raw = line, fromLoad = fromLogLoad });

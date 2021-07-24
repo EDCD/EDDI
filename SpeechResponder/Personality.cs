@@ -302,6 +302,10 @@ namespace EddiSpeechResponder
                     {
                         scriptHolder.Add(kv.Key);
                     }
+                    else if (kv.Value.Name == "Ship repurchased") // Replaced by "Respawned" script
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
                 }
                 foreach (string script in scriptHolder)
                 {

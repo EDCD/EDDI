@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public bool bounty { get; set; }
 
-        /// <summary> The ship ID associated with the crime. May be null if the commander is associated directly with the crime. </summary>
+        /// <summary> The ship ID associated with the crime. May be -1 if the commander is associated directly with the crime. </summary>
         [PublicAPI]
         public int shipId { get; set; }
 

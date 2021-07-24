@@ -201,10 +201,6 @@ namespace EddiShipMonitor
             {
                 handleShipRepairDroneEvent((ShipRepairDroneEvent)@event);
             }
-            else if (@event is ShipRepurchasedEvent)
-            {
-                handleShipRepurchasedEvent((ShipRepurchasedEvent)@event);
-            }
             else if (@event is ShipRestockedEvent)
             {
                 handleShipRestockedEvent((ShipRestockedEvent)@event);
@@ -786,11 +782,6 @@ namespace EddiShipMonitor
         private void handleShipRestockedEvent(ShipRestockedEvent @event)
         {
             // TODO
-        }
-
-        private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event)
-        {
-            // We don't do anything here as this is followed by a full ship loadout event
         }
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)

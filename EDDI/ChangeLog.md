@@ -3,11 +3,16 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 4.0.1-b2
+  * Crime Monitor
+    * Fines are converted to bounties when a bounty is incurred.
+    * Improved handling of fines and bounties with various respawn scenarios. 
   * Mission Monitor
     * Fixed a bug that inverted community goal progression reports when moving between tiers.
   * Speech Responder
     * Events
-      * `Safe` event added
+      * `Respawned` event added.
+      * `Safe` event added.
+      * `Ship repurchased` event removed (folded into the new `Respawned` event).
 
 ### 4.0.1-b1
   * Core

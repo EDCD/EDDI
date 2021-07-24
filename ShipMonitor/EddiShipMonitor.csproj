@@ -96,7 +96,6 @@
     <Compile Include="ShipRefuelledEvent.cs" />
     <Compile Include="ShipRenamedEvent.cs" />
     <Compile Include="ShipRepairedEvent.cs" />
-    <Compile Include="ShipRepurchasedEvent.cs" />
     <Compile Include="ShipRestockedEvent.cs" />
     <Compile Include="ShipShutdownEvent.cs" />
     <Compile Include="ShipSoldEvent.cs" />
