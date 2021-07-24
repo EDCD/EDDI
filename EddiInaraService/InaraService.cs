@@ -133,7 +133,7 @@ namespace EddiInaraService
                         events = indexedEvents
                     };
                     request.RequestFormat = DataFormat.Json;
-                    request.AddBody(inaraRequest); // uses JsonSerializer
+                    request.AddJsonBody(inaraRequest); // uses JsonSerializer
 
                     Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<InaraResponses>(request);
