@@ -766,17 +766,25 @@ namespace EddiShipMonitor
 
         private void handleShipRepairedEvent(ShipRepairedEvent @event)
         {
-            // This doesn't give us enough information at present to do anything useful
+            if (@event.itemEDNames.Contains("Wear"))
+            {
+                var currentShip = GetCurrentShip();
+                currentShip.health = 100M;
+            }
+            if (!@event.fromLoad) { writeShips(); }
         }
 
         private void handleShipRepairDroneEvent(ShipRepairDroneEvent @event)
         {
-            // This doesn't give us enough information at present to do anything useful
+            // This event does not report the percentage of hull repaired.
+            // It reports the integrity repaired (which we can't use since we do not calculate integrity).
+            // Set ship hull and module health with a profile refresh.
+            EDDI.Instance?.refreshProfile();
         }
 
         private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
         {
-            // We do not keep track of current fuel level so nothing to do here
+            // We use status to track current fuel level so nothing to do here
         }
 
         private void handleShipRestockedEvent(ShipRestockedEvent @event)
