@@ -418,6 +418,7 @@
     <PostBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\EDDI.json" "$(SolutionDir)$(OutDir)"
 xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(SolutionDir)$(OutDir)\Wiki\"
 xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)SpeechService\Lexicons.md" "$(SolutionDir)$(OutDir)\Wiki\"
 xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)$(OutDir)\Wiki\"
 xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)$(OutDir)\Wiki\images\"</PostBuildEvent>
   </PropertyGroup>

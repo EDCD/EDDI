@@ -18,19 +18,18 @@ namespace EddiSpeechResponder.CustomFunctions
             if (values.Count == 0)
             {
                 List<VoiceDetail> voices = new List<VoiceDetail>();
-                if (SpeechService.Instance?.synth != null)
+                if (SpeechService.Instance?.allVoices != null)
                 {
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
+                    foreach (var vc in SpeechService.Instance.allVoices)
                     {
-                        if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        if (!vc.name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             voices.Add(new VoiceDetail(
-                                vc.VoiceInfo.Name,
-                                vc.VoiceInfo.Culture.Parent.EnglishName,
-                                vc.VoiceInfo.Culture.Parent.NativeName,
-                                vc.VoiceInfo.Culture.Name,
-                                vc.VoiceInfo.Gender.ToString(),
-                                vc.Enabled
+                                vc.name,
+                                vc.Culture.Parent.EnglishName,
+                                vc.Culture.Parent.NativeName,
+                                vc.Culture.Name,
+                                vc.gender
                                 ));
                         }
                     }
@@ -40,20 +39,19 @@ namespace EddiSpeechResponder.CustomFunctions
             if (values.Count == 1)
             {
                 VoiceDetail result = null;
-                if (SpeechService.Instance?.synth != null && !string.IsNullOrEmpty(values[0].AsString))
+                if (SpeechService.Instance?.allVoices != null && !string.IsNullOrEmpty(values[0].AsString))
                 {
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth.GetInstalledVoices())
+                    foreach (var vc in SpeechService.Instance.allVoices)
                     {
-                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant())
-                        && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        if (vc.name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant())
+                        && !vc.name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             result = new VoiceDetail(
-                                vc.VoiceInfo.Name,
-                                vc.VoiceInfo.Culture.Parent.EnglishName,
-                                vc.VoiceInfo.Culture.Parent.NativeName,
-                                vc.VoiceInfo.Culture.Name,
-                                vc.VoiceInfo.Gender.ToString(),
-                                vc.Enabled
+                                vc.name,
+                                vc.Culture.Parent.EnglishName,
+                                vc.Culture.Parent.NativeName,
+                                vc.Culture.Name,
+                                vc.gender
                                 );
                             break;
                         }
@@ -82,16 +80,13 @@ namespace EddiSpeechResponder.CustomFunctions
         [PublicAPI]
         public string gender { get; }
 
-        public bool enabled { get; }
-
-        public VoiceDetail(string name, string cultureinvariantname, string culturename, string culturecode, string gender, bool enabled)
+        public VoiceDetail(string name, string cultureinvariantname, string culturename, string culturecode, string gender)
         {
             this.name = name;
             this.cultureinvariantname = cultureinvariantname;
             this.culturename = culturename;
             this.culturecode = culturecode;
             this.gender = gender;
-            this.enabled = enabled;
         }
     }
 }
