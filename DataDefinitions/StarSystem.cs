@@ -156,7 +156,7 @@ namespace EddiDataDefinitions
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
 
         [PublicAPI, JsonIgnore]
-        public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
+        public string reserves => (Reserve ?? ReserveLevel.None).localizedName;
 
         // Populated system data
 

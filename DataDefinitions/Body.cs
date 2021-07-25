@@ -403,7 +403,7 @@ namespace EddiDataDefinitions
         public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
 
         /// <summary>The reserve level (localized name)</summary>
-        [JsonIgnore, Obsolete("Please use SystemReserveLevel instead")]
+        [PublicAPI, JsonIgnore, Obsolete("Please use reserveLevel instead")]
         public string reserves => (reserveLevel ?? ReserveLevel.None).localizedName;
 
         /// <summary>The reserve level</summary>

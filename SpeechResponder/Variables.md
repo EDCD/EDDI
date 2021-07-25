@@ -481,6 +481,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
   - *scannedbodies* - the total number of bodies you have scanned within the system
   - *mappedbodies* - the total number of bodies you have mapped within the system
   - *scoopable* - true if a fuel scoop equipped ship can refuel at at least one star in this starsystem
+  - *reserves* - the reserve level of the system
 
 #### Last starsystem
 
@@ -565,6 +566,7 @@ All bodies have the following data:
   - *rotationalperiodprobability* - the cumulative probability describing the body's rotational period, relative to other bodies of the same planet type or stellar class.
   - *tiltprobability* - the cumulative probability describing the body's orbital tilt, relative to other bodies of the same planet type or stellar class.
   - *densityprobability* - the cumulative probability describing the body's density, relative to other bodies of the same planet type or stellar class.
+  - *reserves* - the reserve level of the body
 
 In addition, stars have the following data:
 
