@@ -3,6 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 4.0.1-b2
+  * Core
+    * Unlocks *most** previously unavailable Windows voices.
+    * Adds support for user lexicons (to learn more, search the wiki for "lexicons").
   * Crime Monitor
     * Fines are converted to bounties when a bounty is incurred.
     * Improved handling of fines and bounties with various respawn scenarios. 
