@@ -51,7 +51,7 @@ Save the .pls file once you are done editing. The revised pronunciation will be 
 
 ### Ivona voices
 
-Ivona voice installers include a Lexicon Editor utility. The utility can be used to change word pronunciations, and includes support for phonemes. The lexicon editor utility supports SSML tags only, meaning SAPI5 phonemes are not supported.  Either the [IPA](###IPA) or [X-SAMPA](###X-SAMPA) can be used to create phoneme pronunciations in SSML. 
+Ivona voice installers include a Lexicon Editor utility. The utility can be used to change word pronunciations, and includes support for phonemes. 
 
 To access the Lexicon Editor utility, from the Control Panel navigate to `Ease of Access` then `Speech Recognition` then `Advanced speech options`. 
 
@@ -65,11 +65,17 @@ To use phonemes in the Lexicon Editor, you need to translate the word you want t
 
 ![](../images/lexicons-Ivona3.png)
 
-The Lexicon Editor also accepts simple phonetic changes like adding spacing between words (e.g. from "supergiant" to "super giant")
+The Lexicon Editor accepts simple phonetic changes like adding spacing between words (e.g. from "supergiant" to "super giant")
+
+The Lexicon Editor also supports the [IPA](###IPA) or [X-SAMPA](###X-SAMPA) alphabets to create phoneme pronunciations in SSML. To ensure that these are interpreted correctly, we recommend enclosing the IPA pronunciations in [SSML tags](https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.9), e.g.
+
+- Word: `gimballed`
+- IPA: `ɡɪmbəlɗ`
+- Wrapped in SSML tags: `<speak><phoneme alphabet="ipa" ph="ɡɪmbəlɗ">gimballed</phoneme></speak>`
 
 Notes:
-- changes take effect immediately (you do not need to restart EDDI)
-- changes match on partial words so adjusting the pronunciation of "xeno" will also influence the pronunciation of words like "xenobiology" or "anti-xeno".
+- Changes take effect immediately after saving (you do not need to restart EDDI)
+- Changes match on partial words so adjusting the pronunciation of "xeno" will also influence the pronunciation of words like "xenobiology" or "anti-xeno".
 
 ### Cereproc voices
 
