@@ -328,6 +328,7 @@ namespace EddiSpeechService
                         Logging.Warn($"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible.", ce);
                         return;
                     }
+                    // ReSharper disable once AccessToDisposedClosure
                     soundOut.Stopped += (s, e) => waitHandle.Set();
 
                     TimeSpan waitTime = source.GetTime(source.Length);
