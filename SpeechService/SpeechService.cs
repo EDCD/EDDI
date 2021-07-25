@@ -803,13 +803,13 @@ namespace EddiSpeechService
                     foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
                         .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}.pls"))
                     {
-                        result.Add(file.FullName);
+                        CheckAndAdd(file);
                     }
                     // Find full language code lexicons
                     foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
                         .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}.pls"))
                     {
-                        result.Add(file.FullName);
+                        CheckAndAdd(file);
                     }
                 }
                 else if (createIfMissing)
@@ -817,6 +817,18 @@ namespace EddiSpeechService
                     dir.Create();
                 }
                 return result;
+            }
+
+            void CheckAndAdd(FileInfo file)
+            {
+                if (IsValidXML(file.FullName))
+                {
+                    result.Add(file.FullName);
+                }
+                else
+                {
+                    file.MoveTo($"{file.FullName}.malformed");
+                }
             }
 
             // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
@@ -828,6 +840,21 @@ namespace EddiSpeechService
             result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons"));
 
             return result;
+        }
+
+        private bool IsValidXML(string filename)
+        {
+            // Check whether the file is valid .xml (.pls is an xml-based format)
+            try
+            {
+                var _ = System.Xml.Linq.XDocument.Load(filename);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn($"Could not load .pls file from {filename}.", ex);
+                return false;
+            }
         }
 
         private string BestGuessCulture()
