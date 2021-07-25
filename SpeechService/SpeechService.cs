@@ -798,15 +798,15 @@ namespace EddiSpeechService
                 DirectoryInfo dir = new DirectoryInfo(directory);
                 if (dir.Exists)
                 {
-                    // Find two letter language code lexicons
+                    // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
                     foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}.pls" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}"))
+                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}.pls"))
                     {
                         result.Add(file.FullName);
                     }
                     // Find full language code lexicons
                     foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}.pls" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}"))
+                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}.pls"))
                     {
                         result.Add(file.FullName);
                     }
@@ -814,18 +814,6 @@ namespace EddiSpeechService
                 else if (createIfMissing)
                 {
                     dir.Create();
-                    // Create a readme file to explain the directory   
-                    using (FileStream fs = File.Create($"{dir}/readme.txt"))
-                    {
-                        var sb = new StringBuilder();
-                        sb.AppendLine("If you have selected a voice which supports it, you can add a .pls style lexicon to this directory to customize EDDI's pronuncations of words. Each accent should have a different lexicon.");
-                        sb.AppendLine("");
-                        sb.AppendLine("For more information and an example of how to create a .pls style lexicon file, see https://www.w3.org/TR/pronunciation-lexicon/.");
-                        sb.AppendLine("");
-                        sb.AppendLine("Please name the file to match the culture code of the voice or voices you'd like to match and to match the value of the \"xml:lang\" attribute of the .pls file, e.g. \"en-gb.pls\" for British voices or \"en-us.pls\" for United States voices. You can also use a two letter culture code (e.g. \"en.pls\"), though the more specific language codes will be preferred.");
-                        var bytes = new UTF8Encoding(true).GetBytes(sb.ToString());
-                        fs.Write(bytes, 0, bytes.Length);
-                    }
                 }
                 return result;
             }
@@ -836,7 +824,7 @@ namespace EddiSpeechService
             result.UnionWith(GetLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons"));
 
             // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
-            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons", true));
+            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons"));
 
             return result;
         }
