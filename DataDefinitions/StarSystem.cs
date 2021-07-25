@@ -155,7 +155,7 @@ namespace EddiDataDefinitions
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
 
-        [JsonIgnore]
+        [PublicAPI, JsonIgnore]
         public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
 
         // Populated system data
