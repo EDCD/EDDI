@@ -17,7 +17,7 @@ namespace EddiStarMapService
 
             var request = new RestRequest("api-system-v1/stations", Method.POST);
             request.AddParameter("systemName", system);
-            request.AddParameter("systemId", edsmId);
+            if (edsmId != null) { request.AddParameter("systemId", edsmId); }
             var clientResponse = restClient.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
