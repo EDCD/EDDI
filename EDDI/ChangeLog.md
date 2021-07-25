@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 4.0.1-b2
   * Core
-    * Unlocks *most** previously unavailable Windows voices.
+    * Unlocks *most* previously unavailable Windows voices.
     * Adds support for user lexicons (to learn more, search the wiki for "lexicons").
   * Crime Monitor
     * Fines are converted to bounties when a bounty is incurred.
