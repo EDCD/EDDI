@@ -231,5 +231,43 @@ namespace GeneratorTests
             File.WriteAllLines(@"Wiki\Help.md", help);
             File.WriteAllLines(@"Wiki\Functions.md", functions);
         }
+
+        //[TestMethod]
+        //public void GenerateIvonaPronunciations()
+        //{
+        //    var output = new List<string>();
+        //    var MyResourceClass = new System.Resources.ResourceManager(typeof(EddiSpeechService.Properties.Phonetics));
+
+        //    var resourceSet = MyResourceClass
+        //        .GetResourceSet(System.Globalization.CultureInfo.InvariantCulture, true, true);
+
+        //    foreach (System.Collections.DictionaryEntry entry in resourceSet)
+        //    {
+        //        string key = entry.Key.ToString();
+        //        string value = entry.Value.ToString();
+        //        output.Add($"{key}\t\"<speak><phoneme alphabet=\\\"ipa\\\" ph=\\\"{value}\\\">{key}</phoneme></speak>\"");
+        //    }
+
+        //    File.WriteAllLines(@"C:\Ivona.lex", output);
+        //}
+
+        //[TestMethod]
+        //public void GenerateCereprocPronunciations()
+        //{
+        //    var output = new List<string>();
+        //    var MyResourceClass = new System.Resources.ResourceManager(typeof(EddiSpeechService.Properties.Phonetics));
+
+        //    var resourceSet = MyResourceClass
+        //        .GetResourceSet(System.Globalization.CultureInfo.InvariantCulture, true, true);
+
+        //    foreach (System.Collections.DictionaryEntry entry in resourceSet)
+        //    {
+        //        string key = entry.Key.ToString();
+        //        string value = entry.Value.ToString();
+        //        output.Add($"{key} {value}");
+        //    }
+
+        //    File.WriteAllLines(@"C:\user_lexicon.txt", output);
+        //}
     }
 }
