@@ -155,7 +155,8 @@ namespace EddiSpeechService
         private static readonly Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
             { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
-            { "Federation Unite!", "Federation Unite"} // Stop pausing at the end of Unite!
+            { "Federation Unite!", "Federation Unite"}, // Stop pausing at the end of Unite!
+            { "Minutemen", "Minute men" } // Prevent pronunciation like "Minnuh-tea-men"
         };
 
         private static readonly Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
@@ -175,9 +176,11 @@ namespace EddiSpeechService
             { "Cayutorme", new string[] { Properties.Phonetics.cayutorme } },
             { "Celaeno", new string[] { Properties.Phonetics.celaeno } },
             { "Ceos", new string[] { Properties.Phonetics.ceos } },
+            { "Conn", new string[] { Properties.Phonetics.Conn } },
             { "Cygnus", new string[] { Properties.Phonetics.cygnus } },
             { "Deciat", new string[] { Properties.Phonetics.deciat } },
             { "Diso", new string[] { Properties.Phonetics.diso } },
+            { "Eta Draconis", new string[] {Properties.Phonetics.Eta, Properties.Phonetics.Draconis } },
             { "Djiwal", new string[] { Properties.Phonetics.djiwal } },
             { "Dvorsi", new string[] { Properties.Phonetics.dvorsi } },
             { "Electra", new string[] { Properties.Phonetics.electra } },
@@ -213,6 +216,7 @@ namespace EddiSpeechService
             { "Sagittarius A Star", new string[] {Properties.Phonetics.Sagittarius, Properties.Phonetics.Sagittarius_A, Properties.Phonetics.Sagittarius_A_star} },
             { "Sakti", new string[] { Properties.Phonetics.sakti } },
             { "Shinrarta Dezhra", new string[] { Properties.Phonetics.shinrartadezhra_shinrarta, Properties.Phonetics.shinrartadezhra_dezhra } },
+            { "Sterope", new string[] {Properties.Phonetics.Sterope} },
             { "Surya", new string[] { Properties.Phonetics.surya } },
             { "Taygeta", new string[] { Properties.Phonetics.taygeta } },
             { "Tse", new string[] { Properties.Phonetics.tse } },
@@ -221,6 +225,12 @@ namespace EddiSpeechService
             { "Yakabugai", new string[] { Properties.Phonetics.yakabugai } },
             { "Zaonce", new string[] { Properties.Phonetics.zaonce } },
             { "Zhang Fei", new string[] { Properties.Phonetics.zhangfei_zhang, Properties.Phonetics.zhangfei_fei } },
+        };
+
+        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        {
+            { "Aachen Town", new string[] { Properties.Phonetics.Aachen, Properties.Phonetics.Town } },
+            { "Slough Orbital", new string[] { Properties.Phonetics.Slough, Properties.Phonetics.Orbital } },
         };
 
         public static string PlanetClass(string val)
@@ -570,6 +580,12 @@ namespace EddiSpeechService
         /// <summary>Fix up station related pronunciations </summary>
         private static string Station(string station)
         {
+            // Specific translations
+            if (STATION_PRONUNCIATIONS.ContainsKey(station))
+            {
+                return replaceWithPronunciation(station, STATION_PRONUNCIATIONS[station]);
+            }
+
             // Specific fixing of station model pronunciations
             if (STATION_MODEL_FIXES.ContainsKey(station))
             {

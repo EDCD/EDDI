@@ -61,6 +61,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ˈɑːxən.
+        /// </summary>
+        public static string Aachen {
+            get {
+                return ResourceManager.GetString("Aachen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ˈakɜːnɑ.
         /// </summary>
         public static string achenar {
@@ -430,6 +439,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to kɒn.
+        /// </summary>
+        public static string Conn {
+            get {
+                return ResourceManager.GetString("Conn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ˈkruːsɪs.
         /// </summary>
         public static string Crucis {
@@ -516,6 +534,15 @@ namespace EddiSpeechService.Properties {
         public static string Dou {
             get {
                 return ResourceManager.GetString("Dou", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dreɪˈkəʊnɪs.
+        /// </summary>
+        public static string Draconis {
+            get {
+                return ResourceManager.GetString("Draconis", resourceCulture);
             }
         }
         
@@ -1006,6 +1033,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ˈôrbədl.
+        /// </summary>
+        public static string Orbital {
+            get {
+                return ResourceManager.GetString("Orbital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ɒrˈɪər.
         /// </summary>
         public static string orrere {
@@ -1303,11 +1339,29 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to slaʊ.
+        /// </summary>
+        public static string Slough {
+            get {
+                return ResourceManager.GetString("Slough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to stɑː.
         /// </summary>
         public static string star {
             get {
                 return ResourceManager.GetString("star", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ˈstɛrəpiː.
+        /// </summary>
+        public static string Sterope {
+            get {
+                return ResourceManager.GetString("Sterope", resourceCulture);
             }
         }
         
@@ -1398,6 +1452,15 @@ namespace EddiSpeechService.Properties {
         public static string torval {
             get {
                 return ResourceManager.GetString("torval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to taʊn.
+        /// </summary>
+        public static string Town {
+            get {
+                return ResourceManager.GetString("Town", resourceCulture);
             }
         }
         

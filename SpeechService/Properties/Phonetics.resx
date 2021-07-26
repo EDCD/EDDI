@@ -785,4 +785,32 @@
     <value>ʈʂáŋ</value>
     <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
   </data>
+  <data name="Conn" xml:space="preserve">
+    <value>kɒn</value>
+    <comment>Optional phonetic pronunciation for Conn</comment>
+  </data>
+  <data name="Sterope" xml:space="preserve">
+    <value>ˈstɛrəpiː</value>
+    <comment>Optional phonetic pronunciation for Sterope</comment>
+  </data>
+  <data name="Draconis" xml:space="preserve">
+    <value>dreɪˈkəʊnɪs</value>
+    <comment>Optional phonetic pronunciation for Draconis</comment>
+  </data>
+  <data name="Orbital" xml:space="preserve">
+    <value>ˈɔː.bɪ.təl</value>
+    <comment>Optional phonetic pronunciation for Orbital</comment>
+  </data>
+  <data name="Slough" xml:space="preserve">
+    <value>slaʊ</value>
+    <comment>Optional phonetic pronunciation for Slough</comment>
+  </data>
+  <data name="Aachen" xml:space="preserve">
+    <value>ˈɑːxən</value>
+    <comment>Optional pronunciation for Aachen</comment>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>taʊn</value>
+    <comment>Optional pronunciation for Town</comment>
+  </data>
 </root>

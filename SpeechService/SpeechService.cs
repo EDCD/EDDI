@@ -472,8 +472,22 @@ namespace EddiSpeechService
                         PrepareSpeech(voice, ref speech, out var useSSML);
                         if (useSSML)
                         {
-                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                            synth.SpeakSsml(speech);
+                            try
+                            {
+                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                                synth.SpeakSsml(speech);
+                            }
+                            catch (Exception ex)
+                            {
+                                var badSpeech = new Dictionary<string, object>()
+                                {
+                                    {"voice", voice},
+                                    {"speech", speech},
+                                    {"exception", ex}
+                                };
+                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                synth.SpeakSsml(DisableIPA(speech));
+                            }
                         }
                         else
                         {
@@ -528,23 +542,41 @@ namespace EddiSpeechService
                             {
                                 result += rate * 0.2;
                             }
+
                             return result;
                         }
 
                         if (!voice.name.Equals(synth.Voice.DisplayName))
                         {
                             Logging.Debug("Selecting voice " + voice);
-                            synth.Voice = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices.FirstOrDefault(v => v.DisplayName == voice.name);
+                            synth.Voice =
+                                Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
+                                    v.DisplayName == voice.name);
                         }
+
                         synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                        synth.Options.AudioVolume = Math.Round((double)Configuration.Volume / 100);
+                        synth.Options.AudioVolume = Math.Round((double) Configuration.Volume / 100);
                         Logging.Debug(JsonConvert.SerializeObject(Configuration));
 
                         PrepareSpeech(voice, ref speech, out var useSSML);
                         if (useSSML)
                         {
-                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                            stream = synth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
+                            try
+                            {
+                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                                stream = synth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
+                            }
+                            catch (Exception ex)
+                            {
+                                var badSpeech = new Dictionary<string, object>()
+                                {
+                                    {"voice", voice},
+                                    {"speech", speech},
+                                    {"exception", ex}
+                                };
+                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                stream = synth.SynthesizeSsmlToStreamAsync(DisableIPA(speech)).AsTask().Result;
+                            }
                         }
                         else
                         {
@@ -559,14 +591,14 @@ namespace EddiSpeechService
                     }
                     catch (Exception ex)
                     {
-                        Logging.Warn("Speech failed: ", ex);
-                        var badSpeech = new Dictionary<string, object>() 
+                        var badSpeech = new Dictionary<string, object>()
                         {
-                            {"voice", voice },
+                            {"voice", voice},
                             {"speech", speech},
+                            {"exception", ex}
                         };
                         string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                        Logging.Info("Speech failed", badSpeechJSON);
+                        Logging.Warn("Speech failed", badSpeechJSON);
                     }
                 }
             });
