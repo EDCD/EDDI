@@ -482,7 +482,7 @@
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
   <data name="luytens" xml:space="preserve">
-    <value>ˈlaʊ.təns</value>
+    <value>ˈlaɪtəns</value>
     <comment>Optional phonetic pronunciation for luytens</comment>
   </data>
   <data name="Lyncis" xml:space="preserve">
@@ -812,5 +812,17 @@
   <data name="Town" xml:space="preserve">
     <value>taʊn</value>
     <comment>Optional pronunciation for Town</comment>
+  </data>
+  <data name="Lalande" xml:space="preserve">
+    <value>lalɑ̃d</value>
+    <comment>Optional phonetic pronunciation for the Lalande star catalog</comment>
+  </data>
+  <data name="Luyten" xml:space="preserve">
+    <value>ˈlaɪtən</value>
+    <comment>Optional phonetic pronunciation for the Luyten star catalog</comment>
+  </data>
+  <data name="Gliese" xml:space="preserve">
+    <value>ˈɡliːzə</value>
+    <comment>Optional phonetic pronunciation for the Gliese star catalog</comment>
   </data>
 </root>

@@ -673,6 +673,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ˈɡliːzə.
+        /// </summary>
+        public static string Gliese {
+            get {
+                return ResourceManager.GetString("Gliese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ˈɡʀɒdˌmɔʀ.
         /// </summary>
         public static string grandmort {
@@ -853,6 +862,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lalɑ̃d.
+        /// </summary>
+        public static string Lalande {
+            get {
+                return ResourceManager.GetString("Lalande", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to leɪv.
         /// </summary>
         public static string lave {
@@ -907,7 +925,16 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ˈlaʊ.təns.
+        ///   Looks up a localized string similar to ˈlaɪtən.
+        /// </summary>
+        public static string Luyten {
+            get {
+                return ResourceManager.GetString("Luyten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ˈlaɪtəns.
         /// </summary>
         public static string luytens {
             get {
@@ -1033,7 +1060,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ˈôrbədl.
+        ///   Looks up a localized string similar to ˈɔː.bɪ.təl.
         /// </summary>
         public static string Orbital {
             get {
