@@ -481,10 +481,7 @@
     <value>ˈluːpəs</value>
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
-  <data name="luytens" xml:space="preserve">
-    <value>ˈlaʊ.təns</value>
-    <comment>Optional phonetic pronunciation for luytens</comment>
-  </data>
+  
   <data name="Lyncis" xml:space="preserve">
     <value>ˈlɪnsɪs</value>
     <comment>Optional phonetic pronunciation for Lyncis</comment>
@@ -785,6 +782,10 @@
     <value>ʈʂáŋ</value>
     <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
   </data>
+  
+  
+  
+  
   
   
   
