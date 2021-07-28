@@ -825,4 +825,8 @@
     <value>ˈɡliːzə</value>
     <comment>Optional phonetic pronunciation for the Gliese star catalog</comment>
   </data>
+  <data name="Carinae" xml:space="preserve">
+    <value>kəˈriːniː</value>
+    <comment>Otional phonetic translation for Carinae</comment>
+  </data>
 </root>

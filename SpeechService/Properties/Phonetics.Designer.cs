@@ -358,6 +358,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to kəˈriːniː.
+        /// </summary>
+        public static string Carinae {
+            get {
+                return ResourceManager.GetString("Carinae", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ˈkaɪətɔːm.
         /// </summary>
         public static string cayutorme {
