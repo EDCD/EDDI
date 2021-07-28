@@ -18,6 +18,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Respawned` event added.
       * `Safe` event added.
       * `Ship repurchased` event removed (folded into the new `Respawned` event).
+    * Functions
+      * P() function - Touched up star system and body pronunciations
 
 ### 4.0.1-b1
   * Core
