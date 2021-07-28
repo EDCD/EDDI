@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -29,14 +28,14 @@ namespace EddiSpeechService
                 case "shipmanufacturer":
                     translation = getPhoneticShipManufacturer(val);
                     break;
-                case "body":
-                    translation = getPhoneticBody(val, useICAO);
+                case "station":
+                    translation = getPhoneticStation(val);
                     break;
                 case "starsystem":
                     translation = getPhoneticStarSystem(val, useICAO);
                     break;
-                case "station":
-                    translation = getPhoneticStation(val);
+                case "body":
+                    translation = getPhoneticBody(val, useICAO);
                     break;
                 case "faction":
                     translation = getPhoneticFaction(val);
@@ -60,6 +59,10 @@ namespace EddiSpeechService
                     }
                     if (translation == val)
                     {
+                        translation = getPhoneticStation(val);
+                    }
+                    if (translation == val)
+                    {
                         translation = getPhoneticBody(val, useICAO);
                     }
                     if (translation == val)
@@ -68,10 +71,7 @@ namespace EddiSpeechService
                     }
                     if (translation == val)
                     {
-                        translation = getPhoneticStation(val);
-                    }
-                    if (translation == val)
-                    {
+                        // Faction names can include system names, so we need to recognize system names first
                         translation = getPhoneticFaction(val);
                     }
                     break;
@@ -80,17 +80,20 @@ namespace EddiSpeechService
         }
 
         // Various handy regexes so we don't keep recreating them
-        private static readonly Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z][0-9]");
+        private static readonly Regex ALPHA_DOT = new Regex(@"[A-Z]\.");
+        private static readonly Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z]+[0-9]+");
         private static readonly Regex UPPERCASE = new Regex(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
         private static readonly Regex TEXT = new Regex(@"([A-Za-z]{1,3}(?:\s|$))");
         private static readonly Regex DIGIT = new Regex(@"\d+(?:\s|$)");
         private static readonly Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
         private static readonly Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
         private static readonly Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
-        private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
-        private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
-        private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
-        private static readonly Regex SHORTBODY = new Regex(@"^(A?B?C?D?E?)?(?> )?(\d*)(?> )?([a-z]*)$");
+        private static readonly Regex MOON = new Regex(@"^[a-z]$");
+        private static readonly Regex SUBSTARS = new Regex(@"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$");
+        private static readonly Regex SYSTEMBODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$");
+        private static readonly Regex SHORTBODY = new Regex(@"(?=\S)(?<STARS>(?<=^|\s)A?B?C?D?E?)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$");
+        private static readonly Regex PROC_GEN_SYSTEM = new Regex(@"^(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))$");
+        private static readonly Regex PROC_GEN_SYSTEM_BODY = new Regex(@"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$");
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
@@ -268,6 +271,10 @@ namespace EddiSpeechService
                     }
                     else
                     {
+                        // Handle leading zeros
+                        elements.AddRange(matchAsString.TakeWhile(s => s == '0').Select(s => s.ToString()));
+
+                        // Handle the number
                         elements.Add($"{number}");
                     }
                 }
