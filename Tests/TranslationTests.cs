@@ -134,7 +134,7 @@ namespace UnitTests
         )]
         [DataRow("Gliese 398.2",
             @"<phoneme alphabet=""ipa"" ph=""ˈɡliːzə"">Gliese</phoneme> 3 9 8 point 2",
-            @"Gliese <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈnaɪnər"">niner</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> point <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme>"
+            @"<phoneme alphabet=""ipa"" ph=""ˈɡliːzə"">Gliese</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈnaɪnər"">niner</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> point <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme>"
         )]
         [DataRow("Col 285 Sector QH-U c3-22",
             @"Coll 2 8 5 Sector <say-as interpret-as=""characters"">Q</say-as> <say-as interpret-as=""characters"">H</say-as> dash <say-as interpret-as=""characters"">U</say-as> <say-as interpret-as=""characters"">c</say-as> 3 dash 22",

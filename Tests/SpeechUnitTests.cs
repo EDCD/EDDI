@@ -273,8 +273,8 @@ namespace UnitTests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.GetTranslation("Swoiwns NY-B a95-0"));
-            Assert.AreEqual("P P M 5 2 8 7", Translations.GetTranslation("PPM 5287"));
+            Assert.AreEqual("Swoiwns <say-as interpret-as=\"characters\">N</say-as> <say-as interpret-as=\"characters\">Y</say-as> dash <say-as interpret-as=\"characters\">B</say-as> <say-as interpret-as=\"characters\">a</say-as> 95 dash 0", Translations.GetTranslation("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("<say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">M</say-as> 5 2 8 7", Translations.GetTranslation("PPM 5287"));
         }
 
         [TestMethod]

@@ -272,8 +272,11 @@ namespace EddiSpeechService
                     else
                     {
                         // Handle leading zeros
-                        elements.AddRange(matchAsString.TakeWhile(s => s == '0').Select(s => s.ToString()));
-
+                        if (number > 0)
+                        {
+                            elements.AddRange(matchAsString.TakeWhile(s => s == '0').Select(s => s.ToString()));
+                        }
+                       
                         // Handle the number
                         elements.Add($"{number}");
                     }
