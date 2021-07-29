@@ -166,7 +166,7 @@ namespace UnitTests
         [DataRow("SDSS J1416+1348", @"<say-as interpret-as=""characters"">S</say-as> <say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""characters"">S</say-as> <say-as interpret-as=""characters"">S</say-as> <say-as interpret-as=""characters"">J</say-as> 1 4 1 6 plus 1 3 4 8")]
         [DataRow("UGCS J122031.56+243614.8", @"<say-as interpret-as=""characters"">U</say-as> <say-as interpret-as=""characters"">G</say-as> <say-as interpret-as=""characters"">C</say-as> <say-as interpret-as=""characters"">S</say-as> <say-as interpret-as=""characters"">J</say-as> 1 2 2 0 3 1 point 56 plus 2 4 3 6 1 4 point 8")]
         [DataRow("XTE J1748-288", @"<say-as interpret-as=""characters"">X</say-as> <say-as interpret-as=""characters"">T</say-as> <say-as interpret-as=""characters"">E</say-as> <say-as interpret-as=""characters"">J</say-as> 1 7 4 8 dash 2 8 8")]
-        [DataRow("9 G. Carinae", @"9 <say-as interpret-as=""characters"">G</say-as> Carinae")]
+        [DataRow("9 G. Carinae", @"9 <say-as interpret-as=""characters"">G</say-as> <phoneme alphabet=""ipa"" ph=""kəˈriːniː"">Carinae</phoneme>")]
         [DataRow("LP 355-64", @"<say-as interpret-as=""characters"">L</say-as> <say-as interpret-as=""characters"">P</say-as> 3 5 5 dash 64")]
         public void TestTranslateStarSystems(string source, string expected)
         {

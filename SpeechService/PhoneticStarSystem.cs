@@ -271,7 +271,16 @@ namespace EddiSpeechService
                         if (i == 0)
                         {
                             // Apply our transformation to our first element
-                            elements.Add(string.Join(" ", abbr.Value).Trim());
+                            if (abbr.Key == "2MASS")
+                            {
+                                // Apply ICAO for "2MASS" catalog star systems
+                                elements.Add(sayAsLettersOrNumbers(abbr.Value[0], false, useICAO));
+                                elements.Add(abbr.Value[1]);
+                            }
+                            else
+                            {
+                                elements.Add(string.Join(" ", abbr.Value).Trim());
+                            }
                         }
                         else
                         {
