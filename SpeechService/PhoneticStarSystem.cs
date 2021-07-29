@@ -91,6 +91,7 @@ namespace EddiSpeechService
             { "Bei Dou" , new[] { Phonetics.Bei, Phonetics.Dou } },
             { "Blanco" , new[] { Phonetics.Blanco } },
             { "Bleae Thaa" , new[] { Phonetics.BleaeThaa_Bleae, Phonetics.BleaeThaa_Thaa } },
+            { "Bleae Thua" , new[] { Phonetics.BleaeThaa_Bleae, Phonetics.BleaeThua_Thua } },
             { "Capricorni" , new[] { Phonetics.Capricorni } },
             { "Carinae", new [] { Phonetics.Carinae } },
             { "Cepheus" , new[] { Phonetics.Cepheus } },
