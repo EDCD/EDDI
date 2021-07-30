@@ -20,6 +20,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship repurchased` event removed (folded into the new `Respawned` event).
     * Functions
       * P() function - Touched up star system and body pronunciations
+    * Scripts
+      * `Body report` script updated to key on the invariant reserve level
 
 ### 4.0.1-b1
   * Core
