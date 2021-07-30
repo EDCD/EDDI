@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EddiSpeechResponder.Service
@@ -23,6 +24,7 @@ namespace EddiSpeechResponder.Service
         private readonly EditScriptWindow _scriptWindow;
         private bool _scriptSaveCallGuard;
         private readonly object _lockRoot;
+        private static CancellationTokenSource cancellationTS; // This must be static so that it is visible to child threads and tasks
 
         public static Script GetRecoveredScript()
         {
@@ -55,6 +57,7 @@ namespace EddiSpeechResponder.Service
             }
 
             _scriptWindow.editorScript.PropertyChanged += _scriptWindow_PropertyChanged;
+            cancellationTS = new CancellationTokenSource();
         }
 
         private void _scriptWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -87,7 +90,7 @@ namespace EddiSpeechResponder.Service
                 {
                     _scriptSaveCallGuard = false;
                 }
-            });
+            }, cancellationTS.Token);
         }
 
         /// <summary>
@@ -107,11 +110,16 @@ namespace EddiSpeechResponder.Service
         /// </summary>
         public void StopScriptRecovery()
         {
-            if (File.Exists(_tempFileName))
+            lock (_lockRoot)
             {
-                File.Delete(_tempFileName);
+                if (File.Exists(_tempFileName))
+                {
+                    File.Delete(_tempFileName);
+                }
             }
+
             _scriptWindow.editorScript.PropertyChanged -= _scriptWindow_PropertyChanged;
+            cancellationTS.Cancel();
         }
     }
 }
