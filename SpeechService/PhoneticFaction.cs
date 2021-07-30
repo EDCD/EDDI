@@ -13,7 +13,7 @@ namespace EddiSpeechService
         };
 
         /// <summary>Fix up faction names</summary>
-        public static string getPhoneticFaction(string faction)
+        public static string getPhoneticFaction(string faction, bool useICAO = false)
         {
             if (faction == null)
             {
@@ -36,8 +36,32 @@ namespace EddiSpeechService
                 }
             }
 
-            return faction;
+            // It's possible that the name contains a constellation or catalog abbreviation, in which case translate it
+            string[] pieces = faction.Split(' ');
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
+                {
+                    pieces[i] = replaceWithPronunciation(pieces[i], CONSTELLATION_PRONUNCIATIONS[pieces[i]]);
+                }
+                else if (ALPHA_THEN_NUMERIC.IsMatch(pieces[i]))
+                {
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i], false, useICAO);
+                }
+                else if (ALPHA_DOT.IsMatch(pieces[i]))
+                {
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i].Replace(".", ""), false, useICAO);
+                }
+                else if (DIGIT.IsMatch(pieces[i]))
+                {
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i], !THREE_OR_MORE_DIGITS.IsMatch(pieces[i]), useICAO);
+                }
+                else if (UPPERCASE.IsMatch(pieces[i]))
+                {
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i], false, useICAO);
+                }
+            }
+            return string.Join(" ", pieces);
         }
-
     }
 }

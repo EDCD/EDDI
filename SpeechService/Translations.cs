@@ -38,7 +38,7 @@ namespace EddiSpeechService
                     translation = getPhoneticBody(val, useICAO);
                     break;
                 case "faction":
-                    translation = getPhoneticFaction(val);
+                    translation = getPhoneticFaction(val, useICAO);
                     break;
                 default:
                     if (translation == val)
@@ -72,7 +72,7 @@ namespace EddiSpeechService
                     if (translation == val)
                     {
                         // Faction names can include system names, so we need to recognize system names first
-                        translation = getPhoneticFaction(val);
+                        translation = getPhoneticFaction(val, useICAO);
                     }
                     break;
             }
