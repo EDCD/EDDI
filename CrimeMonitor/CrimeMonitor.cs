@@ -270,13 +270,12 @@ namespace EddiCrimeMonitor
 
         private void _handleBondAwardedEvent(BondAwardedEvent @event)
         {
-            int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
             Faction faction = bgsService.GetFactionByName(@event.victimfaction);
 
-            FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
+            FactionReport report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.bodyname,
@@ -383,9 +382,8 @@ namespace EddiCrimeMonitor
 
             foreach (Reward reward in @event.rewards.ToList())
             {
-                int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
                 long amount = Convert.ToInt64(reward.amount * bonus);
-                FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem?.systemname, amount)
+                FactionReport report = new FactionReport(@event.timestamp, true, Crime.None, currentSystem?.systemname, amount)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
                     body = EDDI.Instance?.CurrentStellarBody?.bodyname,
@@ -481,9 +479,6 @@ namespace EddiCrimeMonitor
         private void _handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
             crimeAuthorityFaction = @event.faction;
-            int shipId = @event.crimetype.Contains("onFoot_") || EDDI.Instance?.CurrentShip?.LocalId is null
-                ? -1
-                : (int)EDDI.Instance?.CurrentShip?.LocalId;
             var crime = Crime.FromEDName(@event.crimetype);
             var currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
@@ -491,7 +486,7 @@ namespace EddiCrimeMonitor
             var target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
 
             // Create a bounty report and add it to our record
-            var report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
+            var report = new FactionReport(@event.timestamp, true, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.bodyname,
@@ -567,12 +562,9 @@ namespace EddiCrimeMonitor
         private void _handleFineIncurredEvent(FineIncurredEvent @event)
         {
             crimeAuthorityFaction = @event.faction;
-            int shipId = @event.crimetype.Contains("onFoot_") || EDDI.Instance?.CurrentShip?.LocalId is null
-                ? -1
-                : (int)EDDI.Instance?.CurrentShip?.LocalId;
             Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
-            FactionReport report = new FactionReport(@event.timestamp, false, shipId, crime, currentSystem, @event.fine)
+            FactionReport report = new FactionReport(@event.timestamp, false, crime, currentSystem, @event.fine)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.bodyname,
@@ -955,11 +947,10 @@ namespace EddiCrimeMonitor
 
             if (mission?.faction != null)
             {
-                int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
                 Crime crime = Crime.FromEDName("missionFine");
                 string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
-                FactionReport report = new FactionReport(timestamp, false, shipId, crime, currentSystem, fine)
+                FactionReport report = new FactionReport(timestamp, false, crime, currentSystem, fine)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
                     body = EDDI.Instance?.CurrentStellarBody?.bodyname,

@@ -11,10 +11,6 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public bool bounty { get; set; }
 
-        /// <summary> The ship ID associated with the crime. May be -1 if the commander is associated directly with the crime. </summary>
-        [PublicAPI]
-        public int shipId { get; set; }
-
         public string crimeEDName
         {
             get => crimeDef.edname;
@@ -58,7 +54,6 @@ namespace EddiDataDefinitions
         public FactionReport(FactionReport factionReport)
         {
             bounty = factionReport.bounty;
-            shipId = factionReport.shipId;
             crimeDef = factionReport.crimeDef;
             crimeEDName = factionReport.crimeEDName;
             system = factionReport.system;
@@ -70,11 +65,10 @@ namespace EddiDataDefinitions
             timestamp = factionReport.timestamp;
         }
 
-        public FactionReport(DateTime Timestamp, bool Bounty, int ShipId, Crime Crime, string System, long Amount)
+        public FactionReport(DateTime Timestamp, bool Bounty, Crime Crime, string System, long Amount)
         {
             timestamp = Timestamp;
             bounty = Bounty;
-            shipId = ShipId;
             crimeDef = Crime ?? Crime.None;
             system = System;
             amount = Amount;

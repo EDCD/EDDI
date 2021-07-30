@@ -195,7 +195,7 @@ namespace EddiCrimeMonitor
                                         .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Claim, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, false, Crime.Claim, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += amount;
@@ -216,7 +216,7 @@ namespace EddiCrimeMonitor
                                     var report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.Fine);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Fine, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, false, Crime.Fine, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += amount;
@@ -238,7 +238,7 @@ namespace EddiCrimeMonitor
                                         .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, true, 0, Crime.Bounty, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, true, Crime.Bounty, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += amount;

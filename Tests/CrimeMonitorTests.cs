@@ -206,7 +206,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBountyAwardedEvent", new object[] { events[0], true });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
-            record.factionReports.FirstOrDefault(r => r.amount == 22265).shipId = 10;
+            Assert.IsNotNull(record);
             Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef == Crime.None));
             Assert.AreEqual(127433, record.bountiesAmount);
 
@@ -216,7 +216,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleFineIncurredEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
-            record.factionReports.FirstOrDefault(r => !r.bounty && r.crimeDef != Crime.None).shipId = 10;
+            Assert.IsNotNull(record);
             Assert.AreEqual(1, record.factionReports.Count(r => !r.bounty && r.crimeDef != Crime.None));
             Assert.AreEqual(400, record.finesIncurred.Sum(r => r.amount));
 
@@ -226,8 +226,8 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBountyIncurredEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
-            record.factionReports.FirstOrDefault(r => r.bounty && r.crimeDef != Crime.None).shipId = 10;
             // The fine should be converted to a bounty, resulting in two bounty records.
+            Assert.IsNotNull(record);
             Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef != Crime.None));
             Assert.AreEqual(800, record.bountiesIncurred.Sum(r => r.amount));
 
