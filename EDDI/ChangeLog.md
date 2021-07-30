@@ -22,6 +22,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * P() function - Touched up star system and body pronunciations
     * Scripts
       * `Body report` script updated to key on the invariant reserve level
+      * `Bond awarded` script updated to reduce verbosity.
+      * `Bounty awarded` script updated to reduce verbosity.
+      * `Bounty incurred` script updated to reduce verbosity.
+      * `Crime check station` script updated to more intelligent suggestions about paying off fines and bounties.
+      * `Crime check system` script updated to reduce verbosity.
+      * `Entered supercruise` script updated to report any changes to pending fines, bounties, or claims.
+      * `Fine incurred` script updated to reduce verbosity.
+      * `Respawned` script added.
 
 ### 4.0.1-b1
   * Core
