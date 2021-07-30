@@ -4,10 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 4.0.1-b2
   * Core
-    * Unlocks *most* previously unavailable Windows voices.
-    * Adds support for user lexicons (to learn more, search the wiki for "lexicons").
+    * Unlocked *most* previously unavailable Windows voices.
+    * Added support for user lexicons (to learn more, search the wiki for "lexicons").
   * Crime Monitor
-    * Fines are converted to bounties when a bounty is incurred.
+    * Fines are now converted to bounties when a bounty is incurred.
     * Improved handling of fines and bounties with various respawn scenarios. 
   * Mission Monitor
     * Fixed a bug that inverted community goal progression reports when moving between tiers.
