@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiJournalMonitor
@@ -187,13 +188,15 @@ namespace EddiJournalMonitor
 
                 if (lastLoadLine != null)
                 {
-                    for (int i = lastLoadLine.lineNumber; i < lines.Count(); i++)
-                    {
-                        if (lines[i] != "")
+                    Task.Run(() => {
+                        for (int i = lastLoadLine.lineNumber; i < lines.Count(); i++)
                         {
-                            Callback(lines[i], isLoadEvent);
+                            if (lines[i] != "")
+                            {
+                                Callback(lines[i], isLoadEvent);
+                            }
                         }
-                    }
+                    });
                 }
             }
         }

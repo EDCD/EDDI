@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Unlocked *most* previously unavailable Windows voices.
     * Added support for user lexicons (to learn more, search the wiki for "lexicons").
+    * Fixed a bug that might in some instances make EDDI slow to respond to events.
   * Crime Monitor
     * Fines are now converted to bounties when a bounty is incurred.
     * Improved handling of fines and bounties with various respawn scenarios. 
