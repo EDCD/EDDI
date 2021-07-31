@@ -37,7 +37,6 @@ namespace EddiMissionMonitor
         public string missionsRouteList;
         public decimal missionsRouteDistance;
 
-        private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
 
         private static readonly object missionsLock = new object();
@@ -68,8 +67,7 @@ namespace EddiMissionMonitor
 
         public MissionMonitor(IEdsmService edsmService)
         {
-            this.edsmService = edsmService ?? new StarMapService();
-            dataProviderService = new DataProviderService(edsmService);
+            dataProviderService = new DataProviderService(edsmService ?? new StarMapService());
             missions = new ObservableCollection<Mission>();
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
@@ -113,7 +111,6 @@ namespace EddiMissionMonitor
         {
             readMissions();
             Logging.Info($"Reloaded {MonitorName()}");
-
         }
 
         public void _start()
@@ -128,46 +125,43 @@ namespace EddiMissionMonitor
                     missionsList = missions.ToList();
                 }
 
-                if (missionsList != null)
+                foreach (Mission mission in missionsList)
                 {
-                    foreach (Mission mission in missionsList)
+                    if (mission.expiry != null && mission.statusEDName == "Active")
                     {
-                        if (mission.expiry != null && mission.statusEDName == "Active")
+                        // Generate 'Expired' and 'Warning' events when conditions met
+                        if (mission.expiry < DateTime.UtcNow)
                         {
-                            // Generate 'Expired' and 'Warning' events when conditions met
-                            if (mission.expiry < DateTime.UtcNow)
+                            if (mission.communal)
                             {
-                                if (mission.communal)
+                                if (mission.reward is null)
                                 {
-                                    if (mission.reward is null)
-                                    {
-                                        RemoveMission(mission);
-                                    }
-                                    else 
-                                    { 
-                                        mission.statusDef = MissionStatus.FromEDName("Claim"); 
-                                    }
+                                    RemoveMission(mission);
                                 }
-                                else 
-                                { 
-                                    EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name)); 
+                                else
+                                {
+                                    mission.statusDef = MissionStatus.FromEDName("Claim"); 
                                 }
                             }
-                            else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? Constants.missionWarningDefault))
+                            else
                             {
-                                if (!mission.expiring && mission.timeRemaining != null)
-                                {
-                                    mission.expiring = true;
-                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.UtcNow, mission.missionid, mission.name, (int)((TimeSpan)mission.timeRemaining).TotalMinutes));
-                                }
-                            }
-                            else if (mission.expiring)
-                            {
-                                mission.expiring = false;
+                                EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name)); 
                             }
                         }
-                        mission.UpdateTimeRemaining();
+                        else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? Constants.missionWarningDefault))
+                        {
+                            if (!mission.expiring && mission.timeRemaining != null)
+                            {
+                                mission.expiring = true;
+                                EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.UtcNow, mission.missionid, mission.name, (int)((TimeSpan)mission.timeRemaining).TotalMinutes));
+                            }
+                        }
+                        else if (mission.expiring)
+                        {
+                            mission.expiring = false;
+                        }
                     }
+                    mission.UpdateTimeRemaining();
                 }
                 Thread.Sleep(5000);
             }
@@ -1072,7 +1066,7 @@ namespace EddiMissionMonitor
             string destination = EDDI.Instance?.DestinationStarSystem?.systemname;
             UpdateDestinationData(null, null, 0);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "cancel", destination, null, null, 0, 0, 0, null));
+            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "cancel", destination, null, null, 0, 0, 0, null));
         }
 
         public string GetMissionsRoute(string homeSystem = null)
@@ -1150,7 +1144,7 @@ namespace EddiMissionMonitor
                 if (CalculateRNNA(systems, homeSystem))
                 {
                     nextSystem = missionsRouteList?.Split('_')[0];
-                    nextDistance = CalculateDistance(currentSystem, nextSystem);
+                    nextDistance = CalculateDistance(currentSystem, nextSystem) ?? 0;
                     routeCount = missionsRouteList.Split('_').Count();
 
                     Logging.Debug("Calculated Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
@@ -1164,7 +1158,7 @@ namespace EddiMissionMonitor
                     Logging.Debug("Unable to meet missions route calculation criteria");
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "route", nextSystem, null, missionsRouteList, routeCount, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "route", nextSystem, null, missionsRouteList, routeCount, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1198,9 +1192,9 @@ namespace EddiMissionMonitor
                     for (int j = i + 1; j < systems.Count; j++)
                     {
                         StarSystem dest = starsystems.Find(s => s.systemname == systems[j]);
-                        decimal distance = CalculateDistance(curr, dest);
-                        distMatrix[i][j] = distance;
-                        distMatrix[j][i] = distance;
+                        decimal? distance = CalculateDistance(curr, dest) ?? 0;
+                        distMatrix[i][j] = (decimal)distance;
+                        distMatrix[j][i] = (decimal)distance;
                     }
                 }
 
@@ -1285,7 +1279,7 @@ namespace EddiMissionMonitor
         public string SetNextInRoute()
         {
             string nextSystem = missionsRouteList?.Split('_')[0];
-            decimal nextDistance = 0;
+            decimal? nextDistance = 0;
             int count = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
@@ -1300,9 +1294,9 @@ namespace EddiMissionMonitor
                 missionids = GetSystemMissionIds(nextSystem);
 
                 // Set destination variables
-                UpdateDestinationData(nextSystem, null, nextDistance);
+                UpdateDestinationData(nextSystem, null, nextDistance ?? 0);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "set", nextSystem, null, missionsRouteList, count, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "set", nextSystem, null, missionsRouteList, count, nextDistance ?? 0, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1333,7 +1327,7 @@ namespace EddiMissionMonitor
                     nextSystem = missionsRouteList?.Split('_')[0];
                     if (nextSystem != null)
                     {
-                        nextDistance = CalculateDistance(currentSystem, nextSystem);
+                        nextDistance = CalculateDistance(currentSystem, nextSystem) ?? 0;
 
                         // Get mission IDs for 'next' system
                         missionids = GetSystemMissionIds(nextSystem);
@@ -1345,14 +1339,14 @@ namespace EddiMissionMonitor
                     UpdateDestinationData(nextSystem, null, nextDistance);
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "update", nextSystem, null, missionsRouteList, route.Count, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, "update", nextSystem, null, missionsRouteList, route.Count, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
         private bool RemoveSystemFromRoute(string system)
         {
             List<string> route = missionsRouteList?.Split('_').ToList();
-            if (route.Count == 0) { return false; }
+            if (route is null || route.Count == 0) { return false; }
 
             int index = route.IndexOf(system);
             if (index > -1)
@@ -1389,24 +1383,16 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public decimal CalculateDistance(string currentSystem, string destinationSystem)
+        public decimal? CalculateDistance(string currentSystem, string destinationSystem)
         {
             StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(currentSystem, true);
             StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem, true);
             return CalculateDistance(curr, dest);
         }
 
-        public decimal CalculateDistance(StarSystem curr, StarSystem dest)
+        public decimal? CalculateDistance(StarSystem curr, StarSystem dest)
         {
-            double square(double x) => x * x;
-            decimal distance = 0;
-            if (curr?.x != null && dest?.x != null)
-            {
-                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
-                            + square((double)(curr.y - dest.y))
-                            + square((double)(curr.z - dest.z))), 2);
-            }
-            return distance;
+            return Functions.DistanceFromCoordinates(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z);
         }
 
         private decimal CalculateRouteDistance()
@@ -1414,7 +1400,7 @@ namespace EddiMissionMonitor
             List<string> route = missionsRouteList?.Split('_').ToList();
             decimal distance = 0;
 
-            if (route.Count > 0)
+            if (route?.Count > 0)
             {
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
 
@@ -1423,14 +1409,14 @@ namespace EddiMissionMonitor
 
                 // Get distance to the next system
                 StarSystem dest = starsystems.Find(s => s.systemname == route[0]);
-                distance = CalculateDistance(curr, dest);
+                distance = CalculateDistance(curr, dest) ?? 0;
 
                 // Calculate remaining route distance
                 for (int i = 0; i < route.Count() - 1; i++)
                 {
                     curr = starsystems.Find(s => s.systemname == route[i]);
                     dest = starsystems.Find(s => s.systemname == route[i + 1]);
-                    distance += CalculateDistance(curr, dest);
+                    distance += CalculateDistance(curr, dest) ?? 0;
                 }
             }
             return distance;

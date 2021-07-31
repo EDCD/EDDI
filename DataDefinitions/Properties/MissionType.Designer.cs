@@ -70,15 +70,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit Donation.
-        /// </summary>
-        internal static string AltruismCredits {
-            get {
-                return ResourceManager.GetString("AltruismCredits", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Assassination.
         /// </summary>
         internal static string Assassinate {
@@ -174,6 +165,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Covert {
             get {
                 return ResourceManager.GetString("Covert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credits.
+        /// </summary>
+        internal static string Credits {
+            get {
+                return ResourceManager.GetString("Credits", resourceCulture);
             }
         }
         

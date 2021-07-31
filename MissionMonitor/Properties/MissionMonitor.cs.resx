@@ -150,9 +150,6 @@
   <data name="header_status" xml:space="preserve">
     <value>Stav</value>
   </data>
-  <data name="header_tags" xml:space="preserve">
-    <value>Typ</value>
-  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Sledovat informace o vašich misích.</value>
   </data>

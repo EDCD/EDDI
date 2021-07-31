@@ -29,7 +29,7 @@ namespace EddiMissionMonitor
             missionsData.ItemsSource = missionMonitor()?.missions;
             
             MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
-            missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture);
+            missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture) ?? Constants.missionWarningDefault.ToString();
         }
 
         private void missionsUpdated(object sender, DataTransferEventArgs e)

@@ -12,7 +12,7 @@
             missingEDNameHandler = (edname) => new MissionType(edname);
 
             _ = new MissionType("Altruism");
-            _ = new MissionType("AltruismCredits");
+            _ = new MissionType("Credits"); // Donation type: credits
             _ = new MissionType("Assassinate");
             _ = new MissionType("AssassinateWing");
             _ = new MissionType("BlOps");

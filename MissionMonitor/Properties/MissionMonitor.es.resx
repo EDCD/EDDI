@@ -150,9 +150,6 @@
   <data name="header_status" xml:space="preserve">
     <value>Estado</value>
   </data>
-  <data name="header_tags" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Rastrea la información de tus misiones.</value>
   </data>

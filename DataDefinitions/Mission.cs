@@ -337,6 +337,7 @@ namespace EddiDataDefinitions
             if (string.IsNullOrEmpty(name)) { return; }
 
             var tidiedName = name.ToLowerInvariant()
+                .Replace("altruismcredits", "altruism_credits")
                 .Replace("assassinationillegal", "assassinate_illegal")
                 .Replace("conflict_civilwar", "conflictcivilwar")
                 .Replace("conflict_war", "conflictwar")
