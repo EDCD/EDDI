@@ -130,7 +130,8 @@ namespace UnitTests
             Assert.AreEqual(config.missionsCount, config.missions.Count);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
-            Assert.AreEqual("Courier", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("Courier"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsFalse(mission.originreturn);
             Assert.IsTrue(mission.legal);
@@ -139,11 +140,13 @@ namespace UnitTests
             Assert.AreEqual(99656, mission.reward);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563678);
-            Assert.AreEqual("Delivery", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("Delivery"));
             Assert.AreEqual(180, mission.amount);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563829);
-            Assert.AreEqual("Salvage", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("Salvage"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);
@@ -175,7 +178,8 @@ namespace UnitTests
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.AreEqual(4, missionMonitor.missions.Count);
-            Assert.AreEqual("CollectWing", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("CollectWing"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.wing);
@@ -210,7 +214,8 @@ namespace UnitTests
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             Assert.AreEqual(4, missionMonitor.missions.Count);
-            Assert.AreEqual("Collect", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("Collect"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.legal);
@@ -246,7 +251,8 @@ namespace UnitTests
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 414732731);
             Assert.AreEqual(6, missionMonitor.missions.Count);
-            Assert.AreEqual("Smuggle", mission.typeEDName);
+            Assert.IsNotNull(mission);
+            Assert.IsTrue(mission.edTags.Contains("Smuggle"));
             Assert.IsFalse(mission.originreturn);
             Assert.IsFalse(mission.legal);
 

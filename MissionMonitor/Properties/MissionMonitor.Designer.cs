@@ -115,6 +115,33 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Percentile Band:.
+        /// </summary>
+        public static string header_cg_percentileband {
+            get {
+                return ResourceManager.GetString("header_cg_percentileband", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reward (Credits):.
+        /// </summary>
+        public static string header_cg_reward {
+            get {
+                return ResourceManager.GetString("header_cg_reward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tier:.
+        /// </summary>
+        public static string header_cg_tier {
+            get {
+                return ResourceManager.GetString("header_cg_tier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Station.
         /// </summary>
         public static string header_destinationstation {
@@ -133,11 +160,47 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Faction:.
+        /// </summary>
+        public static string header_faction {
+            get {
+                return ResourceManager.GetString("header_faction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mission ID.
         /// </summary>
         public static string header_missionid {
             get {
                 return ResourceManager.GetString("header_missionid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string header_name {
+            get {
+                return ResourceManager.GetString("header_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin Station:.
+        /// </summary>
+        public static string header_originstation {
+            get {
+                return ResourceManager.GetString("header_originstation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin System:.
+        /// </summary>
+        public static string header_originsystem {
+            get {
+                return ResourceManager.GetString("header_originsystem", resourceCulture);
             }
         }
         
@@ -160,11 +223,11 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
+        ///   Looks up a localized string similar to Tags:.
         /// </summary>
-        public static string header_type {
+        public static string header_tags {
             get {
-                return ResourceManager.GetString("header_type", resourceCulture);
+                return ResourceManager.GetString("header_tags", resourceCulture);
             }
         }
         

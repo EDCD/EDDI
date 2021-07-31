@@ -193,7 +193,8 @@ Details of an individual mission in the commander's mission log.
   - *missionid* - unique identifier ID of the mission
   - *name* - name of mission
   - *localisedname* - localised name of the mission
-  - *type* - localized type (altruism, delivery, massacre, etc) of the mission
+  - *tags* - localized tags (altruism, delivery, massacre, etc) describing the mission, as a list
+  - *invariantTags* - invariant tags (altruism, delivery, massacre, etc) describing the mission, as a list
   - *status* - localized status (active, complete, failed) of the mission
   - *faction* - name of the faction issuing the mission
   - *originsystem* - origin system of the mission

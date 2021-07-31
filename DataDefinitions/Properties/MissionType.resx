@@ -121,7 +121,7 @@
     <value>Donation</value>
   </data>
   <data name="AltruismCredits" xml:space="preserve">
-    <value>Donation</value>
+    <value>Credit Donation</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Assassination</value>
@@ -178,7 +178,7 @@
     <value>Wing Mining</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>None</value>
+    <value>Unknown</value>
   </data>
   <data name="PassengerBulk" xml:space="preserve">
     <value>Transport</value>
@@ -190,7 +190,7 @@
     <value>Piracy</value>
   </data>
   <data name="Rescue" xml:space="preserve">
-    <value>Rescue</value>
+    <value>Rescue Cargo</value>
   </data>
   <data name="Salvage" xml:space="preserve">
     <value>Salvage</value>
@@ -209,5 +209,105 @@
   </data>
   <data name="StartZone" xml:space="preserve">
     <value>Start Zone</value>
+  </data>
+  <data name="OnFoot" xml:space="preserve">
+    <value>On Foot</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>Black Ops</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>Chain</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>Illegal</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>Planetary</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>Federal Navy Contract</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Imperial Navy Contract</value>
+  </data>
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>Disable Megaship</value>
+  </data>
+  <data name="Founder" xml:space="preserve">
+    <value>Founder</value>
+  </data>
+  <data name="HackMegaship" xml:space="preserve">
+    <value>Hack Megaship</value>
+  </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>Civil War Targets</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>War Targets</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="Skimmer" xml:space="preserve">
+    <value>Skimmer Targets</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Hard</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>Covert</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Offline Settlement</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>Settlement Raid</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Production Heist</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>Nonviolent</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Settlement Reactivation</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>Settlement Reactivation</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Settlement Shutdown</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Disrupt Settlement Production</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planetary</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Political Prisoners</value>
+    <comment>Bulk passenger type</comment>
   </data>
 </root>

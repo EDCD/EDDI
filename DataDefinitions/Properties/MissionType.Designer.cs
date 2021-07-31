@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Donation.
+        ///   Looks up a localized string similar to Credit Donation.
         /// </summary>
         internal static string AltruismCredits {
             get {
@@ -93,6 +93,24 @@ namespace EddiDataDefinitions.Properties {
         internal static string AssassinateWing {
             get {
                 return ResourceManager.GetString("AssassinateWing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Black Ops.
+        /// </summary>
+        internal static string BlOps {
+            get {
+                return ResourceManager.GetString("BlOps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chain.
+        /// </summary>
+        internal static string Chain {
+            get {
+                return ResourceManager.GetString("Chain", resourceCulture);
             }
         }
         
@@ -124,11 +142,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Civil War Targets.
+        /// </summary>
+        internal static string ConflictCivilWar {
+            get {
+                return ResourceManager.GetString("ConflictCivilWar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to War Targets.
+        /// </summary>
+        internal static string ConflictWar {
+            get {
+                return ResourceManager.GetString("ConflictWar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Courier.
         /// </summary>
         internal static string Courier {
             get {
                 return ResourceManager.GetString("Courier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Covert.
+        /// </summary>
+        internal static string Covert {
+            get {
+                return ResourceManager.GetString("Covert", resourceCulture);
             }
         }
         
@@ -160,11 +205,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable Megaship.
+        /// </summary>
+        internal static string DisableMegaship {
+            get {
+                return ResourceManager.GetString("DisableMegaship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wing Disable.
         /// </summary>
         internal static string DisableWing {
             get {
                 return ResourceManager.GetString("DisableWing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        internal static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Founder.
+        /// </summary>
+        internal static string Founder {
+            get {
+                return ResourceManager.GetString("Founder", resourceCulture);
             }
         }
         
@@ -183,6 +255,42 @@ namespace EddiDataDefinitions.Properties {
         internal static string Hack {
             get {
                 return ResourceManager.GetString("Hack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hack Megaship.
+        /// </summary>
+        internal static string HackMegaship {
+            get {
+                return ResourceManager.GetString("HackMegaship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard.
+        /// </summary>
+        internal static string Hard {
+            get {
+                return ResourceManager.GetString("Hard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal.
+        /// </summary>
+        internal static string Illegal {
+            get {
+                return ResourceManager.GetString("Illegal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legal.
+        /// </summary>
+        internal static string Legal {
+            get {
+                return ResourceManager.GetString("Legal", resourceCulture);
             }
         }
         
@@ -241,11 +349,47 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Nonviolent.
+        /// </summary>
+        internal static string NCD {
+            get {
+                return ResourceManager.GetString("NCD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
         /// </summary>
         internal static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Settlement.
+        /// </summary>
+        internal static string Offline {
+            get {
+                return ResourceManager.GetString("Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Foot.
+        /// </summary>
+        internal static string OnFoot {
+            get {
+                return ResourceManager.GetString("OnFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Raid.
+        /// </summary>
+        internal static string Onslaught {
+            get {
+                return ResourceManager.GetString("Onslaught", resourceCulture);
             }
         }
         
@@ -277,7 +421,97 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rescue.
+        ///   Looks up a localized string similar to Planetary.
+        /// </summary>
+        internal static string Planet {
+            get {
+                return ResourceManager.GetString("Planet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planetary.
+        /// </summary>
+        internal static string Planetary {
+            get {
+                return ResourceManager.GetString("Planetary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Political Prisoners.
+        /// </summary>
+        internal static string PolPrisoner {
+            get {
+                return ResourceManager.GetString("PolPrisoner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Shutdown.
+        /// </summary>
+        internal static string Power {
+            get {
+                return ResourceManager.GetString("Power", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disrupt Settlement Production.
+        /// </summary>
+        internal static string Production {
+            get {
+                return ResourceManager.GetString("Production", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Production Heist.
+        /// </summary>
+        internal static string ProductionHeist {
+            get {
+                return ResourceManager.GetString("ProductionHeist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imperial Navy Contract.
+        /// </summary>
+        internal static string RankEmp {
+            get {
+                return ResourceManager.GetString("RankEmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Federal Navy Contract.
+        /// </summary>
+        internal static string RankFed {
+            get {
+                return ResourceManager.GetString("RankFed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Reactivation.
+        /// </summary>
+        internal static string Reboot {
+            get {
+                return ResourceManager.GetString("Reboot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Reactivation.
+        /// </summary>
+        internal static string RebootRestore {
+            get {
+                return ResourceManager.GetString("RebootRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rescue Cargo.
         /// </summary>
         internal static string Rescue {
             get {
@@ -313,6 +547,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skimmer Targets.
+        /// </summary>
+        internal static string Skimmer {
+            get {
+                return ResourceManager.GetString("Skimmer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smuggling.
         /// </summary>
         internal static string Smuggle {
@@ -336,6 +579,24 @@ namespace EddiDataDefinitions.Properties {
         internal static string StartZone {
             get {
                 return ResourceManager.GetString("StartZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        internal static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        internal static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }

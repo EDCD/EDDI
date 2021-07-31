@@ -9,6 +9,55 @@
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="missionDataTemplate">
+            <Grid Background="Azure">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_tags}" Margin="15, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding localizedTagsString}" Margin="5, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_faction}" Margin="15, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding faction}" Margin="5, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originstation}" Margin="5, 0" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="communityGoalDataTemplate">
+            <Grid Background="Azure">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_tier}" Margin="15, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding communalTier}" Margin="5, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_percentileband}" Margin="15, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding communalPercentileBand, StringFormat={}{0}%}" Margin="5, 0" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_reward}" Margin="15, 0" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward}" Margin="5, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 0" />
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 0" />
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding originstation}" Margin="5, 0" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,5" Text="{x:Static resx:MissionMonitor.para1}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,5" Text="{x:Static resx:MissionMonitor.para2}" />
@@ -43,17 +92,8 @@
             <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.clear_route_button_desc}" />
         </Grid>
         <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="ToolTip">
-                        <Setter.Value>
-                            <TextBlock Text="{Binding Path=localisedname}" />
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="140" IsReadOnly="True" Binding="{Binding Path=localizedType}">
+                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_name}" MinWidth="140" IsReadOnly="True" Binding="{Binding Path=localisedname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -61,24 +101,11 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="TextAlignment" Value="Left" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="100" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationsystem}" Width="*" IsReadOnly="True" Binding="{Binding Path=destinationsystem}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -105,6 +132,19 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="100" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" Width="140" IsReadOnly="True" Binding="{Binding Path=timeRemaining, StringFormat={}{0:g}, Mode=OneWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -119,6 +159,24 @@
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate"
+                                        Value="{StaticResource missionDataTemplate}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding communal}" Value="True">
+                                        <Setter Property="ContentTemplate"
+                                                Value="{StaticResource communityGoalDataTemplate}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
     </DockPanel>
 </UserControl>

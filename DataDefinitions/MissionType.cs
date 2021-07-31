@@ -11,37 +11,78 @@
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new MissionType(edname);
 
-            var Altruism = new MissionType("Altruism");
-            var AltruismCredits = new MissionType("AltruismCredits");
-            var Assassinate = new MissionType("Assassinate");
-            var AssassinateWing = new MissionType("AssassinateWing");
-            var Collect = new MissionType("Collect");
-            var CollectWing = new MissionType("CollectWing");
-            var CommunityGoal = new MissionType("CommunityGoal");
-            var Courier = new MissionType("Courier");
-            var Delivery = new MissionType("Delivery");
-            var DeliveryWing = new MissionType("DeliveryWing");
-            var Disable = new MissionType("Disable");
-            var DisableWing = new MissionType("DisableWing");
-            var GenericPermit1 = new MissionType("GenericPermit1");
-            var Hack = new MissionType("Hack");
-            var LongDistanceExpedition = new MissionType("LongDistanceExpedition");
-            var Massacre = new MissionType("Massacre");
-            var MassacreThargoid = new MissionType("MassacreThargoid");
-            var MassacreWing = new MissionType("MassacreWing");
-            var Mining = new MissionType("Mining");
-            var MiningWing = new MissionType("MiningWing");
-            var None = new MissionType("None");
-            var PassengerBulk = new MissionType("PassengerBulk");
-            var PassengerVIP = new MissionType("PassengerVIP");
-            var Piracy = new MissionType("Piracy");
-            var Rescue = new MissionType("Rescue");
-            var Salvage = new MissionType("Salvage");
-            var Scan = new MissionType("Scan");
-            var Sightseeing = new MissionType("Sightseeing");
-            var Smuggle = new MissionType("Smuggle");
-            var Special = new MissionType("Special");
-            var StartZone = new MissionType("StartZone");
+            _ = new MissionType("Altruism");
+            _ = new MissionType("AltruismCredits");
+            _ = new MissionType("Assassinate");
+            _ = new MissionType("AssassinateWing");
+            _ = new MissionType("BlOps");
+            _ = new MissionType("Chain");
+            _ = new MissionType("Collect");
+            _ = new MissionType("CollectWing");
+            _ = new MissionType("CommunityGoal");
+            _ = new MissionType("Courier");
+            _ = new MissionType("Covert");
+            _ = new MissionType("Delivery");
+            _ = new MissionType("DeliveryWing");
+            _ = new MissionType("Disable");
+            _ = new MissionType("DisableMegaship");
+            _ = new MissionType("DisableWing");
+            _ = new MissionType("Founder");
+            _ = new MissionType("GenericPermit1");
+            _ = new MissionType("Hack");
+            _ = new MissionType("HackMegaship");
+            _ = new MissionType("LongDistanceExpedition");
+            _ = new MissionType("Massacre");
+            _ = new MissionType("MassacreThargoid");
+            _ = new MissionType("MassacreWing");
+            _ = new MissionType("Mining");
+            _ = new MissionType("MiningWing");
+            _ = new MissionType("None");
+            _ = new MissionType("OnFoot");
+            _ = new MissionType("Onslaught");
+            _ = new MissionType("PassengerBulk");
+            _ = new MissionType("PassengerVIP");
+            _ = new MissionType("Piracy");
+            _ = new MissionType("Planet");
+            _ = new MissionType("Planetary");
+            _ = new MissionType("RankEmp");
+            _ = new MissionType("RankFed");
+            _ = new MissionType("Rescue");
+            _ = new MissionType("Salvage");
+            _ = new MissionType("Scan");
+            _ = new MissionType("Sightseeing");
+            _ = new MissionType("Smuggle");
+            _ = new MissionType("Special");
+            _ = new MissionType("StartZone");
+            _ = new MissionType("Welcome");
+
+            // Hack types
+            _ = new MissionType("Download");
+            _ = new MissionType("Upload");
+
+            // Heist types
+            _ = new MissionType("ProductionHeist");
+
+            // Massacre target types
+            _ = new MissionType("Skimmer");
+            _ = new MissionType("ConflictCivilWar");
+            _ = new MissionType("ConflictWar");
+
+            // Mission difficulty types
+            _ = new MissionType("Hard");
+            _ = new MissionType("Illegal");
+            _ = new MissionType("Legal");
+            _ = new MissionType("NCD");
+
+            // Odyssey settlement states
+            _ = new MissionType("Offline");
+            _ = new MissionType("Reboot");
+            _ = new MissionType("RebootRestore");
+
+            // Sabotage types
+            _ = new MissionType("Power");
+            _ = new MissionType("Production");
+
         }
 
         // dummy used to ensure that the static constructor has run

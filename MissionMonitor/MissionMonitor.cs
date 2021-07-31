@@ -283,11 +283,13 @@ namespace EddiMissionMonitor
             {
                 foreach (Mission mission in missions.ToList())
                 {
-                    string type = mission.typeEDName.ToLowerInvariant();
-                    switch (type)
+                    foreach (var type in mission.edTags)
                     {
-                        // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
-                        case "sightseeing":
+                        var exitLoop = false;
+                        switch (type)
+                        {
+                            // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
+                            case "sightseeing":
                             {
                                 DestinationSystem system = mission.destinationsystems
                                     .FirstOrDefault(s => s.name == EDDI.Instance?.CurrentStarSystem?.systemname);
@@ -299,12 +301,18 @@ namespace EddiMissionMonitor
                                     if (!string.IsNullOrEmpty(waypointSystemName))
                                     {
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
-                                        EDDI.Instance.enqueueEvent(new MissionRedirectedEvent(DateTime.UtcNow, mission.missionid, mission.name, null, null, waypointSystemName, EDDI.Instance?.CurrentStarSystem?.systemname));
+                                        EDDI.Instance.enqueueEvent(new MissionRedirectedEvent(DateTime.UtcNow,
+                                            mission.missionid, mission.name, null, null, waypointSystemName,
+                                            EDDI.Instance?.CurrentStarSystem?.systemname));
                                     }
+
                                     update = true;
+                                    exitLoop = true;
                                 }
+                                break;
                             }
-                            break;
+                        }
+                        if (exitLoop) { break; }
                     }
                 }
             }
@@ -369,17 +377,23 @@ namespace EddiMissionMonitor
                     if (missionEntry.name.Contains("None"))
                     {
                         missionEntry.name = mission.name;
-                        missionEntry.typeDef = MissionType.FromEDName(mission.name.Split('_').ElementAt(1));
                         missionEntry.expiry = mission.expiry;
                         update = true;
                     }
+                }
+
+                // Add our destination for origin return missions
+                if (mission.originreturn && string.IsNullOrEmpty(mission.destinationsystem))
+                {
+                    mission.destinationsystem = mission.originsystem;
+                    mission.destinationstation = mission.originstation;
                 }
 
                 // Add missions to mission log
                 else
                 {
                     // Starter zone missions have no consistent 'accepted' or 'completed' events, so exclude them from the mission log
-                    if (mission.typeEDName != "StartZone")
+                    if (!mission.edTags.Contains("StartZone"))
                     {
                         AddMission(mission);
                         update = true;
@@ -557,9 +571,7 @@ namespace EddiMissionMonitor
                             amount = @event.totaltodeliver,
                             commodity = @event.commodity,
                             originsystem = EDDI.Instance?.CurrentStarSystem?.systemname,
-                            originstation = EDDI.Instance?.CurrentStation?.name,
-                            wing = true,
-                            originreturn = false
+                            originstation = EDDI.Instance?.CurrentStation?.name
                         };
                         AddMission(mission);
                     }
@@ -585,9 +597,7 @@ namespace EddiMissionMonitor
                                 amount = @event.totaltodeliver,
                                 commodity = @event.commodity,
                                 originsystem = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.systemname : null,
-                                originstation = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.systemname : null,
-                                wing = true,
-                                originreturn = @event.startmarketid == 0
+                                originstation = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.systemname : null
                             };
                             AddMission(mission);
                         }
@@ -689,7 +699,6 @@ namespace EddiMissionMonitor
                     influence = @event.influence,
                     reputation = @event.reputation,
                     reward = @event.reward ?? 0,
-                    wing = @event.wing,
                     communal = @event.communal,
 
                     // Get the minor faction stuff
@@ -752,22 +761,28 @@ namespace EddiMissionMonitor
                 else
                 {
                     // Populate destination system and station, depending on mission type
-                    string type = mission.typeEDName.ToLowerInvariant();
-                    switch (type)
+                    foreach (var type in mission.edTags)
                     {
-                        case "altruism":
-                        case "altruismcredits":
+                        bool exitLoop;
+                        switch (type)
+                        {
+                            case "altruism":
+                            case "altruismcredits":
                             {
                                 mission.destinationsystem = mission.originsystem;
                                 mission.destinationstation = mission.originstation;
+                                exitLoop = true;
+                                break;
                             }
-                            break;
-                        default:
+                            default:
                             {
                                 mission.destinationsystem = @event.destinationsystem;
                                 mission.destinationstation = @event.destinationstation;
+                                exitLoop = true;
+                                break;
                             }
-                            break;
+                        }
+                        if (exitLoop) { break; }
                     }
                 }
                 AddMission(mission);
@@ -1087,22 +1102,24 @@ namespace EddiMissionMonitor
                 // Add destination systems for applicable mission types to the 'systems' list
                 foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
                 {
-                    string type = mission.typeEDName.ToLowerInvariant();
-                    switch (type)
+                    foreach (var type in mission.edTags)
                     {
-                        case "assassinate":
-                        case "courier":
-                        case "delivery":
-                        case "disable":
-                        case "hack":
-                        case "massacre":
-                        case "passengerbulk":
-                        case "passengervip":
-                        case "rescue":
-                        case "salvage":
-                        case "scan":
-                        case "sightseeing":
-                        case "smuggle":
+                        var exitLoop = false;
+                        switch (type)
+                        {
+                            case "assassinate":
+                            case "courier":
+                            case "delivery":
+                            case "disable":
+                            case "hack":
+                            case "massacre":
+                            case "passengerbulk":
+                            case "passengervip":
+                            case "rescue":
+                            case "salvage":
+                            case "scan":
+                            case "sightseeing":
+                            case "smuggle":
                             {
                                 if (!(mission.destinationsystems?.Any() ?? false))
                                 {
@@ -1121,8 +1138,11 @@ namespace EddiMissionMonitor
                                         }
                                     }
                                 }
+                                exitLoop = true;
+                                break;
                             }
-                            break;
+                        }
+                        if (exitLoop) { break; }
                     }
                 }
 
@@ -1450,22 +1470,24 @@ namespace EddiMissionMonitor
         {
             foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
             {
-                string type = mission.typeEDName.ToLowerInvariant();
-                switch (type)
+                foreach (var type in mission.edTags)
                 {
-                    case "assassinate":
-                    case "courier":
-                    case "delivery":
-                    case "disable":
-                    case "hack":
-                    case "massacre":
-                    case "passengerbulk":
-                    case "passengervip":
-                    case "rescue":
-                    case "salvage":
-                    case "scan":
-                    case "sightseeing":
-                    case "smuggle":
+                    var exitLoop = false;
+                    switch (type)
+                    {
+                        case "assassinate":
+                        case "courier":
+                        case "delivery":
+                        case "disable":
+                        case "hack":
+                        case "massacre":
+                        case "passengerbulk":
+                        case "passengervip":
+                        case "rescue":
+                        case "salvage":
+                        case "scan":
+                        case "sightseeing":
+                        case "smuggle":
                         {
                             // Check if the system is origin system for 'Active' and 'Claim' missions
                             if (mission.originsystem == system) { return true; }
@@ -1479,8 +1501,11 @@ namespace EddiMissionMonitor
                                 }
                                 else if (mission.destinationsystem == system) { return true; }
                             }
+                            exitLoop = true;
+                            break;
                         }
-                        break;
+                    }
+                    if (exitLoop) { break; }
                 }
             }
             return false;
@@ -1491,32 +1516,37 @@ namespace EddiMissionMonitor
             if (mission.originreturn && mission.originsystem == mission.destinationsystem
                 && mission.originstation == mission.destinationstation)
             {
-                string type = mission.typeEDName.ToLowerInvariant();
-                switch (type)
+                foreach (var type in mission.edTags)
                 {
-                    case "assassinate":
-                    case "assassinatewing":
-                    case "disable":
-                    case "disablewing":
-                    case "massacre":
-                    case "massacrethargoid":
-                    case "massacrewing":
-                    case "hack":
-                    case "longdistanceexpedition":
-                    case "passengervip":
-                    case "piracy":
-                    case "rescue":
-                    case "salvage":
-                    case "scan":
-                    case "sightseeing":
+                    var exitLoop = false;
+                    switch (type)
+                    {
+                        case "assassinate":
+                        case "assassinatewing":
+                        case "disable":
+                        case "disablewing":
+                        case "massacre":
+                        case "massacrethargoid":
+                        case "massacrewing":
+                        case "hack":
+                        case "longdistanceexpedition":
+                        case "passengervip":
+                        case "piracy":
+                        case "rescue":
+                        case "salvage":
+                        case "scan":
+                        case "sightseeing":
                         {
                             if (mission.statusEDName != "Claim")
                             {
                                 mission.statusDef = MissionStatus.FromEDName("Claim");
                                 return true;
                             }
+                            exitLoop = true;
+                            break;
                         }
-                        break;
+                    }
+                    if (exitLoop) { break; }
                 }
             }
             return false;

@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
 {
     public class Mission : INotifyPropertyChanged
     {
-        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},
             {"drawthegeneralout", "assassinate"},
@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
             {"wrongtarget", "assassinate"},
         };
 
-        private static List<string> ORGRETURN = new List<string>()
+        private static readonly List<string> ORGRETURN = new List<string>()
         {
             "altruism",
             "altruismcredits",
@@ -40,6 +40,7 @@ namespace EddiDataDefinitions
             "assassinatewing",
             "collect",
             "collectwing",
+            "deliverywing",
             "disable",
             "disablewing",
             "genericpermit1",
@@ -63,7 +64,18 @@ namespace EddiDataDefinitions
 
         // The name of the mission
         [Utilities.PublicAPI]
-        public string name { get; set; }
+        public string name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                SetTypes();
+            }
+        }
+
+        [JsonIgnore]
+        private string _name;
 
         // The localised name of the mission
         [JsonIgnore]
@@ -79,36 +91,26 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        
+
         // The type of mission
-        public string typeEDName
-        {
-            get => typeDef.edname;
-            set
-            {
-                MissionType tDef = MissionType.FromEDName(value);
-                this.typeDef = tDef;
-            }
-        }
 
         [JsonIgnore]
-        private MissionType _typeDef;
-        [JsonIgnore]
-        public MissionType typeDef
-        {
-            get => _typeDef;
-            set
-            {
-                _typeDef = value;
-                OnPropertyChanged("localizedType");
-            }
-        }
+        public List<MissionType> tagsList { get; set; }
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public List<string> invariantTags => tagsList.Select(t => t.invariantName ?? "Unknown").ToList();
 
         [JsonIgnore]
-        public string localizedType => typeDef?.localizedName ?? "Unknown";
+        public List<string> localizedTags => tagsList.Select(t => t.localizedName ?? "Unknown").ToList();
+
+        [JsonIgnore]
+        public string localizedTagsString => string.Join(", ", localizedTags);
+
+        [JsonIgnore]
+        public List<string> edTags => tagsList.Select(t => t.edname ?? "Unknown").ToList();
 
         [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
-        public string type => localizedType;
+        public List<string> tags => localizedTags;
 
         // Status of the mission
         public string statusEDName
@@ -149,8 +151,8 @@ namespace EddiDataDefinitions
         public string originstation { get; set; }
 
         // Mission returns to origin
-        [Utilities.PublicAPI]
-        public bool originreturn { get; set; }
+        [Utilities.PublicAPI] 
+        public bool originreturn => edTags.Any(t => ORGRETURN.Contains(t));
 
         [Utilities.PublicAPI]
         public string faction { get; set; }
@@ -184,6 +186,8 @@ namespace EddiDataDefinitions
 
         public bool chained => name.ToLowerInvariant().Contains("chained");
 
+        public bool onfoot => name.ToLowerInvariant().Contains("onfoot");
+
         [Utilities.PublicAPI]
         public bool communal { get; set; }
 
@@ -197,7 +201,7 @@ namespace EddiDataDefinitions
         public bool shared { get; set; }
 
         [Utilities.PublicAPI]
-        public bool wing { get; set; }
+        public bool wing => name.ToLowerInvariant().Contains("wing") || onfoot;
 
         [Utilities.PublicAPI]
         public long? reward { get; set; }
@@ -313,19 +317,6 @@ namespace EddiDataDefinitions
             this.shared = Shared;
             this.expiring = false;
             destinationsystems = new List<DestinationSystem>();
-
-            // Mechanism for identifying chained, 'welcome', and 'special' missions
-            string type = Name.Split('_').ElementAt(1)?.ToLowerInvariant();
-            if (type != null && CHAINED.TryGetValue(type, out string value))
-            {
-                type = value;
-            }
-            else if (type == "ds" || type == "rs" || type == "welcome")
-            {
-                type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
-            }
-            this.typeDef = MissionType.FromEDName(type);
-            this.originreturn = ORGRETURN.Contains(type);
         }
 
         public void UpdateTimeRemaining()
@@ -339,6 +330,76 @@ namespace EddiDataDefinitions
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
+        }
+
+        public void SetTypes()
+        {
+            if (string.IsNullOrEmpty(name)) { return; }
+
+            var tidiedName = name.ToLowerInvariant()
+                .Replace("assassinationillegal", "assassinate_illegal")
+                .Replace("conflict_civilwar", "conflictcivilwar")
+                .Replace("conflict_war", "conflictwar")
+                .Replace("massacreillegal", "massacre_illegal")
+                .Replace("onslaughtillegal", "onslaught_illegal")
+                .Replace("salvageillegal", "salvage_illegal")
+                ;
+
+            var elements = tidiedName.Split('_').ToList();
+
+            // Skip various obscure mission type elements that we don't need or that we're representing some other way
+            elements.RemoveAll(t =>
+                t == "mission" ||
+                t == "arriving" ||
+                t == "leaving" ||
+                t == "bs" ||
+                t == "ds" || 
+                t == "rs" ||
+                t == "mb"
+            );
+
+            // Skip faction state elements
+            elements.RemoveAll(t => FactionState
+                .AllOfThem
+                .Select(s => s.edname)
+                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+
+            // Skip government elements
+            elements.RemoveAll(t => Government
+                .AllOfThem
+                .Select(s => s.edname)
+                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+
+            // Skip economy elements
+            elements.RemoveAll(t => Economy
+                .AllOfThem
+                .Select(s => s.edname)
+                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+
+            // Skip passenger elements (we'll fill these using the `Passengers` event)
+            elements.RemoveAll(t => PassengerType
+                .AllOfThem
+                .Select(s => s.edname)
+                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+
+            // Skip numeric elements
+            elements.RemoveAll(t => int.TryParse(t, out _));
+
+            // Replace chained mission types with conventional equivalents
+            elements.ForEach(e =>
+            {
+                if (CHAINED.ContainsKey(e)) { e = CHAINED[e]; }
+            });
+
+            this.tagsList = new List<MissionType>();
+            foreach (var type in elements)
+            {
+                var typeDef = MissionType.FromEDName(type);
+                if (typeDef != null)
+                {
+                    this.tagsList.Add(typeDef);
+                }
+            }
         }
     }
 }
