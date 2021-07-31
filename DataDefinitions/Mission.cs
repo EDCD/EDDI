@@ -353,6 +353,7 @@ namespace EddiDataDefinitions
                 t == "mission" ||
                 t == "arriving" ||
                 t == "leaving" ||
+                t == "name" ||
                 t == "bs" ||
                 t == "ds" || 
                 t == "rs" ||
