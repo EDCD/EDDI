@@ -34,6 +34,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Entered supercruise` script updated to report any changes to pending fines, bounties, or claims.
       * `Fine incurred` script updated to reduce verbosity.
       * `Respawned` script added.
+      * `Mission abandoned` script revised to use mission tags.
+      * `Mission accepted` script revised to use mission tags.
+      * `Mission check station` script revised to use mission tags.
+      * `Mission check system` script revised to use mission tags.
+      * `Mission completed` script revised to use mission tags.
+      * `Mission expired` script revised to use mission tags.
+      * `Mission failed` script revised to use mission tags.
+      * `Mission redirected` script revised to use mission tags.
+      * `Mission warning` script revised to use mission tags.
+      * `Route details` script revised to use mission tags.
 
 ### 4.0.1-b1
   * Core
