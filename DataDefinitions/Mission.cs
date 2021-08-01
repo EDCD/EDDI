@@ -151,8 +151,9 @@ namespace EddiDataDefinitions
         public string originstation { get; set; }
 
         // Mission returns to origin
-        [Utilities.PublicAPI] 
-        public bool originreturn => edTags.Any(t => ORGRETURN.Contains(t));
+        [Utilities.PublicAPI]
+        public bool originreturn => edTags
+            .Any(t => ORGRETURN.Contains(t, StringComparer.InvariantCultureIgnoreCase));
 
         [Utilities.PublicAPI]
         public string faction { get; set; }

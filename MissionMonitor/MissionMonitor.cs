@@ -374,13 +374,13 @@ namespace EddiMissionMonitor
                         missionEntry.expiry = mission.expiry;
                         update = true;
                     }
-                }
 
-                // Add our destination for origin return missions
-                if (mission.originreturn && string.IsNullOrEmpty(mission.destinationsystem))
-                {
-                    mission.destinationsystem = mission.originsystem;
-                    mission.destinationstation = mission.originstation;
+                    // Add our destination for origin return missions
+                    if (mission.originreturn && string.IsNullOrEmpty(mission.destinationsystem))
+                    {
+                        mission.destinationsystem = mission.originsystem;
+                        mission.destinationstation = mission.originstation;
+                    }
                 }
 
                 // Add missions to mission log
