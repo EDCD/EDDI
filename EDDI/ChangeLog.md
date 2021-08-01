@@ -12,11 +12,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Improved handling of fines and bounties with various respawn scenarios. 
   * Mission Monitor
     * Fixed a bug that inverted community goal progression reports when moving between tiers.
+    * Replaced the mission `type` property with a list of mission `tags`.
+    * Updated missions list to provide the mission name and to provide additional row details by clicking an item on the list.
   * Ship monitor
     * Fixed a bug that would cause ship roles to not be remembered correctly in 4.0.1-b1.
   * Speech Responder
     * Events
       * `Respawned` event added.
+      * `Mission completed` event updated to record faction effects.
       * `Safe` event added.
       * `Ship repurchased` event removed (folded into the new `Respawned` event).
     * Functions
