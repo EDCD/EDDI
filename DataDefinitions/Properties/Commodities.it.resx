@@ -1769,5 +1769,8 @@
     <value>Alianti a bassa gravità Uzumokuensi</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
-  
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Distillato Gamma di Testa di Cipolla</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
 </root>
