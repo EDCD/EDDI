@@ -1783,7 +1783,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
       "default": true,
       "name": "Respawned",
       "description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
