@@ -104,7 +104,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<string> localizedTags => tagsList.Select(t => t.localizedName ?? "Unknown").ToList();
 
-        [JsonIgnore]
+        [JsonIgnore, UsedImplicitly]
         public string localizedTagsString => string.Join(", ", localizedTags);
 
         [JsonIgnore]
@@ -113,7 +113,7 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI, JsonIgnore]
         public List<string> tags => localizedTags;
 
-        [Utilities.PublicAPI, JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
+        [Utilities.PublicAPI("Obsolete: `type` has been deprecated in favor of tags"), JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
         public string type => localizedTags[0];
 
         // Status of the mission

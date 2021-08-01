@@ -5,14 +5,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 4.0.1-b2
   * Core
     * Unlocked *most* previously unavailable Windows voices.
-    * Added support for user lexicons (to learn more, search the wiki for "lexicons").
+    * Added support for custom user lexicons (to learn more, search the wiki for "lexicons").
     * Fixed a bug that might in some instances make EDDI slow to respond to events.
   * Crime Monitor
     * Fines are now converted to bounties when a bounty is incurred.
-    * Improved handling of fines and bounties with various respawn scenarios. 
+    * Improved handling of fines and bounties, particularly with various respawn scenarios. 
   * Mission Monitor
     * Fixed a bug that inverted community goal progression reports when moving between tiers.
-    * Replaced the mission `type` property with a list of mission `tags`.
+    * Replaced the mission `type` property with a list of mission `tags`. 
     * Updated missions list to provide the mission name and to provide additional row details by clicking an item on the list.
   * Ship monitor
     * Fixed a bug that would cause ship roles to not be remembered correctly in 4.0.1-b1.
