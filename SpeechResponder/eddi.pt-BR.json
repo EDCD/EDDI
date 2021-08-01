@@ -31,7 +31,7 @@
 		"Backpack": {
 			"enabled": true,
 			"priority": 3,
-			"responder": false,
+			"responder": true,
 			"script": null,
 			"default": true,
 			"name": "Backpack",
@@ -40,7 +40,7 @@
 		"Backpack changed": {
 			"enabled": true,
 			"priority": 3,
-			"responder": false,
+			"responder": true,
 			"script": null,
 			"default": true,
 			"name": "Backpack changed",
@@ -768,7 +768,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+			"script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
 			"name": "Embark",
 			"description": "Triggered when you transition from on foot to a ship or SRV"
 		},
@@ -1960,6 +1960,15 @@
 			"description": "Report the estimated value of the last body scanned",
 			"default": true
 		},
+		"Respawned": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+			"default": true,
+			"name": "Respawned",
+			"description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
+		},
 		"Ring hotspots detected": {
 			"enabled": true,
 			"priority": 3,
@@ -1986,6 +1995,15 @@
 			"name": "Route details",
 			"description": "Triggered when a route has been generated or updated",
 			"default": true
+		},
+		"Safe": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Safe",
+			"description": "Triggered when you are no longer in danger"
 		},
 		"Screenshot": {
 			"enabled": true,
@@ -2165,15 +2183,6 @@
 			"script": "\r\n{if event.item = \"Wear\" || event.item = \"Ship Integrity\":\r\n   {OneOf(\"General\",\"Normal\")} {Occasionally(2,\"ship\")} {OneOf(\"maintenance {OneOf('Completed','Performed')}\",\"wear Repaired\")}\r\n|elif event.item = \"Hull\":\r\n   {Occasionally(2,\"{OneOf('Blindagem do ','Revestimento do')}\")} Casco: {OneOf(\"reparado\",\"consertado\")}\r\n|elif event.item = \"Paint\":\r\n   {OneOf(\"Pintura {OneOf('reaplicada','renovada')}\",\"Trabalho de pintura {OneOf('reaplicado','renovado')}\")} \r\n|elif event.item = \"$modularcargobaydoor_name\":\r\n   {OneOf(\"Sistema\",\"Componente\",\"Módulo\")} da\r\n   {OneOf(\"Escotilha\",\"Porta\")} {Occasionally(\"do compartimento\")} de Carga: {OneOf(\"reparado\",\"consertado\")}\r\n|elif event.item = null || event.item = \"All\":\r\n   {OneOf(\"danos reparados na\",\"reparos finalizados na\")} {Occasionally(2,ShipName())}\r\n|else:\r\n   {if find(event.item, \"Cockpit\") > -1:\r\n      {OneOf(\"Cabine\",\"Canópla\")}: {OneOf(\"reparada\",\"consertada\")}\r\n   |else:\r\n      {event.item}\r\n      {OneOf(\"Sistema\",\"Componente\",\"Módulo\")}: {OneOf(\"reparado\",\"consertado\")}\r\n   }\r\n}.\r\n",
 			"name": "Ship repaired",
 			"description": "Triggered when you repair your ship",
-			"default": true
-		},
-		"Ship repurchased": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": null,
-			"name": "Ship repurchased",
-			"description": "Triggered when you repurchase your ship",
 			"default": true
 		},
 		"Ship restocked": {

@@ -769,7 +769,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },
@@ -1772,6 +1772,15 @@
       "name": "Report last scan value",
       "description": "Report the estimated value of the last body scanned"
     },
+    "Respawned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "default": true,
+      "name": "Respawned",
+      "description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
+    },
     "Ring hotspots detected": {
       "enabled": true,
       "priority": 3,
@@ -1789,6 +1798,15 @@
       "default": true,
       "name": "Ring mapped",
       "description": "Triggered after mapping a ring with the Surface Area Analysis scanner"
+    },
+    "Safe": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Safe",
+      "description": "Triggered when you are no longer in danger"
     },
     "Screenshot": {
       "enabled": true,
@@ -1960,15 +1978,6 @@
       "default": true,
       "name": "Ship repaired",
       "description": "Triggered when you repair your ship"
-    },
-    "Ship repurchased": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Ship repurchased",
-      "description": "Triggered when you repurchase your ship"
     },
     "Ship restocked": {
       "enabled": true,

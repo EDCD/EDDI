@@ -683,7 +683,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },
@@ -1762,6 +1762,15 @@
       "name": "Report last scan value 2",
       "description": "Copia del evento con el mismo nombre sin mínimo."
     },
+    "Respawned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "default": true,
+      "name": "Respawned",
+      "description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
+    },
     "Ring mapped": {
       "enabled": true,
       "priority": 3,
@@ -1777,6 +1786,15 @@
       "script": "{_ Route details }\r\n{_ Triggered when a route has been generated or updated }\r\n\r\n\r\n{if event.routetype = \"expiring\":\r\n     {if event.distance > 0:\r\n         {set mission to MissionDetails(event.missionids[0])}\r\n\r\n         {if find(mission.typeEDName, \"Passenger\") > -1:\r\n             {set type to \"Transporte \"}\r\n             {set type to cat(type, mission.passengertype)}\r\n         |else:\r\n             {set type to mission.type}\r\n         }\r\n         {set type to cat(type, \" misión\")}\r\n\r\n         {type} {if mission.faction: para {mission.faction}}\r\n         {if mission.destinationsystem: en la\r\n             {if mission.destinationsystem = system.name:\r\n                 actual\r\n             |else:\r\n                 {mission.destinationsystem}\r\n             } sistema\r\n         } is cerca de expirar.\r\n     |else:\r\n         No tiene misiones activas.\r\n     }\r\n|elif event.routetype = \"facilitator\":\r\n    {if event.distance > 0:\r\n        Nuestro contacto de Interestélar fáctor más cercano está en\r\n        la estación {destinationstation.name}, en el sistema\r\n        {if event.system = system.name:\r\n            este sistema\r\n        |else:\r\n            sistema {event.system}, a {round(event.distance, 1)} años luz de aquí\r\n        }.\r\n     |else:\r\n         No se encuenta ningún contacto de Interestélar fáctor en el rango del sensor.\r\n     }\r\n|elif event.routetype = \"farthest\":\r\n     {if event.distance > 0:\r\n         Su {if missionsCount = 1: único |else: más lejano}\r\n         objetivo está en el sistema\r\n         {if event.system = system.name:\r\n             este sistema\r\n         |else:\r\n             sistema {event.system}, a {round(event.distance, 1)} años luz de aquí\r\n         }.\r\n     |else:\r\n         No se ha encontrado ninguna misión con un sistema destino designado.\r\n     }\r\n|elif event.routetype = \"most\":\r\n     {if missionsCount = 1:\r\n         Su único objeto está {Occasionally(2,\"localizado\")} en\r\n         {if missions[0].destinationsystem = \"\":\r\n             un sistema {Occasionally(2,\"estelar\")} desconocido\r\n         |elif missions[0].destinationsystem = system.name:\r\n             el actual sistema {Occasionally(2,\"estelar\")}\r\n         |else:\r\n             el sistema {Occasionally(2,\"estelar\")} {missions[0].destinationsystem}\r\n         }\r\n         .\r\n     |else:\r\n         {set systems to split(event.systems, \"_\")}\r\n         {set system_most to event.system}\r\n         {set systems_count to len(systems)}\r\n\r\n         {if systems_count = 1:\r\n             {if system_most = system.name:\r\n                 {set system_most to \"El sistema actual\"}\r\n             |else:\r\n                 {set system_most to cat(\"el sistema \", system_most)}\r\n             }\r\n             {OneOf(\"La mayoría de sus misiones están {Occasionally(2,'localizadas')} en {system_most}\",\r\n                 \"{system_most} tiene {OneOf('la mayoría','la mayoría de sus')} misiones\",\r\n                 \"{system_most} la mayoría de misiones pendientes de completar\")}.\r\n         |elif systems_count > 1:\r\n             Tienes {event.count} objetivo{if event.count > 1:s, cada uno} en {if event.count > 1:los sistemas|else:el sistema}\r\n\r\n             {set cur to 0}\r\n             {while cur < len(equal):\r\n                 {systems[cur]}\r\n                 {set cur to cur + 1}\r\n                 {if cur = systems_count-1: y |elif cur < systems_count: ,}\r\n             }.\r\n         }\r\n     }\r\n|elif event.routetype = \"nearest\":\r\n     {if event.distance > 0:\r\n         Su {if missionsCount = 1: único objetivo |else: objetivo más cercano}\r\n         está en el\r\n         {if event.system = system.name:\r\n             sistema actual\r\n         |else:\r\n             sistema {event.system}, a {round(event.distance, 1)} años luz de aquí\r\n         }.\r\n     |else:\r\n         No se ha encontrado ninguna misión con un sistema destino designado.\r\n     }\r\n|elif event.routetype = \"route\":\r\n     {if event.routedistance > 0:\r\n         Ruta de misiones calculada para {event.count} sistemas.\r\n         La distancia total de la ruta es de {round(event.routedistance, 1)} años luz.\r\n         El primer objeto está en el sistema {event.system}, a {round(event.distance, 1)} de aquí.\r\n     |else:\r\n         No consigo calcular la ruta para las misiones actuales.\r\n     }\r\n|elif event.routetype = \"source\":\r\n     {if event.count > 0:\r\n         {set systems to split(event.route, \"_\")}\r\n\r\n         {set pos to 0}\r\n         {while pos < event.count:\r\n\r\n             {set source_cargo to []}\r\n             {for missionid in event.missionids:\r\n                 {set haulage to HaulageDetails(missionid)}\r\n                 {if haulage.sourcesystem = systems[pos]:\r\n                     {set cargo to CargoDetails(missionid)}\r\n                     {if find(source_cargo, cargo.name) = -1:\r\n                         {set source_cargo to cat(source_cargo, [cargo.name])}\r\n                     }\r\n                 }\r\n             }\r\n\r\n             {if pos = 0:\r\n                 El origen de su {if event.count = 1: única misión de carga |else: misión de carga más cercana}\r\n             |elif pos = 1:\r\n                 además, El origen de su misión de carga\r\n             |elif pos = event.count - 1:\r\n                 finalmente, El origen de su misión de carga\r\n             |else:\r\n                 Su misión de carga\r\n             }\r\n\r\n             para\r\n             {set cur to 0}\r\n             {while cur < len(source_cargo):\r\n                 {source_cargo[cur]}\r\n                 {set cur to cur + 1}\r\n                 {if cur = len(source_cargo) - 1: y |elif cur < len(source_cargo): ,}\r\n             }\r\n\r\n             está en el sistema \r\n             {if systems[pos] = system.name:\r\n                 actual\r\n             |else:\r\n                 {systems[pos]},\r\n                 {set distance to Distance(system.name, systems[pos])}\r\n                 a {round(distance, 1)} años luz de aquí\r\n             }.\r\n             {set pos to pos + 1}\r\n         }\r\n         {SetState('eddi_context_cargo_source', event.route)}\r\n     |else:\r\n         No se ha encontrado ningún origen de carga con un sistema de destino designado\r\n     }\r\n|elif event.routetype = \"update\":\r\n     {if event.system && event.system != \"\":\r\n         El destino de la siguiente misión es el sistema {event.system}, a {round(event.distance, 1)} años luz de aquí.\r\n     }\r\n}\r\n\r\n",
       "name": "Route details",
       "description": "Triggered when a route has been generated or updated"
+    },
+    "Safe": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Safe",
+      "description": "Triggered when you are no longer in danger"
     },
     "Screenshot": {
       "enabled": true,
@@ -1938,14 +1956,6 @@
       "script": "{ShipName()} reparada.",
       "name": "Ship repaired",
       "description": "Se activa cuando se repara su nave"
-    },
-    "Ship repurchased": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "name": "Ship repurchased",
-      "description": "Se activa cuando se recompra su nave"
     },
     "Ship restocked": {
       "enabled": true,
