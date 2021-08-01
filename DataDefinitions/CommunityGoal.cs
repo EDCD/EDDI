@@ -65,7 +65,7 @@ namespace EddiDataDefinitions
         public string Tier { get; set; }
 
         [JsonIgnore] // The name may be in the format "Tier 8" with "Tier" being localized.
-        public int tier => Tier == null ? 0 : int.Parse(Tier.Replace("Tier ", ""));
+        public int tier => Tier == null ? 0 : int.Parse(Tier.Last().ToString());
 
         [JsonProperty("Bonus")]
         public long? tierreward { get; set; }
