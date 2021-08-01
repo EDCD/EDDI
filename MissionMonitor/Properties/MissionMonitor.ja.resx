@@ -150,7 +150,9 @@
   <data name="header_status" xml:space="preserve">
     <value>状態</value>
   </data>
-  
+  <data name="header_tags" xml:space="preserve">
+    <value>タグ:</value>
+  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>ミッションの情報を表示します。</value>
   </data>
@@ -184,11 +186,25 @@
   <data name="update_route_button_text" xml:space="preserve">
     <value>ルートを更新:</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="header_originsystem" xml:space="preserve">
+    <value>出発星系:</value>
+  </data>
+  <data name="header_originstation" xml:space="preserve">
+    <value>出発ステーション:</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>ファクション:</value>
+  </data>
+  <data name="header_cg_tier" xml:space="preserve">
+    <value>階級:</value>
+  </data>
+  <data name="header_cg_percentileband" xml:space="preserve">
+    <value>パーセンタイルバンド:</value>
+  </data>
+  <data name="header_cg_reward" xml:space="preserve">
+    <value>報酬(クレジット):</value>
+  </data>
 </root>
