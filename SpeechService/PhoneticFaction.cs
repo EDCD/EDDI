@@ -56,10 +56,6 @@ namespace EddiSpeechService
                 {
                     pieces[i] = sayAsLettersOrNumbers(pieces[i], !THREE_OR_MORE_DIGITS.IsMatch(pieces[i]), useICAO);
                 }
-                else if (UPPERCASE.IsMatch(pieces[i]))
-                {
-                    pieces[i] = sayAsLettersOrNumbers(pieces[i], false, useICAO);
-                }
             }
             return string.Join(" ", pieces);
         }
