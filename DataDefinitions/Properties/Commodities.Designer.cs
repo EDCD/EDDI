@@ -2338,6 +2338,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Onionhead Gamma Strain.
+        /// </summary>
+        public static string OnionHeadC {
+            get {
+                return ResourceManager.GetString("OnionHeadC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Onionhead Derivatives.
         /// </summary>
         public static string OnionheadDerivatives {

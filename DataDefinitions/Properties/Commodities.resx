@@ -1769,4 +1769,8 @@
     <value>Uzumoku Low-G Wings</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Onionhead Gamma Strain</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
 </root>
