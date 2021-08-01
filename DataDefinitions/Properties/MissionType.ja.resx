@@ -139,9 +139,6 @@
   
   
   
-  <data name="None" xml:space="preserve">
-    <value>不明</value>
-  </data>
   
   
   
@@ -162,6 +159,7 @@
   </data>
   <data name="Chain" xml:space="preserve">
     <value>連鎖</value>
+    <comment>Sequential chained (joined) mission</comment>
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>ようこそ</value>
