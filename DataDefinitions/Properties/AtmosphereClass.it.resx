@@ -186,7 +186,7 @@
     <comment>Atmosphere class "Silicate vapour"</comment>
   </data>
   <data name="SuitableForWaterBasedLife" xml:space="preserve">
-    <value>Adatta a forme di vita acquatiche</value>
+    <value>Adatta a forme di vita a base di acqua</value>
     <comment>Atmosphere class "Suitable for water-based life"</comment>
   </data>
   <data name="SulphurDioxide" xml:space="preserve">
@@ -202,7 +202,7 @@
     <comment>Atmosphere class "Water-rich"</comment>
   </data>
   <data name="EarthLike" xml:space="preserve">
-    <value>Adatta a forme di vita acquatiche</value>
+    <value>Adatta a forme di vita a base di acqua</value>
     <comment>Atmosphere class "EarthLike"</comment>
   </data>
   <data name="GasGiant" xml:space="preserve">
