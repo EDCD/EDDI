@@ -482,7 +482,7 @@
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
   <data name="luytens" xml:space="preserve">
-    <value>ˈlaʊ.təns</value>
+    <value>ˈɫuj.tɐ̃jʃ</value>
     <comment>Optional phonetic pronunciation for luytens</comment>
   </data>
   <data name="Lyncis" xml:space="preserve">
@@ -784,5 +784,49 @@
   <data name="zhangfei_zhang" xml:space="preserve">
     <value>ʈʂáŋ</value>
     <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
+  </data>
+  <data name="Conn" xml:space="preserve">
+    <value>kˈõn</value>
+    <comment>Optional phonetic pronunciation for Conn</comment>
+  </data>
+  <data name="Sterope" xml:space="preserve">
+    <value>ʃteɾˈɔpi</value>
+    <comment>Optional phonetic pronunciation for Sterope</comment>
+  </data>
+  <data name="Draconis" xml:space="preserve">
+    <value>dɾakˈoniʃ</value>
+    <comment>Optional phonetic pronunciation for Draconis</comment>
+  </data>
+  <data name="Orbital" xml:space="preserve">
+    <value>oɾ.bi.ˈtaɫ</value>
+    <comment>Optional phonetic pronunciation for Orbital</comment>
+  </data>
+  <data name="Slough" xml:space="preserve">
+    <value>ˈsɫog</value>
+    <comment>Optional phonetic pronunciation for Slough</comment>
+  </data>
+  <data name="Aachen" xml:space="preserve">
+    <value>ɐt.ˈʃen</value>
+    <comment>Optional pronunciation for Aachen</comment>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>ˈta.un</value>
+    <comment>Optional pronunciation for Town</comment>
+  </data>
+  <data name="Lalande" xml:space="preserve">
+    <value>ɫɐ.ˈɫɐ̃.dɨ</value>
+    <comment>Optional phonetic pronunciation for the Lalande star catalog</comment>
+  </data>
+  <data name="Luyten" xml:space="preserve">
+    <value>ˈɫuj.tɨn</value>
+    <comment>Optional phonetic pronunciation for the Luyten star catalog</comment>
+  </data>
+  <data name="Gliese" xml:space="preserve">
+    <value>gɫi.ˈɛ.zɨ</value>
+    <comment>Optional phonetic pronunciation for the Gliese star catalog</comment>
+  </data>
+  <data name="Carinae" xml:space="preserve">
+    <value>kɐ.ˈɾi.nɨ</value>
+    <comment>Otional phonetic translation for Carinae</comment>
   </data>
 </root>

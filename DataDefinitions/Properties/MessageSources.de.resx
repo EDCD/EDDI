@@ -99,130 +99,100 @@
   </resheader>
   <data name="SquadronMate" xml:space="preserve">
     <value>Geschwaderkamerad</value>
-    
   </data>
   <data name="WingMate" xml:space="preserve">
     <value>Wing-Kamerad</value>
-    
   </data>
   <data name="CrewMate" xml:space="preserve">
     <value>Besatzungsmitglied</value>
-    
   </data>
   <data name="Commander" xml:space="preserve">
     <value>Kommandant</value>
-    
   </data>
   <data name="AmbushedPilot" xml:space="preserve">
     <value>Überfallener Pilot</value>
-    
   </data>
   <data name="BountyHunter" xml:space="preserve">
     <value>Kopfgeldjäger</value>
-    
   </data>
   <data name="CapShip" xml:space="preserve">
     <value>Großkampfschiff</value>
-    
   </data>
   <data name="CargoHunter" xml:space="preserve">
     <value>Frachtjäger</value>
-    
   </data>
   <data name="ConvoyExplorers" xml:space="preserve">
     <value>Erkundungskonvoi</value>
-    
   </data>
   <data name="ConvoyWedding" xml:space="preserve">
     <value>Hochzeitskonvoi</value>
-    
   </data>
   <data name="CruiseLiner" xml:space="preserve">
     <value>Kreuzfahrtschiff</value>
-    
   </data>
   <data name="Escort" xml:space="preserve">
     <value>Begleitschutz</value>
-    
   </data>
   <data name="Hitman" xml:space="preserve">
     <value>Killer</value>
-    
   </data>
   <data name="Messenger" xml:space="preserve">
     <value>Nachrichtensystem</value>
-    
   </data>
   <data name="Military" xml:space="preserve">
     <value>Militär</value>
-    
   </data>
   <data name="Miner" xml:space="preserve">
     <value>Bergarbeiter</value>
-    
   </data>
   <data name="PassengerHunter" xml:space="preserve">
     <value>Passagierjäger</value>
-    
   </data>
   <data name="PassengerLiner" xml:space="preserve">
     <value>Passagierschiiff</value>
-    
   </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirat</value>
-    
   </data>
   <data name="Police" xml:space="preserve">
     <value>Polizei</value>
-    
   </data>
   <data name="PowersAssassin" xml:space="preserve">
     <value>Agent der rivalisierenden Macht</value>
-    
   </data>
   <data name="PowersPirate" xml:space="preserve">
     <value>Agent der rivalisierenden Macht</value>
-    
   </data>
   <data name="PowersSecurity" xml:space="preserve">
     <value>Agent der rivalisierenden Macht</value>
-    
   </data>
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandist</value>
-    
   </data>
   <data name="Protester" xml:space="preserve">
     <value>Demonstrant</value>
-    
   </data>
   <data name="Refugee" xml:space="preserve">
     <value>Flüchtling</value>
-    
   </data>
   <data name="StarshipOne" xml:space="preserve">
     <value>Starship One</value>
-    
+    <comment>StarshipOne
+The Federation presidential flagship, like "Airforce One" in real life.</comment>
   </data>
   <data name="SearchandRescue" xml:space="preserve">
     <value>Suche und Rettung</value>
-    
   </data>
   <data name="NPC" xml:space="preserve">
     <value>NPC</value>
-    
   </data>
   <data name="Station" xml:space="preserve">
     <value>Station</value>
-    
   </data>
   <data name="CivilianPilot" xml:space="preserve">
     <value>ziviler Pilot</value>
-    
   </data>
   <data name="ConflictZone" xml:space="preserve">
     <value>Konfliktzone</value>
-    
   </data>
 </root>
