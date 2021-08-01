@@ -110,8 +110,11 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<string> edTags => tagsList.Select(t => t.edname ?? "Unknown").ToList();
 
-        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore]
         public List<string> tags => localizedTags;
+
+        [Utilities.PublicAPI, JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
+        public string type => localizedTags[0];
 
         // Status of the mission
         public string statusEDName
