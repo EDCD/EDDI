@@ -88,6 +88,7 @@ namespace EddiDataDefinitions
             set
             {
                 _localisedname = value;
+                GetDestinationStation();
                 OnPropertyChanged();
             }
         }
@@ -333,7 +334,7 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }
 
-        public void SetTypes()
+        private void SetTypes()
         {
             if (string.IsNullOrEmpty(name)) { return; }
 
@@ -402,6 +403,59 @@ namespace EddiDataDefinitions
                 {
                     this.tagsList.Add(typeDef);
                 }
+            }
+        }
+        private void GetDestinationStation()
+        {
+            if (string.IsNullOrEmpty(localisedname) || !string.IsNullOrEmpty(destinationstation)) { return; }
+
+            var settlementNamePrefixes = new List<Tuple<string, string>>
+            {
+                Tuple.Create("Acquire a sample from ", ""),
+                Tuple.Create("Digital Infiltration: Breach the ", " network"),
+                Tuple.Create("Exterminate scavengers at ", ""),
+                Tuple.Create("Heist: Acquire a sample from ", ""),
+                Tuple.Create("Heist: Take a sample from ", ""),
+                Tuple.Create("Reactivation: Find a regulator for ", ""),
+                Tuple.Create("Reactivation: Turn on power at ", ""),
+                Tuple.Create("Restore: Find a regulator and prepare ", ""),
+                Tuple.Create("Restore: Prepare ", " for operation"),
+                Tuple.Create("Sabotage: Disrupt production at ", ""),
+                Tuple.Create("Sabotage: Halt production at ", ""),
+                Tuple.Create("Settlement Raid: Exterminate scavengers at ", ""),
+                Tuple.Create("Shutdown: Disable power at ", ""),
+                Tuple.Create("Shutdown: Switch off power at ", "")
+            };
+
+            var tidiedLocalizedName = localisedname
+                .Replace("Covert ", "")
+                .Replace("Nonviolent ", "")
+            ;
+            string settlementName = null;
+
+            foreach (var prefixSuffix in settlementNamePrefixes)
+            {
+                if (tidiedLocalizedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase) 
+                    && tidiedLocalizedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (prefixSuffix.Item1.Length > 0)
+                    {
+                        tidiedLocalizedName = tidiedLocalizedName
+                            .Replace(prefixSuffix.Item1, "");
+                    }
+                    if (prefixSuffix.Item2.Length > 0)
+                    {
+                        tidiedLocalizedName = tidiedLocalizedName
+                            .Replace(prefixSuffix.Item2, "");
+                    }
+                    settlementName = tidiedLocalizedName;
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(settlementName))
+            {
+                destinationstation = settlementName;
             }
         }
     }

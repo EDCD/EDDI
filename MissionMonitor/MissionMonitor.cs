@@ -37,6 +37,7 @@ namespace EddiMissionMonitor
         public string missionsRouteList;
         public decimal missionsRouteDistance;
 
+        private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
 
         private static readonly object missionsLock = new object();
@@ -67,7 +68,8 @@ namespace EddiMissionMonitor
 
         public MissionMonitor(IEdsmService edsmService)
         {
-            dataProviderService = new DataProviderService(edsmService ?? new StarMapService());
+            this.edsmService = edsmService ?? new StarMapService();
+            dataProviderService = new DataProviderService(edsmService);
             missions = new ObservableCollection<Mission>();
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
