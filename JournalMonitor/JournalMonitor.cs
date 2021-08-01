@@ -2930,7 +2930,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Reward", out object val);
                                     long reward = (val == null ? 0 : (long)val);
 
-                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3183,7 +3183,47 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, microResource, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, microResourceRewards, donation) { raw = line, fromLoad = fromLogLoad });
+                                    var missionFactionEffects = new List<MissionFactionEffect>();
+                                    data.TryGetValue("FactionEffects", out val);
+                                    var missionFactionEffectsData = (List<object>)val;
+                                    if (missionFactionEffectsData != null)
+                                    {
+                                        foreach (Dictionary<string, object> missionFactionEffectData in missionFactionEffectsData)
+                                        {
+                                            var effectFaction = JsonParsing.getString(missionFactionEffectData, "Faction");
+                                            var reputationPlusses = JsonParsing.getString(missionFactionEffectData, "Reputation");
+
+                                            var effects = new List<MissionEffect>();
+                                            missionFactionEffectData.TryGetValue("Effects", out val);
+                                            var effectsData = (List<object>)val;
+                                            if (effectsData != null)
+                                            {
+                                                foreach (Dictionary<string, object> effectData in effectsData)
+                                                {
+                                                    var edEffect = JsonParsing.getString(effectData, "Effect");
+                                                    var localizedEffect = JsonParsing.getString(effectData, "Effect_Localised");
+                                                    effects.Add(new MissionEffect(edEffect, localizedEffect));
+                                                }
+                                            }
+
+                                            var influences = new List<MissionInfluence>();
+                                            missionFactionEffectData.TryGetValue("Influence", out val);
+                                            var influencesData = (List<object>)val;
+                                            if (influencesData != null)
+                                            {
+                                                foreach (Dictionary<string, object> influenceData in influencesData)
+                                                {
+                                                    var influencedSystemAddress = JsonParsing.getOptionalLong(influenceData, "SystemAddress");
+                                                    var influencePlusses = JsonParsing.getString(influenceData, "Influence");
+                                                    influences.Add(new MissionInfluence(influencedSystemAddress, influencePlusses));
+                                                }
+                                            }
+                                            
+                                            missionFactionEffects.Add(new MissionFactionEffect(effectFaction, effects, influences, reputationPlusses));
+                                        }
+                                    }
+
+                                    events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, microResource, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, microResourceRewards, missionFactionEffects, donation) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

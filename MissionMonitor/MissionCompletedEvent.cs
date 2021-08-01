@@ -11,7 +11,7 @@ namespace EddiMissionMonitor
     {
         public const string NAME = "Mission completed";
         public const string DESCRIPTION = "Triggered when you complete a mission";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-12-02T13:04:35Z"", ""event"":""MissionCompleted"", ""Faction"":""Values Party of Syntec"", ""Name"":""Mission_Courier_Boom_name"", ""MissionID"":55868124, ""DestinationSystem"":""Syntec"", ""DestinationStation"":""Leavitt City"", ""Reward"":20020, ""CommodityReward"":[ { ""Name"": ""ModularTerminals"", ""Count"": 4 } ] }";
+        public const string SAMPLE = @"{ ""timestamp"":""2021-07-24T06:54:44Z"", ""event"":""MissionCompleted"", ""Faction"":""69 G. Carinae Solutions"", ""Name"":""Mission_OnFoot_Onslaught_Offline_MB_name"", ""MissionID"":794589235, ""TargetFaction"":""Amaterasu Silver Brothers"", ""Reward"":269600, ""MaterialsReward"":[ { ""Name"":""SuitSchematic"", ""Name_Localised"":""Suit Schematic"", ""Category"":""$MICRORESOURCE_CATEGORY_Item;"", ""Category_Localised"":""Item"", ""Count"":2 } ], ""FactionEffects"":[ { ""Faction"":""69 G. Carinae Solutions"", ""Effects"":[  ], ""Influence"":[ { ""SystemAddress"":1865920022891, ""Trend"":""UpGood"", ""Influence"":""++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
 
         [PublicAPI("The ID of the mission")]
         public long? missionid { get; }
@@ -73,13 +73,16 @@ namespace EddiMissionMonitor
         [PublicAPI("The amount of the micro-resource (on foot item) reward (if applicable)")]
         public int rewardMicroResourceAmount { get; }
 
+        [PublicAPI("The faction effects from completing the mission, as a list")]
+        public List<MissionFactionEffect> factionEffects { get; }
+
         // Not intended to be user facing
 
         public CommodityDefinition commodityDefinition { get; }
 
         public MicroResource microResource { get; }
 
-        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, MicroResource microResource, CommodityDefinition commodity, int? amount, bool communal, long reward, List<string> permitsawarded = null, List<CommodityAmount> commodityrewards = null, List<MaterialAmount> materialsrewards = null, List<MicroResourceAmount> microResourceRewards = null, long donation = 0) : base(timestamp, NAME)
+        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, MicroResource microResource, CommodityDefinition commodity, int? amount, bool communal, long reward, List<string> permitsawarded = null, List<CommodityAmount> commodityrewards = null, List<MaterialAmount> materialsrewards = null, List<MicroResourceAmount> microResourceRewards = null, List<MissionFactionEffect> factionEffects = null, long donation = 0) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
@@ -93,6 +96,7 @@ namespace EddiMissionMonitor
             this.commodityrewards = commodityrewards;
             this.materialsrewards = materialsrewards;
             this.microresourcerewards = microResourceRewards;
+            this.factionEffects = factionEffects;
             this.donation = donation;
             if (permitsawarded?.Count > 0)
             {

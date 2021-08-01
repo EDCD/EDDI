@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MissionFactionEffect.cs" />
     <Compile Include="ExobiologistRating.cs" />
     <Compile Include="MicroResourceInfo.cs" />
     <Compile Include="MercenaryRating.cs" />
