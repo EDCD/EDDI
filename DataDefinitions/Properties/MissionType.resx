@@ -177,9 +177,6 @@
   <data name="MiningWing" xml:space="preserve">
     <value>Wing Mining</value>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
   <data name="PassengerBulk" xml:space="preserve">
     <value>Transport</value>
   </data>
@@ -218,6 +215,7 @@
   </data>
   <data name="Chain" xml:space="preserve">
     <value>Chain</value>
+    <comment>Sequential chained (joined) mission</comment>
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>Welcome</value>

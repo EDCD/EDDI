@@ -37,7 +37,6 @@
             _ = new MissionType("MassacreWing");
             _ = new MissionType("Mining");
             _ = new MissionType("MiningWing");
-            _ = new MissionType("None");
             _ = new MissionType("OnFoot");
             _ = new MissionType("Onslaught");
             _ = new MissionType("PassengerBulk");
