@@ -382,6 +382,7 @@ namespace EddiInaraResponder
                 { "starsystemBodyName", string.IsNullOrEmpty(@event.bodyname) ? EDDI.Instance.CurrentStellarBody.bodyname : @event.bodyname },
                 { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
             };
+            if (string.IsNullOrEmpty(eventData["starsystemName"]?.ToString())) { return; }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
         }
 
