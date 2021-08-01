@@ -317,59 +317,206 @@
     <value>星系警察や戦闘船のスキャン、又はミッション報酬として得られる。特にBoom状態の星系においてより顕著である。</value>
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>地上基地のデータリンクのスキャンで得られる。</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>星系警察をスキャン、又はミッション報酬で得られる。</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>地上基地のデータリンクのスキャン、又はミッション報酬で得られる。</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>船が残すFSDの航跡をスキャンして得られる。</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>地上基地のデータリンクのスキャン、又はミッション報酬で得られる。</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>ガーディアンとして知られるエイリアンの遺跡から得られる。</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>ガーディアンとして知られるエイリアンの遺跡から得られる。</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>サーゴイドとして知られるエイリアンの地上施設で得られる。</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>サーゴイド船が残す航跡をスキャンして得られる。</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>戦闘船のスキャン、深宇宙にあるデータビーコンのスキャン、Encodedシグナルソース、またミッションの報酬として得られる。</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>インストレーションや人の住む地球型惑星付近にある人工衛星のスキャン、又はミッション、特に地上でのスキャンミッションの報酬として得られる。</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>地上基地のデータリンクのスキャン、軍用船や星系警察のスキャン、またミッション報酬として得られる。特にBoom状態の星系で顕著である。</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>船が残すFSDの航跡をスキャン、エンコーデッドデータビーコンをスキャンする、又はミッションの報酬として得られる。</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>地上基地のデータリンクのスキャン、又はミッション報酬で得られる。</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>船のスキャン、又はミッション報酬で得られる。</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>輸送船の残骸から得られる。</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>輸送船の残骸から得られる。</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>地上でのシグナルやDegradedシグナルソースで得られる。</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>戦闘船の残骸や、地上でのシグナルで得られる。</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>小型戦闘船の残骸、またミッション報酬で得られる。</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>輸送船の残骸、各種シグナルソース、またミッション報酬で得られる。</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>輸送船の残骸、ミッション報酬で得られる。</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>戦闘船の残骸から得られる。</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>戦闘船の残骸から得られる。</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>戦闘船の残骸から得られる。</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>輸送船の残骸、ミッション報酬で得られる。</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
   <data name="conductivecomponents" xml:space="preserve">
     <value>輸送船の残骸から得られる。有人星系付近の無政府星系で顕著である。</value>
     <comment>Material location Conductive Components</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>軍用船と星系警察の残骸から得られる。</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>戦闘船の残骸や、Combat aftermathのシグナルで得られる。</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>戦闘船の残骸、又はミッション報酬として得られる。特に選挙中の星系で顕著である。</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>シグナルソース内、特にBoom状態の星系で輸送船の残骸から、又はミッション報酬として得られる。</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>軍用船と星系警察の残骸から得られる。</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>AnacondaやFederal Corvetteのような大型戦闘艦の残骸から、又はミッション報酬として得られる。</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>輸送船の残骸から得られる。特にBoom状態の星系においてより顕著である。</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>戦闘艦の残骸、各種シグナルソースから得られる。特にBoom状態の星系においてより顕著である。</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>サーゴイドとして知られるエイリアンの地上施設で得られる。</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>輸送船の残骸から得られる。</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>輸送船の残骸から得られる。有人星系付近の無政府星系で顕著である。Dav's Hopeでも見つかる。</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>戦闘艦、星系警察の残骸から、又は有人星系付近の無政府星系にあるDegradedシグナルソースから得られる。</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>戦闘艦の残骸から得られる。特に高セキュリティ星系で顕著である。</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>輸送船の残骸から得られる。有人星系付近の無政府星系で顕著である。</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>AnacondaやFederal Corvetteのような大型戦闘艦の残骸から得られる。Dav's Hopeでも見つかる。</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>小型輸送船の残骸から得られる。特に低セキュリティ星系で顕著である。Dav's Hopeでも見つかる。</value>
+    <comment>Material location Mechanical Components</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Boom状態の星系で戦闘艦の残骸、各種シグナルソースから得られる。</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>戦闘艦、星系警察の残骸から、又はミッション報酬で得られる。</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>戦闘艦の残骸、またミッション報酬で得られる。</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>サーゴイドとして知られるエイリアンの地上施設で得られる。</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Type-7やType-9などの大型輸送船の残骸から得られる。特に無政府星系、病害に遭っている星系で顕著である。Dav's Hopeでも見つかる。</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>戦闘艦の残骸、ミッション報酬、Encodedシグナルソースで得られる。特に高セキュリティ星系、Boom状態の星系、Retreat状態の星系、またConsolidate期のパワー影響下で顕著である。Dav's Hopeでも見られる。</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Type-9やBelugaのような大型輸送船、大型客船の残骸から、また各種シグナルソース、ミッション報酬として得られる。Dav's Hopeでも見られる。</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
   <data name="configurablecomponents" xml:space="preserve">
     <value>輸送船の残骸から得られる。特に低セキュリティ星系で顕著である。Dav's Hopeでも見られる。</value>
     <comment>Material location Configurable Components</comment>
