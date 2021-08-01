@@ -48,6 +48,7 @@
             _ = new MissionType("RankEmp");
             _ = new MissionType("RankFed");
             _ = new MissionType("Rescue");
+            _ = new MissionType("Sabotage");
             _ = new MissionType("Salvage");
             _ = new MissionType("Scan");
             _ = new MissionType("Sightseeing");
