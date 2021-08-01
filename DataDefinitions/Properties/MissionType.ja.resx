@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="Credits" xml:space="preserve">
+    <value>クレジット</value>
+  </data>
   
   
   
@@ -136,45 +139,119 @@
   
   
   
+  <data name="None" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  
+  
+  
+  <data name="Rescue" xml:space="preserve">
+    <value>カーゴの救助</value>
+  </data>
   
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="OnFoot" xml:space="preserve">
+    <value>徒歩</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>秘密作戦</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>連鎖</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>ようこそ</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>合法</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>違法</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>惑星</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>連邦海軍の契約</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>帝国海軍の契約</value>
+  </data>
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>メガシップの無効化</value>
+  </data>
+  <data name="Founder" xml:space="preserve">
+    <value>ファウンダー</value>
+  </data>
+  <data name="HackMegaship" xml:space="preserve">
+    <value>メガシップのハッキング</value>
+  </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>内戦の標的</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>戦争の標的</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="Skimmer" xml:space="preserve">
+    <value>標的のスキマー</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>難しい</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>隠密</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>ダウンロード</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>アップロード</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>セトルメントの電源切断</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>セトルメントの襲撃</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>生産物の強盗</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>非暴力</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>セトルメントの再起動</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>セトルメントの再起動</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>セトルメントの停止</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>セトルメントでの生産の破壊活動</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>惑星</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>政治犯</value>
+    <comment>Bulk passenger type</comment>
+  </data>
 </root>
