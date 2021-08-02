@@ -117,16 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>Čpavek</value>
+    <comment>Volcanism Ammonia</comment>
+  </data>
+  <data name="Carbon_dioxide" xml:space="preserve">
+    <value>Oxid uhličitý</value>
+    <comment>Volcanism Carbon_dioxide</comment>
+  </data>
+  <data name="Iron" xml:space="preserve">
+    <value>Železo</value>
+    <comment>Volcanism Iron</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Methan</value>
+    <comment>Volcanism Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Dusík</value>
+    <comment>Volcanism Nitrogen</comment>
+  </data>
+  <data name="Silicate" xml:space="preserve">
+    <value>Silikát</value>
+    <comment>Volcanism Silicate</comment>
+  </data>
+  <data name="Silicate_vapour" xml:space="preserve">
+    <value>Křemičitané výpary</value>
+    <comment>Volcanism Silicate_vapour</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Voda</value>
+    <comment>Volcanism Water</comment>
+  </data>
+  <data name="Major" xml:space="preserve">
+    <value>Hlavní</value>
+    <comment>Volcanism Major</comment>
+  </data>
+  <data name="Minor" xml:space="preserve">
+    <value>Nevýznamné</value>
+    <comment>Volcanism Minor</comment>
+  </data>
+  <data name="Geysers" xml:space="preserve">
+    <value>Gejzíry</value>
+    <comment>Volcanism Geysers</comment>
+  </data>
+  <data name="Magma" xml:space="preserve">
+    <value>Magma</value>
+    <comment>Volcanism Magma</comment>
+  </data>
 </root>
