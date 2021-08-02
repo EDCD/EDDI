@@ -138,7 +138,7 @@ namespace EddiDataDefinitions
         [JsonIgnore] 
         public long bondsAmount => bondsAwarded.Sum(r => r.amount);
 
-        /// <summary> All bounty vouchers awarded, excluding the discrepancy report </summary>
+        /// <summary> All bounty vouchers awarded, including the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bountiesAwarded => factionReports
             .Where(r => r.bounty && r.crimeDef == Crime.None)
@@ -147,16 +147,16 @@ namespace EddiDataDefinitions
         [JsonIgnore] 
         public long bountiesAmount => bountiesAwarded.Sum(r => r.amount);
 
-        /// <summary> All fines incurred, excluding the discrepancy report </summary>
+        /// <summary> All fines incurred, including the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> finesIncurred => factionReports
-            .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
+            .Where(r => !r.bounty && r.crimeDef != Crime.None)
             .ToList();
 
-        /// <summary> All bounties incurred, excluding the discrepancy report </summary>
+        /// <summary> All bounties incurred, including the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bountiesIncurred => factionReports
-            .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
+            .Where(r => r.bounty && r.crimeDef != Crime.None)
             .ToList();
 
         // Default Constructor
