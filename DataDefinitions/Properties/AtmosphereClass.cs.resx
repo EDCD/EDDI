@@ -189,10 +189,28 @@
     <value>Vhodné pro život ve vodě</value>
     <comment>Atmosphere class "Suitable for water-based life"</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Oxid siřičitý</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Voda</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>Bohatý na vodu</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Vhodné pro život ve vodě</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Plynový gigant</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Čpavek a kyslík</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
+  </data>
 </root>
