@@ -117,6 +117,174 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Navigační maják</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Kompromitovaný navigační maják</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Neidentifikovaný zdroj signálu</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Konfliktní zóna s velkou intenzitou</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Konfliktní zóna se střední intenzitou</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Konfliktní zóna s nízkou inzenzitou</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degradovaná vysílání</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Zkáza po boji</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomálie</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Ceremoniální vysílání</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Vysílání vysokého stupně</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Enkódovaná vysílání</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Vysílání mimozemského původu</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Střelba ze zbraní</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Cíl mise</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Odhalen vzorec rozpuštění konvoje</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Volání v nouzi</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Obchodní maják</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů s vysokou intenzitou</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů s nízkou intenzitou</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů (RES)</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů s hazardní intenzitou</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Neregistrovaný navigační maják</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Anti-Xeno konfliktní zóna</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Odposlouchávací stanice</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Pozoruhodný hvězdný fenomén</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Capital Ship</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Pozoruhodný hvězdný fenomén</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Aktivita pirátů</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Biologický povrchový signál</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Geologický povrchový signál</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Lidský povrchový signál</value>
+    <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Thargoidí povrchový signál</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Thargoid Barnacle</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Kontrolní stanoviště</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Maják konvoje</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Aktivita pirátů</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Aktivita pirátů</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Povrchový signál Strážce</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Struktura Strážců</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Ztarodávné ruiny</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Struktura Strážců</value>
+    <comment>Guardian Structure</comment>
+  </data>
   
   
   
@@ -125,54 +293,33 @@
   
   
   
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Struktura Strážců</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Pole trosek</value>
+    <comment>Debris field</comment>
+  </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Jiný povrchový signál</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Havarovaná lod thargoidů</value>
+    <comment>Thargoid crash site</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Distribuční centrum</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Volání v nouzi</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Volání v nouzi</value>
+    <comment>Distress Call</comment>
+  </data>
 </root>
