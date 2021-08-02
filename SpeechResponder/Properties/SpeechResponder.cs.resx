@@ -243,7 +243,13 @@ Chcete jej znovu otevřít?</value>
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Toto jméno je již použito, zadejte prosím jiné</value>
   </data>
-  
-  
-  
+  <data name="search_filter" xml:space="preserve">
+    <value>Filtr:</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Povolit všechny skripty založené na akci</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Zakázat všechny skripty založené na akci</value>
+  </data>
 </root>
