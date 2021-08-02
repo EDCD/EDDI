@@ -117,24 +117,78 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>Čpavek</value>
+    <comment>Atmosphere class "Ammonia"</comment>
+  </data>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>Čpavek a kyslík</value>
+    <comment>Atmosphere class "Ammonia and oxygen" (obsolete - see "AmmoniaOxygen")</comment>
+  </data>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>Bohaté na kyslík</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Argon</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>Bohatý na Argon</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Oxid uhličitý</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>Bohatý na oxit uhličitý</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Helium</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Metalické výpary</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Methan</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>Bohatý na methan</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>Bohatý na Neon</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Dusík</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Bez atmosféry</value>
+    <comment>Atmosphere class "None"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Kyslík</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Křemičitané výpary</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Vhodné pro život ve vodě</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
   
   
   
