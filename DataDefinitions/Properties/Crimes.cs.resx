@@ -117,37 +117,136 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="assault" xml:space="preserve">
+    <value>Napadení</value>
+    <comment>Crime assault</comment>
+  </data>
+  <data name="murder" xml:space="preserve">
+    <value>Vražda</value>
+    <comment>Crime murder</comment>
+  </data>
+  <data name="piracy" xml:space="preserve">
+    <value>Pirátství</value>
+    <comment>Crime piracy</comment>
+  </data>
+  <data name="interdiction" xml:space="preserve">
+    <value>Interdikce čisté lodi</value>
+    <comment>Crime interdiction</comment>
+  </data>
+  <data name="illegalCargo" xml:space="preserve">
+    <value>Přechovávání nelegálního nákladu</value>
+    <comment>Crime illegalCargo</comment>
+  </data>
+  <data name="disobeyPolice" xml:space="preserve">
+    <value>Neuposlechnutí policie</value>
+    <comment>Crime disobeyPolice</comment>
+  </data>
+  <data name="fireInNoFireZone" xml:space="preserve">
+    <value>Střelba v nepalebné zóně</value>
+    <comment>Crime fireInNoFireZone</comment>
+  </data>
+  <data name="fireInStation" xml:space="preserve">
+    <value>Střelba uvnitř stanice</value>
+    <comment>Crime fireInStation</comment>
+  </data>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Vyhození nebezpečného nákladu</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>Vyhození odpadu v blízkosti stanice</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>Blokování přetlakové komory</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>Blokování přetlakové komory</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>Blokování přistávacího místa</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>Blokování přistávacího místa</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>Nepovolený vstup</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Závažný nepovolený vstup</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Kolize</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>Kolize s poškozením</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Výstřel ze zbraní s nedbalosti</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Přechovávání hledané osoby</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+  <data name="missionFine" xml:space="preserve">
+    <value>Pokuta za misi</value>
+    <comment>Crime missionFine</comment>
+  </data>
+  <data name="onFoot_assault" xml:space="preserve">
+    <value>Napadení</value>
+    <comment>Crime onFoot_assault</comment>
+  </data>
+  <data name="onFoot_breakingAndEntering" xml:space="preserve">
+    <value>Vloupání</value>
+    <comment>Crime onFoot_breakingAndEntering</comment>
+  </data>
+  <data name="onFoot_damagingDefences" xml:space="preserve">
+    <value>Poškození obranných systémů</value>
+    <comment>Crime onFoot_damagingDefences</comment>
+  </data>
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Tasení zbraně</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
+  <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
+    <value>Útěk před lokálními autoritami</value>
+    <comment>Crime onFoot_failureToSubmitToPolice</comment>
+  </data>
+  <data name="onFoot_identityTheft" xml:space="preserve">
+    <value>Krádež identity</value>
+    <comment>Crime onFoot_identityTheft</comment>
+  </data>
+  <data name="onFoot_murder" xml:space="preserve">
+    <value>Vražda</value>
+    <comment>Crime onFoot_murder</comment>
+  </data>
+  <data name="onFoot_profileCloningIntent" xml:space="preserve">
+    <value>Pokus o krádež identity</value>
+    <comment>Crime onFoot_profileCloningIntent</comment>
+  </data>
+  <data name="onFoot_propertyTheft" xml:space="preserve">
+    <value>Kráděž</value>
+    <comment>Crime onFoot_propertyTheft</comment>
+  </data>
+  <data name="onFoot_recklessEndangerment" xml:space="preserve">
+    <value>Ohrožení z nedbalosti</value>
+    <comment>Crime onFoot_recklessEndangerment</comment>
+  </data>
+  <data name="onFoot_theft" xml:space="preserve">
+    <value>Krádež</value>
+    <comment>Crime onFoot_theft</comment>
+  </data>
+  <data name="onFoot_trespass" xml:space="preserve">
+    <value>Nepovolený vstup</value>
+    <comment>Crime onFoot_trespass</comment>
+  </data>
 </root>
