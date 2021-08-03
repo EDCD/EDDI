@@ -150,7 +150,9 @@
   <data name="header_status" xml:space="preserve">
     <value>Статус</value>
   </data>
-  
+  <data name="header_tags" xml:space="preserve">
+    <value>Метки:</value>
+  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Получение информации о ваших миссиях.</value>
   </data>
@@ -184,11 +186,25 @@
   <data name="update_route_button_text" xml:space="preserve">
     <value>Обновить маршрут:</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="header_originsystem" xml:space="preserve">
+    <value>Начальная система:</value>
+  </data>
+  <data name="header_originstation" xml:space="preserve">
+    <value>Начальная станция:</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>Фракция:</value>
+  </data>
+  <data name="header_cg_tier" xml:space="preserve">
+    <value>Уровень:</value>
+  </data>
+  <data name="header_cg_percentileband" xml:space="preserve">
+    <value>Процентный диапазон:</value>
+  </data>
+  <data name="header_cg_reward" xml:space="preserve">
+    <value>Вознаграждение (кредиты):</value>
+  </data>
 </root>
