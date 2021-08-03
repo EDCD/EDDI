@@ -120,7 +120,9 @@
   <data name="Altruism" xml:space="preserve">
     <value>Благотворительные</value>
   </data>
-  
+  <data name="Credits" xml:space="preserve">
+    <value>Кредиты</value>
+  </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Заказное убийство</value>
   </data>
