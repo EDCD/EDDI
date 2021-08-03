@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Пиратские</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Спасательный груз</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Разборка</value>
   </data>
@@ -205,33 +207,105 @@
   <data name="StartZone" xml:space="preserve">
     <value>Начальная зона</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="OnFoot" xml:space="preserve">
+    <value>Пешком</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>Спецоперация</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>Цепочка</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Добро пожаловать</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Легальный</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>Незаконно</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>Планетарные</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>Контракт Федерации</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Контракт Империи</value>
+  </data>
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>Обесточить Мегакорабль</value>
+  </data>
+  <data name="Founder" xml:space="preserve">
+    <value>Основатель</value>
+  </data>
+  <data name="HackMegaship" xml:space="preserve">
+    <value>Взлом Мегакоробля</value>
+  </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>Цели гражданской войны</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>Цели войны</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="Skimmer" xml:space="preserve">
+    <value>Цели беспелотники</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Сложно</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>Тайный</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Загрузка</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Загрузить</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Отключённое поселение</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>Нападение на поселение</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Производственное ограбление</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>Ненасильственный</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Перезагрузка поселения</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>Перезагрузка поселения</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Обесточить поселение</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Прервать производство поселения</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Планетарные</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Политический заключенный</value>
+    <comment>Bulk passenger type</comment>
+  </data>
 </root>
