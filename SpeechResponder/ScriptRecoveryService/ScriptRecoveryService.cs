@@ -110,6 +110,7 @@ namespace EddiSpeechResponder.Service
         /// </summary>
         public void StopScriptRecovery()
         {
+            cancellationTS.Cancel();
             lock (_lockRoot)
             {
                 if (File.Exists(_tempFileName))
@@ -119,7 +120,6 @@ namespace EddiSpeechResponder.Service
             }
 
             _scriptWindow.editorScript.PropertyChanged -= _scriptWindow_PropertyChanged;
-            cancellationTS.Cancel();
         }
     }
 }

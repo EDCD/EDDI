@@ -54,7 +54,13 @@ namespace EddiSpeechResponder
         public string Value
         {
             get => script;
-            set { script = value; OnPropertyChanged(); }
+            set
+            {
+                if (script != value)
+                {
+                    script = value; OnPropertyChanged();
+                }
+            }
         }
 
         [JsonProperty("defaultValue")]
