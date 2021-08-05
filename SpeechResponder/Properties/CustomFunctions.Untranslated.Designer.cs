@@ -498,9 +498,9 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///Common usage of this is to provide further information about a material, for example:
         ///
-        ///    Iron is a {MaterialDetails(&quot;Iron&quot;).rarity.name} material.
+        ///    Iron is a {MaterialDetails(&quot;Iron&quot;).rarity} material.
         ///
-        ///The second argument, the name of a star system, is optional. If provided then the `bodyname` and `bodyshortname` properties in the resu [rest of string was truncated]&quot;;.
+        ///The second argument, the name of a star system, is optional. If provided then the `bodyname` and `bodyshortname` properties in the resulting [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MaterialDetails {
             get {
