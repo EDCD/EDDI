@@ -506,27 +506,7 @@ Common usage of this is to provide destination/route details, dependent on the '
     {set system to RouteDetails("nearest")}
     {set system to RouteDetails("most", "Sol")}
 
-Upon success of the query, a 'Route details' event is triggered, providing a following event data:
-
-* `routetype` Type of route query (see above).
-* `destination` Destination system.
-* `distance` Destination distance
-* `route` '_' Delimited system(s) list, depending on route type:
-  * `most` Other systems with most number of missions.
-  * `route` Missions route list
-  * `source` Other systems designated as a source for missions.
-* `count` Count of missions, systems, or expiry seconds, etc, depending on route type:
-  * `expiring` Expiry seconds.
-  * `farthest` Missions in the system.
-  * `most` Number of most missions.
-  * `nearest` Missions in the system.
-  * `route` Systems in the route.
-  * `scoop` Number if scoopable stars found, within search radius.
-  * `source` Number of source systems.
-  * `update` Remaining systems in the route.
-* `routedistance` Remaining distance of the route (multiple or single), with the following exceptions:
-  * `scoop` Distance of the search radius.
-* `missionids` Mission ID(s) associated with the destination system.</value>
+Upon success of the query, a 'Route details' event is triggered, providing event data as documented [here](https://github.com/EDCD/EDDI/wiki/Route-details-event).</value>
   </data>
   <data name="SecondsSince" xml:space="preserve">
     <value>This function will provide the number of seconds since a given timestamp.
