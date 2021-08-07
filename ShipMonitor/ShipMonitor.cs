@@ -1872,7 +1872,7 @@ namespace EddiShipMonitor
 
         private bool inTaxi(string edModel)
         {
-            return edModel.Contains("adder_taxi");
+            return edModel.Contains("_taxi");
         }
 
         private Task _refreshProfileDelayed;
