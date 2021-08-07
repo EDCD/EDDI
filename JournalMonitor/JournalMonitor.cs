@@ -4384,8 +4384,10 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan":
                             case "DropItems":
                             case "EngineerLegacyConvert":
+                            case "FssBodySignals":
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
+                            case "ModuleBuyAndStore":
                             case "NavRoute":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
