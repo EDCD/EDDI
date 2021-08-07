@@ -258,11 +258,12 @@ namespace EddiShipMonitor
         // Set the ship name conditionally, avoiding filtered names
         private void setShipName(Ship ship, string name)
         {
+            if (ship is null) { return; }
             if (string.IsNullOrEmpty(name))
             {
                 ship.name = null;
             }
-            else if (name != null && !name.Contains("***"))
+            else if (!name.Contains("***"))
             {
                 ship.name = name;
             }
@@ -271,6 +272,7 @@ namespace EddiShipMonitor
         // Set the ship ident conditionally, avoiding filtered idents
         private void setShipIdent(Ship ship, string ident)
         {
+            if (ship is null) { return; }
             if (string.IsNullOrEmpty(ident))
             {
                 ship.ident = null;
