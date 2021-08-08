@@ -28,7 +28,6 @@ namespace EddiStatusMonitor
         private const int pollingIntervalRelaxedMs = 5000;
 
         // Miscellaneous tracking
-        private bool in_combat;
         private bool gliding;
         private bool jumping;
         private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
@@ -470,22 +469,9 @@ namespace EddiStatusMonitor
                     fuelLog = null;
                 }
                 // Detect whether we're in combat
-                if (!in_combat && thisStatus.in_danger)
+                if (lastStatus.in_danger && !thisStatus.in_danger)
                 {
-                    // We're in combat
-                    in_combat = true;
-                }
-                if (in_combat && !thisStatus.in_danger)
-                {
-                    // We may still be in combat but the immediate danger has passed
-                    if ((thisStatus.vehicle == Constants.VEHICLE_LEGS && thisStatus.selected_weapon.Contains("Unarmed"))
-                        || (thisStatus.vehicle == Constants.VEHICLE_SRV && !thisStatus.srv_turret_deployed)
-                        || (thisStatus.vehicle == Constants.VEHICLE_SHIP && !thisStatus.hardpoints_deployed))
-                    {
-                        // We're safe
-                        in_combat = false;
-                        EDDI.Instance.enqueueEvent(new SafeEvent(DateTime.UtcNow) { fromLoad = false });
-                    }
+                    EDDI.Instance.enqueueEvent(new SafeEvent(DateTime.UtcNow) { fromLoad = false });
                 }
 
                 // Pass the change in status to all subscribed processes
