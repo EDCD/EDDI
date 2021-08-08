@@ -150,7 +150,9 @@
   <data name="header_status" xml:space="preserve">
     <value>Stav</value>
   </data>
-  
+  <data name="header_tags" xml:space="preserve">
+    <value>Šťitky:</value>
+  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Sledovat informace o vašich misích.</value>
   </data>
@@ -184,11 +186,25 @@
   <data name="update_route_button_text" xml:space="preserve">
     <value>Aktualizovat trasu:</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_name" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="header_originsystem" xml:space="preserve">
+    <value>Původní systém:</value>
+  </data>
+  <data name="header_originstation" xml:space="preserve">
+    <value>Původní stanice:</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>Frakce:</value>
+  </data>
+  <data name="header_cg_tier" xml:space="preserve">
+    <value>Třída:</value>
+  </data>
+  <data name="header_cg_percentileband" xml:space="preserve">
+    <value>Procentní ukazatel:</value>
+  </data>
+  <data name="header_cg_reward" xml:space="preserve">
+    <value>Odměna (kredity):</value>
+  </data>
 </root>

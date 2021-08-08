@@ -97,21 +97,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Anarchy" xml:space="preserve">
+    <value>Anarchie</value>
+    <comment>Government type Anarchy</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Kolonie</value>
+    <comment>Government type Colony</comment>
+  </data>
+  <data name="Communism" xml:space="preserve">
+    <value>Komunismus</value>
+    <comment>Government type Communism</comment>
+  </data>
+  <data name="Confederacy" xml:space="preserve">
+    <value>Konfederace</value>
+    <comment>Government type Confederacy</comment>
+  </data>
+  <data name="Cooperative" xml:space="preserve">
+    <value>Kooperativní</value>
+    <comment>Government type Cooperative</comment>
+  </data>
+  <data name="Corporate" xml:space="preserve">
+    <value>Firemní</value>
+    <comment>Government type Corporate</comment>
+  </data>
+  <data name="Democracy" xml:space="preserve">
+    <value>Demokracie</value>
+    <comment>Government type Democracy</comment>
+  </data>
+  <data name="Dictatorship" xml:space="preserve">
+    <value>Diktatura</value>
+    <comment>Government type Dictatorship</comment>
+  </data>
+  <data name="Feudal" xml:space="preserve">
+    <value>Feudální</value>
+    <comment>Government type Feudal</comment>
+  </data>
+  <data name="Imperial" xml:space="preserve">
+    <value>Císařství</value>
+    <comment>Government type Imperial</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Žádné</value>
+    <comment>Government type None</comment>
+  </data>
+  <data name="Patronage" xml:space="preserve">
+    <value>Patronát</value>
+    <comment>Government type Patronage</comment>
+  </data>
+  <data name="PrisonColony" xml:space="preserve">
+    <value>Trestanecká kolonie</value>
+    <comment>Government type PrisonColony</comment>
+  </data>
+  <data name="Theocracy" xml:space="preserve">
+    <value>Teokracie</value>
+    <comment>Government type Theocracy</comment>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Dílna</value>
+    <comment>Government type Workshop</comment>
+  </data>
+  <data name="engineer" xml:space="preserve">
+    <value>Inženýrská</value>
+    <comment>Government type engineer</comment>
+  </data>
+  <data name="Carrier" xml:space="preserve">
+    <value>Soukromé vlastnictví</value>
+    <comment>Government Type Carrier</comment>
+  </data>
 </root>

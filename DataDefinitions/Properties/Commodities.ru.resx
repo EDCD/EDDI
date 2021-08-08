@@ -1769,5 +1769,8 @@
     <value>Узумокские крылья для малой гравитации</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
-  
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Луковая головка, сорт гамма</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
 </root>

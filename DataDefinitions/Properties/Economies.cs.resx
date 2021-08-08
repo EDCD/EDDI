@@ -97,20 +97,68 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Agri" xml:space="preserve">
+    <value>Zemědělství</value>
+    <comment>Economy type Agri</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Kolonie</value>
+    <comment>Economy type Colony</comment>
+  </data>
+  <data name="Extraction" xml:space="preserve">
+    <value>Těžba</value>
+    <comment>Economy type Extraction</comment>
+  </data>
+  <data name="HighTech" xml:space="preserve">
+    <value>High Tech</value>
+    <comment>Economy type HighTech</comment>
+  </data>
+  <data name="Industrial" xml:space="preserve">
+    <value>Průmysl</value>
+    <comment>Economy type Industrial</comment>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Vojenský</value>
+    <comment>Economy type Military</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Žádné</value>
+    <comment>Economy type None</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Rafinérie</value>
+    <comment>Economy type Refinery</comment>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Služby</value>
+    <comment>Economy type Service</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformace</value>
+    <comment>Economy type Terraforming</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Cestovní ruch</value>
+    <comment>Economy type Tourism</comment>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Záchranná</value>
+    <comment>Economy type Rescue</comment>
+  </data>
+  <data name="Prison" xml:space="preserve">
+    <value>Vězení</value>
+    <comment>Economy type Prison</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Opravy</value>
+    <comment>Economy type Repair</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Poškozené</value>
+    <comment>Economy type Damaged</comment>
+  </data>
+  <data name="Carrier" xml:space="preserve">
+    <value>Soukromé podnikání</value>
+    <comment>Economy Type Carrier</comment>
+  </data>
 </root>

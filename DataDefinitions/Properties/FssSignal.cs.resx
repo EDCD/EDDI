@@ -117,32 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Navigační maják</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Kompromitovaný navigační maják</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Neidentifikovaný zdroj signálu</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Bojová zóna s velkou intenzitou</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Bojová zóna se střední intenzitou</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Bojová zóna s nízkou intenzitou</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degradovaná vysílání</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Zkáza po boji</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomálie</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Ceremoniální vysílání</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Vysílání vysokého stupně</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Enkódovaná vysílání</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Vysílání mimozemského původu</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Střelba ze zbraní</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Cíl mise</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Odhalen vzorec rozpuštění konvoje</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Volání v nouzi</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Obchodní maják</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů s vysokou intenzitou</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdrojů s nízkou intenzitou</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
     <value>Oblast extrakce zdrojů (RES)</value>
     <comment>Resource Extraction Site</comment>
   </data>
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Oblast extrakce zdroju s hazardní intenzitou</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Neregistrovaný navigační maják</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Anti-Xeno konfliktní zóna</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Odposlouchávací stanice</value>
+    <comment>ListeningPost</comment>
+  </data>
 </root>

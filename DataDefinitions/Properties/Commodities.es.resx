@@ -1770,5 +1770,8 @@
     <value>Alas de baja gravedad de Uzumoku</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
-  
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Cepa gamma de Cebollazo</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
 </root>

@@ -213,7 +213,10 @@
     <value>Beschädigung von Verteidigungsanlagen</value>
     <comment>Crime onFoot_damagingDefences</comment>
   </data>
-  
+  <data name="onFoot_detectionOfWeapon" xml:space="preserve">
+    <value>Waffe ziehen</value>
+    <comment>Crime onFoot_detectionOfWeapon</comment>
+  </data>
   <data name="onFoot_failureToSubmitToPolice" xml:space="preserve">
     <value>Sich den lokalen Behörden entziehen</value>
     <comment>Crime onFoot_failureToSubmitToPolice</comment>
