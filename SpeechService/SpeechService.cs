@@ -20,7 +20,7 @@ using Utilities;
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public partial class SpeechService : INotifyPropertyChanged
+    public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
         public SpeechServiceConfiguration Configuration
@@ -93,11 +93,34 @@ namespace EddiSpeechService
             }
         }
 
+        private static readonly object synthLock = new object();
+        private readonly System.Speech.Synthesis.SpeechSynthesizer systemSynth = new System.Speech.Synthesis.SpeechSynthesizer();
+        private readonly Windows.Media.SpeechSynthesis.SpeechSynthesizer wmSynth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // another false positive from CA2213
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<synth>k__BackingField")]
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                lock (synthLock)
+                {
+                    systemSynth?.Dispose();
+                    wmSynth?.Dispose();
+                }
+            }
+        }
+
         private SpeechService()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
-
-
+            
             // Get all available voices from Windows.Media.SpeechSynthesis
             foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
             {
@@ -110,19 +133,24 @@ namespace EddiSpeechService
             }
 
             // Get all available voices from System.Speech.Synthesis
-            using (var synth = new System.Speech.Synthesis.SpeechSynthesizer())
+            lock (synthLock)
             {
-                var systemSpeechVoices = synth
+                var systemSpeechVoices = systemSynth
                     .GetInstalledVoices()
-                    .Where(v => v.Enabled && !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    .Where(v => v.Enabled &&
+                                !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                     .ToList();
                 foreach (var voice in systemSpeechVoices)
                 {
-                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(), voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
-                    
+                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
+                        voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
+
                     // Skip voices "Desktop" variant voices from System.Speech.Synthesis
                     // where we already have a (newer) OneCore version
-                    if (allVoices.Exists(v => v.name + " Desktop" == voiceDetails.name)) { continue; }
+                    if (allVoices.Exists(v => v.name + " Desktop" == voiceDetails.name))
+                    {
+                        continue;
+                    }
 
 
                     allVoices.Add(voiceDetails);
@@ -195,7 +223,7 @@ namespace EddiSpeechService
             StopCurrentSpeech();
         }
 
-        public void Speak(EddiSpeech speech)
+        public static void Speak(EddiSpeech speech)
         {
             Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
         }
@@ -355,16 +383,19 @@ namespace EddiSpeechService
         {
             try
             {
-                if (string.IsNullOrEmpty(voice))
+                lock (synthLock)
                 {
-                    var wmSynth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
-                    voice = wmSynth.Voice.DisplayName;
+                    if (string.IsNullOrEmpty(voice))
+                    {
+                        voice = wmSynth.Voice.DisplayName;
+                    }
+
+                    if (string.IsNullOrEmpty(voice))
+                    {
+                        voice = systemSynth.Voice.Name;
+                    }
                 }
-                if (string.IsNullOrEmpty(voice))
-                {
-                    var sysSynth = new System.Speech.Synthesis.SpeechSynthesizer();
-                    voice = sysSynth.Voice.Name;
-                }
+
                 if (string.IsNullOrEmpty(voice))
                 {
                     Logging.Error("Could not obtain a voice for speaking.");
@@ -456,44 +487,47 @@ namespace EddiSpeechService
             var stream = new MemoryStream();
             var synthThread = new Thread(() =>
             {
-                using (var synth = new System.Speech.Synthesis.SpeechSynthesizer())
-                {
                     try
                     {
-                        if (!voice.name.Equals(synth.Voice.Name))
+                        lock (synthLock)
                         {
-                            Logging.Debug("Selecting voice " + voice);
-                            synth.SelectVoice(voice.name);
-                        }
-                        synth.Rate = Configuration.Rate;
-                        synth.Volume = Configuration.Volume;
-                        synth.SetOutputToWaveStream(stream);
-                        Logging.Debug(JsonConvert.SerializeObject(Configuration));
-                        PrepareSpeech(voice, ref speech, out var useSSML);
-                        if (useSSML)
-                        {
-                            try
+                            if (!voice.name.Equals(systemSynth.Voice.Name))
                             {
-                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                                synth.SpeakSsml(speech);
+                                Logging.Debug("Selecting voice " + voice);
+                                systemSynth.SelectVoice(voice.name);
                             }
-                            catch (Exception ex)
+
+                            systemSynth.Rate = Configuration.Rate;
+                            systemSynth.Volume = Configuration.Volume;
+                            systemSynth.SetOutputToWaveStream(stream);
+                            Logging.Debug(JsonConvert.SerializeObject(Configuration));
+                            PrepareSpeech(voice, ref speech, out var useSSML);
+                            if (useSSML)
                             {
-                                var badSpeech = new Dictionary<string, object>()
+                                try
                                 {
-                                    {"voice", voice},
-                                    {"speech", speech},
-                                    {"exception", ex}
-                                };
-                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                synth.SpeakSsml(DisableIPA(speech));
+                                    Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                                    systemSynth.SpeakSsml(speech);
+                                }
+                                catch (Exception ex)
+                                {
+                                    var badSpeech = new Dictionary<string, object>()
+                                    {
+                                        {"voice", voice},
+                                        {"speech", speech},
+                                        {"exception", ex}
+                                    };
+                                    Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                    systemSynth.SpeakSsml(DisableIPA(speech));
+                                }
+                            }
+                            else
+                            {
+                                Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                                systemSynth.Speak(speech);
                             }
                         }
-                        else
-                        {
-                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                            synth.Speak(speech);
-                        }
+
                         stream.Position = 0;
                     }
                     catch (ThreadAbortException)
@@ -505,13 +539,12 @@ namespace EddiSpeechService
                         Logging.Warn("Speech failed: ", ex);
                         var badSpeech = new Dictionary<string, object>()
                         {
-                            {"voice", voice },
+                            {"voice", voice},
                             {"speech", speech},
                         };
                         string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
                         Logging.Info("Speech failed", badSpeechJSON);
                     }
-                }
             });
             synthThread.Start();
             synthThread.Join();
@@ -526,8 +559,6 @@ namespace EddiSpeechService
             Windows.Media.SpeechSynthesis.SpeechSynthesisStream stream = null;
             var synthThread = new Thread(() =>
             {
-                using (var synth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer())
-                {
                     try
                     {
                         double ConvertSpeakingRate(int rate)
@@ -546,43 +577,47 @@ namespace EddiSpeechService
                             return result;
                         }
 
-                        if (!voice.name.Equals(synth.Voice.DisplayName))
+                        lock (synthLock)
                         {
-                            Logging.Debug("Selecting voice " + voice);
-                            synth.Voice =
-                                Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
-                                    v.DisplayName == voice.name);
-                        }
-
-                        synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                        synth.Options.AudioVolume = Math.Round((double) Configuration.Volume / 100);
-                        Logging.Debug(JsonConvert.SerializeObject(Configuration));
-
-                        PrepareSpeech(voice, ref speech, out var useSSML);
-                        if (useSSML)
-                        {
-                            try
+                            if (!voice.name.Equals(wmSynth.Voice.DisplayName))
                             {
-                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                                stream = synth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
+                                Logging.Debug("Selecting voice " + voice);
+                                wmSynth.Voice =
+                                    Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
+                                        v.DisplayName == voice.name);
                             }
-                            catch (Exception ex)
+
+                            wmSynth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
+                            wmSynth.Options.AudioVolume = Math.Round((double) Configuration.Volume / 100);
+                            Logging.Debug(JsonConvert.SerializeObject(Configuration));
+
+                            PrepareSpeech(voice, ref speech, out var useSSML);
+                            if (useSSML)
                             {
-                                var badSpeech = new Dictionary<string, object>()
+                                try
                                 {
-                                    {"voice", voice},
-                                    {"speech", speech},
-                                    {"exception", ex}
-                                };
-                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                stream = synth.SynthesizeSsmlToStreamAsync(DisableIPA(speech)).AsTask().Result;
+                                    Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                                    stream = wmSynth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
+                                }
+                                catch (Exception ex)
+                                {
+                                    var badSpeech = new Dictionary<string, object>()
+                                    {
+                                        {"voice", voice},
+                                        {"speech", speech},
+                                        {"exception", ex}
+                                    };
+                                    Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                    stream = wmSynth.SynthesizeSsmlToStreamAsync(DisableIPA(speech)).AsTask().Result;
+                                }
+                            }
+                            else
+                            {
+                                Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                                stream = wmSynth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
                             }
                         }
-                        else
-                        {
-                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                            stream = synth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
-                        }
+
                         stream.Seek(0);
                     }
                     catch (ThreadAbortException)
@@ -600,7 +635,6 @@ namespace EddiSpeechService
                         string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
                         Logging.Warn("Speech failed", badSpeechJSON);
                     }
-                }
             });
             synthThread.Start();
             synthThread.Join();
@@ -701,7 +735,7 @@ namespace EddiSpeechService
             }
         }
 
-        public void FadeOutCurrentSpeech()
+        private void FadeOutCurrentSpeech()
         {
             if (activeSpeech?.PlaybackState == PlaybackState.Playing)
             {
@@ -726,7 +760,7 @@ namespace EddiSpeechService
             }
         }
 
-        public void StartOrContinueSpeaking()
+        private void StartOrContinueSpeaking()
         {
             if (!eddiSpeaking)
             {
@@ -739,7 +773,7 @@ namespace EddiSpeechService
                         {
                             try
                             {
-                                Instance.Speak(speech);
+                                Speak(speech);
                             }
                             catch (Exception ex)
                             {
@@ -899,10 +933,6 @@ namespace EddiSpeechService
                 // but it does support two letter country codes so we will use those instead
                 guess = Culture.Parent.Name;
             }
-            //else if (name.Contains("IVONA") && Culture.Name == "en-GB")
-            //{
-            //    guess = "en-uk";
-            //}
             else
             {
                 // Trust the voice's information (with the complete country/region code)
