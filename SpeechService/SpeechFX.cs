@@ -33,7 +33,7 @@ namespace EddiSpeechService
                 const int delay = 16;
                 const int feedback = 25;
                 float wetDryMix = Math.Min(100, (int)(180 * effectsLevel / (decimal)100));
-                float frequency = (effectsLevel / 10);
+                float frequency = ((float)effectsLevel / 10);
                 source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = wetDryMix, Delay = delay, Frequency = frequency, Feedback = feedback });
             }
 
