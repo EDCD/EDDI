@@ -588,7 +588,7 @@ namespace EddiSpeechService
                             }
 
                             wmSynth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                            wmSynth.Options.AudioVolume = Math.Round((double) Configuration.Volume / 100);
+                            wmSynth.Options.AudioVolume = (double)Configuration.Volume / 100;
                             Logging.Debug(JsonConvert.SerializeObject(Configuration));
 
                             PrepareSpeech(voice, ref speech, out var useSSML);
