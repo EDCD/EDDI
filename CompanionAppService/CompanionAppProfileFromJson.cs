@@ -53,6 +53,7 @@ namespace EddiCompanionAppService
                 };
                 Profile.Cmdr = Commander;
                 Profile.docked = (bool)json["commander"]["docked"];
+                Profile.onFoot = (bool)json["commander"]["onfoot"];
                 Profile.alive = (bool)json["commander"]["alive"];
 
                 if (json["commander"]["capabilities"] != null)
@@ -81,7 +82,7 @@ namespace EddiCompanionAppService
                 {
                     Profile.LastStation = new ProfileStation
                     {
-                        name = (string)json["lastStarport"]["name"],
+                        name = ((string)json["lastStarport"]["name"])?.ReplaceEnd('+'),
                         marketId = (long?)json["lastStarport"]["id"]
                     };
                     if ((bool)json["commander"]["docked"])
@@ -121,7 +122,7 @@ namespace EddiCompanionAppService
             ProfileStation lastStation = null;
             try
             {
-                string lastStarport = (string)marketJson["lastStarport"]["name"];
+                string lastStarport = ((string)marketJson["lastStarport"]["name"])?.ReplaceEnd('+');
                 long? marketId = (long?)marketJson["lastStarport"]["id"];
                 lastStation = new ProfileStation
                 {

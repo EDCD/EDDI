@@ -2964,7 +2964,7 @@ namespace EddiCore
                             }
 
                             // If we're docked, the lastStation information is located within the lastSystem identified by the profile
-                            if (profile.docked && Environment == Constants.ENVIRONMENT_DOCKED)
+                            if ((profile.docked || profile.onFoot) && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
                                 Logging.Debug("Fetching station profile");
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemAddress, CurrentStarSystem.systemname);

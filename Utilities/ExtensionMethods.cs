@@ -26,5 +26,18 @@ namespace Utilities
                    (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
                    (token.Type == JTokenType.Null);
         }
+
+        // Remove undesired characters from end of a string (like the +++ on the end of some station names)
+        public static string ReplaceEnd(this string str, char endreplace)
+        {
+            if (string.IsNullOrEmpty(str) || !char.IsWhiteSpace(endreplace)) { return str; }
+            str = str.Trim();
+            var ep = str.Length - 1;
+            while (ep >= 0 && str[ep] == endreplace)
+            {
+                ep--;
+            }
+            return str.Substring(0, ep + 1);
+        }
     }
 }

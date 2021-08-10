@@ -29,6 +29,9 @@ namespace EddiCompanionAppService
         /// <summary>Whether this profile describes a docked commander</summary>
         public bool docked { get; set; }
 
+        /// <summary>Whether this profile describes an on-foot commander</summary>
+        public bool onFoot { get; set; }
+
         /// <summary>Whether this profile describes a currently living commander</summary>
         public bool alive { get; set; }
 
