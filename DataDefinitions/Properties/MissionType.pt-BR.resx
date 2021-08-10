@@ -252,7 +252,10 @@
     <value>Alvos da Guerra</value>
     <comment>Massacre mission type</comment>
   </data>
-  
+  <data name="Skimmer" xml:space="preserve">
+    <value>Alvos Skimmer</value>
+    <comment>Massacre type</comment>
+  </data>
   <data name="Hard" xml:space="preserve">
     <value>Difícil</value>
     <comment>Mission difficulty</comment>
