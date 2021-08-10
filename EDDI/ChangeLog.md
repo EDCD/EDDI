@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.1-b3
+  * Core
+    * Fixed a bug that would cause speech volume for some voices to be either 0% or 100%.
+
 ### 4.0.1-b2
   * Core
     * Unlocked *most* previously unavailable Windows voices.
