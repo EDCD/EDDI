@@ -119,13 +119,19 @@ namespace EddiSpeechService
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
-            var temp = RuntimeEnvironment.GetSystemVersion();
-            if (ApiInformation.IsTypePresent("Windows.Media.SpeechSynthesis.SpeechSynthesizer"))
+            try
             {
-                // Prep the Windows.Media.SpeechSynthesis synthesizer
-                windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
+                if (ApiInformation.IsTypePresent("Windows.Media.SpeechSynthesis.SpeechSynthesizer"))
+                {
+                    // Prep the Windows.Media.SpeechSynthesis synthesizer
+                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
+                }
             }
-
+            catch (Exception e)
+            {
+                Logging.Warn($"Unable to initialize Windows.Media.SpeechSynthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e);
+            }
+            
             // Prep the System.Speech synthesizer
             systemSpeechSynth = new SystemSpeechSynthesizer(ref voiceStore);
             
