@@ -10,11 +10,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.Win32;
+using Windows.Foundation.Metadata;
+using EddiSpeechService.SpeechPreparation;
+using EddiSpeechService.SpeechSynthesizers;
 using Utilities;
 
 namespace EddiSpeechService
@@ -23,6 +25,7 @@ namespace EddiSpeechService
     public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
+
         public SpeechServiceConfiguration Configuration
         {
             get => configuration;
@@ -37,17 +40,17 @@ namespace EddiSpeechService
         }
         private SpeechServiceConfiguration configuration;
 
-        public List<VoiceDetails> allVoices { get; private set; } = new List<VoiceDetails>();
+        private readonly SystemSpeechSynthesizer systemSpeechSynth;
+        private readonly WindowsMediaSynthesizer windowsMediaSynth;
+
+        public List<VoiceDetails> allVoices { get; }
         public List<string> allvoices => allVoices.Select(v => v.name).ToList();
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut _activeSpeech;
         private ISoundOut activeSpeech
         {
-            get
-            {
-                return _activeSpeech;
-            }
+            get => _activeSpeech;
             set
             {
                 eddiSpeaking = value != null;
@@ -56,7 +59,7 @@ namespace EddiSpeechService
         }
         private int activeSpeechPriority;
 
-        public SpeechQueue speechQueue = SpeechQueue.Instance;
+        public readonly SpeechQueue speechQueue = SpeechQueue.Instance;
 
         private static bool _eddiSpeaking;
         public bool eddiSpeaking
@@ -93,10 +96,6 @@ namespace EddiSpeechService
             }
         }
 
-        private static readonly object synthLock = new object();
-        private readonly System.Speech.Synthesis.SpeechSynthesizer systemSynth = new System.Speech.Synthesis.SpeechSynthesizer();
-        private readonly Windows.Media.SpeechSynthesis.SpeechSynthesizer wmSynth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
-
         public void Dispose()
         {
             Dispose(true);
@@ -109,11 +108,8 @@ namespace EddiSpeechService
         {
             if (disposing)
             {
-                lock (synthLock)
-                {
-                    systemSynth?.Dispose();
-                    wmSynth?.Dispose();
-                }
+                systemSpeechSynth?.Dispose();
+                windowsMediaSynth?.Dispose();
             }
         }
 
@@ -122,70 +118,16 @@ namespace EddiSpeechService
             Configuration = SpeechServiceConfiguration.FromFile();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
-            bool TryOneCoreVoice(VoiceDetails voiceDetails)
+            // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
+            var temp = RuntimeEnvironment.GetSystemVersion();
+            if (ApiInformation.IsTypePresent("Windows.Media.SpeechSynthesis.SpeechSynthesizer"))
             {
-                // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
-                // so we test the registry entries for each voice to see if it is really fully registered.
-                var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
-                var voiceKeys = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
-                if (voiceKeys != null)
-                {
-                    foreach (var subKeyName in voiceKeys.GetSubKeyNames())
-                    {
-                        var voiceKey = Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
-                        var voiceName = voiceKey?.GetValue("").ToString();
-                        if (voiceName?.Contains(voiceDetails.name) ?? false)
-                        {
-                            return true;
-                        }
-                    }
-                }
-                return false;
+                // Prep the Windows.Media.SpeechSynthesis synthesizer
+                windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
             }
 
-            // Get all available voices from Windows.Media.SpeechSynthesis
-            foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
-            {
-                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
-
-                // Skip voices which are not fully registered
-                if (!TryOneCoreVoice(voiceDetails)) { continue; }
-
-                voiceStore.Add(voiceDetails);
-                Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voiceDetails)}");
-            }
-
-            // Get all available voices from System.Speech.Synthesis
-            lock (synthLock)
-            {
-                var systemSpeechVoices = systemSynth
-                    .GetInstalledVoices()
-                    .Where(v => v.Enabled &&
-                                !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
-                    .ToList();
-                foreach (var voice in systemSpeechVoices)
-                {
-                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
-
-                    // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
-                    // (for example, if OneCore voices have been added to System.Speech with a registry edit)
-                    if (voiceStore.Any(v => v.name == voiceDetails.name))
-                    {
-                        continue;
-                    }
-
-                    // Skip voices "Desktop" variant voices from System.Speech.Synthesis
-                    // where we already have a (newer) OneCore version
-                    if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
-                    {
-                        continue;
-                    }
-
-                    voiceStore.Add(voiceDetails);
-                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voiceDetails)}");
-                }
-            }
+            // Prep the System.Speech synthesizer
+            systemSpeechSynth = new SystemSpeechSynthesizer(ref voiceStore);
             
             // Sort results alphabetically by voice name
             allVoices = voiceStore.OrderBy(v => v.name).ToList();
@@ -244,7 +186,7 @@ namespace EddiSpeechService
             // If the user wants to disable IPA then we remove any IPA phoneme tags here
             if (Configuration.DisableIpa && speech.Contains("<phoneme"))
             {
-                speech = DisableIPA(speech);
+                speech = SpeechFormatter.DisableIPA(speech);
             }
 
             if (string.IsNullOrWhiteSpace(voice))
@@ -252,31 +194,22 @@ namespace EddiSpeechService
                 voice = Configuration.StandardVoice;
             }
 
-            // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
-            string[] separators =
-            {
-                        @"(<audio.*?>)",
-                        @"(<transmit.*?>[\s\S]*?<\/transmit>)",
-                        @"(<voice.*?>[\s\S]*?<\/voice>)",
-                    };
-            List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
+            List<string> statements = SpeechFormatter.SeparateSpeechStatements(speech);
 
             foreach (string Statement in statements)
             {
                 string statement = Statement;
 
                 bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
-                bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
-
                 if (isAudio)
                 {
-                    statement = Regex.Replace(statement, "^.*<audio", "<audio");
-                    statement = Regex.Replace(statement, ">.*$", ">");
+                    statement = SpeechFormatter.FormatAudioTags(statement);
                 }
-                else if (isRadio)
+
+                bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
+                if (isRadio)
                 {
-                    statement = statement.Replace("<transmit>", "");
-                    statement = statement.Replace("</transmit>", "");
+                    statement = SpeechFormatter.StripRadioTags(statement);
                 }
 
                 using (Stream stream = getSpeechStream(voice, statement))
@@ -307,39 +240,6 @@ namespace EddiSpeechService
                     play(source, priority);
                 }
             }
-        }
-
-        private static string DisableIPA(string speech)
-        {
-            // User has disabled IPA so remove all IPA phoneme tags
-            Logging.Debug("Phonetic speech is disabled, removing.");
-            speech = Regex.Replace(speech, @"<phoneme.*?>", string.Empty);
-            speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
-            return speech;
-        }
-
-        private static List<string> SeparateSpeechStatements(string speech, string separators)
-        {
-            // Separate speech into statements that can be handled differently & sequentially by the speech service
-            List<string> statements = new List<string>();
-
-            Match match = Regex.Match(speech, separators);
-            if (match.Success)
-            {
-                string[] splitSpeech = new Regex(separators).Split(speech);
-                foreach (string split in splitSpeech)
-                {
-                    if (Regex.Match(split, @"\S").Success) // Trim out non-word statements; match only words
-                    {
-                        statements.Add(split);
-                    }
-                }
-            }
-            else
-            {
-                statements.Add(speech);
-            }
-            return statements;
         }
 
         // Play a source
@@ -392,17 +292,14 @@ namespace EddiSpeechService
         {
             try
             {
-                lock (synthLock)
+                if (string.IsNullOrEmpty(voice))
                 {
-                    if (string.IsNullOrEmpty(voice))
-                    {
-                        voice = wmSynth.Voice.DisplayName;
-                    }
+                    voice = windowsMediaSynth?.voice;
+                }
 
-                    if (string.IsNullOrEmpty(voice))
-                    {
-                        voice = systemSynth.Voice.Name;
-                    }
+                if (string.IsNullOrEmpty(voice))
+                {
+                    voice = systemSpeechSynth?.voice;
                 }
 
                 if (string.IsNullOrEmpty(voice))
@@ -416,12 +313,14 @@ namespace EddiSpeechService
                     // Try again, with speech devoid of SSML
                     stream = speak(voice, Regex.Replace(speech, "<.*?>", string.Empty));
                 }
+
                 return stream;
             }
             catch (Exception ex)
             {
                 Logging.Warn("Speech failed (" + Encoding.Default.EncodingName + ")", ex);
             }
+
             return null;
         }
 
@@ -440,214 +339,13 @@ namespace EddiSpeechService
         {
             if (voiceDetails?.synthType is nameof(System.Speech.Synthesis))
             {
-                Logging.Debug($"Selecting {nameof(System.Speech.Synthesis)} synthesizer");
-                return SystemSpeechSynthesis(voiceDetails, speech);
+                return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
             }
             else if (voiceDetails?.synthType is nameof(Windows.Media.SpeechSynthesis))
             {
-                Logging.Debug($"Selecting {nameof(Windows.Media.SpeechSynthesis)} synthesizer");
-                return WindowsMediaSpeechSynthesis(voiceDetails, speech).AsStreamForRead();
+                return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
             }
             return null;
-        }
-
-        private static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
-        {
-            var lexicons = voice.GetLexicons();
-            if (speech.Contains("<") || lexicons.Any())
-            {
-                // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
-                var xmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
-
-                // SSML "speak" tag must use version 1.0. This synthesizer rejects version 1.1.
-                var speakHeader = $@"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis/synthesis.xsd"" xml:lang=""{voice.culturecode}"">";
-                var speakFooter = @"</speak>";
-
-                // Lexicons are applied as a child element to the `speak` element
-                var lexiconString = lexicons.Aggregate(string.Empty, (current, lexiconFile) => current + $"<lexicon uri=\"{lexiconFile}\" type=\"application/pls+xml\"/>");
-
-                var speakBody = lexiconString + escapeSsml(speech);
-
-                // Put it all together
-                speech = xmlHeader + speakHeader + speakBody + speakFooter;
-
-                if (voice.name.StartsWith("CereVoice "))
-                {
-                    // Cereproc voices do not respect `SpeakSsml` (particularly for IPA), but they do handle SSML via the `Speak` method.
-                    Logging.Debug("Working around CereVoice SSML support");
-                    useSSML = false;
-                }
-                else
-                {
-                    useSSML = true;
-                }
-            }
-            else
-            {
-                useSSML = false;
-            }
-        }
-
-        private MemoryStream SystemSpeechSynthesis(VoiceDetails voice, string speech)
-        {
-            if (voice is null || speech is null) { return null; }
-
-            // Speak using the system's native speech synthesizer (System.Speech.Synthesis). 
-            var stream = new MemoryStream();
-            var synthThread = new Thread(() =>
-            {
-                    try
-                    {
-                        lock (synthLock)
-                        {
-                            if (!voice.name.Equals(systemSynth.Voice.Name))
-                            {
-                                Logging.Debug("Selecting voice " + voice);
-                                systemSynth.SelectVoice(voice.name);
-                            }
-
-                            systemSynth.Rate = Configuration.Rate;
-                            systemSynth.Volume = Configuration.Volume;
-                            systemSynth.SetOutputToWaveStream(stream);
-                            Logging.Debug(JsonConvert.SerializeObject(Configuration));
-                            PrepareSpeech(voice, ref speech, out var useSSML);
-                            if (useSSML)
-                            {
-                                try
-                                {
-                                    Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                                    systemSynth.SpeakSsml(speech);
-                                }
-                                catch (Exception ex)
-                                {
-                                    var badSpeech = new Dictionary<string, object>()
-                                    {
-                                        {"voice", voice},
-                                        {"speech", speech},
-                                        {"exception", ex}
-                                    };
-                                    Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                    systemSynth.SpeakSsml(DisableIPA(speech));
-                                }
-                            }
-                            else
-                            {
-                                Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                                systemSynth.Speak(speech);
-                            }
-                        }
-
-                        stream.Position = 0;
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        Logging.Debug("Thread aborted");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Warn("Speech failed: ", ex);
-                        var badSpeech = new Dictionary<string, object>()
-                        {
-                            {"voice", voice},
-                            {"speech", speech},
-                        };
-                        string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                        Logging.Info("Speech failed", badSpeechJSON);
-                    }
-            });
-            synthThread.Start();
-            synthThread.Join();
-            return stream;
-        }
-
-        private Windows.Media.SpeechSynthesis.SpeechSynthesisStream WindowsMediaSpeechSynthesis(VoiceDetails voice, string speech)
-        {
-            if (voice is null || speech is null) { return null; }
-
-            // Speak using the Windows.Media.SpeechSynthesis speech synthesizer. 
-            Windows.Media.SpeechSynthesis.SpeechSynthesisStream stream = null;
-            var synthThread = new Thread(() =>
-            {
-                    try
-                    {
-                        double ConvertSpeakingRate(int rate)
-                        {
-                            // Convert from rate from -10 to 10 (with 0 being normal speed) to rate from 0.5X to 3X (with 1.0 being normal speed)
-                            var result = 1.0;
-                            if (rate < 0)
-                            {
-                                result += rate * 0.05;
-                            }
-                            else if (rate > 0)
-                            {
-                                result += rate * 0.2;
-                            }
-
-                            return result;
-                        }
-
-                        lock (synthLock)
-                        {
-                            if (!voice.name.Equals(wmSynth.Voice.DisplayName))
-                            {
-                                Logging.Debug("Selecting voice " + voice);
-                                wmSynth.Voice =
-                                    Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
-                                        v.DisplayName == voice.name);
-                            }
-
-                            wmSynth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                            wmSynth.Options.AudioVolume = (double)Configuration.Volume / 100;
-                            Logging.Debug(JsonConvert.SerializeObject(Configuration));
-
-                            PrepareSpeech(voice, ref speech, out var useSSML);
-                            if (useSSML)
-                            {
-                                try
-                                {
-                                    Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                                    stream = wmSynth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
-                                }
-                                catch (Exception ex)
-                                {
-                                    var badSpeech = new Dictionary<string, object>()
-                                    {
-                                        {"voice", voice},
-                                        {"speech", speech},
-                                        {"exception", ex}
-                                    };
-                                    Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                    stream = wmSynth.SynthesizeSsmlToStreamAsync(DisableIPA(speech)).AsTask().Result;
-                                }
-                            }
-                            else
-                            {
-                                Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                                stream = wmSynth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
-                            }
-                        }
-
-                        stream.Seek(0);
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        Logging.Debug("Thread aborted");
-                    }
-                    catch (Exception ex)
-                    {
-                        var badSpeech = new Dictionary<string, object>()
-                        {
-                            {"voice", voice},
-                            {"speech", speech},
-                            {"exception", ex}
-                        };
-                        string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                        Logging.Warn("Speech failed", badSpeechJSON);
-                    }
-            });
-            synthThread.Start();
-            synthThread.Join();
-            return stream;
         }
 
         private void StartSpeech(ref ISoundOut soundout, int priority)
@@ -673,58 +371,6 @@ namespace EddiSpeechService
                 }
                 Thread.Sleep(10);
             }
-        }
-
-        public static string escapeSsml(string text)
-        {
-            // Our input text might have SSML elements in it but the rest needs escaping
-            string result = text;
-
-            // We need to make sure file names for the play function include a "/" (e.g. C:/)
-            result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2%SSS%" + "$3");
-
-            // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
-            // Also escape any double quotes or single quotes inside the elements
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "<(audio.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(break.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(play.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(phoneme.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/phoneme)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(prosody.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/prosody)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(emphasis.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/emphasis)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(transmit.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/transmit)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(voice.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/voice)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(say-as.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/say-as)>", "%XXX%$1%YYY%");
-
-            // Cereproc uses some additional custom SSML tags (documented in https://www.cereproc.com/files/CereVoiceCloudGuide.pdf)
-            result = Regex.Replace(result, "<(usel.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/usel)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(spurt.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/spurt)>", "%XXX%$1%YYY%");
-
-            // Now escape anything that is still present
-            result = SecurityElement.Escape(result) ?? "";
-
-            // Put back the characters we hid
-            result = Regex.Replace(result, "%XXX%", "<");
-            result = Regex.Replace(result, "%YYY%", ">");
-            result = Regex.Replace(result, "%ZZZ%", "\"");
-            result = Regex.Replace(result, "%WWW%", "\'");
-            result = Regex.Replace(result, "%SSS%", @"\");
-            return result;
         }
 
         public void StopCurrentSpeech()
