@@ -120,42 +120,7 @@ namespace EddiSpeechService
         private SpeechService()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
-            
-            // Get all available voices from Windows.Media.SpeechSynthesis
-            foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
-            {
-                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
-
-                // Skip voices which are not fully registered
-                if (!TryOneCoreVoice(voiceDetails)) { continue; } 
-
-                allVoices.Add(voiceDetails);
-            }
-
-            // Get all available voices from System.Speech.Synthesis
-            lock (synthLock)
-            {
-                var systemSpeechVoices = systemSynth
-                    .GetInstalledVoices()
-                    .Where(v => v.Enabled &&
-                                !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
-                    .ToList();
-                foreach (var voice in systemSpeechVoices)
-                {
-                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
-
-                    // Skip voices "Desktop" variant voices from System.Speech.Synthesis
-                    // where we already have a (newer) OneCore version
-                    if (allVoices.Exists(v => v.name + " Desktop" == voiceDetails.name))
-                    {
-                        continue;
-                    }
-
-
-                    allVoices.Add(voiceDetails);
-                }
-            }
+            var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
             bool TryOneCoreVoice(VoiceDetails voiceDetails)
             {
@@ -178,8 +143,52 @@ namespace EddiSpeechService
                 return false;
             }
 
+            // Get all available voices from Windows.Media.SpeechSynthesis
+            foreach (var voice in Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices)
+            {
+                var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(), CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
+
+                // Skip voices which are not fully registered
+                if (!TryOneCoreVoice(voiceDetails)) { continue; }
+
+                voiceStore.Add(voiceDetails);
+                Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voiceDetails)}");
+            }
+
+            // Get all available voices from System.Speech.Synthesis
+            lock (synthLock)
+            {
+                var systemSpeechVoices = systemSynth
+                    .GetInstalledVoices()
+                    .Where(v => v.Enabled &&
+                                !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    .ToList();
+                foreach (var voice in systemSpeechVoices)
+                {
+                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
+                        voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
+
+                    // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
+                    // (for example, if OneCore voices have been added to System.Speech with a registry edit)
+                    if (voiceStore.Any(v => v.name == voiceDetails.name))
+                    {
+                        continue;
+                    }
+
+                    // Skip voices "Desktop" variant voices from System.Speech.Synthesis
+                    // where we already have a (newer) OneCore version
+                    if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
+                    {
+                        continue;
+                    }
+
+                    voiceStore.Add(voiceDetails);
+                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                }
+            }
+            
             // Sort results alphabetically by voice name
-            allVoices = allVoices.OrderBy(v => v.name).ToList();
+            allVoices = voiceStore.OrderBy(v => v.name).ToList();
         }
 
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
@@ -821,7 +830,7 @@ namespace EddiSpeechService
     }
 
     [PublicAPI]
-    public class VoiceDetails
+    public class VoiceDetails : IEquatable<VoiceDetails>
     {
         [PublicAPI]
         public string name { get; }
@@ -939,6 +948,17 @@ namespace EddiSpeechService
                 guess = Culture.Name;
             }
             Logging.Debug($"Best guess culture for {name} is {guess}"); return guess;
+        }
+
+        // Implement IEquatable
+        public bool Equals(VoiceDetails other)
+        {
+            return name == other?.name;
+        }
+
+        public override int GetHashCode()
+        {
+            return name.GetHashCode();
         }
     }
 }
