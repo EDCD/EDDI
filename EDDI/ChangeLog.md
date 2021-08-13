@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 4.0.1-b4
   * Core
-    * Added a speculative fix for a bug that could prevent speech when the same voice has been added to .
+    * Added a speculative fix for a bug that could prevent speech when the same voice is available from multiple speech synthesizers.
     
 ### 4.0.1-b3
   * Core
