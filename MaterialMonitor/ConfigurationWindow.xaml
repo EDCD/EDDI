@@ -44,7 +44,7 @@
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.type_header}" Width="100" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.type_header}" Width="100" IsReadOnly="True" Binding="{Binding Path=category}"></DataGridTextColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.inventory_header}" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
