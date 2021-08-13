@@ -361,10 +361,7 @@ namespace UnitTests
         {
             // Test removal of <phoneme> tags (and only phenome tags) when the user has indicated that they would like to disable phonetic speech
             var line = @"<break time=""100ms""/><phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> & Co's shop";
-
-            var service = new PrivateType(typeof(SpeechService));
-            var result = service.InvokeStatic("DisableIPA", line)?.ToString();
-
+            var result = SpeechFormatter.DisableIPA(line);
             Assert.AreEqual(@"<break time=""100ms""/>Shinrarta Dezhra & Co's shop", result);
         }
     }
