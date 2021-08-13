@@ -294,7 +294,7 @@ namespace EddiDataDefinitions
                 {
                     if (materialPresence?.definition?.edname == materialEdName)
                     {
-                        if (materialPresence.percentage > percentage)
+                        if (materialPresence?.percentage > percentage)
                         {
                             percentage = materialPresence.percentage;
                             bestBody = body;
