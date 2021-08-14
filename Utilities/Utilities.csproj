@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OSInfo.cs" />
     <Compile Include="MetaVariables.cs" />
     <Compile Include="CustomAttributes.cs" />
     <Compile Include="Functions.cs" />

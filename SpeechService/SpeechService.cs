@@ -120,17 +120,10 @@ namespace EddiSpeechService
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                if (OSInfo.TryGetWindowsVersion(out var osVersion) && osVersion.Major >= 10)
                 {
-                    var osVersionString = Regex.Match(RuntimeInformation.OSDescription.Trim(), @"(?<=\s)((?>\d+.){1,3}(?>\d+)(?>\/\d+)?)$").Value;
-                    if (!string.IsNullOrEmpty(osVersionString))
-                    {
-                        if (System.Version.TryParse(osVersionString, out var osVersion) && osVersion.Major >= 10)
-                        {
-                            // Prep the Windows.Media.SpeechSynthesis synthesizer
-                            windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
-                        }
-                    }
+                    // Prep the Windows.Media.SpeechSynthesis synthesizer
+                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
                 }
             }
             catch (Exception e)
