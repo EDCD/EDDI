@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Utilities
 {
-    public class OSInfo
+    public static class OSInfo
     {
         public static bool TryGetWindowsVersion(out System.Version osVersion)
         {
