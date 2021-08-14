@@ -2,6 +2,8 @@
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using EddiDataDefinitions;
+using EddiSpeechService.SpeechPreparation;
+using EddiSpeechService.SpeechSynthesizers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Windows.Foundation.Metadata;
-using EddiSpeechService.SpeechPreparation;
-using EddiSpeechService.SpeechSynthesizers;
 using Utilities;
 
 namespace EddiSpeechService
@@ -121,10 +120,17 @@ namespace EddiSpeechService
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
             {
-                if (ApiInformation.IsTypePresent("Windows.Media.SpeechSynthesis.SpeechSynthesizer"))
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
+                    var osVersionString = Regex.Match(RuntimeInformation.OSDescription.Trim(), @"(?<=\s)((?>\d+.){1,3}(?>\d+)(?>\/\d+)?)$").Value;
+                    if (!string.IsNullOrEmpty(osVersionString))
+                    {
+                        if (System.Version.TryParse(osVersionString, out var osVersion) && osVersion.Major >= 10)
+                        {
+                            // Prep the Windows.Media.SpeechSynthesis synthesizer
+                            windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
+                        }
+                    }
                 }
             }
             catch (Exception e)

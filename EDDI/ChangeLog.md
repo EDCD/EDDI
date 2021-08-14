@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.1-b5
+  * Core
+    * Improve speech service detection of older Windows versions. 
+
 ### 4.0.1-b4
   * Core
     * Added a speculative fix for a bug that could prevent speech when the same voice is available from multiple speech synthesizers.
