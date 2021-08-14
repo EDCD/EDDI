@@ -475,6 +475,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
   - *permitname* - (If using SystemDetails()) The name of the permit required for visiting this system, if any
   - *signalsources* - a list of signals detected within the starsystem (for the current starsystem only)
   - *carriersignalsources* - a list of signals detected within the starsystem, filtered  to only return fleet carrier signals (for the current star system only) 
+  - *surfaceelements* - the elements available from bodies in this starsystem (as an array of material names)
   - *isgreen* - true if bodies in this starsystem contain all elements required for FSD synthesis
   - *isgold* - true if bodies in this starsystem contain all elements available from surface prospecting
   - *estimatedvalue* - the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)

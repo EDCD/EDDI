@@ -37,20 +37,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [PublicAPI, JsonProperty] // Required to deserialize to the private setter
-        public ImmutableList<Body> bodies
-        {
-            get => _bodies;
-            private set
-            {
-                if (value == _bodies)
-                {
-                    return;
-                }
-                materialsAvailable = MaterialsOnBodies(value);
-                _bodies = value;
-            }
-        }
-        private ImmutableList<Body> _bodies;
+        public ImmutableList<Body> bodies { get; private set; }
 
         public Body BodyWithID(long? bodyID)
         {
@@ -308,22 +295,17 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
-        private HashSet<Material> materialsAvailable = new HashSet<Material>();
+        private HashSet<Material> materialsAvailable => bodies?
+            .SelectMany(b => b.materials)
+            .Select(m => m.definition)
+            .Distinct()
+            .OrderByDescending(m => m.Rarity.level)
+            .ToHashSet() ?? new HashSet<Material>();
 
-        private HashSet<Material> MaterialsOnBodies(IEnumerable<Body> bodies)
-        {
-            HashSet<Material> result = new HashSet<Material>();
-            if (bodies == null) { return result; }
-            foreach (Body body in bodies)
-            {
-                if (body?.materials == null) { continue; }
-                foreach (MaterialPresence presence in body.materials)
-                {
-                    result.Add(presence.definition);
-                }
-            }
-            return result;
-        }
+        // Not intended to be user facing - materials available from system bodies
+        [PublicAPI]
+        public HashSet<string> surfaceelements => materialsAvailable
+            .Select(m => m.localizedName).ToHashSet();
 
         // Discoverable bodies as reported by a discovery scan "honk"
         [PublicAPI, JsonProperty("discoverableBodies")]
@@ -355,9 +337,6 @@ namespace EddiDataDefinitions
         private void OnDeserialized(StreamingContext context)
         {
             OnFactionDeserialized();
-
-            materialsAvailable = MaterialsOnBodies(bodies);
-
             additionalJsonData = null;
         }
 
