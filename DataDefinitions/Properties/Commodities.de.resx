@@ -946,7 +946,7 @@
     <comment>Commodity OchoengChillies</comment>
   </data>
   <data name="OnionHead" xml:space="preserve">
-    <value>Zwiebelkopf</value>
+    <value>Onionhead</value>
     <comment>Commodity OnionHead</comment>
   </data>
   <data name="OnionHeadA" xml:space="preserve">
@@ -954,7 +954,7 @@
     <comment>Commodity OnionheadAlphaStrain</comment>
   </data>
   <data name="OnionHeadB" xml:space="preserve">
-    <value>Beta-Stamm Onionhead</value>
+    <value>Onionhead (Beta)</value>
     <comment>Commodity OnionheadBetaStrain</comment>
   </data>
   <data name="OphiuchiExinoArtefacts" xml:space="preserve">
