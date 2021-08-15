@@ -950,7 +950,7 @@
     <comment>Commodity OnionHead</comment>
   </data>
   <data name="OnionHeadA" xml:space="preserve">
-    <value>Alpha-Stamm Onionhead</value>
+    <value>Onionhead (Alpha)</value>
     <comment>Commodity OnionheadAlphaStrain</comment>
   </data>
   <data name="OnionHeadB" xml:space="preserve">
@@ -1258,7 +1258,7 @@
     <comment>Commodity ToxicWaste</comment>
   </data>
   <data name="TransgenicOnionHead" xml:space="preserve">
-    <value>Lucan Zwiebelkopf</value>
+    <value>Lucan Onionhead</value>
     <comment>Commodity TransgenicOnionHead</comment>
   </data>
   <data name="TrinketsOfFortune" xml:space="preserve">
@@ -1769,5 +1769,8 @@
     <value>Uzumokusische niedrig-G Flügel</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
-  
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Onionhead (Gamma)</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
 </root>
