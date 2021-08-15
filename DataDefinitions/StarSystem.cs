@@ -303,7 +303,7 @@ namespace EddiDataDefinitions
             .ToHashSet() ?? new HashSet<Material>();
 
         // Not intended to be user facing - materials available from system bodies
-        [PublicAPI]
+        [PublicAPI, JsonIgnore]
         public HashSet<string> surfaceelements => materialsAvailable
             .Select(m => m.localizedName).ToHashSet();
 
