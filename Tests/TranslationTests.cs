@@ -168,20 +168,10 @@ namespace UnitTests
         [DataRow("XTE J1748-288", @"<say-as interpret-as=""characters"">X</say-as> <say-as interpret-as=""characters"">T</say-as> <say-as interpret-as=""characters"">E</say-as> <say-as interpret-as=""characters"">J</say-as> 1 7 4 8 dash 2 8 8")]
         [DataRow("9 G. Carinae", @"9 <say-as interpret-as=""characters"">G</say-as> <phoneme alphabet=""ipa"" ph=""kəˈriːniː"">Carinae</phoneme>")]
         [DataRow("LP 355-64", @"<say-as interpret-as=""characters"">L</say-as> <say-as interpret-as=""characters"">P</say-as> 3 5 5 dash 64")]
+        [DataRow("Llyr", @"Llyr")]
         public void TestTranslateStarSystems(string source, string expected)
         {
             Assert.AreEqual(expected, Translations.GetTranslation(source));
-        }
-
-        [TestMethod]
-        public void TestTranslateStarSystemsStability()
-        {
-            string[] starSystems = Resources.starsystems.Split(new[] { '\r', '\n' });
-
-            foreach (string starSystem in starSystems)
-            {
-                Translations.GetTranslation(starSystem);
-            }
         }
 
         [TestMethod]
