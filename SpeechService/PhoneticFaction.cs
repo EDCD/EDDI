@@ -27,6 +27,13 @@ namespace EddiSpeechService
             }
 
             // Faction names can contain system names; hunt them down and change them
+            foreach (var pronunciation in STAR_SYSTEM_FIXES)
+            {
+                if (faction.Contains(pronunciation.Key))
+                {
+                    return faction.Replace(pronunciation.Key, pronunciation.Value);
+                }
+            }
             foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
             {
                 if (faction.Contains(pronunciation.Key))
