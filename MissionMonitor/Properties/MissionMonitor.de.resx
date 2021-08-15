@@ -150,7 +150,9 @@
   <data name="header_status" xml:space="preserve">
     <value>Status</value>
   </data>
-  
+  <data name="header_tags" xml:space="preserve">
+    <value>Tags:</value>
+  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Informationen zum Fortschritt Ihren Missionen.</value>
   </data>
@@ -184,11 +186,25 @@
   <data name="update_route_button_text" xml:space="preserve">
     <value>Route aktualisieren:</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="header_originsystem" xml:space="preserve">
+    <value>Ursprungsystem:</value>
+  </data>
+  <data name="header_originstation" xml:space="preserve">
+    <value>Ursprungstation:</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>Fraktion:</value>
+  </data>
+  <data name="header_cg_tier" xml:space="preserve">
+    <value>Stufe:</value>
+  </data>
+  <data name="header_cg_percentileband" xml:space="preserve">
+    <value>Prozentbereich:</value>
+  </data>
+  <data name="header_cg_reward" xml:space="preserve">
+    <value>Belohnung (Credits):</value>
+  </data>
 </root>
