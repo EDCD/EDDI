@@ -120,7 +120,9 @@
   <data name="Altruism" xml:space="preserve">
     <value>Spende</value>
   </data>
-  
+  <data name="Credits" xml:space="preserve">
+    <value>Credits</value>
+  </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Attentat</value>
   </data>
@@ -206,29 +208,62 @@
   
   
   
+  <data name="Welcome" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>Illegal</value>
+  </data>
   
   
   
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>Megaschiff ausschalten</value>
+  </data>
+  
+  <data name="HackMegaship" xml:space="preserve">
+    <value>Megaschiff hacken</value>
+  </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>Bürgerkriegsziele</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>Kriegsziele</value>
+    <comment>Massacre mission type</comment>
+  </data>
   
   
   
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+    <comment>Hack type</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="NCD" xml:space="preserve">
+    <value>Gewaltfrei</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Siedlung hochfahren</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>Siedlung aktivieren</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Siedlung herunterfahren</value>
+    <comment>Sabotage type</comment>
+  </data>
   
   
   
