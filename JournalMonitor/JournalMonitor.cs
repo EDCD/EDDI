@@ -2174,7 +2174,7 @@ namespace EddiJournalMonitor
                                     StarSystem system = EDDI.Instance?.CurrentStarSystem;
                                     Body body = null;
 
-                                    if (bodyName.EndsWith(" Ring"))
+                                    if (system != null && bodyName.EndsWith(" Ring"))
                                     {
                                         // We've mapped a ring. 
                                         Ring ring = null;
