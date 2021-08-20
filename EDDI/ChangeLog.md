@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 4.0.1
+  * Core
+    * Promote 4.0.1-rc1 to 4.0.1
+
 ### 4.0.1-rc1
   * Core
     * Promote 4.0.1-b5 to rc1
