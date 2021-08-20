@@ -4384,7 +4384,7 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan":
                             case "DropItems":
                             case "EngineerLegacyConvert":
-                            case "FssBodySignals":
+                            case "FSSBodySignals":
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
@@ -4831,7 +4831,6 @@ namespace EddiJournalMonitor
             "EndCrewSession",
             "EscapeInterdiction",
             "FSDTarget",
-            "FSSBodySignals",
             "FuelScoop",
             "HeatDamage",
             "HeatWarning",
