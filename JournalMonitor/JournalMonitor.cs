@@ -4831,6 +4831,7 @@ namespace EddiJournalMonitor
             "EndCrewSession",
             "EscapeInterdiction",
             "FSDTarget",
+            "FSSBodySignals",
             "FuelScoop",
             "HeatDamage",
             "HeatWarning",
