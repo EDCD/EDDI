@@ -50,7 +50,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_percentileband}" Margin="15, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding communalPercentileBand, StringFormat={}{0}%}" Margin="5, 0" />
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_reward}" Margin="15, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward}" Margin="5, 0" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward, StringFormat={}{0:n0}}" Margin="5, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 0" />
                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 0" />
