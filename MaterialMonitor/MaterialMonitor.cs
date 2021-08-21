@@ -311,7 +311,17 @@ namespace EddiMaterialMonitor
                 }
 
                 var previous = ma.amount;
-                ma.amount += amount;
+
+                // Calculate a hard maximum storage limit for the material from its rarity level
+                var max = 300;
+                var rarityLevel = Material.FromEDName(ma.edname).Rarity.level;
+                if (rarityLevel > 0)
+                {
+                    max = -50 * (rarityLevel) + 350;
+                }
+
+                // Add our amount, not exceeding our storage maximum
+                ma.amount += Math.Min(amount, max - ma.amount);
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
                 if (ma.maximum != null && incMaterialThreshold(previous, ma.amount, ma.maximum))
