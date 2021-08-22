@@ -194,11 +194,6 @@ namespace EddiSpeechService
                 speech = SpeechFormatter.DisableIPA(speech);
             }
 
-            if (string.IsNullOrWhiteSpace(voice))
-            {
-                voice = Configuration.StandardVoice;
-            }
-
             List<string> statements = SpeechFormatter.SeparateSpeechStatements(speech);
 
             foreach (string Statement in statements)
