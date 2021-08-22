@@ -198,21 +198,27 @@ namespace EddiSpeechService
 
             foreach (string Statement in statements)
             {
-                string statement = Statement;
+                string statement = null;
 
-                bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
+                bool isAudio = Statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
                 if (isAudio)
                 {
-                    statement = SpeechFormatter.FormatAudioTags(statement);
+                    statement = SpeechFormatter.FormatAudioTags(Statement);
                 }
 
-                bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
+                bool isRadio = Statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
                 if (isRadio)
                 {
-                    statement = SpeechFormatter.StripRadioTags(statement);
+                    statement = SpeechFormatter.StripRadioTags(Statement);
                 }
 
-                using (Stream stream = getSpeechStream(voice, statement))
+                bool isVoice = Statement.Contains("<voice") || radio; // This is a voice override
+                if (isVoice)
+                {
+                    SpeechFormatter.UnpackVoiceTags(Statement, out voice, out statement);
+                }
+
+                using (Stream stream = getSpeechStream(voice, statement ?? Statement))
                 {
                     if (stream == null)
                     {
@@ -288,7 +294,7 @@ namespace EddiSpeechService
         }
 
         // Obtain the speech memory stream
-        private Stream getSpeechStream(string voice, string speech)
+        public Stream getSpeechStream(string voice, string speech)
         {
             try
             {

@@ -145,6 +145,21 @@ namespace EddiSpeechService.SpeechPreparation
             return statement;
         }
 
+        public static void UnpackVoiceTags(string inputStatement, out string voice, out string outputStatement)
+        {
+            var match = Regex.Match(inputStatement, @"(?<=<voice name="")(.+)(?="" )(?>.)*(?<=>)(.+)(?=<\/voice>)");
+            if (match.Groups.Count >= 2)
+            {
+                voice = match.Groups[1].ToString();
+                outputStatement = match.Groups[2].ToString();
+            }
+            else
+            {
+                voice = null;
+                outputStatement = null;
+            }
+        }
+
         public static string DisableIPA(string speech)
         {
             // User has disabled IPA so remove all IPA phoneme tags
