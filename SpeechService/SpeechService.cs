@@ -198,7 +198,7 @@ namespace EddiSpeechService
 
             foreach (string Statement in statements)
             {
-                string voice = defaultVoice;
+                string voice = null;
                 string statement = null;
 
                 bool isAudio = Statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
@@ -219,7 +219,7 @@ namespace EddiSpeechService
                     SpeechFormatter.UnpackVoiceTags(Statement, out voice, out statement);
                 }
 
-                using (Stream stream = getSpeechStream(voice, statement ?? Statement))
+                using (Stream stream = getSpeechStream(voice ?? defaultVoice, statement ?? Statement))
                 {
                     if (stream == null)
                     {
