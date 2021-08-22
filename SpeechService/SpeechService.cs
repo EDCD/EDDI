@@ -348,11 +348,11 @@ namespace EddiSpeechService
 
         private Stream speak(VoiceDetails voiceDetails, string speech)
         {
-            if (voiceDetails?.synthType is nameof(System.Speech.Synthesis))
+            if (voiceDetails?.synthType is nameof(System))
             {
                 return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
             }
-            else if (voiceDetails?.synthType is nameof(Windows.Media.SpeechSynthesis))
+            else if (voiceDetails?.synthType is nameof(Windows.Media))
             {
                 return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
             }

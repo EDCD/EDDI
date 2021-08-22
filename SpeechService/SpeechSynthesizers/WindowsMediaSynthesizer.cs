@@ -61,7 +61,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 foreach (var voice in SpeechSynthesizer.AllVoices)
                 {
                     var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
-                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media.SpeechSynthesis));
+                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
 
                     // Skip voices which are not fully registered
                     if (!TryOneCoreVoice(voiceDetails))
@@ -77,7 +77,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         internal Stream Speak(VoiceDetails voiceDetails, string speech, SpeechServiceConfiguration Configuration)
         {
-            Logging.Debug($"Selecting {nameof(Windows.Media.SpeechSynthesis)} synthesizer");
+            Logging.Debug($"Selecting {nameof(Windows.Media)} synthesizer");
             return WindowsMediaSpeechSynthesis(voiceDetails, speech, Configuration).AsStreamForRead();
         }
 

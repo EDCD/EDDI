@@ -40,7 +40,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 foreach (var voice in systemSpeechVoices)
                 {
                     var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture, nameof(System.Speech.Synthesis));
+                        voice.VoiceInfo.Culture, nameof(System));
 
                     // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
                     // (for example, if OneCore voices have been added to System.Speech with a registry edit)
@@ -64,7 +64,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         internal Stream Speak(VoiceDetails voiceDetails, string speech, SpeechServiceConfiguration Configuration)
         {
-            Logging.Debug($"Selecting {nameof(System.Speech.Synthesis)} synthesizer");
+            Logging.Debug($"Selecting {nameof(System)} synthesizer");
             return SystemSpeechSynthesis(voiceDetails, speech, Configuration);
         }
 
