@@ -294,6 +294,11 @@ namespace EddiSpeechService
             {
                 if (string.IsNullOrEmpty(voice))
                 {
+                    voice = Configuration.StandardVoice;
+                }
+
+                if (string.IsNullOrEmpty(voice))
+                {
                     voice = windowsMediaSynth?.voice;
                 }
 
