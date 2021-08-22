@@ -184,7 +184,7 @@ namespace EddiSpeechService
             Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
         }
 
-        public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
+        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
         {
             if (speech == null || speech.Trim() == "") { return; }
 
@@ -198,6 +198,7 @@ namespace EddiSpeechService
 
             foreach (string Statement in statements)
             {
+                string voice = defaultVoice;
                 string statement = null;
 
                 bool isAudio = Statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
