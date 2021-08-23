@@ -205,9 +205,14 @@
   <data name="StartZone" xml:space="preserve">
     <value>Startzone</value>
   </data>
+  <data name="OnFoot" xml:space="preserve">
+    <value>Zu Fuß</value>
+  </data>
   
-  
-  
+  <data name="Chain" xml:space="preserve">
+    <value>Kette</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
   <data name="Welcome" xml:space="preserve">
     <value>Willkommen</value>
   </data>
@@ -217,13 +222,17 @@
   <data name="Illegal" xml:space="preserve">
     <value>Illegal</value>
   </data>
-  
+  <data name="Planetary" xml:space="preserve">
+    <value>Planetarisch</value>
+  </data>
   
   
   <data name="DisableMegaship" xml:space="preserve">
     <value>Megaschiff ausschalten</value>
   </data>
-  
+  <data name="Founder" xml:space="preserve">
+    <value>Gründer</value>
+  </data>
   <data name="HackMegaship" xml:space="preserve">
     <value>Megaschiff hacken</value>
   </data>
@@ -237,7 +246,9 @@
   </data>
   
   
-  
+  <data name="Covert" xml:space="preserve">
+    <value>Verdeckt</value>
+  </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
     <comment>Hack type</comment>
@@ -264,7 +275,15 @@
     <value>Siedlung herunterfahren</value>
     <comment>Sabotage type</comment>
   </data>
-  
-  
-  
+  <data name="Production" xml:space="preserve">
+    <value>Unterbrechen der Siedlungsproduktion</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planetarisch</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Politische Gefangene</value>
+    <comment>Bulk passenger type</comment>
+  </data>
 </root>
