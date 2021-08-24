@@ -39,6 +39,8 @@ namespace EddiSpeechService.SpeechSynthesizers
                     .ToList();
                 foreach (var voice in systemSpeechVoices)
                 {
+                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice.VoiceInfo)}");
+
                     var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
                         voice.VoiceInfo.Culture, nameof(System));
 
@@ -57,7 +59,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     }
 
                     voiceStore.Add(voiceDetails);
-                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                    Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
                 }
             }
         }
