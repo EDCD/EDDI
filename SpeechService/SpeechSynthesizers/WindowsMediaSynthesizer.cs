@@ -60,19 +60,26 @@ namespace EddiSpeechService.SpeechSynthesizers
                 // Get all available voices from Windows.Media.SpeechSynthesis
                 foreach (var voice in SpeechSynthesizer.AllVoices)
                 {
-                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice)}");
-
-                    var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
-                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
-
-                    // Skip voices which are not fully registered
-                    if (!TryOneCoreVoice(voiceDetails))
+                    try
                     {
-                        continue;
-                    }
+                        Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice)}");
 
-                    voiceStore.Add(voiceDetails);
-                    Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                        var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
+                            CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
+
+                        // Skip voices which are not fully registered
+                        if (!TryOneCoreVoice(voiceDetails))
+                        {
+                            continue;
+                        }
+
+                        voiceStore.Add(voiceDetails);
+                        Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.Error($"Failed to load {voice.DisplayName}", e);
+                    }
                 }
             }
         }

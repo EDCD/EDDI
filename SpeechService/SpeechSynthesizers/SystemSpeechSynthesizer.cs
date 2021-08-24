@@ -39,27 +39,34 @@ namespace EddiSpeechService.SpeechSynthesizers
                     .ToList();
                 foreach (var voice in systemSpeechVoices)
                 {
-                    Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice.VoiceInfo)}");
-
-                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture, nameof(System));
-
-                    // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
-                    // (for example, if OneCore voices have been added to System.Speech with a registry edit)
-                    if (voiceStore.Any(v => v.name == voiceDetails.name))
+                    try
                     {
-                        continue;
-                    }
+                        Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice.VoiceInfo)}");
 
-                    // Skip voices "Desktop" variant voices from System.Speech.Synthesis
-                    // where we already have a (newer) OneCore version
-                    if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
+                        var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
+                            voice.VoiceInfo.Culture, nameof(System));
+
+                        // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
+                        // (for example, if OneCore voices have been added to System.Speech with a registry edit)
+                        if (voiceStore.Any(v => v.name == voiceDetails.name))
+                        {
+                            continue;
+                        }
+
+                        // Skip voices "Desktop" variant voices from System.Speech.Synthesis
+                        // where we already have a (newer) OneCore version
+                        if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
+                        {
+                            continue;
+                        }
+
+                        voiceStore.Add(voiceDetails);
+                        Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                    }
+                    catch (Exception e)
                     {
-                        continue;
+                        Logging.Error($"Failed to load {voice.VoiceInfo.Name}", e);
                     }
-
-                    voiceStore.Add(voiceDetails);
-                    Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
                 }
             }
         }
