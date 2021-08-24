@@ -158,7 +158,7 @@
     <comment>A Surface Outpost</comment>
   </data>
   <data name="MegaShipCivilian" xml:space="preserve">
-    <value>Mega Bastimento Civile</value>
+    <value>Mega Vascello Civile</value>
     <comment>A Civilian Megaship</comment>
   </data>
   <data name="OutpostScientific" xml:space="preserve">
