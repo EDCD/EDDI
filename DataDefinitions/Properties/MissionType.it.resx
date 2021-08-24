@@ -212,9 +212,13 @@
   
   
   
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>Disabilita Mega Vascello</value>
+  </data>
   
-  
-  
+  <data name="HackMegaship" xml:space="preserve">
+    <value>Viola Mega Vascello</value>
+  </data>
   
   
   
