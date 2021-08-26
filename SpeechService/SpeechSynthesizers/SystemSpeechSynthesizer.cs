@@ -65,7 +65,14 @@ namespace EddiSpeechService.SpeechSynthesizers
                     }
                     catch (Exception e)
                     {
-                        Logging.Error($"Failed to load {voice.VoiceInfo.Name}", e);
+                        if (voice.VoiceInfo.Culture is null)
+                        {
+                            Logging.Warn($"Failed to load {voice.VoiceInfo.Name}, voice culture is not set.", e);
+                        }
+                        else
+                        {
+                            Logging.Error($"Failed to load {voice.VoiceInfo.Name}", e);
+                        }
                     }
                 }
             }
