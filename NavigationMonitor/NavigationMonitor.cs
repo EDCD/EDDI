@@ -25,7 +25,7 @@ namespace EddiNavigationMonitor
         private bool running;
 
         // Observable collection for us to handle changes
-        public ObservableCollection<Bookmark> bookmarks { get; private set; }
+        public ObservableCollection<NavBookmark> bookmarks { get; private set; }
 
         private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
 
@@ -61,7 +61,7 @@ namespace EddiNavigationMonitor
 
         public NavigationMonitor()
         {
-            bookmarks = new ObservableCollection<Bookmark>();
+            bookmarks = new ObservableCollection<NavBookmark>();
             BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
             initializeNavigationMonitor();
         }
@@ -121,11 +121,11 @@ namespace EddiNavigationMonitor
                     decimal slope = 0;
                     decimal slopeError = 0;
 
-                    Bookmark bookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-                    if (bookmark?.isset ?? false)
+                    NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+                    if (navBookmark?.isset ?? false)
                     {
                         StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-                        if (currentSystem?.systemname == bookmark.system)
+                        if (currentSystem?.systemname == navBookmark.system)
                         {
 
                             Status currentStatus = NavigationService.Instance.currentStatus;
@@ -134,11 +134,11 @@ namespace EddiNavigationMonitor
                             if (currentStatus?.near_surface ?? false)
                             {
                                 Body currentBody = EDDI.Instance.CurrentStellarBody;
-                                if (currentBody != null && currentBody.shortname == bookmark.body)
+                                if (currentBody != null && currentBody.shortname == navBookmark.body)
                                 {
-                                    heading = CalculateHeading(currentStatus, bookmark.latitude, bookmark.longitude);
+                                    heading = CalculateHeading(currentStatus, navBookmark.latitude, navBookmark.longitude);
                                     headingError = heading - (decimal)currentStatus.heading;
-                                    distance = CalculateDistance(currentStatus, bookmark.latitude, bookmark.longitude);
+                                    distance = CalculateDistance(currentStatus, navBookmark.latitude, navBookmark.longitude);
 
                                     if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                                     {
@@ -152,7 +152,7 @@ namespace EddiNavigationMonitor
                                     // Guidance system inactive when destination reached
                                     if (distance < 0.5M)
                                     {
-                                        bookmark.isset = false;
+                                        navBookmark.isset = false;
                                         EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.Now, "complete", null, null, null, null, null));
                                     }
                                     else
@@ -288,12 +288,12 @@ namespace EddiNavigationMonitor
         {
             // Update bookmark 'set' status
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            Bookmark bookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-            if (bookmark?.system == system)
+            NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            if (navBookmark?.system == system)
             {
-                if (bookmark.body is null && !bookmark.isstation || !string.IsNullOrEmpty(station) && bookmark.poi == station)
+                if (navBookmark.body is null && !navBookmark.isstation || !string.IsNullOrEmpty(station) && navBookmark.poi == station)
                 {
-                    bookmark.isset = false;
+                    navBookmark.isset = false;
                 }
 
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
@@ -390,7 +390,7 @@ namespace EddiNavigationMonitor
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["bookmarks"] = new List<Bookmark>(bookmarks),
+                ["bookmarks"] = new List<NavBookmark>(bookmarks),
                 ["navRouteList"] = navRouteList
             };
             return variables;
@@ -427,23 +427,23 @@ namespace EddiNavigationMonitor
 
                 // Build a new bookmark list
                 bookmarks.Clear();
-                foreach (Bookmark bookmark in navConfig.bookmarks)
+                foreach (NavBookmark bookmark in navConfig.bookmarks)
                 {
                     bookmarks.Add(bookmark);
                 }
             }
         }
 
-        private void RemoveBookmark(Bookmark bookmark)
+        private void RemoveBookmark(NavBookmark navBookmark)
         {
-            _RemoveBookmark(bookmark);
+            _RemoveBookmark(navBookmark);
         }
 
-        public void _RemoveBookmark(Bookmark bookmark)
+        public void _RemoveBookmark(NavBookmark navBookmark)
         {
-            string system = bookmark.system.ToLowerInvariant();
-            string body = bookmark.body?.ToLowerInvariant();
-            string poi = bookmark.poi?.ToLowerInvariant();
+            string system = navBookmark.system.ToLowerInvariant();
+            string body = navBookmark.body?.ToLowerInvariant();
+            string poi = navBookmark.poi?.ToLowerInvariant();
             lock (bookmarksLock)
             {
                 for (int i = 0; i < bookmarks.Count; i++)

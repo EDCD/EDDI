@@ -72,7 +72,7 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
-    <Compile Include="Bookmark.cs" />
+    <Compile Include="NavBookmark.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Killer.cs" />
     <Compile Include="CommunityGoal.cs" />

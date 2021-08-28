@@ -136,9 +136,9 @@ namespace EddiNavigationMonitor
                 }
             }
 
-            Bookmark bookmark = new Bookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
+            NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
                 currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
-            navConfig.bookmarks.Add(bookmark);
+            navConfig.bookmarks.Add(navBookmark);
             ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "location", currentSystem.systemname, currentBody?.shortname, poi, isStation, latitude, longitude, landable));
         }
@@ -159,8 +159,8 @@ namespace EddiNavigationMonitor
                 landable = station.IsPlanetary();
             }
 
-            Bookmark bookmark = new Bookmark(systemName, system.x, system.y, system.z, null, null, stationName, isStation, null, null, landable);
-            navConfig.bookmarks.Add(bookmark);
+            NavBookmark navBookmark = new NavBookmark(systemName, system.x, system.y, system.z, null, null, stationName, isStation, null, null, landable);
+            navConfig.bookmarks.Add(navBookmark);
             ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "query", systemName, null, stationName, isStation, null, null, landable));
         }
@@ -188,7 +188,7 @@ namespace EddiNavigationMonitor
                     {
                         try
                         {
-                            Bookmark bookmark = new Bookmark();
+                            NavBookmark navBookmark = new NavBookmark();
                             string[] fields = parser.ReadFields();
                             for (int i = 0; i < fields.Count(); i++)
                             {
@@ -202,58 +202,58 @@ namespace EddiNavigationMonitor
                                     {
                                         case "system":
                                             {
-                                                bookmark.system = fields[i];
+                                                navBookmark.system = fields[i];
                                             }
                                             break;
                                         case "x":
                                             {
-                                                bookmark.x = decimal.Parse(fields[i]);
+                                                navBookmark.x = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "y":
                                             {
-                                                bookmark.y = decimal.Parse(fields[i]);
+                                                navBookmark.y = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "z":
                                             {
-                                                bookmark.z = decimal.Parse(fields[i]);
+                                                navBookmark.z = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "body":
                                             {
-                                                bookmark.body = fields[i];
+                                                navBookmark.body = fields[i];
                                             }
                                             break;
                                         case "name":
                                             {
-                                                bookmark.comment = fields[i];
+                                                navBookmark.comment = fields[i];
                                             }
                                             break;
                                         case "catagory":
                                             {
-                                                bookmark.catagory = fields[i];
+                                                navBookmark.catagory = fields[i];
                                             }
                                             break;
                                         case "radius":
                                             {
-                                                bookmark.radius = decimal.Parse(fields[i]);
+                                                navBookmark.radius = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "latitude":
                                             {
-                                                bookmark.latitude = decimal.Parse(fields[i]);
+                                                navBookmark.latitude = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "longitude":
                                             {
-                                                bookmark.longitude = decimal.Parse(fields[i]);
+                                                navBookmark.longitude = decimal.Parse(fields[i]);
                                             }
                                             break;
                                     }
                                 }
                             }
-                            if (!header) { navConfig.bookmarks.Add(bookmark); }
+                            if (!header) { navConfig.bookmarks.Add(navBookmark); }
                             header = false;
                         }
                         catch (MalformedLineException ex)
@@ -270,7 +270,7 @@ namespace EddiNavigationMonitor
         {
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            Bookmark bookmark = (Bookmark)((Button)e.Source).DataContext;
+            NavBookmark navBookmark = (NavBookmark)((Button)e.Source).DataContext;
 
             string messageBoxText = Properties.NavigationMonitor.remove_message;
             string caption = Properties.NavigationMonitor.remove_caption;
@@ -280,7 +280,7 @@ namespace EddiNavigationMonitor
                 case MessageBoxResult.Yes:
                     {
                         // Remove the bookmark from the list
-                        navigationMonitor()._RemoveBookmark(bookmark);
+                        navigationMonitor()._RemoveBookmark(navBookmark);
                         navConfig.bookmarks = navigationMonitor()?.bookmarks;
                         ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                     }
@@ -292,7 +292,7 @@ namespace EddiNavigationMonitor
         {
             // Clear all previously 'set' bookmarks
             navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            Bookmark bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            NavBookmark bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
             while (bm?.isset ?? false)
             {
                 bm.isset = false;
@@ -300,11 +300,11 @@ namespace EddiNavigationMonitor
             }
 
             string station = null;
-            Bookmark bookmark = (Bookmark)((Button)e.Source).DataContext;
-            if (bookmark.isstation) { station = bookmark.poi; }
-            bookmark.isset = true;
+            NavBookmark navBookmark = (NavBookmark)((Button)e.Source).DataContext;
+            if (navBookmark.isstation) { station = navBookmark.poi; }
+            navBookmark.isset = true;
 
-            NavigationService.Instance.SetRoute(bookmark.system, station);
+            NavigationService.Instance.SetRoute(navBookmark.system, station);
         }
 
         private void updateBookmark(object sender, RoutedEventArgs e)
@@ -321,13 +321,13 @@ namespace EddiNavigationMonitor
 
             if (e.Source is DataGrid)
             {
-                Bookmark bookmark = (Bookmark)((DataGrid)e.Source).CurrentItem;
+                NavBookmark navBookmark = (NavBookmark)((DataGrid)e.Source).CurrentItem;
 
                 // Update only if current system matches the bookmarked system
-                if (bookmark?.system == currentSystem.systemname)
+                if (navBookmark?.system == currentSystem.systemname)
                 {
                     // Update latitude & longitude if current body matches the bookmarked body
-                    if (currentBody != null && currentBody.shortname == bookmark.body)
+                    if (currentBody != null && currentBody.shortname == navBookmark.body)
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                         {
@@ -335,7 +335,7 @@ namespace EddiNavigationMonitor
                             {
                                 latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
                                 longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                                if (bookmark.poi is null) { bookmark.poi = navConfig.tdPOI; }
+                                if (navBookmark.poi is null) { navBookmark.poi = navConfig.tdPOI; }
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
                             {
@@ -348,35 +348,35 @@ namespace EddiNavigationMonitor
                                     decimal distance = navigationMonitor().CalculateDistance(currentStatus);
                                     if (distance < 5)
                                     {
-                                        bookmark.poi = navConfig.tdPOI;
+                                        navBookmark.poi = navConfig.tdPOI;
                                     }
                                 }
                             }
-                            bookmark.landable = true;
+                            navBookmark.landable = true;
                         }
                         else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                         {
                             if (currentStatus.near_surface)
                             {
                                 navigationMonitor().CalculateCoordinates(currentStatus, ref latitude, ref longitude);
-                                bookmark.landable = currentBody.landable ?? false;
+                                navBookmark.landable = currentBody.landable ?? false;
                             }
                         }
                     }
 
                     // Update if a station is instanced and a body was not previously bookmarked
-                    else if (currentStation != null && bookmark.body is null)
+                    else if (currentStation != null && navBookmark.body is null)
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
                         {
-                            bookmark.isstation = true;
-                            bookmark.poi = currentStation.name;
+                            navBookmark.isstation = true;
+                            navBookmark.poi = currentStation.name;
                         }
                     }
 
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                     EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.Now, "update", currentSystem.systemname, currentBody?.shortname,
-                        bookmark.poi, bookmark.isstation, latitude, longitude, bookmark.landable));
+                        navBookmark.poi, navBookmark.isstation, latitude, longitude, navBookmark.landable));
                 }
             }
         }

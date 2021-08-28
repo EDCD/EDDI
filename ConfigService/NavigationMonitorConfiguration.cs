@@ -10,7 +10,7 @@ namespace EddiConfigService
     /// <summary>Storage for configuration of cargo details</summary>
     public class NavigationMonitorConfiguration
     {
-        public ObservableCollection<Bookmark> bookmarks { get; set; }
+        public ObservableCollection<NavBookmark> bookmarks { get; set; }
 
         public DateTime updatedat { get; set; }
 
@@ -50,7 +50,7 @@ namespace EddiConfigService
 
         public NavigationMonitorConfiguration()
         {
-            bookmarks = new ObservableCollection<Bookmark>();
+            bookmarks = new ObservableCollection<NavBookmark>();
         }
 
         /// <summary>

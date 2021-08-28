@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace EddiDataDefinitions
 {
-    public class Bookmark : INotifyPropertyChanged
+    public class NavBookmark : INotifyPropertyChanged
     {
         // The bookmark system
         [JsonIgnore]
@@ -60,10 +60,10 @@ namespace EddiDataDefinitions
         public bool isset { get; set; }
 
         // Default Constructor
-        public Bookmark() { }
+        public NavBookmark() { }
 
         [JsonConstructor]
-        public Bookmark(string system, decimal? x, decimal? y, decimal? z, string body, decimal? radius, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable)
+        public NavBookmark(string system, decimal? x, decimal? y, decimal? z, string body, decimal? radius, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable)
         {
             this.system = system;
             this.x = x;
