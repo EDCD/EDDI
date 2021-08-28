@@ -134,17 +134,16 @@ namespace EddiVoiceAttackResponder
                     };
                 }
 
-                StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
-                if (statusMonitor != null)
+                StatusMonitor.StatusUpdatedEvent += (s, e) =>
                 {
-                    statusMonitor.StatusUpdatedEvent += (s, e) =>
+                    if (s is Status status)
                     {
                         lock (vaProxyLock)
                         {
-                            setStatusValues(statusMonitor.currentStatus, "Status", ref vaProxy);
+                            setStatusValues(status, "Status", ref vaProxy);
                         }
-                    };
-                }
+                    }
+                };
 
                 // Set initial values for standard variables
                 initializeStandardValues();

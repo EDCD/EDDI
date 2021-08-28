@@ -34,7 +34,7 @@ namespace EddiStatusMonitor
         // Keep track of status monitor 
         private bool running;
 
-        public event EventHandler StatusUpdatedEvent;
+        public static event EventHandler StatusUpdatedEvent;
 
         public StatusMonitor()
         {
@@ -632,7 +632,7 @@ namespace EddiStatusMonitor
                     status.gliding = true;
                 }
             }
-            if (status.gliding && status.fsd_status == "cooldown"
+            if ((status.gliding && status.fsd_status == "cooldown")
                 || status.hyperspace 
                 || status.supercruise 
                 || status.docked 

@@ -89,9 +89,17 @@
             <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
         </UniformGrid>
         <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=isset}" Value="True">
+                            <Setter Property="Background" Value="LightGoldenrodYellow"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
-
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=system}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=systemname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -104,7 +112,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=body}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

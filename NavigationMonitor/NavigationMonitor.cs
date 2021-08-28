@@ -4,6 +4,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
+using EddiStatusMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,11 +23,12 @@ namespace EddiNavigationMonitor
 {
     public class NavigationMonitor : EDDIMonitor
     {
-        // Engage guidance system
-        private bool running;
+        // A token source so that we can cancel the guidance system when desired
+        private CancellationTokenSource guidanceCancellationTokenSource = new CancellationTokenSource();
 
         // Observable collection for us to handle changes
         public ObservableCollection<NavBookmark> bookmarks { get; private set; }
+        private static readonly object bookmarksLock = new object();
 
         private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
 
@@ -33,11 +36,14 @@ namespace EddiNavigationMonitor
         public string navDestination;
         public string navRouteList;
         public decimal navRouteDistance;
-
         private DateTime updateDat;
+        private bool guidanceEngaged;
 
-        private static readonly object bookmarksLock = new object();
-        public event EventHandler BookmarksUpdatedEvent;
+        public static event EventHandler BookmarksUpdatedEvent;
+
+        private static readonly object statusLock = new object();
+        public Status currentStatus { get; private set; }
+        private Status lastStatus { get; set; }
 
         public string MonitorName()
         {
@@ -63,7 +69,38 @@ namespace EddiNavigationMonitor
         {
             bookmarks = new ObservableCollection<NavBookmark>();
             BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
+
+            StatusMonitor.StatusUpdatedEvent += (s, e) =>
+            {
+                if (s is Status status)
+                {
+                    lock (statusLock)
+                    {
+                        OnStatusUpdated(status);
+                    }
+                }
+            };
             initializeNavigationMonitor();
+        }
+
+        private void OnStatusUpdated(Status status)
+        {
+            lastStatus = currentStatus;
+            currentStatus = status;
+
+            if (lastStatus != null && currentStatus != null)
+            {
+                if (currentStatus.near_surface && !lastStatus.near_surface)
+                {
+                    updateDat = status.timestamp;
+                    EngageGuidanceSystem(EDDI.Instance.CurrentStarSystem?.systemname, status.bodyname);
+                }
+                else if (lastStatus.near_surface && !currentStatus.near_surface)
+                {
+                    updateDat = status.timestamp;
+                    DisengageGuidanceSystem();
+                }
+            }
         }
 
         public void initializeNavigationMonitor()
@@ -85,84 +122,24 @@ namespace EddiNavigationMonitor
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock); });
             }
         }
+
         public bool NeedsStart()
         {
-            return true;
+            return false;
         }
 
         public void Start()
-        {
-            _start();
-        }
+        { }
 
         public void Stop()
         {
-            running = false;
+            guidanceCancellationTokenSource.Cancel();
         }
 
         public void Reload()
         {
             readBookmarks();
             Logging.Info($"Reloaded {MonitorName()}");
-        }
-
-        public void _start()
-        {
-            running = true;
-
-            while (running)
-            {
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                if (navConfig.guidanceSystem)
-                {
-                    NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-                    if (navBookmark?.isset ?? false)
-                    {
-                        StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-                        if (currentSystem?.systemname == navBookmark.system)
-                        {
-                            Status currentStatus = NavigationService.Instance.currentStatus;
-
-                            // Activate guidance system when near surface of the bookmark body
-                            if (currentStatus != null && currentStatus.near_surface)
-                            {
-                                Body currentBody = EDDI.Instance.CurrentStellarBody;
-                                if (currentBody != null && currentBody.shortname == navBookmark.body)
-                                {
-                                    decimal? heading = SurfaceHeadingDegrees(currentStatus, navBookmark.latitude, navBookmark.longitude);
-                                    decimal? headingError = heading - currentStatus.heading;
-                                    decimal? surfaceDistanceKm = SurfaceDistanceKm(currentStatus, navBookmark.latitude, navBookmark.longitude);
-                                    decimal? slope = null;
-                                    decimal? slopeError = null;
-
-                                    // Our calculated slope from the status object is not guaranteed to be accurate if we're in normal space and not gliding
-                                    // (since we may be moving in a direction other than where we are pointing) so we disregard slope unless we're gliding.
-                                    if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE || (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE && currentStatus.gliding))
-                                    {
-                                        if (currentStatus?.slope != null && currentStatus.altitude != null)
-                                        {
-                                            slope = (decimal)Math.Round(Math.Atan2((double)currentStatus.altitude/1000, (double)surfaceDistanceKm) * 180 / Math.PI, 4) * -1;
-                                            slopeError = slope - currentStatus.slope;
-                                        }
-                                    }
-
-                                    // Guidance system inactive when destination reached
-                                    if (surfaceDistanceKm < 0.5M)
-                                    {
-                                        navBookmark.isset = false;
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
-                                    }
-                                    else
-                                    {
-                                        EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, surfaceDistanceKm));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                Thread.Sleep(10000);
-            }
         }
 
         public UserControl ConfigurationTabItem()
@@ -184,54 +161,66 @@ namespace EddiNavigationMonitor
         {
         }
 
-        public void PostHandle(Event @event)
-        {
-            if (@event is TouchdownEvent)
-            {
-                handleTouchdownEvent((TouchdownEvent)@event);
-            }
-            if (@event is LiftoffEvent)
-            {
-                handleLiftoffEvent((LiftoffEvent)@event);
-            }
-        }
-
         public void PreHandle(Event @event)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is CarrierJumpedEvent)
+            if (@event is BookmarkDetailsEvent bookmarkDetailsEvent)
             {
-                handleCarrierJumpedEvent((CarrierJumpedEvent)@event);
+                handleBookmarkDetailsEvent(bookmarkDetailsEvent);
             }
-            else if (@event is LocationEvent)
+            else if (@event is CarrierJumpedEvent carrierJumpedEvent)
             {
-                handleLocationEvent((LocationEvent)@event);
+                handleCarrierJumpedEvent(carrierJumpedEvent);
             }
-            else if (@event is JumpedEvent)
+            else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
             {
-                handleJumpedEvent((JumpedEvent)@event);
+                handleEnteredNormalSpaceEvent(enteredNormalSpaceEvent);
             }
-            else if (@event is NavRouteEvent)
+            else if (@event is JumpedEvent jumpedEvent)
             {
-                handleCarrierJumpedEvent((CarrierJumpedEvent)@event);
+                handleJumpedEvent(jumpedEvent);
             }
-            else if (@event is LocationEvent)
+            else if (@event is LocationEvent locationEvent)
             {
-                handleLocationEvent((LocationEvent)@event);
+                handleLocationEvent(locationEvent);
             }
-            else if (@event is JumpedEvent)
+            else if (@event is NavRouteEvent navRouteEvent)
             {
-                handleJumpedEvent((JumpedEvent)@event);
+                handleNavRouteEvent(navRouteEvent);
             }
-            else if (@event is EnteredNormalSpaceEvent)
+            else if(@event is SRVTurretDeployableEvent srvTurretDeployableEvent)
             {
-                handleEnteredNormalSpaceEvent((EnteredNormalSpaceEvent)@event);
+                handleSRVTurretDeployableEvent(srvTurretDeployableEvent);
             }
-            else if (@event is NavRouteEvent)
+        }
+
+        public void PostHandle(Event @event)
+        {
+            if (@event is TouchdownEvent touchdownEvent)
             {
-                handleNavRouteEvent((NavRouteEvent)@event);
+                handleTouchdownEvent(touchdownEvent);
+            }
+            else if (@event is LiftoffEvent liftoffEvent)
+            {
+                handleLiftoffEvent(liftoffEvent);
+            }
+        }
+
+        private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event) 
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (@event.isset)
+                {
+                    EngageGuidanceSystem(@event.system, @event.body);
+                }
+                else
+                {
+                    DisengageGuidanceSystem();
+                }
             }
         }
 
@@ -254,6 +243,7 @@ namespace EddiNavigationMonitor
                 UpdateBookmarkSetStatus(@event.systemname);
             }
         }
+
         private void handleJumpedEvent(JumpedEvent @event)
         {
             if (@event.timestamp > updateDat)
@@ -274,22 +264,6 @@ namespace EddiNavigationMonitor
                 {
                     UpdateBookmarkSetStatus(@event.systemname, @event.bodyname);
                 }
-            }
-        }
-
-        private void UpdateBookmarkSetStatus(string system, string station = null)
-        {
-            // Update bookmark 'set' status
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-            if (navBookmark != null && navBookmark.system == system)
-            {
-                if (navBookmark.body is null && !navBookmark.isstation || !string.IsNullOrEmpty(station) && navBookmark.poi == station)
-                {
-                    navBookmark.isset = false;
-                }
-
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
 
@@ -362,6 +336,110 @@ namespace EddiNavigationMonitor
                 }
             }
         }
+
+        private void handleSRVTurretDeployableEvent(SRVTurretDeployableEvent @event) 
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (@event.deployable)
+                {
+                    EngageGuidanceSystem(EDDI.Instance.CurrentStarSystem?.systemname, EDDI.Instance.CurrentStellarBody.bodyname);
+                }
+                else
+                {
+                    DisengageGuidanceSystem();
+                }
+            }
+        }
+
+        private void DisengageGuidanceSystem()
+        {
+            if (guidanceEngaged)
+            {
+                guidanceEngaged = false;
+                guidanceCancellationTokenSource.Cancel();
+                EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "disengaged", null, null, null, null, null));
+            }
+        }
+
+        private void EngageGuidanceSystem(string systemname, string bodyname)
+        {
+            // Find a guidance-eligible bookmark that matches a given systemname and bodyname, if any
+            var navBookmark = bookmarks.FirstOrDefault(b =>
+                b.isset &&
+                string.Equals(b.systemname, systemname, StringComparison.InvariantCultureIgnoreCase) &&
+                string.Equals(b.bodyname, bodyname, StringComparison.InvariantCultureIgnoreCase) &&
+                b.latitude != null &&
+                b.longitude != null);
+            if (navBookmark != null)
+            {
+                // Activate guidance system when near an eligible bookmark
+                EngageGuidanceSystem(navBookmark);
+            }
+        }
+
+        private void EngageGuidanceSystem(NavBookmark navBookmark)
+        {
+            guidanceCancellationTokenSource = new CancellationTokenSource();
+            Task.Run(() => GuidanceSystem(navBookmark), guidanceCancellationTokenSource.Token);
+        }
+
+        private void GuidanceSystem(NavBookmark navBookmark)
+        {
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            if (navBookmark is null || !navConfig.guidanceSystemEnabled) { return; }
+
+            // Wait as needed until our status also shows us near the surface of the body
+            while (currentStatus == null || !currentStatus.near_surface || navBookmark.bodyname != currentStatus.bodyname)
+            {
+                Thread.Sleep(250);
+            }
+
+            while (navConfig.guidanceSystemEnabled && navBookmark.isset && navBookmark.bodyname == currentStatus.bodyname)
+            {
+                // Guidance system is active and tracking a bookmark.
+                if (!guidanceEngaged)
+                {
+                    guidanceEngaged = true;
+                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "engaged", null, null, null, null, null));
+                }
+
+                // Determine our distance
+                decimal? surfaceDistanceKm = SurfaceDistanceKm(currentStatus, navBookmark?.latitude, navBookmark?.longitude);
+                if (surfaceDistanceKm < 3.0M)
+                {
+                    // We've arrived - guidance system deactivated
+                    guidanceEngaged = false;
+                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "complete", null, null, null, null, null));
+                    return;
+                }
+
+                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE || (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE && currentStatus.gliding))
+                {
+                    // Determine our heading
+                    decimal? heading = SurfaceHeadingDegrees(currentStatus, navBookmark?.latitude, navBookmark?.longitude);
+                    decimal? headingError = heading - currentStatus?.heading;
+
+                    // Determine our slope
+                    // Our calculated slope from the status object is not guaranteed to be accurate if we're in normal space and not gliding
+                    // (since we may be moving in a direction other than where we are pointing) so we disregard slope unless we're gliding.
+                    decimal? slope = null;
+                    decimal? slopeError = null;
+                    if (currentStatus.near_surface && currentStatus?.slope != null && currentStatus.altitude != null && surfaceDistanceKm != null)
+                    {
+                        var altitudeKm = (double)currentStatus.altitude / 1000;
+                        slope = (decimal)Math.Round(Math.Atan2(altitudeKm, (double)surfaceDistanceKm) * 180 / Math.PI, 4) * -1;
+                        slopeError = slope - currentStatus.slope;
+                    }
+
+                    // We're already navigating to this bookmark, send an update event
+                    EDDI.Instance.enqueueEvent(new GuidanceSystemEvent(DateTime.UtcNow, "update", heading, headingError, slope, slopeError, surfaceDistanceKm));
+                    Thread.Sleep(3000);
+                }
+            }
+        }
+
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
@@ -410,15 +488,23 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void RemoveBookmark(NavBookmark navBookmark)
+        private void UpdateBookmarkSetStatus(string system, string station = null)
         {
-            lock (bookmarksLock)
+            // Update bookmark 'set' status
+            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            if (navBookmark != null && navBookmark.systemname == system)
             {
-                bookmarks.Remove(navBookmark);
+                if ((navBookmark.bodyname is null && !navBookmark.isstation) || (!string.IsNullOrEmpty(station) && navBookmark.poi == station))
+                {
+                    navBookmark.isset = false;
+                }
+
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
 
-        public void _RemoveBookmark(int index)
+        public void RemoveBookmarkAt(int index)
         {
             lock (bookmarksLock)
             {

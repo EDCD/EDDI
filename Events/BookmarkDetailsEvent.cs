@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -13,7 +14,7 @@ namespace EddiEvents
 
         static BookmarkDetailsEvent()
         {
-            VARIABLES.Add("request", "The bookmark request (location, search, select)");
+            VARIABLES.Add("request", "The bookmark request (location, query, update, set)");
             VARIABLES.Add("system", "The bookmarked system");
             VARIABLES.Add("body", "The bookmarked body, if applicable");
             VARIABLES.Add("poi", "The bookmarked 'point of interest', if applicable");
@@ -39,16 +40,19 @@ namespace EddiEvents
 
         public bool landable { get; private set; }
 
-        public BookmarkDetailsEvent(DateTime timestamp, string request, string system, string body, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable) : base(timestamp, NAME)
+        public bool isset { get; private set; }
+
+        public BookmarkDetailsEvent(DateTime timestamp, string request, NavBookmark bookmark) : base(timestamp, NAME)
         {
             this.request = request;
-            this.system = system;
-            this.body = body;
-            this.poi = poi;
-            this.isstation = isstation;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.landable = landable;
+            this.system = bookmark.systemname;
+            this.body = bookmark.bodyname;
+            this.poi = bookmark.poi;
+            this.isstation = bookmark.isstation;
+            this.latitude = bookmark.latitude;
+            this.longitude = bookmark.longitude;
+            this.landable = bookmark.landable;
+            this.isset = bookmark.isset;
         }
     }
 }

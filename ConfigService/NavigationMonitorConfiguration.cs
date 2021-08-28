@@ -39,7 +39,7 @@ namespace EddiConfigService
         public string tdPOI { get; set; }
 
         // Guidance system
-        public bool guidanceSystem { get; set; }
+        public bool guidanceSystemEnabled { get; set; }
 
 
         [JsonIgnore]
