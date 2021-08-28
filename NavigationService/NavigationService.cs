@@ -1094,7 +1094,7 @@ namespace EddiNavigationService
 
         private bool RemoveSystemFromRoute(string system, List<Mission> missions, ref string missionsRouteList, ref decimal missionsRouteDistance)
         {
-            List<string> route = missionsRouteList?.Split('_').ToList();
+            List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
             if (route.Count == 0) { return false; }
 
             int index = route.IndexOf(system);
