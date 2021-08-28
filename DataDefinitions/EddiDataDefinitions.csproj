@@ -72,6 +72,7 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
+    <Compile Include="Bookmark.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Killer.cs" />
     <Compile Include="CommunityGoal.cs" />
@@ -143,6 +144,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="NavRouteInfo.cs" />
     <Compile Include="NpcSuitLoadout.cs" />
     <Compile Include="Suit.cs" />
     <Compile Include="ShipyardInfo.cs" />

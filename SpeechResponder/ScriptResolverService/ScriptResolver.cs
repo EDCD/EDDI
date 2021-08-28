@@ -10,6 +10,7 @@ using EddiCompanionAppService;
 using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiNavigationService;
 using EddiSpeechService;
 using EddiStatusMonitor;
 using Newtonsoft.Json;
@@ -155,6 +156,7 @@ namespace EddiSpeechResponder.Service
             {
                 ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
+                ["searchdistance"] = NavigationService.Instance.SearchDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,
                 ["odyssey"] = EDDI.Instance.inOdyssey,
@@ -213,6 +215,16 @@ namespace EddiSpeechResponder.Service
                 dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
             }
 
+            if (NavigationService.Instance.SearchStarSystem != null)
+            {
+                dict["searchsystem"] = new ReflectionValue(NavigationService.Instance.SearchStarSystem);
+            }
+
+            if (NavigationService.Instance.SearchStation != null)
+            {
+                dict["searchstation"] = new ReflectionValue(NavigationService.Instance.SearchStation);
+            }
+            
             if (EDDI.Instance.CurrentStation != null)
             {
                 dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);

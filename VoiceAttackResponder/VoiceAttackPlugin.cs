@@ -1,11 +1,9 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiMaterialMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder;
@@ -1017,9 +1015,6 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
-                MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
-                int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
                 string station = vaProxy.GetText("Station variable");
@@ -1028,12 +1023,12 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            NavigationService.Instance.CancelDestination();
+                            NavigationService.Instance.CancelRoute();
                         }
                         break;
                     case "encoded":
                         {
-                            NavigationService.Instance.GetServiceRoute("encoded", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("encoded");
                         }
                         break;
                     case "expiring":
@@ -1043,9 +1038,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "facilitator":
                         {
-                            int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
-                            bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                            NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                            NavigationService.Instance.GetServiceRoute("facilitator");
                         }
                         break;
                     case "farthest":
@@ -1055,17 +1048,17 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "guardian":
                         {
-                            NavigationService.Instance.GetServiceRoute("guardian", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("guardian");
                         }
                         break;
                     case "human":
                         {
-                            NavigationService.Instance.GetServiceRoute("human", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("human");
                         }
                         break;
                     case "manufactured":
                         {
-                            NavigationService.Instance.GetServiceRoute("manufactured", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("manufactured");
                         }
                         break;
                     case "most":
@@ -1092,7 +1085,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "raw":
                         {
-                            NavigationService.Instance.GetServiceRoute("raw", materialDistance);
+                            NavigationService.Instance.GetServiceRoute("raw");
                         }
                         break;
                     case "route":
@@ -1115,20 +1108,13 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "set":
                         {
-                            if (string.IsNullOrEmpty(system))
+                            if (string.IsNullOrEmpty(station))
                             {
-                                NavigationService.Instance.SetDestination();
+                                NavigationService.Instance.SetRoute(system);
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(station))
-                                {
-                                    NavigationService.Instance.SetDestination(system);
-                                }
-                                else
-                                {
-                                    NavigationService.Instance.SetDestination(system, station);
-                                }
+                                NavigationService.Instance.SetRoute(system, station);
                             }
                         }
                         break;

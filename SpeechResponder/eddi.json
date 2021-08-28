@@ -173,11 +173,20 @@
       "name": "Book transport",
       "description": "Triggered when booking a taxi or deployment for on foot combat"
     },
+    "Bookmark details": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Bookmark details",
+      "description": "Triggered when a bookmark has been added or updated"
+    },
     "Bounty awarded": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n{SetState(\"eddi_context_criminal_record_change\", true)}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher \r\n|elif len(event.rewards) > 1:\r\n    Bounty vouchers \r\n}\r\n{OneOf(\"received\", \"awarded\")}.", 
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n{SetState(\"eddi_context_criminal_record_change\", true)}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher \r\n|elif len(event.rewards) > 1:\r\n    Bounty vouchers \r\n}\r\n{OneOf(\"received\", \"awarded\")}.",
       "default": true,
       "name": "Bounty awarded",
       "description": "Triggered when you are awarded a bounty"
@@ -1014,6 +1023,15 @@
       "name": "Glide",
       "description": "Triggered when your ship enters or exits glide"
     },
+    "Guidance system": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Guidance system",
+      "description": "Triggered when the guidance system parameters have been updated"
+    },
     "Hardpoints": {
       "enabled": true,
       "priority": 3,
@@ -1598,6 +1616,15 @@
       "default": true,
       "name": "Nav beacon scan",
       "description": "Triggered when you scan a nav beacon, before the scan data for all the bodies in the system is written into the journal"
+    },
+    "Nav route": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Nav route",
+      "description": "Triggered when plotting a multi-star route"
     },
     "Near surface": {
       "enabled": true,

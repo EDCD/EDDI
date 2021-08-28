@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiMissionMonitor;
+using EddiNavigationMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -3530,6 +3531,14 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "NavRoute":
+                                {
+                                    List<NavRouteInfo> navRoute = new List<NavRouteInfo>();
+                                    navRoute = NavRouteInfoReader.FromFile().Route;
+                                    events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "PowerplayJoin":
                                 {
                                     Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
@@ -4388,7 +4397,6 @@ namespace EddiJournalMonitor
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
-                            case "NavRoute":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":

@@ -2,6 +2,7 @@
 using EddiCargoMonitor;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;
@@ -25,7 +26,9 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.vaProxy) },
             { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.vaProxy) },
             { nameof(EDDI.Instance.DestinationDistanceLy), () => App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.DestinationStation), () => setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref App.vaProxy) },
+            { nameof(NavigationService.Instance.SearchDistanceLy), () => App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy) },
+            { nameof(NavigationService.Instance.SearchStarSystem), () => setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy) },
+            { nameof(NavigationService.Instance.SearchStation), () => setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy) },
             { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.vaProxy) },
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {

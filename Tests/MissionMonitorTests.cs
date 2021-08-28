@@ -1,4 +1,5 @@
-﻿using EddiCrimeMonitor;
+﻿using EddiConfigService;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;

@@ -12,8 +12,6 @@ namespace EddiMaterialMonitor
     {
         public ObservableCollection<MaterialAmount> materials { get; set; }
 
-        public int? maxStationDistanceFromStarLs { get; set; }
-
         [JsonIgnore]
         private string dataPath;
 

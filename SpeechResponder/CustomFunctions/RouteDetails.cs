@@ -30,12 +30,12 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     case "cancel":
                         {
-                            NavigationService.Instance.CancelDestination();
+                            NavigationService.Instance.CancelRoute();
                         }
                         break;
                     case "encoded":
                         {
-                            result = NavigationService.Instance.GetServiceRoute("encoded", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("encoded");
                         }
                         break;
                     case "expiring":
@@ -45,9 +45,7 @@ namespace EddiSpeechResponder.CustomFunctions
                         break;
                     case "facilitator":
                         {
-                            int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
-                            bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                            result = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
+                            result = NavigationService.Instance.GetServiceRoute("facilitator");
                         }
                         break;
                     case "farthest":
@@ -57,17 +55,17 @@ namespace EddiSpeechResponder.CustomFunctions
                         break;
                     case "guardian":
                         {
-                            result = NavigationService.Instance.GetServiceRoute("guardian", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("guardian");
                         }
                         break;
                     case "human":
                         {
-                            result = NavigationService.Instance.GetServiceRoute("human", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("human");
                         }
                         break;
                     case "manufactured":
                         {
-                            result = NavigationService.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("manufactured");
                         }
                         break;
                     case "most":
@@ -94,7 +92,7 @@ namespace EddiSpeechResponder.CustomFunctions
                         break;
                     case "raw":
                         {
-                            result = NavigationService.Instance.GetServiceRoute("raw", materialMonitorDistance);
+                            result = NavigationService.Instance.GetServiceRoute("raw");
                         }
                         break;
                     case "route":
@@ -126,15 +124,11 @@ namespace EddiSpeechResponder.CustomFunctions
                         {
                             if (values.Count == 3)
                             {
-                                result = NavigationService.Instance.SetDestination(values[1].AsString, values[2].AsString);
+                                result = NavigationService.Instance.SetRoute(values[1].AsString, values[2].AsString);
                             }
                             else if (values.Count == 2)
                             {
-                                result = NavigationService.Instance.SetDestination(values[1].AsString);
-                            }
-                            else
-                            {
-                                result = NavigationService.Instance.SetDestination();
+                                result = NavigationService.Instance.SetRoute(values[1].AsString);
                             }
                         }
                         break;

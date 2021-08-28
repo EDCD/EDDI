@@ -1,0 +1,196 @@
+﻿<UserControl x:Class="EddiNavigationMonitor.ConfigurationWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EddiNavigationMonitor"
+             xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
+             xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
+            <Label x:Name ="maxSearchDistanceLabel" Grid.Row="1" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
+            <TextBox x:Name="maxSearchDistanceInt" Grid.Row="1" Grid.Column="1" Margin="0,5"
+                     PreviewTextInput="EnsureValidInteger"
+                     KeyDown="maxSearchDistance_KeyDown"
+                     LostFocus="maxSearchDistance_LostFocus"
+                     TextAlignment="Center"
+                     VerticalContentAlignment="Center" Height="25" Width="60"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="60" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" />
+            <ComboBox x:Name="searchTypeDropDown" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan ="1" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
+            <ComboBox x:Name="searchQueryDropDown" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan ="1" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
+            <Button HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" Margin="10, 0" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search_button}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="60" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
+            <local:SearchSystemComboBox x:Name="searchSystemDropDown"
+                                  IsEditable="True"
+                                  IsReadOnly="False"
+                                  IsTextSearchEnabled="False"
+                                  TextBoxBase.TextChanged="SearchSystemText_TextChanged"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan ="1"
+                                  Margin="5, 0"
+                                  VerticalContentAlignment="Center"
+                                  LostFocus="SearchSystemDropDown_LostFocus"
+                                  SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
+            <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
+            <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
+            <Button HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4" Margin="10, 0" VerticalContentAlignment="Center" Click="executeSelect" Content="{x:Static resx:NavigationMonitor.select_button}" ToolTip="{x:Static resx:NavigationMonitor.select_button_tooltip}" />
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.guidance_system_checkbox}" VerticalAlignment="Top"/>
+            <CheckBox x:Name="guidanceSystem" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Checked="guidanceSystemEngaged" Unchecked="guidanceSystemDisengaged"/>
+        </Grid>
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+            <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="bookmarkQuery" Content="{x:Static resx:NavigationMonitor.bm_query_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_query_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
+        </UniformGrid>
+        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated">
+            <DataGrid.Columns>
+
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=system}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=body}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_latitude}" Width="80" IsReadOnly="True" Binding="{Binding Path=latitude}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_longitude}" Width="80" IsReadOnly="True" Binding="{Binding Path=longitude}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <DataGridTemplateColumn MinWidth="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="updateBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.update_button}" ToolTip="{x:Static resx:NavigationMonitor.update_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="setBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.set_button}" ToolTip="{x:Static resx:NavigationMonitor.set_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

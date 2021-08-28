@@ -68,6 +68,7 @@
     <Compile Include="BackpackEvent.cs" />
     <Compile Include="AsteroidProspectedEvent.cs" />
     <Compile Include="AsteroidCrackedEvent.cs" />
+    <Compile Include="BookmarkDetailsEvent.cs" />
     <Compile Include="CarrierJumpCancelledEvent.cs" />
     <Compile Include="CarrierJumpRequestEvent.cs" />
     <Compile Include="CarrierPadsLockedEvent.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="EmbarkEvent.cs" />
     <Compile Include="CommanderReputationEvent.cs" />
     <Compile Include="CarrierJumpedEvent.cs" />
+    <Compile Include="GuidanceSystemEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
     <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />

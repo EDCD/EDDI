@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Utilities;
 
-namespace EddiMissionMonitor
+namespace EddiConfigService
 {
     /// <summary>Storage for configuration of mission details</summary>
     public class MissionMonitorConfiguration
@@ -16,8 +16,6 @@ namespace EddiMissionMonitor
         public int goalsCount { get; set; }
         public int missionsCount { get; set; }
         public int? missionWarning { get; set; }
-        public string missionsRouteList { get; set; }
-        public decimal missionsRouteDistance { get; set; }
 
         [JsonIgnore]
         private string dataPath;

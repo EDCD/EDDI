@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{86C23EBD-C979-4517-BB66-62E103AB13EF}</ProjectGuid>
+    <ProjectGuid>{1AF3FE80-A671-463E-B2A2-C8D4D148EFD4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EddiNavigationService</RootNamespace>
-    <AssemblyName>EddiNavigationService</AssemblyName>
+    <RootNamespace>EddiConfigService</RootNamespace>
+    <AssemblyName>EddiConfigService</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,9 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,45 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NavigationService.cs" />
+    <Compile Include="CargoMonitorConfiguration.cs" />
+    <Compile Include="ConfigService.cs" />
+    <Compile Include="MissionMonitorConfiguration.cs" />
+    <Compile Include="NavigationMonitorConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
-      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
-      <Name>EddiCargoMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
-      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
-      <Name>EddiConfigService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EddiDataProviderService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>Eddi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Events\EddiEvents.csproj">
-      <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
-      <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
-      <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
-      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
-      <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj">
-      <Project>{fec7ba2b-23c3-4f4f-96ef-bf1f1909eb03}</Project>
-      <Name>EddiStatusMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
@@ -89,21 +61,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations">
-      <Version>2020.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Rollbar">
-      <Version>4.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>5.0.0</Version>
-    </PackageReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
