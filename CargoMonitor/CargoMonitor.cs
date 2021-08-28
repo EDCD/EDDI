@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -970,6 +971,11 @@ namespace EddiCargoMonitor
                     cargocarried = cargoCarried
                 };
                 configuration.ToFile();
+                var cargoConfig = ConfigService.Instance.cargoMonitorConfiguration;
+                cargoConfig.updatedat = updateDat;
+                cargoConfig.cargo = inventory;
+                cargoConfig.cargocarried = cargoCarried;
+                ConfigService.Instance.cargoMonitorConfiguration = cargoConfig;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);
