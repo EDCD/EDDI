@@ -7,11 +7,11 @@ namespace EddiNavigationMonitor
 {
     public class NavRouteInfoReader
     {
-        public List<NavRouteInfo> Route { get; set; }
+        public List<NavWaypoint> Route { get; set; }
 
         public NavRouteInfoReader()
         {
-            Route = new List<NavRouteInfo>();
+            Route = new List<NavWaypoint>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    

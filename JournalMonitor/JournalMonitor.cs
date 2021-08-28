@@ -3533,8 +3533,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavRoute":
                                 {
-                                    List<NavRouteInfo> navRoute = new List<NavRouteInfo>();
-                                    navRoute = NavRouteInfoReader.FromFile().Route;
+                                    var navRoute = NavRouteInfoReader.FromFile()?.Route ?? new List<NavWaypoint>();
                                     events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;

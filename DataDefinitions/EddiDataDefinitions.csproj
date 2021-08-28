@@ -144,6 +144,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="NavWaypoint.cs" />
     <Compile Include="NavRouteInfo.cs" />
     <Compile Include="NpcSuitLoadout.cs" />
     <Compile Include="Suit.cs" />

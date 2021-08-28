@@ -1621,10 +1621,10 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Set to 0 to disable or set to 1 to enable optional parameters }\r\n{set reportDestination to 1}\r\n{set reportDistance to 0}\r\n{set reportJumps to 1}\r\n\r\n{_ Set optional details text from optional parameter values }\r\n{set details to []}\r\n{if reportJumps:\r\n   {set jumpDesc to: {event.jumps} jumps}\r\n   {set details to cat(details, [jumpDesc])}\r\n}\r\n{if reportDistance:\r\n   {set distanceDesc to: {round(event.distance)} light years}\r\n   {set details to cat(details, [distanceDesc])}\r\n}\r\n\r\n{_ Begin speaking }\r\nCourse {OneOf(\"laid in\", \"set\")}\r\n{if reportDestination:\r\n    for {P(event.route[event.jumps - 1].systemname)}{if len(details) > 0:,}\r\n}\r\n{if len(details) > 0:\r\n    {List(details)} {OneOf(\"to go\", \"remain\")}\r\n}.",
       "default": true,
       "name": "Nav route",
-      "description": "Triggered when plotting a multi-star route"
+      "description": "Triggered when the navigation route is updated"
     },
     "Near surface": {
       "enabled": true,

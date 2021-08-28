@@ -236,10 +236,6 @@ namespace EddiNavigationMonitor
             {
                 handleNavRouteEvent((NavRouteEvent)@event);
             }
-            else if (@event is RouteDetailsEvent)
-            {
-                handleRouteDetailsEvent((RouteDetailsEvent)@event);
-            }
         }
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
@@ -309,46 +305,29 @@ namespace EddiNavigationMonitor
                 // Get up-to-date configuration data
                 navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-                List<long> missionids = new List<long>();
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                List<NavRouteInfo> route = @event.navRoute;
+                List<NavWaypoint> route = @event.route;
                 List<string> routeList = new List<string>();
-                decimal nextSystemDistance = 0;
-                int count = 0;
 
                 navDestination = null;
                 navRouteList = null;
                 navRouteDistance = 0;
-                if (navConfig.searchQuery != "cancel")
-                {
-                    count = route.Count;
-                    if (count > 1 && route[0].starSystem == curr.systemname)
-                    {
-                        routeList.Add(route[0].starSystem);
-                        for (int i = 0; i < count - 1; i++)
-                        {
-                            navRouteDistance += CalculateDistance(route[i], route[i + 1]);
-                            if (i == 0) { nextSystemDistance = navRouteDistance; }
-                            routeList.Add(route[i + 1].starSystem);
-                        }
-                        navDestination = route[count - 1].starSystem;
-                        navRouteList = string.Join("_", routeList);
-                        UpdateDestinationData(navDestination, navRouteDistance);
 
-                        // Get mission IDs for 'set' system
-                        missionids = NavigationService.Instance.GetSystemMissionIds(navDestination);
+                if (route.Count > 1 && route[0].systemname == EDDI.Instance?.CurrentStarSystem?.systemname)
+                {
+                    routeList.Add(route[0].systemname);
+                    for (int i = 0; i < route.Count - 1; i++)
+                    {
+                        navRouteDistance += CalculateDistance(route[i], route[i + 1]);
+                        routeList.Add(route[i + 1].systemname);
                     }
+                    navDestination = route[route.Count - 1].systemname;
+                    navRouteList = string.Join("_", routeList);
+                    UpdateDestinationData(navDestination, navRouteDistance);
                 }
-                EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nav", navDestination, null, navRouteList, count, nextSystemDistance, navRouteDistance, missionids));
 
                 // Update the navigation configuration 
                 writeBookmarks();
             }
-        }
-
-        private void handleRouteDetailsEvent(RouteDetailsEvent @event)
-        {
-
         }
 
         private void handleTouchdownEvent(TouchdownEvent @event)
@@ -490,17 +469,9 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public decimal CalculateDistance(NavRouteInfo curr, NavRouteInfo dest)
+        public decimal CalculateDistance(NavWaypoint curr, NavWaypoint dest)
         {
-            double square(double x) => x * x;
-            decimal distance = 0;
-            if (curr?.x != null && dest?.x != null)
-            {
-                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
-                            + square((double)(curr.y - dest.y))
-                            + square((double)(curr.z - dest.z))), 2);
-            }
-            return distance;
+            return Functions.DistanceFromCoordinates(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
         }
 
         public decimal CalculateDistance(Status curr, decimal? latitude = null, decimal? longitude = null)

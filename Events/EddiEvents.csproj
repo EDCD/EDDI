@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackpackChangedEvent.cs" />
+    <Compile Include="NavRouteEvent.cs" />
     <Compile Include="SafeEvent.cs" />
     <Compile Include="ShipLockerEvent.cs" />
     <Compile Include="CancelTransportEvent.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="CommanderReputationEvent.cs" />
     <Compile Include="CarrierJumpedEvent.cs" />
     <Compile Include="GuidanceSystemEvent.cs" />
-    <Compile Include="NavRouteEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
     <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />
