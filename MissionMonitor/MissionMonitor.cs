@@ -30,8 +30,6 @@ namespace EddiMissionMonitor
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
 
-        private MissionMonitorConfiguration missionsConfig = new MissionMonitorConfiguration();
-
         private DateTime updateDat;
         public int goalsCount;
         public int missionsCount;
@@ -944,11 +942,11 @@ namespace EddiMissionMonitor
 
         public void writeMissions()
         {
-            missionsCount = missions.Where(m => !m.shared && !m.communal).Count();
+            missionsCount = missions.Count(m => !m.shared && !m.communal);
             lock (missionsLock)
             {
                 // Write bookmarks configuration with current list
-                missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 missionsConfig.missions = missions;
                 missionsConfig.goalsCount = missions.Count(m => m.communal);
                 missionsConfig.missionsCount = missions.Count(m => !m.shared && !m.communal);
@@ -965,7 +963,7 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Obtain current missions log from configuration
-                missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 missionsCount = missionsConfig.missionsCount;
                 missionWarning = missionsConfig.missionWarning ?? Constants.missionWarningDefault;
                 updateDat = missionsConfig.updatedat;
