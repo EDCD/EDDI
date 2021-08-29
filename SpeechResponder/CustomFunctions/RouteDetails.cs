@@ -1,13 +1,10 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiCore;
-using EddiCrimeMonitor;
-using EddiMaterialMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -19,9 +16,6 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.RouteDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
-            MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
-            int materialMonitorDistance = materialMonitor.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
             string result = null;
             string value = values[0].AsString;
             if (!string.IsNullOrEmpty(value))
