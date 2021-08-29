@@ -28,6 +28,7 @@ namespace EddiStatusMonitor
         private const int pollingIntervalRelaxedMs = 5000;
 
         // Miscellaneous tracking
+        private bool gliding;
         private bool jumping;
         private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
 
