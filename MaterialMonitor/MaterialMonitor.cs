@@ -26,7 +26,6 @@ namespace EddiMaterialMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();
-        public int? maxStationDistanceFromStarLs;
 
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
