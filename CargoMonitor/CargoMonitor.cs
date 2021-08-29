@@ -964,18 +964,11 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Write cargo configuration with current inventory
-                CargoMonitorConfiguration configuration = new CargoMonitorConfiguration()
-                {
-                    updatedat = updateDat,
-                    cargo = inventory,
-                    cargocarried = cargoCarried
-                };
-                configuration.ToFile();
                 var cargoConfig = ConfigService.Instance.cargoMonitorConfiguration;
                 cargoConfig.updatedat = updateDat;
                 cargoConfig.cargo = inventory;
                 cargoConfig.cargocarried = cargoCarried;
-                ConfigService.Instance.cargoMonitorConfiguration = cargoConfig;
+                cargoConfig.ToFile();
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);
@@ -986,7 +979,7 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Obtain current cargo inventory from configuration
-                configuration = configuration ?? CargoMonitorConfiguration.FromFile();
+                configuration = configuration ?? ConfigService.Instance.cargoMonitorConfiguration;
                 cargoCarried = configuration.cargocarried;
                 updateDat = configuration.updatedat;
 
