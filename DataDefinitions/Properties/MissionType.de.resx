@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Fracht retten</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Bergung</value>
   </data>
@@ -206,9 +208,11 @@
     <value>Startzone</value>
   </data>
   <data name="OnFoot" xml:space="preserve">
-    <value>Zu Fuß</value>
+    <value>Bodenmission</value>
   </data>
-  
+  <data name="BlOps" xml:space="preserve">
+    <value>Verdeckte Operation</value>
+  </data>
   <data name="Chain" xml:space="preserve">
     <value>Kette</value>
     <comment>Sequential chained (joined) mission</comment>
@@ -225,8 +229,12 @@
   <data name="Planetary" xml:space="preserve">
     <value>Planetarisch</value>
   </data>
-  
-  
+  <data name="RankFed" xml:space="preserve">
+    <value>Föderaler Auftrag</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Imperialer Auftrag</value>
+  </data>
   <data name="DisableMegaship" xml:space="preserve">
     <value>Megaschiff ausschalten</value>
   </data>
@@ -258,7 +266,9 @@
     <comment>Hack type</comment>
   </data>
   
-  
+  <data name="Onslaught" xml:space="preserve">
+    <value>Siedlung überfallen</value>
+  </data>
   
   <data name="NCD" xml:space="preserve">
     <value>Gewaltfrei</value>
