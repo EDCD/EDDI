@@ -214,7 +214,7 @@
     <value>Verdeckte Operation</value>
   </data>
   <data name="Chain" xml:space="preserve">
-    <value>Kette</value>
+    <value>Verbundene Mission</value>
     <comment>Sequential chained (joined) mission</comment>
   </data>
   <data name="Welcome" xml:space="preserve">
@@ -252,10 +252,16 @@
     <value>Kriegsziele</value>
     <comment>Massacre mission type</comment>
   </data>
-  
-  
+  <data name="Skimmer" xml:space="preserve">
+    <value>Skimmer zerstören</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Anspruchsvoll</value>
+    <comment>Mission difficulty</comment>
+  </data>
   <data name="Covert" xml:space="preserve">
-    <value>Verdeckt</value>
+    <value>Verdeckte Mission</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
@@ -265,11 +271,17 @@
     <value>Upload</value>
     <comment>Hack type</comment>
   </data>
-  
+  <data name="Offline" xml:space="preserve">
+    <value>Siedlung ausschalten</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
   <data name="Onslaught" xml:space="preserve">
     <value>Siedlung überfallen</value>
   </data>
-  
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Produktion überfallen</value>
+    <comment>Heist type</comment>
+  </data>
   <data name="NCD" xml:space="preserve">
     <value>Gewaltfrei</value>
   </data>
