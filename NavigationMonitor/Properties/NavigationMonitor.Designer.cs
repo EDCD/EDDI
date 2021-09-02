@@ -133,7 +133,16 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guidance System Engaged:.
+        ///   Looks up a localized string similar to Guidance.
+        /// </summary>
+        public static string guidance {
+            get {
+                return ResourceManager.GetString("guidance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Guidance System?.
         /// </summary>
         public static string guidance_system_checkbox {
             get {
@@ -223,7 +232,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prioritize Orbital Stations:.
+        ///   Looks up a localized string similar to Prioritize Orbital Stations?.
         /// </summary>
         public static string orbital_station_checkbox {
             get {
@@ -279,9 +288,9 @@ namespace EddiNavigationMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
-        public static string search_button {
+        public static string search {
             get {
-                return ResourceManager.GetString("search_button", resourceCulture);
+                return ResourceManager.GetString("search", resourceCulture);
             }
         }
         
@@ -547,7 +556,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the bookmark with latest data.
+        ///   Looks up a localized string similar to Update the bookmark&apos;s location data from your current in-game position and orientation.
         /// </summary>
         public static string update_button_tooltip {
             get {

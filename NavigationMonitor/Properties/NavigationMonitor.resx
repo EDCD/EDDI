@@ -142,7 +142,7 @@
     <value>Find:</value>
   </data>
   <data name="guidance_system_checkbox" xml:space="preserve">
-    <value>Guidance System Engaged:</value>
+    <value>Enable Guidance System?</value>
   </data>
   <data name="header_body" xml:space="preserve">
     <value>Body</value>
@@ -172,7 +172,7 @@
     <value>No Station</value>
   </data>
   <data name="orbital_station_checkbox" xml:space="preserve">
-    <value>Prioritize Orbital Stations:</value>
+    <value>Prioritize Orbital Stations?</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Tip: Maximize the allowed search distance to minimize search times.</value>
@@ -189,7 +189,7 @@
   <data name="remove_message" xml:space="preserve">
     <value>Are you sure you want to remove the bookmark?</value>
   </data>
-  <data name="search_button" xml:space="preserve">
+  <data name="search" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="search_button_tooltip" xml:space="preserve">
@@ -280,6 +280,9 @@
     <value>Update</value>
   </data>
   <data name="update_button_tooltip" xml:space="preserve">
-    <value>Update the bookmark with latest data</value>
+    <value>Update the bookmark's location data from your current in-game position and orientation</value>
+  </data>
+  <data name="guidance" xml:space="preserve">
+    <value>Guidance</value>
   </data>
 </root>
