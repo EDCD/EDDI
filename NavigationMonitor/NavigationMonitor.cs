@@ -25,7 +25,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavBookmark> bookmarks;
         private static readonly object bookmarksLock = new object();
 
-        private NavigationMonitorConfiguration navConfig;
+        private NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
         private PlanetaryGuidance planetaryGuidance;
 
         // Navigation route data
@@ -59,7 +59,6 @@ namespace EddiNavigationMonitor
         public NavigationMonitor()
         {
             bookmarks = new ObservableCollection<NavBookmark>();
-            navConfig = new NavigationMonitorConfiguration();
             BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
             initializeNavigationMonitor();
         }
@@ -168,7 +167,7 @@ namespace EddiNavigationMonitor
 
         private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
                 if (@event.isset)
@@ -184,7 +183,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
@@ -194,7 +193,7 @@ namespace EddiNavigationMonitor
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
@@ -204,7 +203,7 @@ namespace EddiNavigationMonitor
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
@@ -214,7 +213,7 @@ namespace EddiNavigationMonitor
 
         private void handleEnteredNormalSpaceEvent(EnteredNormalSpaceEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
@@ -227,12 +226,9 @@ namespace EddiNavigationMonitor
 
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-
-                // Get up-to-date configuration data
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
                 List<NavWaypoint> route = @event.route;
                 List<string> routeList = new List<string>();
@@ -261,36 +257,32 @@ namespace EddiNavigationMonitor
 
         private void handleTouchdownEvent(TouchdownEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
 
                 if (@event.playercontrolled)
                 {
-                    navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
                     navConfig.tdLat = @event.latitude;
                     navConfig.tdLong = @event.longitude;
                     navConfig.tdPOI = @event.nearestdestination;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    navConfig.ToFile();
                 }
             }
         }
 
         private void handleLiftoffEvent(LiftoffEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
 
                 if (@event.playercontrolled)
                 {
-                    navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
                     navConfig.tdLat = null;
                     navConfig.tdLong = null;
                     navConfig.tdPOI = null;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    navConfig.ToFile();
                 }
             }
         }
@@ -300,7 +292,8 @@ namespace EddiNavigationMonitor
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["bookmarks"] = new List<NavBookmark>(bookmarks),
-                ["navRouteList"] = navRouteList
+                ["navRouteList"] = navRouteList,
+                ["orbitalpriority"] = navConfig.prioritizeOrbitalStations
             };
             return variables;
         }
@@ -310,14 +303,13 @@ namespace EddiNavigationMonitor
             lock (bookmarksLock)
             {
                 // Write bookmarks configuration with current list
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.bookmarks = bookmarks;
                 navConfig.navDestination = navDestination;
                 navConfig.navRouteDistance = navRouteDistance;
                 navConfig.navRouteList = navRouteList;
                 if (navConfig.searchQuery == "cancel") { navConfig.searchQuery = null; }
                 navConfig.updatedat = updateDat;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                navConfig.ToFile();
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
@@ -328,7 +320,6 @@ namespace EddiNavigationMonitor
             lock (bookmarksLock)
             {
                 // Obtain current bookmarks list from configuration
-                navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navDestination = navConfig.navDestination;
                 navRouteDistance = navConfig.navRouteDistance;
                 navRouteList = navConfig.navRouteList;
@@ -346,7 +337,6 @@ namespace EddiNavigationMonitor
         private void UpdateBookmarkSetStatus(string system, string station = null)
         {
             // Update bookmark 'set' status
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
             if (navBookmark != null && navBookmark.systemname == system)
             {
@@ -354,8 +344,9 @@ namespace EddiNavigationMonitor
                 {
                     navBookmark.isset = false;
                 }
-
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                navConfig.ToFile();
+                // Make sure the UI is up to date
+                RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
             }
         }
 
@@ -364,6 +355,8 @@ namespace EddiNavigationMonitor
             lock (bookmarksLock)
             {
                 bookmarks.RemoveAt(index);
+                // Make sure the UI is up to date
+                RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
             }
         }
 

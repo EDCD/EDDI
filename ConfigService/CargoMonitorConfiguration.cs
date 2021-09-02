@@ -25,7 +25,7 @@ namespace EddiConfigService
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a json.
+        /// Obtain configuration from a json.
         /// </summary>
         public static CargoMonitorConfiguration FromJson(dynamic json)
         {
@@ -45,8 +45,7 @@ namespace EddiConfigService
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\cargomonitor.json is used
+        /// Obtain configuration from a file.  If the file name is not supplied the the default path is used
         /// </summary>
         public static CargoMonitorConfiguration FromFile(string filename = null)
         {
@@ -92,15 +91,19 @@ namespace EddiConfigService
         /// </summary>
         public void ToFile(string filename = null)
         {
-            // Remove any items that are all NULL
-            //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
-
             filename = filename ?? dataPath;
             if (filename == null) { return; }
 
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Logging.Debug("Configuration to file: " + json);
-            Files.Write(filename, json);
+            string json = null;
+            LockManager.GetLock(nameof(CargoMonitorConfiguration), () =>
+            {
+                json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            });
+            if (!string.IsNullOrEmpty(json))
+            {
+                Logging.Debug("Configuration to file: " + json);
+                Files.Write(filename, json);
+            }
         }
     }
 }

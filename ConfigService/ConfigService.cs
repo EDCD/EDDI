@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Utilities;
+﻿using Utilities;
 
 namespace EddiConfigService
 {
@@ -7,9 +6,6 @@ namespace EddiConfigService
     {
         private static ConfigService instance;
         private static readonly object instanceLock = new object();
-        private static readonly object cargoLock = new object();
-        private static readonly object missionLock = new object();
-        private static readonly object navigationLock = new object();
 
         public static ConfigService Instance
         {
@@ -30,34 +26,24 @@ namespace EddiConfigService
             }
         }
 
-        private ConfigService()
-        {
-
-        }
-
         private CargoMonitorConfiguration _cargoMonitorConfiguration;
         public CargoMonitorConfiguration cargoMonitorConfiguration
         {
             get
             {
-                return _cargoMonitorConfiguration ?? CargoMonitorConfiguration.FromFile();
+                CargoMonitorConfiguration result = null;
+                LockManager.GetLock(nameof(CargoMonitorConfiguration), () =>
+                {
+                    result = _cargoMonitorConfiguration;
+                });
+                return result ?? CargoMonitorConfiguration.FromFile();
             }
             set
             {
-                var stackTrace = new StackTrace();
-                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
-                if (Namespace == "EddiCargoMonitor")
+                LockManager.GetLock(nameof(CargoMonitorConfiguration), () =>
                 {
-                    lock (cargoLock)
-                    {
-                        _cargoMonitorConfiguration = value;
-                    }
-
-                    // Write configuration with current cargo data
-                    value.ToFile();
-                }
-                else
-                { }
+                    _cargoMonitorConfiguration = value;
+                });
             }
         }
 
@@ -66,23 +52,19 @@ namespace EddiConfigService
         {
             get
             {
-                return _missionMonitorConfiguration ?? MissionMonitorConfiguration.FromFile();
+                MissionMonitorConfiguration result = null;
+                LockManager.GetLock(nameof(MissionMonitorConfiguration), () =>
+                {
+                    result = _missionMonitorConfiguration;
+                });
+                return result ?? MissionMonitorConfiguration.FromFile();
             }
             set
             {
-                var stackTrace = new StackTrace();
-                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
-                if (Namespace == "EddiMissionMonitor")
+                LockManager.GetLock(nameof(MissionMonitorConfiguration), () =>
                 {
-                    lock (missionLock)
-                    {
-                        _missionMonitorConfiguration = value;
-                    }
-
-                    // Write configuration with current missions data
-                    value.ToFile();
-                }
-                else { }
+                    _missionMonitorConfiguration = value;
+                });
             }
         }
 
@@ -91,23 +73,19 @@ namespace EddiConfigService
         {
             get
             {
-                return _navigationMonitorConfiguration ?? NavigationMonitorConfiguration.FromFile();
+                NavigationMonitorConfiguration result = null;
+                LockManager.GetLock(nameof(NavigationMonitorConfiguration), () =>
+                {
+                    result = _navigationMonitorConfiguration;
+                });
+                return result ?? NavigationMonitorConfiguration.FromFile();
             }
             set
             {
-                var stackTrace = new StackTrace();
-                var Namespace = stackTrace.GetFrame(1).GetMethod().DeclaringType.Namespace;
-                if (Namespace == "EddiNavigationMonitor" || Namespace == "EddiNavigationService")
+                LockManager.GetLock(nameof(NavigationMonitorConfiguration), () =>
                 {
-                    lock (navigationLock)
-                    {
-                        _navigationMonitorConfiguration = value;
-                    }
-
-                    // Write configuration with current navigation data
-                    value.ToFile();
-                }
-                else { }
+                    _navigationMonitorConfiguration = value;
+                });
             }
         }
     }

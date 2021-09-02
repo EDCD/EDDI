@@ -5,6 +5,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiShipMonitor;
+using EddiStatusMonitor;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utilities;
-using EddiStatusMonitor;
 
 namespace EddiNavigationMonitor
 {
@@ -28,7 +28,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private NavigationMonitorConfiguration navConfig = new NavigationMonitorConfiguration();
+        private readonly NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
         private string searchTypeSelection = String.Empty;
         private string searchQuerySelection = String.Empty;
         private string dropdownSearchSystem = null;
@@ -70,16 +70,15 @@ namespace EddiNavigationMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
-            bookmarksData.ItemsSource = navigationMonitor()?.bookmarks;
+            bookmarksData.ItemsSource = navigationMonitor().bookmarks;
 
             ConfigureSearchTypeOptions();
             searchTypeDropDown.SelectedItem = Properties.NavigationMonitor.search_type_missions;
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
 
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             guidanceSystem.IsChecked = navConfig.guidanceSystemEnabled;
-            maxSearchDistanceInt.Text = navConfig.maxSearchDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
+            maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
 
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
         }
@@ -100,8 +99,6 @@ namespace EddiNavigationMonitor
             decimal? longitude = null;
             bool landable = false;
 
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
             if (EDDI.Instance.CurrentStarSystem != null)
             {
                 StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
@@ -110,7 +107,7 @@ namespace EddiNavigationMonitor
 
                 if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                 {
-                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP && navConfig.tdLat != null && navConfig.tdLong != null)
                     {
                         latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
                         longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
@@ -169,9 +166,9 @@ namespace EddiNavigationMonitor
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
-                    currentBody?.shortname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
-                navConfig.bookmarks.Add(navBookmark);
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    currentBody?.bodyname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
+                navigationMonitor().bookmarks.Add(navBookmark);
+                navigationMonitor().writeBookmarks();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
             }
         }
@@ -179,8 +176,6 @@ namespace EddiNavigationMonitor
         private void bookmarkQuery(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(navConfig.searchSystem)) { return; }
-
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
             string systemName = navConfig.searchSystem;
             StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName, false);
@@ -195,8 +190,8 @@ namespace EddiNavigationMonitor
             }
 
             NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, null, stationName, isStation, null, null, landable);
-            navConfig.bookmarks.Add(navBookmark);
-            ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+            navigationMonitor().bookmarks.Add(navBookmark);
+            navigationMonitor().writeBookmarks();
             EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "query", navBookmark));
         }
 
@@ -211,7 +206,6 @@ namespace EddiNavigationMonitor
             string filename = Constants.DATA_DIR + @"\import.csv";
             bool header = true;
             List<string> headerNames = new List<string>();
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
             if (File.Exists(filename))
             {
@@ -224,7 +218,7 @@ namespace EddiNavigationMonitor
                         try
                         {
                             NavBookmark navBookmark = new NavBookmark();
-                            string[] fields = parser.ReadFields();
+                            string[] fields = parser.ReadFields() ?? new string[0];
                             for (int i = 0; i < fields.Count(); i++)
                             {
                                 if (header)
@@ -288,7 +282,11 @@ namespace EddiNavigationMonitor
                                     }
                                 }
                             }
-                            if (!header) { navConfig.bookmarks.Add(navBookmark); }
+
+                            if (!header)
+                            {
+                                navigationMonitor().bookmarks.Add(navBookmark);
+                            }
                             header = false;
                         }
                         catch (MalformedLineException ex)
@@ -297,13 +295,12 @@ namespace EddiNavigationMonitor
                         }
                     }
                 }
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                navigationMonitor().writeBookmarks();
             }
         }
 
         private void removeBookmark(object sender, RoutedEventArgs e)
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             var index = bookmarksData.SelectedIndex;
             string messageBoxText = Properties.NavigationMonitor.remove_message;
             string caption = Properties.NavigationMonitor.remove_caption;
@@ -314,8 +311,7 @@ namespace EddiNavigationMonitor
                     {
                         // Remove the bookmark from the list
                         navigationMonitor().RemoveBookmarkAt(index);
-                        navConfig.bookmarks = navigationMonitor()?.bookmarks;
-                        ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                        navConfig.ToFile();
                     }
                     break;
             }
@@ -324,12 +320,11 @@ namespace EddiNavigationMonitor
         private void setBookmark(object sender, RoutedEventArgs e)
         {
             // Clear all previously 'set' bookmarks
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            NavBookmark bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+            NavBookmark bm = navigationMonitor().bookmarks.FirstOrDefault(b => b.isset);
             while (bm?.isset ?? false)
             {
                 bm.isset = false;
-                bm = navConfig.bookmarks.FirstOrDefault(b => b.isset);
+                bm = navigationMonitor().bookmarks.FirstOrDefault(b => b.isset);
             }
 
             string station = null;
@@ -344,15 +339,9 @@ namespace EddiNavigationMonitor
 
         private void updateBookmark(object sender, RoutedEventArgs e)
         {
-            decimal? latitude = null;
-            decimal? longitude = null;
-
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-            StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-            Body currentBody = EDDI.Instance.CurrentStellarBody;
-            Station currentStation = EDDI.Instance.CurrentStation;
-            Status currentStatus = NavigationService.Instance.currentStatus;
+            var currentSystem = EDDI.Instance.CurrentStarSystem;
+            var currentBody = EDDI.Instance.CurrentStellarBody;
+            var currentStation = EDDI.Instance.CurrentStation;
 
             if (e.Source is Button button)
             {
@@ -366,16 +355,16 @@ namespace EddiNavigationMonitor
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                         {
-                            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+                            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP && navConfig.tdLat != null && navConfig.tdLong != null)
                             {
-                                latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
-                                longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
+                                navBookmark.latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
+                                navBookmark.longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
                                 if (navBookmark.poi is null) { navBookmark.poi = navConfig.tdPOI; }
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
                             {
-                                latitude = currentStatus.latitude;
-                                longitude = currentStatus.longitude;
+                                navBookmark.latitude = currentStatus.latitude;
+                                navBookmark.longitude = currentStatus.longitude;
 
                                 if (navConfig.tdPOI != null)
                                 {
@@ -393,8 +382,10 @@ namespace EddiNavigationMonitor
                         {
                             if (currentStatus.near_surface)
                             {
-                                PlanetaryGuidance.SurfaceCoordinates(currentStatus, out latitude, out longitude);
+                                PlanetaryGuidance.SurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
                                 navBookmark.landable = currentBody.landable ?? false;
+                                navBookmark.latitude = latitude;
+                                navBookmark.longitude = longitude;
                             }
                         }
                     }
@@ -409,7 +400,7 @@ namespace EddiNavigationMonitor
                         }
                     }
 
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    navConfig.ToFile();
                     EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "update", navBookmark));
                 }
             }
@@ -427,13 +418,11 @@ namespace EddiNavigationMonitor
 
         private void updateOrbitalStationsCheckbox()
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
-            bool isChecked = prioritizeOrbitalStations.IsChecked.Value;
+            bool isChecked = prioritizeOrbitalStations.IsChecked ?? false;
             if (navConfig.prioritizeOrbitalStations != isChecked)
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                navConfig.ToFile();
             }
         }
 
@@ -449,13 +438,11 @@ namespace EddiNavigationMonitor
 
         private void updateGuidanceSystemCheckbox()
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
             bool isChecked = guidanceSystem.IsChecked ?? false;
             if (navConfig.guidanceSystemEnabled != isChecked)
             {
                 navConfig.guidanceSystemEnabled = isChecked;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                navConfig.ToFile();
             }
         }
 
@@ -474,8 +461,6 @@ namespace EddiNavigationMonitor
 
         private void maxStationDistance_Changed()
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-
             try
             {
                 int? distance = string.IsNullOrWhiteSpace(maxSearchDistanceInt.Text)
@@ -483,7 +468,7 @@ namespace EddiNavigationMonitor
                 if (distance != navConfig.maxSearchDistanceFromStarLs)
                 {
                     navConfig.maxSearchDistanceFromStarLs = distance;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    navConfig.ToFile();
                 }
             }
             catch
@@ -544,8 +529,7 @@ namespace EddiNavigationMonitor
 
         private void ConfigureSearchQueryOptions(string type)
         {
-            List<string> SearchQueryOptions = new List<string> { };
-
+            var SearchQueryOptions = new List<string>();
             foreach (string query in searchQuery)
             {
                 string property = Properties.NavigationMonitor.ResourceManager.GetString("search_query_"

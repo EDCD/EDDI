@@ -71,6 +71,10 @@
       <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
       <Name>EddiBgsService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
@@ -90,10 +94,6 @@
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
-      <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
-      <Name>EddiNavigationService</Name>
     </ProjectReference>
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>

@@ -7,7 +7,7 @@ using Utilities;
 
 namespace EddiConfigService
 {
-    /// <summary>Storage for configuration of cargo details</summary>
+    /// <summary>Storage for configuration of navigation details</summary>
     public class NavigationMonitorConfiguration
     {
         public ObservableCollection<NavBookmark> bookmarks { get; set; }
@@ -15,8 +15,8 @@ namespace EddiConfigService
         public DateTime updatedat { get; set; }
 
         // Search parameters
-        public int? maxSearchDistanceFromStarLs { get; set; }
-        public bool prioritizeOrbitalStations { get; set; }
+        public int? maxSearchDistanceFromStarLs { get; set; } = 10000;
+        public bool prioritizeOrbitalStations { get; set; } = true;
 
         // Navigation Route data
         public string navDestination { get; set; }
@@ -45,16 +45,13 @@ namespace EddiConfigService
         [JsonIgnore]
         private string dataPath;
 
-        [JsonIgnore]
-        static readonly object fileLock = new object();
-
         public NavigationMonitorConfiguration()
         {
             bookmarks = new ObservableCollection<NavBookmark>();
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a json.
+        /// Obtain configuration from a json.
         /// </summary>
         public static NavigationMonitorConfiguration FromJson(dynamic json)
         {
@@ -74,8 +71,7 @@ namespace EddiConfigService
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\cargomonitor.json is used
+        /// Obtain configuration from a file.  If the file name is not supplied the the default path is used
         /// </summary>
         public static NavigationMonitorConfiguration FromFile(string filename = null)
         {
@@ -116,27 +112,22 @@ namespace EddiConfigService
 
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
-        /// when reading in the configuration will be used, or the default path of 
-        /// Constants.Data_DIR\cargomonitor.json will be used
+        /// when reading in the configuration will be used, unless it too is null, for example
+        /// a test config purely based on JSON, in which case nothing will be written.
         /// </summary>
         public void ToFile(string filename = null)
         {
-            // Remove any items that are all NULL
-            //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
+            filename = filename ?? dataPath;
+            if (filename == null) { return; }
 
-            if (filename == null)
+            string json = null;
+            LockManager.GetLock(nameof(NavigationMonitorConfiguration), () =>
             {
-                filename = dataPath;
-            }
-            if (filename == null)
+                json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            });
+            if (!string.IsNullOrEmpty(json))
             {
-                filename = Constants.DATA_DIR + @"\navigationmonitor.json";
-            }
-
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Logging.Debug("Configuration to file: " + json);
-            lock (fileLock)
-            {
+                Logging.Debug("Configuration to file: " + json);
                 Files.Write(filename, json);
             }
         }

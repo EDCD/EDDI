@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -15,8 +14,7 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-
-        private MissionMonitorConfiguration missionsConfig = new MissionMonitorConfiguration();
+        private readonly MissionMonitorConfiguration missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
 
         private MissionMonitor missionMonitor()
         {
@@ -28,9 +26,7 @@ namespace EddiMissionMonitor
             InitializeComponent();
 
             missionsData.ItemsSource = missionMonitor()?.missions;
-
-            missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
-            missionWarningInt.Text = missionsConfig.missionWarning?.ToString(CultureInfo.InvariantCulture) ?? Constants.missionWarningDefault.ToString();
+            missionWarningInt.Text = (missionsConfig.missionWarning ?? 0).ToString(CultureInfo.InvariantCulture);
         }
 
         private void missionsUpdated(object sender, DataTransferEventArgs e)
@@ -41,14 +37,13 @@ namespace EddiMissionMonitor
 
         private void warningChanged(object sender, TextChangedEventArgs e)
         {
-            missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
             try
             {
-                int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? Constants.missionWarningDefault
+                int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 0
                     : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
                 missionMonitor().missionWarning = warning;
                 missionsConfig.missionWarning = warning;
-                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
+                missionsConfig.ToFile();
             }
             catch
             {

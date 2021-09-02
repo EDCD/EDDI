@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiBgsService;
 using EddiCore;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -31,8 +32,6 @@ namespace EddiCrimeMonitor
         public long claims;
         public long fines;
         public long bounties;
-        public int? maxStationDistanceFromStarLs;
-        public bool prioritizeOrbitalStations;
         public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
@@ -42,6 +41,8 @@ namespace EddiCrimeMonitor
         private static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
         private readonly IBgsService bgsService;
+
+        private NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
         public string MonitorName()
         {
@@ -755,7 +756,6 @@ namespace EddiCrimeMonitor
                 ["claims"] = claims,
                 ["fines"] = fines,
                 ["bounties"] = bounties,
-                ["orbitalpriority"] = prioritizeOrbitalStations,
                 ["shiptargets"] = new List<Target>(shipTargets)
             };
             return variables;
@@ -775,8 +775,6 @@ namespace EddiCrimeMonitor
                     claims = claims,
                     fines = fines,
                     bounties = bounties,
-                    maxStationDistanceFromStarLs = maxStationDistanceFromStarLs,
-                    prioritizeOrbitalStations = prioritizeOrbitalStations,
                     targetSystem = targetSystem,
                     homeSystems = homeSystems,
                     updatedat = updateDat
@@ -796,9 +794,6 @@ namespace EddiCrimeMonitor
                 claims = configuration.claims;
                 fines = configuration.fines;
                 bounties = configuration.bounties;
-                maxStationDistanceFromStarLs =
-                    configuration.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
-                prioritizeOrbitalStations = configuration.prioritizeOrbitalStations;
                 targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
@@ -1057,9 +1052,9 @@ namespace EddiCrimeMonitor
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
                 LandingPadSize padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                List<Station> factionStations = !prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false) ? factionStarSystem.stations : factionStarSystem.orbitalstations
+                List<Station> factionStations = !navConfig.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false) ? factionStarSystem.stations : factionStarSystem.orbitalstations
                     .Where(s => s.stationservices.Count > 0).ToList();
-                factionStations = factionStations.Where(s => s.distancefromstar <= maxStationDistanceFromStarLs).ToList();
+                factionStations = factionStations.Where(s => s.distancefromstar <= navConfig.maxSearchDistanceFromStarLs).ToList();
                 factionStations = factionStations.Where(s => s.LandingPadCheck(padSize)).ToList();
 
                 // Build list to find the faction station nearest to the main star

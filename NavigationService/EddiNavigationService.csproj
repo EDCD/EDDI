@@ -48,10 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
-      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
-      <Name>EddiCargoMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
       <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
       <Name>EddiConfigService</Name>
@@ -71,10 +67,6 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
-      <Name>EddiMissionMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>

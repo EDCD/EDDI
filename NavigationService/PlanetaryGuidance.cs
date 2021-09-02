@@ -21,7 +21,7 @@ namespace EddiNavigationService
         private static GuidanceStatus guidanceStatus;
 
         private static readonly object statusLock = new object();
-        public Status currentStatus { get; private set; }
+        private Status currentStatus { get; set; }
         private Status lastStatus { get; set; }
 
         private NavigationMonitorConfiguration navConfig { get; set; }

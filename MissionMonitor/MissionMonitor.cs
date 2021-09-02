@@ -30,6 +30,7 @@ namespace EddiMissionMonitor
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
 
+        private MissionMonitorConfiguration missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
         private DateTime updateDat;
         public int goalsCount;
         public int missionsCount;
@@ -70,7 +71,7 @@ namespace EddiMissionMonitor
 
         public void initializeMissionMonitor(MissionMonitorConfiguration configuration = null)
         {
-            readMissions();
+            readMissions(configuration);
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -143,7 +144,7 @@ namespace EddiMissionMonitor
                                 EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name)); 
                             }
                         }
-                        else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? Constants.missionWarningDefault))
+                        else if (missionWarning > 0 && mission.expiry < DateTime.UtcNow.AddMinutes((double)missionWarning))
                         {
                             if (!mission.expiring && mission.timeRemaining != null)
                             {
@@ -946,13 +947,12 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Write bookmarks configuration with current list
-                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 missionsConfig.missions = missions;
                 missionsConfig.goalsCount = missions.Count(m => m.communal);
                 missionsConfig.missionsCount = missions.Count(m => !m.shared && !m.communal);
                 missionsConfig.missionWarning = missionWarning;
                 missionsConfig.updatedat = updateDat;
-                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
+                missionsConfig.ToFile();
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(MissionUpdatedEvent, missions);
@@ -963,9 +963,9 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Obtain current missions log from configuration
-                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+                missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
                 missionsCount = missionsConfig.missionsCount;
-                missionWarning = missionsConfig.missionWarning ?? Constants.missionWarningDefault;
+                missionWarning = missionsConfig.missionWarning;
                 updateDat = missionsConfig.updatedat;
 
                 // Build a new missions log
@@ -992,22 +992,6 @@ namespace EddiMissionMonitor
         public Mission GetMissionWithMissionId(long missionid)
         {
             return missions.FirstOrDefault(m => m.missionid == missionid);
-        }
-
-        public List<long> GetSystemMissionIds(string system)
-        {
-            List<long> missionids = new List<long>();       // List of mission IDs for the system
-
-            if (system != null)
-            {
-                // Get mission IDs associated with the system
-                foreach (Mission mission in missions.Where(m => m.destinationsystem == system
-                    || (m.originreturn && m.originsystem == system)).ToList())
-                {
-                    missionids.Add(mission.missionid);
-                }
-            }
-            return missionids;
         }
 
         private void AddMission(Mission mission)
@@ -1082,13 +1066,6 @@ namespace EddiMissionMonitor
                 }
             }
             return false;
-        }
-
-        public void UpdateDestinationData(string system, string station, decimal distance)
-        {
-            EDDI.Instance.updateDestinationSystem(system);
-            EDDI.Instance.DestinationDistanceLy = distance;
-            EDDI.Instance.updateDestinationStation(station);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
