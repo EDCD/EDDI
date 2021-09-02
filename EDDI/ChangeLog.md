@@ -6,7 +6,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
     * Improved parsing of Odyssey settlements from EDSM API data.
-
+  * Speech Responder
+    * Scripts
+      * `Material required report` updated to fix a typo
+      
 ### 4.0.1
   * Core
     * Promote 4.0.1-rc1 to 4.0.1
