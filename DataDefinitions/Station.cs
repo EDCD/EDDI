@@ -278,22 +278,38 @@ namespace EddiDataDefinitions
         public long? shipyardupdatedat;
 
         /// <summary>Is this station a fleet carrier?</summary>
-        public bool IsCarrier() { return Model?.basename == "FleetCarrier"; }
+        public bool IsCarrier() { return Model == StationModel.FleetCarrier; }
 
         /// <summary>Is this station a mega ship?</summary>
-        public bool IsMegaShip() { return Model?.basename == "Megaship" || Model?.basename == "MegaShipCivilian"; }
+        public bool IsMegaShip() { return 
+            Model == StationModel.Megaship || 
+            Model == StationModel.MegaShipCivilian; }
         
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return !IsPlanetary() && !IsCarrier() && !IsMegaShip() && !IsOutpost(); }
+        public bool IsStarport() { return 
+            !IsPlanetary() && 
+            !IsCarrier() && 
+            !IsMegaShip() && 
+            !IsOutpost() &&
+            Model != StationModel.None;
+        }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return !IsPlanetary() && Model?.basename == "Outpost"; }
+        public bool IsOutpost() { return 
+            !IsPlanetary() && 
+            Model == StationModel.Outpost; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return Model?.basename == "SurfaceStation" || Model?.basename == "CraterOutpost"; }
+        public bool IsPlanetary() { return 
+            Model == StationModel.SurfaceStation || 
+            Model == StationModel.CraterOutpost || 
+            Model == StationModel.CraterPort || 
+            Model == StationModel.OnFootSettlement; }
 
         /// <summary>Is this station an (undockable) settlement?</summary>
-        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && hasdocking != true; }
+        public bool IsPlanetarySettlement() { return
+            Model == StationModel.SurfaceStation && 
+            hasdocking != true; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

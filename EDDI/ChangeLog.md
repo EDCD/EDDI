@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 4.0.2-b1
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
+    * Improved parsing of Odyssey settlements from EDSM API data.
 
 ### 4.0.1
   * Core
