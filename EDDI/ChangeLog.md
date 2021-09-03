@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Scripts
       * `Material required report` updated to fix a typo
+      * `System state report` updated to facilitate localization and to add several newer faction states.
       
 ### 4.0.1
   * Core
