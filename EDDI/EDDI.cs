@@ -206,6 +206,8 @@ namespace EddiCore
             get => currentStarSystem; 
             private set
             {
+                setSystemDistanceFromHome(value);
+                setSystemDistanceFromDestination(value);
                 currentStarSystem = value;
                 OnPropertyChanged(); 
             } 
@@ -217,6 +219,7 @@ namespace EddiCore
             get => lastStarSystem;
             private set
             {
+                setSystemDistanceFromHome(value);
                 lastStarSystem = value;
                 OnPropertyChanged();
             }
@@ -228,6 +231,7 @@ namespace EddiCore
             get => nextStarSystem;
             private set
             {
+                setSystemDistanceFromHome(value);
                 nextStarSystem = value;
                 OnPropertyChanged();
             }
@@ -1977,8 +1981,6 @@ namespace EddiCore
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
             }
 
-            setSystemDistanceFromHome(CurrentStarSystem);
-            setSystemDistanceFromDestination(CurrentStarSystem);
             setCommanderTitle();
         }
 
@@ -2635,8 +2637,6 @@ namespace EddiCore
                         if (CurrentStarSystem == null)
                         {
                             updateCurrentSystem(profile.CurrentStarSystem.systemName);
-                            setSystemDistanceFromHome(CurrentStarSystem);
-                            setSystemDistanceFromDestination(CurrentStarSystem);
                             setCommanderTitle();
 
                             if (profile.docked && profile.CurrentStarSystem?.systemName == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
