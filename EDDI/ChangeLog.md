@@ -6,6 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
     * Improved parsing of Odyssey settlements from EDSM API data.
+  * Crime Monitor
+    * Fixed a bug that could identify a fleet carrier as a faction station.
   * Speech Responder
     * Scripts
       * `Crime check station` updated remove obsolete references to `shipid`.
