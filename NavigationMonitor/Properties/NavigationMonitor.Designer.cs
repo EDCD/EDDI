@@ -124,6 +124,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string cancel_button {
+            get {
+                return ResourceManager.GetString("cancel_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel the current route.
+        /// </summary>
+        public static string cancel_button_tooltip {
+            get {
+                return ResourceManager.GetString("cancel_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find:.
         /// </summary>
         public static string find_text {
@@ -331,6 +349,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scoopable Star.
+        /// </summary>
+        public static string search_query_galaxy_scoop {
+            get {
+                return ResourceManager.GetString("search_query_galaxy_scoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expiring.
         /// </summary>
         public static string search_query_missions_expiring {
@@ -448,29 +475,20 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel Route.
-        /// </summary>
-        public static string search_query_ship_cancel {
-            get {
-                return ResourceManager.GetString("search_query_ship_cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scoopable Star.
-        /// </summary>
-        public static string search_query_ship_scoop {
-            get {
-                return ResourceManager.GetString("search_query_ship_scoop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Crime.
         /// </summary>
         public static string search_type_crime {
             get {
                 return ResourceManager.GetString("search_type_crime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Galaxy.
+        /// </summary>
+        public static string search_type_galaxy {
+            get {
+                return ResourceManager.GetString("search_type_galaxy", resourceCulture);
             }
         }
         
@@ -493,16 +511,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ship.
-        /// </summary>
-        public static string search_type_ship {
-            get {
-                return ResourceManager.GetString("search_type_ship", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select.
+        ///   Looks up a localized string similar to Set.
         /// </summary>
         public static string select_button {
             get {
@@ -511,7 +520,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Sytem &amp; Station in the dropdown menus.
+        ///   Looks up a localized string similar to Navigate to the selected system &amp; station.
         /// </summary>
         public static string select_button_tooltip {
             get {
@@ -529,7 +538,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set the bookmark as the &apos;search&apos; system.
+        ///   Looks up a localized string similar to Navigate to the selected bookmark target.
         /// </summary>
         public static string set_button_tooltip {
             get {

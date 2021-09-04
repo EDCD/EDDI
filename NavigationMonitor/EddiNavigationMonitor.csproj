@@ -103,6 +103,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\NavigationMonitor.cs.resx" />
     <EmbeddedResource Include="Properties\NavigationMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NavigationMonitor.Designer.cs</LastGenOutput>

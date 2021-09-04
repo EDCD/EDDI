@@ -240,10 +240,10 @@
   <data name="search_query_services_raw" xml:space="preserve">
     <value>Raw Materials Trader</value>
   </data>
-  <data name="search_query_ship_cancel" xml:space="preserve">
-    <value>Cancel Route</value>
+  <data name="cancel_button" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="search_query_ship_scoop" xml:space="preserve">
+  <data name="search_query_galaxy_scoop" xml:space="preserve">
     <value>Scoopable Star</value>
   </data>
   <data name="search_type_crime" xml:space="preserve">
@@ -255,20 +255,20 @@
   <data name="search_type_services" xml:space="preserve">
     <value>Services</value>
   </data>
-  <data name="search_type_ship" xml:space="preserve">
-    <value>Ship</value>
+  <data name="search_type_galaxy" xml:space="preserve">
+    <value>Galaxy</value>
   </data>
   <data name="select_button" xml:space="preserve">
-    <value>Select</value>
+    <value>Set</value>
   </data>
   <data name="select_button_tooltip" xml:space="preserve">
-    <value>Select Sytem &amp; Station in the dropdown menus</value>
+    <value>Navigate to the selected system &amp; station</value>
   </data>
   <data name="set_button" xml:space="preserve">
     <value>Set</value>
   </data>
   <data name="set_button_tooltip" xml:space="preserve">
-    <value>Set the bookmark as the 'search' system</value>
+    <value>Navigate to the selected bookmark target</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Station:</value>
@@ -287,5 +287,8 @@
   </data>
   <data name="route_details_desc" xml:space="preserve">
     <value>A successful search triggers a "Route details" event.</value>
+  </data>
+  <data name="cancel_button_tooltip" xml:space="preserve">
+    <value>Cancel the current route</value>
   </data>
 </root>

@@ -38,13 +38,12 @@ namespace EddiNavigationMonitor
 
         private readonly List<string> searchType = new List<string> {
             "crime",
+            "galaxy",
             "missions",
-            "services",
-            "ship"
+            "services"
         };
 
         private readonly List<string> searchQuery = new List<string> {
-            "cancel",
             "encoded",
             "expiring",
             "farthest",
@@ -509,6 +508,11 @@ namespace EddiNavigationMonitor
                         searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_crime_facilitator;
                     }
                     break;
+                case "galaxy":
+                    {
+                        searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_galaxy_scoop;
+                    }
+                    break;
                 case "missions":
                     {
                         searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
@@ -517,11 +521,6 @@ namespace EddiNavigationMonitor
                 case "services":
                     {
                         searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_services_encoded;
-                    }
-                    break;
-                case "ship":
-                    {
-                        searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_ship_scoop;
                     }
                     break;
             }
@@ -629,15 +628,10 @@ namespace EddiNavigationMonitor
                 {
                     searchSystem = NavigationService.Instance.GetServiceRoute(searchQuerySelection);
                 }
-                else if (searchTypeSelection == "ship")
+                else if (searchTypeSelection == "galaxy")
                 {
                     switch (searchQuerySelection)
                     {
-                        case "cancel":
-                            {
-                                NavigationService.Instance.CancelRoute();
-                            }
-                            break;
                         case "scoop":
                             {
                                 ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
@@ -656,6 +650,11 @@ namespace EddiNavigationMonitor
         private void executeSelect(object sender, RoutedEventArgs e)
         {
             NavigationService.Instance.SetRoute(dropdownSearchSystem, dropdownSearchStation);
+        }
+
+        private void executeCancel(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Instance.CancelRoute();
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
