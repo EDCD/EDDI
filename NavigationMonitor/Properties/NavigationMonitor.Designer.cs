@@ -286,6 +286,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A successful search triggers a &quot;Route details&quot; event..
+        /// </summary>
+        public static string route_details_desc {
+            get {
+                return ResourceManager.GetString("route_details_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string search {

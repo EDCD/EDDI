@@ -646,18 +646,6 @@ namespace EddiNavigationMonitor
                             break;
                     }
                 }
-
-                Dispatcher?.Invoke(() =>
-                {
-                    searchButton.Foreground = Brushes.Black;
-                    searchButton.FontWeight = FontWeights.Regular;
-
-                    // If 'search system' found, send to clipboard
-                    if (searchSystem != null)
-                    {
-                        Clipboard.SetData(DataFormats.Text, searchSystem);
-                    }
-                });
             })
             {
                 IsBackground = true

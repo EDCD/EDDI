@@ -285,4 +285,7 @@
   <data name="guidance" xml:space="preserve">
     <value>Guidance</value>
   </data>
+  <data name="route_details_desc" xml:space="preserve">
+    <value>A successful search triggers a "Route details" event.</value>
+  </data>
 </root>
