@@ -8,7 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Improved parsing of Odyssey settlements from EDSM API data.
   * Speech Responder
     * Scripts
-      * `Material required report` updated to fix a typo
+      * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Material required report` updated to fix a typo.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
 ### 4.0.1
