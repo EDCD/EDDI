@@ -24,12 +24,11 @@ namespace EddiNavigationService
         private Status currentStatus { get; set; }
         private Status lastStatus { get; set; }
 
-        private NavigationMonitorConfiguration navConfig { get; set; }
+        private readonly NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
         private ObservableCollection<NavBookmark> bookmarks { get; set; }
 
-        public PlanetaryGuidance(ref NavigationMonitorConfiguration navConfig, ref ObservableCollection<NavBookmark> bookmarks)
+        public PlanetaryGuidance(ref ObservableCollection<NavBookmark> bookmarks)
         {
-            this.navConfig = navConfig;
             this.bookmarks = bookmarks;
 
             StatusMonitor.StatusUpdatedEvent += (s, e) =>
@@ -109,7 +108,6 @@ namespace EddiNavigationService
 
         private void GuidanceSystemLoop(NavBookmark navBookmark)
         {
-            navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             if (navBookmark is null || !navConfig.guidanceSystemEnabled) { return; }
 
             do

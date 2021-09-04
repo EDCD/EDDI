@@ -66,7 +66,7 @@ namespace EddiNavigationMonitor
         public void initializeNavigationMonitor()
         {
             readBookmarks();
-            planetaryGuidance = new PlanetaryGuidance(ref navConfig, ref bookmarks);
+            planetaryGuidance = new PlanetaryGuidance(ref bookmarks);
             Logging.Info($"Initialized {MonitorName()}");
         }
 
