@@ -83,6 +83,7 @@
     <Compile Include="CustomFunctions\GalnetNewsArticle.cs" />
     <Compile Include="CustomFunctions\InaraDetails.cs" />
     <Compile Include="CustomFunctions\OrbitalVelocity.cs" />
+    <Compile Include="CustomFunctions\SetClipboard.cs" />
     <Compile Include="CustomFunctions\SetState.cs" />
     <Compile Include="CustomFunctions\Log.cs" />
     <Compile Include="CustomFunctions\Distance.cs" />

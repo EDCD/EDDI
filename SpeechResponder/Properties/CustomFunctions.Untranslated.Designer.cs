@@ -666,6 +666,21 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This function will send a text string to the system clipboard.  
+        ///
+        ///SetClipboard takes a single argument: the text to send to the clipboard. 
+        ///
+        ///Common usage of this is to allow a text string to be pasted outside of EDDI, for example:
+        ///
+        ///    {SetClipboard(&quot;Shinrarta Dezhra&quot;)}.
+        /// </summary>
+        public static string SetClipboard {
+            get {
+                return ResourceManager.GetString("SetClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This function will set a session state value.  The value will be available as a property of the &apos;state&apos; object in future templates within the same EDDI session.
         ///
         ///SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, or a string; other values will be ignored.

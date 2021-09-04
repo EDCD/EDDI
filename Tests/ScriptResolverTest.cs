@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace UnitTests
 {
@@ -210,6 +211,28 @@ namespace UnitTests
             Assert.AreNotEqual(newDefaultScript.Value, upgradedScript.Value);
             Assert.AreEqual(newDefaultScript.defaultValue, upgradedScript.defaultValue);
             Assert.AreNotEqual(newDefaultScript.Priority, upgradedScript.Priority);
+        }
+
+        [TestMethod]
+        public void TestSetClipboard()
+        {
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>
+            {
+                {"test1", new Script("test1", null, false, @"{SetClipboard(""A"")}")},
+                {"test2", new Script("test2", null, false, @"{SetClipboard(""B"")}")},
+                {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
+            };
+            ScriptResolver resolver = new ScriptResolver(scripts);
+            var dict = new Dictionary<string, Cottle.Value>();
+
+            resolver.resolveFromName("test1", dict, true);
+            Assert.AreEqual("A", Clipboard.GetText());
+
+            resolver.resolveFromName("test2", dict, true);
+            Assert.AreEqual("B", Clipboard.GetText());
+
+            resolver.resolveFromName("test3", dict, true);
+            Assert.AreEqual("C", Clipboard.GetText());
         }
     }
 }
