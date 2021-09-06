@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EddiDataDefinitions;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -24,20 +25,28 @@ namespace EddiEvents
             VARIABLES.Add("distance", "The distance to the POI in kilometers");
         }
 
+        [PublicAPI]
         public string poi { get; private set; }
 
+        [PublicAPI]
         public string shortbodyname { get; private set; }
 
+        [PublicAPI]
         public string status { get; private set; }
 
+        [PublicAPI]
         public decimal? heading { get; private set; }
 
+        [PublicAPI]
         public decimal? headingerror { get; private set; }
 
+        [PublicAPI]
         public decimal? slope { get; private set; }
 
+        [PublicAPI]
         public decimal? slopeerror { get; private set; }
 
+        [PublicAPI]
         public decimal? distance { get; private set; }
 
         public GuidanceSystemEvent(DateTime timestamp, GuidanceStatus status, NavBookmark bookmark = null, decimal? heading = null, decimal? headingError = null, decimal? slope = null, decimal? slopeError = null, decimal? distance = null) : base(timestamp, NAME)

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -24,20 +25,28 @@ namespace EddiEvents
             VARIABLES.Add("landable", "True if the body is 'landable'");
         }
 
+        [PublicAPI]
         public string request { get; private set; }
 
+        [PublicAPI]
         public string system { get; private set; }
 
+        [PublicAPI]
         public string body { get; private set; }
 
+        [PublicAPI]
         public string poi { get; private set; }
 
+        [PublicAPI]
         public bool isstation { get; private set; }
 
+        [PublicAPI]
         public decimal? latitude { get; private set; }
 
+        [PublicAPI]
         public decimal? longitude { get; private set; }
 
+        [PublicAPI]
         public bool landable { get; private set; }
 
         public bool isset { get; private set; }

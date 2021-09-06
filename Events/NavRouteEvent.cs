@@ -26,14 +26,18 @@ namespace EddiEvents
             VARIABLES.Add("directdistance", "The direct line distance to the destination starsystem, in light years");
         }
 
+        [PublicAPI]
         public List<NavWaypoint> route { get; }
 
         // The route includes the originating star system - we need this to calculate 
         // distances but it should not be included in the jump count.
+        [PublicAPI]
         public int jumps => route.Count - 1;
 
+        [PublicAPI]
         public decimal? distance => CalculateTotalDistance();
 
+        [PublicAPI]
         public decimal? directdistance => CalculateDirectDistance();
 
         public NavRouteEvent(DateTime timestamp, List<NavWaypoint> route) : base(timestamp, NAME)
