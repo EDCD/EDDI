@@ -51,6 +51,7 @@ namespace EddiDataDefinitions
             "massacrewing",
             "mining",
             "miningwing",
+            "onfoot",
             "piracy",
             "rescue",
             "salvage",
@@ -415,27 +416,32 @@ namespace EddiDataDefinitions
             var settlementNamePrefixes = new List<Tuple<string, string>>
             {
                 Tuple.Create("Acquire a sample from ", ""),
-                Tuple.Create("Digital Infiltration: Breach the ", " network"),
+                Tuple.Create("Breach the ", " network"),
+                Tuple.Create("Disable power at ", ""),
+                Tuple.Create("Disrupt production at ", ""),
                 Tuple.Create("Exterminate scavengers at ", ""),
-                Tuple.Create("Heist: Acquire a sample from ", ""),
-                Tuple.Create("Heist: Take a sample from ", ""),
-                Tuple.Create("Reactivation: Find a regulator for ", ""),
-                Tuple.Create("Reactivation: Turn on power at ", ""),
-                Tuple.Create("Restore: Find a regulator and prepare ", ""),
-                Tuple.Create("Restore: Prepare ", " for operation"),
-                Tuple.Create("Sabotage: Disrupt production at ", ""),
-                Tuple.Create("Sabotage: Halt production at ", ""),
-                Tuple.Create("Settlement Raid: Exterminate scavengers at ", ""),
-                Tuple.Create("Shutdown: Disable power at ", ""),
-                Tuple.Create("Shutdown: Switch off power at ", "")
+                Tuple.Create("Find a regulator for ", ""),
+                Tuple.Create("Find a regulator and prepare ", ""),
+                Tuple.Create("Halt production at ", ""),
+                Tuple.Create("Prepare ", " for operation"),
+                Tuple.Create("Switch off power at ", ""),
+                Tuple.Create("Take a sample from ", ""),
+                Tuple.Create("Turn on power at ", "")
             };
 
             var tidiedLocalizedName = localisedname
                 .Replace("Covert ", "")
                 .Replace("Nonviolent ", "")
-            ;
-            string settlementName = null;
+                .Replace("Digital Infiltration: ", "")
+                .Replace("Heist: ", "")
+                .Replace("Reactivation: ", "")
+                .Replace("Restore: ", "")
+                .Replace("Sabotage: ", "")
+                .Replace("Settlement Raid: ", "")
+                .Replace("Shutdown: ", "")
+                ;
 
+            string settlementName = null;
             foreach (var prefixSuffix in settlementNamePrefixes)
             {
                 if (tidiedLocalizedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase) 
