@@ -90,6 +90,7 @@ namespace EddiDataDefinitions
             {
                 _localisedname = value;
                 GetDestinationStation();
+                GetTargetFaction();
                 OnPropertyChanged();
             }
         }
@@ -409,11 +410,24 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         private void GetDestinationStation()
         {
             if (string.IsNullOrEmpty(localisedname) || !string.IsNullOrEmpty(destinationstation)) { return; }
 
-            var settlementNamePrefixes = new List<Tuple<string, string>>
+            var tidiedName = localisedname
+                .Replace("Covert ", "")
+                .Replace("Nonviolent ", "")
+                .Replace("Digital Infiltration: ", "")
+                .Replace("Heist: ", "")
+                .Replace("Reactivation: ", "")
+                .Replace("Restore: ", "")
+                .Replace("Sabotage: ", "")
+                .Replace("Settlement Raid: ", "")
+                .Replace("Shutdown: ", "")
+                ;
+
+            var prefixesSuffixes = new List<Tuple<string, string>>
             {
                 Tuple.Create("Acquire a sample from ", ""),
                 Tuple.Create("Breach the ", " network"),
@@ -429,35 +443,23 @@ namespace EddiDataDefinitions
                 Tuple.Create("Turn on power at ", "")
             };
 
-            var tidiedLocalizedName = localisedname
-                .Replace("Covert ", "")
-                .Replace("Nonviolent ", "")
-                .Replace("Digital Infiltration: ", "")
-                .Replace("Heist: ", "")
-                .Replace("Reactivation: ", "")
-                .Replace("Restore: ", "")
-                .Replace("Sabotage: ", "")
-                .Replace("Settlement Raid: ", "")
-                .Replace("Shutdown: ", "")
-                ;
-
             string settlementName = null;
-            foreach (var prefixSuffix in settlementNamePrefixes)
+            foreach (var prefixSuffix in prefixesSuffixes)
             {
-                if (tidiedLocalizedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase) 
-                    && tidiedLocalizedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
+                if (tidiedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase) 
+                    && tidiedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (prefixSuffix.Item1.Length > 0)
                     {
-                        tidiedLocalizedName = tidiedLocalizedName
+                        tidiedName = tidiedName
                             .Replace(prefixSuffix.Item1, "");
                     }
                     if (prefixSuffix.Item2.Length > 0)
                     {
-                        tidiedLocalizedName = tidiedLocalizedName
+                        tidiedName = tidiedName
                             .Replace(prefixSuffix.Item2, "");
                     }
-                    settlementName = tidiedLocalizedName;
+                    settlementName = tidiedName;
                     break;
                 }
             }
@@ -465,6 +467,49 @@ namespace EddiDataDefinitions
             if (!string.IsNullOrEmpty(settlementName))
             {
                 destinationstation = settlementName;
+            }
+        }
+
+        private void GetTargetFaction()
+        {
+            if (string.IsNullOrEmpty(localisedname) || !string.IsNullOrEmpty(targetfaction)) { return; }
+
+            var tidiedName = localisedname
+                .Replace("Settlement ", "")
+                .Replace("Massacre: ", "")
+                .Replace("Raid: ", "")
+            ;
+
+            var prefixesSuffixes = new List<Tuple<string, string>>
+            {
+                Tuple.Create("Exterminate ", " members"),
+                Tuple.Create("Take out ", " personnel"),
+            };
+
+            string factionName = null;
+            foreach (var prefixSuffix in prefixesSuffixes)
+            {
+                if (tidiedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase)
+                    && tidiedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (prefixSuffix.Item1.Length > 0)
+                    {
+                        tidiedName = tidiedName
+                            .Replace(prefixSuffix.Item1, "");
+                    }
+                    if (prefixSuffix.Item2.Length > 0)
+                    {
+                        tidiedName = tidiedName
+                            .Replace(prefixSuffix.Item2, "");
+                    }
+                    factionName = tidiedName;
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(factionName))
+            {
+                targetfaction = factionName;
             }
         }
     }
