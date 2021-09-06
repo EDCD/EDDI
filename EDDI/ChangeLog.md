@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
   * Speech Responder
+    * Functions
+      * Fixed a bug that could cause the TrafficDetails() function to fail.
     * Scripts
       * `Crime check station` updated remove obsolete references to `shipid`.
       * `Material required report` updated to fix a typo.
