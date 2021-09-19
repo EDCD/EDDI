@@ -100,8 +100,6 @@ namespace EddiNavigationService
 
         public void CancelRoute()
         {
-            string destination = navConfig.navDestination;
-
             // Save the route data to the configuration
             navConfig.searchQuery = "cancel";
             navConfig.searchSystem = null;
@@ -116,7 +114,7 @@ namespace EddiNavigationService
             EDDI.Instance.updateDestinationSystem(null);
             EDDI.Instance.DestinationDistanceLy = 0;
             
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", destination, null, null, 0, 0, 0, null));
+            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, null, 0, 0, 0, null));
         }
 
         public string GetExpiringRoute()

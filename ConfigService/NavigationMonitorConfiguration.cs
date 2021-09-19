@@ -18,11 +18,6 @@ namespace EddiConfigService
         public int? maxSearchDistanceFromStarLs { get; set; } = 10000;
         public bool prioritizeOrbitalStations { get; set; } = true;
 
-        // Navigation Route data
-        public string navDestination { get; set; }
-        public string navRouteList { get; set; }
-        public decimal navRouteDistance { get; set; }
-
         // Missions route data
         public string missionsRouteList { get; set; }
         public decimal missionsRouteDistance { get; set; }

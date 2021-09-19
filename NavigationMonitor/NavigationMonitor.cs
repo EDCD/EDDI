@@ -304,9 +304,6 @@ namespace EddiNavigationMonitor
             {
                 // Write bookmarks configuration with current list
                 navConfig.bookmarks = bookmarks;
-                navConfig.navDestination = navDestination;
-                navConfig.navRouteDistance = navRouteDistance;
-                navConfig.navRouteList = navRouteList;
                 if (navConfig.searchQuery == "cancel") { navConfig.searchQuery = null; }
                 navConfig.updatedat = updateDat;
                 navConfig.ToFile();
@@ -320,9 +317,6 @@ namespace EddiNavigationMonitor
             lock (bookmarksLock)
             {
                 // Obtain current bookmarks list from configuration
-                navDestination = navConfig.navDestination;
-                navRouteDistance = navConfig.navRouteDistance;
-                navRouteList = navConfig.navRouteList;
                 updateDat = navConfig.updatedat;
 
                 // Build a new bookmark list
