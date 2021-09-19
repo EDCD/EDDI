@@ -25,7 +25,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavBookmark> bookmarks;
         private static readonly object bookmarksLock = new object();
 
-        private NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
         private PlanetaryGuidance planetaryGuidance;
 
         // Navigation route data

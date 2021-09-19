@@ -14,7 +14,7 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private readonly MissionMonitorConfiguration missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+        private MissionMonitorConfiguration missionsConfig => ConfigService.Instance.missionMonitorConfiguration;
 
         private MissionMonitor missionMonitor()
         {

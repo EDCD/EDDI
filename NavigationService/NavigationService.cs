@@ -13,9 +13,9 @@ namespace EddiNavigationService
 {
     public class NavigationService
     {
-        private readonly CargoMonitorConfiguration cargoConfig = ConfigService.Instance.cargoMonitorConfiguration;
-        private readonly MissionMonitorConfiguration missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
-        private readonly NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+        private CargoMonitorConfiguration cargoConfig => ConfigService.Instance.cargoMonitorConfiguration;
+        private MissionMonitorConfiguration missionsConfig => ConfigService.Instance.missionMonitorConfiguration;
+        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
 
         private static Dictionary<string, dynamic> ServiceFilter = new Dictionary<string, dynamic>()
         {
@@ -252,7 +252,7 @@ namespace EddiNavigationService
                     foreach (var type in mission.edTags)
                     {
                         var exitLoop = false;
-                        switch (type)
+                        switch (type.ToLowerInvariant())
                         {
                             case "assassinate":
                             case "courier":
@@ -1095,7 +1095,7 @@ namespace EddiNavigationService
                 foreach (var type in mission.edTags)
                 {
                     var exitLoop = false;
-                    switch (type)
+                    switch (type.ToLowerInvariant())
                     {
                         case "assassinate":
                         case "courier":

@@ -42,7 +42,7 @@ namespace EddiCrimeMonitor
         public event EventHandler RecordUpdatedEvent;
         private readonly IBgsService bgsService;
 
-        private NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
 
         public string MonitorName()
         {

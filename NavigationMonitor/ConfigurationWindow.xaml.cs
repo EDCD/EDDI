@@ -28,7 +28,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private readonly NavigationMonitorConfiguration navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
         private string searchTypeSelection = String.Empty;
         private string searchQuerySelection = String.Empty;
         private string dropdownSearchSystem = null;

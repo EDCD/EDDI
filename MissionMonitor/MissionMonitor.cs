@@ -276,7 +276,7 @@ namespace EddiMissionMonitor
                     foreach (var type in mission.edTags)
                     {
                         var exitLoop = false;
-                        switch (type)
+                        switch (type.ToLowerInvariant())
                         {
                             // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                             case "sightseeing":
@@ -383,7 +383,7 @@ namespace EddiMissionMonitor
                 else
                 {
                     // Starter zone missions have no consistent 'accepted' or 'completed' events, so exclude them from the mission log
-                    if (!mission.edTags.Contains("StartZone"))
+                    if (!mission.edTags.Contains("StartZone", StringComparer.InvariantCultureIgnoreCase))
                     {
                         AddMission(mission);
                         update = true;
@@ -754,7 +754,7 @@ namespace EddiMissionMonitor
                     foreach (var type in mission.edTags)
                     {
                         bool exitLoop;
-                        switch (type)
+                        switch (type.ToLowerInvariant())
                         {
                             case "altruism":
                             case "altruismcredits":
@@ -1035,7 +1035,7 @@ namespace EddiMissionMonitor
                 foreach (var type in mission.edTags)
                 {
                     var exitLoop = false;
-                    switch (type)
+                    switch (type.ToLowerInvariant())
                     {
                         case "assassinate":
                         case "assassinatewing":
