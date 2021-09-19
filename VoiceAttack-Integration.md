@@ -237,7 +237,7 @@ Note: "Tiny" hardpoints are utility slots.
   * {INT:System outposts}: the total number of orbital outposts in the system
   * {INT:System planetary stations}: the total number of planetary stations (outposts and ports) in the system
   * {INT:System planetary settlements}: the total number of undockable planetary ports in the system, as reported to EDDB.
-  * {INT:System total bodies}: the total number of discoverable bodies within the system.
+  * {INT:System total bodies}: the total number of discoverable bodies within the system (only set after a discovery scan).
   * {INT:System scanned bodies}: the total number of bodies you have scanned within the system.
   * {INT:System mapped bodies}: the total number of bodies you have mapped within the system.
   * {BOOL:System requires permit}: Whether a permit is required to enter the system, as reported to EDDB.
