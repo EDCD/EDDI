@@ -929,7 +929,7 @@ namespace EddiNavigationService
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
             List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
 
-            if (route.Count == 0) { update = false; }
+            if (!missions.Any() || !route.Any()) { update = false; }
             else if (updateSystem == null)
             {
                 updateSystem = route[0];
