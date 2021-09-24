@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Fracht retten</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Bergung</value>
   </data>
@@ -205,9 +207,16 @@
   <data name="StartZone" xml:space="preserve">
     <value>Startzone</value>
   </data>
-  
-  
-  
+  <data name="OnFoot" xml:space="preserve">
+    <value>Bodenmission</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>Verdeckte Operation</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>Verbundene Mission</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
   <data name="Welcome" xml:space="preserve">
     <value>Willkommen</value>
   </data>
@@ -217,13 +226,21 @@
   <data name="Illegal" xml:space="preserve">
     <value>Illegal</value>
   </data>
-  
-  
-  
+  <data name="Planetary" xml:space="preserve">
+    <value>Planetarisch</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>Föderaler Auftrag</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Imperialer Auftrag</value>
+  </data>
   <data name="DisableMegaship" xml:space="preserve">
     <value>Megaschiff ausschalten</value>
   </data>
-  
+  <data name="Founder" xml:space="preserve">
+    <value>Gründer</value>
+  </data>
   <data name="HackMegaship" xml:space="preserve">
     <value>Megaschiff hacken</value>
   </data>
@@ -235,9 +252,17 @@
     <value>Kriegsziele</value>
     <comment>Massacre mission type</comment>
   </data>
-  
-  
-  
+  <data name="Skimmer" xml:space="preserve">
+    <value>Skimmer zerstören</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Anspruchsvoll</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>Verdeckte Mission</value>
+  </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
     <comment>Hack type</comment>
@@ -246,9 +271,17 @@
     <value>Upload</value>
     <comment>Hack type</comment>
   </data>
-  
-  
-  
+  <data name="Offline" xml:space="preserve">
+    <value>Siedlung ausschalten</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>Siedlung überfallen</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Produktion überfallen</value>
+    <comment>Heist type</comment>
+  </data>
   <data name="NCD" xml:space="preserve">
     <value>Gewaltfrei</value>
   </data>
@@ -264,7 +297,15 @@
     <value>Siedlung herunterfahren</value>
     <comment>Sabotage type</comment>
   </data>
-  
-  
-  
+  <data name="Production" xml:space="preserve">
+    <value>Unterbrechen der Siedlungsproduktion</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planetarisch</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Politische Gefangene</value>
+    <comment>Bulk passenger type</comment>
+  </data>
 </root>
