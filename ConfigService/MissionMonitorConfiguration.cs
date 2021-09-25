@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Utilities;
 
-namespace EddiMissionMonitor
+namespace EddiConfigService
 {
     /// <summary>Storage for configuration of mission details</summary>
     public class MissionMonitorConfiguration
@@ -15,9 +15,7 @@ namespace EddiMissionMonitor
         public DateTime updatedat { get; set; }
         public int goalsCount { get; set; }
         public int missionsCount { get; set; }
-        public int? missionWarning { get; set; }
-        public string missionsRouteList { get; set; }
-        public decimal missionsRouteDistance { get; set; }
+        public int? missionWarning { get; set; } = 60;
 
         [JsonIgnore]
         private string dataPath;
@@ -28,7 +26,7 @@ namespace EddiMissionMonitor
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a json.
+        /// Obtain configuration from a json.
         /// </summary>
         public static MissionMonitorConfiguration FromJson(dynamic json)
         {
@@ -48,8 +46,7 @@ namespace EddiMissionMonitor
         }
 
         /// <summary>
-        /// Obtain cargo configuration from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\cargomonitor.json is used
+        /// Obtain configuration from a file.  If the file name is not supplied the the default path is used
         /// </summary>
         public static MissionMonitorConfiguration FromFile(string filename = null)
         {
@@ -90,26 +87,24 @@ namespace EddiMissionMonitor
 
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
-        /// when reading in the configuration will be used, or the default path of 
-        /// Constants.Data_DIR\missionmonitor.json will be used
+        /// when reading in the configuration will be used, unless it too is null, for example
+        /// a test config purely based on JSON, in which case nothing will be written.
         /// </summary>
         public void ToFile(string filename = null)
         {
-            // Remove any items that are all NULL
-            //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
+            filename = filename ?? dataPath;
+            if (filename == null) { return; }
 
-            if (filename == null)
+            string json = null;
+            LockManager.GetLock(nameof(MissionMonitorConfiguration), () =>
             {
-                filename = dataPath;
-            }
-            if (filename == null)
+                json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            });
+            if (!string.IsNullOrEmpty(json))
             {
-                filename = Constants.DATA_DIR + @"\missionmonitor.json";
+                Logging.Debug("Configuration to file: " + json);
+                Files.Write(filename, json);
             }
-
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Logging.Debug("Configuration to file: " + json);
-            Files.Write(filename, json);
         }
     }
 }

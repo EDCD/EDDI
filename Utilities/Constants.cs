@@ -29,10 +29,6 @@ namespace Utilities
         public static readonly string VEHICLE_TAXI = "Taxi";
         public static readonly string VEHICLE_MULTICREW = "Multicrew";
 
-        //Option defaults
-        public const int maxStationDistanceDefault = 10000;
-        public const int missionWarningDefault = 60;
-
         // Physical Constants
         public const int lightSpeedMetersPerSecond = 299792458;
         public const int solarRadiusMeters = 695500000;

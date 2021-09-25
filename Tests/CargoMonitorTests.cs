@@ -1,4 +1,5 @@
 ﻿using EddiCargoMonitor;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;

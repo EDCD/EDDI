@@ -26,7 +26,6 @@ namespace EddiMaterialMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();
-        public int? maxStationDistanceFromStarLs;
 
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
@@ -436,7 +435,6 @@ namespace EddiMaterialMonitor
                 MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration
                 {
                     materials = inventory,
-                    maxStationDistanceFromStarLs = maxStationDistanceFromStarLs
                 };
                 configuration.ToFile();
             }
@@ -450,7 +448,6 @@ namespace EddiMaterialMonitor
             {
                 // Obtain current inventory from  configuration
                 MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
-                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
 
                 // Build a new inventory
                 List<MaterialAmount> newInventory = new List<MaterialAmount>();

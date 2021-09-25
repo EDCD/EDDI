@@ -8,7 +8,7 @@
         static MissionType()
         {
             resourceManager = Properties.MissionType.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new MissionType(edname);
 
             _ = new MissionType("Altruism");

@@ -414,7 +414,7 @@ namespace EddiDataDefinitions
         public decimal? DistanceFromStarSystem(StarSystem other)
         {
             if (other is null) { return null; }
-            return Functions.DistanceFromCoordinates(x, y, z, other.x, other.y, other.z);
+            return Functions.StellarDistanceLy(x, y, z, other.x, other.y, other.z);
         }
     }
 }

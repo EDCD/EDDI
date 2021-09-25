@@ -739,4 +739,13 @@ In addition to the basic Cottle features EDDI has a number of features that prov
 
 Cottle's library is extended with several functions listed below ([detailed documentation](https://github.com/EDCD/EDDI/wiki/Help)):</value>
   </data>
+  <data name="SetClipboard" xml:space="preserve">
+    <value>This function will send a text string to the system clipboard.  
+
+SetClipboard takes a single argument: the text to send to the clipboard. 
+
+Common usage of this is to allow a text string to be pasted outside of EDDI, for example:
+
+    {SetClipboard("Shinrarta Dezhra")}</value>
+  </data>
 </root>
