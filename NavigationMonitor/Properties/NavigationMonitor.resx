@@ -148,10 +148,10 @@
     <value>Comment</value>
   </data>
   <data name="header_latitude" xml:space="preserve">
-    <value>Latitude</value>
+    <value>Latitude:</value>
   </data>
   <data name="header_longitude" xml:space="preserve">
-    <value>Longitude</value>
+    <value>Longitude:</value>
   </data>
   <data name="header_poi" xml:space="preserve">
     <value>Station / POI</value>
@@ -281,5 +281,11 @@
   </data>
   <data name="bm_export_button_tooltip" xml:space="preserve">
     <value>Export bookmarks from .csv file</value>
+  </data>
+  <data name="header_heading" xml:space="preserve">
+    <value>Heading:</value>
+  </data>
+  <data name="header_distanceKm" xml:space="preserve">
+    <value>Distance (km):</value>
   </data>
 </root>

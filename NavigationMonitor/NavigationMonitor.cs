@@ -9,7 +9,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -175,7 +174,6 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
-                UpdateBookmarkSetStatus(@event.systemname);
             }
         }
 
@@ -185,7 +183,6 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
-                UpdateBookmarkSetStatus(@event.systemname);
             }
         }
 
@@ -195,7 +192,6 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
-                UpdateBookmarkSetStatus(@event.system);
             }
         }
 
@@ -205,10 +201,6 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
-                if (@event.bodytype == "Station")
-                {
-                    UpdateBookmarkSetStatus(@event.systemname, @event.bodyname);
-                }
             }
         }
 
@@ -312,22 +304,6 @@ namespace EddiNavigationMonitor
                 {
                     bookmarks.Add(bookmark);
                 }
-            }
-        }
-
-        private void UpdateBookmarkSetStatus(string system, string station = null)
-        {
-            // Update bookmark 'set' status
-            NavBookmark navBookmark = navConfig.bookmarks.FirstOrDefault(b => b.isset);
-            if (navBookmark != null && navBookmark.systemname == system)
-            {
-                if ((navBookmark.bodyname is null && !navBookmark.isstation) || (!string.IsNullOrEmpty(station) && navBookmark.poi == station))
-                {
-                    navBookmark.isset = false;
-                }
-                navConfig.ToFile();
-                // Make sure the UI is up to date
-                RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
             }
         }
 

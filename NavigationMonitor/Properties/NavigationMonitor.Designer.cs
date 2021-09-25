@@ -169,7 +169,25 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Latitude.
+        ///   Looks up a localized string similar to Distance (km):.
+        /// </summary>
+        public static string header_distanceKm {
+            get {
+                return ResourceManager.GetString("header_distanceKm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heading:.
+        /// </summary>
+        public static string header_heading {
+            get {
+                return ResourceManager.GetString("header_heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude:.
         /// </summary>
         public static string header_latitude {
             get {
@@ -178,7 +196,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Longitude.
+        ///   Looks up a localized string similar to Longitude:.
         /// </summary>
         public static string header_longitude {
             get {

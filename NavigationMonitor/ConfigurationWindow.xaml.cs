@@ -28,8 +28,8 @@ namespace EddiNavigationMonitor
     public partial class ConfigurationWindow : UserControl
     {
         private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
-        private string searchTypeSelection = String.Empty;
-        private string searchQuerySelection = String.Empty;
+        private string searchTypeSelection = string.Empty;
+        private string searchQuerySelection = string.Empty;
         private string dropdownSearchSystem = null;
         private string dropdownSearchStation = null;
 
@@ -84,6 +84,19 @@ namespace EddiNavigationMonitor
             if (sender is Status status)
             {
                 currentStatus = status;
+                foreach (var bookmark in navigationMonitor().bookmarks)
+                {
+                    if (currentStatus.bodyname == bookmark.bodyname)
+                    {
+                        bookmark.heading = SurfaceHeadingDegrees(status, bookmark.latitude, bookmark.longitude);
+                        bookmark.distanceKm = Math.Round(SurfaceConstantHeadingDistanceKm(status, bookmark.latitude, bookmark.longitude) ?? 0, 2);
+                    }
+                    else
+                    {
+                        bookmark.heading = null;
+                        bookmark.distanceKm = null;
+                    }
+                }
             }
         }
 
@@ -98,7 +111,6 @@ namespace EddiNavigationMonitor
             if (EDDI.Instance.CurrentStarSystem != null)
             {
                 StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-                Body currentBody = EDDI.Instance.CurrentStellarBody;
                 Station currentStation = EDDI.Instance.CurrentStation;
 
                 if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
@@ -137,6 +149,7 @@ namespace EddiNavigationMonitor
                         poi = currentStation.name;
                         latitude = currentStatus?.latitude;
                         longitude = currentStatus?.longitude;
+                        landable = currentStatus?.near_surface ?? false;
                     }
                 }
                 else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
@@ -146,23 +159,23 @@ namespace EddiNavigationMonitor
                         isStation = true;
                         poi = currentStation.name;
                     }
-                    if (currentStatus != null && currentStatus.near_surface && currentBody != null)
+                    if (currentStatus != null && currentStatus.near_surface)
                     {
                         SurfaceCoordinates(currentStatus, out latitude, out longitude);
-                        landable = currentBody?.landable ?? false;
+                        landable = true;
                     }
                 }
                 else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                 {
-                    if (currentStatus != null && currentStatus.near_surface && currentBody != null)
+                    if (currentStatus != null && currentStatus.near_surface)
                     {
                         SurfaceCoordinates(currentStatus, out latitude, out longitude);
-                        landable = currentBody?.landable ?? false;
+                        landable = true;
                     }
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
-                    currentBody?.bodyname, currentBody?.radius, poi, isStation, latitude, longitude, landable);
+                    currentStatus?.bodyname, currentStatus?.planetradius, poi, isStation, latitude, longitude, landable);
                 navigationMonitor().bookmarks.Add(navBookmark);
                 navigationMonitor().writeBookmarks();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
@@ -171,12 +184,12 @@ namespace EddiNavigationMonitor
 
         private void bookmarkQuery(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(navConfig.searchSystem)) { return; }
+            if (string.IsNullOrEmpty(dropdownSearchSystem)) { return; }
 
-            string systemName = navConfig.searchSystem;
+            string systemName = dropdownSearchSystem;
             StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName, false);
 
-            string stationName = navConfig.searchStation;
+            string stationName = dropdownSearchStation;
             bool isStation = false;
             bool landable = false;
             if (stationName != null)
@@ -312,7 +325,7 @@ namespace EddiNavigationMonitor
                     {
                         // Remove the bookmark from the list
                         navigationMonitor().RemoveBookmarkAt(index);
-                        navConfig.ToFile();
+                        navigationMonitor().writeBookmarks();
                     }
                     break;
             }
@@ -329,10 +342,10 @@ namespace EddiNavigationMonitor
                 var navBookmark = (NavBookmark)button.DataContext;
 
                 // Update only if current system matches the bookmarked system
-                if (navBookmark != null && navBookmark?.systemname == currentSystem.systemname)
+                if (navBookmark != null && navBookmark.systemname == currentSystem.systemname)
                 {
                     // Update latitude & longitude if current body matches the bookmarked body
-                    if (currentBody != null && currentBody.bodyname == navBookmark.bodyname)
+                    if (currentBody?.bodyname == navBookmark.bodyname || currentStation?.name == navBookmark.poi)
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                         {
@@ -381,7 +394,7 @@ namespace EddiNavigationMonitor
                         }
                     }
 
-                    navConfig.ToFile();
+                    navigationMonitor().writeBookmarks();
                     EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "update", navBookmark));
                 }
             }
@@ -403,7 +416,7 @@ namespace EddiNavigationMonitor
             if (navConfig.prioritizeOrbitalStations != isChecked)
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
-                navConfig.ToFile();
+                navigationMonitor().writeBookmarks();
             }
         }
 
@@ -429,7 +442,7 @@ namespace EddiNavigationMonitor
                 if (distance != navConfig.maxSearchDistanceFromStarLs)
                 {
                     navConfig.maxSearchDistanceFromStarLs = distance;
-                    navConfig.ToFile();
+                    navigationMonitor().writeBookmarks();
                 }
             }
             catch
@@ -697,14 +710,24 @@ namespace EddiNavigationMonitor
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        public static void SurfaceCoordinates(Status curr, out decimal? destinationLatitude, out decimal? destinationLongitude)
+        private static void SurfaceCoordinates(Status curr, out decimal? destinationLatitude, out decimal? destinationLongitude)
         {
             Functions.SurfaceCoordinates(curr.altitude, curr.planetradius, curr.slope, curr.heading, curr.latitude, curr.longitude, out destinationLatitude, out destinationLongitude);
         }
 
-        public static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        private static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
             return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
+        }
+
+        private static decimal? SurfaceHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            return Functions.SurfaceConstantHeadingDegrees(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
+        }
+
+        private static decimal? SurfaceConstantHeadingDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            return Functions.SurfaceConstantHeadingDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
     }
 }

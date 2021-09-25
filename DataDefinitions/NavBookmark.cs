@@ -6,8 +6,6 @@ namespace EddiDataDefinitions
     public class NavBookmark : INotifyPropertyChanged
     {
         // The bookmark system
-        [JsonIgnore]
-        private string _systemname;
         [JsonProperty("system")]
         public string systemname
         {
@@ -17,18 +15,17 @@ namespace EddiDataDefinitions
                 if (_systemname != value)
                 {
                     _systemname = value;
-                    NotifyPropertyChanged("systemname");
+                    NotifyPropertyChanged(nameof(systemname));
                 }
             }
         }
+        [JsonIgnore] private string _systemname;
 
         public decimal? x { get; set; }
         public decimal? y { get; set; }
         public decimal? z { get; set; }
 
         // The bookmark body
-        [JsonIgnore]
-        private string _bodyname;
         [JsonProperty("body")]
         public string bodyname
         {
@@ -38,10 +35,12 @@ namespace EddiDataDefinitions
                 if (_bodyname != value)
                 {
                     _bodyname = value;
-                    NotifyPropertyChanged("bodyname");
+                    NotifyPropertyChanged(nameof(bodyname));
                 }
             }
         }
+        [JsonIgnore] private string _bodyname;
+
         [JsonIgnore]
         public string bodyshortname => Body.GetShortName(bodyname, systemname);
 
@@ -62,20 +61,34 @@ namespace EddiDataDefinitions
         public bool landable { get; set; }
 
         [JsonIgnore]
-        private bool _isset;
-        [JsonProperty("isset")] 
-        public bool isset 
+        public decimal? heading
         {
-            get => _isset;
+            get => _heading;
             set
             {
-                if (_isset != value)
+                if (_heading != value)
                 {
-                    _isset = value;
-                    NotifyPropertyChanged("isset");
+                    _heading = value;
+                    NotifyPropertyChanged(nameof(heading));
                 }
             }
         }
+        [JsonIgnore] private decimal? _heading;
+
+        [JsonIgnore]
+        public decimal? distanceKm
+        {
+            get => _distanceKm;
+            set
+            {
+                if (_distanceKm != value)
+                {
+                    _distanceKm = value;
+                    NotifyPropertyChanged(nameof(distanceKm));
+                }
+            }
+        }
+        [JsonIgnore] private decimal? _distanceKm;
 
         // Default Constructor
         public NavBookmark() { }
@@ -94,7 +107,6 @@ namespace EddiDataDefinitions
             this.latitude = latitude;
             this.longitude = longitude;
             this.landable = landable;
-            this.isset = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
