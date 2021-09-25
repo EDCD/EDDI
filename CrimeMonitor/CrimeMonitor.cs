@@ -1058,7 +1058,7 @@ namespace EddiCrimeMonitor
                 factionStations = factionStations
                     .Where(s => s.Model != StationModel.FleetCarrier)
                     .Where(s => s.stationservices.Count > 0)
-                    .Where(s => s.distancefromstar <= navConfig.maxStationDistanceFromStarLs)
+                    .Where(s => s.distancefromstar <= navConfig.maxSearchDistanceFromStarLs)
                     .Where(s => s.LandingPadCheck(padSize))
                     .ToList();
 
