@@ -49,8 +49,6 @@ namespace EddiEvents
         [PublicAPI]
         public bool landable { get; private set; }
 
-        public bool isset { get; private set; }
-
         public BookmarkDetailsEvent(DateTime timestamp, string request, NavBookmark bookmark) : base(timestamp, NAME)
         {
             this.request = request;
@@ -61,7 +59,6 @@ namespace EddiEvents
             this.latitude = bookmark.latitude;
             this.longitude = bookmark.longitude;
             this.landable = bookmark.landable;
-            this.isset = bookmark.isset;
         }
     }
 }
