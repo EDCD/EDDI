@@ -70,6 +70,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Bookmarks.
+        /// </summary>
+        public static string bm_export_button {
+            get {
+                return ResourceManager.GetString("bm_export_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export bookmarks from .csv file.
+        /// </summary>
+        public static string bm_export_button_tooltip {
+            get {
+                return ResourceManager.GetString("bm_export_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Bookmarks.
         /// </summary>
         public static string bm_import_button {
@@ -106,7 +124,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bookmark Query.
+        ///   Looks up a localized string similar to Add bookmark.
         /// </summary>
         public static string bm_query_button {
             get {
@@ -124,47 +142,11 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        public static string cancel_button {
-            get {
-                return ResourceManager.GetString("cancel_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel the current route.
-        /// </summary>
-        public static string cancel_button_tooltip {
-            get {
-                return ResourceManager.GetString("cancel_button_tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Find:.
         /// </summary>
         public static string find_text {
             get {
                 return ResourceManager.GetString("find_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guidance.
-        /// </summary>
-        public static string guidance {
-            get {
-                return ResourceManager.GetString("guidance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable Guidance System?.
-        /// </summary>
-        public static string guidance_system_checkbox {
-            get {
-                return ResourceManager.GetString("guidance_system_checkbox", resourceCulture);
             }
         }
         
@@ -358,7 +340,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expiring.
+        ///   Looks up a localized string similar to Expiring Missions System.
         /// </summary>
         public static string search_query_missions_expiring {
             get {
@@ -367,7 +349,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Farthest.
+        ///   Looks up a localized string similar to Farthest Mission System.
         /// </summary>
         public static string search_query_missions_farthest {
             get {
@@ -376,7 +358,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Most.
+        ///   Looks up a localized string similar to Most Missions System.
         /// </summary>
         public static string search_query_missions_most {
             get {
@@ -394,16 +376,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next System In Route.
-        /// </summary>
-        public static string search_query_missions_next {
-            get {
-                return ResourceManager.GetString("search_query_missions_next", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Missions Route.
+        ///   Looks up a localized string similar to Shortest Route System.
         /// </summary>
         public static string search_query_missions_route {
             get {
@@ -412,7 +385,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source.
+        ///   Looks up a localized string similar to Cargo Source System.
         /// </summary>
         public static string search_query_missions_source {
             get {
@@ -421,7 +394,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update Route.
+        ///   Looks up a localized string similar to Update Mission System.
         /// </summary>
         public static string search_query_missions_update {
             get {

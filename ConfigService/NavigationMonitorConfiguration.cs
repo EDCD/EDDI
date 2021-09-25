@@ -18,10 +18,6 @@ namespace EddiConfigService
         public int? maxSearchDistanceFromStarLs { get; set; } = 10000;
         public bool prioritizeOrbitalStations { get; set; } = true;
 
-        // Missions route data
-        public string missionsRouteList { get; set; }
-        public decimal missionsRouteDistance { get; set; }
-
         // Search data
         public string searchQuery { get; set; }
         public string searchSystem { get; set; }
@@ -32,10 +28,6 @@ namespace EddiConfigService
         public decimal? tdLat { get; set; }
         public decimal? tdLong { get; set; }
         public string tdPOI { get; set; }
-
-        // Guidance system
-        public bool guidanceSystemEnabled { get; set; }
-
 
         [JsonIgnore]
         private string dataPath;

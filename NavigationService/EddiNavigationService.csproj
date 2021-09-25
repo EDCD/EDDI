@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlanetaryGuidance.cs" />
+    <Compile Include="QueryTypes.cs" />
     <Compile Include="NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,6 +67,10 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
+      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
+      <Name>EddiShipMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>

@@ -1016,134 +1016,87 @@ namespace EddiVoiceAttackResponder
             {
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
-                string station = vaProxy.GetText("Station variable");
-
-                switch (type)
-                {
-                    case "cancel":
-                        {
-                            NavigationService.Instance.CancelRoute();
-                        }
-                        break;
-                    case "encoded":
-                        {
-                            NavigationService.Instance.GetServiceRoute("encoded");
-                        }
-                        break;
-                    case "expiring":
-                        {
-                            NavigationService.Instance.GetExpiringRoute();
-                        }
-                        break;
-                    case "facilitator":
-                        {
-                            NavigationService.Instance.GetServiceRoute("facilitator");
-                        }
-                        break;
-                    case "farthest":
-                        {
-                            NavigationService.Instance.GetFarthestRoute();
-                        }
-                        break;
-                    case "guardian":
-                        {
-                            NavigationService.Instance.GetServiceRoute("guardian");
-                        }
-                        break;
-                    case "human":
-                        {
-                            NavigationService.Instance.GetServiceRoute("human");
-                        }
-                        break;
-                    case "manufactured":
-                        {
-                            NavigationService.Instance.GetServiceRoute("manufactured");
-                        }
-                        break;
-                    case "most":
-                        {
-                            if (string.IsNullOrEmpty(system))
-                            {
-                                NavigationService.Instance.GetMostRoute();
-                            }
-                            else
-                            {
-                                NavigationService.Instance.GetMostRoute(system);
-                            }
-                        }
-                        break;
-                    case "nearest":
-                        {
-                            NavigationService.Instance.GetNearestRoute();
-                        }
-                        break;
-                    case "next":
-                        {
-                            NavigationService.Instance.GetNextInRoute();
-                        }
-                        break;
-                    case "raw":
-                        {
-                            NavigationService.Instance.GetServiceRoute("raw");
-                        }
-                        break;
-                    case "route":
-                        {
-                            if (string.IsNullOrEmpty(system))
-                            {
-                                NavigationService.Instance.GetMissionsRoute();
-                            }
-                            else
-                            {
-                                NavigationService.Instance.GetMissionsRoute(system);
-                            }
-                        }
-                        break;
-                    case "scoop":
-                        {
-                            ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
-                            NavigationService.Instance.GetScoopRoute(detail.distance);
-                        }
-                        break;
-                    case "set":
-                        {
-                            if (string.IsNullOrEmpty(station))
-                            {
-                                NavigationService.Instance.SetRoute(system);
-                            }
-                            else
-                            {
-                                NavigationService.Instance.SetRoute(system, station);
-                            }
-                        }
-                        break;
-                    case "source":
-                        {
-                            if (string.IsNullOrEmpty(system))
-                            {
-                                NavigationService.Instance.GetSourceRoute();
-                            }
-                            else
-                            {
-                                NavigationService.Instance.GetSourceRoute(system);
-                            }
-                        }
-                        break;
-                    case "update":
-                        {
-                            if (string.IsNullOrEmpty(system))
-                            {
-                                NavigationService.Instance.UpdateRoute();
-                            }
-                            else
-                            {
-                                NavigationService.Instance.UpdateRoute(system);
-                            }
-                        }
-                        break;
-                }
                 vaProxy.SetText("Type variable", null);
                 vaProxy.SetText("System variable", null);
+
+                RouteDetailsEvent @event = null;
+                switch (type.ToLowerInvariant())
+                {
+                    case "encoded":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.encoded);
+                        break;
+                    }
+                    case "expiring":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.expiring);
+                        break;
+                    }
+                    case "facilitator":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.facilitator);
+                        break;
+                    }
+                    case "farthest":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.farthest);
+                        break;
+                    }
+                    case "guardian":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.guardian);
+                        break;
+                    }
+                    case "human":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.human);
+                        break;
+                    }
+                    case "manufactured":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.manufactured);
+                        break;
+                    }
+                    case "most":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.most);
+                        break;
+                    }
+                    case "nearest":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.nearest);
+                        break;
+                    }
+                    case "raw":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.raw);
+                        break;
+                    }
+                    case "route":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.route, new[] {(dynamic) system});
+                        break;
+                    }
+                    case "scoop":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.scoop);
+                        break;
+                    }
+                    case "source":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.source, new[] {(dynamic) system});
+                        break;
+                    }
+                    case "update":
+                    {
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.update);
+                        break;
+                    }
+                }
+                if (@event != null)
+                {
+                    EDDI.Instance?.enqueueEvent(@event);
+                }
             }
             catch (Exception e)
             {

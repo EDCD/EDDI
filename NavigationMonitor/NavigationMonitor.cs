@@ -26,7 +26,6 @@ namespace EddiNavigationMonitor
         private static readonly object bookmarksLock = new object();
 
         private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
-        private PlanetaryGuidance planetaryGuidance;
 
         // Navigation route data
         public string navDestination;
@@ -66,7 +65,6 @@ namespace EddiNavigationMonitor
         public void initializeNavigationMonitor()
         {
             readBookmarks();
-            planetaryGuidance = new PlanetaryGuidance(ref bookmarks);
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -93,9 +91,7 @@ namespace EddiNavigationMonitor
         { }
 
         public void Stop()
-        {
-            planetaryGuidance.StopGuidance();
-        }
+        { }
 
         public void Reload()
         {
@@ -170,14 +166,6 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                if (@event.isset)
-                {
-                    planetaryGuidance.TryEngageGuidanceSystem(@event.system, @event.body);
-                }
-                else
-                {
-                    planetaryGuidance.DisengageGuidanceSystem();
-                }
             }
         }
 
@@ -304,7 +292,6 @@ namespace EddiNavigationMonitor
             {
                 // Write bookmarks configuration with current list
                 navConfig.bookmarks = bookmarks;
-                if (navConfig.searchQuery == "cancel") { navConfig.searchQuery = null; }
                 navConfig.updatedat = updateDat;
                 navConfig.ToFile();
             }

@@ -133,16 +133,13 @@
     <value>Add bookmark for current location</value>
   </data>
   <data name="bm_query_button" xml:space="preserve">
-    <value>Bookmark Query</value>
+    <value>Add bookmark</value>
   </data>
   <data name="bm_query_button_tooltip" xml:space="preserve">
     <value>Add bookmark from query results</value>
   </data>
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
-  </data>
-  <data name="guidance_system_checkbox" xml:space="preserve">
-    <value>Enable Guidance System?</value>
   </data>
   <data name="header_body" xml:space="preserve">
     <value>Body</value>
@@ -202,28 +199,25 @@
     <value>Legal Facilities</value>
   </data>
   <data name="search_query_missions_expiring" xml:space="preserve">
-    <value>Expiring</value>
+    <value>Expiring Missions System</value>
   </data>
   <data name="search_query_missions_farthest" xml:space="preserve">
-    <value>Farthest</value>
+    <value>Farthest Mission System</value>
   </data>
   <data name="search_query_missions_most" xml:space="preserve">
-    <value>Most</value>
+    <value>Most Missions System</value>
   </data>
   <data name="search_query_missions_nearest" xml:space="preserve">
     <value>Nearest Mission System</value>
   </data>
-  <data name="search_query_missions_next" xml:space="preserve">
-    <value>Next System In Route</value>
-  </data>
   <data name="search_query_missions_route" xml:space="preserve">
-    <value>Missions Route</value>
+    <value>Shortest Route System</value>
   </data>
   <data name="search_query_missions_source" xml:space="preserve">
-    <value>Source</value>
+    <value>Cargo Source System</value>
   </data>
   <data name="search_query_missions_update" xml:space="preserve">
-    <value>Update Route</value>
+    <value>Update Mission System</value>
   </data>
   <data name="search_query_services_encoded" xml:space="preserve">
     <value>Encoded Materials Trader</value>
@@ -239,9 +233,6 @@
   </data>
   <data name="search_query_services_raw" xml:space="preserve">
     <value>Raw Materials Trader</value>
-  </data>
-  <data name="cancel_button" xml:space="preserve">
-    <value>Cancel</value>
   </data>
   <data name="search_query_galaxy_scoop" xml:space="preserve">
     <value>Scoopable Star</value>
@@ -282,13 +273,13 @@
   <data name="update_button_tooltip" xml:space="preserve">
     <value>Update the bookmark's location data from your current in-game position and orientation</value>
   </data>
-  <data name="guidance" xml:space="preserve">
-    <value>Guidance</value>
-  </data>
   <data name="route_details_desc" xml:space="preserve">
     <value>A successful search triggers a "Route details" event.</value>
   </data>
-  <data name="cancel_button_tooltip" xml:space="preserve">
-    <value>Cancel the current route</value>
+  <data name="bm_export_button" xml:space="preserve">
+    <value>Export Bookmarks</value>
+  </data>
+  <data name="bm_export_button_tooltip" xml:space="preserve">
+    <value>Export bookmarks from .csv file</value>
   </data>
 </root>

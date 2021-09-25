@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiShipMonitor;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace EddiNavigationService
         private MissionMonitorConfiguration missionsConfig => ConfigService.Instance.missionMonitorConfiguration;
         private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
 
-        private static Dictionary<string, dynamic> ServiceFilter = new Dictionary<string, dynamic>()
+        private static readonly Dictionary<string, dynamic> ServiceFilter = new Dictionary<string, dynamic>()
         {
             { "encoded", new {
                 econ = new List<string>() {"High Tech", "Military"},
@@ -69,10 +70,18 @@ namespace EddiNavigationService
         private static readonly object instanceLock = new object();
 
         // Search variables
+        private QueryTypes SearchQuery { get; set; }
+        private dynamic[] SearchQueryArgs { get; set; }
         public StarSystem SearchStarSystem { get; private set; }
         public Station SearchStation { get; private set; }
         public decimal SearchDistanceLy { get; set; }
-        
+
+        // Last mission query variables
+        private QueryTypes LastMissionQuery { get; set; }
+        private dynamic[] LastMissionQueryArgs { get; set; }
+        private StarSystem LastMissionStarSystem { get; set; }
+        private Station LastMissionStation { get; set; }
+
         public NavigationService(IEdsmService edsmService)
         {
             this.edsmService = edsmService;
@@ -98,26 +107,146 @@ namespace EddiNavigationService
             }
         }
 
-        public void CancelRoute()
+        /// <summary> Obtains the result from various navigation queries </summary>
+        /// <param name="queryType">The type of query</param>
+        /// <param name="args">The query arguments</param>
+        /// <returns>The query result</returns>
+        public RouteDetailsEvent NavQuery(QueryTypes queryType, dynamic[] args = null)
         {
-            // Save the route data to the configuration
-            navConfig.searchQuery = "cancel";
-            navConfig.searchSystem = null;
-            navConfig.searchStation = null;
-            navConfig.searchDistance = 0;
-            navConfig.missionsRouteList = null;
-            navConfig.missionsRouteDistance = 0;
-            navConfig.ToFile();
+            try
+            {
+                // Keep track of the last mission query (excluding `update` queries)
+                switch (queryType)
+                {
+                    case QueryTypes.expiring:
+                    case QueryTypes.farthest:
+                    case QueryTypes.most:
+                    case QueryTypes.nearest:
+                    case QueryTypes.route:
+                    case QueryTypes.source:
+                    {
+                        LastMissionQuery = queryType;
+                        LastMissionQueryArgs = args;
+                        break;
+                    }
+                }
+                
+                // Note the current search query
+                SearchQuery = queryType;
+                SearchQueryArgs = args;
 
-            // Update Voice Attack & Cottle variables
-            UpdateSearchData(null, null, 0);
-            EDDI.Instance.updateDestinationSystem(null);
-            EDDI.Instance.DestinationDistanceLy = 0;
-            
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, null, 0, 0, 0, null));
+                // Resolve the current search query
+                switch (queryType)
+                {
+                    case QueryTypes.encoded:
+                    {
+                        return GetServiceSystem("encoded");
+                    }
+                    case QueryTypes.expiring:
+                    {
+                        var result = GetExpiringMissionSystem();
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.facilitator:
+                    {
+                        return GetServiceSystem("facilitator");
+                    }
+                    case QueryTypes.farthest:
+                    {
+                        var result = GetFarthestMissionSystem();
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.guardian:
+                    {
+                        return GetServiceSystem("guardian");
+                    }
+                    case QueryTypes.human:
+                    {
+                        return GetServiceSystem("human");
+                    }
+                    case QueryTypes.manufactured:
+                    {
+                        return GetServiceSystem("manufactured");
+                    }
+                    case QueryTypes.most:
+                    {
+                        var result = GetMostMissionSystem();
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.nearest:
+                    {
+                        var result = GetNearestMissionSystem();
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.raw:
+                    {
+                        return GetServiceSystem("raw");
+                    }
+                    case QueryTypes.route:
+                    {
+                        string system = null;
+                        if (args?.Length > 0)
+                        {
+                            system = args[0].ToString();
+                        }
+                        var result = GetShortestPathMissionSystem(system);
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.scoop:
+                    {
+                        decimal? distance;
+                        if (args?.Length > 0 && (decimal)args[0] > 0)
+                        {
+                            distance = (decimal)args[0];
+                        }
+                        else
+                        {
+                            distance = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails("total")?.distance;
+                        }
+                        return GetNearestScoopSystem(distance ?? 100);
+                    }
+                    case QueryTypes.source:
+                    {
+                        string system = null;
+                        if (args?.Length > 0)
+                        {
+                            system = args[0].ToString();
+                        }
+                        var result = GetMissionCargoSource(string.IsNullOrEmpty(system) ? null : system);
+                        LastMissionStarSystem = SearchStarSystem;
+                        LastMissionStation = SearchStation;
+                        return result;
+                    }
+                    case QueryTypes.update:
+                    {
+                        return RefreshLastMissionQuery();
+                    }
+                    default:
+                    {
+                        throw new ArgumentException($"{queryType} has not been configured in NavigationService.cs");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Warn("Nav query failed", e);
+                return null;
+            }
         }
 
-        public string GetExpiringRoute()
+        /// <summary> Obtains the star system where missions shall expire first </summary>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetExpiringMissionSystem()
         {
             List<Mission> missions = missionsConfig.missions.ToList();
             List<long> missionids = new List<long>();       // List of mission IDs for the next system  
@@ -141,24 +270,23 @@ namespace EddiNavigationService
                 dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
                 searchDistance = CalculateDistance(curr, dest);
 
-                // Save the misisons route data
+                // Save the missions route data
                 navConfig.searchQuery = "expiring";
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
-                navConfig.missionsRouteList = null;
-                navConfig.missionsRouteDistance = 0;
                 navConfig.ToFile();
                 UpdateSearchData(searchSystem, null, searchDistance);
 
                 // Get mission IDs for 'expiring' system
                 missionids = GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "expiring", searchSystem, null, searchSystem, expiringSeconds, searchDistance, searchDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "expiring", searchSystem, null, searchSystem, expiringSeconds, searchDistance, searchDistance, missionids);
         }
 
-        public string GetFarthestRoute()
+        /// <summary> Obtains the star system furthest from the current star system with active missions </summary>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetFarthestMissionSystem()
         {
             List<Mission> missions = missionsConfig.missions.ToList();
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
@@ -205,23 +333,23 @@ namespace EddiNavigationService
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
-                navConfig.missionsRouteList = null;
-                navConfig.missionsRouteDistance = 0;
                 navConfig.ToFile();
                 UpdateSearchData(searchSystem, null, searchDistance);
 
                 // Get mission IDs for 'farthest' system
                 missionids = GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "farthest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "farthest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids);
         }
 
-        public string GetMissionsRoute(string homeSystem = null)
+        /// <summary> Obtains the star system that provides the shortest total travel path to complete all missions using the 'Repetitive Nearest Neighbor' Algorithm (RNNA) </summary>
+        /// <param name="homeSystem"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetShortestPathMissionSystem(string homeSystem = null)
         {
-            List<Mission> missions = missionsConfig.missions.ToList();
-            string missionsRouteList = null;
-            decimal missionsRouteDistance = 0;
+            var missions = missionsConfig.missions.ToList();
+            var systemsRoute = new List<string>();
+            decimal routeDistance = 0;
             string searchSystem = null;
             decimal searchDistance = 0;
             int routeCount = 0;
@@ -292,18 +420,16 @@ namespace EddiNavigationService
                 }
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
-                if (CalculateRNNA(systems, homeSystem, missions, ref missionsRouteList, ref missionsRouteDistance))
+                if (CalculateRNNA(systems, homeSystem, missions, ref systemsRoute, ref routeDistance))
                 {
-                    searchSystem = missionsRouteList?.Split('_')[0];
+                    searchSystem = systemsRoute[0];
                     StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
                     searchDistance = CalculateDistance(curr, dest);
-                    routeCount = missionsRouteList?.Split('_').Count() ?? 0;
+                    routeCount = systemsRoute.Count;
 
-                    Logging.Debug("Calculated Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
+                    Logging.Debug("Calculated Route Selected = " + systemsRoute + ", Total Distance = " + routeDistance);
 
                     // Save the route data to the configuration
-                    navConfig.missionsRouteList = missionsRouteList;
-                    navConfig.missionsRouteDistance = missionsRouteDistance;
                     navConfig.searchQuery = "route";
                     navConfig.searchSystem = searchSystem;
                     navConfig.searchStation = null;
@@ -319,15 +445,14 @@ namespace EddiNavigationService
                     Logging.Debug("Unable to meet missions route calculation criteria");
                 }
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "route", searchSystem, null, missionsRouteList, routeCount, searchDistance, missionsRouteDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "route", searchSystem, null, string.Join("_", systemsRoute), routeCount, searchDistance, routeDistance, missionids);
         }
 
-        public bool CalculateRNNA(List<string> systems, string homeSystem, List<Mission> missions, ref string missionsRouteList, ref decimal missionsRouteDistance)
+        private bool CalculateRNNA(List<string> systems, string homeSystem, List<Mission> missions, ref List<string> systemsRoute, ref decimal routeDistance)
         {
             bool found = false;
-            missionsRouteList = null;
-            missionsRouteDistance = 0;
+            systemsRoute = null;
+            routeDistance = 0;
 
             int numSystems = systems.Count();
             if (numSystems > 1)
@@ -428,19 +553,20 @@ namespace EddiNavigationService
 
                 if (bestRoute.Count == numSystems)
                 {
-                    missionsRouteList = string.Join("_", bestRoute);
-                    missionsRouteDistance = bestDistance;
+                    systemsRoute = bestRoute;
+                    routeDistance = bestDistance;
                     found = true;
                 }
             }
             return found;
         }
-        public string GetMostRoute(string homeSystem = null)
+
+        /// <summary> Obtains the star system that provides the most active missions </summary>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetMostMissionSystem()
         {
             List<Mission> missions = missionsConfig.missions.ToList();
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
-            string missionsRouteList = null;
-            decimal missionsRouteDistance = 0;
             string searchSystem = null;
             decimal searchDistance = 0;
             long mostCount = 0;
@@ -505,25 +631,7 @@ namespace EddiNavigationService
                 searchSystem = mostList.Values.FirstOrDefault();
                 searchDistance = mostList.Keys.FirstOrDefault();
 
-                // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithim (RNNA)
-                mostList.Add(0, curr?.systemname);
-                if (CalculateRNNA(mostList.Values.ToList(), homeSystem, missions, ref missionsRouteList, ref missionsRouteDistance))
-                {
-                    Logging.Debug("Calculated Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
-                    if (homeSystem != null)
-                    {
-                        searchSystem = missionsRouteList?.Split('_')[0];
-                        searchDistance = mostList.Keys[mostList.Values.ToList().IndexOf(searchSystem)];
-                    }
-                }
-                else
-                {
-                    Logging.Debug("Unable to meet missions route calculation criteria");
-                }
-
                 // Save the route data to the configuration
-                navConfig.missionsRouteList = missionsRouteList;
-                navConfig.missionsRouteDistance = missionsRouteDistance;
                 navConfig.searchQuery = "most";
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
@@ -534,11 +642,12 @@ namespace EddiNavigationService
                 // Get mission IDs for 'most' system
                 missionids = GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "most", searchSystem, null, missionsRouteList, mostCount, searchDistance, missionsRouteDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "most", searchSystem, null, searchSystem, mostCount, searchDistance, searchDistance, missionids);
         }
 
-        public string GetNearestRoute()
+        /// <summary> Obtains the nearest star system with active missions </summary>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetNearestMissionSystem()
         {
             List<Mission> missions = missionsConfig.missions.ToList();
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
@@ -585,19 +694,18 @@ namespace EddiNavigationService
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
-                navConfig.missionsRouteList = null;
-                navConfig.missionsRouteDistance = 0;
                 navConfig.ToFile();
                 UpdateSearchData(searchSystem, null, searchDistance);
 
                 // Get mission IDs for 'farthest' system
                 missionids = GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nearest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "nearest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids);
         }
 
-        public string GetScoopRoute(decimal searchRadius)
+        /// <summary> Obtains the nearest star system that is eligible for fuel scoop refueling </summary>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetNearestScoopSystem(decimal searchRadius)
         {
             string searchSystem = null;
             decimal searchDistance = 0;
@@ -640,16 +748,15 @@ namespace EddiNavigationService
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
-                navConfig.missionsRouteList = null;
-                navConfig.missionsRouteDistance = 0;
                 navConfig.ToFile();
                 UpdateSearchData(searchSystem, null, searchDistance);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, endRadius, null));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, endRadius, null);
         }
 
-        public string GetServiceRoute(string serviceQuery, int? maxDistance = null)
+        /// <summary> Obtains the nearest star system that offers a specific service </summary>
+        /// <returns> The query result </returns>
+        public RouteDetailsEvent GetServiceSystem(string serviceQuery, int? maxDistance = null)
         {
             // Get up-to-date configuration data
             int maxStationDistance = maxDistance ?? navConfig.maxSearchDistanceFromStarLs ?? 10000;
@@ -697,8 +804,6 @@ namespace EddiNavigationService
                     navConfig.searchSystem = searchSystem;
                     navConfig.searchStation = searchStation;
                     navConfig.searchDistance = searchDistance;
-                    navConfig.missionsRouteList = null;
-                    navConfig.missionsRouteDistance = 0;
                     navConfig.ToFile();
                     UpdateSearchData(searchSystem, searchStation, searchDistance);
 
@@ -706,11 +811,10 @@ namespace EddiNavigationService
                     missionids = GetSystemMissionIds(searchSystem);
                 }
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, serviceQuery, searchSystem, searchStation, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, serviceQuery, searchSystem, searchStation, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids);
         }
 
-        public StarSystem GetServiceSystem(string serviceQuery, int maxStationDistance, bool prioritizeOrbitalStations)
+        private StarSystem GetServiceSystem(string serviceQuery, int maxStationDistance, bool prioritizeOrbitalStations)
         {
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
@@ -725,7 +829,7 @@ namespace EddiNavigationService
                 string ServiceSystem = null;
                 int maxTries = 5;
 
-                while (ServiceSystem == null && maxTries > 0)
+                while (maxTries > 0)
                 {
                     List<StarSystem> cubeSystems = edsmService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
                     if (cubeSystems?.Any() ?? false)
@@ -787,7 +891,10 @@ namespace EddiNavigationService
             return null;
         }
 
-        public string GetSourceRoute(string system = null)
+        /// <summary> Obtains the nearest star system that can be used to source active mission cargo </summary>
+        /// <param name="system"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
+        /// <returns> The query result </returns>
+        private RouteDetailsEvent GetMissionCargoSource(string system = null)
         {
             List<Cargo> inventory = cargoConfig.cargo.ToList();
             int missionsCount = inventory.Sum(c => c.haulageData.Count());
@@ -823,148 +930,37 @@ namespace EddiNavigationService
                     }
                 }
 
-                if (sourceList != null)
-                {
-                    searchSystem = sourceList.Values.FirstOrDefault();
-                    searchDistance = (decimal)sourceList.Keys.FirstOrDefault() / 100;
-                    sourceSystems = string.Join("_", sourceList.Values);
-                    systemsCount = sourceList.Count;
-
-                    // Save the route data to the configuration
-                    navConfig.searchQuery = "source";
-                    navConfig.searchSystem = searchSystem;
-                    navConfig.searchStation = null;
-                    navConfig.searchDistance = searchDistance;
-                    navConfig.missionsRouteList = sourceSystems;
-                    navConfig.missionsRouteDistance = 0;
-                    navConfig.ToFile();
-                    UpdateSearchData(searchSystem, null, searchDistance);
-                }
-            }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "source", searchSystem, null, sourceSystems, systemsCount, searchDistance, 0, missionids));
-            return searchSystem;
-        }
-
-        public string GetNextInRoute()
-        {
-            string missionsRouteList = navConfig.missionsRouteList;
-            decimal missionsRouteDistance = navConfig.missionsRouteDistance;
-            string searchSystem = missionsRouteList?.Split('_')[0];
-            string searchStation = null;
-            decimal searchDistance = 0;
-            List<long> missionids = new List<long>();       // List of mission IDs for the next system
-
-            int count = 0;
-            if (searchSystem != null)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
-                searchDistance = CalculateDistance(curr, dest);
-                count = missionsRouteList.Split('_').Count();
+                searchSystem = sourceList.Values.FirstOrDefault();
+                searchDistance = (decimal)sourceList.Keys.FirstOrDefault() / 100;
+                sourceSystems = string.Join("_", sourceList.Values);
+                systemsCount = sourceList.Count;
 
                 // Save the route data to the configuration
-                navConfig.searchQuery = "next";
+                navConfig.searchQuery = "source";
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
                 navConfig.ToFile();
                 UpdateSearchData(searchSystem, null, searchDistance);
-
-                // Get mission IDs for 'next' system
-                missionids = GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "next", searchSystem, searchStation, missionsRouteList, count, searchDistance, missionsRouteDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "source", searchSystem, null, sourceSystems, systemsCount, searchDistance, 0, missionids);
         }
 
-        public string SetRoute(string system, string station = null)
+        /// <summary> Repeat the last mission query and return an updated result if different from the prior result, either relative to your current location or to a named system </summary>
+        /// <returns> The star system result from the repeated query </returns>
+        private RouteDetailsEvent RefreshLastMissionQuery()
         {
-            decimal distance = 0;
-
-            if (system != null)
+            var @event = NavQuery(LastMissionQuery, LastMissionQueryArgs);
+            if (LastMissionStarSystem?.systemname == SearchStarSystem?.systemname)
             {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
-                if (curr?.x != null && dest?.x != null)
+                // Same star system as last result
+                if (LastMissionStation?.name == SearchStation?.name)
                 {
-                    if (system != curr.systemname) { distance = CalculateDistance(curr, dest); }
-                }
-                else
-                {
-                    system = null;
-                    station = null;
-                }
-
-                // Update the search data to the configuration
-                navConfig.searchQuery = "set";
-                navConfig.searchSystem = system;
-                navConfig.searchStation = station;
-                navConfig.searchDistance = distance;
-                navConfig.ToFile();
-            }
-            UpdateSearchData(system, station, distance);
-
-            // Get mission IDs for 'set' system
-            List<long> missionids = GetSystemMissionIds(system);
-
-            string routeList = navConfig.missionsRouteList;
-            decimal routeDistance = navConfig.missionsRouteDistance;
-            int count = routeList?.Split('_').Count() ?? 0;
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, routeList, count, distance, routeDistance, missionids));
-            return system;
-        }
-
-        public string UpdateRoute(string updateSystem = null)
-        {
-            bool update;
-            string missionsRouteList = navConfig.missionsRouteList;
-            decimal missionsRouteDistance = navConfig.missionsRouteDistance;
-            List<Mission> missions = missionsConfig.missions.ToList();
-            string searchSystem = null;
-            decimal searchDistance = 0;
-            List<long> missionids = new List<long>();       // List of mission IDs for the next system
-
-            string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
-            List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
-
-            if (!missions.Any() || !route.Any()) { update = false; }
-            else if (updateSystem == null)
-            {
-                updateSystem = route[0];
-
-                // Determine if the 'update' system in the missions route list is the current system & has no pending missions
-                update = currentSystem == updateSystem ? !SystemPendingMissions(updateSystem, missions) : false;
-            }
-            else { update = route.Contains(updateSystem); }
-
-            // Remove 'update' system from the missions route list
-            if (update)
-            {
-                if (RemoveSystemFromRoute(updateSystem, missions, ref missionsRouteList, ref missionsRouteDistance))
-                {
-                    searchSystem = missionsRouteList?.Split('_')[0];
-                    if (searchSystem != null)
-                    {
-                        searchDistance = CalculateDistance(currentSystem, searchSystem);
-
-                        // Get mission IDs for 'next' system
-                        missionids = GetSystemMissionIds(searchSystem);
-                    }
-                    Logging.Debug("Route Updated = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
-
-                    // Save the route data to the configuration
-                    navConfig.searchQuery = "update";
-                    navConfig.searchSystem = searchSystem;
-                    navConfig.searchStation = null;
-                    navConfig.searchDistance = searchDistance;
-                    navConfig.missionsRouteList = missionsRouteList;
-                    navConfig.missionsRouteDistance = missionsRouteDistance;
-                    navConfig.ToFile();
-                    UpdateSearchData(searchSystem, null, searchDistance);
+                    // No station or same station as last result
+                    return null;
                 }
             }
-            EDDI.Instance?.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "update", searchSystem, null, missionsRouteList, route.Count, searchDistance, missionsRouteDistance, missionids));
-            return searchSystem;
+            return new RouteDetailsEvent(DateTime.Now, "update", @event.system, @event.station, @event.route, @event.count, @event.distance, @event.routedistance, @event.missionids);
         }
 
         private decimal CalculateDistance(string currentSystem, string destinationSystem)
@@ -977,33 +973,6 @@ namespace EddiNavigationService
         private decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
             return Functions.StellarDistanceLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
-        }
-
-        private decimal CalculateRouteDistance(string missionsRouteList)
-        {
-            List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
-            decimal distance = 0;
-
-            if (route.Count > 0)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-
-                // Get all the route coordinates from EDSM in one request
-                List<StarSystem> starsystems = dataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
-
-                // Get distance to the next system
-                StarSystem dest = starsystems.Find(s => s.systemname == route[0]);
-                distance = CalculateDistance(curr, dest);
-
-                // Calculate remaining route distance
-                for (int i = 0; i < route.Count() - 1; i++)
-                {
-                    curr = starsystems.Find(s => s.systemname == route[i]);
-                    dest = starsystems.Find(s => s.systemname == route[i + 1]);
-                    distance += CalculateDistance(curr, dest);
-                }
-            }
-            return distance;
         }
 
         private bool DestinationOriginReturn(string destination, List<Mission> missions)
@@ -1046,95 +1015,10 @@ namespace EddiNavigationService
             return missionids;
         }
 
-        private bool RemoveSystemFromRoute(string system, List<Mission> missions, ref string missionsRouteList, ref decimal missionsRouteDistance)
-        {
-            List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
-            if (route.Count == 0) { return false; }
-
-            int index = route.IndexOf(system);
-            if (index > -1)
-            {
-                // Do not remove the 'home' system unless last in list
-                if (route.Count > 1 && index == route.Count - 1) { return false; }
-
-                route.RemoveAt(index);
-                if (route.Count > 0)
-                {
-                    // If other than 'next' system removed, recalculate the route
-                    if (route.Count > 2 && index > 0)
-                    {
-                        // Use copy to keep the original intact.
-                        List<string> systems = new List<string>(route);
-
-                        // Build systems list
-                        string homeSystem = systems.Last();
-                        systems.RemoveAt(systems.Count - 1);
-                        systems.Insert(0, EDDI.Instance?.CurrentStarSystem?.systemname);
-
-                        if (CalculateRNNA(systems, homeSystem, missions, ref missionsRouteList, ref missionsRouteDistance)) { return true; }
-                    }
-                    missionsRouteList = string.Join("_", route);
-                    missionsRouteDistance = CalculateRouteDistance(missionsRouteList);
-                }
-                else
-                {
-                    missionsRouteList = null;
-                    missionsRouteDistance = 0;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        private bool SystemPendingMissions(string system, List<Mission> missions)
-        {
-            foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
-            {
-                foreach (var type in mission.edTags)
-                {
-                    var exitLoop = false;
-                    switch (type.ToLowerInvariant())
-                    {
-                        case "assassinate":
-                        case "courier":
-                        case "delivery":
-                        case "disable":
-                        case "hack":
-                        case "massacre":
-                        case "passengerbulk":
-                        case "passengervip":
-                        case "rescue":
-                        case "salvage":
-                        case "scan":
-                        case "sightseeing":
-                        case "smuggle":
-                        {
-                            // Check if the system is origin system for 'Active' and 'Claim' missions
-                            if (mission.originsystem == system) { return true; }
-
-                            // Check if the system is destination system for 'Active' missions
-                            else if (mission.statusEDName == "Active")
-                            {
-                                if (mission.destinationsystems?.Any() ?? false)
-                                {
-                                    if (mission.destinationsystems.Any(d => d.name == system)) { return true; }
-                                }
-                                else if (mission.destinationsystem == system) { return true; }
-                            }
-                            exitLoop = true;
-                            break;
-                        }
-                    }
-                    if (exitLoop) { break; }
-                }
-            }
-            return false;
-        }
-
         public void UpdateSearchData(string searchSystem, string searchStation, decimal searchDistance)
         {
             // Update search system data
-            if (searchSystem != null)
+            if (!string.IsNullOrEmpty(searchSystem))
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem);
 
@@ -1155,7 +1039,7 @@ namespace EddiNavigationService
             }
 
             // Update search station data
-            if (searchStation != null && SearchStarSystem?.stations != null)
+            if (!string.IsNullOrEmpty(searchStation) && SearchStarSystem?.stations != null)
             {
                 string searchStationName = searchStation.Trim();
                 Station station = SearchStarSystem.stations.FirstOrDefault(s => s.name == searchStationName);

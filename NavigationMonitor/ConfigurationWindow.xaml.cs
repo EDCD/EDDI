@@ -4,7 +4,6 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
-using EddiShipMonitor;
 using EddiStatusMonitor;
 using Microsoft.VisualBasic.FileIO;
 using System;
@@ -13,7 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -53,7 +52,6 @@ namespace EddiNavigationMonitor
             "manufactured",
             "most",
             "nearest",
-            "next",
             "raw",
             "route",
             "scoop",
@@ -76,7 +74,6 @@ namespace EddiNavigationMonitor
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
 
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
-            guidanceSystem.IsChecked = navConfig.guidanceSystemEnabled;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
 
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
@@ -122,7 +119,7 @@ namespace EddiNavigationMonitor
                             if (navConfig.tdPOI != null)
                             {
                                 // Get current distance from `Touchdown` POI
-                                decimal? distanceKm = PlanetaryGuidance.SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                decimal? distanceKm = SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                 if (distanceKm < 5)
                                 {
                                     poi = navConfig.tdPOI;
@@ -151,7 +148,7 @@ namespace EddiNavigationMonitor
                     }
                     if (currentStatus != null && currentStatus.near_surface && currentBody != null)
                     {
-                        PlanetaryGuidance.SurfaceCoordinates(currentStatus, out latitude, out longitude);
+                        SurfaceCoordinates(currentStatus, out latitude, out longitude);
                         landable = currentBody?.landable ?? false;
                     }
                 }
@@ -159,7 +156,7 @@ namespace EddiNavigationMonitor
                 {
                     if (currentStatus != null && currentStatus.near_surface && currentBody != null)
                     {
-                        PlanetaryGuidance.SurfaceCoordinates(currentStatus, out latitude, out longitude);
+                        SurfaceCoordinates(currentStatus, out latitude, out longitude);
                         landable = currentBody?.landable ?? false;
                     }
                 }
@@ -198,6 +195,11 @@ namespace EddiNavigationMonitor
         {
             // Update the bookmark list
             navigationMonitor()?.writeBookmarks();
+        }
+
+        private void exportBookmarks(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void importBookmarks(object sender, RoutedEventArgs e)
@@ -316,26 +318,6 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void setBookmark(object sender, RoutedEventArgs e)
-        {
-            // Clear all previously 'set' bookmarks
-            NavBookmark bm = navigationMonitor().bookmarks.FirstOrDefault(b => b.isset);
-            while (bm?.isset ?? false)
-            {
-                bm.isset = false;
-                bm = navigationMonitor().bookmarks.FirstOrDefault(b => b.isset);
-            }
-
-            string station = null;
-            NavBookmark navBookmark = (NavBookmark)((Button)e.Source).DataContext;
-            if (navBookmark.isstation) { station = navBookmark.poi; }
-            navBookmark.isset = true;
-
-            NavigationService.Instance.SetRoute(navBookmark.systemname, station);
-
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "set", navBookmark));
-        }
-
         private void updateBookmark(object sender, RoutedEventArgs e)
         {
             var currentSystem = EDDI.Instance.CurrentStarSystem;
@@ -368,7 +350,7 @@ namespace EddiNavigationMonitor
                                 if (navConfig.tdPOI != null)
                                 {
                                     // Get current distance from `Touchdown` POI
-                                    decimal? distanceKm = PlanetaryGuidance.SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                    decimal? distanceKm = SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                     if (distanceKm < 5)
                                     {
                                         navBookmark.poi = navConfig.tdPOI;
@@ -381,7 +363,7 @@ namespace EddiNavigationMonitor
                         {
                             if (currentStatus.near_surface)
                             {
-                                PlanetaryGuidance.SurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
+                                SurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
                                 navBookmark.landable = currentBody.landable ?? false;
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
@@ -421,26 +403,6 @@ namespace EddiNavigationMonitor
             if (navConfig.prioritizeOrbitalStations != isChecked)
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
-                navConfig.ToFile();
-            }
-        }
-
-        private void guidanceSystemEngaged(object sender, RoutedEventArgs e)
-        {
-            updateGuidanceSystemCheckbox();
-        }
-
-        private void guidanceSystemDisengaged(object sender, RoutedEventArgs e)
-        {
-            updateGuidanceSystemCheckbox();
-        }
-
-        private void updateGuidanceSystemCheckbox()
-        {
-            bool isChecked = guidanceSystem.IsChecked ?? false;
-            if (navConfig.guidanceSystemEnabled != isChecked)
-            {
-                navConfig.guidanceSystemEnabled = isChecked;
                 navConfig.ToFile();
             }
         }
@@ -558,24 +520,27 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void executeSearch(object sender, RoutedEventArgs e)
+        private async void executeSearch(object sender, RoutedEventArgs e)
         {
             Button searchButton = (Button)sender;
-            searchButton.Foreground = Brushes.Red;
+            searchButton.Foreground = Brushes.DarkBlue;
             searchButton.FontWeight = FontWeights.Bold;
-            string searchSystem = null;
 
-            Thread searchThread = new Thread(() =>
+            string resultSystem = string.Empty;
+            string resultStation = string.Empty;
+
+            var search = Task.Run(() =>
             {
+                RouteDetailsEvent @event = null;
                 if (searchTypeSelection == "crime")
                 {
                     switch (searchQuerySelection)
                     {
                         case "facilitator":
-                            {
-                                searchSystem = NavigationService.Instance.GetServiceRoute(searchQuerySelection);
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.facilitator);
                             break;
+                        }
                     }
                 }
                 else if (searchTypeSelection == "missions")
@@ -583,78 +548,80 @@ namespace EddiNavigationMonitor
                     switch (searchQuerySelection)
                     {
                         case "expiring":
-                            {
-                                searchSystem = NavigationService.Instance.GetExpiringRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.expiring);
                             break;
+                        }
                         case "farthest":
-                            {
-                                searchSystem = NavigationService.Instance.GetFarthestRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.farthest);
                             break;
+                        }
                         case "most":
-                            {
-                                searchSystem = NavigationService.Instance.GetMostRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.most);
                             break;
+                        }
                         case "nearest":
-                            {
-                                searchSystem = NavigationService.Instance.GetNearestRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.nearest);
                             break;
-                        case "next":
-                            {
-                                searchSystem = NavigationService.Instance.GetNextInRoute();
-                            }
-                            break;
+                        }
                         case "route":
-                            {
-                                searchSystem = NavigationService.Instance.GetMissionsRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.route);
                             break;
+                        }
                         case "source":
-                            {
-                                searchSystem = NavigationService.Instance.GetSourceRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.source);
                             break;
+                        }
                         case "update":
-                            {
-                                searchSystem = NavigationService.Instance.UpdateRoute();
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.update);
                             break;
+                        }
                     }
                 }
                 else if (searchTypeSelection == "services")
                 {
-                    searchSystem = NavigationService.Instance.GetServiceRoute(searchQuerySelection);
+                    @event = NavigationService.Instance.GetServiceSystem(searchQuerySelection);
                 }
                 else if (searchTypeSelection == "galaxy")
                 {
                     switch (searchQuerySelection)
                     {
                         case "scoop":
-                            {
-                                ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
-                                searchSystem = NavigationService.Instance.GetScoopRoute(detail.distance);
-                            }
+                        {
+                            @event = NavigationService.Instance.NavQuery(QueryTypes.scoop);
                             break;
+                        }
                     }
                 }
-            })
+                if (@event != null)
+                {
+                    resultSystem = @event.system;
+                    resultStation = @event.station;
+                    EDDI.Instance?.enqueueEvent(@event);
+                }
+            });
+
+            // Update our UI to match our results
+            await Task.WhenAll(search);
+            if (searchSystemDropDown.Text != resultSystem)
             {
-                IsBackground = true
-            };
-            searchThread.Start();
-        }
-
-        private void executeSelect(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Instance.SetRoute(dropdownSearchSystem, dropdownSearchStation);
-        }
-
-        private void executeCancel(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Instance.CancelRoute();
+                dropdownSearchSystem = resultSystem;
+                searchSystemDropDown.Text = resultSystem;
+                ConfigureSearchStationOptions(resultSystem);
+            }
+            if (searchStationDropDown.Text != resultStation)
+            {
+                dropdownSearchStation = resultStation;
+                searchStationDropDown.Text = !string.IsNullOrEmpty(resultStation) ? resultStation : Properties.NavigationMonitor.no_station;
+            }
+            searchButton.Foreground = Brushes.Black;
+            searchButton.FontWeight = FontWeights.Normal;
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
@@ -728,6 +695,16 @@ namespace EddiNavigationMonitor
             Regex regex = new Regex(@"[0-9]");
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        public static void SurfaceCoordinates(Status curr, out decimal? destinationLatitude, out decimal? destinationLongitude)
+        {
+            Functions.SurfaceCoordinates(curr.altitude, curr.planetradius, curr.slope, curr.heading, curr.latitude, curr.longitude, out destinationLatitude, out destinationLongitude);
+        }
+
+        public static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
     }
 }
