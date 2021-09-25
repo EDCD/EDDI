@@ -154,7 +154,7 @@
     <value>Longitude</value>
   </data>
   <data name="header_poi" xml:space="preserve">
-    <value>POI</value>
+    <value>Station / POI</value>
   </data>
   <data name="header_system" xml:space="preserve">
     <value>System</value>

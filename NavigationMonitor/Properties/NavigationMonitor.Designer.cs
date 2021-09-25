@@ -187,7 +187,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to POI.
+        ///   Looks up a localized string similar to Station / POI.
         /// </summary>
         public static string header_poi {
             get {
