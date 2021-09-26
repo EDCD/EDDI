@@ -271,7 +271,7 @@
     <value>Update</value>
   </data>
   <data name="update_button_tooltip" xml:space="preserve">
-    <value>Update the bookmark's location data from your current in-game position and orientation</value>
+    <value>Update the bookmark's location data from your current latitude and longitude</value>
   </data>
   <data name="route_details_desc" xml:space="preserve">
     <value>A successful search triggers a "Route details" event.</value>

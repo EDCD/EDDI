@@ -44,13 +44,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string bodyshortname => Body.GetShortName(bodyname, systemname);
 
-        public decimal? radius { get; set; }
-
         public string poi { get; set; }
 
         public bool isstation { get; set; }
-
-        public string category { get; set; }
 
         public string comment { get; set; }
 
@@ -94,14 +90,13 @@ namespace EddiDataDefinitions
         public NavBookmark() { }
 
         [JsonConstructor]
-        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, decimal? radius, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable)
+        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable)
         {
             this.systemname = systemname;
             this.x = x;
             this.y = y;
             this.z = z;
             this.bodyname = bodyname;
-            this.radius = radius;
             this.poi = poi;
             this.isstation = isstation;
             this.latitude = latitude;

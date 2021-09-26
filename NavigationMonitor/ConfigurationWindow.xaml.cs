@@ -179,7 +179,7 @@ namespace EddiNavigationMonitor
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
-                    currentStatus?.bodyname, currentStatus?.planetradius, poi, isStation, latitude, longitude, landable);
+                    currentStatus?.bodyname, poi, isStation, latitude, longitude, landable);
                 navigationMonitor().bookmarks.Add(navBookmark);
                 navigationMonitor().writeBookmarks();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
@@ -202,7 +202,7 @@ namespace EddiNavigationMonitor
                 landable = system.stations.FirstOrDefault(s => s.name == stationName)?.IsPlanetary() ?? false;
             }
 
-            NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, null, stationName, isStation, null, null, landable);
+            NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, stationName, isStation, null, null, landable);
             navigationMonitor().bookmarks.Add(navBookmark);
             navigationMonitor().writeBookmarks();
             EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "query", navBookmark));
@@ -275,16 +275,6 @@ namespace EddiNavigationMonitor
                                         case "name":
                                             {
                                                 navBookmark.comment = fields[i];
-                                            }
-                                            break;
-                                        case "category":
-                                            {
-                                                navBookmark.category = fields[i];
-                                            }
-                                            break;
-                                        case "radius":
-                                            {
-                                                navBookmark.radius = decimal.Parse(fields[i]);
                                             }
                                             break;
                                         case "latitude":
@@ -382,6 +372,7 @@ namespace EddiNavigationMonitor
                                 }
                             }
                             navBookmark.landable = true;
+                            navBookmark.bodyname = currentStatus.bodyname;
                         }
                         else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                         {
@@ -391,6 +382,7 @@ namespace EddiNavigationMonitor
                                 navBookmark.landable = currentBody?.landable ?? false;
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
+                                navBookmark.bodyname = currentStatus.bodyname;
                             }
                         }
                     }

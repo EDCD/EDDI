@@ -565,7 +565,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the bookmark&apos;s location data from your current in-game position and orientation.
+        ///   Looks up a localized string similar to Update the bookmark&apos;s location data from your current latitude and longitude.
         /// </summary>
         public static string update_button_tooltip {
             get {

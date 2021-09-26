@@ -20,6 +20,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -33,6 +34,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="5" Text="{Binding latitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="5, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="4" Text="{x:Static resx:NavigationMonitor.header_longitude}" Margin="15, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding longitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="5, 0" />
+                <Button Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" Click="updateBookmark" MinWidth="60" HorizontalAlignment="Right" Margin="2, 10" Content="{x:Static resx:NavigationMonitor.update_button}" ToolTip="{x:Static resx:NavigationMonitor.update_button_tooltip}" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -187,13 +189,6 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn MinWidth="60">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Click="updateBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.update_button}" ToolTip="{x:Static resx:NavigationMonitor.update_button_tooltip}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
                 <DataGridTemplateColumn MinWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
