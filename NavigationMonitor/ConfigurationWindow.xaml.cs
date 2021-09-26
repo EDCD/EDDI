@@ -388,7 +388,7 @@ namespace EddiNavigationMonitor
                             if (currentStatus.near_surface)
                             {
                                 SurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
-                                navBookmark.landable = currentBody.landable ?? false;
+                                navBookmark.landable = currentBody?.landable ?? false;
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
                             }
