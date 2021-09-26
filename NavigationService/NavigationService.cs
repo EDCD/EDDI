@@ -256,7 +256,7 @@ namespace EddiNavigationService
                 var curr = EDDI.Instance?.CurrentStarSystem;
                 var dest = new StarSystem();             // Destination star system
 
-                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active" && !string.IsNullOrEmpty(m.destinationsystem)).ToList())
                 {
                     if (expiringSeconds == 0 || mission.expiryseconds < expiringSeconds)
                     {
@@ -313,7 +313,7 @@ namespace EddiNavigationService
                             }
                         }
                     }
-                    else if (mission.destinationsystem != string.Empty)
+                    else if (!string.IsNullOrEmpty(mission.destinationsystem))
                     {
                         dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem, true);
                         decimal distance = CalculateDistance(curr, dest);
@@ -397,7 +397,7 @@ namespace EddiNavigationService
                                 {
                                     if (!(mission.destinationsystems?.Any() ?? false))
                                     {
-                                        if (!systems.Contains(mission.destinationsystem))
+                                        if (!string.IsNullOrEmpty(mission.destinationsystem) && !systems.Contains(mission.destinationsystem))
                                         {
                                             systems.Add(mission.destinationsystem);
                                         }
@@ -600,7 +600,7 @@ namespace EddiNavigationService
                             }
                         }
                     }
-                    else if (mission.destinationsystem != string.Empty)
+                    else if (!string.IsNullOrEmpty(mission.destinationsystem))
                     {
                         int index = systems.IndexOf(mission.destinationsystem);
                         if (index == -1)
@@ -680,7 +680,7 @@ namespace EddiNavigationService
                             }
                         }
                     }
-                    else if (mission.destinationsystem != string.Empty)
+                    else if (!string.IsNullOrEmpty(mission.destinationsystem))
                     {
                         dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem, true);
                         decimal distance = CalculateDistance(curr, dest);
@@ -982,6 +982,7 @@ namespace EddiNavigationService
 
         private decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
+            if (curr is null || dest is null) { return 0; }
             return Functions.StellarDistanceLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? 0;
         }
 
