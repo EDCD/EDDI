@@ -66,8 +66,6 @@ namespace EddiNavigationService
         private static readonly object instanceLock = new object();
 
         // Search variables
-        private QueryTypes SearchQuery { get; set; }
-        private dynamic[] SearchQueryArgs { get; set; }
         public StarSystem SearchStarSystem { get; private set; }
         public Station SearchStation { get; private set; }
         public decimal SearchDistanceLy { get; set; }
@@ -126,10 +124,6 @@ namespace EddiNavigationService
                         break;
                     }
                 }
-                
-                // Note the current search query
-                SearchQuery = queryType;
-                SearchQueryArgs = args;
 
                 // Resolve the current search query
                 switch (queryType)
