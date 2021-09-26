@@ -110,7 +110,7 @@
                                   SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
             <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
             <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Height="20" MinWidth="175" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
-            <Button HorizontalAlignment="Center"  Click="bookmarkQuery" Grid.Row="0" Grid.Column="4" Margin="10, 0" Height="20" Content="{x:Static resx:NavigationMonitor.bm_query_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_query_button_tooltip}" />
+            <Button HorizontalAlignment="Center"  Click="bookmarkQuery" Grid.Row="0" Grid.Column="4" Margin="10, 0" Height="20" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}" />
         </Grid>
         <Grid DockPanel.Dock="Top" Margin="15,0" >
             <Grid.ColumnDefinitions>

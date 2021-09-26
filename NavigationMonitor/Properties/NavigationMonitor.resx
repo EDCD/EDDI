@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="add_button" xml:space="preserve">
-    <value>Add Bookmark</value>
-  </data>
   <data name="bm_import_button" xml:space="preserve">
     <value>Import Bookmarks</value>
   </data>
@@ -132,10 +129,10 @@
   <data name="bm_location_button_tooltip" xml:space="preserve">
     <value>Add bookmark for current location</value>
   </data>
-  <data name="bm_query_button" xml:space="preserve">
+  <data name="add_button" xml:space="preserve">
     <value>Add bookmark</value>
   </data>
-  <data name="bm_query_button_tooltip" xml:space="preserve">
+  <data name="add_button_tooltip" xml:space="preserve">
     <value>Add bookmark from query results</value>
   </data>
   <data name="find_text" xml:space="preserve">
@@ -248,18 +245,6 @@
   </data>
   <data name="search_type_galaxy" xml:space="preserve">
     <value>Galaxy</value>
-  </data>
-  <data name="select_button" xml:space="preserve">
-    <value>Set</value>
-  </data>
-  <data name="select_button_tooltip" xml:space="preserve">
-    <value>Navigate to the selected system &amp; station</value>
-  </data>
-  <data name="set_button" xml:space="preserve">
-    <value>Set</value>
-  </data>
-  <data name="set_button_tooltip" xml:space="preserve">
-    <value>Navigate to the selected bookmark target</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Station:</value>

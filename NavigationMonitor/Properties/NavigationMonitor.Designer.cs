@@ -61,11 +61,20 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Bookmark.
+        ///   Looks up a localized string similar to Add bookmark.
         /// </summary>
         public static string add_button {
             get {
                 return ResourceManager.GetString("add_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add bookmark from query results.
+        /// </summary>
+        public static string add_button_tooltip {
+            get {
+                return ResourceManager.GetString("add_button_tooltip", resourceCulture);
             }
         }
         
@@ -120,24 +129,6 @@ namespace EddiNavigationMonitor.Properties {
         public static string bm_location_button_tooltip {
             get {
                 return ResourceManager.GetString("bm_location_button_tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add bookmark.
-        /// </summary>
-        public static string bm_query_button {
-            get {
-                return ResourceManager.GetString("bm_query_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add bookmark from query results.
-        /// </summary>
-        public static string bm_query_button_tooltip {
-            get {
-                return ResourceManager.GetString("bm_query_button_tooltip", resourceCulture);
             }
         }
         
@@ -498,42 +489,6 @@ namespace EddiNavigationMonitor.Properties {
         public static string search_type_services {
             get {
                 return ResourceManager.GetString("search_type_services", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set.
-        /// </summary>
-        public static string select_button {
-            get {
-                return ResourceManager.GetString("select_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Navigate to the selected system &amp; station.
-        /// </summary>
-        public static string select_button_tooltip {
-            get {
-                return ResourceManager.GetString("select_button_tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set.
-        /// </summary>
-        public static string set_button {
-            get {
-                return ResourceManager.GetString("set_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Navigate to the selected bookmark target.
-        /// </summary>
-        public static string set_button_tooltip {
-            get {
-                return ResourceManager.GetString("set_button_tooltip", resourceCulture);
             }
         }
         
