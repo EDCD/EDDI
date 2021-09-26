@@ -225,7 +225,7 @@ namespace EddiDataDefinitions
         public string bodyname;
 
         [PublicAPI]
-        public decimal? planetradius;
+        public decimal? planetradius; // in meters
 
         [PublicAPI]
         public decimal? oxygen; // 0..100, when on foot

@@ -26,13 +26,13 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Text="{x:Static resx:NavigationMonitor.header_heading}" FontSize="16" VerticalAlignment="Center" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding heading, StringFormat={}{0}°, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding heading, StringFormat={}{0:0}°, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
                 <TextBlock Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{x:Static resx:NavigationMonitor.header_distanceKm}" FontSize="16" VerticalAlignment="Center" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Text="{Binding distanceKm, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Text="{Binding distanceKm, StringFormat={}{0:0.000}, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
                 <TextBlock Grid.Row="0" Grid.Column="4" Text="{x:Static resx:NavigationMonitor.header_latitude}" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="5" Text="{Binding latitude, StringFormat={}{0}°, TargetNullValue='-'}" Margin="5, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="5" Text="{Binding latitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="5, 0" />
                 <TextBlock Grid.Row="1" Grid.Column="4" Text="{x:Static resx:NavigationMonitor.header_longitude}" Margin="15, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding longitude, StringFormat={}{0}°, TargetNullValue='-'}" Margin="5, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding longitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="5, 0" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

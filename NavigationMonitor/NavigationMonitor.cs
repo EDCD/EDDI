@@ -239,14 +239,11 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
 
-                if (@event.playercontrolled)
-                {
-                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                    navConfig.tdLat = @event.latitude;
-                    navConfig.tdLong = @event.longitude;
-                    navConfig.tdPOI = @event.nearestdestination;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-                }
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                navConfig.tdLat = @event.latitude;
+                navConfig.tdLong = @event.longitude;
+                navConfig.tdPOI = @event.nearestdestination;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
 

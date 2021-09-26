@@ -86,12 +86,12 @@ namespace EddiNavigationMonitor
                 currentStatus = status;
                 foreach (var bookmark in navigationMonitor().bookmarks)
                 {
-                    if (currentStatus.bodyname == bookmark.bodyname)
+                    if (status.bodyname == bookmark.bodyname)
                     {
-                        bookmark.heading = SurfaceHeadingDegrees(status, bookmark.latitude, bookmark.longitude);
-                        bookmark.distanceKm = Math.Round(SurfaceConstantHeadingDistanceKm(status, bookmark.latitude, bookmark.longitude) ?? 0, 2);
+                        bookmark.heading = SurfaceConstantHeadingDegrees(status, bookmark.latitude, bookmark.longitude);
+                        bookmark.distanceKm = SurfaceConstantHeadingDistanceKm(status, bookmark.latitude, bookmark.longitude);
                     }
-                    else
+                    else if (bookmark.heading != null || bookmark.distanceKm != null)
                     {
                         bookmark.heading = null;
                         bookmark.distanceKm = null;
@@ -116,13 +116,16 @@ namespace EddiNavigationMonitor
 
                 if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                 {
-                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP && navConfig.tdLat != null && navConfig.tdLong != null)
+                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
                     {
-                        latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
-                        longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                        poi = navConfig.tdPOI;
+                        if (navConfig.tdLat != null && navConfig.tdLong != null)
+                        {
+                            latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
+                            longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
+                            poi = navConfig.tdPOI;
+                        }
                     }
-                    else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
+                    else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
                     {
                         if (currentStatus != null)
                         {
@@ -351,13 +354,19 @@ namespace EddiNavigationMonitor
                     {
                         if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
                         {
-                            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP && navConfig.tdLat != null && navConfig.tdLong != null)
+                            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
                             {
-                                navBookmark.latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
-                                navBookmark.longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                                if (navBookmark.poi is null) { navBookmark.poi = navConfig.tdPOI; }
+                                if (navConfig.tdLat != null && navConfig.tdLong != null)
+                                {
+                                    navBookmark.latitude = (decimal) Math.Round((double) navConfig.tdLat, 4);
+                                    navBookmark.longitude = (decimal) Math.Round((double) navConfig.tdLong, 4);
+                                    if (navBookmark.poi is null)
+                                    {
+                                        navBookmark.poi = navConfig.tdPOI;
+                                    }
+                                }
                             }
-                            else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
+                            else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
                             {
                                 navBookmark.latitude = currentStatus.latitude;
                                 navBookmark.longitude = currentStatus.longitude;
@@ -724,14 +733,20 @@ namespace EddiNavigationMonitor
             return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
 
-        private static decimal? SurfaceHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        private static decimal? SurfaceConstantHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            return Functions.SurfaceConstantHeadingDegrees(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceConstantHeadingDegrees(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         private static decimal? SurfaceConstantHeadingDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            return Functions.SurfaceConstantHeadingDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceConstantHeadingDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
     }
 }
