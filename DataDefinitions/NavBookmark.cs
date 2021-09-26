@@ -50,9 +50,33 @@ namespace EddiDataDefinitions
 
         public string comment { get; set; }
 
-        public decimal? latitude { get; set; }
+        public decimal? latitude
+        {
+            get => _latitude;
+            set
+            {
+                if (_latitude != value)
+                {
+                    _latitude = value;
+                    NotifyPropertyChanged(nameof(latitude));
+                }
+            }
+        }
+        [JsonIgnore] private decimal? _latitude;
 
-        public decimal? longitude { get; set; }
+        public decimal? longitude
+        {
+            get => _longitude;
+            set
+            {
+                if (_longitude != value)
+                {
+                    _longitude = value;
+                    NotifyPropertyChanged(nameof(longitude));
+                }
+            }
+        }
+        [JsonIgnore] private decimal? _longitude;
 
         public bool landable { get; set; }
 
