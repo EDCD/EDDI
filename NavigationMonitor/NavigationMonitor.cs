@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -31,6 +32,7 @@ namespace EddiNavigationMonitor
         private DateTime updateDat;
 
         public static event EventHandler BookmarksUpdatedEvent;
+        private Status currentStatus { get; set; }
 
         public string MonitorName()
         {
@@ -56,6 +58,7 @@ namespace EddiNavigationMonitor
         {
             bookmarks = new ObservableCollection<NavBookmark>();
             BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
+            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
             initializeNavigationMonitor();
         }
 
@@ -128,6 +131,10 @@ namespace EddiNavigationMonitor
             {
                 handleCarrierJumpedEvent(carrierJumpedEvent);
             }
+            else if (@event is DockedEvent dockedEvent)
+            {
+                handleDockedEvent(dockedEvent);
+            }
             else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
             {
                 handleEnteredNormalSpaceEvent(enteredNormalSpaceEvent);
@@ -156,6 +163,10 @@ namespace EddiNavigationMonitor
             {
                 handleLiftoffEvent(liftoffEvent);
             }
+            else if (@event is UndockedEvent undockedEvent)
+            {
+                handleUndockedEvent(undockedEvent);
+            }
         }
 
         private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
@@ -172,6 +183,25 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
                 NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+            }
+        }
+
+        private void handleDockedEvent(DockedEvent @event)
+        {
+            if (@event.timestamp >= updateDat)
+            {
+                updateDat = @event.timestamp;
+
+                // Check if we're at a planetary location and capture our location if true
+                if (currentStatus.near_surface && new Station() { Model = @event.stationModel }.IsPlanetary())
+                {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                    navConfig.tdLat = currentStatus.latitude;
+                    navConfig.tdLong = currentStatus.longitude;
+                    navConfig.tdPOI = @event.station;
+                    navConfig.updatedat = updateDat;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
             }
         }
 
@@ -243,6 +273,7 @@ namespace EddiNavigationMonitor
                 navConfig.tdLat = @event.latitude;
                 navConfig.tdLong = @event.longitude;
                 navConfig.tdPOI = @event.nearestdestination;
+                navConfig.updatedat = updateDat;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
@@ -252,15 +283,26 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                navConfig.tdLat = null;
+                navConfig.tdLong = null;
+                navConfig.tdPOI = null;
+                navConfig.updatedat = updateDat;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+            }
+        }
 
-                if (@event.playercontrolled)
-                {
-                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                    navConfig.tdLat = null;
-                    navConfig.tdLong = null;
-                    navConfig.tdPOI = null;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-                }
+        private void handleUndockedEvent(UndockedEvent @event)
+        {
+            if (@event.timestamp >= updateDat)
+            {
+                updateDat = @event.timestamp;
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                navConfig.tdLat = null;
+                navConfig.tdLong = null;
+                navConfig.tdPOI = null;
+                navConfig.updatedat = updateDat;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
         }
 
@@ -323,6 +365,18 @@ namespace EddiNavigationMonitor
             EDDI.Instance.updateDestinationSystem(system);
             EDDI.Instance.DestinationDistanceLy = distance;
         }
+
+        private void OnStatusUpdated(object sender, EventArgs e)
+        {
+            if (sender is Status status)
+            {
+                LockManager.GetLock(nameof(currentStatus), () => 
+                {
+                    currentStatus = status;
+                });
+            }
+        }
+
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
             if (handler != null)
