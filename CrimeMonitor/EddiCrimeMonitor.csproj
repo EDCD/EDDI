@@ -56,7 +56,6 @@
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CrimeMonitor.cs" />
-    <Compile Include="CrimeMonitorConfiguration.cs" />
     <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="FinePaidEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

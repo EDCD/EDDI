@@ -125,9 +125,9 @@ namespace UnitTests
                 ""missionWarning"": 60
             }";
             // Save original data
-            MissionMonitorConfiguration data = MissionMonitorConfiguration.FromFile();
+            var data = ConfigService.Instance.missionMonitorConfiguration;
 
-            MissionMonitorConfiguration config = MissionMonitorConfiguration.FromJsonString(missionConfigJson);
+            var config = ConfigService.FromJsonString<MissionMonitorConfiguration>(missionConfigJson);
             Assert.AreEqual(config.missionsCount, config.missions.Count);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
@@ -153,14 +153,14 @@ namespace UnitTests
             Assert.IsTrue(mission.originreturn);
 
             // Restore original data
-            data.ToFile();
+            ConfigService.Instance.missionMonitorConfiguration = data;
         }
 
         [TestMethod]
         public void TestMissionEventsScenario()
         {
             // Save original data
-            MissionMonitorConfiguration missionData = MissionMonitorConfiguration.FromFile();
+            var missionData = ConfigService.Instance.missionMonitorConfiguration;
 
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
@@ -271,8 +271,8 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
-            CrimeMonitorConfiguration crimeData = CrimeMonitorConfiguration.FromFile();
-            CrimeMonitor crimeMonitor = new CrimeMonitor();
+            var crimeData = ConfigService.Instance.crimeMonitorConfiguration;
+            var crimeMonitor = new CrimeMonitor();
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             long fine = ((MissionFailedEvent)events[0]).fine;
             crimeMonitor._handleMissionFine(events[0].timestamp, mission, fine);
@@ -282,7 +282,7 @@ namespace UnitTests
             FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.FromEDName("missionFine"));
             Assert.IsNotNull(report);
             Assert.AreEqual(50000, report.amount);
-            crimeData.ToFile();
+            ConfigService.Instance.crimeMonitorConfiguration = crimeData;
 
             missionMonitor.handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual("Failed", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413748324)?.statusEDName); 
@@ -297,7 +297,7 @@ namespace UnitTests
             Assert.AreEqual(1000000, mcEvent.donation);
 
             // Restore original data
-            missionData.ToFile();
+            ConfigService.Instance.missionMonitorConfiguration = missionData;
         }
 
         [TestMethod]
@@ -314,7 +314,7 @@ namespace UnitTests
         public void TestCommunityGoalScenario()
         {
             // Save original data
-            MissionMonitorConfiguration missionData = MissionMonitorConfiguration.FromFile();
+            var missionData = ConfigService.Instance.missionMonitorConfiguration;
 
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
@@ -367,7 +367,7 @@ namespace UnitTests
             Assert.AreEqual(1, missionMonitor.missions.Count); // Commnunity goals are not removed from by the `Missions` event (where community goals are absent)
 
             // Restore original data
-            missionData.ToFile();
+            ConfigService.Instance.missionMonitorConfiguration = missionData;
         }
     }
 }

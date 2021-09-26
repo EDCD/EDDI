@@ -14,8 +14,6 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private MissionMonitorConfiguration missionsConfig => ConfigService.Instance.missionMonitorConfiguration;
-
         private MissionMonitor missionMonitor()
         {
             return (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
@@ -26,6 +24,7 @@ namespace EddiMissionMonitor
             InitializeComponent();
 
             missionsData.ItemsSource = missionMonitor()?.missions;
+            var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
             missionWarningInt.Text = (missionsConfig.missionWarning ?? 0).ToString(CultureInfo.InvariantCulture);
         }
 
@@ -39,11 +38,12 @@ namespace EddiMissionMonitor
         {
             try
             {
+                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 0
                     : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
                 missionMonitor().missionWarning = warning;
                 missionsConfig.missionWarning = warning;
-                missionsConfig.ToFile();
+                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
             }
             catch
             {

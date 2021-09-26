@@ -27,7 +27,6 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
         private string searchTypeSelection = string.Empty;
         private string searchQuerySelection = string.Empty;
         private string dropdownSearchSystem = null;
@@ -73,6 +72,7 @@ namespace EddiNavigationMonitor
             searchTypeDropDown.SelectedItem = Properties.NavigationMonitor.search_type_missions;
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
 
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
 
@@ -107,6 +107,7 @@ namespace EddiNavigationMonitor
             decimal? latitude = null;
             decimal? longitude = null;
             bool landable = false;
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
             if (EDDI.Instance.CurrentStarSystem != null)
             {
@@ -336,6 +337,7 @@ namespace EddiNavigationMonitor
             var currentSystem = EDDI.Instance.CurrentStarSystem;
             var currentBody = EDDI.Instance.CurrentStellarBody;
             var currentStation = EDDI.Instance.CurrentStation;
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
             if (e.Source is Button button)
             {
@@ -412,6 +414,7 @@ namespace EddiNavigationMonitor
 
         private void updateOrbitalStationsCheckbox()
         {
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             bool isChecked = prioritizeOrbitalStations.IsChecked ?? false;
             if (navConfig.prioritizeOrbitalStations != isChecked)
             {
@@ -437,6 +440,7 @@ namespace EddiNavigationMonitor
         {
             try
             {
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 int? distance = string.IsNullOrWhiteSpace(maxSearchDistanceInt.Text)
                     ? 10000 : Convert.ToInt32(maxSearchDistanceInt.Text, CultureInfo.InvariantCulture);
                 if (distance != navConfig.maxSearchDistanceFromStarLs)

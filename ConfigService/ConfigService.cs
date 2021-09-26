@@ -1,9 +1,97 @@
-﻿using Utilities;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using Utilities;
 
 namespace EddiConfigService
 {
-    public class ConfigService
+    public partial class ConfigService : INotifyPropertyChanged
     {
+        #region Configurations
+
+        // The configurations managed by the configuration service
+        public CargoMonitorConfiguration cargoMonitorConfiguration
+        {
+            get => currentConfigs[nameof(cargoMonitorConfiguration)] as CargoMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(cargoMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public CrimeMonitorConfiguration crimeMonitorConfiguration
+        {
+            get => currentConfigs[nameof(crimeMonitorConfiguration)] as CrimeMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(crimeMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public MissionMonitorConfiguration missionMonitorConfiguration
+        {
+            get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(missionMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public NavigationMonitorConfiguration navigationMonitorConfiguration
+        {
+            get => currentConfigs[nameof(navigationMonitorConfiguration)] as NavigationMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(navigationMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>Saves configurations from the specified data directory</summary>
+        public Dictionary<string, Config> ReadConfigurations(string directory)
+        {
+            return new Dictionary<string, Config>
+            {
+                {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
+                {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
+                {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
+                {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
+            };
+        }
+
+        #endregion
+
+        // The directory to use for reading and saving configuration files
+        private string dataDirectory { get; set; }
+
+        private Dictionary<string, Config> currentConfigs = new Dictionary<string, Config>();
+
+        private static readonly object configurationsLock = new object();
+
+        public ConfigService(string commanderFID = null)
+        {
+            SetCommander(commanderFID);
+            PropertyChanged += ConfigChanged;
+        }
+
+        private void ConfigChanged(object sender, PropertyChangedEventArgs e)
+        {
+            foreach (var config in currentConfigs)
+            {
+                if (config.Key == e.PropertyName)
+                {
+                    ToFile(config.Value, dataDirectory);
+                }
+            }
+        }
+
         private static ConfigService instance;
         private static readonly object instanceLock = new object();
 
@@ -22,71 +110,64 @@ namespace EddiConfigService
                         }
                     }
                 }
+
                 return instance;
             }
         }
 
-        private CargoMonitorConfiguration _cargoMonitorConfiguration;
-        public CargoMonitorConfiguration cargoMonitorConfiguration
+        /// <summary>Sets the current commander FID and corresponding data directory (if null, we'll default to the legacy directory location)</summary>
+        public void SetCommander(string commanderFID)
         {
-            get
+            lock (configurationsLock)
             {
-                CargoMonitorConfiguration result = null;
-                LockManager.GetLock(nameof(CargoMonitorConfiguration), () =>
+                if (currentConfigs.Any())
                 {
-                    result = _cargoMonitorConfiguration;
-                });
-                return result ?? CargoMonitorConfiguration.FromFile();
-            }
-            set
-            {
-                LockManager.GetLock(nameof(CargoMonitorConfiguration), () =>
-                {
-                    _cargoMonitorConfiguration = value;
-                });
+                    SaveConfigurations(dataDirectory, currentConfigs);
+                }
+
+                dataDirectory = GetDataDirectory(commanderFID);
+                currentConfigs = ReadConfigurations(dataDirectory);
             }
         }
 
-        private MissionMonitorConfiguration _missionMonitorConfiguration;
-        public MissionMonitorConfiguration missionMonitorConfiguration
+        /// <summary>Gets the data directory for the specified commander FID</summary>
+        private string GetDataDirectory(string commanderFID)
         {
-            get
-            {
-                MissionMonitorConfiguration result = null;
-                LockManager.GetLock(nameof(MissionMonitorConfiguration), () =>
-                {
-                    result = _missionMonitorConfiguration;
-                });
-                return result ?? MissionMonitorConfiguration.FromFile();
-            }
-            set
-            {
-                LockManager.GetLock(nameof(MissionMonitorConfiguration), () =>
-                {
-                    _missionMonitorConfiguration = value;
-                });
-            }
+            return $@"{Constants.DATA_DIR}{(!string.IsNullOrEmpty(commanderFID) ? @"\" + commanderFID : null)}";
         }
 
-        private NavigationMonitorConfiguration _navigationMonitorConfiguration;
-        public NavigationMonitorConfiguration navigationMonitorConfiguration
+        /// <summary>Saves configurations to the specified data directory</summary>
+        public void SaveConfigurations(string directory, Dictionary<string, Config> configurations)
         {
-            get
+            if (configurations is null)
             {
-                NavigationMonitorConfiguration result = null;
-                LockManager.GetLock(nameof(NavigationMonitorConfiguration), () =>
-                {
-                    result = _navigationMonitorConfiguration;
-                });
-                return result ?? NavigationMonitorConfiguration.FromFile();
+                return;
             }
-            set
+
+            if (!string.IsNullOrEmpty(directory))
             {
-                LockManager.GetLock(nameof(NavigationMonitorConfiguration), () =>
+                var directoryInfo = new DirectoryInfo(directory);
+                if (!directoryInfo.Exists)
                 {
-                    _navigationMonitorConfiguration = value;
-                });
+                    directoryInfo.Create();
+                }
             }
+
+            configurations.AsParallel().ForAll(c => ToFile(c.Value, directory));
+        }
+
+        /// <summary>Copies configurations from one directory to another</summary>
+        public void CopyConfigurations(string fromDirectory, string toDirectory)
+        {
+            SaveConfigurations(toDirectory, ReadConfigurations(fromDirectory));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

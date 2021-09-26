@@ -24,8 +24,6 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavBookmark> bookmarks;
         private static readonly object bookmarksLock = new object();
 
-        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
-
         // Navigation route data
         public string navDestination;
         public string navRouteList;
@@ -243,10 +241,11 @@ namespace EddiNavigationMonitor
 
                 if (@event.playercontrolled)
                 {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                     navConfig.tdLat = @event.latitude;
                     navConfig.tdLong = @event.longitude;
                     navConfig.tdPOI = @event.nearestdestination;
-                    navConfig.ToFile();
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 }
             }
         }
@@ -259,16 +258,18 @@ namespace EddiNavigationMonitor
 
                 if (@event.playercontrolled)
                 {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                     navConfig.tdLat = null;
                     navConfig.tdLong = null;
                     navConfig.tdPOI = null;
-                    navConfig.ToFile();
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 }
             }
         }
 
         public IDictionary<string, object> GetVariables()
         {
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["bookmarks"] = new List<NavBookmark>(bookmarks),
@@ -283,9 +284,10 @@ namespace EddiNavigationMonitor
             lock (bookmarksLock)
             {
                 // Write bookmarks configuration with current list
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.bookmarks = bookmarks;
                 navConfig.updatedat = updateDat;
-                navConfig.ToFile();
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
@@ -295,6 +297,8 @@ namespace EddiNavigationMonitor
         {
             lock (bookmarksLock)
             {
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
                 // Obtain current bookmarks list from configuration
                 updateDat = navConfig.updatedat;
 

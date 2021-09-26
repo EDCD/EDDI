@@ -87,7 +87,7 @@ namespace UnitTests
                 }],
                 ""cargocarried"": 29
             }";
-            CargoMonitorConfiguration config = CargoMonitorConfiguration.FromJsonString(cargoConfigJson);
+            var config = ConfigService.FromJsonString<CargoMonitorConfiguration>(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
             cargo = config.cargo.ToList().FirstOrDefault(c => c.edname == "DamagedEscapePod");

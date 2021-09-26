@@ -2722,7 +2722,7 @@ namespace EddiCore
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            if (HomeStarSystem is null) { return; }
+            if (system is null || HomeStarSystem is null) { return; }
             system.distancefromhome = getSystemDistance(system, HomeStarSystem);
             Logging.Debug("Distance from home is " + system.distancefromhome);
         }

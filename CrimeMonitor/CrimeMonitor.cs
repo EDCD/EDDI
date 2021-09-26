@@ -42,8 +42,6 @@ namespace EddiCrimeMonitor
         public event EventHandler RecordUpdatedEvent;
         private readonly IBgsService bgsService;
 
-        private NavigationMonitorConfiguration navConfig => ConfigService.Instance.navigationMonitorConfiguration;
-
         public string MonitorName()
         {
             return "Crime monitor";
@@ -769,7 +767,7 @@ namespace EddiCrimeMonitor
                 claims = criminalrecord.Sum(r => r.claims);
                 fines = criminalrecord.Sum(r => r.fines);
                 bounties = criminalrecord.Sum(r => r.bounties);
-                CrimeMonitorConfiguration configuration = new CrimeMonitorConfiguration()
+                var configuration = new CrimeMonitorConfiguration()
                 {
                     criminalrecord = criminalrecord,
                     claims = claims,
@@ -779,7 +777,7 @@ namespace EddiCrimeMonitor
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
-                configuration.ToFile();
+                ConfigService.Instance.crimeMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
@@ -790,7 +788,7 @@ namespace EddiCrimeMonitor
             lock (recordLock)
             {
                 // Obtain current criminal record from configuration
-                configuration = configuration ?? CrimeMonitorConfiguration.FromFile();
+                configuration = configuration ?? ConfigService.Instance.crimeMonitorConfiguration;
                 claims = configuration.claims;
                 fines = configuration.fines;
                 bounties = configuration.bounties;
@@ -1052,13 +1050,13 @@ namespace EddiCrimeMonitor
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
                 LandingPadSize padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                List<Station> factionStations = !navConfig.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
+                List<Station> factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
                     ? factionStarSystem.stations
                     : factionStarSystem.orbitalstations;
                 factionStations = factionStations
                     .Where(s => s.Model != StationModel.FleetCarrier)
                     .Where(s => s.stationservices.Count > 0)
-                    .Where(s => s.distancefromstar <= navConfig.maxSearchDistanceFromStarLs)
+                    .Where(s => s.distancefromstar <= ConfigService.Instance.navigationMonitorConfiguration.maxSearchDistanceFromStarLs)
                     .Where(s => s.LandingPadCheck(padSize))
                     .ToList();
 

@@ -964,11 +964,13 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Write cargo configuration with current inventory
-                var cargoConfig = ConfigService.Instance.cargoMonitorConfiguration;
-                cargoConfig.updatedat = updateDat;
-                cargoConfig.cargo = inventory;
-                cargoConfig.cargocarried = cargoCarried;
-                cargoConfig.ToFile();
+                var configuration = new CargoMonitorConfiguration()
+                {
+                    updatedat = updateDat,
+                    cargo = inventory,
+                    cargocarried = cargoCarried
+                };
+                ConfigService.Instance.cargoMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);

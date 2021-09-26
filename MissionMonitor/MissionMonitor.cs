@@ -30,7 +30,6 @@ namespace EddiMissionMonitor
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
 
-        private MissionMonitorConfiguration missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
         private DateTime updateDat;
         public int goalsCount;
         public int missionsCount;
@@ -832,10 +831,13 @@ namespace EddiMissionMonitor
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
             // 'Expired' is a non-journal event and not subject to 'LogLoad'
-            updateDat = @event.timestamp;
-            if (_handleMissionExpiredEvent(@event))
+            if (@event.timestamp >= updateDat)
             {
-                writeMissions();
+                updateDat = @event.timestamp;
+                if (_handleMissionExpiredEvent(@event))
+                {
+                    writeMissions();
+                }
             }
         }
 
@@ -947,12 +949,13 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Write bookmarks configuration with current list
+                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 missionsConfig.missions = missions;
                 missionsConfig.goalsCount = missions.Count(m => m.communal);
                 missionsConfig.missionsCount = missions.Count(m => !m.shared && !m.communal);
                 missionsConfig.missionWarning = missionWarning;
                 missionsConfig.updatedat = updateDat;
-                missionsConfig.ToFile();
+                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(MissionUpdatedEvent, missions);
@@ -963,7 +966,7 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Obtain current missions log from configuration
-                missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
+                var missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
                 missionsCount = missionsConfig.missionsCount;
                 missionWarning = missionsConfig.missionWarning;
                 updateDat = missionsConfig.updatedat;

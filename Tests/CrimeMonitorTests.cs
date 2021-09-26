@@ -6,6 +6,7 @@ using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using EddiConfigService;
 
 namespace UnitTests
 {
@@ -152,9 +153,9 @@ namespace UnitTests
         public void TestCrimeConfig()
         {
             // Save original data
-            CrimeMonitorConfiguration data = CrimeMonitorConfiguration.FromFile();
+            var data = ConfigService.Instance.crimeMonitorConfiguration;
 
-            CrimeMonitorConfiguration config = CrimeMonitorConfiguration.FromJsonString(crimeConfigJson);
+            var config = ConfigService.FromJsonString<CrimeMonitorConfiguration>(crimeConfigJson);
             Assert.AreEqual(3, config.criminalrecord.Count);
             Assert.AreEqual(275915, config.claims);
             Assert.AreEqual(400, config.fines);
@@ -178,17 +179,18 @@ namespace UnitTests
             Assert.AreEqual("Fabian City", report.station);
 
             // Restore original data
-            data.ToFile();
+            ConfigService.Instance.crimeMonitorConfiguration = data;
         }
 
         [TestMethod]
         public void TestCrimeEventsScenario()
         {
             // Save original data
-            CrimeMonitorConfiguration data = CrimeMonitorConfiguration.FromFile();
+            var data = ConfigService.Instance.crimeMonitorConfiguration;
 
             var privateObject = new PrivateObject(crimeMonitor);
-            CrimeMonitorConfiguration config = CrimeMonitorConfiguration.FromJsonString(crimeConfigJson);
+
+            var config = ConfigService.FromJsonString<CrimeMonitorConfiguration>(crimeConfigJson);
             crimeMonitor.readRecord(config);
 
             // Bond Awarded Event
@@ -261,7 +263,7 @@ namespace UnitTests
             Assert.IsNull(record);
 
             // Restore original data
-            data.ToFile();
+            ConfigService.Instance.crimeMonitorConfiguration = data;
         }
 
         [TestMethod]
