@@ -687,7 +687,7 @@ namespace EddiNavigationMonitor
                 StarSystem SearchSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, false);
                 if (SearchSystem?.stations != null)
                 {
-                    foreach (Station station in SearchSystem.stations)
+                    foreach (Station station in SearchSystem.stations.Where(s => !s.IsCarrier() && !s.IsMegaShip()))
                     {
                         SearchStationOptions.Add(station.name);
                     }
