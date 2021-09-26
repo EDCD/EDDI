@@ -114,7 +114,7 @@ namespace EddiNavigationMonitor
                 StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
                 Station currentStation = EDDI.Instance.CurrentStation;
 
-                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
+                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
                     if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
                     {
@@ -342,7 +342,7 @@ namespace EddiNavigationMonitor
                     // Update latitude & longitude if current body matches the bookmarked body
                     if (currentBody?.bodyname == navBookmark.bodyname || currentStation?.name == navBookmark.poi)
                     {
-                        if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED)
+                        if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
                         {
                             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
                             {
