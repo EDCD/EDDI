@@ -183,11 +183,11 @@ namespace EddiNavigationService
                     case QueryTypes.route:
                     {
                         string system = null;
-                        if (args?.Length > 0)
+                        if (!(args?[0] is null))
                         {
                             system = args[0].ToString();
                         }
-                        var result = GetShortestPathMissionSystem(system);
+                        var result = GetShortestPathMissionSystem(string.IsNullOrEmpty(system) ? null : system);
                         LastMissionStarSystem = SearchStarSystem;
                         LastMissionStation = SearchStation;
                         return result;
@@ -195,9 +195,9 @@ namespace EddiNavigationService
                     case QueryTypes.scoop:
                     {
                         decimal? distance;
-                        if (args?.Length > 0 && (decimal)args[0] > 0)
+                        if (args?[0] != null && (decimal?)args[0] > 0)
                         {
-                            distance = (decimal)args[0];
+                            distance = (decimal)(args[0] ?? 0);
                         }
                         else
                         {
@@ -208,7 +208,7 @@ namespace EddiNavigationService
                     case QueryTypes.source:
                     {
                         string system = null;
-                        if (args?.Length > 0)
+                        if (!(args?[0] is null))
                         {
                             system = args[0].ToString();
                         }
@@ -447,8 +447,6 @@ namespace EddiNavigationService
         private bool CalculateRNNA(List<string> systems, string homeSystem, List<Mission> missions, ref List<string> systemsRoute, ref decimal routeDistance)
         {
             bool found = false;
-            systemsRoute = null;
-            routeDistance = 0;
 
             int numSystems = systems.Count();
             if (numSystems > 1)
