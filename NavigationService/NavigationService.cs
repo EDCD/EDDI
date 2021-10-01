@@ -221,6 +221,10 @@ namespace EddiNavigationService
                     {
                         return RefreshLastMissionQuery();
                     }
+                    case QueryTypes.None:
+                    {
+                        return null;
+                    }
                     default:
                     {
                         throw new ArgumentException($"{queryType} has not been configured in NavigationService.cs");
