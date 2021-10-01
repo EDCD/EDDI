@@ -122,7 +122,7 @@ namespace EddiSpeechResponder.CustomFunctions
                                 arg = values[1].AsString;
                             }
                         }
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.source, new[] { arg });
+                        @event = NavigationService.Instance.NavQuery(QueryTypes.update, new[] { arg });
                         break;
                     }
                 }
