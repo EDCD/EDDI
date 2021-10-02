@@ -550,79 +550,14 @@ namespace EddiNavigationMonitor
             var search = Task.Run(() =>
             {
                 RouteDetailsEvent @event = null;
-                if (searchTypeSelection == "crime")
+                if (Enum.TryParse(searchQuerySelection, true, out QueryTypes result))
                 {
-                    switch (searchQuerySelection)
-                    {
-                        case "facilitator":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.facilitator);
-                            break;
-                        }
-                    }
+                    @event = NavigationService.Instance.NavQuery(result);
                 }
-                else if (searchTypeSelection == "missions")
-                {
-                    switch (searchQuerySelection)
-                    {
-                        case "expiring":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.expiring);
-                            break;
-                        }
-                        case "farthest":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.farthest);
-                            break;
-                        }
-                        case "most":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.most);
-                            break;
-                        }
-                        case "nearest":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.nearest);
-                            break;
-                        }
-                        case "route":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.route);
-                            break;
-                        }
-                        case "source":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.source);
-                            break;
-                        }
-                        case "update":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.update);
-                            break;
-                        }
-                    }
-                }
-                else if (searchTypeSelection == "services")
-                {
-                    @event = NavigationService.Instance.GetServiceSystem(searchQuerySelection);
-                }
-                else if (searchTypeSelection == "galaxy")
-                {
-                    switch (searchQuerySelection)
-                    {
-                        case "scoop":
-                        {
-                            @event = NavigationService.Instance.NavQuery(QueryTypes.scoop);
-                            break;
-                        }
-                    }
-                }
-                if (@event != null)
-                {
-                    resultSystem = @event.system;
-                    resultStation = @event.station;
-                    EDDI.Instance?.enqueueEvent(@event);
-                }
+                if (@event == null) { return; }
+                resultSystem = @event.system;
+                resultStation = @event.station;
+                EDDI.Instance?.enqueueEvent(@event);
             });
 
             // Update our UI to match our results

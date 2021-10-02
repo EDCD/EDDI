@@ -758,7 +758,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>
-        public RouteDetailsEvent GetServiceSystem(QueryTypes serviceQuery, int? maxDistance = null)
+        private RouteDetailsEvent GetServiceSystem(QueryTypes serviceQuery, int? maxDistance = null)
         {
             // Get up-to-date configuration data
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;

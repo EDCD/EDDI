@@ -1020,78 +1020,11 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("System variable", null);
 
                 RouteDetailsEvent @event = null;
-                switch (type.ToLowerInvariant())
+                if (Enum.TryParse(type, true, out QueryTypes result))
                 {
-                    case "encoded":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.encoded);
-                        break;
-                    }
-                    case "expiring":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.expiring);
-                        break;
-                    }
-                    case "facilitator":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.facilitator);
-                        break;
-                    }
-                    case "farthest":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.farthest);
-                        break;
-                    }
-                    case "guardian":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.guardian);
-                        break;
-                    }
-                    case "human":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.human);
-                        break;
-                    }
-                    case "manufactured":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.manufactured);
-                        break;
-                    }
-                    case "most":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.most);
-                        break;
-                    }
-                    case "nearest":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.nearest);
-                        break;
-                    }
-                    case "raw":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.raw);
-                        break;
-                    }
-                    case "route":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.route, new[] {(dynamic) system});
-                        break;
-                    }
-                    case "scoop":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.scoop);
-                        break;
-                    }
-                    case "source":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.source, new[] {(dynamic) system});
-                        break;
-                    }
-                    case "update":
-                    {
-                        @event = NavigationService.Instance.NavQuery(QueryTypes.update);
-                        break;
-                    }
+                    @event = !string.IsNullOrEmpty(system) 
+                        ? NavigationService.Instance.NavQuery(result, new[] { (dynamic)system }) 
+                        : NavigationService.Instance.NavQuery(result);
                 }
                 if (@event != null)
                 {
