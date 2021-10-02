@@ -132,6 +132,16 @@ namespace EddiCrimeMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is ShipSwappedEvent)
+            {
+                postHandleShipSwappedEvent();
+            }
+        }
+
+        private void postHandleShipSwappedEvent()
+        {
+            // Update stations in minor faction records
+            UpdateStations();
         }
 
         public void PreHandle(Event @event)

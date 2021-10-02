@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStatusMonitor;
@@ -388,9 +387,6 @@ namespace EddiShipMonitor
             {
                 updatedAt = @event.timestamp;
 
-                // Save swapped ship size for minor faction station update
-                LandingPadSize swappedShipSize = GetCurrentShip()?.Size;
-
                 // Set ship hull and module health with a profile refresh before we write the stored ship.
                 EDDI.Instance?.refreshProfile();
 
@@ -418,12 +414,6 @@ namespace EddiShipMonitor
                     RemoveShip(@event.soldshipid);
                 }
                 if (!@event.fromLoad) { writeShips(); }
-
-                // Update stations in minor faction records
-                if (swappedShipSize != LandingPadSize.Large && swappedShipSize != GetCurrentShip()?.Size)
-                {
-                    ((CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor"))?.UpdateStations();
-                }
             }
         }
 

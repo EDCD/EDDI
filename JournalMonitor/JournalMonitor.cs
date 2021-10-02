@@ -1,6 +1,5 @@
 ﻿using EddiCargoMonitor;
 using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
