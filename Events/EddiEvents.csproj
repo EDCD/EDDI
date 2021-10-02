@@ -80,6 +80,7 @@
     <Compile Include="LimpetLaunchedEvent.cs" />
     <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="MaterialThresholdEvent.cs" />
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />

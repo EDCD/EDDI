@@ -68,7 +68,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MaterialThresholdEvent.cs" />
     <Compile Include="MaterialMonitor.cs" />
     <Compile Include="MaterialMonitorConfiguration.cs" />
     <Page Include="ConfigurationWindow.xaml">

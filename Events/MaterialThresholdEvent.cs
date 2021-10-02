@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiMaterialMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class MaterialThresholdEvent : Event
