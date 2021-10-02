@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiMissionMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class MissionAcceptedEvent : Event

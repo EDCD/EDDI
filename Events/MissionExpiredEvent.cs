@@ -1,8 +1,7 @@
-﻿using EddiEvents;
-using System;
+﻿using System;
 using Utilities;
 
-namespace EddiMissionMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class MissionExpiredEvent : Event

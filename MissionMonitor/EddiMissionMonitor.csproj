@@ -70,17 +70,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommunityGoalEvent.cs" />
-    <Compile Include="CommunityGoalsEvent.cs" />
-    <Compile Include="MissionAbandonedEvent.cs" />
-    <Compile Include="MissionAcceptedEvent.cs" />
-    <Compile Include="MissionCompletedEvent.cs" />
-    <Compile Include="MissionExpiredEvent.cs" />
-    <Compile Include="MissionFailedEvent.cs" />
-    <Compile Include="MissionRedirectedEvent.cs" />
-    <Compile Include="MissionsEvent.cs" />
-    <Compile Include="MissionWarningEvent.cs" />
-    <Compile Include="PassengersEvent.cs" />
     <Compile Include="Properties\MissionMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
