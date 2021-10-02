@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiShipMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class ModuleSoldEvent : Event

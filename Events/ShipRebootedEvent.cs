@@ -1,11 +1,10 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-namespace EddiShipMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class ShipRebootedEvent : Event

@@ -1,8 +1,7 @@
-﻿using EddiEvents;
-using System;
+﻿using System;
 using Utilities;
 
-namespace EddiShipMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class ShipRestockedEvent : Event
