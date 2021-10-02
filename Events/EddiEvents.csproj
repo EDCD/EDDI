@@ -77,6 +77,9 @@
     <Compile Include="CommunityGoalsEvent.cs" />
     <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="FinePaidEvent.cs" />
+    <Compile Include="FlightAssistEvent.cs" />
+    <Compile Include="GalnetNewsPublishedEvent.cs" />
+    <Compile Include="GlideEvent.cs" />
     <Compile Include="LimpetLaunchedEvent.cs" />
     <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
@@ -107,7 +110,12 @@
     <Compile Include="SafeEvent.cs" />
     <Compile Include="ShipAFMURepairedEvent.cs" />
     <Compile Include="ShipArrivedEvent.cs" />
+    <Compile Include="ShipCargoScoopEvent.cs" />
     <Compile Include="ShipDeliveredEvent.cs" />
+    <Compile Include="ShipFsdEvent.cs" />
+    <Compile Include="ShipHardpointsEvent.cs" />
+    <Compile Include="ShipLandingGearEvent.cs" />
+    <Compile Include="ShipLightsEvent.cs" />
     <Compile Include="ShipLoadoutEvent.cs" />
     <Compile Include="ShipLockerEvent.cs" />
     <Compile Include="CancelTransportEvent.cs" />
@@ -124,6 +132,7 @@
     <Compile Include="CommanderPromotionEvent.cs" />
     <Compile Include="DropshipDeploymentEvent.cs" />
     <Compile Include="RespawnedEvent.cs" />
+    <Compile Include="ShipLowFuelEvent.cs" />
     <Compile Include="ShipPurchasedEvent.cs" />
     <Compile Include="ShipRebootedEvent.cs" />
     <Compile Include="ShipRefuelledEvent.cs" />
@@ -136,6 +145,9 @@
     <Compile Include="ShipSoldOnRebuyEvent.cs" />
     <Compile Include="ShipSwappedEvent.cs" />
     <Compile Include="ShipTransferInitiatedEvent.cs" />
+    <Compile Include="SilentRunningEvent.cs" />
+    <Compile Include="SRVTurretDeployableEvent.cs" />
+    <Compile Include="SrvTurretEvent.cs" />
     <Compile Include="StoredModulesEvent.cs" />
     <Compile Include="StoredShipsEvent.cs" />
     <Compile Include="SuitPurchasedEvent.cs" />
