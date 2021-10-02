@@ -1981,6 +1981,12 @@ namespace EddiCore
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
             }
 
+            // Clear our destination system once we arrive
+            if (destinationStarSystem?.systemname == currentStarSystem?.systemname)
+            {
+                updateDestinationSystem(null);
+            }
+
             setCommanderTitle();
         }
 
