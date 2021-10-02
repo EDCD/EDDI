@@ -1,8 +1,7 @@
-﻿using EddiEvents;
-using System;
+﻿using System;
 using Utilities;
 
-namespace EddiCrimeMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class FinePaidEvent : Event

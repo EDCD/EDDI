@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiCrimeMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class BountyIncurredEvent : Event

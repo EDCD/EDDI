@@ -61,8 +61,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackpackChangedEvent.cs" />
+    <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="BondRedeemedEvent.cs" />
+    <Compile Include="BountyAwardedEvent.cs" />
+    <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="BountyPaidEvent.cs" />
+    <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="CommunityGoalsEvent.cs" />
+    <Compile Include="FineIncurredEvent.cs" />
+    <Compile Include="FinePaidEvent.cs" />
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />

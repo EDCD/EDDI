@@ -1,9 +1,8 @@
-﻿using EddiEvents;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiCrimeMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class BountyRedeemedEvent : Event
