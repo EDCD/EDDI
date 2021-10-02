@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiCargoMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class CommodityPurchasedEvent : Event

@@ -1,10 +1,9 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiCargoMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class CargoEvent : Event
