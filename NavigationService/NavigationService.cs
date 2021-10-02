@@ -18,9 +18,9 @@ namespace EddiNavigationService
         {
             // Encoded materials trader
             { QueryTypes.encoded, new ServiceFilter {
-                econ = new List<string>() {"High Tech", "Military"},
+                econ = new List<string> {"High Tech", "Military"},
                 population = 1000000,
-                security = new List<string>() {"Medium", "High"},
+                security = new List<string> {"Medium", "High"},
                 service = StationService.FromName("Material Trader"),
                 cubeLy = 40}
             },
@@ -28,13 +28,13 @@ namespace EddiNavigationService
             { QueryTypes.facilitator, new ServiceFilter {
                 econ = new List<string>(),
                 population = 0,
-                security = new List<string>() {"Low"},
+                security = new List<string> {"Low"},
                 service = StationService.FromName("Interstellar Factors Contact"),
                 cubeLy = 25}
             },
             // Manufactured materials trader
             { QueryTypes.manufactured, new ServiceFilter {
-                econ = new List<string>() {"Industrial"},
+                econ = new List<string> {"Industrial"},
                 population = 1000000,
                 security = new List<string>() {"Medium", "High"},
                 service = StationService.FromName("Material Trader"),
@@ -42,25 +42,25 @@ namespace EddiNavigationService
             },
             // Raw materials trader
             { QueryTypes.raw, new ServiceFilter {
-                econ = new List<string>() {"Extraction", "Refinery"},
+                econ = new List<string> {"Extraction", "Refinery"},
                 population = 1000000,
-                security = new List<string>() {"Medium", "High"},
+                security = new List<string> {"Medium", "High"},
                 service = StationService.FromName("Material Trader"),
                 cubeLy = 40}
             },
             // Guardian tech broker
             { QueryTypes.guardian, new ServiceFilter {
-                econ = new List<string>() {"High Tech"},
+                econ = new List<string> {"High Tech"},
                 population = 10000000,
-                security = new List<string>()  {"High"},
+                security = new List<string>  {"High"},
                 service = StationService.FromName("Technology Broker"),
                 cubeLy = 80}
             },
             // Human tech broker
             { QueryTypes.human, new ServiceFilter {
-                econ = new List<string>() {"Industrial"},
+                econ = new List<string> {"Industrial"},
                 population = 10000000,
-                security = new List<string>() {"High"},
+                security = new List<string> {"High"},
                 service = StationService.FromName("Technology Broker"),
                 cubeLy = 80}
             }
