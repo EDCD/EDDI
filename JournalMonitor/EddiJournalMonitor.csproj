@@ -79,10 +79,6 @@
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
-      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
-      <Name>EddiCrimeMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EddiDataProviderService</Name>
@@ -91,10 +87,6 @@
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>Eddi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
@@ -102,10 +94,6 @@
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NavigationMonitor\EddiNavigationMonitor.csproj">
-      <Project>{99f79039-803b-4709-a24f-4d8104d1e5d2}</Project>
-      <Name>EddiNavigationMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
       <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>

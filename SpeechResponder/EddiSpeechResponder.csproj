@@ -186,10 +186,6 @@
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
       <Name>EddiCompanionAppService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
-      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
-      <Name>EddiCrimeMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
       <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
       <Name>EddiInaraService</Name>
@@ -197,10 +193,6 @@
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</Project>

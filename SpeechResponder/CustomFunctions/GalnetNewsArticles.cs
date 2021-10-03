@@ -1,5 +1,6 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
+using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using GalnetMonitor;
 using JetBrains.Annotations;

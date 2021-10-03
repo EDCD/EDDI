@@ -1,7 +1,7 @@
 ﻿using System;
 using Utilities;
 
-namespace GalnetMonitor
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// A news item

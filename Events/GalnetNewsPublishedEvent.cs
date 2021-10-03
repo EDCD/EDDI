@@ -1,9 +1,9 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace GalnetMonitor
+namespace EddiEvents
 {
     [PublicAPI]
     public class GalnetNewsPublishedEvent : Event

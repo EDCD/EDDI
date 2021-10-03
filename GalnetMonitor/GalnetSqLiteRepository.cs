@@ -1,4 +1,5 @@
-﻿using EddiDataProviderService;
+﻿using EddiDataDefinitions;
+using EddiDataProviderService;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

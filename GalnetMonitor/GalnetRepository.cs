@@ -1,4 +1,6 @@
-﻿namespace GalnetMonitor
+﻿using EddiDataDefinitions;
+
+namespace GalnetMonitor
 {
     public interface GalnetRepository
     {
