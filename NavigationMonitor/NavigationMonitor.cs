@@ -193,7 +193,7 @@ namespace EddiNavigationMonitor
                 updateDat = @event.timestamp;
 
                 // Check if we're at a planetary location and capture our location if true
-                if (currentStatus.near_surface && new Station() { Model = @event.stationModel }.IsPlanetary())
+                if ((currentStatus?.near_surface ?? false) && new Station { Model = @event.stationModel }.IsPlanetary())
                 {
                     var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                     navConfig.tdLat = currentStatus.latitude;
