@@ -480,8 +480,8 @@ namespace UnitTests
             fakeEdsmRestClient.Expect(resource, json, data);
             string systemName = "Sol";
 
-            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
-            Assert.AreEqual(9, starSystems.Count);
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 25, false, false, false, false);
+            Assert.AreEqual(51, starSystems.Count);
         }
 
         [TestMethod]
