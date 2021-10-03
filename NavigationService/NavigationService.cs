@@ -758,12 +758,12 @@ namespace EddiNavigationService
 
         /// <summary> Obtains the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetServiceSystem(QueryTypes serviceQuery, int? maxDistance = null)
+        private RouteDetailsEvent GetServiceSystem(QueryTypes serviceQuery, int? maxDistanceOverride = null, bool? prioritizeOrbitalStationsOverride = null)
         {
             // Get up-to-date configuration data
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            int maxStationDistance = maxDistance ?? navConfig.maxSearchDistanceFromStarLs ?? 10000;
-            bool prioritizeOrbitalStations = navConfig.prioritizeOrbitalStations;
+            int maxStationDistance = maxDistanceOverride ?? navConfig.maxSearchDistanceFromStarLs ?? 10000;
+            bool prioritizeOrbitalStations = prioritizeOrbitalStationsOverride ?? navConfig.prioritizeOrbitalStations;
 
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
