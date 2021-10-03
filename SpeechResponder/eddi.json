@@ -1023,15 +1023,6 @@
       "name": "Glide",
       "description": "Triggered when your ship enters or exits glide"
     },
-    "Guidance system": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{set yawError to 10}\r\n{set pitchError to 10}\r\n\r\n{if event.status = \"update\":\r\n    {if event.headingerror && abs(event.headingerror) > yawError:\r\n        Turn to {round(event.heading)} degrees.\r\n    |elif event.slopeerror && abs(event.slopeerror) > pitchError && event.slope < -15:\r\n        Pitch to {round(event.slope)} degrees.\r\n    }\r\n|elif event.status = \"engaged\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    {if event.poi:\r\n        Guidance to {event.poi} engaged.\r\n    |else:\r\n        Guidance to body {event.shortbodyname} engaged.\r\n    }\r\n|elif event.status = \"disengaged\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    Guidance disengaged.\r\n|elif event.status = \"complete\":\r\n    {Occasionally(2, \"Planetary\")}\r\n    Guidance complete.\r\n}",
-      "default": true,
-      "name": "Guidance system",
-      "description": "Triggered when the guidance system parameters have been updated"
-    },
     "Hardpoints": {
       "enabled": true,
       "priority": 3,
