@@ -11,42 +11,28 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when a bookmark has been added or updated";
         public const string SAMPLE = null;
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static BookmarkDetailsEvent()
-        {
-            VARIABLES.Add("request", "The bookmark request (location, query, update, set)");
-            VARIABLES.Add("system", "The bookmarked system");
-            VARIABLES.Add("body", "The bookmarked body, if applicable");
-            VARIABLES.Add("poi", "The bookmarked 'point of interest', if applicable");
-            VARIABLES.Add("isstation", "True if the point of interest is a station");
-            VARIABLES.Add("latitude", "The latitude on the surface of a landable body");
-            VARIABLES.Add("longitude", "The longitude on the surface of a landable body");
-            VARIABLES.Add("landable", "True if the body is 'landable'");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The bookmark request (location, query, update, set)")]
         public string request { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The bookmarked system")]
         public string system { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The bookmarked body, if applicable")]
         public string body { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The bookmarked 'point of interest', if applicable")]
         public string poi { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the point of interest is a station")]
         public bool isstation { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The latitude on the surface of a landable body")]
         public decimal? latitude { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("The longitude on the surface of a landable body")]
         public decimal? longitude { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("True if the body is 'landable'")]
         public bool landable { get; private set; }
 
         public BookmarkDetailsEvent(DateTime timestamp, string request, NavBookmark bookmark) : base(timestamp, NAME)

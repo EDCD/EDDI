@@ -16,28 +16,18 @@ namespace EddiEvents
             new NavRouteInfoItem("LHS 4031", 1733254091490, new List<decimal>() {67.56250M, -134.12500M, 66.84375M }, "K")
         });
 
-        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-
-        static NavRouteEvent()
-        {
-            VARIABLES.Add("route", "The plotted route (this is a collection of NavWaypoint objects)");
-            VARIABLES.Add("jumps", "The number of jumps in the plotted route");
-            VARIABLES.Add("distance", "The total distance spanned by the plotted route, in light years");
-            VARIABLES.Add("directdistance", "The direct line distance to the destination starsystem, in light years");
-        }
-
-        [PublicAPI]
+        [PublicAPI("The plotted route (this is a collection of NavWaypoint objects)")]
         public List<NavRouteInfoItem> route { get; }
 
         // The route includes the originating star system - we need this to calculate 
         // distances but it should not be included in the jump count.
-        [PublicAPI]
+        [PublicAPI("The number of jumps in the plotted route")]
         public int jumps => route.Count - 1;
 
-        [PublicAPI]
+        [PublicAPI("The total distance spanned by the plotted route, in light years")]
         public decimal? distance => CalculateTotalDistance();
 
-        [PublicAPI]
+        [PublicAPI("The direct line distance to the destination starsystem, in light years")]
         public decimal? directdistance => CalculateDirectDistance();
 
         public NavRouteEvent(DateTime timestamp, List<NavRouteInfoItem> route) : base(timestamp, NAME)
