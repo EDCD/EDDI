@@ -880,7 +880,6 @@ namespace UnitTests
             Assert.AreEqual("High Tech", @event.Economy.invariantName);
             Assert.AreEqual("Refinery", @event.Economy2.invariantName);
 
-            Assert.AreEqual("EXO", @event.faction);
             Assert.AreEqual("EXO", @event.systemfaction);
             Assert.AreEqual("Independent", @event.controllingsystemfaction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", @event.controllingsystemfaction.Government.invariantName);
