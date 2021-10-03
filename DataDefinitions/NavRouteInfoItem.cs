@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
-    public class NavWaypoint
+    public class NavRouteInfoItem
     {
         [JsonProperty("StarSystem")]
         public string systemname { get; set; }
@@ -26,11 +26,11 @@ namespace EddiDataDefinitions
         public decimal? z => starPos?[2];
 
         // Default Constructor
-        public NavWaypoint()
+        public NavRouteInfoItem()
         { }
 
         // Copy Constructor
-        public NavWaypoint(NavWaypoint navWaypoint)
+        public NavRouteInfoItem(NavRouteInfoItem navWaypoint)
         {
             this.systemname = navWaypoint.systemname;
             this.systemAddress = navWaypoint.systemAddress;
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
         }
 
         // Main Constructor
-        public NavWaypoint(string systemname, long? SystemAddress, List<decimal> StarPos, string stellarclass)
+        public NavRouteInfoItem(string systemname, long? SystemAddress, List<decimal> StarPos, string stellarclass)
         {
             this.systemname = systemname;
             this.systemAddress = SystemAddress;

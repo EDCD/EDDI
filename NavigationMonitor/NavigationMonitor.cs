@@ -238,7 +238,7 @@ namespace EddiNavigationMonitor
             {
                 updateDat = @event.timestamp;
 
-                List<NavWaypoint> route = @event.route;
+                List<NavRouteInfoItem> route = @event.route;
                 List<string> routeList = new List<string>();
 
                 navDestination = null;

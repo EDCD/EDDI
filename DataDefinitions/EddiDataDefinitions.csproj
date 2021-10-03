@@ -82,6 +82,8 @@
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
+    <Compile Include="NavRouteInfo.cs" />
+    <Compile Include="News.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\MessageChannels.Designer.cs">
@@ -144,7 +146,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
-    <Compile Include="NavWaypoint.cs" />
+    <Compile Include="NavRouteInfoItem.cs" />
     <Compile Include="NpcSuitLoadout.cs" />
     <Compile Include="Suit.cs" />
     <Compile Include="ShipyardInfo.cs" />

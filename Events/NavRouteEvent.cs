@@ -9,11 +9,11 @@ namespace EddiEvents
     {
         public const string NAME = "Nav route";
         public const string DESCRIPTION = "Triggered when the navigation route is updated";
-        public static NavRouteEvent SAMPLE = new NavRouteEvent(DateTime.UtcNow, new List<NavWaypoint>()
+        public static NavRouteEvent SAMPLE = new NavRouteEvent(DateTime.UtcNow, new List<NavRouteInfoItem>()
         {
-            new NavWaypoint("Cemiess", 1522322606443, new List<decimal>() { 66.06250M, -105.34375M, 27.09375M }, "G"),
-            new NavWaypoint("CT Tucanae", 358864556762, new List<decimal>() { 66.40625M, -123.37500M, 51.90625M }, "M"),
-            new NavWaypoint("LHS 4031", 1733254091490, new List<decimal>() {67.56250M, -134.12500M, 66.84375M }, "K")
+            new NavRouteInfoItem("Cemiess", 1522322606443, new List<decimal>() { 66.06250M, -105.34375M, 27.09375M }, "G"),
+            new NavRouteInfoItem("CT Tucanae", 358864556762, new List<decimal>() { 66.40625M, -123.37500M, 51.90625M }, "M"),
+            new NavRouteInfoItem("LHS 4031", 1733254091490, new List<decimal>() {67.56250M, -134.12500M, 66.84375M }, "K")
         });
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
@@ -27,7 +27,7 @@ namespace EddiEvents
         }
 
         [PublicAPI]
-        public List<NavWaypoint> route { get; }
+        public List<NavRouteInfoItem> route { get; }
 
         // The route includes the originating star system - we need this to calculate 
         // distances but it should not be included in the jump count.
@@ -40,7 +40,7 @@ namespace EddiEvents
         [PublicAPI]
         public decimal? directdistance => CalculateDirectDistance();
 
-        public NavRouteEvent(DateTime timestamp, List<NavWaypoint> route) : base(timestamp, NAME)
+        public NavRouteEvent(DateTime timestamp, List<NavRouteInfoItem> route) : base(timestamp, NAME)
         {
             this.route = route;
         }

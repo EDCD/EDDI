@@ -5,7 +5,6 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiMissionMonitor;
-using EddiNavigationMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -3533,7 +3532,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavRoute":
                                 {
-                                    var navRoute = NavRouteInfoReader.FromFile()?.Route ?? new List<NavWaypoint>();
+                                    var navRoute = NavRouteInfo.FromFile()?.Route ?? new List<NavRouteInfoItem>();
                                     events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
