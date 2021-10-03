@@ -39,7 +39,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <Grid DockPanel.Dock="Top" Margin="10,0" >
+        <Grid DockPanel.Dock="Top" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="Auto" />
@@ -60,7 +60,7 @@
             <TextBlock Grid.Row="1" Grid.Column="4" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
         </Grid>
-        <Grid DockPanel.Dock="Top" Margin="10, 0" >
+        <Grid DockPanel.Dock="Top" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="41.18" />
                 <ColumnDefinition Width="208.82"/>
@@ -79,7 +79,7 @@
                      VerticalContentAlignment="Center" Height="20" Width="60"/>
             <TextBlock Grid.Row="0" Grid.Column="3" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.p1}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         </Grid>
-        <Grid DockPanel.Dock="Top" Margin="10,5" >
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="Auto" />
