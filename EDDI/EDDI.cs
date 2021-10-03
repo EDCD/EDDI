@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCompanionAppService;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -302,7 +303,7 @@ namespace EddiCore
                 CompanionAppService.Instance.gameIsBeta = false;
 
                 // Retrieve commander preferences
-                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
 
                 List<Task> essentialAsyncTasks = new List<Task>();
                 if (running)
@@ -412,7 +413,7 @@ namespace EddiCore
         {
             if (!started)
             {
-                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
 
                 foreach (EDDIMonitor monitor in monitors)
                 {
@@ -1295,9 +1296,9 @@ namespace EddiCore
             Cmdr.powerrating = 0;
 
             // Store power merits
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             configuration.powerMerits = Cmdr.powermerits;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
 
             return true;
         }
@@ -1309,9 +1310,9 @@ namespace EddiCore
             Cmdr.powerrating = 1;
 
             // Store power merits
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             configuration.powerMerits = Cmdr.powermerits;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
 
             return true;
         }
@@ -1343,9 +1344,9 @@ namespace EddiCore
             }
 
             // Store power merits
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             configuration.powerMerits = Cmdr.powermerits;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
 
             return true;
         }
@@ -1361,9 +1362,9 @@ namespace EddiCore
                 Cmdr.powermerits = @event.merits;
 
                 // Store power merits
-                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
                 configuration.powerMerits = @event.merits;
-                configuration.ToFile();
+                ConfigService.Instance.eddiConfiguration = configuration;
 
                 return true;
             }
@@ -2343,10 +2344,10 @@ namespace EddiCore
             SquadronRank rank = SquadronRank.FromRank(theEvent.rank + 1);
 
             // Update the configuration file
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             configuration.SquadronName = theEvent.name;
             configuration.SquadronRank = rank;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
 
             // Update the squadron UI data
             Application.Current?.Dispatcher?.Invoke(() =>
@@ -2369,7 +2370,7 @@ namespace EddiCore
 
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
 
             switch (theEvent.status)
             {
@@ -2448,7 +2449,7 @@ namespace EddiCore
                         break;
                     }
             }
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
             return true;
         }
 
@@ -2457,10 +2458,10 @@ namespace EddiCore
             SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
 
             // Update the configuration file
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             configuration.SquadronName = theEvent.name;
             configuration.SquadronRank = rank;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
 
             // Update the squadron UI data
             Application.Current?.Dispatcher?.Invoke(() =>
@@ -3057,7 +3058,7 @@ namespace EddiCore
 
         public void updateDestinationSystem(string destinationSystem)
         {
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             if (destinationSystem != null)
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem);
@@ -3078,12 +3079,12 @@ namespace EddiCore
                 DestinationStarSystem = null;
             }
             configuration.DestinationSystem = destinationSystem;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
         }
 
         public void updateDestinationStation(string destinationStation)
         {
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             if (destinationStation != null && DestinationStarSystem?.stations != null)
             {
                 string destinationStationName = destinationStation.Trim();
@@ -3102,14 +3103,14 @@ namespace EddiCore
                 DestinationStation = null;
             }
             configuration.DestinationStation = destinationStation;
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
         }
 
         public void updateHomeSystemStation(EDDIConfiguration configuration)
         {
             updateHomeSystem(configuration);
             updateHomeStation(configuration);
-            configuration.ToFile();
+            ConfigService.Instance.eddiConfiguration = configuration;
         }
 
         public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
@@ -3188,7 +3189,7 @@ namespace EddiCore
         {
             if (faction != null)
             {
-                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
 
                 //Update the squadron faction, if changed
                 if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
@@ -3262,7 +3263,7 @@ namespace EddiCore
                         }
                     }
                 }
-                configuration.ToFile();
+                ConfigService.Instance.eddiConfiguration = configuration;
             }
         }
 

@@ -33,6 +33,16 @@ namespace EddiConfigService
             }
         }
 
+        public EDDIConfiguration eddiConfiguration
+        {
+            get => currentConfigs[nameof(eddiConfiguration)] as EDDIConfiguration;
+            set
+            {
+                currentConfigs[nameof(eddiConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MissionMonitorConfiguration missionMonitorConfiguration
         {
             get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
@@ -60,6 +70,7 @@ namespace EddiConfigService
             {
                 {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
                 {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
+                {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
             };

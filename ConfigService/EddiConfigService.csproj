@@ -39,6 +39,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CargoMonitorConfiguration.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="ConfigService.cs" />
     <Compile Include="CrimeMonitorConfiguration.cs" />
+    <Compile Include="EDDIConfiguration.cs" />
     <Compile Include="MissionMonitorConfiguration.cs" />
     <Compile Include="NavigationMonitorConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
