@@ -1,4 +1,5 @@
 ﻿using EddiSpeechService.SpeechPreparation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading;
-using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiSpeechService.SpeechSynthesizers

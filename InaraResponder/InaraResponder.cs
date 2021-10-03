@@ -1,9 +1,7 @@
-﻿using EddiCargoMonitor;
-using EddiCore;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
-using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;

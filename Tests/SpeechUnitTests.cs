@@ -1,10 +1,10 @@
 ﻿using EddiSpeechService;
+using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using EddiSpeechService.SpeechPreparation;
 
 namespace UnitTests
 {

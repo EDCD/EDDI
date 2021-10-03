@@ -1,11 +1,8 @@
 ﻿using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiMissionMonitor;
-using EddiShipMonitor;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;

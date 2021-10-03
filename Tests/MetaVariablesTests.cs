@@ -1,6 +1,4 @@
-﻿using EddiCargoMonitor;
-using EddiEvents;
-using GalnetMonitor;
+﻿using EddiEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

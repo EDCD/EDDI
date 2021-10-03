@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -21,7 +22,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiCompanionAppService;
 using Utilities;
 
 namespace EddiVoiceAttackResponder

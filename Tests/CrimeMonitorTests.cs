@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -6,7 +7,6 @@ using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using EddiConfigService;
 
 namespace UnitTests
 {

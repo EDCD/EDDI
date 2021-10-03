@@ -1,10 +1,9 @@
-﻿using System;
+﻿using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiConfigService

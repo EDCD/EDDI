@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -19,7 +20,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiCore

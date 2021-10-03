@@ -4,6 +4,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
+using EddiStatusMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -22,16 +22,16 @@ namespace EddiNavigationMonitor
     public class NavigationMonitor : EDDIMonitor
     {
         // Observable collection for us to handle changes
-        public ObservableCollection<NavBookmark> bookmarks;
+        public readonly ObservableCollection<NavBookmark> bookmarks;
         private static readonly object bookmarksLock = new object();
+        public static event EventHandler BookmarksUpdatedEvent;
 
         // Navigation route data
-        public string navDestination;
-        public string navRouteList;
-        public decimal navRouteDistance;
+        private string navDestination;
+        private string navRouteList;
+        private decimal navRouteDistance;
         private DateTime updateDat;
 
-        public static event EventHandler BookmarksUpdatedEvent;
         private Status currentStatus { get; set; }
 
         public string MonitorName()

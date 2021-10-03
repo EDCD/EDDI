@@ -1,11 +1,11 @@
-﻿using System;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiCore;
 using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions

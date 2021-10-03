@@ -1,6 +1,5 @@
 ﻿using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tests.Properties;
 
 namespace UnitTests
 {

@@ -1,7 +1,4 @@
-﻿using EddiCore;
-using EddiDataDefinitions;
-using EddiNavigationService;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnitTests;
 
 
