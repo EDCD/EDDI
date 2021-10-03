@@ -84,7 +84,6 @@
     <Compile Include="MarketInfo.cs" />
     <Compile Include="NavRouteInfo.cs" />
     <Compile Include="News.cs" />
-    <Compile Include="News.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\MessageChannels.Designer.cs">
