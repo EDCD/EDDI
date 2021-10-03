@@ -286,6 +286,10 @@
     <Compile Include="SystemScanComplete.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
+      <Name>EddiDataDefinitions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
       <Name>Utilities</Name>
