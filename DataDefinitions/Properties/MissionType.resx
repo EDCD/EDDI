@@ -308,4 +308,13 @@
     <value>Political Prisoners</value>
     <comment>Bulk passenger type</comment>
   </data>
+  <data name="Assassination" xml:space="preserve">
+    <value>Assassination</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>Heist</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>Point of Interest</value>
+  </data>
 </root>

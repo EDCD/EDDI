@@ -12,6 +12,7 @@
             missingEDNameHandler = (edname) => new MissionType(edname);
 
             _ = new MissionType("Altruism");
+            _ = new MissionType("Assassination");
             _ = new MissionType("Credits"); // Donation type: credits
             _ = new MissionType("Assassinate");
             _ = new MissionType("AssassinateWing");
@@ -44,6 +45,7 @@
             _ = new MissionType("Piracy");
             _ = new MissionType("Planet");
             _ = new MissionType("Planetary");
+            _ = new MissionType("POI");
             _ = new MissionType("RankEmp");
             _ = new MissionType("RankFed");
             _ = new MissionType("Rescue");
@@ -61,6 +63,7 @@
             _ = new MissionType("Upload");
 
             // Heist types
+            _ = new MissionType("Heist");
             _ = new MissionType("ProductionHeist");
 
             // Massacre target types
