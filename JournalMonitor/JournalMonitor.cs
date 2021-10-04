@@ -2650,21 +2650,21 @@ namespace EddiJournalMonitor
                             case "Progress":
                                 {
                                     data.TryGetValue("Combat", out object val);
-                                    decimal combat = (long)val;
+                                    decimal combat = (long?)val ?? 0;
                                     data.TryGetValue("Trade", out val);
-                                    decimal trade = (long)val;
+                                    decimal trade = (long?)val ?? 0;
                                     data.TryGetValue("Explore", out val);
-                                    decimal exploration = (long)val;
+                                    decimal exploration = (long?)val ?? 0;
                                     data.TryGetValue("CQC", out val);
-                                    decimal cqc = (long)val;
+                                    decimal cqc = (long?)val ?? 0;
                                     data.TryGetValue("Empire", out val);
-                                    decimal empire = (long)val;
+                                    decimal empire = (long?)val ?? 0;
                                     data.TryGetValue("Federation", out val);
-                                    decimal federation = (long)val;
+                                    decimal federation = (long?)val ?? 0;
                                     data.TryGetValue("Soldier", out val);
-                                    decimal soldier = (long)val;
+                                    decimal soldier = (long?)val ?? 0;
                                     data.TryGetValue("Exobiologist", out val);
-                                    decimal exobiologist = (long)val;
+                                    decimal exobiologist = (long?)val ?? 0;
 
                                     events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -2673,21 +2673,21 @@ namespace EddiJournalMonitor
                             case "Rank":
                                 {
                                     data.TryGetValue("Combat", out object val);
-                                    CombatRating combat = CombatRating.FromRank((int)((long)val));
+                                    CombatRating combat = CombatRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Trade", out val);
-                                    TradeRating trade = TradeRating.FromRank((int)((long)val));
+                                    TradeRating trade = TradeRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Explore", out val);
-                                    ExplorationRating exploration = ExplorationRating.FromRank((int)((long)val));
+                                    ExplorationRating exploration = ExplorationRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("CQC", out val);
-                                    CQCRating cqc = CQCRating.FromRank((int)((long)val));
+                                    CQCRating cqc = CQCRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Empire", out val);
-                                    EmpireRating empire = EmpireRating.FromRank((int)((long)val));
+                                    EmpireRating empire = EmpireRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Federation", out val);
-                                    FederationRating federation = FederationRating.FromRank((int)((long)val));
+                                    FederationRating federation = FederationRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Soldier", out val);
-                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long)val));
+                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Exobiologist", out val);
-                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long)val));
+                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long?)val ?? 0));
 
                                     events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
