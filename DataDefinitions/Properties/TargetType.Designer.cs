@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Faction Members.
+        /// </summary>
+        internal static string AIHumanoid {
+            get {
+                return ResourceManager.GetString("AIHumanoid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bounty Hunter.
         /// </summary>
         internal static string BountyHunter {
@@ -147,6 +156,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Terrorist {
             get {
                 return ResourceManager.GetString("Terrorist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terrorist Leader.
+        /// </summary>
+        internal static string TerroristLeader {
+            get {
+                return ResourceManager.GetString("TerroristLeader", resourceCulture);
             }
         }
         
