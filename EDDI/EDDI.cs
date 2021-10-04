@@ -926,6 +926,10 @@ namespace EddiCore
                     {
                         passEvent = eventUnderAttack(underAttackEvent);
                     }
+                    else if (@event is SettlementApproachedEvent settlementApproachedEvent)
+                    {
+                        passEvent = eventSettlementApproached(settlementApproachedEvent);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -949,6 +953,27 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)
+        {
+            if (CurrentStarSystem?.systemAddress == settlementApproachedEvent.systemAddress)
+            {
+                var station = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == settlementApproachedEvent.marketId);
+                if (station is null)
+                {
+                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                    station = new Station
+                    {
+                        name = settlementApproachedEvent.name,
+                        marketId = settlementApproachedEvent.marketId,
+                        systemname = CurrentStarSystem.systemname,
+                        systemAddress = settlementApproachedEvent.systemAddress
+                    };
+                    CurrentStarSystem.stations.Add(station);
+                }
+            }
+            return true;
         }
 
         private bool eventUnderAttack(UnderAttackEvent underAttackEvent)
