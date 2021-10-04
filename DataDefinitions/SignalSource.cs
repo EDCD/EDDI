@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
@@ -64,19 +65,47 @@ namespace EddiDataDefinitions
             var Other = new SignalSource("SAA_SignalType_Other");
 
             var AncientGuardianRuins = new SignalSource("Ancient");
-            var GuardianStructureT1 = new SignalSource("Ancient_Tiny_001");
-            var GuardianStructureT2 = new SignalSource("Ancient_Tiny_002");
-            var GuardianStructureT3 = new SignalSource("Ancient_Tiny_003");
-            var GuardianStructureS1 = new SignalSource("Ancient_Small_001");
-            var GuardianStructureS2 = new SignalSource("Ancient_Small_002");
-            var GuardianStructureS3 = new SignalSource("Ancient_Small_003");
-            var GuardianStructureS4 = new SignalSource("Ancient_Small_004");
-            var GuardianStructureS5 = new SignalSource("Ancient_Small_005");
-            var GuardianStructureM1 = new SignalSource("Ancient_Medium_001");
-            var GuardianStructureM2 = new SignalSource("Ancient_Medium_002");
-            var GuardianStructureM3 = new SignalSource("Ancient_Medium_003");
+            var GuardianStructureTiny = new SignalSource("Ancient_Tiny");
+            var GuardianStructureSmall = new SignalSource("Ancient_Small");
+            var GuardianStructureMedium = new SignalSource("Ancient_Medium");
             var ThargoidBarnacle = new SignalSource("Settlement_Unflattened_Unknown");
             var ThargoidCrashSite = new SignalSource("Settlement_Unflattened_WreckedUnknown");
+
+            var AbandonedBuggyEasy = new SignalSource("Abandoned_Buggy_Easy");
+            var AbandonedBuggyMedium = new SignalSource("Abandoned_Buggy_Medium");
+            var AbandonedBuggyHard = new SignalSource("Abandoned_Buggy_Hard");
+            var DamagedEagleAssassinationEasy = new SignalSource("Damaged_Eagle_Assassination_Easy");
+            var DamagedEagleAssassinationMedium = new SignalSource("Damaged_Eagle_Assassination_Medium");
+            var DamagedEagleAssassinationHard = new SignalSource("Damaged_Eagle_Assassination_Hard");
+            var DamagedSidewinderAssassinationEasy = new SignalSource("Damaged_Sidewinder_Assassination_Easy");
+            var DamagedSidewinderAssassinationMedium = new SignalSource("Damaged_Sidewinder_Assassination_Medium");
+            var DamagedSidewinderAssassinationHard = new SignalSource("Damaged_Sidewinder_Assassination_Hard");
+            var DamagedEagleEasy = new SignalSource("Damaged_Eagle_Easy");
+            var DamagedEagleMedium = new SignalSource("Damaged_Eagle_Medium");
+            var DamagedEagleHard = new SignalSource("Damaged_Eagle_Hard");
+            var DamagedSidewinderEasy = new SignalSource("Damaged_Sidewinder_Easy");
+            var DamagedSidewinderMedium = new SignalSource("Damaged_Sidewinder_Medium");
+            var DamagedSidewinderHard = new SignalSource("Damaged_Sidewinder_Hard");
+            var SmugglersCacheEasy = new SignalSource("Smugglers_Cache_Easy");
+            var SmugglersCacheMedium = new SignalSource("Smugglers_Cache_Medium");
+            var SmugglersCacheHard = new SignalSource("Smugglers_Cache_Hard");
+            var TrapCargo = new SignalSource("Trap_Cargo");
+            var WreckageBuggyEasy = new SignalSource("Wreckage_Buggy_Easy");
+            var WreckageBuggyMedium = new SignalSource("Wreckage_Buggy_Medium");
+            var WreckageBuggyHard = new SignalSource("Wreckage_Buggy_Hard");
+            var WreckageCargo = new SignalSource("Wreckage_Cargo");
+            var WreckageProbeEasy = new SignalSource("Wreckage_Probe_Easy");
+            var WreckageProbeMedium = new SignalSource("Wreckage_Probe_Medium");
+            var WreckageProbeHard = new SignalSource("Wreckage_Probe_Hard");
+            var WreckageSatelliteEasy = new SignalSource("Wreckage_Satellite_Easy");
+            var WreckageSatelliteMedium = new SignalSource("Wreckage_Satellite_Medium");
+            var WreckageSatelliteHard = new SignalSource("Wreckage_Satellite_Hard");
+            var WrecksEagleEasy = new SignalSource("Wrecks_Eagle_Easy");
+            var WrecksEagleMedium = new SignalSource("Wrecks_Eagle_Medium");
+            var WrecksEagleHard = new SignalSource("Wrecks_Eagle_Hard");
+            var WrecksSidewinderEasy = new SignalSource("Wrecks_Sidewinder_Easy");
+            var WrecksSidewinderMedium = new SignalSource("Wrecks_Sidewinder_Medium");
+            var WrecksSidewinderHard = new SignalSource("Wrecks_Sidewinder_Hard");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
@@ -104,6 +133,11 @@ namespace EddiDataDefinitions
                 {
                     string tidiedFrom = from
                         .Replace("$", "")
+                        .Replace("POIScenario_", "")
+                        .Replace("POIScene_", "")
+                        .Replace("Watson_", "")
+                        .Replace("_Heist", "")
+                        .Replace("_Salvage", "")
                         .Replace(";", "");
 
                     // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
@@ -111,6 +145,15 @@ namespace EddiDataDefinitions
                     {
                         string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
                         tidiedFrom = fromArray[1];
+                    }
+
+                    // Extract any threat value which might be present and then strip the index value
+                    int? threatLvl = null;
+                    if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
+                    {
+                        string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
+                        if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
+                        tidiedFrom = fromArray[0];
                     }
 
                     // Extract any index value which might be present and then strip the index value
@@ -122,11 +165,21 @@ namespace EddiDataDefinitions
                         tidiedFrom = fromArray[0];
                     }
 
+                    // Extract any pure number parts (e.g. '_01_')
+                    var parts = new List<string>();
+                    foreach (var part in tidiedFrom.Split(new[] { "_" }, StringSplitOptions.None))
+                    {
+                        if (int.TryParse(part, out _)) { }
+                        else { parts.Add(part); }
+                    }
+                    tidiedFrom = string.Join("_", parts);
+
                     // Find our signal source
-                    SignalSource result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom);
+                    SignalSource result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom.Trim());
 
                     // Include our index value with our result
                     result.index = indexResult;
+                    result.threatLevel = threatLvl;
 
                     return result;
                 }

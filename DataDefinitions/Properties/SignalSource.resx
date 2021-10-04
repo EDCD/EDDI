@@ -273,51 +273,19 @@
     <value>Guardian Surface Signal</value>
     <comment>Guardian Surface Signal</comment>
   </data>
-  <data name="Ancient_Tiny_003" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
   <data name="Ancient" xml:space="preserve">
     <value>Ancient Ruins</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  <data name="Ancient_Small_005" xml:space="preserve">
+  <data name="Ancient_Small" xml:space="preserve">
     <value>Guardian Structure</value>
     <comment>Guardian Structure</comment>
   </data>
-  <data name="Ancient_Small_001" xml:space="preserve">
+  <data name="Ancient_Tiny" xml:space="preserve">
     <value>Guardian Structure</value>
     <comment>Guardian Structure</comment>
   </data>
-  <data name="Ancient_Tiny_001" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Small_002" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Small_003" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Tiny_002" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Medium_003" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Small_004" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Medium_001" xml:space="preserve">
-    <value>Guardian Structure</value>
-    <comment>Guardian Structure</comment>
-  </data>
-  <data name="Ancient_Medium_002" xml:space="preserve">
+  <data name="Ancient_Medium" xml:space="preserve">
     <value>Guardian Structure</value>
     <comment>Guardian Structure</comment>
   </data>
@@ -348,5 +316,145 @@
   <data name="AttackAftermath" xml:space="preserve">
     <value>Distress Call</value>
     <comment>Distress Call</comment>
+  </data>
+  <data name="Abandoned_Buggy_Easy" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Medium" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Hard" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Easy" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Medium" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Hard" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Easy" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Medium" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Hard" xml:space="preserve">
+    <value>ENCRYPTED SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Easy" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Medium" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Hard" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Easy" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Medium" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Hard" xml:space="preserve">
+    <value>Distress Beacon</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Smugglers_Cache_Easy" xml:space="preserve">
+    <value>Irregular Markers</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Smugglers_Cache_Medium" xml:space="preserve">
+    <value>Irregular Markers</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Smugglers_Cache_Hard" xml:space="preserve">
+    <value>Irregular Markers</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Trap_Cargo" xml:space="preserve">
+    <value>Irregular Markers</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Wreckage_Buggy_Easy" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Buggy_Medium" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Buggy_Hard" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe_Easy" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Probe_Medium" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Probe_Hard" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite_Easy" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite_Medium" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite_Hard" xml:space="preserve">
+    <value>Impact Site</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Cargo" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wrecks_Eagle_Easy" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Medium" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Hard" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Easy" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Medium" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Hard" xml:space="preserve">
+    <value>Crash Site</value>
+    <comment>Crash Site</comment>
   </data>
 </root>
