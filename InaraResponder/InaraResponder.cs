@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
+using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiInaraResponder
@@ -1421,10 +1422,7 @@ namespace EddiInaraResponder
             data.Remove("timestamp");
             data.Remove("event");
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderGameStatistics", (Dictionary<string, object>)data));
-        }
 
-        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
-        {
             // Sets current credits and loans. A record is added to the credits log (if the value differs).
             // Warning: Do NOT set credits/assets unless you are absolutely sure they are correct. 
             // The journals currently doesn't contain crew wage cuts, so credit gains are very probably off 
@@ -1432,11 +1430,25 @@ namespace EddiInaraResponder
             // spam player's credits log with unusable data and they won't be most likely very happy about it. 
             // It may be good to set credits just on the session start, session end and on the big changes 
             // or in hourly intervals.
-            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCredits", new Dictionary<string, object>()
+            long? startingAssets = (long?)JObject.FromObject(data)?["Bank_Account"]?["Current_Wealth"];
+            data = new Dictionary<string, object>()
             {
-                { "commanderCredits", @event.credits },
-                { "commanderLoan", @event.loan }
-            }));
+                {"commanderCredits", startingCredits},
+                {"commanderLoan", startingLoan}
+            };
+            if (startingAssets != null)
+            {
+                data.Add("commanderAssets", startingAssets);
+            }
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCredits", (Dictionary<string, object>)data));
+        }
+
+        private long startingCredits;
+        private long startingLoan;
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        {
+            startingCredits = @event.credits;
+            startingLoan = @event.loan;
         }
 
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
