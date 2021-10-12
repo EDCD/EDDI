@@ -21,6 +21,8 @@ namespace EddiConfigService
         // Search data
         public string searchQuery { get; set; }
 
+        public dynamic[] searchQueryArgs { get; set; }
+
         public string searchSystem { get; set; }
 
         public string searchStation { get; set; }

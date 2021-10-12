@@ -79,13 +79,33 @@ namespace EddiNavigationService
         // Last mission query variables
         private QueryTypes LastMissionQuery { get; set; }
         private dynamic[] LastMissionQueryArgs { get; set; }
-        private StarSystem LastMissionStarSystem { get; set; }
-        private Station LastMissionStation { get; set; }
+        private StarSystem LastUpdateMissionStarSystem { get; set; }
+        private Station LastUpdateMissionStation { get; set; }
 
         public NavigationService(IEdsmService edsmService)
         {
             this.edsmService = edsmService;
             dataProviderService = new DataProviderService(edsmService);
+
+            // Remember our last query
+            var configuration = ConfigService.Instance.navigationMonitorConfiguration;
+            if (Enum.TryParse(configuration.searchQuery, true, out QueryTypes queryType))
+            {
+                switch (queryType)
+                {
+                    case QueryTypes.expiring:
+                    case QueryTypes.farthest:
+                    case QueryTypes.most:
+                    case QueryTypes.nearest:
+                    case QueryTypes.route:
+                    case QueryTypes.source:
+                    {
+                        LastMissionQuery = queryType;
+                        LastMissionQueryArgs = configuration.searchQueryArgs;
+                        break;
+                    }
+                }
+            }
         }
 
         public static NavigationService Instance
@@ -141,8 +161,6 @@ namespace EddiNavigationService
                     case QueryTypes.expiring:
                     {
                         var result = GetExpiringMissionSystem();
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.facilitator:
@@ -152,8 +170,6 @@ namespace EddiNavigationService
                     case QueryTypes.farthest:
                     {
                         var result = GetFarthestMissionSystem();
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.guardian:
@@ -171,15 +187,11 @@ namespace EddiNavigationService
                     case QueryTypes.most:
                     {
                         var result = GetMostMissionSystem();
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.nearest:
                     {
                         var result = GetNearestMissionSystem();
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.raw:
@@ -194,8 +206,6 @@ namespace EddiNavigationService
                             system = args[0].ToString();
                         }
                         var result = GetShortestPathMissionSystem(string.IsNullOrEmpty(system) ? null : system);
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.scoop:
@@ -219,8 +229,6 @@ namespace EddiNavigationService
                             system = args[0].ToString();
                         }
                         var result = GetMissionCargoSource(string.IsNullOrEmpty(system) ? null : system);
-                        LastMissionStarSystem = SearchStarSystem;
-                        LastMissionStation = SearchStation;
                         return result;
                     }
                     case QueryTypes.update:
@@ -273,6 +281,7 @@ namespace EddiNavigationService
                 // Save the missions route data
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "expiring";
+                navConfig.searchQueryArgs = null;
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -331,6 +340,7 @@ namespace EddiNavigationService
                 // Save the route data to the configuration
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "farthest";
+                navConfig.searchQueryArgs = null;
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -434,6 +444,7 @@ namespace EddiNavigationService
                     // Save the route data to the configuration
                     var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                     navConfig.searchQuery = "route";
+                    navConfig.searchQueryArgs = new dynamic[]{ homeSystem };
                     navConfig.searchSystem = searchSystem;
                     navConfig.searchStation = null;
                     navConfig.searchDistance = searchDistance;
@@ -634,6 +645,7 @@ namespace EddiNavigationService
                 // Save the route data to the configuration
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "most";
+                navConfig.searchQueryArgs = null;
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -692,6 +704,7 @@ namespace EddiNavigationService
                 // Save the route data to the configuration
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "nearest";
+                navConfig.searchQueryArgs = null;
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -747,6 +760,7 @@ namespace EddiNavigationService
                 // Save the route data to the configuration
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "scoop";
+                navConfig.searchQueryArgs = new dynamic[] { searchRadius };
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -807,6 +821,7 @@ namespace EddiNavigationService
 
                         // Save the route data to the configuration
                         navConfig.searchQuery = serviceQuery.ToString();
+                        navConfig.searchQueryArgs = null;
                         navConfig.searchSystem = searchSystem;
                         navConfig.searchStation = searchStation;
                         navConfig.searchDistance = searchDistance;
@@ -969,6 +984,7 @@ namespace EddiNavigationService
                 // Save the route data to the configuration
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.searchQuery = "source";
+                navConfig.searchQueryArgs = new dynamic[] { system };
                 navConfig.searchSystem = searchSystem;
                 navConfig.searchStation = null;
                 navConfig.searchDistance = searchDistance;
@@ -982,16 +998,22 @@ namespace EddiNavigationService
         /// <returns> The star system result from the repeated query </returns>
         private RouteDetailsEvent RefreshLastMissionQuery()
         {
+            if (LastMissionQuery is QueryTypes.None) { return null; }
             var @event = NavQuery(LastMissionQuery, LastMissionQueryArgs);
-            if (LastMissionStarSystem?.systemname == SearchStarSystem?.systemname)
+            if (LastUpdateMissionStarSystem?.systemname == SearchStarSystem?.systemname
+                && LastUpdateMissionStation?.name == SearchStation?.name)
             {
-                // Same star system as last result
-                if (LastMissionStation?.name == SearchStation?.name)
-                {
-                    // No station or same station as last result
-                    return null;
-                }
+                // Same result as last time. Suppress the repetition.
+                return null;
             }
+            if (EDDI.Instance.CurrentStarSystem?.systemname == SearchStarSystem?.systemname
+                && EDDI.Instance.CurrentStation?.name == SearchStation?.name)
+            {
+                // We're already at the system
+                return null;
+            }
+            LastUpdateMissionStarSystem = SearchStarSystem;
+            LastUpdateMissionStation = SearchStation;
             return new RouteDetailsEvent(DateTime.Now, "update", @event.system, @event.station, @event.route, @event.count, @event.distance, @event.routedistance, @event.missionids);
         }
 
