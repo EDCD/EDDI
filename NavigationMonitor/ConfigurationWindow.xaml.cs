@@ -5,12 +5,14 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiStatusMonitor;
-using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -214,94 +216,87 @@ namespace EddiNavigationMonitor
             navigationMonitor()?.writeBookmarks();
         }
 
-        private void exportBookmarks(object sender, RoutedEventArgs e)
+        private async void exportBookmarks(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            // Select bookmarks
+            var selectedBookmarks = navigationMonitor().bookmarks;
+
+            // Package up bookmarks
+            var sb = new StringBuilder();
+            foreach (var navBookmark in selectedBookmarks)
+            {
+                sb.AppendLine(JsonConvert.SerializeObject(navBookmark));
+            }
+
+            // Export to a file (.jsonl format)
+            var fileDialog = new SaveFileDialog
+            {
+                InitialDirectory = Constants.DATA_DIR, 
+                AddExtension = true, 
+                OverwritePrompt = true, 
+                ValidateNames = true,
+                DefaultExt = ".bkmks",
+                Filter = "Bookmark files|*.bkmks",
+                FilterIndex = 0
+            };
+            if (fileDialog.ShowDialog() ?? false)
+            {
+                Files.Write(fileDialog.FileName, sb.ToString());
+            }
         }
 
-        private void importBookmarks(object sender, RoutedEventArgs e)
+        private async void importBookmarks(object sender, RoutedEventArgs e)
         {
-            string filename = Constants.DATA_DIR + @"\import.csv";
-            bool header = true;
-            List<string> headerNames = new List<string>();
-
-            if (File.Exists(filename))
+            // Read bookmarks from selected files (.jsonl format)
+            var fileDialog = new OpenFileDialog
             {
-                using (TextFieldParser parser = new TextFieldParser(filename))
+                InitialDirectory = Constants.DATA_DIR, 
+                Multiselect = true, 
+                DefaultExt = ".bkmks",
+                Filter = "Bookmark files|*.bkmks",
+                FilterIndex = 0
+            };
+            if (fileDialog.ShowDialog() ?? false)
+            {
+                var importedBookmarks = new HashSet<NavBookmark>();
+                foreach (var fileName in fileDialog.FileNames)
                 {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(",");
-                    while (!parser.EndOfData)
+                    var fileContents = Files.Read(fileName);
+                    using (var sr = new StringReader(fileContents))
                     {
-                        try
+                        string line;
+                        while ((line = await sr.ReadLineAsync()) != null)
                         {
-                            NavBookmark navBookmark = new NavBookmark();
-                            string[] fields = parser.ReadFields() ?? new string[0];
-                            for (int i = 0; i < fields.Count(); i++)
+                            try
                             {
-                                if (header)
-                                {
-                                    headerNames.Add(fields[i]);
-                                }
+                                var navBookmark = JsonConvert.DeserializeObject<NavBookmark>(line);
+                                if (importedBookmarks.Add(navBookmark))
+                                { }
                                 else
                                 {
-                                    switch (headerNames[i]?.ToLowerInvariant())
-                                    {
-                                        case "system":
-                                            {
-                                                navBookmark.systemname = fields[i];
-                                            }
-                                            break;
-                                        case "x":
-                                            {
-                                                navBookmark.x = decimal.Parse(fields[i]);
-                                            }
-                                            break;
-                                        case "y":
-                                            {
-                                                navBookmark.y = decimal.Parse(fields[i]);
-                                            }
-                                            break;
-                                        case "z":
-                                            {
-                                                navBookmark.z = decimal.Parse(fields[i]);
-                                            }
-                                            break;
-                                        case "body":
-                                            {
-                                                navBookmark.bodyname = fields[i];
-                                            }
-                                            break;
-                                        case "name":
-                                            {
-                                                navBookmark.comment = fields[i];
-                                            }
-                                            break;
-                                        case "latitude":
-                                            {
-                                                navBookmark.latitude = decimal.Parse(fields[i]);
-                                            }
-                                            break;
-                                        case "longitude":
-                                            {
-                                                navBookmark.longitude = decimal.Parse(fields[i]);
-                                            }
-                                            break;
-                                    }
+                                    Logging.Warn("Failed to import bookmark, duplicate entry");
                                 }
                             }
-
-                            if (!header)
+                            catch (Exception exception)
                             {
-                                navigationMonitor().bookmarks.Add(navBookmark);
+                                var data = new Dictionary<string, object>
+                                {
+                                    {"Bookmark", line},
+                                    {"Exception", exception}
+                                };
+                                Logging.Warn("Failed to import bookmark", data);
                             }
-                            header = false;
-                        }
-                        catch (MalformedLineException ex)
-                        {
-                            Logging.Error("Line " + ex.Message + " is invalid. Skipping: ", ex);
                         }
                     }
+                }
+
+                // Select bookmarks
+                var selectedBookmarks = importedBookmarks;
+
+                // Add bookmarks to Navigation Monitor
+                foreach (var navBookmark in selectedBookmarks)
+                {
+                    navigationMonitor().bookmarks.Add(navBookmark);
                 }
                 navigationMonitor().writeBookmarks();
             }
