@@ -216,7 +216,7 @@ namespace EddiNavigationMonitor
             navigationMonitor()?.writeBookmarks();
         }
 
-        private async void exportBookmarks(object sender, RoutedEventArgs e)
+        private void exportBookmarks(object sender, RoutedEventArgs e)
         {
             // Select bookmarks
             var selectedBookmarks = navigationMonitor().bookmarks;
