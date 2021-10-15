@@ -266,6 +266,11 @@ namespace EddiDataDefinitions
         public LegalStatus legalStatus;
         public string raw;
 
+        public long? destinationSystemAddress;
+        public int? destinationBodyId; // Multiple destinations either on or orbiting the same body may share a single bodyId
+        public string destinationName;
+        public string destinationLocalizedName; // Typically only written for signal source
+        
         public Status(Flags flags = Flags.None, Flags2 flags2 = Flags2.None)
         {
             this.flags = flags;

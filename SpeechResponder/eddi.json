@@ -1626,6 +1626,15 @@
       "name": "Near surface",
       "description": "Triggered when you enter or depart orbit around a surface"
     },
+    "Next destination": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Next destination",
+      "description": "Triggered when selecting an in-system destination"
+    },
     "Next jump": {
       "enabled": true,
       "priority": 3,

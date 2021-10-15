@@ -31,6 +31,7 @@ namespace EddiStatusMonitor
         private bool gliding;
         private bool jumping;
         private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
+        private string lastDestinationPOI;
 
         // Keep track of status monitor 
         private bool running;
@@ -311,6 +312,31 @@ namespace EddiStatusMonitor
                         ?? JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
                     status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
 
+                    // When not on foot
+                    if (data.TryGetValue("Destination", out object destinationData))
+                    {
+                        if (destinationData is IDictionary<string, object> destinationInfo)
+                        {
+                            status.destinationSystemAddress = JsonParsing.getOptionalLong(destinationInfo, "System");
+                            status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
+                            status.destinationName = JsonParsing.getString(destinationInfo, "Name");
+                            status.destinationLocalizedName = JsonParsing.getString(destinationInfo, "Name_Localised");
+
+                            // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
+                            var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
+                            if (string.IsNullOrEmpty(status.destinationLocalizedName) && fleetCarrierRegex.IsMatch(status.destinationName))
+                            {
+                                // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                                var fleetCarrierParts = fleetCarrierRegex.Matches(status.destinationName)[0].Groups;
+                                if (fleetCarrierParts.Count == 3)
+                                {
+                                    status.destinationName = fleetCarrierParts[2].Value;
+                                    status.destinationLocalizedName = fleetCarrierParts[1].Value;
+                                }
+                            }
+                        }
+                    }
+
                     // Calculated data
                     SetFuelExtras(status);
                     SetSlope(status);
@@ -440,6 +466,67 @@ namespace EddiStatusMonitor
                 if (thisStatus.flight_assist_off != lastStatus.flight_assist_off)
                 {
                     EDDI.Instance.enqueueEvent(new FlightAssistEvent(thisStatus.timestamp, thisStatus.flight_assist_off));
+                }
+                if (!string.IsNullOrEmpty(thisStatus.destinationName) && thisStatus.destinationName != lastStatus.destinationName)
+                {
+                    if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress ==
+                        thisStatus.destinationSystemAddress && thisStatus.destinationName != lastDestinationPOI)
+                    {
+                        var body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b =>
+                            b.bodyId == thisStatus.destinationBodyId);
+                        var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
+                            s.name == thisStatus.destinationName);
+                        var signalSource = EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
+                            s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName);
+                        // Might be a body (including the primary star of a different system if selecting a star system)
+                        if (body != null && thisStatus.destinationName == body.bodyname)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body));
+                        }
+                        // Might be a station (including megaship or fleet carrier)
+                        else if (station != null)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body,
+                                station));
+                        }
+                        // Might be a non-station signal source
+                        else if (signalSource != null)
+                        {
+                            signalSource.fallbackLocalizedName = thisStatus.destinationLocalizedName;
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                signalSource.invariantName,
+                                signalSource.localizedName,
+                                null,
+                                null,
+                                signalSource));
+                        }
+                        else if (thisStatus.destinationName != lastDestinationPOI)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body));
+                        }
+                        lastDestinationPOI = thisStatus.destinationName;
+                    }
                 }
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
