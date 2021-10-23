@@ -13,8 +13,7 @@
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="1" Margin="0,5">
             <Button HorizontalAlignment="Center" Click="addRecord" Content="{x:Static resx:CrimeMonitor.add_button}" ToolTip="{x:Static resx:CrimeMonitor.add_button_desc}" />
         </UniformGrid>
-
-        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="criminalRecord" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="criminalRecordUpdated">
+        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="criminalRecord" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="criminalRecordUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:CrimeMonitor.header_faction}" Width="*" Binding="{Binding Path=faction, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>

@@ -65,7 +65,7 @@
             <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
             <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
-        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
+        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_name}" MinWidth="140" IsReadOnly="True" Binding="{Binding Path=localisedname}">
                     <DataGridTextColumn.HeaderStyle>

@@ -13,7 +13,7 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0" Text="{x:Static resx:CargoMonitor.para1}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:CargoMonitor.para2}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:CargoMonitor.para3}" />
-        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
+        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:CargoMonitor.header_name}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedName}">
                     <DataGridTextColumn.HeaderStyle>
