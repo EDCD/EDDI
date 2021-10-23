@@ -1617,6 +1617,15 @@
       "name": "Nav route",
       "description": "Triggered when the navigation route is updated"
     },
+    "Near bookmark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Near bookmark",
+      "description": "Triggered when entering or departing the nearby radius of a bookmark"
+    },
     "Near surface": {
       "enabled": true,
       "priority": 3,

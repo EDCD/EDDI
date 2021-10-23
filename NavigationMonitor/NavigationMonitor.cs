@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -374,7 +375,73 @@ namespace EddiNavigationMonitor
                 {
                     currentStatus = status;
                 });
+
+                foreach (var bookmark in bookmarks)
+                {
+                    CheckBookmarkPosition(bookmark, currentStatus);
+                }
             }
+        }
+
+        public void CheckBookmarkPosition(NavBookmark bookmark, Status status, bool emitEvent = true)
+        {
+            // Calculate our position relative to the bookmark and whether we're nearby
+            if (currentStatus.bodyname == bookmark.bodyname && currentStatus.near_surface)
+            {
+                // Update our bookmark heading and distance
+                var surfaceDistanceKm = SurfaceConstantHeadingDistanceKm(currentStatus, bookmark.latitude, bookmark.longitude);
+                if (surfaceDistanceKm != null)
+                {
+                    var trueDistanceKm = (decimal) Math.Sqrt(Math.Pow((double)surfaceDistanceKm, 2) +
+                                                             Math.Pow((double?) (status.altitude / 1000) ?? 0, 2));
+                    bookmark.distanceKm = trueDistanceKm;
+                    bookmark.heading = SurfaceConstantHeadingDegrees(currentStatus, bookmark.latitude, bookmark.longitude);
+
+                    var trueDistanceMeters = trueDistanceKm * 1000;
+                    if (!bookmark.nearby && trueDistanceMeters < bookmark.arrivalRadiusMeters)
+                    {
+                        // We've entered the nearby radius of the bookmark
+                        bookmark.nearby = true;
+                        if (emitEvent)
+                        {
+                            EDDI.Instance.enqueueEvent(new NearBookmarkEvent(status.timestamp, true, bookmark));
+                        }
+                    }
+                    else if (bookmark.nearby && trueDistanceMeters >= bookmark.arrivalRadiusMeters * 1.1M)
+                    {
+                        // We've left the nearby radius of the bookmark
+                        // (calculated at 110% of the arrival radius to prevent bouncing between nearby and not)
+                        bookmark.nearby = false;
+                        if (emitEvent)
+                        {
+                            EDDI.Instance.enqueueEvent(new NearBookmarkEvent(status.timestamp, false, bookmark));
+                        }
+                    }
+                }
+            }
+            else if (bookmark.heading != null || bookmark.distanceKm != null)
+            {
+                // We're not at the body, clear bookmark position data
+                bookmark.heading = null;
+                bookmark.distanceKm = null;
+                bookmark.nearby = false;
+            }
+        }
+
+        private static decimal? SurfaceConstantHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceConstantHeadingDegrees(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
+        }
+
+        private static decimal? SurfaceConstantHeadingDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceConstantHeadingDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

@@ -102,10 +102,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\NavigationMonitor.cs.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.de.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.es.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.fr.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.hu.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.it.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\NavigationMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NavigationMonitor.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\NavigationMonitor.ru.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">

@@ -133,6 +133,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nearby Radius (m):.
+        /// </summary>
+        public static string bm_nearby_radius {
+            get {
+                return ResourceManager.GetString("bm_nearby_radius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The radius (in meters) which triggers `Near bookmark` events.
+        /// </summary>
+        public static string bm_nearby_radius_tooltip {
+            get {
+                return ResourceManager.GetString("bm_nearby_radius_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find:.
         /// </summary>
         public static string find_text {
@@ -250,15 +268,6 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tip: Maximize the allowed search distance to minimize search times..
-        /// </summary>
-        public static string p1 {
-            get {
-                return ResourceManager.GetString("p1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {
@@ -327,6 +336,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string search_distance {
             get {
                 return ResourceManager.GetString("search_distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip: Maximize the allowed search distance to minimize search times..
+        /// </summary>
+        public static string search_distance_tooltip {
+            get {
+                return ResourceManager.GetString("search_distance_tooltip", resourceCulture);
             }
         }
         

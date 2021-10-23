@@ -110,11 +110,27 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private decimal? _distanceKm;
 
+        public long? arrivalRadiusMeters
+        {
+            get => _arrivalRadiusMeters;
+            set
+            {
+                if (_arrivalRadiusMeters != value)
+                {
+                    _arrivalRadiusMeters = value;
+                    NotifyPropertyChanged(nameof(arrivalRadiusMeters));
+                }
+            }
+        }
+        [JsonIgnore] private long? _arrivalRadiusMeters = 1000;
+
+        public bool nearby = false;
+
         // Default Constructor
         public NavBookmark() { }
 
         [JsonConstructor]
-        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable)
+        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable, bool nearby)
         {
             this.systemname = systemname;
             this.x = x;
@@ -126,6 +142,7 @@ namespace EddiDataDefinitions
             this.latitude = latitude;
             this.longitude = longitude;
             this.landable = landable;
+            this.nearby = nearby;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

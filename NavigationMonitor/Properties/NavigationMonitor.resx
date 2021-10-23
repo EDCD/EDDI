@@ -168,7 +168,7 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Prioritize Orbital Stations?</value>
   </data>
-  <data name="p1" xml:space="preserve">
+  <data name="search_distance_tooltip" xml:space="preserve">
     <value>Tip: Maximize the allowed search distance to minimize search times.</value>
   </data>
   <data name="remove_button" xml:space="preserve">
@@ -272,5 +272,11 @@
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Distance (km):</value>
+  </data>
+  <data name="bm_nearby_radius" xml:space="preserve">
+    <value>Nearby Radius (m):</value>
+  </data>
+  <data name="bm_nearby_radius_tooltip" xml:space="preserve">
+    <value>The radius (in meters) which triggers `Near bookmark` events</value>
   </data>
 </root>
