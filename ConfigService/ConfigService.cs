@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -64,16 +65,16 @@ namespace EddiConfigService
         }
 
         /// <summary>Saves configurations from the specified data directory</summary>
-        public Dictionary<string, Config> ReadConfigurations(string directory)
+        public ConcurrentDictionary<string, Config> ReadConfigurations(string directory)
         {
-            return new Dictionary<string, Config>
+            return new ConcurrentDictionary<string, Config> (new Dictionary<string, Config>
             {
                 {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
                 {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
-            };
+            });
         }
 
         #endregion
@@ -81,7 +82,7 @@ namespace EddiConfigService
         // The directory to use for reading and saving configuration files
         private string dataDirectory { get; set; }
 
-        private Dictionary<string, Config> currentConfigs = new Dictionary<string, Config>();
+        private ConcurrentDictionary<string, Config> currentConfigs = new ConcurrentDictionary<string, Config>();
 
         private static readonly object configurationsLock = new object();
 
@@ -147,7 +148,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Saves configurations to the specified data directory</summary>
-        public void SaveConfigurations(string directory, Dictionary<string, Config> configurations)
+        public void SaveConfigurations(string directory, ConcurrentDictionary<string, Config> configurations)
         {
             if (configurations is null)
             {
