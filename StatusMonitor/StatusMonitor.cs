@@ -467,7 +467,8 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.enqueueEvent(new FlightAssistEvent(thisStatus.timestamp, thisStatus.flight_assist_off));
                 }
-                if (!string.IsNullOrEmpty(thisStatus.destinationName) && thisStatus.destinationName != lastStatus.destinationName)
+                if (!string.IsNullOrEmpty(thisStatus.destinationName) && thisStatus.destinationName != lastStatus.destinationName
+                    && thisStatus.vehicle == lastStatus.vehicle)
                 {
                     if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress ==
                         thisStatus.destinationSystemAddress && thisStatus.destinationName != lastDestinationPOI)
