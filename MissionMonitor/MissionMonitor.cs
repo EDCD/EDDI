@@ -513,7 +513,7 @@ namespace EddiMissionMonitor
                     mission.originstation = goal.station;
                     mission.destinationsystem = goal.system;
                     mission.destinationstation = goal.station;
-                    mission.reward = goal.tierreward;
+                    mission.reward = goal.contribution > 0 ? goal.tierreward : 0;
                     mission.communal = true;
                     mission.communalPercentileBand = goal.percentileband;
                     mission.communalTier = goal.tier;
