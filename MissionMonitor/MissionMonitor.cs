@@ -135,7 +135,7 @@ namespace EddiMissionMonitor
                                 }
                                 else
                                 {
-                                    mission.statusDef = MissionStatus.FromEDName("Claim"); 
+                                    mission.statusDef = MissionStatus.FromEDName("Claim");
                                 }
                             }
                             else
@@ -618,28 +618,28 @@ namespace EddiMissionMonitor
                 }
             }
         }
-        
+
         public void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            if (@event.missionid != null)
+            if (@event.timestamp >= updateDat)
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                if (mission != null)
+                updateDat = @event.timestamp;
+                if (@event.missionid != null)
                 {
-                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                    Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission != null)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                    }
                 }
             }
         }
 
         private void postHandleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (_postHandleMissionAbandonedEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_postHandleMissionAbandonedEvent(@event))
-                {
-                    writeMissions();
-                }
+                writeMissions();
             }
         }
 
@@ -782,25 +782,25 @@ namespace EddiMissionMonitor
 
         public void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            if (@event.missionid != null)
+            if (@event.timestamp >= updateDat)
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                if (mission != null)
+                updateDat = @event.timestamp;
+                if (@event.missionid != null)
                 {
-                    mission.statusDef = MissionStatus.FromEDName("Complete");
+                    Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission != null)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Complete");
+                    }
                 }
             }
         }
 
         private void postHandleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (_postHandleMissionCompletedEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_postHandleMissionCompletedEvent(@event))
-                {
-                    writeMissions();
-                }
+                writeMissions();
             }
         }
 
@@ -854,7 +854,7 @@ namespace EddiMissionMonitor
                         mission.statusDef = MissionStatus.FromEDName("Claim");
                         update = true;
                     }
-                    else
+                    else if (mission.statusDef != MissionStatus.FromEDName("Claim"))
                     {
                         mission.statusDef = MissionStatus.FromEDName("Failed");
                         update = true;
@@ -866,25 +866,25 @@ namespace EddiMissionMonitor
 
         public void handleMissionFailedEvent(MissionFailedEvent @event)
         {
-            if (@event.missionid != null)
+            if (@event.timestamp >= updateDat)
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                if (mission != null)
+                updateDat = @event.timestamp;
+                if (@event.missionid != null)
                 {
-                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                    Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission != null)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                    }
                 }
             }
         }
 
         private void postHandleMissionFailedEvent(MissionFailedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (_postHandleMissionFailedEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_postHandleMissionFailedEvent(@event))
-                {
-                    writeMissions();
-                }
+                writeMissions();
             }
         }
 
@@ -999,7 +999,7 @@ namespace EddiMissionMonitor
 
         private void AddMission(Mission mission)
         {
-            if (mission == null)
+            if (mission == null || missions.Any(m => m.missionid == mission.missionid))
             {
                 return;
             }
@@ -1044,11 +1044,12 @@ namespace EddiMissionMonitor
                         case "assassinatewing":
                         case "disable":
                         case "disablewing":
+                        case "hack":
                         case "massacre":
                         case "massacrethargoid":
                         case "massacrewing":
-                        case "hack":
                         case "longdistanceexpedition":
+                        case "onfoot":
                         case "passengervip":
                         case "piracy":
                         case "rescue":

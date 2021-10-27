@@ -121,7 +121,7 @@ namespace EddiDataDefinitions
         // Status of the mission
         public string statusEDName
         {
-            get => statusDef.edname;
+            get => statusDef?.edname;
             set
             {
                 MissionStatus sDef = MissionStatus.FromEDName(value);
@@ -138,6 +138,7 @@ namespace EddiDataDefinitions
             set
             {
                 _statusDef = value;
+                UpdateExpiry();
                 OnPropertyChanged("localizedStatus");
             }
         }
@@ -271,7 +272,7 @@ namespace EddiDataDefinitions
         
         // The mission time remaining
         [JsonIgnore]
-        public TimeSpan? timeRemaining => expiry != null && statusEDName == "Active" ? TimeSpanNearestSecond(expiry - DateTime.UtcNow) : null;
+        public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond(expiry - DateTime.UtcNow) : null;
 
         private TimeSpan? TimeSpanNearestSecond(TimeSpan? utcNow)
         {
@@ -510,6 +511,14 @@ namespace EddiDataDefinitions
             if (!string.IsNullOrEmpty(factionName))
             {
                 targetfaction = factionName;
+            }
+        }
+
+        private void UpdateExpiry()
+        {
+            if (statusEDName != "Active" && !onfoot)
+            {
+                expiry = null;
             }
         }
     }
