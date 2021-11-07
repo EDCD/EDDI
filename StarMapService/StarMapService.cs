@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiConfigService;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
 using System;
@@ -73,7 +74,7 @@ namespace EddiStarMapService
 
         public void SetEdsmCredentials()
         {
-            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            var starMapCredentials = ConfigService.Instance.edsmConfiguration;
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
             {
                 // Commander name might come from EDSM credentials or from the game and companion app
@@ -196,7 +197,7 @@ namespace EddiStarMapService
 
         private void SendEvents(List<IDictionary<string, object>> queue)
         {
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
             SendEventBatch(queue, starMapConfiguration);
         }
 
@@ -239,7 +240,7 @@ namespace EddiStarMapService
                     starMapConfiguration.lastJournalSync = eventData
                         .Select(e => JsonParsing.getDateTime("timestamp", e))
                         .Max();
-                    starMapConfiguration.ToFile();
+                    ConfigService.Instance.edsmConfiguration = starMapConfiguration;
                 }
                 if (response?.msgnum != 100)
                 {

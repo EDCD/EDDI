@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiDataDefinitions;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataProviderService;
 using EddiStarMapService;
 using System;
@@ -20,7 +20,7 @@ namespace EddiEdsmResponder
         {
             InitializeComponent();
 
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
             edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? Properties.EDSMResources.log_button_empty_api_key : Properties.EDSMResources.log_button;
@@ -42,7 +42,7 @@ namespace EddiEdsmResponder
 
         private void updateEdsmConfiguration()
         {
-            StarMapConfiguration edsmConfiguration = StarMapConfiguration.FromFile();
+            var edsmConfiguration = ConfigService.Instance.edsmConfiguration;
             if (!string.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
             {
                 edsmConfiguration.apiKey = edsmApiKeyTextBox.Text.Trim();
@@ -51,7 +51,7 @@ namespace EddiEdsmResponder
             {
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
             }
-            edsmConfiguration.ToFile();
+            ConfigService.Instance.edsmConfiguration = edsmConfiguration;
             EDDI.Instance.Reload("EDSM responder");
         }
 
@@ -60,7 +60,7 @@ namespace EddiEdsmResponder
         /// </summary>
         private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
 
             if (string.IsNullOrEmpty(starMapConfiguration.apiKey))
             {
@@ -68,28 +68,7 @@ namespace EddiEdsmResponder
                 edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_empty_api_key;
                 return;
             }
-
-            string commanderName;
-            if (string.IsNullOrEmpty(starMapConfiguration.commanderName))
-            {
-                // Fetch the commander name from the companion app
-                Commander cmdr = EDDI.Instance.Cmdr;
-                if (cmdr != null && cmdr.name != null)
-                {
-                    commanderName = cmdr.name;
-                }
-                else
-                {
-                    edsmFetchLogsButton.IsEnabled = false;
-                    edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_companion_unconfigured;
-                    return;
-                }
-            }
-            else
-            {
-                commanderName = starMapConfiguration.commanderName;
-            }
-
+            
             edsmFetchLogsButton.IsEnabled = false;
             edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
 
@@ -98,7 +77,7 @@ namespace EddiEdsmResponder
             await Task.Factory.StartNew(() => obtainEdsmLogs(edsmService, progress), TaskCreationOptions.LongRunning);
 
             starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
-            starMapConfiguration.ToFile();
+            ConfigService.Instance.edsmConfiguration = starMapConfiguration;
         }
 
         public static void obtainEdsmLogs(IEdsmService edsmService, IProgress<string> progress)

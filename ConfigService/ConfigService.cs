@@ -114,6 +114,16 @@ namespace EddiConfigService
             }
         }
 
+        public StarMapConfiguration edsmConfiguration
+        {
+            get => currentConfigs[nameof(edsmConfiguration)] as StarMapConfiguration;
+            set
+            {
+                currentConfigs[nameof(edsmConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>Saves configurations from the specified data directory</summary>
         public ConcurrentDictionary<string, Config> ReadConfigurations(string directory)
         {
@@ -122,6 +132,7 @@ namespace EddiConfigService
                 {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
                 {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
+                {nameof(edsmConfiguration), FromFile<StarMapConfiguration>(directory)},
                 {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
                 {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
                 {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
