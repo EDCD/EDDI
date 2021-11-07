@@ -62,6 +62,10 @@
       <Project>{C1D256BA-68B9-437A-8907-599C3A388C37}</Project>
       <Name>EddiCargoMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>

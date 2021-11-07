@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-
+﻿using EddiConfigService;
+using System.Collections.Generic;
 
 namespace EddiInaraService
 {

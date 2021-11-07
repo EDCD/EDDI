@@ -1,4 +1,5 @@
-﻿using EddiInaraService;
+﻿using EddiConfigService;
+using EddiInaraService;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace EddiInaraResponder
             DataContext = this;
             InitializeComponent();
 
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             inaraApiKeyTextBox.Text = inaraConfiguration.apiKey;
         }
 
@@ -61,7 +62,7 @@ namespace EddiInaraResponder
 
         private void UpdateConfiguration()
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
 
             // Reset API key validity when it is edited.
             inaraConfiguration.isAPIkeyValid = true;
@@ -70,7 +71,7 @@ namespace EddiInaraResponder
             inaraConfiguration.apiKey = apiKey;
 
             // Save the updated configuration
-            inaraConfiguration.ToFile();
+            ConfigService.Instance.inaraConfiguration = inaraConfiguration;
         }
 
         private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)

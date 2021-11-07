@@ -51,6 +51,7 @@
     <Compile Include="EDDIConfiguration.cs" />
     <Compile Include="EddpConfiguration.cs" />
     <Compile Include="GalnetConfiguration.cs" />
+    <Compile Include="InaraConfiguration.cs" />
     <Compile Include="MissionMonitorConfiguration.cs" />
     <Compile Include="NavigationMonitorConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

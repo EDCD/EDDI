@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiConfigService;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Concurrent;
@@ -113,7 +114,7 @@ namespace EddiInaraService
 
             try
             {
-                if (inaraConfiguration is null) { inaraConfiguration = InaraConfiguration.FromFile(); }
+                if (inaraConfiguration is null) { inaraConfiguration = ConfigService.Instance.inaraConfiguration; }
                 List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
                 if (indexedEvents.Count > 0)
                 {
@@ -231,9 +232,9 @@ namespace EddiInaraService
                         {
                             ReEnqueueAPIEvents(indexedEvents);
                             // The Inara API key has been rejected. We'll note and remember that.
-                            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
                             inaraConfiguration.isAPIkeyValid = false;
-                            inaraConfiguration.ToFile();
+                            ConfigService.Instance.inaraConfiguration = inaraConfiguration;
                             // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
                             invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
                         }
@@ -290,14 +291,14 @@ namespace EddiInaraService
 
         public void SendAPIEvents(List<InaraAPIEvent> queue)
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (checkAPIcredentialsOk(inaraConfiguration))
             {
                 var responses = SendEventBatch(queue, inaraConfiguration);
                 if (responses != null && responses.Count > 0)
                 {
                     inaraConfiguration.lastSync = queue.Max(e => e.eventTimestamp);
-                    inaraConfiguration.ToFile();
+                    ConfigService.Instance.inaraConfiguration = inaraConfiguration;
                 }
             }
         }

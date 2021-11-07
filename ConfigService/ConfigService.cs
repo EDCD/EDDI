@@ -64,6 +64,16 @@ namespace EddiConfigService
             }
         }
 
+        public InaraConfiguration inaraConfiguration
+        {
+            get => currentConfigs[nameof(inaraConfiguration)] as InaraConfiguration;
+            set
+            {
+                currentConfigs[nameof(inaraConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MissionMonitorConfiguration missionMonitorConfiguration
         {
             get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
@@ -94,6 +104,7 @@ namespace EddiConfigService
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
                 {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
+                {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
             });

@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
@@ -359,7 +360,7 @@ namespace EddiInaraResponder
                 // Whether is the item stolen or not. It is not used on Inara at this moment,
                 // but you can set it with the `isStolen` property if you'd like. 
                 eventData.Add(entry);
-            };
+            }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventory", eventData));
         }
 
@@ -1162,7 +1163,7 @@ namespace EddiInaraResponder
             }));
             if (@event.docked)
             {
-                // Set our docked lcoation for reference by the `Docked` event.
+                // Set our docked location for reference by the `Docked` event.
                 firstDockedLocation = @event.station;
             }
         }
@@ -1453,23 +1454,23 @@ namespace EddiInaraResponder
 
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
             {
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
-                inaraConfiguration.ToFile();
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
             }
         }
 
         private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
             {
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
-                inaraConfiguration.ToFile();
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
             }
         }
 
