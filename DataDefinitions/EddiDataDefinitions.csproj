@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BgsWatch.cs" />
+    <Compile Include="CargoInfo.cs" />
     <Compile Include="MissionFactionEffect.cs" />
     <Compile Include="ExobiologistRating.cs" />
     <Compile Include="MicroResourceInfo.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="NavBookmark.cs" />
-    <Compile Include="CargoInfo.cs" />
+    <Compile Include="CargoInfoItem.cs" />
     <Compile Include="Killer.cs" />
     <Compile Include="CommunityGoal.cs" />
     <Compile Include="MessageChannel.cs" />

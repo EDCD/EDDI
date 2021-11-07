@@ -5,7 +5,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -935,8 +934,9 @@ namespace EddiCrimeMonitor
         private bool handleMissionFine(DateTime timestamp, long missionid, long fine)
         {
             bool update = false;
-            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
-            Mission mission = missionMonitor?.GetMissionWithMissionId(missionid);
+            var mission = ConfigService.Instance.missionMonitorConfiguration
+                ?.missions
+                ?.FirstOrDefault(m => m.missionid == missionid);
             if (mission != null)
             {
                 update = _handleMissionFine(timestamp, mission, fine);

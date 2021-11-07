@@ -71,10 +71,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
-      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
-      <Name>EddiCargoMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
@@ -94,10 +90,6 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
-      <Name>EddiMissionMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
       <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>

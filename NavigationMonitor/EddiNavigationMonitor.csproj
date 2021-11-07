@@ -84,10 +84,6 @@
       <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
       <Name>EddiNavigationService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
-      <Name>EddiShipMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>

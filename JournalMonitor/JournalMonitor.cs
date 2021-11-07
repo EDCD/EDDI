@@ -1,5 +1,4 @@
-﻿using EddiCargoMonitor;
-using EddiCore;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -3495,7 +3494,7 @@ namespace EddiJournalMonitor
                             case "Cargo":
                                 {
                                     bool update = false;
-                                    List<CargoInfo> inventory = new List<CargoInfo>();
+                                    var inventory = new List<CargoInfoItem>();
 
                                     string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
                                     int cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
@@ -3509,13 +3508,13 @@ namespace EddiJournalMonitor
                                             long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
                                             int count = JsonParsing.getInt(cargoJson, "Count");
                                             int stolen = JsonParsing.getInt(cargoJson, "Stolen");
-                                            CargoInfo info = new CargoInfo(name, missionid, count, stolen);
+                                            var info = new CargoInfoItem(name, missionid, count, stolen);
                                             inventory.Add(info);
                                         }
                                     }
                                     else
                                     {
-                                        inventory = CargoInfoReader.FromFile().Inventory;
+                                        inventory = CargoInfo.FromFile().Inventory;
                                         update = true;
                                     }
 
@@ -3523,7 +3522,6 @@ namespace EddiJournalMonitor
                                     if (cargocarried == inventory.Sum(i => i.count))
                                     {
                                         events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
-
                                     }
                                 }
                                 handled = true;

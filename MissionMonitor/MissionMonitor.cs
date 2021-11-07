@@ -992,11 +992,6 @@ namespace EddiMissionMonitor
             }
         }
 
-        public Mission GetMissionWithMissionId(long missionid)
-        {
-            return missions.FirstOrDefault(m => m.missionid == missionid);
-        }
-
         private void AddMission(Mission mission)
         {
             if (mission == null || missions.Any(m => m.missionid == mission.missionid))

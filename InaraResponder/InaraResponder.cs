@@ -1015,7 +1015,7 @@ namespace EddiInaraResponder
         private void handleCargoEvent(CargoEvent @event)
         {
             List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
-            foreach (CargoInfo cargoInfo in @event.inventory)
+            foreach (CargoInfoItem cargoInfo in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
                 {

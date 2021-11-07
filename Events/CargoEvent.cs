@@ -18,11 +18,11 @@ namespace EddiEvents
 
         public string vessel { get; private set; }
 
-        public List<CargoInfo> inventory { get; private set; }
+        public List<CargoInfoItem> inventory { get; private set; }
 
         public int cargocarried { get; private set; }
 
-        public CargoEvent(DateTime timestamp, bool update, string vessel, List<CargoInfo> inventory, int cargocarried) : base(timestamp, NAME)
+        public CargoEvent(DateTime timestamp, bool update, string vessel, List<CargoInfoItem> inventory, int cargocarried) : base(timestamp, NAME)
         {
             this.update = update;
             this.vessel = vessel;

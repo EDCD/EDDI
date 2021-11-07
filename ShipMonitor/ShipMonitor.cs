@@ -1,9 +1,8 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiStatusMonitor;
+using EddiNavigationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -551,7 +550,7 @@ namespace EddiShipMonitor
             {
                 ship.frameshiftdrive = compartment.module;
                 ship.optimalmass = @event.optimalmass;
-                ship.maxfuelperjump = MaxFuelPerJump(ship);
+                ship.maxfuelperjump = JumpCalcs.MaxFuelPerJump(ship);
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "LifeSupport");
@@ -1754,92 +1753,6 @@ namespace EddiShipMonitor
             {
                 Logging.Warn("Cannot remove the module. Ship ID " + ship?.LocalId + " or ship slot " + slot + " was not found.");
             }
-        }
-
-        public JumpDetail JumpDetails(string type)
-        {
-            Ship ship = GetCurrentShip();
-            ship.maxfuelperjump = MaxFuelPerJump(ship);
-
-            int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
-            decimal? currentFuel = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus.fuelInTanks;
-            decimal maxFuel = ship.fueltanktotalcapacity ?? 0;
-
-            if (!string.IsNullOrEmpty(type))
-            {
-                switch (type)
-                {
-                    case "next":
-                        {
-                            decimal distance = JumpRange(ship, currentFuel ?? 0, cargoCarried);
-                            return new JumpDetail(distance, 1);
-                        }
-                    case "max":
-                        {
-                            decimal distance = JumpRange(ship, ship.maxfuelperjump, cargoCarried);
-                            return new JumpDetail(distance, 1);
-                        }
-                    case "total":
-                        {
-                            decimal total = 0;
-                            int jumps = 0;
-                            while (currentFuel > 0)
-                            {
-                                total += JumpRange(ship, currentFuel ?? 0, cargoCarried);
-                                jumps++;
-                                currentFuel -= Math.Min(currentFuel ?? 0, ship.maxfuelperjump);
-                            }
-                            return new JumpDetail(total, jumps);
-                        }
-                    case "full":
-                        {
-                            decimal total = 0;
-                            int jumps = 0;
-                            while (maxFuel > 0)
-                            {
-                                total += JumpRange(ship, maxFuel, cargoCarried);
-                                jumps++;
-                                maxFuel -= Math.Min(maxFuel, ship.maxfuelperjump);
-                            }
-                            return new JumpDetail(total, jumps);
-                        }
-                }
-            }
-            return null;
-        }
-
-        private decimal JumpRange(Ship ship, decimal currentFuel, int cargoCarried)
-        {
-            decimal boostConstant = 0;
-            Module module = ship.compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
-            if (module != null)
-            {
-                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
-            }
-
-            Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
-            Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
-            decimal massRatio = ship.optimalmass / (ship.unladenmass + currentFuel + cargoCarried);
-            decimal fuel = Math.Min(currentFuel, ship.maxfuelperjump);
-
-            return ((decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio) + boostConstant;
-        }
-
-        private decimal MaxFuelPerJump(Ship ship)
-        {
-            // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
-            decimal boostConstant = 0;
-            Module module = ship.compartments.FirstOrDefault(c => c?.module?.edname != null && c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
-            if (module != null)
-            {
-                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
-            }
-            Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
-            Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
-            decimal maxJumpRange = Math.Max(ship.maxjumprange - boostConstant, 0);
-            decimal massRatio = (ship.unladenmass + ship.maxfuelperjump) / ship.optimalmass;
-
-            return ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * massRatio), (double)powerConstant) / 1000;
         }
 
         /// <summary> See if we're in a fighter </summary>

@@ -3,7 +3,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiShipMonitor;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
@@ -217,7 +216,7 @@ namespace EddiNavigationService
                         }
                         else
                         {
-                            distance = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails("total")?.distance;
+                            distance = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip)?.distance;
                         }
                         return GetNearestScoopSystem(distance ?? 100);
                     }

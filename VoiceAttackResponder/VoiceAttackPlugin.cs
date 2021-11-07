@@ -998,7 +998,7 @@ namespace EddiVoiceAttackResponder
                 string type = vaProxy.GetText("Type variable");
                 if (!string.IsNullOrEmpty(type))
                 {
-                    ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(type);
+                    var detail = JumpCalcs.JumpDetails(type, EDDI.Instance.CurrentShip);
                     vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
                     vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
                     vaProxy.SetText("Type variable", null);
