@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using EddiConfigService;
+using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiMaterialMonitor;
@@ -41,7 +42,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMaterialMonitor()
         {
-            MaterialMonitorConfiguration config = MaterialMonitorConfiguration.FromJsonString(json);
+            var config = ConfigService.FromJsonString<MaterialMonitorConfiguration>(json);
             Assert.AreEqual(2, config.materials.Count);
 
             MaterialAmount zirconiumAmount = config.materials[1];

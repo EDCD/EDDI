@@ -74,6 +74,16 @@ namespace EddiConfigService
             }
         }
 
+        public MaterialMonitorConfiguration materialMonitorConfiguration
+        {
+            get => currentConfigs[nameof(materialMonitorConfiguration)] as MaterialMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(materialMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MissionMonitorConfiguration missionMonitorConfiguration
         {
             get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
@@ -105,6 +115,7 @@ namespace EddiConfigService
                 {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
                 {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
                 {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
+                {nameof(materialMonitorConfiguration), FromFile<MaterialMonitorConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
             });
