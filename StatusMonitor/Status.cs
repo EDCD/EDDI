@@ -254,6 +254,8 @@ namespace EddiDataDefinitions
 
         [PublicAPI]
         public int? fuel_seconds { get; set; }
+
+        [PublicAPI]
         public bool gliding { get; set; }
 
         // Not intended to be user facing
