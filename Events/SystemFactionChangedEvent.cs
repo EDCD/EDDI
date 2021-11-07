@@ -1,11 +1,10 @@
-﻿using EddiEvents;
-using System;
+﻿using System;
 using Utilities;
 
-namespace EddiEddpMonitor
+namespace EddiEvents
 {
     [PublicAPI]
-    class SystemFactionChangedEvent : Event
+    public class SystemFactionChangedEvent : Event
     {
         public const string NAME = "System faction changed";
         public const string DESCRIPTION = "Triggered when there is a change in the controlling faction of a watched system";

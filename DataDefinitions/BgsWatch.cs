@@ -1,13 +1,12 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel;
 
-namespace EddiEddpMonitor
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// The parameters to match EDDP messages
     /// </summary>
-    public class Watch : INotifyPropertyChanged
+    public class BgsWatch : INotifyPropertyChanged
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -35,7 +34,7 @@ namespace EddiEddpMonitor
         [JsonProperty("maxdistancefromhome")]
         public long? MaxDistanceFromHome { get; set; }
 
-        public Watch() { }
+        public BgsWatch() { }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)

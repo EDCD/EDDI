@@ -1,4 +1,5 @@
 ﻿using EddiCore;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -60,7 +61,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public void Start()
         {
-            configuration = EddpConfiguration.FromFile();
+            configuration = ConfigService.Instance.eddpConfiguration;
             running = true;
             monitor();
         }
@@ -76,7 +77,7 @@ namespace EddiEddpMonitor
         public void Reload()
         {
             // Reload the configuration and let the monitor know that we have done so
-            configuration = EddpConfiguration.FromFile();
+            configuration = ConfigService.Instance.eddpConfiguration;
             reloading = true;
         }
 
@@ -214,7 +215,7 @@ namespace EddiEddpMonitor
         /// </summary>
         private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, FactionState oldstate, FactionState newstate)
         {
-            foreach (Watch watch in configuration.watches)
+            foreach (BgsWatch watch in configuration.watches)
             {
                 if (watch.System != null && watch.System != systemname)
                 {

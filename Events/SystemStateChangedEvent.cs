@@ -1,12 +1,11 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using System;
 using Utilities;
 
-namespace EddiEddpMonitor
+namespace EddiEvents
 {
     [PublicAPI]
-    class SystemStateChangedEvent : Event
+    public class SystemStateChangedEvent : Event
     {
         public const string NAME = "System state changed";
         public const string DESCRIPTION = "Triggered when there is a change in the state of a watched system";
