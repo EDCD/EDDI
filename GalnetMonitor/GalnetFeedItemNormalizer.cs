@@ -5,7 +5,7 @@ using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 
-namespace GalnetMonitor
+namespace EddiGalnetMonitor
 {
     /// <summary>
     /// The <see cref="DefaultFeedItemNormalizer"/> normalizes <see cref="FeedItem.Title"/>, 

@@ -71,7 +71,6 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GalnetConfiguration.cs" />
     <Compile Include="GalnetFeedItemNormalizer.cs" />
     <Compile Include="GalnetMonitor.cs" />
     <Compile Include="GalnetRepository.cs" />
@@ -87,6 +86,10 @@
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>

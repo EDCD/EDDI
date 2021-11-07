@@ -83,6 +83,7 @@ Type: files; Name: "{app}\EntityFramework.xml"
 Type: files; Name: "{app}\System.Data.SQLite.dll.config"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 Type: files; Name: "{userappdata}\EDDI\elite.json"
+Type: files; Name: "{userappdata}\EDDI\galnet"
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]

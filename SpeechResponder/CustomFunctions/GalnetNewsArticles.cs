@@ -2,7 +2,7 @@
 using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
-using GalnetMonitor;
+using EddiGalnetMonitor;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 

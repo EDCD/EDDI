@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.IO;
 using Utilities;
 
-namespace GalnetMonitor
+namespace EddiGalnetMonitor
 {
     public class GalnetSqLiteRepository : SqLiteBaseRepository, GalnetRepository
     {

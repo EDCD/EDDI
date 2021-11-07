@@ -54,6 +54,16 @@ namespace EddiConfigService
             }
         }
 
+        public GalnetConfiguration galnetConfiguration
+        {
+            get => currentConfigs[nameof(galnetConfiguration)] as GalnetConfiguration;
+            set
+            {
+                currentConfigs[nameof(galnetConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MissionMonitorConfiguration missionMonitorConfiguration
         {
             get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
@@ -83,6 +93,7 @@ namespace EddiConfigService
                 {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
+                {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
             });
