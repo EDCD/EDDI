@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EddiUpgrader.cs" />
+    <Compile Include="JumpCalcs.cs" />
     <Compile Include="StarSystemComboBox.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

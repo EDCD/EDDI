@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -33,6 +34,8 @@ namespace EddiSpeechResponder
 #pragma warning disable IDE0052 // Remove unread private members: instantiating this registers the Cottle Highlighting Definition
         private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
 #pragma warning restore IDE0052 // Remove unread private members
+
+        public static Status currentStatus;
 
         public string ResponderName()
         {
@@ -65,6 +68,8 @@ namespace EddiSpeechResponder
             subtitles = configuration?.Subtitles ?? false;
             subtitlesOnly = configuration?.SubtitlesOnly ?? false;
             Logging.Info($"Initialized {ResponderName()}");
+
+            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
         }
 
         /// <summary>
@@ -272,6 +277,17 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
+            }
+        }
+
+        private void OnStatusUpdated(object sender, EventArgs e)
+        {
+            if (sender is Status status)
+            {
+                LockManager.GetLock(nameof(currentStatus), () =>
+                {
+                    currentStatus = status;
+                });
             }
         }
     }

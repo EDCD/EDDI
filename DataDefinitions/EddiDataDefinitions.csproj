@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="NavRouteInfoItem.cs" />
     <Compile Include="NpcSuitLoadout.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="Suit.cs" />
     <Compile Include="ShipyardInfo.cs" />
     <Compile Include="Statistics.cs" />

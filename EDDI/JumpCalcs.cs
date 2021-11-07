@@ -1,11 +1,9 @@
 ﻿using EddiDataDefinitions;
-using EddiCore;
-using EddiStatusMonitor;
-using Utilities;
 using System;
 using System.Linq;
+using Utilities;
 
-namespace EddiNavigationService
+namespace Eddi
 {
     public class JumpCalcs
     {
@@ -26,14 +24,12 @@ namespace EddiNavigationService
             }
         }
 
-        public static JumpDetail JumpDetails(string type, Ship ship)
+        public static JumpDetail JumpDetails(string type, Ship ship, decimal? fuelInTanks, int cargoCarried)
         {
-            if (string.IsNullOrEmpty(type) || ship is null) { return null; }
+            if (string.IsNullOrEmpty(type) || ship is null || fuelInTanks is null) { return null; }
 
             ship.maxfuelperjump = MaxFuelPerJump(ship);
 
-            int cargoCarried = EddiConfigService.ConfigService.Instance.cargoMonitorConfiguration.cargocarried;
-            decimal? currentFuel = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus.fuelInTanks;
             decimal maxFuel = ship.fueltanktotalcapacity ?? 0;
 
             if (!string.IsNullOrEmpty(type))
@@ -42,7 +38,7 @@ namespace EddiNavigationService
                 {
                     case "next":
                         {
-                            decimal distance = JumpRange(ship, currentFuel ?? 0, cargoCarried);
+                            decimal distance = JumpRange(ship, fuelInTanks ?? 0, cargoCarried);
                             return new JumpDetail(distance, 1);
                         }
                     case "max":
@@ -54,11 +50,11 @@ namespace EddiNavigationService
                         {
                             decimal total = 0;
                             int jumps = 0;
-                            while (currentFuel > 0)
+                            while (fuelInTanks > 0)
                             {
-                                total += JumpRange(ship, currentFuel ?? 0, cargoCarried);
+                                total += JumpRange(ship, fuelInTanks ?? 0, cargoCarried);
                                 jumps++;
-                                currentFuel -= Math.Min(currentFuel ?? 0, ship.maxfuelperjump);
+                                fuelInTanks -= Math.Min(fuelInTanks ?? 0, ship.maxfuelperjump);
                             }
                             return new JumpDetail(total, jumps);
                         }

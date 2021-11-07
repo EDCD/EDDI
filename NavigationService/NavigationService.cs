@@ -7,6 +7,7 @@ using EddiStarMapService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiNavigationService
@@ -69,6 +70,7 @@ namespace EddiNavigationService
         private readonly DataProviderService dataProviderService;
         private static NavigationService instance;
         private static readonly object instanceLock = new object();
+        private Status currentStatus;
 
         // Search variables
         public StarSystem SearchStarSystem { get; private set; }
@@ -104,6 +106,19 @@ namespace EddiNavigationService
                         break;
                     }
                 }
+            }
+
+            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+        }
+
+        private void OnStatusUpdated(object sender, EventArgs e)
+        {
+            if (sender is Status status)
+            {
+                LockManager.GetLock(nameof(currentStatus), () =>
+                {
+                    currentStatus = status;
+                });
             }
         }
 
@@ -216,7 +231,7 @@ namespace EddiNavigationService
                         }
                         else
                         {
-                            distance = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip)?.distance;
+                            distance = Eddi.JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance;
                         }
                         return GetNearestScoopSystem(distance ?? 100);
                     }

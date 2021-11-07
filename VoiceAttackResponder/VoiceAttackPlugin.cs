@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCompanionAppService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -53,6 +54,8 @@ namespace EddiVoiceAttackResponder
         private static List<VoiceAttackVariable> currentVariables = new List<VoiceAttackVariable>();
 
         private static readonly object vaProxyLock = new object();
+
+        private static Status currentStatus;
 
         public static void VA_Init1(dynamic vaProxy)
         {
@@ -111,6 +114,7 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
                 SpeechService.Instance.PropertyChanged += (s, e) => setSpeechState(e);
                 CompanionAppService.Instance.StateChanged += (oldState, newState) => setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
+                StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
@@ -185,6 +189,17 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Error("Failed to initialize VoiceAttack plugin", e);
                 vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
+            }
+        }
+
+        private static void OnStatusUpdated(object sender, EventArgs e)
+        {
+            if (sender is Status status)
+            {
+                LockManager.GetLock(nameof(currentStatus), () =>
+                {
+                    currentStatus = status;
+                });
             }
         }
 
@@ -998,7 +1013,7 @@ namespace EddiVoiceAttackResponder
                 string type = vaProxy.GetText("Type variable");
                 if (!string.IsNullOrEmpty(type))
                 {
-                    var detail = JumpCalcs.JumpDetails(type, EDDI.Instance.CurrentShip);
+                    var detail = JumpCalcs.JumpDetails(type, EDDI.Instance.CurrentShip, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
                     vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
                     vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
                     vaProxy.SetText("Type variable", null);

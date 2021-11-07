@@ -1,7 +1,7 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
+using EddiConfigService;
 using EddiCore;
-using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 
@@ -20,7 +20,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 return null;
             }
-            var result = JumpCalcs.JumpDetails(value, EDDI.Instance.CurrentShip);
+            var result = Eddi.JumpCalcs.JumpDetails(value, EDDI.Instance.CurrentShip, SpeechResponder.currentStatus?.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }
