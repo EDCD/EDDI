@@ -104,6 +104,16 @@ namespace EddiConfigService
             }
         }
 
+        public SpeechResponderConfiguration speechResponderConfiguration
+        {
+            get => currentConfigs[nameof(speechResponderConfiguration)] as SpeechResponderConfiguration;
+            set
+            {
+                currentConfigs[nameof(speechResponderConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>Saves configurations from the specified data directory</summary>
         public ConcurrentDictionary<string, Config> ReadConfigurations(string directory)
         {
@@ -117,7 +127,8 @@ namespace EddiConfigService
                 {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
                 {nameof(materialMonitorConfiguration), FromFile<MaterialMonitorConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
-                {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)}
+                {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)},
+                {nameof(speechResponderConfiguration), FromFile<SpeechResponderConfiguration>(directory)}
             });
         }
 

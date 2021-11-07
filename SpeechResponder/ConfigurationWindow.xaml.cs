@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using System;
@@ -20,7 +21,7 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged
     {
-        private SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+        private SpeechResponderConfiguration configuration = ConfigService.Instance.speechResponderConfiguration;
         private readonly Personality defaultPersonality = Personality.Default();
 
         public ObservableCollection<Personality> Personalities
@@ -282,9 +283,9 @@ namespace EddiSpeechResponder
             if (sender is ComboBox comboBox && !comboBox.IsLoaded) { return; }
             if (Personality != null)
             {
-                configuration = SpeechResponderConfiguration.FromFile();
+                configuration = ConfigService.Instance.speechResponderConfiguration;
                 configuration.Personality = Personality.Name;
-                configuration.ToFile();
+                ConfigService.Instance.speechResponderConfiguration = configuration;
                 EDDI.Instance.Reload("Speech responder");
             }
         }
@@ -352,9 +353,9 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.Subtitles = true;
-                    configuration.ToFile();
+                    ConfigService.Instance.speechResponderConfiguration = configuration;
                     EDDI.Instance.Reload("Speech responder");
                 }
             }
@@ -366,9 +367,9 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.Subtitles = false;
-                    configuration.ToFile();
+                    ConfigService.Instance.speechResponderConfiguration = configuration;
                     EDDI.Instance.Reload("Speech responder");
                 }
             }
@@ -380,9 +381,9 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.SubtitlesOnly = true;
-                    configuration.ToFile();
+                    ConfigService.Instance.speechResponderConfiguration = configuration;
                     EDDI.Instance.Reload("Speech responder");
                 }
             }
@@ -394,9 +395,9 @@ namespace EddiSpeechResponder
             {
                 if (checkBox.IsLoaded)
                 {
-                    configuration = SpeechResponderConfiguration.FromFile();
+                    configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.SubtitlesOnly = false;
-                    configuration.ToFile();
+                    ConfigService.Instance.speechResponderConfiguration = configuration;
                     EDDI.Instance.Reload("Speech responder");
                 }
             }

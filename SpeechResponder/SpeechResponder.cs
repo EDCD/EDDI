@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -50,7 +51,7 @@ namespace EddiSpeechResponder
 
         public SpeechResponder()
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
             Personality personality = null;
             if (configuration != null && configuration.Personality != null)
             {
@@ -72,7 +73,7 @@ namespace EddiSpeechResponder
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
         public bool SetPersonality(string newPersonality)
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
             if (newPersonality == configuration.Personality)
             {
                 // Already set to this personality
@@ -85,7 +86,7 @@ namespace EddiSpeechResponder
             {
                 // Yes it does; use it
                 configuration.Personality = newPersonality;
-                configuration.ToFile();
+                ConfigService.Instance.speechResponderConfiguration = configuration;
                 scriptResolver = new Service.ScriptResolver(personality.Scripts);
                 Logging.Debug("Changed personality to " + newPersonality);
                 return true;
@@ -146,14 +147,14 @@ namespace EddiSpeechResponder
 
         public void Reload()
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
-            Personality personality = Personality.FromName(configuration.Personality);
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
+            var personality = Personality.FromName(configuration.Personality);
             if (personality == null)
             {
                 Logging.Warn("Failed to find named personality; falling back to default");
                 personality = Personality.Default();
                 configuration.Personality = personality.Name;
-                configuration.ToFile();
+                ConfigService.Instance.speechResponderConfiguration = configuration;
             }
             scriptResolver = new Service.ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
