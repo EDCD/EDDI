@@ -2,13 +2,13 @@
 using Cottle.Functions;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using EddiConfigService;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -33,8 +33,8 @@ namespace EddiSpeechResponder.CustomFunctions
                 ? (int)values[1].AsNumber 
                 : (int?)null);
 
-            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-            Ship ship = localId is null ? shipMonitor.GetCurrentShip() : shipMonitor.GetShip(localId);
+            var shipyard = ConfigService.Instance.shipMonitorConfiguration?.shipyard;
+            var ship = localId is null ? EDDI.Instance.CurrentShip : shipyard?.FirstOrDefault(s => s.LocalId == localId);
 
             switch (callsignType)
             {
@@ -43,10 +43,10 @@ namespace EddiSpeechResponder.CustomFunctions
                     return phoneticCallsign(ship, EDDI.Instance.Cmdr.name);
                 case 1:
                     // Variant: ShipName
-                    return phoneticCallsign(ship, ship.name);
+                    return phoneticCallsign(ship, ship?.name);
                 case 2:
                     // Variant: ShipID
-                    return phoneticCallsign(ship, ship.ident);
+                    return phoneticCallsign(ship, ship?.ident);
             }
         }, 0, 2);
 

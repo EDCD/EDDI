@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -16,7 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using EddiConfigService;
 using Utilities;
 
 namespace EddiShipMonitor

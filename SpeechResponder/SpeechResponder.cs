@@ -3,7 +3,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using Newtonsoft.Json;
@@ -208,7 +207,7 @@ namespace EddiSpeechResponder
             Ship ship = null;
             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
-                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                ship = EDDI.Instance.CurrentShip;
             }
             Say(scriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
         }
