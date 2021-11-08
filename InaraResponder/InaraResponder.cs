@@ -3,7 +3,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
-using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;
 using System;
@@ -52,8 +51,7 @@ namespace EddiInaraResponder
         {
             // Alert the user that there is a problem with the Inara API key
             Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
-            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor(EddiShipMonitor.Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture));
-            SpeechService.Instance.Say(shipMonitor.GetCurrentShip(), Properties.InaraResources.invalidKeyErr);
+            SpeechService.Instance.Say(EDDI.Instance.CurrentShip, Properties.InaraResources.invalidKeyErr);
         }
 
         public void Stop()
@@ -395,7 +393,7 @@ namespace EddiInaraResponder
                 { "stationName", @event.carriername },
                 { "marketID", @event.carrierId }
             };
-            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+            var currentShip = EDDI.Instance.CurrentShip;
             if (!string.IsNullOrEmpty(currentShip?.EDName))
             {
                 eventData.Add("shipType", currentShip.EDName);
@@ -594,7 +592,7 @@ namespace EddiInaraResponder
 
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                    var currentShip = EDDI.Instance.CurrentShip;
                     if (!string.IsNullOrEmpty(currentShip?.EDName))
                     {
                         eventData.Add("shipType", currentShip.EDName);
@@ -629,7 +627,7 @@ namespace EddiInaraResponder
                 { "shipIdent", @event.ident },
                 { "isCurrentShip", true }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip.EDName == @event.edModel)
             {
                 currentShipData.Add("shipRole", (currentShip.Role ?? Role.MultiPurpose).invariantName);
@@ -651,7 +649,7 @@ namespace EddiInaraResponder
                 { "shipModulesValue", @event.modulesvalue },
                 { "shipRebuyCost", @event.rebuy }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip.EDName == @event.edModel)
             {
                 currentShipData.Add("shipRole", (currentShip.Role ?? Role.MultiPurpose).invariantName);
@@ -760,7 +758,7 @@ namespace EddiInaraResponder
                     { "stationName", EDDI.Instance.CurrentStation?.name },
                     { "marketID", EDDI.Instance.CurrentStation?.marketId }
                 };
-                var storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
                 {
                     storedShipData.Add("shipName", storedShip.name);
@@ -784,7 +782,7 @@ namespace EddiInaraResponder
                 { "shipGameID", @event.shipid },
                 { "isCurrentShip", true }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip?.EDName == @event.edModel)
             {
                 currentShipData.Add("shipName", currentShip.name);
@@ -837,7 +835,7 @@ namespace EddiInaraResponder
                     { "stationName", EDDI.Instance.CurrentStation?.name },
                     { "marketID", EDDI.Instance.CurrentStation?.marketId }
                 };
-                var storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
                 {
                     storedShipData.Add("shipName", storedShip.name);
@@ -1185,7 +1183,7 @@ namespace EddiInaraResponder
 
             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                var currentShip = EDDI.Instance.CurrentShip;
                 if (!string.IsNullOrEmpty(currentShip?.EDName))
                 {
                     eventData.Add("shipType", currentShip.EDName);

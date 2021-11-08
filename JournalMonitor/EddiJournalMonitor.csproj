@@ -95,10 +95,6 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
-      <Name>EddiShipMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>

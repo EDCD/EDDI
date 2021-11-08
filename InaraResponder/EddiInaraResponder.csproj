@@ -82,10 +82,6 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
-      <Name>EddiShipMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
       <Name>EddiSpeechService</Name>

@@ -3,7 +3,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -1329,7 +1328,7 @@ namespace EddiJournalMonitor
                                     long? price = JsonParsing.getOptionalLong(data, "TransferPrice");
                                     long? time = JsonParsing.getOptionalLong(data, "TransferTime");
 
-                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetShip(shipId);
+                                    var ship = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == shipId);
                                     if (ship is null)
                                     {
                                         string shipEDModel = JsonParsing.getString(data, "ShipType");
@@ -2354,7 +2353,7 @@ namespace EddiJournalMonitor
                                     decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
                                     string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().EDName;
+                                    string ship = EDDI.Instance.CurrentShip?.EDName;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
@@ -3371,7 +3370,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Modules", out object val);
                                     List<object> slotsJson = (List<object>)val;
 
-                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
+                                    var ship = EDDI.Instance.CurrentShip;
                                     List<Module> modules = new List<Module>();
                                     foreach (string slot in slotsJson)
                                     {
