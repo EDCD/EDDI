@@ -104,6 +104,16 @@ namespace EddiConfigService
             }
         }
 
+        public ShipMonitorConfiguration shipMonitorConfiguration
+        {
+            get => currentConfigs[nameof(shipMonitorConfiguration)] as ShipMonitorConfiguration;
+            set
+            {
+                currentConfigs[nameof(shipMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
         public SpeechResponderConfiguration speechResponderConfiguration
         {
             get => currentConfigs[nameof(speechResponderConfiguration)] as SpeechResponderConfiguration;
@@ -139,6 +149,7 @@ namespace EddiConfigService
                 {nameof(materialMonitorConfiguration), FromFile<MaterialMonitorConfiguration>(directory)},
                 {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
                 {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)},
+                {nameof(shipMonitorConfiguration), FromFile<ShipMonitorConfiguration>(directory)},
                 {nameof(speechResponderConfiguration), FromFile<SpeechResponderConfiguration>(directory)}
             });
         }

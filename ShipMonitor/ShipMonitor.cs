@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiConfigService;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -1225,14 +1226,14 @@ namespace EddiShipMonitor
             lock (shipyardLock)
             {
                 // Write ship configuration with current inventory
-                ShipMonitorConfiguration configuration = new ShipMonitorConfiguration()
+                var configuration = new ShipMonitorConfiguration()
                 {
                     currentshipid = currentShipId,
                     shipyard = shipyard,
                     storedmodules = storedmodules,
                     updatedat = updatedAt
                 };
-                configuration.ToFile();
+                ConfigService.Instance.shipMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(ShipyardUpdatedEvent, shipyard);
@@ -1243,7 +1244,7 @@ namespace EddiShipMonitor
             lock (shipyardLock)
             {
                 // Obtain current inventory from configuration
-                ShipMonitorConfiguration configuration = ShipMonitorConfiguration.FromFile();
+                var configuration = ConfigService.Instance.shipMonitorConfiguration;
                 updatedAt = configuration.updatedat;
 
                 // Build a new shipyard
