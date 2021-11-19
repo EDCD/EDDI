@@ -553,7 +553,7 @@ namespace EddiNavigationMonitor
             var search = Task.Run(() =>
             {
                 RouteDetailsEvent @event = null;
-                if (Enum.TryParse(searchQuerySelection, true, out QueryTypes result))
+                if (Enum.TryParse(searchQuerySelection, true, out QueryType result))
                 {
                     @event = NavigationService.Instance.NavQuery(result);
                 }

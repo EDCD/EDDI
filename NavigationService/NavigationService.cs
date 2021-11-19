@@ -14,10 +14,10 @@ namespace EddiNavigationService
 {
     public class NavigationService
     {
-        private static readonly Dictionary<QueryTypes, ServiceFilter> ServiceFilter = new Dictionary<QueryTypes, ServiceFilter>()
+        private static readonly Dictionary<QueryType, ServiceFilter> ServiceFilters = new Dictionary<QueryType, ServiceFilter>()
         {
             // Encoded materials trader
-            { QueryTypes.encoded, new ServiceFilter {
+            { QueryType.encoded, new ServiceFilter {
                 econ = new List<string> {"High Tech", "Military"},
                 population = 1000000,
                 security = new List<string> {"Medium", "High"},
@@ -25,7 +25,7 @@ namespace EddiNavigationService
                 cubeLy = 40}
             },
             // Interstellar Factors
-            { QueryTypes.facilitator, new ServiceFilter {
+            { QueryType.facilitator, new ServiceFilter {
                 econ = new List<string>(),
                 population = 0,
                 security = new List<string> {"Low"},
@@ -33,7 +33,7 @@ namespace EddiNavigationService
                 cubeLy = 25}
             },
             // Manufactured materials trader
-            { QueryTypes.manufactured, new ServiceFilter {
+            { QueryType.manufactured, new ServiceFilter {
                 econ = new List<string> {"Industrial"},
                 population = 1000000,
                 security = new List<string>() {"Medium", "High"},
@@ -41,7 +41,7 @@ namespace EddiNavigationService
                 cubeLy = 40}
             },
             // Raw materials trader
-            { QueryTypes.raw, new ServiceFilter {
+            { QueryType.raw, new ServiceFilter {
                 econ = new List<string> {"Extraction", "Refinery"},
                 population = 1000000,
                 security = new List<string> {"Medium", "High"},
@@ -49,7 +49,7 @@ namespace EddiNavigationService
                 cubeLy = 40}
             },
             // Guardian tech broker
-            { QueryTypes.guardian, new ServiceFilter {
+            { QueryType.guardian, new ServiceFilter {
                 econ = new List<string> {"High Tech"},
                 population = 10000000,
                 security = new List<string>  {"High"},
@@ -57,7 +57,7 @@ namespace EddiNavigationService
                 cubeLy = 80}
             },
             // Human tech broker
-            { QueryTypes.human, new ServiceFilter {
+            { QueryType.human, new ServiceFilter {
                 econ = new List<string> {"Industrial"},
                 population = 10000000,
                 security = new List<string> {"High"},
@@ -78,7 +78,7 @@ namespace EddiNavigationService
         public decimal SearchDistanceLy { get; set; }
 
         // Last mission query variables
-        private QueryTypes LastMissionQuery { get; set; }
+        private QueryType LastMissionQuery { get; set; }
         private dynamic[] LastMissionQueryArgs { get; set; }
         private StarSystem LastUpdateMissionStarSystem { get; set; }
         private Station LastUpdateMissionStation { get; set; }
@@ -90,16 +90,16 @@ namespace EddiNavigationService
 
             // Remember our last query
             var configuration = ConfigService.Instance.navigationMonitorConfiguration;
-            if (Enum.TryParse(configuration.searchQuery, true, out QueryTypes queryType))
+            if (Enum.TryParse(configuration.searchQuery, true, out QueryType queryType))
             {
                 switch (queryType)
                 {
-                    case QueryTypes.expiring:
-                    case QueryTypes.farthest:
-                    case QueryTypes.most:
-                    case QueryTypes.nearest:
-                    case QueryTypes.route:
-                    case QueryTypes.source:
+                    case QueryType.expiring:
+                    case QueryType.farthest:
+                    case QueryType.most:
+                    case QueryType.nearest:
+                    case QueryType.route:
+                    case QueryType.source:
                     {
                         LastMissionQuery = queryType;
                         LastMissionQueryArgs = configuration.searchQueryArgs;
@@ -145,19 +145,19 @@ namespace EddiNavigationService
         /// <param name="queryType">The type of query</param>
         /// <param name="args">The query arguments</param>
         /// <returns>The query result</returns>
-        public RouteDetailsEvent NavQuery(QueryTypes queryType, dynamic[] args = null)
+        public RouteDetailsEvent NavQuery(QueryType queryType, dynamic[] args = null)
         {
             try
             {
                 // Keep track of the last mission query (excluding `update` queries)
                 switch (queryType)
                 {
-                    case QueryTypes.expiring:
-                    case QueryTypes.farthest:
-                    case QueryTypes.most:
-                    case QueryTypes.nearest:
-                    case QueryTypes.route:
-                    case QueryTypes.source:
+                    case QueryType.expiring:
+                    case QueryType.farthest:
+                    case QueryType.most:
+                    case QueryType.nearest:
+                    case QueryType.route:
+                    case QueryType.source:
                     {
                         LastMissionQuery = queryType;
                         LastMissionQueryArgs = args;
@@ -168,51 +168,51 @@ namespace EddiNavigationService
                 // Resolve the current search query
                 switch (queryType)
                 {
-                    case QueryTypes.encoded:
+                    case QueryType.encoded:
                     {
-                        return GetServiceSystem(QueryTypes.encoded);
+                        return GetServiceSystem(QueryType.encoded);
                     }
-                    case QueryTypes.expiring:
+                    case QueryType.expiring:
                     {
                         var result = GetExpiringMissionSystem();
                         return result;
                     }
-                    case QueryTypes.facilitator:
+                    case QueryType.facilitator:
                     {
-                        return GetServiceSystem(QueryTypes.facilitator);
+                        return GetServiceSystem(QueryType.facilitator);
                     }
-                    case QueryTypes.farthest:
+                    case QueryType.farthest:
                     {
                         var result = GetFarthestMissionSystem();
                         return result;
                     }
-                    case QueryTypes.guardian:
+                    case QueryType.guardian:
                     {
-                        return GetServiceSystem(QueryTypes.guardian);
+                        return GetServiceSystem(QueryType.guardian);
                     }
-                    case QueryTypes.human:
+                    case QueryType.human:
                     {
-                        return GetServiceSystem(QueryTypes.human);
+                        return GetServiceSystem(QueryType.human);
                     }
-                    case QueryTypes.manufactured:
+                    case QueryType.manufactured:
                     {
-                        return GetServiceSystem(QueryTypes.manufactured);
+                        return GetServiceSystem(QueryType.manufactured);
                     }
-                    case QueryTypes.most:
+                    case QueryType.most:
                     {
                         var result = GetMostMissionSystem();
                         return result;
                     }
-                    case QueryTypes.nearest:
+                    case QueryType.nearest:
                     {
                         var result = GetNearestMissionSystem();
                         return result;
                     }
-                    case QueryTypes.raw:
+                    case QueryType.raw:
                     {
-                        return GetServiceSystem(QueryTypes.raw);
+                        return GetServiceSystem(QueryType.raw);
                     }
-                    case QueryTypes.route:
+                    case QueryType.route:
                     {
                         string system = null;
                         if (!(args?[0] is null))
@@ -222,7 +222,7 @@ namespace EddiNavigationService
                         var result = GetShortestPathMissionSystem(string.IsNullOrEmpty(system) ? null : system);
                         return result;
                     }
-                    case QueryTypes.scoop:
+                    case QueryType.scoop:
                     {
                         decimal? distance;
                         if (args?[0] != null && (decimal?)args[0] > 0)
@@ -235,7 +235,7 @@ namespace EddiNavigationService
                         }
                         return GetNearestScoopSystem(distance ?? 100);
                     }
-                    case QueryTypes.source:
+                    case QueryType.source:
                     {
                         string system = null;
                         if (!(args?[0] is null))
@@ -245,11 +245,11 @@ namespace EddiNavigationService
                         var result = GetMissionCargoSource(string.IsNullOrEmpty(system) ? null : system);
                         return result;
                     }
-                    case QueryTypes.update:
+                    case QueryType.update:
                     {
                         return RefreshLastMissionQuery();
                     }
-                    case QueryTypes.None:
+                    case QueryType.None:
                     {
                         return null;
                     }
@@ -786,7 +786,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetServiceSystem(QueryTypes serviceQuery, int? maxDistanceOverride = null, bool? prioritizeOrbitalStationsOverride = null)
+        private RouteDetailsEvent GetServiceSystem(QueryType serviceQuery, int? maxDistanceOverride = null, bool? prioritizeOrbitalStationsOverride = null)
         {
             // Get up-to-date configuration data
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
@@ -797,7 +797,7 @@ namespace EddiNavigationService
             if (currentSystem != null)
             {
                 LandingPadSize shipSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                if (ServiceFilter.TryGetValue(serviceQuery, out ServiceFilter filter))
+                if (ServiceFilters.TryGetValue(serviceQuery, out ServiceFilter filter))
                 {
                     StarSystem ServiceStarSystem =
                         GetServiceSystem(serviceQuery, maxStationDistance, prioritizeOrbitalStations);
@@ -812,7 +812,7 @@ namespace EddiNavigationService
                             : ServiceStarSystem.orbitalstations
                                 .Where(s => s.stationservices.Count > 0).ToList();
                         ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
-                        if (serviceQuery == QueryTypes.facilitator)
+                        if (serviceQuery == QueryType.facilitator)
                         {
                             ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
                         }
@@ -860,14 +860,14 @@ namespace EddiNavigationService
             return null;
         }
 
-        private StarSystem GetServiceSystem(QueryTypes serviceQuery, int maxStationDistance, bool prioritizeOrbitalStations)
+        private StarSystem GetServiceSystem(QueryType serviceQuery, int maxStationDistance, bool prioritizeOrbitalStations)
         {
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
             {
                 // Get the filter parameters
                 LandingPadSize shipSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                if (ServiceFilter.TryGetValue(serviceQuery, out ServiceFilter filter))
+                if (ServiceFilters.TryGetValue(serviceQuery, out ServiceFilter filter))
                 {
                     int cubeLy = filter.cubeLy;
 
@@ -885,7 +885,7 @@ namespace EddiNavigationService
                             cubeSystems = cubeSystems.Where(s => s.population >= filter.population).ToList();
                             cubeSystems = cubeSystems
                                 .Where(s => filter.security.Contains(s.securityLevel.invariantName)).ToList();
-                            if (serviceQuery != QueryTypes.facilitator)
+                            if (serviceQuery != QueryType.facilitator)
                             {
                                 cubeSystems = cubeSystems
                                     .Where(s => filter.econ.Contains(s.Economies
@@ -913,7 +913,7 @@ namespace EddiNavigationService
                                         : starsystem.orbitalstations
                                             .Where(s => s.stationservices.Count > 0).ToList();
                                     stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
-                                    if (serviceQuery == QueryTypes.facilitator)
+                                    if (serviceQuery == QueryType.facilitator)
                                     {
                                         stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList();
                                     }
@@ -1012,7 +1012,7 @@ namespace EddiNavigationService
         /// <returns> The star system result from the repeated query </returns>
         private RouteDetailsEvent RefreshLastMissionQuery()
         {
-            if (LastMissionQuery is QueryTypes.None) { return null; }
+            if (LastMissionQuery is QueryType.None) { return null; }
             var @event = NavQuery(LastMissionQuery, LastMissionQueryArgs);
             if (LastUpdateMissionStarSystem?.systemname == SearchStarSystem?.systemname
                 && LastUpdateMissionStation?.name == SearchStation?.name)

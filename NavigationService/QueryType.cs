@@ -1,6 +1,6 @@
 ﻿namespace EddiNavigationService
 {
-    public enum QueryTypes
+    public enum QueryType
     {
         // ReSharper disable once UnusedMember.Global
         None, // null

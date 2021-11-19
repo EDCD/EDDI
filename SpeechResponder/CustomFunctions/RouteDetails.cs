@@ -24,13 +24,13 @@ namespace EddiSpeechResponder.CustomFunctions
 
             if (!string.IsNullOrEmpty(value))
             {
-                if (Enum.TryParse(value, true, out QueryTypes queryType))
+                if (Enum.TryParse(value, true, out QueryType queryType))
                 {
                     // Special case any queries which allow optional arguments
                     dynamic[] args = null;
                     switch (queryType)
                     {
-                        case QueryTypes.route:
+                        case QueryType.route:
                         {
                             dynamic querySystem = null;
                             if (values.Count == 2)
@@ -40,7 +40,7 @@ namespace EddiSpeechResponder.CustomFunctions
                             args = new[] {querySystem};
                             break;
                         }
-                        case QueryTypes.scoop:
+                        case QueryType.scoop:
                         {
                             dynamic searchDistance = null;
                             if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
@@ -50,7 +50,7 @@ namespace EddiSpeechResponder.CustomFunctions
                             args = new[] { searchDistance };
                             break;
                         }
-                        case QueryTypes.source:
+                        case QueryType.source:
                         {
                             dynamic querySystem = null;
                             if (values.Count == 2)
@@ -60,7 +60,7 @@ namespace EddiSpeechResponder.CustomFunctions
                             args = new[] { querySystem };
                             break;
                         }
-                        case QueryTypes.update:
+                        case QueryType.update:
                         {
                             dynamic arg = null;
                             if (values.Count == 2)

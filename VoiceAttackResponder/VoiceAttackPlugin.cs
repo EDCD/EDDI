@@ -1035,7 +1035,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("System variable", null);
 
                 RouteDetailsEvent @event = null;
-                if (Enum.TryParse(type, true, out QueryTypes result))
+                if (Enum.TryParse(type, true, out QueryType result))
                 {
                     @event = !string.IsNullOrEmpty(system) 
                         ? NavigationService.Instance.NavQuery(result, new[] { (dynamic)system }) 
