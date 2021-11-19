@@ -214,7 +214,7 @@
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
-    <value>Impulsunterbrecher</value>
+    <value>Disruptor</value>
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
@@ -318,7 +318,7 @@
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
-    <value>Verzeichnisscanner</value>
+    <value>Ladungssensor</value>
     <comment>Module ManifestScanner</comment>
   </data>
   <data name="MetaAlloyHullReinforcement" xml:space="preserve">
