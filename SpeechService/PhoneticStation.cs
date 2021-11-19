@@ -32,8 +32,11 @@ namespace EddiSpeechService
                 station = STATION_MODEL_FIXES[station];
             }
             // Strip plus signs and spaces from station name suffixes
-            char[] charsToTrim = { '+', ' ' };
-            station = station.TrimEnd(charsToTrim);
+            if (station.EndsWith("+"))
+            {
+                char[] charsToTrim = { '+', ' ' };
+                station = station.TrimEnd(charsToTrim);
+            }
             return station;
         }
     }
