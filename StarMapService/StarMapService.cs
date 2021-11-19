@@ -61,7 +61,30 @@ namespace EddiStarMapService
             }
 
             public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
-            IRestResponse<T> IEdsmRestClient.Execute<T>(IRestRequest request) => restClient.Execute<T>(request);
+            IRestResponse<T> IEdsmRestClient.Execute<T>(IRestRequest request)
+            {
+                var response = restClient.Execute<T>(request);
+                if (int.TryParse(
+                    response.Headers.FirstOrDefault(h => h.Name == "X-Rate-Limit-Remaining")?.Value as string,
+                    out int requestsRemaining))
+                {
+                    if (requestsRemaining == 0)
+                    {
+                        // We've exceeded our rate limit. A new request can be made after a short time has passed.
+                        if (int.TryParse(
+                            response.Headers.FirstOrDefault(h => h.Name == "X-Rate-Limit-Reset")?.Value as string,
+                            out var resetSeconds)) { }
+                        else
+                        {
+                            resetSeconds = 10;
+                        }
+                        Logging.Warn($"EDSM rate limit exceeded. Waiting {resetSeconds} seconds for server cool-down.");
+                        Thread.Sleep(TimeSpan.FromSeconds(resetSeconds));
+                        ((IEdsmRestClient) this).Execute<T>(request);
+                    }
+                }
+                return response;
+            }
         }
 
         public StarMapService(IEdsmRestClient restClient = null)
