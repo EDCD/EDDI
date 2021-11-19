@@ -285,10 +285,10 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.2.1</Version>
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.2.1</Version>
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="NetMQ">
       <Version>4.0.0.1</Version>
