@@ -9,7 +9,7 @@ namespace EddiSpeechService
             string phoneticManufacturer = ShipDefinitions.SpokenManufacturer(val2);
             if (phoneticManufacturer != null)
             {
-                return phoneticManufacturer;
+                return phoneticManufacturer.Trim();
             }
             return val2;
         }
