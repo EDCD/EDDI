@@ -217,30 +217,35 @@ namespace UnitTests
         [TestMethod]
         public void TestSetClipboard()
         {
-            if (Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA))
+            var testThread = new Thread(() =>
             {
-                Dictionary<string, Script> scripts = new Dictionary<string, Script>
+                if (Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA))
                 {
-                    {"test1", new Script("test1", null, false, @"{SetClipboard(""A"")}")},
-                    {"test2", new Script("test2", null, false, @"{SetClipboard(""B"")}")},
-                    {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
-                };
-                ScriptResolver resolver = new ScriptResolver(scripts);
-                var dict = new Dictionary<string, Cottle.Value>();
+                    Dictionary<string, Script> scripts = new Dictionary<string, Script>
+                    {
+                        {"test1", new Script("test1", null, false, @"{SetClipboard(""A"")}")},
+                        {"test2", new Script("test2", null, false, @"{SetClipboard(""B"")}")},
+                        {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
+                    };
+                    ScriptResolver resolver = new ScriptResolver(scripts);
+                    var dict = new Dictionary<string, Cottle.Value>();
 
-                resolver.resolveFromName("test1", dict, true);
-                Assert.AreEqual("A", Clipboard.GetText());
+                    resolver.resolveFromName("test1", dict, true);
+                    Assert.AreEqual("A", Clipboard.GetText());
 
-                resolver.resolveFromName("test2", dict, true);
-                Assert.AreEqual("B", Clipboard.GetText());
+                    resolver.resolveFromName("test2", dict, true);
+                    Assert.AreEqual("B", Clipboard.GetText());
 
-                resolver.resolveFromName("test3", dict, true);
-                Assert.AreEqual("C", Clipboard.GetText());
-            }
-            else
-            {
-                Assert.Fail("Unable to set thread to single thread apartment (STA) mode");
-            }
+                    resolver.resolveFromName("test3", dict, true);
+                    Assert.AreEqual("C", Clipboard.GetText());
+                }
+                else
+                {
+                    Assert.Fail("Unable to set thread to single thread apartment (STA) mode");
+                }
+            });
+            testThread.Start();
+            testThread.Join();
         }
     }
 }
