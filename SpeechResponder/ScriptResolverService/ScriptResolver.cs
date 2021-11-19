@@ -280,7 +280,7 @@ namespace EddiSpeechResponder.Service
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
-        private BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars)
+        public BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars = null)
         {
             BuiltinStore store = new BuiltinStore();
             
@@ -297,9 +297,12 @@ namespace EddiSpeechResponder.Service
             }
 
             // Variables
-            foreach (KeyValuePair<string, Cottle.Value> entry in vars)
+            if (vars != null)
             {
-                store[entry.Key] = entry.Value;
+                foreach (KeyValuePair<string, Cottle.Value> entry in vars)
+                {
+                    store[entry.Key] = entry.Value;
+                }
             }
 
             return store;
