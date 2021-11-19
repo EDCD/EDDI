@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assassination.
+        /// </summary>
+        internal static string Assassination {
+            get {
+                return ResourceManager.GetString("Assassination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Black Ops.
         /// </summary>
         internal static string BlOps {
@@ -277,6 +286,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Heist.
+        /// </summary>
+        internal static string Heist {
+            get {
+                return ResourceManager.GetString("Heist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Illegal.
         /// </summary>
         internal static string Illegal {
@@ -426,6 +444,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Planetary {
             get {
                 return ResourceManager.GetString("Planetary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Point of Interest.
+        /// </summary>
+        internal static string POI {
+            get {
+                return ResourceManager.GetString("POI", resourceCulture);
             }
         }
         

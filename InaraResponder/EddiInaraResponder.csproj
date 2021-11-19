@@ -58,12 +58,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
-      <Project>{C1D256BA-68B9-437A-8907-599C3A388C37}</Project>
-      <Name>EddiCargoMonitor</Name>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
@@ -81,14 +81,6 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6D01F475-75B8-4FCA-9B1D-9ECF5993A32D}</Project>
-      <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
-      <Name>EddiShipMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>

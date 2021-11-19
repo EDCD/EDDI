@@ -1,4 +1,6 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
+using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 using SimpleFeedReader;
@@ -14,7 +16,7 @@ using System.Threading;
 using System.Windows.Controls;
 using Utilities;
 
-namespace GalnetMonitor
+namespace EddiGalnetMonitor
 {
 
     /// <summary>
@@ -24,7 +26,7 @@ namespace GalnetMonitor
     {
         private static Dictionary<string, string> locales = new Dictionary<string, string>();
         protected static string locale;
-        private GalnetConfiguration configuration = new GalnetConfiguration();
+        private GalnetConfiguration configuration;
         protected static ResourceManager resourceManager = EddiGalnetMonitor.Properties.GalnetMonitor.ResourceManager;
 
         private bool running;
@@ -34,17 +36,7 @@ namespace GalnetMonitor
 
         public GalnetMonitor()
         {
-            // Remove the old configuration file if it still exists
-            if (File.Exists(Constants.DATA_DIR + @"\galnet"))
-            {
-                try
-                {
-                    File.Delete(Constants.DATA_DIR + @"\galnet");
-                }
-                catch { }
-            }
-
-            configuration = GalnetConfiguration.FromFile();
+            configuration = ConfigService.Instance.galnetConfiguration;
         }
 
         /// <summary>
@@ -98,7 +90,7 @@ namespace GalnetMonitor
 
         public void Reload()
         {
-            configuration = GalnetConfiguration.FromFile();
+            configuration = ConfigService.Instance.galnetConfiguration;
         }
 
         /// <summary>
@@ -229,7 +221,7 @@ namespace GalnetMonitor
                             {
                                 Logging.Debug("Updated latest UID to " + firstUid);
                                 configuration.lastuuid = firstUid;
-                                configuration.ToFile();
+                                ConfigService.Instance.galnetConfiguration = configuration;
                             }
 
                             if (newsItems.Count > 0)

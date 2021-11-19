@@ -1,11 +1,8 @@
 ﻿using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiMissionMonitor;
-using EddiShipMonitor;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -883,7 +880,6 @@ namespace UnitTests
             Assert.AreEqual("High Tech", @event.Economy.invariantName);
             Assert.AreEqual("Refinery", @event.Economy2.invariantName);
 
-            Assert.AreEqual("EXO", @event.faction);
             Assert.AreEqual("EXO", @event.systemfaction);
             Assert.AreEqual("Independent", @event.controllingsystemfaction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", @event.controllingsystemfaction.Government.invariantName);

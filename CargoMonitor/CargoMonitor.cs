@@ -1,8 +1,8 @@
 ﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -238,14 +238,14 @@ namespace EddiCargoMonitor
                 cargoCarried = @event.cargocarried;
                 if (@event.inventory != null)
                 {
-                    List<CargoInfo> infoList = @event.inventory.ToList();
+                    List<EddiDataDefinitions.CargoInfoItem> infoList = @event.inventory.ToList();
 
                     // Remove strays from the manifest
                     foreach (Cargo inventoryCargo in inventory.ToList())
                     {
                         string name = inventoryCargo.edname;
-                        CargoInfo info = @event.inventory.FirstOrDefault(i => i.name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                        if (info == null)
+                        EddiDataDefinitions.CargoInfoItem infoItem = @event.inventory.FirstOrDefault(i => i.name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                        if (infoItem == null)
                         {
                             if (inventoryCargo.haulageData?.Any() ?? false)
                             {
@@ -267,7 +267,7 @@ namespace EddiCargoMonitor
                     while (infoList.Any())
                     {
                         string name = infoList.ToList().First().name;
-                        List<CargoInfo> cargoInfo = infoList.Where(i => i.name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                        List<EddiDataDefinitions.CargoInfoItem> cargoInfo = infoList.Where(i => i.name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
                         Cargo cargo = inventory.FirstOrDefault(c => c.edname.Equals(name, StringComparison.OrdinalIgnoreCase));
                         if (cargo != null)
                         {
@@ -383,7 +383,6 @@ namespace EddiCargoMonitor
                 Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == @event.missionid);
                 if (haulage != null)
                 {
-                    MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
                     switch (haulage.typeEDName)
                     {
                         case "delivery":
@@ -391,7 +390,9 @@ namespace EddiCargoMonitor
                         case "smuggle":
                             {
                                 haulage.status = "Failed";
-                                Mission mission = missionMonitor?.GetMissionWithMissionId(@event.missionid ?? 0);
+                                var mission = ConfigService.Instance.missionMonitorConfiguration
+                                    ?.missions
+                                    ?.FirstOrDefault(m => m.missionid == @event.missionid);
                                 if (mission != null)
                                 {
                                     mission.statusDef = MissionStatus.FromEDName("Failed");
@@ -494,10 +495,11 @@ namespace EddiCargoMonitor
 
         private void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
-            Mission mission = missionMonitor?.GetMissionWithMissionId(@event.missionid ?? 0);
-            Cargo cargo = new Cargo();
-            Haulage haulage = new Haulage();
+            var mission = ConfigService.Instance.missionMonitorConfiguration
+                ?.missions
+                ?.FirstOrDefault(m => m.missionid == @event.missionid);
+            var cargo = new Cargo();
+            var haulage = new Haulage();
             int amountRemaining = @event.totaltodeliver - @event.delivered;
 
             switch (@event.updatetype)
@@ -963,13 +965,13 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Write cargo configuration with current inventory
-                CargoMonitorConfiguration configuration = new CargoMonitorConfiguration()
+                var configuration = new CargoMonitorConfiguration()
                 {
                     updatedat = updateDat,
                     cargo = inventory,
                     cargocarried = cargoCarried
                 };
-                configuration.ToFile();
+                ConfigService.Instance.cargoMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);
@@ -980,7 +982,7 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Obtain current cargo inventory from configuration
-                configuration = configuration ?? CargoMonitorConfiguration.FromFile();
+                configuration = configuration ?? ConfigService.Instance.cargoMonitorConfiguration;
                 cargoCarried = configuration.cargocarried;
                 updateDat = configuration.updatedat;
 
@@ -1103,17 +1105,18 @@ namespace EddiCargoMonitor
             return null;
         }
 
-        private void UpdateCargoFromInfo(Cargo cargo, List<CargoInfo> infoList)
+        private void UpdateCargoFromInfo(Cargo cargo, List<CargoInfoItem> infoList)
         {
             cargo.haulage = infoList.Where(i => i.missionid != null).Sum(i => i.count);
             cargo.stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
             cargo.owned = infoList.Sum(i => i.count) - cargo.haulage - cargo.stolen;
 
-            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
-            foreach (CargoInfo info in infoList.Where(i => i.missionid != null).ToList())
+            foreach (CargoInfoItem info in infoList.Where(i => i.missionid != null).ToList())
             {
-                Mission mission = missionMonitor?.GetMissionWithMissionId(info.missionid ?? 0);
-                Haulage cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);
+                var mission = ConfigService.Instance.missionMonitorConfiguration
+                    ?.missions
+                    ?.FirstOrDefault(m => m.missionid == info.missionid);
+                var cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);
                 if (cargoHaulage != null)
                 {
                     // Check for sold haulage

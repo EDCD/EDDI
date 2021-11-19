@@ -1,38 +1,25 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class CargoInfo
     {
-        [JsonProperty]
-        public string name { get; set; }
+        public int Count => Inventory.Count;
+        public List<CargoInfoItem> Inventory { get; set; } = new List<CargoInfoItem>();
 
-        [JsonProperty]
-        public long? missionid { get; set; }
-
-        [JsonProperty]
-        public int count { get; set; }
-
-        [JsonProperty]
-        public int stolen { get; set; }
-
-        public CargoInfo()
-        { }
-
-        public CargoInfo(CargoInfo CargoInfo)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
+        public static CargoInfo FromFile(string filename = null)
         {
-            this.name = CargoInfo.name;
-            this.missionid = CargoInfo.missionid;
-            this.count = CargoInfo.count;
-            this.stolen = CargoInfo.stolen;
-        }
+            CargoInfo info = new CargoInfo();
 
-        public CargoInfo(string Name, long? MissionID, int Count, int Stolen)
-        {
-            this.name = Name;
-            this.missionid = MissionID;
-            this.count = Count;
-            this.stolen = Stolen;
+            string data = Files.FromSavedGames("Cargo.json");
+            if (data != null)
+            {
+                info = JsonConvert.DeserializeObject<CargoInfo>(data);
+            }
+            return info;
         }
     }
 }

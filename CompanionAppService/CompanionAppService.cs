@@ -1,4 +1,5 @@
 ﻿using EddiSpeechService;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +12,6 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiCompanionAppService

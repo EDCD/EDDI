@@ -21,6 +21,10 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 return @"<voice name=""" + voice.name + @""" xml:lang=""" + voice.culturecode + @""">" + text + "</voice>";
             }
+            else if (voice is null)
+            {
+                return $"Voice \"{values[1].AsString}\" was not found. Please review available voices from EDDI's Text-To-Speech tab.";
+            }
             return "The Voice function is used improperly. Please review the documentation for correct usage.";
         }, 1, 2);
     }

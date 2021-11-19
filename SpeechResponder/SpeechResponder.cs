@@ -1,8 +1,8 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using Newtonsoft.Json;
@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -33,6 +34,8 @@ namespace EddiSpeechResponder
         private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
 #pragma warning restore IDE0052 // Remove unread private members
 
+        public static Status currentStatus;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -50,7 +53,7 @@ namespace EddiSpeechResponder
 
         public SpeechResponder()
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
             Personality personality = null;
             if (configuration != null && configuration.Personality != null)
             {
@@ -64,6 +67,8 @@ namespace EddiSpeechResponder
             subtitles = configuration?.Subtitles ?? false;
             subtitlesOnly = configuration?.SubtitlesOnly ?? false;
             Logging.Info($"Initialized {ResponderName()}");
+
+            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace EddiSpeechResponder
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
         public bool SetPersonality(string newPersonality)
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
             if (newPersonality == configuration.Personality)
             {
                 // Already set to this personality
@@ -85,7 +90,7 @@ namespace EddiSpeechResponder
             {
                 // Yes it does; use it
                 configuration.Personality = newPersonality;
-                configuration.ToFile();
+                ConfigService.Instance.speechResponderConfiguration = configuration;
                 scriptResolver = new Service.ScriptResolver(personality.Scripts);
                 Logging.Debug("Changed personality to " + newPersonality);
                 return true;
@@ -146,14 +151,14 @@ namespace EddiSpeechResponder
 
         public void Reload()
         {
-            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
-            Personality personality = Personality.FromName(configuration.Personality);
+            var configuration = ConfigService.Instance.speechResponderConfiguration;
+            var personality = Personality.FromName(configuration.Personality);
             if (personality == null)
             {
                 Logging.Warn("Failed to find named personality; falling back to default");
                 personality = Personality.Default();
                 configuration.Personality = personality.Name;
-                configuration.ToFile();
+                ConfigService.Instance.speechResponderConfiguration = configuration;
             }
             scriptResolver = new Service.ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
@@ -202,7 +207,7 @@ namespace EddiSpeechResponder
             Ship ship = null;
             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
-                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                ship = EDDI.Instance.CurrentShip;
             }
             Say(scriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
         }
@@ -271,6 +276,17 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
+            }
+        }
+
+        private void OnStatusUpdated(object sender, EventArgs e)
+        {
+            if (sender is Status status)
+            {
+                LockManager.GetLock(nameof(currentStatus), () =>
+                {
+                    currentStatus = status;
+                });
             }
         }
     }

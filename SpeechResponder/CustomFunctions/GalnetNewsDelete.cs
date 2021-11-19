@@ -1,6 +1,7 @@
 ﻿using Cottle.Functions;
+using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
-using GalnetMonitor;
+using EddiGalnetMonitor;
 using JetBrains.Annotations;
 
 namespace EddiSpeechResponder.CustomFunctions

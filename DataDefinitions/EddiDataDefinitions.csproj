@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BgsWatch.cs" />
+    <Compile Include="CargoInfo.cs" />
     <Compile Include="MissionFactionEffect.cs" />
     <Compile Include="ExobiologistRating.cs" />
     <Compile Include="MicroResourceInfo.cs" />
@@ -72,7 +74,8 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="AsteroidMaterialContent.cs" />
     <Compile Include="BodyType.cs" />
-    <Compile Include="CargoInfo.cs" />
+    <Compile Include="NavBookmark.cs" />
+    <Compile Include="CargoInfoItem.cs" />
     <Compile Include="Killer.cs" />
     <Compile Include="CommunityGoal.cs" />
     <Compile Include="MessageChannel.cs" />
@@ -81,6 +84,8 @@
     <Compile Include="CommodityBracket.cs" />
     <Compile Include="CommodityPresence.cs" />
     <Compile Include="MarketInfo.cs" />
+    <Compile Include="NavRouteInfo.cs" />
+    <Compile Include="News.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\MessageChannels.Designer.cs">
@@ -143,7 +148,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Ship.resx</DependentUpon>
     </Compile>
+    <Compile Include="NavRouteInfoItem.cs" />
     <Compile Include="NpcSuitLoadout.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="Suit.cs" />
     <Compile Include="ShipyardInfo.cs" />
     <Compile Include="Statistics.cs" />

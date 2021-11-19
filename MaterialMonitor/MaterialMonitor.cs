@@ -1,8 +1,8 @@
 ﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -26,7 +26,6 @@ namespace EddiMaterialMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();
-        public int? maxStationDistanceFromStarLs;
 
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
@@ -433,12 +432,11 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 // Write material configuration with current inventory
-                MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration
+                var configuration = new MaterialMonitorConfiguration
                 {
                     materials = inventory,
-                    maxStationDistanceFromStarLs = maxStationDistanceFromStarLs
                 };
-                configuration.ToFile();
+                ConfigService.Instance.materialMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);
@@ -449,8 +447,7 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 // Obtain current inventory from  configuration
-                MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
-                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
+                var configuration = ConfigService.Instance.materialMonitorConfiguration;
 
                 // Build a new inventory
                 List<MaterialAmount> newInventory = new List<MaterialAmount>();
@@ -460,10 +457,10 @@ namespace EddiMaterialMonitor
                 {
                     MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
                     // Make sure the edname is unique before adding the material to the new inventory 
-                    if (newInventory.Where(inv => inv.edname == ma2.edname).Count() == 0)
+                    if (newInventory.All(inv => inv.edname != ma2.edname))
                     {
                         // Set material maximums if they aren't already defined
-                        if (ma2.maximum == null || !ma2.maximum.HasValue)
+                        if (ma2.maximum == null)
                         {
                             int rarityLevel = Material.FromEDName(ma2.edname).Rarity.level;
                             if (rarityLevel > 0)
@@ -515,6 +512,5 @@ namespace EddiMaterialMonitor
                 }
             }
         }
-
     }
 }

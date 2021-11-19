@@ -1,18 +1,29 @@
-﻿using EddiDataDefinitions;
+﻿using Cottle;
+using EddiDataDefinitions;
+using EddiSpeechResponder;
 using EddiSpeechResponder.CustomFunctions;
+using EddiSpeechResponder.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
     public class CustomFunctions : TestBase
     {
+        private readonly ScriptResolver resolver = new ScriptResolver(new Dictionary<string, Script>());
+
         [TestInitialize]
         public void start()
         {
             MakeSafe();
         }
-        
+
+        private string ResolveScript(string script, Dictionary<string, Value> vars = null)
+        {
+            return resolver.resolveFromValue(script, resolver.buildStore(vars), true);
+        }
+
         [DataTestMethod]
         [DataRow("", "", "")] // Manufacturer: Empty, ID with greater than 3 characters
         [DataRow("BelugaLiner", "", "")] // Manufacturer: Saud Kruger, empty ID
@@ -28,6 +39,18 @@ namespace UnitTests
             Ship ship = ShipDefinitions.FromEDModel(shipModel);
             PrivateType privateType = new PrivateType(typeof(ShipCallsign));
             Assert.AreEqual(expected, (string)privateType.InvokeStatic("phoneticCallsign", new object[] { ship, id }));
+        }
+
+        [DataTestMethod]
+        [DataRow("{Occasionally(1, 'A')}{Occasionally(1, 'B')}C", "ABC")]
+        [DataRow("{Occasionally(1, 'A')} {Occasionally(1, 'B')} C", "A B C")]
+        [DataRow("{Occasionally(1, '  A    ')}{Occasionally(1, '  B    ')} C", "A B C")]
+        [DataRow("{Occasionally(1, '  A    ')} {Occasionally(1, '  B    ')} C", "A B C")]
+        [DataRow("   {Occasionally(1, '  A    ')} {Occasionally(1, '  B    ')} C  ", "A B C")]
+        public void TestCustomFunctionTrimming(string rawCottle, string expected)
+        {
+            var actual = ResolveScript(rawCottle);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

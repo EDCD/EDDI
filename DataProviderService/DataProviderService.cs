@@ -1,4 +1,5 @@
 ﻿using EddiBgsService;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiStarMapService;
 using System;
@@ -247,9 +248,9 @@ namespace EddiDataProviderService
         public void saveFromStarMapService(List<StarSystem> syncSystems)
         {
             StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
             starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
-            starMapConfiguration.ToFile();
+            ConfigService.Instance.edsmConfiguration = starMapConfiguration;
         }
     }
 }

@@ -58,6 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -134,9 +135,17 @@
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
       <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
       <Name>EddiCrimeMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
+      <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
       <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>
@@ -149,10 +158,6 @@
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
       <Name>EddiCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
@@ -280,10 +285,10 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.2.1</Version>
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.2.1</Version>
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="NetMQ">
       <Version>4.0.0.1</Version>

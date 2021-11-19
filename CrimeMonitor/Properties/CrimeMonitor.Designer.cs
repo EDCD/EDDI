@@ -79,15 +79,6 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Record:.
-        /// </summary>
-        public static string add_button_text {
-            get {
-                return ResourceManager.GetString("add_button_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter Faction Name.
         /// </summary>
         public static string blank_faction {
@@ -129,15 +120,6 @@ namespace EddiCrimeMonitor.Properties {
         public static string find_button_desc {
             get {
                 return ResourceManager.GetString("find_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find Legal Facilities:.
-        /// </summary>
-        public static string find_button_text {
-            get {
-                return ResourceManager.GetString("find_button_text", resourceCulture);
             }
         }
         
@@ -196,24 +178,6 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prioritize Orbital Stations:.
-        /// </summary>
-        public static string orbital_station_checkbox {
-            get {
-                return ResourceManager.GetString("orbital_station_checkbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tip: Maximize the allowed station distance to minimize search times..
-        /// </summary>
-        public static string p1 {
-            get {
-                return ResourceManager.GetString("p1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {
@@ -232,24 +196,6 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove:.
-        /// </summary>
-        public static string remove_button_text {
-            get {
-                return ResourceManager.GetString("remove_button_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
-        /// </summary>
-        public static string tab_station_distance {
-            get {
-                return ResourceManager.GetString("tab_station_distance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string update_button {
@@ -264,15 +210,6 @@ namespace EddiCrimeMonitor.Properties {
         public static string update_button_desc {
             get {
                 return ResourceManager.GetString("update_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update:.
-        /// </summary>
-        public static string update_button_text {
-            get {
-                return ResourceManager.GetString("update_button_text", resourceCulture);
             }
         }
     }

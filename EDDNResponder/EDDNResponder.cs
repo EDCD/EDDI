@@ -452,7 +452,9 @@ namespace EDDNResponder
                         { "systemName", theEvent.starSystem },
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
-                        { "horizons", theEvent.inHorizons}
+                        { "horizons", theEvent.inHorizons},
+                        { "odyssey", theEvent.inOdyssey}
+
                     };
                 data.Add("commodities", commodities);
                 if (theEvent.prohibitedCommodities?.Count > 0)
@@ -489,7 +491,8 @@ namespace EDDNResponder
                         { "stationName", theEvent.stationName },
                         { "marketId", theEvent.marketId },
                         { "modules", eddnModules },
-                        { "horizons", theEvent.inHorizons}
+                        { "horizons", theEvent.inHorizons},
+                        { "odyssey", theEvent.inOdyssey}
                     };
 
                     SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data);
@@ -510,6 +513,7 @@ namespace EDDNResponder
                         { "marketId", theEvent.marketId },
                         { "ships", theEvent.shipyardModels },
                         { "horizons", theEvent.inHorizons},
+                        { "odyssey", theEvent.inOdyssey},
                         { "allowCobraMkIV", theEvent.allowCobraMkIV }
                     };
 

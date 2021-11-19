@@ -22,6 +22,7 @@ namespace EddiEvents
                 Type eventType = typeof(Event);
                 foreach (FileInfo file in dir.GetFiles("*.dll", SearchOption.AllDirectories))
                 {
+                    Type currentEvent = null;
                     try
                     {
                         Assembly assembly = Assembly.LoadFrom(file.FullName);
@@ -42,6 +43,7 @@ namespace EddiEvents
                                     }
                                     else
                                     {
+                                        currentEvent = type;
                                         if (type.IsSubclassOf(eventType))
                                         {
                                             // Ensure that the static constructor of the class has been run
@@ -96,7 +98,7 @@ namespace EddiEvents
                     }
                     catch (Exception ex)
                     {
-                        Logging.Warn("Exception: ", ex);
+                        Logging.Warn($"Exception with {currentEvent}: ", ex);
                     }
                 }
             }

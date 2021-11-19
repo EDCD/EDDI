@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EddiConfigService;
 using Utilities;
 
 namespace Eddi
@@ -30,7 +31,7 @@ namespace Eddi
 
             // Prepare to start the application
             Logging.incrementLogs(); // Increment to a new log file.
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             StartRollbar(configuration.DisableTelemetry); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
 

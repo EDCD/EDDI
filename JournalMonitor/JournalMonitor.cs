@@ -1,11 +1,8 @@
-﻿using EddiCargoMonitor;
+﻿using EddiConfigService;
 using EddiCore;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiMissionMonitor;
-using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -1331,7 +1328,7 @@ namespace EddiJournalMonitor
                                     long? price = JsonParsing.getOptionalLong(data, "TransferPrice");
                                     long? time = JsonParsing.getOptionalLong(data, "TransferTime");
 
-                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetShip(shipId);
+                                    var ship = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == shipId);
                                     if (ship is null)
                                     {
                                         string shipEDModel = JsonParsing.getString(data, "ShipType");
@@ -2356,7 +2353,7 @@ namespace EddiJournalMonitor
                                     decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
                                     string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().EDName;
+                                    string ship = EDDI.Instance.CurrentShip?.EDName;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
@@ -2652,21 +2649,21 @@ namespace EddiJournalMonitor
                             case "Progress":
                                 {
                                     data.TryGetValue("Combat", out object val);
-                                    decimal combat = (long)val;
+                                    decimal combat = (long?)val ?? 0;
                                     data.TryGetValue("Trade", out val);
-                                    decimal trade = (long)val;
+                                    decimal trade = (long?)val ?? 0;
                                     data.TryGetValue("Explore", out val);
-                                    decimal exploration = (long)val;
+                                    decimal exploration = (long?)val ?? 0;
                                     data.TryGetValue("CQC", out val);
-                                    decimal cqc = (long)val;
+                                    decimal cqc = (long?)val ?? 0;
                                     data.TryGetValue("Empire", out val);
-                                    decimal empire = (long)val;
+                                    decimal empire = (long?)val ?? 0;
                                     data.TryGetValue("Federation", out val);
-                                    decimal federation = (long)val;
+                                    decimal federation = (long?)val ?? 0;
                                     data.TryGetValue("Soldier", out val);
-                                    decimal soldier = (long)val;
+                                    decimal soldier = (long?)val ?? 0;
                                     data.TryGetValue("Exobiologist", out val);
-                                    decimal exobiologist = (long)val;
+                                    decimal exobiologist = (long?)val ?? 0;
 
                                     events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -2675,21 +2672,21 @@ namespace EddiJournalMonitor
                             case "Rank":
                                 {
                                     data.TryGetValue("Combat", out object val);
-                                    CombatRating combat = CombatRating.FromRank((int)((long)val));
+                                    CombatRating combat = CombatRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Trade", out val);
-                                    TradeRating trade = TradeRating.FromRank((int)((long)val));
+                                    TradeRating trade = TradeRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Explore", out val);
-                                    ExplorationRating exploration = ExplorationRating.FromRank((int)((long)val));
+                                    ExplorationRating exploration = ExplorationRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("CQC", out val);
-                                    CQCRating cqc = CQCRating.FromRank((int)((long)val));
+                                    CQCRating cqc = CQCRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Empire", out val);
-                                    EmpireRating empire = EmpireRating.FromRank((int)((long)val));
+                                    EmpireRating empire = EmpireRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Federation", out val);
-                                    FederationRating federation = FederationRating.FromRank((int)((long)val));
+                                    FederationRating federation = FederationRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Soldier", out val);
-                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long)val));
+                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long?)val ?? 0));
                                     data.TryGetValue("Exobiologist", out val);
-                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long)val));
+                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long?)val ?? 0));
 
                                     events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3373,7 +3370,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Modules", out object val);
                                     List<object> slotsJson = (List<object>)val;
 
-                                    var ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
+                                    var ship = EDDI.Instance.CurrentShip;
                                     List<Module> modules = new List<Module>();
                                     foreach (string slot in slotsJson)
                                     {
@@ -3497,7 +3494,7 @@ namespace EddiJournalMonitor
                             case "Cargo":
                                 {
                                     bool update = false;
-                                    List<CargoInfo> inventory = new List<CargoInfo>();
+                                    var inventory = new List<CargoInfoItem>();
 
                                     string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
                                     int cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
@@ -3511,13 +3508,13 @@ namespace EddiJournalMonitor
                                             long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
                                             int count = JsonParsing.getInt(cargoJson, "Count");
                                             int stolen = JsonParsing.getInt(cargoJson, "Stolen");
-                                            CargoInfo info = new CargoInfo(name, missionid, count, stolen);
+                                            var info = new CargoInfoItem(name, missionid, count, stolen);
                                             inventory.Add(info);
                                         }
                                     }
                                     else
                                     {
-                                        inventory = CargoInfoReader.FromFile().Inventory;
+                                        inventory = CargoInfo.FromFile().Inventory;
                                         update = true;
                                     }
 
@@ -3525,8 +3522,14 @@ namespace EddiJournalMonitor
                                     if (cargocarried == inventory.Sum(i => i.count))
                                     {
                                         events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
-
                                     }
+                                }
+                                handled = true;
+                                break;
+                            case "NavRoute":
+                                {
+                                    var navRoute = NavRouteInfo.FromFile()?.Route ?? new List<NavRouteInfoItem>();
+                                    events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4388,7 +4391,6 @@ namespace EddiJournalMonitor
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
-                            case "NavRoute":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":

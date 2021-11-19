@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
@@ -73,7 +74,7 @@ namespace EddiEdsmResponder
                 if (updateThread == null && edsmService.EdsmCredentialsSet())
                 {
                     // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                    updateThread = new Thread(() => dataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastFlightLogSync))
+                    updateThread = new Thread(() => dataProviderService.syncFromStarMapService(ConfigService.Instance.edsmConfiguration?.lastFlightLogSync))
                     {
                         IsBackground = true,
                         Name = "EDSM updater"

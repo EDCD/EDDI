@@ -1,4 +1,5 @@
-﻿using EddiInaraService;
+﻿using EddiConfigService;
+using EddiInaraService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace UnitTests
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
             };
-            PrivateObject privateInaraService = new PrivateObject(typeof(InaraService));
-            var results = (List<InaraAPIEvent>)privateInaraService.Invoke("IndexAndFilterAPIEvents", new object[] { inaraAPIEvents, InaraConfiguration.FromFile() });
+            var privateInaraService = new PrivateObject(typeof(InaraService));
+            var results = (List<InaraAPIEvent>)privateInaraService.Invoke("IndexAndFilterAPIEvents", new object[] { inaraAPIEvents, new InaraConfiguration() });
 
             if (results.Count == 2)
             {
@@ -46,7 +47,7 @@ namespace UnitTests
         public void TestInvalidAPIkey()
         {
             InaraService.invalidAPIkey += OnInvalidAPIkey;
-            InaraConfiguration inaraConfiguration = new InaraConfiguration() { apiKey = "invalidAPIkey!@#", isAPIkeyValid = false };
+            var inaraConfiguration = new InaraConfiguration() { apiKey = "invalidAPIkey!@#", isAPIkeyValid = false };
             PrivateObject privateInaraService = new PrivateObject(inaraService);
             privateInaraService.Invoke("checkAPIcredentialsOk", new object[] { inaraConfiguration });
             System.Threading.Thread.Sleep(50);

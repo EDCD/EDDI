@@ -1,12 +1,11 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiCore;
-using EddiCrimeMonitor;
-using EddiMaterialMonitor;
+using EddiEvents;
 using EddiNavigationService;
-using EddiShipMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -19,150 +18,81 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.RouteDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
-            MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
-            int materialMonitorDistance = materialMonitor.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
             string result = null;
             string value = values[0].AsString;
+            RouteDetailsEvent @event = null;
+
             if (!string.IsNullOrEmpty(value))
             {
-                switch (value)
+                if (Enum.TryParse(value, true, out QueryTypes queryType))
                 {
-                    case "cancel":
+                    // Special case any queries which allow optional arguments
+                    dynamic[] args = null;
+                    switch (queryType)
+                    {
+                        case QueryTypes.route:
                         {
-                            NavigationService.Instance.CancelDestination();
-                        }
-                        break;
-                    case "encoded":
-                        {
-                            result = NavigationService.Instance.GetServiceRoute("encoded", materialMonitorDistance);
-                        }
-                        break;
-                    case "expiring":
-                        {
-                            result = NavigationService.Instance.GetExpiringRoute();
-                        }
-                        break;
-                    case "facilitator":
-                        {
-                            int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
-                            bool isChecked = crimeMonitor.prioritizeOrbitalStations;
-                            result = NavigationService.Instance.GetServiceRoute("facilitator", distance, isChecked);
-                        }
-                        break;
-                    case "farthest":
-                        {
-                            result = NavigationService.Instance.GetFarthestRoute();
-                        }
-                        break;
-                    case "guardian":
-                        {
-                            result = NavigationService.Instance.GetServiceRoute("guardian", materialMonitorDistance);
-                        }
-                        break;
-                    case "human":
-                        {
-                            result = NavigationService.Instance.GetServiceRoute("human", materialMonitorDistance);
-                        }
-                        break;
-                    case "manufactured":
-                        {
-                            result = NavigationService.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
-                        }
-                        break;
-                    case "most":
-                        {
+                            dynamic querySystem = null;
                             if (values.Count == 2)
                             {
-                                result = NavigationService.Instance.GetMostRoute(values[1].AsString);
+                                querySystem = values[1].AsString;
                             }
-                            else
+                            args = new[] {querySystem};
+                            break;
+                        }
+                        case QueryTypes.scoop:
+                        {
+                            dynamic searchDistance = null;
+                            if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
                             {
-                                result = NavigationService.Instance.GetMostRoute();
+                                searchDistance = decimalDistance;
                             }
+                            args = new[] { searchDistance };
+                            break;
                         }
-                        break;
-                    case "nearest":
+                        case QueryTypes.source:
                         {
-                            result = NavigationService.Instance.GetNearestRoute();
-                        }
-                        break;
-                    case "next":
-                        {
-                            result = NavigationService.Instance.GetNextInRoute();
-                        }
-                        break;
-                    case "raw":
-                        {
-                            result = NavigationService.Instance.GetServiceRoute("raw", materialMonitorDistance);
-                        }
-                        break;
-                    case "route":
-                        {
+                            dynamic querySystem = null;
                             if (values.Count == 2)
                             {
-                                result = NavigationService.Instance.GetMissionsRoute(values[1].AsString);
+                                querySystem = values[1].AsString;
                             }
-                            else
-                            {
-                                result = NavigationService.Instance.GetMissionsRoute();
-                            }
+                            args = new[] { querySystem };
+                            break;
                         }
-                        break;
-                    case "scoop":
+                        case QueryTypes.update:
                         {
+                            dynamic arg = null;
                             if (values.Count == 2)
                             {
-                                result = NavigationService.Instance.GetScoopRoute((decimal)values[1].AsNumber);
+                                if (bool.TryParse(values[1].AsString, out var boolArg))
+                                {
+                                    arg = boolArg;
+                                }
+                                else if (decimal.TryParse(values[1].AsString, out var decimalArg))
+                                {
+                                    arg = decimalArg;
+                                }
+                                else
+                                {
+                                    arg = values[1].AsString;
+                                }
                             }
-                            else
-                            {
-                                ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
-                                result = NavigationService.Instance.GetScoopRoute(detail.distance);
-                            }
+                            args = new[] { arg };
+                            break;
                         }
-                        break;
-                    case "set":
-                        {
-                            if (values.Count == 3)
-                            {
-                                result = NavigationService.Instance.SetDestination(values[1].AsString, values[2].AsString);
-                            }
-                            else if (values.Count == 2)
-                            {
-                                result = NavigationService.Instance.SetDestination(values[1].AsString);
-                            }
-                            else
-                            {
-                                result = NavigationService.Instance.SetDestination();
-                            }
-                        }
-                        break;
-                    case "source":
-                        {
-                            if (values.Count == 2)
-                            {
-                                result = NavigationService.Instance.GetSourceRoute(values[1].AsString);
-                            }
-                            else
-                            {
-                                result = NavigationService.Instance.GetSourceRoute();
-                            }
-                        }
-                        break;
-                    case "update":
-                        {
-                            if (values.Count == 2)
-                            {
-                                result = NavigationService.Instance.UpdateRoute(values[1].AsString);
-                            }
-                            else
-                            {
-                                result = NavigationService.Instance.UpdateRoute();
-                            }
-                        }
-                        break;
+                    }
+                    @event = NavigationService.Instance.NavQuery(queryType, args);
                 }
+                else
+                {
+                    Logging.Warn($"The search query '{value}' is unrecognized.");
+                }
+            }
+            if (@event != null)
+            {
+                EDDI.Instance?.enqueueEvent(@event);
+                result = @event.system;
             }
             return new ReflectionValue(result ?? new object());
         }, 1, 3);

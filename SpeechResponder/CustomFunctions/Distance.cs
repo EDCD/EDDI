@@ -49,7 +49,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 var x2 = (decimal)values[3].AsNumber;
                 var y2 = (decimal)values[4].AsNumber;
                 var z2 = (decimal)values[5].AsNumber;
-                var result = Functions.DistanceFromCoordinates(x1, y1, z1, x2, y2, z2);
+                var result = Functions.StellarDistanceLy(x1, y1, z1, x2, y2, z2);
                 return new ReflectionValue(result);
             }
             else

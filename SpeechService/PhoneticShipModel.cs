@@ -9,7 +9,7 @@ namespace EddiSpeechService
             Ship ship = ShipDefinitions.FromModel(val);
             if (ship != null && ship.EDID > 0)
             {
-                return ship.SpokenModel();
+                return ship.SpokenModel().Trim();
             }
             return val;
         }

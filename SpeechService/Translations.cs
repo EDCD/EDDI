@@ -76,7 +76,7 @@ namespace EddiSpeechService
                     }
                     break;
             }
-            return translation.Trim();
+            return translation;
         }
 
         // Various handy regexes so we don't keep recreating them

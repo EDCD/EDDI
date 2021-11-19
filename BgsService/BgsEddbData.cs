@@ -118,10 +118,12 @@ namespace EddiBgsService
                 StarSystem system = new StarSystem
                 {   
                     systemname = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(JsonParsing.getString(systemJson, "name")), // This is lower case by default from the API
-                    systemAddress = long.Parse(JsonParsing.getString(systemJson, "ed_system_address")), // Stored in this API as a string
                     EDSMID = JsonParsing.getOptionalLong(systemJson, "edsm_id"),
                     updatedat = Dates.fromDateTimeToSeconds(JsonParsing.getDateTime("updated_at", systemJson))
                 };
+                // Stored in this API as a string. May be null.
+                var systemAddress = JsonParsing.getString(systemJson, "ed_system_address");
+                system.systemAddress = string.IsNullOrEmpty(systemAddress) ? null : (long?)long.Parse(systemAddress);
 
                 // Get powerplay data
                 // Note: EDDB does not report the following powerplay state ednames: 

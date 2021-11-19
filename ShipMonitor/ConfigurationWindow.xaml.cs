@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using EddiConfigService;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -24,7 +25,7 @@ namespace EddiShipMonitor
         {
             InitializeComponent();
             shipData.ItemsSource = shipMonitor().shipyard;
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             string exportTarget = eddiConfiguration.exporttarget;
 
             // handle migration
@@ -32,7 +33,7 @@ namespace EddiShipMonitor
             {
                 exportTarget = "EDSY";
                 eddiConfiguration.exporttarget = exportTarget;
-                eddiConfiguration.ToFile();
+                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             }
 
             Logging.Debug("Export target from configuration: " + exportTarget);
@@ -44,9 +45,9 @@ namespace EddiShipMonitor
             string exportTarget = (string)((ComboBox)e.Source).SelectedValue;
             Logging.Debug("Export target: " + exportTarget);
 
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.exporttarget = string.IsNullOrWhiteSpace(exportTarget) ? null : exportTarget.Trim();
-            eddiConfiguration.ToFile();
+            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
         }
 
         private void ipaClicked(object sender, RoutedEventArgs e)
@@ -68,7 +69,7 @@ namespace EddiShipMonitor
         private void exportShip(object sender, RoutedEventArgs e)
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
 
             string uri;
             switch (eddiConfiguration.exporttarget)

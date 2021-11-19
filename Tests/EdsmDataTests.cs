@@ -331,7 +331,7 @@ namespace UnitTests
             station = stations.Find(s => s.name == "Jameson Base");
             Assert.AreEqual(285, station.EDSMID);
             Assert.AreEqual(128679815, station.marketId);
-            Assert.AreEqual("Surface Station", station.Model.invariantName);
+            Assert.AreEqual("Surface Outpost", station.Model.invariantName);
             Assert.AreEqual(40.333652M, station.distancefromstar);
             Assert.AreEqual("Independent", station.Faction.Allegiance.invariantName);
             Assert.AreEqual("Engineer", station.Faction.Government.invariantName);
@@ -480,8 +480,8 @@ namespace UnitTests
             fakeEdsmRestClient.Expect(resource, json, data);
             string systemName = "Sol";
 
-            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
-            Assert.AreEqual(9, starSystems.Count);
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystemsCube(systemName, 25, false, false, false, false);
+            Assert.AreEqual(51, starSystems.Count);
         }
 
         [TestMethod]

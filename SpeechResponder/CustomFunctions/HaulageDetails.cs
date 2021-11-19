@@ -1,6 +1,7 @@
-﻿using Cottle.Functions;
+﻿using System.Linq;
+using Cottle.Functions;
 using Cottle.Values;
-using EddiCargoMonitor;
+using EddiConfigService;
 using EddiCore;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -15,7 +16,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.HaulageDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            var result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
+            var cargo = ConfigService.Instance.cargoMonitorConfiguration?.cargo;
+            var result = cargo?.FirstOrDefault(c => c.haulageData.FirstOrDefault(h => h.missionid == (long)values[0].AsNumber) != null)?.haulageData;
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

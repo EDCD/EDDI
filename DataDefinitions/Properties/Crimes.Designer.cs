@@ -223,6 +223,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arc cutter use.
+        /// </summary>
+        public static string onFoot_arcCutterUse {
+            get {
+                return ResourceManager.GetString("onFoot_arcCutterUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assault.
         /// </summary>
         public static string onFoot_assault {
@@ -237,6 +246,15 @@ namespace EddiDataDefinitions.Properties {
         public static string onFoot_breakingAndEntering {
             get {
                 return ResourceManager.GetString("onFoot_breakingAndEntering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carrying stolen goods.
+        /// </summary>
+        public static string onFoot_carryingStolenGoods {
+            get {
+                return ResourceManager.GetString("onFoot_carryingStolenGoods", resourceCulture);
             }
         }
         

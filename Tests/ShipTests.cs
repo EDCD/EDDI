@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -338,7 +339,7 @@ namespace UnitTests
         public void TestShipMonitorDeserialization()
         {
             // Read from our test item "shipMonitor.json"
-            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
+            var configuration = new ShipMonitorConfiguration();
             try
             {
                 configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
@@ -395,7 +396,7 @@ namespace UnitTests
         public void TestShipMonitorDeserializationDoesntMutateStatics()
         {
             // Read from our test item "shipMonitor.json"
-            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
+            var configuration = new ShipMonitorConfiguration();
             try
             {
                 configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);

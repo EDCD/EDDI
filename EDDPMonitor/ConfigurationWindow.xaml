@@ -14,7 +14,7 @@
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="eddpAddWatch" Content="{x:Static resx:EddpResources.new_watch}" />
         </UniformGrid>
-        <DataGrid AutoGenerateColumns="False" x:Name="watchData" CanUserAddRows="false" TargetUpdated="eddpWatchesUpdated"  ItemsSource="{Binding Watches}">
+        <DataGrid AutoGenerateColumns="False" x:Name="watchData" CanUserAddRows="false" TargetUpdated="eddpWatchesUpdated"  ItemsSource="{Binding Watches}" HeadersVisibility="Column">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:EddpResources.name_header}" Binding="{Binding Path=Name, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
                 <DataGridTextColumn Header="{x:Static resx:EddpResources.system_header}" Width="*" Binding="{Binding Path=System, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>

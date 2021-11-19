@@ -61,13 +61,71 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackpackChangedEvent.cs" />
+    <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="BondRedeemedEvent.cs" />
+    <Compile Include="BountyAwardedEvent.cs" />
+    <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="BountyPaidEvent.cs" />
+    <Compile Include="BountyRedeemedEvent.cs" />
+    <Compile Include="CargoEvent.cs" />
+    <Compile Include="CommodityCollectedEvent.cs" />
+    <Compile Include="CommodityEjectedEvent.cs" />
+    <Compile Include="CommodityPurchasedEvent.cs" />
+    <Compile Include="CommodityRefinedEvent.cs" />
+    <Compile Include="CommoditySoldEvent.cs" />
+    <Compile Include="CommunityGoalEvent.cs" />
+    <Compile Include="CommunityGoalsEvent.cs" />
+    <Compile Include="FineIncurredEvent.cs" />
+    <Compile Include="FinePaidEvent.cs" />
+    <Compile Include="FlightAssistEvent.cs" />
+    <Compile Include="NearBookmarkEvent.cs" />
+    <Compile Include="NextDestinationEvent.cs" />
+    <Compile Include="GalnetNewsPublishedEvent.cs" />
+    <Compile Include="GlideEvent.cs" />
+    <Compile Include="LimpetLaunchedEvent.cs" />
+    <Compile Include="LimpetPurchasedEvent.cs" />
+    <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="MaterialThresholdEvent.cs" />
+    <Compile Include="MissionAbandonedEvent.cs" />
+    <Compile Include="MissionAcceptedEvent.cs" />
+    <Compile Include="MissionCompletedEvent.cs" />
+    <Compile Include="MissionExpiredEvent.cs" />
+    <Compile Include="MissionFailedEvent.cs" />
+    <Compile Include="MissionRedirectedEvent.cs" />
+    <Compile Include="MissionsEvent.cs" />
+    <Compile Include="MissionWarningEvent.cs" />
+    <Compile Include="ModuleArrivedEvent.cs" />
+    <Compile Include="ModuleInfoEvent.cs" />
+    <Compile Include="ModulePurchasedEvent.cs" />
+    <Compile Include="ModuleRetrievedEvent.cs" />
+    <Compile Include="ModuleSoldEvent.cs" />
+    <Compile Include="ModuleSoldFromStorageEvent.cs" />
+    <Compile Include="ModulesStoredEvent.cs" />
+    <Compile Include="ModuleStoredEvent.cs" />
+    <Compile Include="ModuleSwappedEvent.cs" />
+    <Compile Include="ModuleTransferEvent.cs" />
+    <Compile Include="NavRouteEvent.cs" />
+    <Compile Include="PassengersEvent.cs" />
+    <Compile Include="PowerCommodityDeliveredEvent.cs" />
+    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
+    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="SafeEvent.cs" />
+    <Compile Include="ShipAFMURepairedEvent.cs" />
+    <Compile Include="ShipArrivedEvent.cs" />
+    <Compile Include="ShipCargoScoopEvent.cs" />
+    <Compile Include="ShipDeliveredEvent.cs" />
+    <Compile Include="ShipFsdEvent.cs" />
+    <Compile Include="ShipHardpointsEvent.cs" />
+    <Compile Include="ShipLandingGearEvent.cs" />
+    <Compile Include="ShipLightsEvent.cs" />
+    <Compile Include="ShipLoadoutEvent.cs" />
     <Compile Include="ShipLockerEvent.cs" />
     <Compile Include="CancelTransportEvent.cs" />
     <Compile Include="BookTransportEvent.cs" />
     <Compile Include="BackpackEvent.cs" />
     <Compile Include="AsteroidProspectedEvent.cs" />
     <Compile Include="AsteroidCrackedEvent.cs" />
+    <Compile Include="BookmarkDetailsEvent.cs" />
     <Compile Include="CarrierJumpCancelledEvent.cs" />
     <Compile Include="CarrierJumpRequestEvent.cs" />
     <Compile Include="CarrierPadsLockedEvent.cs" />
@@ -76,6 +134,24 @@
     <Compile Include="CommanderPromotionEvent.cs" />
     <Compile Include="DropshipDeploymentEvent.cs" />
     <Compile Include="RespawnedEvent.cs" />
+    <Compile Include="ShipLowFuelEvent.cs" />
+    <Compile Include="ShipPurchasedEvent.cs" />
+    <Compile Include="ShipRebootedEvent.cs" />
+    <Compile Include="ShipRefuelledEvent.cs" />
+    <Compile Include="ShipRenamedEvent.cs" />
+    <Compile Include="ShipRepairDroneEvent.cs" />
+    <Compile Include="ShipRepairedEvent.cs" />
+    <Compile Include="ShipRestockedEvent.cs" />
+    <Compile Include="ShipShutdownEvent.cs" />
+    <Compile Include="ShipSoldEvent.cs" />
+    <Compile Include="ShipSoldOnRebuyEvent.cs" />
+    <Compile Include="ShipSwappedEvent.cs" />
+    <Compile Include="ShipTransferInitiatedEvent.cs" />
+    <Compile Include="SilentRunningEvent.cs" />
+    <Compile Include="SRVTurretDeployableEvent.cs" />
+    <Compile Include="SrvTurretEvent.cs" />
+    <Compile Include="StoredModulesEvent.cs" />
+    <Compile Include="StoredShipsEvent.cs" />
     <Compile Include="SuitPurchasedEvent.cs" />
     <Compile Include="MicroResourcesPurchasedEvent.cs" />
     <Compile Include="DisembarkEvent.cs" />
@@ -104,6 +180,8 @@
     <Compile Include="SquadronStartupEvent.cs" />
     <Compile Include="SquadronStatusEvent.cs" />
     <Compile Include="StatisticsEvent.cs" />
+    <Compile Include="SystemFactionChangedEvent.cs" />
+    <Compile Include="SystemStateChangedEvent.cs" />
     <Compile Include="UnhandledEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
@@ -212,7 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">

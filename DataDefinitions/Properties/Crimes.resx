@@ -249,4 +249,12 @@
     <value>Trespass</value>
     <comment>Crime onFoot_trespass</comment>
   </data>
+  <data name="onFoot_carryingStolenGoods" xml:space="preserve">
+    <value>Carrying stolen goods</value>
+    <comment>Crime onFoot_carryingStolenGoods</comment>
+  </data>
+  <data name="onFoot_arcCutterUse" xml:space="preserve">
+    <value>Arc cutter use</value>
+    <comment>Crime onFoot_arcCutterUse</comment>
+  </data>
 </root>

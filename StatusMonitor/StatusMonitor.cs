@@ -31,11 +31,12 @@ namespace EddiStatusMonitor
         private bool gliding;
         private bool jumping;
         private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
+        private string lastDestinationPOI;
 
         // Keep track of status monitor 
         private bool running;
 
-        public event EventHandler StatusUpdatedEvent;
+        public static event EventHandler StatusUpdatedEvent;
 
         public StatusMonitor()
         {
@@ -311,9 +312,35 @@ namespace EddiStatusMonitor
                         ?? JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
                     status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
 
+                    // When not on foot
+                    if (data.TryGetValue("Destination", out object destinationData))
+                    {
+                        if (destinationData is IDictionary<string, object> destinationInfo)
+                        {
+                            status.destinationSystemAddress = JsonParsing.getOptionalLong(destinationInfo, "System");
+                            status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
+                            status.destinationName = JsonParsing.getString(destinationInfo, "Name");
+                            status.destinationLocalizedName = JsonParsing.getString(destinationInfo, "Name_Localised");
+
+                            // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
+                            var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
+                            if (string.IsNullOrEmpty(status.destinationLocalizedName) && fleetCarrierRegex.IsMatch(status.destinationName))
+                            {
+                                // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                                var fleetCarrierParts = fleetCarrierRegex.Matches(status.destinationName)[0].Groups;
+                                if (fleetCarrierParts.Count == 3)
+                                {
+                                    status.destinationName = fleetCarrierParts[2].Value;
+                                    status.destinationLocalizedName = fleetCarrierParts[1].Value;
+                                }
+                            }
+                        }
+                    }
+
                     // Calculated data
                     SetFuelExtras(status);
                     SetSlope(status);
+                    SetGliding(status); // Must be set after setting the slope
 
                     return status;
                 }
@@ -439,6 +466,68 @@ namespace EddiStatusMonitor
                 if (thisStatus.flight_assist_off != lastStatus.flight_assist_off)
                 {
                     EDDI.Instance.enqueueEvent(new FlightAssistEvent(thisStatus.timestamp, thisStatus.flight_assist_off));
+                }
+                if (!string.IsNullOrEmpty(thisStatus.destinationName) && thisStatus.destinationName != lastStatus.destinationName
+                    && thisStatus.vehicle == lastStatus.vehicle)
+                {
+                    if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress ==
+                        thisStatus.destinationSystemAddress && thisStatus.destinationName != lastDestinationPOI)
+                    {
+                        var body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b =>
+                            b.bodyId == thisStatus.destinationBodyId);
+                        var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
+                            s.name == thisStatus.destinationName);
+                        var signalSource = EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
+                            s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName);
+                        // Might be a body (including the primary star of a different system if selecting a star system)
+                        if (body != null && thisStatus.destinationName == body.bodyname)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body));
+                        }
+                        // Might be a station (including megaship or fleet carrier)
+                        else if (station != null)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body,
+                                station));
+                        }
+                        // Might be a non-station signal source
+                        else if (signalSource != null)
+                        {
+                            signalSource.fallbackLocalizedName = thisStatus.destinationLocalizedName;
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                signalSource.invariantName,
+                                signalSource.localizedName,
+                                null,
+                                null,
+                                signalSource));
+                        }
+                        else if (thisStatus.destinationName != lastDestinationPOI)
+                        {
+                            EDDI.Instance.enqueueEvent(new NextDestinationEvent(
+                                thisStatus.timestamp,
+                                thisStatus.destinationSystemAddress,
+                                thisStatus.destinationBodyId,
+                                thisStatus.destinationName,
+                                thisStatus.destinationLocalizedName,
+                                body));
+                        }
+                        lastDestinationPOI = thisStatus.destinationName;
+                    }
                 }
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
@@ -616,6 +705,35 @@ namespace EddiStatusMonitor
             return; // At present, fighters do not appear to consume fuel.
         }
 
+        /// <summary> Depends on slope calculations, which must be performed before this method is run </summary>
+        private void SetGliding(Status status)
+        {
+            // We are exiting supercruise
+            if (!status.gliding && lastEnteredNormalSpaceEvent != null)
+            {
+                // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
+                if (status.fsd_status == "ready"
+                    && status.slope >= -60 && currentStatus.slope <= -5
+                    && status.altitude < 100000
+                    && status.altitude < lastStatus.altitude)
+                {
+                    // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
+                    status.gliding = true;
+                }
+            }
+            if ((status.gliding && status.fsd_status == "cooldown")
+                || status.hyperspace 
+                || status.supercruise 
+                || status.docked 
+                || status.landed)
+            {
+                status.gliding = false;
+            }
+        }
+
+        ///<summary> Our calculated slope may be inaccurate if we are in normal space and thrusting
+        /// in a direction other than the direction we are oriented (e.g. if pointing down towards a
+        /// planet and applying reverse thrust to raise our altitude) </summary> 
         private void SetSlope(Status status)
         {
             status.slope = null;
@@ -625,8 +743,8 @@ namespace EddiStatusMonitor
                 {
                     double square(double x) => x * x;
 
-                    double radius = (double)status.planetradius / 1000;
-                    double deltaAlt = (double)(status.altitude - lastStatus.altitude) / 1000;
+                    double radiusKm = (double)status.planetradius / 1000;
+                    double deltaAltKm = (double)(status.altitude - lastStatus.altitude) / 1000;
 
                     // Convert latitude & longitude to radians
                     double currentLat = (double)status.latitude * Math.PI / 180;
@@ -637,11 +755,12 @@ namespace EddiStatusMonitor
                     // Calculate distance traveled using Law of Haversines
                     double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
                     double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    double distance = c * radius;
+                    double distanceKm = c * radiusKm;
 
                     // Calculate the slope angle
-                    double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
-                    status.slope = Math.Round((decimal)slope, 1);
+                    var slopeRadians = Math.Atan2(deltaAltKm, distanceKm);
+                    var slopeDegrees = slopeRadians * 180 / Math.PI;
+                    status.slope = Math.Round((decimal)slopeDegrees, 1);
                 }
             }
         }

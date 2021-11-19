@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using EddiSpeechService.Properties;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using EddiSpeechService.Properties;
 
 namespace EddiSpeechService
 {

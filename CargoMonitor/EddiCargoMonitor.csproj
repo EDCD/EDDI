@@ -64,24 +64,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CargoEvent.cs" />
-    <Compile Include="CargoInfoReader.cs" />
     <Compile Include="CargoMonitor.cs" />
-    <Compile Include="CargoMonitorConfiguration.cs" />
-    <Compile Include="CommodityCollectedEvent.cs" />
-    <Compile Include="CommodityEjectedEvent.cs" />
-    <Compile Include="CommodityPurchasedEvent.cs" />
-    <Compile Include="CommodityRefinedEvent.cs" />
-    <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LimpetLaunchedEvent.cs" />
-    <Compile Include="LimpetPurchasedEvent.cs" />
-    <Compile Include="LimpetSoldEvent.cs" />
-    <Compile Include="PowerCommodityDeliveredEvent.cs" />
-    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
-    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\CargoMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -90,8 +76,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
+      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
+      <Name>EddiConfigService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
@@ -105,10 +95,6 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
-      <Name>EddiMissionMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>

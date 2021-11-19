@@ -94,7 +94,7 @@
                 </TextBlock>
             </Grid>
         </DockPanel>
-        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding ScriptsView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" HeadersVisibility="Column">
             <DataGrid.Resources>
                 <ContextMenu x:Key="HeaderEnableAllContextMenu" DisplayMemberPath="Header">
                     <MenuItem Header="{x:Static resx:SpeechResponder.context_menu_enable_all}" Click="EnableAll_Clicked"/>

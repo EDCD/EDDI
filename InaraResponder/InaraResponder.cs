@@ -1,10 +1,8 @@
-﻿using EddiCargoMonitor;
+﻿using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
-using EddiMissionMonitor;
-using EddiShipMonitor;
 using EddiSpeechService;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
+using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiInaraResponder
@@ -52,8 +51,7 @@ namespace EddiInaraResponder
         {
             // Alert the user that there is a problem with the Inara API key
             Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
-            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor(EddiShipMonitor.Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture));
-            SpeechService.Instance.Say(shipMonitor.GetCurrentShip(), Properties.InaraResources.invalidKeyErr);
+            SpeechService.Instance.Say(EDDI.Instance.CurrentShip, Properties.InaraResources.invalidKeyErr);
         }
 
         public void Stop()
@@ -360,7 +358,7 @@ namespace EddiInaraResponder
                 // Whether is the item stolen or not. It is not used on Inara at this moment,
                 // but you can set it with the `isStolen` property if you'd like. 
                 eventData.Add(entry);
-            };
+            }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventory", eventData));
         }
 
@@ -395,7 +393,7 @@ namespace EddiInaraResponder
                 { "stationName", @event.carriername },
                 { "marketID", @event.carrierId }
             };
-            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+            var currentShip = EDDI.Instance.CurrentShip;
             if (!string.IsNullOrEmpty(currentShip?.EDName))
             {
                 eventData.Add("shipType", currentShip.EDName);
@@ -594,7 +592,7 @@ namespace EddiInaraResponder
 
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                    var currentShip = EDDI.Instance.CurrentShip;
                     if (!string.IsNullOrEmpty(currentShip?.EDName))
                     {
                         eventData.Add("shipType", currentShip.EDName);
@@ -629,7 +627,7 @@ namespace EddiInaraResponder
                 { "shipIdent", @event.ident },
                 { "isCurrentShip", true }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip.EDName == @event.edModel)
             {
                 currentShipData.Add("shipRole", (currentShip.Role ?? Role.MultiPurpose).invariantName);
@@ -651,7 +649,7 @@ namespace EddiInaraResponder
                 { "shipModulesValue", @event.modulesvalue },
                 { "shipRebuyCost", @event.rebuy }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip.EDName == @event.edModel)
             {
                 currentShipData.Add("shipRole", (currentShip.Role ?? Role.MultiPurpose).invariantName);
@@ -760,7 +758,7 @@ namespace EddiInaraResponder
                     { "stationName", EDDI.Instance.CurrentStation?.name },
                     { "marketID", EDDI.Instance.CurrentStation?.marketId }
                 };
-                var storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
                 {
                     storedShipData.Add("shipName", storedShip.name);
@@ -784,7 +782,7 @@ namespace EddiInaraResponder
                 { "shipGameID", @event.shipid },
                 { "isCurrentShip", true }
             };
-            var currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
             if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip?.EDName == @event.edModel)
             {
                 currentShipData.Add("shipName", currentShip.name);
@@ -837,7 +835,7 @@ namespace EddiInaraResponder
                     { "stationName", EDDI.Instance.CurrentStation?.name },
                     { "marketID", EDDI.Instance.CurrentStation?.marketId }
                 };
-                var storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
                 {
                     storedShipData.Add("shipName", storedShip.name);
@@ -1015,7 +1013,7 @@ namespace EddiInaraResponder
         private void handleCargoEvent(CargoEvent @event)
         {
             List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
-            foreach (CargoInfo cargoInfo in @event.inventory)
+            foreach (CargoInfoItem cargoInfo in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
                 {
@@ -1163,7 +1161,7 @@ namespace EddiInaraResponder
             }));
             if (@event.docked)
             {
-                // Set our docked lcoation for reference by the `Docked` event.
+                // Set our docked location for reference by the `Docked` event.
                 firstDockedLocation = @event.station;
             }
         }
@@ -1185,7 +1183,7 @@ namespace EddiInaraResponder
 
             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                var currentShip = EDDI.Instance.CurrentShip;
                 if (!string.IsNullOrEmpty(currentShip?.EDName))
                 {
                     eventData.Add("shipType", currentShip.EDName);
@@ -1423,10 +1421,7 @@ namespace EddiInaraResponder
             data.Remove("timestamp");
             data.Remove("event");
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderGameStatistics", (Dictionary<string, object>)data));
-        }
 
-        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
-        {
             // Sets current credits and loans. A record is added to the credits log (if the value differs).
             // Warning: Do NOT set credits/assets unless you are absolutely sure they are correct. 
             // The journals currently doesn't contain crew wage cuts, so credit gains are very probably off 
@@ -1434,32 +1429,46 @@ namespace EddiInaraResponder
             // spam player's credits log with unusable data and they won't be most likely very happy about it. 
             // It may be good to set credits just on the session start, session end and on the big changes 
             // or in hourly intervals.
-            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCredits", new Dictionary<string, object>()
+            long? startingAssets = (long?)JObject.FromObject(data)?["Bank_Account"]?["Current_Wealth"];
+            data = new Dictionary<string, object>()
             {
-                { "commanderCredits", @event.credits },
-                { "commanderLoan", @event.loan }
-            }));
+                {"commanderCredits", startingCredits},
+                {"commanderLoan", startingLoan}
+            };
+            if (startingAssets != null)
+            {
+                data.Add("commanderAssets", startingAssets);
+            }
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCredits", (Dictionary<string, object>)data));
+        }
+
+        private long startingCredits;
+        private long startingLoan;
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        {
+            startingCredits = @event.credits;
+            startingLoan = @event.loan;
         }
 
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
             {
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
-                inaraConfiguration.ToFile();
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
             }
         }
 
         private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
             {
                 inaraConfiguration.commanderName = @event.name;
                 inaraConfiguration.commanderFrontierID = @event.frontierID;
-                inaraConfiguration.ToFile();
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
             }
         }
 
