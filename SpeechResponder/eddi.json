@@ -1450,7 +1450,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'fail')}\r\n\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.invariantTags, \"Transport\") > -1:\r\n    {set type to \"Transport \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.tags[0]}\r\n}\r\n{set type to cat(type, \" mission\")}\r\n\r\n{OneOf(\"{type} {if mission.faction: for {P(mission.faction, 'faction')}} failed\", \r\n    \"You have failed the {type} {if mission.faction: for {P(mission.faction, 'faction')}}\")}.\r\n\r\n\r\n\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'fail')}\r\n\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n{if mission:\r\n    {if find(mission.invariantTags, \"Transport\") > -1:\r\n        {set type to \"Transport \"}\r\n        {set type to cat(type, mission.passengertype)}\r\n    |else:\r\n        {set type to mission.tags[0]}\r\n    }\r\n    {set type to cat(type, \" mission\")}\r\n\r\n    {OneOf(\"{type} {if mission.faction: for {P(mission.faction, 'faction')}} failed\",\r\n        \"You have failed the {type} {if mission.faction: for {P(mission.faction, 'faction')}}\")}.\r\n}",
       "default": true,
       "name": "Mission failed",
       "description": "Triggered when you fail a mission"

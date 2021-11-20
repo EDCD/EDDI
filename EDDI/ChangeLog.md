@@ -26,6 +26,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Material required report` updated to fix a typo.
       * `Mission accepted` updated to remove mission counting and reduce verbosity.
       * `Mission check system` updated to improve grammar.
+      * `Mission failed` updated to prevent speech if no mission is found matching the mission id.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
