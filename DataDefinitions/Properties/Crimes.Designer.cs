@@ -250,6 +250,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carrying illegal data.
+        /// </summary>
+        public static string onFoot_carryingIllegalData {
+            get {
+                return ResourceManager.GetString("onFoot_carryingIllegalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carrying stolen goods.
         /// </summary>
         public static string onFoot_carryingStolenGoods {
@@ -264,6 +273,15 @@ namespace EddiDataDefinitions.Properties {
         public static string onFoot_damagingDefences {
             get {
                 return ResourceManager.GetString("onFoot_damagingDefences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transferring illegal data.
+        /// </summary>
+        public static string onFoot_dataTransfer {
+            get {
+                return ResourceManager.GetString("onFoot_dataTransfer", resourceCulture);
             }
         }
         

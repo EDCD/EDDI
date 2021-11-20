@@ -257,4 +257,12 @@
     <value>Arc cutter use</value>
     <comment>Crime onFoot_arcCutterUse</comment>
   </data>
+  <data name="onFoot_carryingIllegalData" xml:space="preserve">
+    <value>Carrying illegal data</value>
+    <comment>Crime onFoot_carryingIllegalData</comment>
+  </data>
+  <data name="onFoot_dataTransfer" xml:space="preserve">
+    <value>Transferring illegal data</value>
+    <comment>Crime onFoot_dataTransfer</comment>
+  </data>
 </root>
