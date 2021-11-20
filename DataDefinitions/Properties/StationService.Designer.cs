@@ -61,11 +61,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apex Interstellar.
+        /// </summary>
+        public static string ApexInterstellar {
+            get {
+                return ResourceManager.GetString("ApexInterstellar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Dock.
         /// </summary>
         public static string AutoDock {
             get {
                 return ResourceManager.GetString("AutoDock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bartender.
+        /// </summary>
+        public static string Bartender {
+            get {
+                return ResourceManager.GetString("Bartender", resourceCulture);
             }
         }
         
@@ -169,6 +187,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frontline Solutions.
+        /// </summary>
+        public static string FrontlineSolutions {
+            get {
+                return ResourceManager.GetString("FrontlineSolutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initiatives.
         /// </summary>
         public static string Initiatives {
@@ -246,6 +273,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Outfitting {
             get {
                 return ResourceManager.GetString("Outfitting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pioneer Supplies.
+        /// </summary>
+        public static string PioneerSupplies {
+            get {
+                return ResourceManager.GetString("PioneerSupplies", resourceCulture);
             }
         }
         
@@ -363,6 +399,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Tuning {
             get {
                 return ResourceManager.GetString("Tuning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vista Genomics.
+        /// </summary>
+        public static string VistaGenomics {
+            get {
+                return ResourceManager.GetString("VistaGenomics", resourceCulture);
             }
         }
         

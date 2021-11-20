@@ -48,6 +48,11 @@ namespace EddiDataDefinitions
             var ModulePacks = new StationService("ModulePacks");
             var VoucherRedemption = new StationService("VoucherRedemption");
             var SocialSpace = new StationService("SocialSpace");
+            var Bartender = new StationService("Bartender");
+            var VistaGenomics = new StationService("VistaGenomics");
+            var PioneerSupplies = new StationService("PioneerSupplies");
+            var ApexInterstellar = new StationService("ApexInterstellar");
+            var FrontlineSolutions = new StationService("FrontlineSolutions");
         }
 
         public static readonly StationService None;
