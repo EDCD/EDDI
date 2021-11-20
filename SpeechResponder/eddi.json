@@ -1621,7 +1621,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if event.near:\r\n    Arrived at \r\n|else:\r\n    Left\r\n}\r\n{if event.poi:\r\n    {P(event.poi, 'station')}.\r\n|else:\r\n    bookmark.\r\n}",
       "default": true,
       "name": "Near bookmark",
       "description": "Triggered when entering or departing the nearby radius of a bookmark"
