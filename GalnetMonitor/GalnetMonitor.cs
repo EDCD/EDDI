@@ -179,7 +179,7 @@ namespace EddiGalnetMonitor
                     {
                         try
                         {
-                            foreach (GalnetFeedItemNormalizer.ExtendedFeedItem item in items)
+                            foreach (FeedItem item in items)
                             {
                                 try
                                 {

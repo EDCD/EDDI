@@ -40,10 +40,10 @@ namespace EddiGalnetMonitor
             }
             else
             {
-                itemuri = alternatelink.GetAbsoluteUri();
+                itemuri = alternatelink?.GetAbsoluteUri();
             }
             string galnetId = GalnetMonitor.altURL ? FetchId(item.Summary.Text) : item.Id;
-            return new ExtendedFeedItem
+            return new FeedItem
             {
                 Id = string.IsNullOrEmpty(galnetId) ? null : galnetId.Trim(),
                 Title = item.Title == null ? null : Normalize(item.Title.Text, false),
@@ -121,17 +121,6 @@ namespace EddiGalnetMonitor
                 return null;
 
             return newvalue;
-        }
-
-        public class ExtendedFeedItem : FeedItem
-        {
-            public string Id { get; set; }
-            public DateTimeOffset PublishDate { get; set; }
-            public DateTimeOffset LastUpdatedDate { get; set; }
-
-            public ExtendedFeedItem() { }
-            public ExtendedFeedItem(FeedItem item)
-                : base(item) { }
         }
     }
 }
