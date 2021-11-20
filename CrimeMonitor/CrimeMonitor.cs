@@ -28,9 +28,9 @@ namespace EddiCrimeMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<FactionRecord> criminalrecord { get; private set; }
-        public long claims;
-        public long fines;
-        public long bounties;
+        public long claims => criminalrecord.Sum(r => r.claims);
+        public long fines => criminalrecord.Sum(r => r.fines);
+        public long bounties => criminalrecord.Sum(r => r.bounties);
         public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
@@ -757,15 +757,18 @@ namespace EddiCrimeMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            IDictionary<string, object> variables = new Dictionary<string, object>
+            lock (recordLock)
             {
-                ["criminalrecord"] = new List<FactionRecord>(criminalrecord),
-                ["claims"] = claims,
-                ["fines"] = fines,
-                ["bounties"] = bounties,
-                ["shiptargets"] = new List<Target>(shipTargets)
-            };
-            return variables;
+                IDictionary<string, object> variables = new Dictionary<string, object>
+                {
+                    ["criminalrecord"] = criminalrecord.ToList(),
+                    ["claims"] = claims,
+                    ["fines"] = fines,
+                    ["bounties"] = bounties,
+                    ["shiptargets"] = shipTargets.ToList()
+                };
+                return variables;
+            }
         }
 
         public void writeRecord()
@@ -773,15 +776,9 @@ namespace EddiCrimeMonitor
             lock (recordLock)
             {
                 // Write criminal configuration with current criminal record
-                claims = criminalrecord.Sum(r => r.claims);
-                fines = criminalrecord.Sum(r => r.fines);
-                bounties = criminalrecord.Sum(r => r.bounties);
                 var configuration = new CrimeMonitorConfiguration()
                 {
                     criminalrecord = criminalrecord,
-                    claims = claims,
-                    fines = fines,
-                    bounties = bounties,
                     targetSystem = targetSystem,
                     homeSystems = homeSystems,
                     updatedat = updateDat
@@ -798,9 +795,6 @@ namespace EddiCrimeMonitor
             {
                 // Obtain current criminal record from configuration
                 configuration = configuration ?? ConfigService.Instance.crimeMonitorConfiguration;
-                claims = configuration.claims;
-                fines = configuration.fines;
-                bounties = configuration.bounties;
                 targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;

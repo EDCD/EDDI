@@ -14,12 +14,6 @@ namespace EddiConfigService
         
         public Dictionary<string, string> homeSystems { get; set; } = new Dictionary<string, string>();
 
-        public long claims { get; set; }
-        
-        public long fines { get; set; }
-        
-        public long bounties { get; set; }
-        
         public string targetSystem { get; set; }
         
         public DateTime updatedat { get; set; }

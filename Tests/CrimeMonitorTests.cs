@@ -157,8 +157,8 @@ namespace UnitTests
 
             var config = ConfigService.FromJsonString<CrimeMonitorConfiguration>(crimeConfigJson);
             Assert.AreEqual(3, config.criminalrecord.Count);
-            Assert.AreEqual(275915, config.claims);
-            Assert.AreEqual(400, config.fines);
+            Assert.AreEqual(275915, config.criminalrecord.Sum(r => r.claims));
+            Assert.AreEqual(400, config.criminalrecord.Sum(r => r.fines));
 
             record = config.criminalrecord.ToList().FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.AreEqual(Superpower.Empire, record.Allegiance);
