@@ -177,7 +177,7 @@ Note: "Tiny" hardpoints are utility slots.
   * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
   * {TXT:Ship fuel tank}: the name of the main fuel tank fitted to the ship
   * {INT:Ship fuel tank class}: the class of the main fuel tank fitted to the ship (e.g. 3)
-  * {TXT:Ship fuel tank drive grade}: the grade of the main fuel tank fitted to the ship (e.g. "A")
+  * {TXT:Ship fuel tank grade}: the grade of the main fuel tank fitted to the ship (e.g. "A")
   * {DEC:Ship fuel tank cost}: the purchase cost of the the main fuel tank
   * {DEC:Ship fuel tank value}: the undiscounted cost of the the main fuel tank
   * {DEC:Ship fuel tank discount}: the percentage discount of the purchased main fuel tank against the undiscounted cost
