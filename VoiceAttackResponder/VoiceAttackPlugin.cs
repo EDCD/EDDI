@@ -53,6 +53,7 @@ namespace EddiVoiceAttackResponder
         // We'll maintain a referenceable list of variables that we've set from events
         private static List<VoiceAttackVariable> currentVariables = new List<VoiceAttackVariable>();
 
+        private static System.Version vaVersion;
         private static readonly object vaProxyLock = new object();
 
         private static Status currentStatus;
@@ -180,8 +181,8 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
 
                 // Set a variable indicating the version of VoiceAttack in use
-                System.Version v = vaProxy.VAVersion;
-                EDDI.Instance.vaVersion = v.ToString();
+                vaVersion = vaProxy.VAVersion;
+                EDDI.Instance.vaVersion = vaVersion.ToString();
 
                 Logging.Info("EDDI VoiceAttack plugin initialization complete");
             }
@@ -225,7 +226,14 @@ namespace EddiVoiceAttackResponder
                             while (active)
                             {
                                 Thread.Sleep(50);
-                                active = vaProxy.Command.Active("((EDDI " + @event.type.ToLowerInvariant() + "))");
+                                if (vaVersion.CompareTo(new System.Version(1, 7, 4)) > 0) // If running VoiceAttack version 1.7.4 or later
+                                {
+                                    active = vaProxy.Command.Active("((EDDI " + @event.type.ToLowerInvariant() + "))");
+                                }
+                                else // Legacy command invocation for versions of VoiceAttack prior to 1.7.4
+                                {
+                                    active = vaProxy.CommandActive("((EDDI " + @event.type.ToLowerInvariant() + "))");
+                                }
                             }
                         }
                     }
@@ -303,11 +311,23 @@ namespace EddiVoiceAttackResponder
             {
                 // Fire local command if present  
                 Logging.Debug("Searching for command " + commandName);
-                if (vaProxy.Command.Exists(commandName))
+                if (vaVersion.CompareTo(new System.Version(1,7,4)) > 0) // If running VoiceAttack version 1.7.4 or later
                 {
-                    Logging.Debug("Found command " + commandName);
-                    vaProxy.Command.Execute(commandName);
-                    Logging.Info("Executed command " + commandName);
+                    if (vaProxy.Command.Exists(commandName))
+                    {
+                        Logging.Debug("Found command " + commandName);
+                        vaProxy.Command.Execute(commandName);
+                        Logging.Info("Executed command " + commandName);
+                    }
+                }
+                else // Legacy command invocation for versions of VoiceAttack prior to 1.7.4
+                {
+                    if (vaProxy.CommandExists(commandName))
+                    {
+                        Logging.Debug("Found command " + commandName);
+                        vaProxy.ExecuteCommand(commandName);
+                        Logging.Info("Executed command " + commandName);
+                    }
                 }
             }
             catch (Exception ex)
