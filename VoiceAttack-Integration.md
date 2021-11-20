@@ -336,6 +336,7 @@ Note: "Tiny" hardpoints are utility slots.
   * {BOOL:odyssey}: true if the Odyssey expansion is currently active
   * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
   * {BOOL:EDDI speaking}: true if EDDI is currently speaking
+  * {TXT:EDDI version}: The currently active version of EDDI
 
 # Running Commands on EDDI Events
 
