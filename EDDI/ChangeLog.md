@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Crime check station` updated remove obsolete references to `shipid`.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
       * `Material required report` updated to fix a typo.
+      * `Mission accepted` updated to remove mission counting and reduce verbosity.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
