@@ -4395,6 +4395,7 @@ namespace EddiJournalMonitor
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "Scanned":
+                            case "ScanBaryCentre":
                             case "ScanOrganic":
                             case "SellMicroResources":
                             case "SellOrganicData":
