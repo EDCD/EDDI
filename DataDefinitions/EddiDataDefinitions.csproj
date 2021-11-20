@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModuleMount.cs" />
     <Compile Include="BgsWatch.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="MissionFactionEffect.cs" />
@@ -112,6 +113,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExobiologistRatings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\ModuleMount.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModuleMount.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
@@ -730,6 +736,19 @@
       <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modifications.ru.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.cs.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.de.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.es.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.fr.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.hu.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.it.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.ja.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\ModuleMount.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModuleMount.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ModuleMount.ru.resx" />
     <EmbeddedResource Include="Properties\Modules.cs.resx" />
     <EmbeddedResource Include="Properties\Modules.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modules.ru.resx" />

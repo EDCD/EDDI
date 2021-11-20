@@ -88,14 +88,7 @@ namespace EddiDataDefinitions
         public string EDName { get => edname; }
 
         [JsonProperty("mount")]
-        public ModuleMount? Mount { get; set; } // Only for weapons
-
-        public enum ModuleMount
-        {
-            Fixed,
-            Gimballed,
-            Turreted
-        }
+        public ModuleMount Mount { get; set; } // Only for weapons
 
         [JsonProperty]
         public string modificationEDName { get; set; }

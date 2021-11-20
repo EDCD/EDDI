@@ -3289,11 +3289,11 @@ namespace EddiJournalMonitor
                                         {
                                             // This is a weapon so provide a bit more information
                                             string mount;
-                                            if (module.Mount == Module.ModuleMount.Fixed)
+                                            if (module.Mount == ModuleMount.Fixed)
                                             {
                                                 mount = "fixed";
                                             }
-                                            else if (module.Mount == Module.ModuleMount.Gimballed)
+                                            else if (module.Mount == ModuleMount.Gimballed)
                                             {
                                                 mount = "gimballed";
                                             }
