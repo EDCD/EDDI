@@ -69,6 +69,7 @@ namespace EddiJournalMonitor
                 Match match = JsonRegex.Match(line);
                 if (match.Success)
                 {
+                    Logging.Debug("Received event", line);
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                     if (fromLogLoad && ignoredLogLoadEvents.Contains(JsonParsing.getString(data, "event")))
