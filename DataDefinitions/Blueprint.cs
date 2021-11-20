@@ -67,6 +67,7 @@ namespace EddiDataDefinitions
             var FSDLongRange3 = new Blueprint(128673692, "FSDLongRange3", "FSDLongRange", 3);
             var FSDLongRange4 = new Blueprint(128673693, "FSDLongRange4", "FSDLongRange", 4);
             var FSDLongRange5 = new Blueprint(128673694, "FSDLongRange5", "FSDLongRange", 5);
+            var FSDLongRange5_1 = new Blueprint(128998592, "FSDLongRange5", "FSDLongRange", 5);
             var FSDShielded1 = new Blueprint(128673700, "FSDShielded1", "FSDShielded", 1);
             var FSDShielded2 = new Blueprint(128673701, "FSDShielded2", "FSDShielded", 2);
             var FSDShielded3 = new Blueprint(128673702, "FSDShielded3", "FSDShielded", 3);
@@ -558,6 +559,7 @@ namespace EddiDataDefinitions
             var RailGunHighCapacity3 = new Blueprint(128673602, "RailGunHighCapacity3", "WeaponHighCapacity", 3);
             var RailGunHighCapacity4 = new Blueprint(128673603, "RailGunHighCapacity4", "WeaponHighCapacity", 4);
             var RailGunHighCapacity5 = new Blueprint(128673604, "RailGunHighCapacity5", "WeaponHighCapacity", 5);
+            var WeaponHighCapacity1 = new Blueprint(128988385, "WeaponHighCapacity1", "WeaponHighCapacity", 1);
             var BeamLaserLightWeight1 = new Blueprint(128673330, "BeamLaserLightWeight1", "WeaponLightWeight", 1);
             var BeamLaserLightWeight2 = new Blueprint(128673331, "BeamLaserLightWeight2", "WeaponLightWeight", 2);
             var BeamLaserLightWeight3 = new Blueprint(128673332, "BeamLaserLightWeight3", "WeaponLightWeight", 3);
@@ -648,6 +650,8 @@ namespace EddiDataDefinitions
             var RailGunLongRange3 = new Blueprint(128673612, "RailGunLongRange3", "WeaponLongRange", 3);
             var RailGunLongRange4 = new Blueprint(128673613, "RailGunLongRange4", "WeaponLongRange", 4);
             var RailGunLongRange5 = new Blueprint(128673614, "RailGunLongRange5", "WeaponLongRange", 5);
+            var WeaponLongRange1 = new Blueprint(128988382, "WeaponLongRange1", "WeaponLongRange", 1);
+            var WeaponLongRange5 = new Blueprint(128984342, "WeaponLongRange5", "WeaponLongRange", 5);
             var BeamLaserOvercharged1 = new Blueprint(128739082, "BeamLaserOvercharged1", "WeaponOvercharged", 1);
             var BeamLaserOvercharged2 = new Blueprint(128739083, "BeamLaserOvercharged2", "WeaponOvercharged", 2);
             var BeamLaserOvercharged3 = new Blueprint(128739084, "BeamLaserOvercharged3", "WeaponOvercharged", 3);
@@ -683,6 +687,7 @@ namespace EddiDataDefinitions
             var PulseLaserOvercharged3 = new Blueprint(128673582, "PulseLaserOvercharged3", "WeaponOvercharged", 3);
             var PulseLaserOvercharged4 = new Blueprint(128673583, "PulseLaserOvercharged4", "WeaponOvercharged", 4);
             var PulseLaserOvercharged5 = new Blueprint(128673584, "PulseLaserOvercharged5", "WeaponOvercharged", 5);
+            var WeaponOvercharged1 = new Blueprint(128990143, "WeaponOvercharged1", "WeaponOvercharged", 1);
             var BurstLaserRapidFire1 = new Blueprint(128673380, "BurstLaserRapidFire1", "WeaponRapidFire", 1);
             var BurstLaserRapidFire2 = new Blueprint(128673381, "BurstLaserRapidFire2", "WeaponRapidFire", 2);
             var BurstLaserRapidFire3 = new Blueprint(128673382, "BurstLaserRapidFire3", "WeaponRapidFire", 3);
@@ -723,6 +728,7 @@ namespace EddiDataDefinitions
             var PulseLaserRapidFire3 = new Blueprint(128673587, "PulseLaserRapidFire3", "WeaponRapidFire", 3);
             var PulseLaserRapidFire4 = new Blueprint(128673588, "PulseLaserRapidFire4", "WeaponRapidFire", 4);
             var PulseLaserRapidFire5 = new Blueprint(128673589, "PulseLaserRapidFire5", "WeaponRapidFire", 5);
+            var WeaponRapidFire1 = new Blueprint(128988383, "WeaponRapidFire1", "WeaponRapidFire", 1);
             var BeamLaserShortRange1 = new Blueprint(128673345, "BeamLaserShortRange1", "WeaponShortRange", 1);
             var BeamLaserShortRange2 = new Blueprint(128673346, "BeamLaserShortRange2", "WeaponShortRange", 2);
             var BeamLaserShortRange3 = new Blueprint(128673347, "BeamLaserShortRange3", "WeaponShortRange", 3);
@@ -856,7 +862,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public static Blueprint FromEliteID(long eliteID, object rawData = null)
+        public static Blueprint FromEliteID(long eliteID, Dictionary<string, object> rawData = null)
         {
             if (eliteID <= 0) { return null; }
             BlueprintsByEliteID.TryGetValue(eliteID, out Blueprint blueprint);
@@ -864,6 +870,12 @@ namespace EddiDataDefinitions
             {
                 // Unknown module; report the full object so that we can update the definitions
                 Logging.Error("Unknown blueprint Elite ID: " + eliteID, rawData);
+                if (rawData != null)
+                {
+                    var edname = JsonParsing.getString(rawData, "BlueprintName");
+                    var level = JsonParsing.getOptionalInt(rawData, "Level") ?? 1;
+                    blueprint = new Blueprint(eliteID, edname.Replace("_", "") + level, edname.Replace("_", ""), level);
+                }
             }
             return blueprint;
         }
