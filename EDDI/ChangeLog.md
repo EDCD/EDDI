@@ -22,6 +22,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
       * `Material required report` updated to fix a typo.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
