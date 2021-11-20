@@ -146,7 +146,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Rollbar">
-      <Version>4.0.1</Version>
+      <Version>4.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>6.0.0</Version>
