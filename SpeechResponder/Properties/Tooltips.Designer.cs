@@ -115,6 +115,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line Folding.
+        /// </summary>
+        public static string folding {
+            get {
+                return ResourceManager.GetString("folding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paste (Ctrl+V).
         /// </summary>
         public static string paste {

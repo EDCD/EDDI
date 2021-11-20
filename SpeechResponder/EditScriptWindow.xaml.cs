@@ -1,5 +1,6 @@
 ﻿using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,9 @@ namespace EddiSpeechResponder
         private readonly Dictionary<string, Script> _scripts;
 
         public ScriptRecoveryService ScriptRecoveryService { get; set; }
+
+        private FoldingStrategy foldingStrategy;
+        private FoldingMargin foldingMargin;
 
         public EditScriptWindow(Script script, Dictionary<string, Script> scripts)
         {
@@ -51,11 +55,16 @@ namespace EddiSpeechResponder
             ScriptRecoveryService = new ScriptRecoveryService(this);
             ScriptRecoveryService.BeginScriptRecovery();
             scriptView.TextChanged += ScriptView_TextChanged;
+
+            foldingStrategy = new FoldingStrategy('{', '}');
+            foldingStrategy.CreateNewFoldings(scriptView.Document);
+            InitializeOrUpdateFolding();
         }
 
         private void ScriptView_TextChanged(object sender, System.EventArgs e)
         {
             editorScript.Value = scriptView.Text;
+            InitializeOrUpdateFolding();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -134,6 +143,35 @@ namespace EddiSpeechResponder
             if (!string.IsNullOrWhiteSpace(editorScript.defaultValue))
             {
                 new ShowDiffWindow(editorScript.defaultValue, editorScript.Value).Show();
+            }
+        }
+
+        private void foldingButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.CheckBox)
+            {
+                InitializeOrUpdateFolding();
+            }
+        }
+
+        private void InitializeOrUpdateFolding()
+        {
+            if (Folding.IsChecked ?? false)
+            {
+                if (foldingMargin is null)
+                {
+                    foldingMargin = new FoldingMargin { FoldingManager = FoldingManager.Install(scriptView.TextArea) };
+                }
+                foldingStrategy.UpdateFoldings(foldingMargin.FoldingManager, scriptView.Document);
+            }
+            else
+            {
+                if (foldingMargin != null)
+                {
+                    foldingMargin.FoldingManager.Clear();
+                    FoldingManager.Uninstall(foldingMargin.FoldingManager);
+                }
+                foldingMargin = null;
             }
         }
     }

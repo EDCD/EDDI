@@ -150,4 +150,7 @@
   <data name="word_wrap" xml:space="preserve">
     <value>Word Wrap</value>
   </data>
+  <data name="folding" xml:space="preserve">
+    <value>Line Folding</value>
+  </data>
 </root>

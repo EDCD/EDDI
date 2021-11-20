@@ -14,7 +14,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Mission Monitor
     * Moved navigation functions to the Navigation Monitor
   * Navigation Monitor
-    * Added new Navigation Monitor with support for both planetary and galactic bookmarking.
+    * Added new Navigation Monitor with support for both planetary and galactic bookmarking. Planetary bookmarks, when selected, will provide compass heading and distance.
   * Speech Responder
     * Functions
       * Fixed a bug that could cause the TrafficDetails() function to fail.
