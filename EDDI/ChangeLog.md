@@ -19,12 +19,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Functions
       * Fixed a bug that could cause the TrafficDetails() function to fail.
     * Scripts
-      * `Bookmark details` event added, triggered when a navigation bookmark is added in the Navigation Monitor.
+      * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
+      * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
       * `Material required report` updated to fix a typo.
-      * `Nav route` event added, triggered when a route is plotted in the Galaxy Map.
-      * `Near bookmark` event added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
-      * `Next destination` event added, triggered when selecting an in-system destination.
+      * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
+      * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
+      * `Next destination` added, triggered when selecting an in-system destination.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
 ### 4.0.1
