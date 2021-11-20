@@ -109,6 +109,10 @@ namespace EddiDataDefinitions
         public static readonly Engineer UmaLaszlo = new Engineer(400007, "Uma Laszlo", "Xuane", 16065190962585, "Laszlo's Resolve", 128974439, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer OdenGeiger = new Engineer(400008, "Oden Geiger", "Candiaei", 8879744226018, "Ankh's Promise", 128974695, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
         public static readonly Engineer YardenBond = new Engineer(400009, "Yarden Bond", "Bayan", 670686455169, "Salamander Bank", 128974951, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer Baltanos = new Engineer(400010, "Baltanos", "Deriso", 71536135676490, "The Divine Apparatus", 128986843, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer EleanorBresa = new Engineer(400011, "Eleanor Bresa", "Desy", 38001031029322, "Bresa Modifications", 128987099, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer RosaDayette = new Engineer(400012, "Rosa Dayette", "Kojeara", 59166629864010, "Rosa's Shop", 128986587, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer YiShen = new Engineer(400013, "Yi Shen", "Einheriar", 13736779007129, "Eidolon Hold", 128987355, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
 
         public static Engineer FromName(string from)
         {
