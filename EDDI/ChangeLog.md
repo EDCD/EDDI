@@ -30,6 +30,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
+      * `Surface signals detected` script updated to indicate the body containing the signals, when available.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
 ### 4.0.1
