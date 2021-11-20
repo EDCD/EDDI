@@ -376,11 +376,12 @@ namespace EddiInaraResponder
         {
             var eventData = new Dictionary<string, object>()
             {
-                { "starsystemName", string.IsNullOrEmpty(@event.systemname) ? EDDI.Instance.CurrentStarSystem.systemname : @event.systemname },
-                { "starsystemBodyName", string.IsNullOrEmpty(@event.bodyname) ? EDDI.Instance.CurrentStellarBody.bodyname : @event.bodyname },
+                { "starsystemName", !string.IsNullOrEmpty(@event.systemname) ? @event.systemname : EDDI.Instance.CurrentStarSystem.systemname },
+                { "starsystemBodyName", !string.IsNullOrEmpty(@event.bodyname) ? @event.bodyname : EDDI.Instance.CurrentStellarBody.bodyname },
                 { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
             };
             if (string.IsNullOrEmpty(eventData["starsystemName"]?.ToString())) { return; }
+            if (string.IsNullOrEmpty(eventData["starsystemBodyName"]?.ToString())) { return; }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelLand", eventData));
         }
 
