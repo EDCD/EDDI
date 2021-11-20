@@ -202,7 +202,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667681, 205, "BurnhamBileDistillate", Narcotics, 8466, true),
                 new CommodityDefinition(128667682, 206, "HIPOrganophosphates", Chemicals, 8169, true),
                 new CommodityDefinition(128667683, 207, "JaradharrePuzzleBox", ConsumerItems, 16816, true),
-                new CommodityDefinition(128667684, 208, "KoroKungPellets", Chemicals, 8067, true),
+                new CommodityDefinition(128667684, 208, "KorroKungPellets", Chemicals, 8067, true),
                 new CommodityDefinition(128667685, 209, "LFTVoidExtractCoffee", Foods, 9554, true),
                 new CommodityDefinition(128667686, 210, "HonestyPills", Medicines, 8860, true),
                 new CommodityDefinition(128667687, 211, "NonEuclidianExotanks", Machinery, 8526, true),

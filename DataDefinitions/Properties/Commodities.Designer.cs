@@ -1710,9 +1710,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Koro Kung Pellets.
         /// </summary>
-        public static string KoroKungPellets {
+        public static string KorroKungPellets {
             get {
-                return ResourceManager.GetString("KoroKungPellets", resourceCulture);
+                return ResourceManager.GetString("KorroKungPellets", resourceCulture);
             }
         }
         
