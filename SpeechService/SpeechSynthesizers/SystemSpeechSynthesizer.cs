@@ -43,6 +43,12 @@ namespace EddiSpeechService.SpeechSynthesizers
                     {
                         Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice.VoiceInfo)}");
 
+                        if (voice.VoiceInfo.Culture is null)
+                        {
+                            Logging.Warn($"Could not identify a culture code for voice {voice.VoiceInfo.Name}, skipping.");
+                            continue;
+                        }
+
                         var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
                             voice.VoiceInfo.Culture, nameof(System));
 
