@@ -110,8 +110,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Lexicons.md">
+      <Link>Lexicons.md</Link>
+    </None>
     <None Include="app.config" />
-    <None Include="Lexicons.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\FormatOverrides.cs.resx" />

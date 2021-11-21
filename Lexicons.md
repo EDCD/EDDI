@@ -55,15 +55,15 @@ Ivona voice installers include a Lexicon Editor utility. The utility can be used
 
 To access the Lexicon Editor utility, from the Control Panel navigate to `Ease of Access` then `Speech Recognition` then `Advanced speech options`. 
 
-![](../images/lexicons-Ivona1.png)
+![](images/lexicons-Ivona1.png)
 
 Open the Text to Speech tab, make sure that your Ivona voice is selected, then hit the `Settings` button to open the Lexicon Editor.
 
-![](../images/lexicons-Ivona2.png)
+![](images/lexicons-Ivona2.png)
 
 To use phonemes in the Lexicon Editor, you need to translate the word you want to correct to an SSML phoneme tag using the [IPA](###IPA) or [X-SAMPA](###X-SAMPA) alphabets. 
 
-![](../images/lexicons-Ivona3.png)
+![](images/lexicons-Ivona3.png)
 
 The Lexicon Editor accepts simple phonetic changes like adding spacing between words (e.g. from "supergiant" to "super giant")
 
