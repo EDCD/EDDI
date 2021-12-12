@@ -126,7 +126,7 @@
     <comment>Commodity AdvancedMedicines</comment>
   </data>
   <data name="AganippeRush" xml:space="preserve">
-    <value>Aganippe Ansturm</value>
+    <value>Aganippe-Hirnhetzer</value>
     <comment>Commodity AganippeRush</comment>
   </data>
   <data name="AgriculturalMedicines" xml:space="preserve">
@@ -138,11 +138,11 @@
     <comment>Commodity AiRelics</comment>
   </data>
   <data name="AlacarakmoSkinArt" xml:space="preserve">
-    <value>Alacarakmo Hautkunst</value>
+    <value>Alacarakmo Hautinlays</value>
     <comment>Commodity AlacarakmoSkinArt</comment>
   </data>
   <data name="AlbinoQuechuaMammoth" xml:space="preserve">
-    <value>Albino Quechua Mammut</value>
+    <value>Albinomammut-Fleisch</value>
     <comment>Commodity AlbinoQuechuaMammoth</comment>
   </data>
   <data name="Algae" xml:space="preserve">
@@ -154,7 +154,7 @@
     <comment>Commodity alieneggs</comment>
   </data>
   <data name="AltairianSkin" xml:space="preserve">
-    <value>Altairianische Haut</value>
+    <value>Altair-Haut</value>
     <comment>Commodity AltairianSkin</comment>
   </data>
   <data name="Aluminium" xml:space="preserve">
