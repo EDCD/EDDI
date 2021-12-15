@@ -745,6 +745,51 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mining Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Mining {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Mining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operations Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Operations {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Operations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rescue Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Rescue {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Rescue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Universal Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Universal {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Universal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xeno Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Xeno {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Xeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pacifier.
         /// </summary>
         public static string Pacifier {

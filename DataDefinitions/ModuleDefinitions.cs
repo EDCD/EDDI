@@ -1063,6 +1063,16 @@ namespace EddiDataDefinitions
                 new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", 1812, "AdvancedMultiCannon", 1, "F", 9500, ModuleMount.Fixed),
                 new Module(128935982, "Hpt_DumbfireMissileRack_Fixed_Small_Advanced", 1813, "AdvancedMissileRack", 1, "B", 32175, ModuleMount.Fixed),
                 new Module(128935983, "Hpt_DumbfireMissileRack_Fixed_Medium_Advanced", 1814, "AdvancedMissileRack", 2, "B", 240000, ModuleMount.Fixed),
+                new Module(129001921, "Int_MultiDroneControl_Mining_Size3_Class1", -1, "MultiDroneControl_Mining", 3, "E", 15000),
+                new Module(129001922, "Int_MultiDroneControl_Mining_Size3_Class3", -1, "MultiDroneControl_Mining", 3, "C", 50000),
+                new Module(129001923, "Int_MultiDroneControl_Operations_Size3_Class3", -1, "MultiDroneControl_Operations", 3, "C", 50000),
+                new Module(129001924, "Int_MultiDroneControl_Operations_Size3_Class4", -1, "MultiDroneControl_Operations", 3, "B", 80000),
+                new Module(129001925, "Int_MultiDroneControl_Rescue_Size3_Class2", -1, "MultiDroneControl_Rescue", 3, "D", 30000),
+                new Module(129001926, "Int_MultiDroneControl_Rescue_Size3_Class3", -1, "MultiDroneControl_Rescue", 3, "C", 50000),
+                new Module(129001927, "Int_MultiDroneControl_Xeno_Size3_Class3", -1, "MultiDroneControl_Xeno", 3, "C", 50000),
+                new Module(129001928, "Int_MultiDroneControl_Xeno_Size3_Class4", -1, "MultiDroneControl_Xeno", 3, "B", 80000),
+                new Module(129001929, "Int_MultiDroneControl_Universal_Size7_Class3", -1, "MultiDroneControl_Universal", 7, "C", 4000000),
+                new Module(129001930, "Int_MultiDroneControl_Universal_Size7_Class5", -1, "MultiDroneControl_Universal", 7, "A", 8000000),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "CargoRack", 2, "E", 0),
@@ -1171,7 +1181,7 @@ namespace EddiDataDefinitions
 
                 // Needs pricing
                 new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
-                
+               
                 // Needs confirmation of localized name, class, and grade
                 new Module(128808878, "Hpt_XenoScannerMk2_Basic_Tiny", -1, "XenoScanner", 0, "E", 745950),
             };
