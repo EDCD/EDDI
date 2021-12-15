@@ -772,6 +772,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classified Experimental Equipment.
+        /// </summary>
+        public static string ClassifiedExperimentalEquipment {
+            get {
+                return ResourceManager.GetString("ClassifiedExperimentalEquipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clothing.
         /// </summary>
         public static string Clothing {

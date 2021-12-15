@@ -1773,4 +1773,8 @@
     <value>Onionhead Gamma Strain</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
+  <data name="ClassifiedExperimentalEquipment" xml:space="preserve">
+    <value>Classified Experimental Equipment</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+  </data>
 </root>
