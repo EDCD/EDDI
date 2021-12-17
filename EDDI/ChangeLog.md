@@ -19,6 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Functions
       * Fixed a bug that could cause the TrafficDetails() function to fail.
     * Scripts
+      * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.

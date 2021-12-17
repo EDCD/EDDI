@@ -1662,7 +1662,7 @@
     <comment>Commodity Alexandrite</comment>
   </data>
   <data name="Opal" xml:space="preserve">
-    <value>Void Opals</value>
+    <value>Void Opal</value>
     <comment>Commodity Opal</comment>
   </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">

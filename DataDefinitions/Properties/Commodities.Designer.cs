@@ -2374,7 +2374,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Void Opals.
+        ///   Looks up a localized string similar to Void Opal.
         /// </summary>
         public static string Opal {
             get {
