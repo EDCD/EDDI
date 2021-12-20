@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Recupero di Carico</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Recupero</value>
   </data>
@@ -250,7 +252,10 @@
     <value>Obiettivi di Guerra</value>
     <comment>Massacre mission type</comment>
   </data>
-  
+  <data name="Skimmer" xml:space="preserve">
+    <value>Obiettivi Skimmer</value>
+    <comment>Massacre type</comment>
+  </data>
   <data name="Hard" xml:space="preserve">
     <value>Difficile</value>
     <comment>Mission difficulty</comment>
@@ -266,14 +271,41 @@
     <value>Upload</value>
     <comment>Hack type</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Offline" xml:space="preserve">
+    <value>Insediamento disattivato</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>Assalto a Insediamento</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Furto della produzione</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>Non violento</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Riattivazione di Insediamento</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>Riattivazione di Insediamento</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Disattivazione di Insediamento</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Sabotaggio della produzione di un Insediamento</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planetario</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Prigionieri Politici</value>
+    <comment>Bulk passenger type</comment>
+  </data>
 </root>
