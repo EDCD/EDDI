@@ -298,6 +298,7 @@ namespace EddiDataDefinitions
         private HashSet<Material> materialsAvailable => bodies?
             .SelectMany(b => b.materials)
             .Select(m => m.definition)
+            .Where(m => m != null)
             .Distinct()
             .OrderByDescending(m => m.Rarity.level)
             .ToHashSet() ?? new HashSet<Material>();
