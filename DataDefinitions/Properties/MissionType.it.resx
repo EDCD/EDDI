@@ -120,7 +120,9 @@
   <data name="Altruism" xml:space="preserve">
     <value>Donazione</value>
   </data>
-  
+  <data name="Credits" xml:space="preserve">
+    <value>Crediti</value>
+  </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinio</value>
   </data>
@@ -203,29 +205,67 @@
   <data name="StartZone" xml:space="preserve">
     <value>Area di Partenza</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="OnFoot" xml:space="preserve">
+    <value>A piedi</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>Operazioni clandestine</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>Serie</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Benvenuto</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Legale</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>Illegale</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>Planetario</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>Contratto per la Marina Federale</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Contratto per la Marina Imperiale</value>
+  </data>
   <data name="DisableMegaship" xml:space="preserve">
     <value>Disabilita Mega Vascello</value>
   </data>
-  
+  <data name="Founder" xml:space="preserve">
+    <value>Fondatore</value>
+  </data>
   <data name="HackMegaship" xml:space="preserve">
     <value>Viola Mega Vascello</value>
   </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>Obiettivi della Guerra Civile</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>Obiettivi di Guerra</value>
+    <comment>Massacre mission type</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="Hard" xml:space="preserve">
+    <value>Difficile</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>Segreto</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+    <comment>Hack type</comment>
+  </data>
   
   
   
