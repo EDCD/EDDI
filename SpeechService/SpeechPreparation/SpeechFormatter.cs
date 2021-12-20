@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.Xml;
 using Utilities;
 
 namespace EddiSpeechService.SpeechPreparation
@@ -12,7 +13,7 @@ namespace EddiSpeechService.SpeechPreparation
         // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
         private static readonly string[] separatorsList =
         {
-            @"(<audio.*?>)",
+            @"(<audio.*?\/>)",
             @"(<transmit.*?>[\s\S]*?<\/transmit>)",
             @"(<voice.*?>[\s\S]*?<\/voice>)",
         };
@@ -131,18 +132,43 @@ namespace EddiSpeechService.SpeechPreparation
             return statements;
         }
 
-        public static string FormatAudioTags(string statement)
-        {
-            statement = Regex.Replace(statement, "^.*<audio", "<audio");
-            statement = Regex.Replace(statement, ">.*$", ">");
-            return statement;
-        }
-
         public static string StripRadioTags(string statement)
         {
             statement = statement.Replace("<transmit>", "");
             statement = statement.Replace("</transmit>", "");
             return statement;
+        }
+        public static void UnpackAudioTags(string inputStatement, out string fileName, out bool async, out decimal? volumeOverride)
+        {
+            fileName = string.Empty;
+            async = false;
+            volumeOverride = null;
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(inputStatement);
+            if (xmlDoc.FirstChild?.Attributes != null)
+            {
+                foreach (XmlAttribute attribute in xmlDoc.FirstChild.Attributes)
+                {
+                    switch (attribute.Name)
+                    {
+                        case "src":
+                        {
+                            fileName = attribute.Value;
+                            break;
+                        }
+                        case "async":
+                        {
+                            async = bool.Parse(attribute.Value);
+                            break;
+                        }
+                        case "volume":
+                        {
+                            volumeOverride = decimal.Parse(attribute.Value);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public static void UnpackVoiceTags(string inputStatement, out string voice, out string outputStatement)

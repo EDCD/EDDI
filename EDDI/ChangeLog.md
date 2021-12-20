@@ -18,6 +18,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Functions
       * Fixed a bug that could cause the TrafficDetails() function to fail.
+      * Fixed a bug that prevented Pause() from affecting Play().
     * Scripts
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.

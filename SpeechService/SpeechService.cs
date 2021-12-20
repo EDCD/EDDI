@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using CSCore.Codecs;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using EddiDataDefinitions;
@@ -16,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpeechService
@@ -204,7 +206,24 @@ namespace EddiSpeechService
                 bool isAudio = Statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
                 if (isAudio)
                 {
-                    statement = SpeechFormatter.FormatAudioTags(Statement);
+                    SpeechFormatter.UnpackAudioTags(Statement, out string fileName, out bool async, out decimal? volumeOverride);
+                    try
+                    {
+                        // Play the audio, waiting for the audio to complete unless we're in async mode
+                        if (async)
+                        {
+                            Task.Run(() => PlayAudio(fileName, volumeOverride));
+                        }
+                        else
+                        {
+                            PlayAudio(fileName, volumeOverride);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.Warn(e.Message, e);
+                    }
+                    continue;
                 }
 
                 bool isRadio = Statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
@@ -476,6 +495,24 @@ namespace EddiSpeechService
                 return true;
             }
             return false;
+        }
+        
+        public void PlayAudio(string fileName, decimal? volumeOverride)
+        {
+            using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
+            using (var soundOut = GetSoundOut())
+            {
+                var audioSource = CodecFactory.Instance.GetCodec(fileName);
+                var waitTime = audioSource.GetTime(audioSource.Length);
+                soundOut.Initialize(audioSource);
+                if (volumeOverride != null)
+                {
+                    soundOut.Volume = (float)volumeOverride / 100;
+                }
+                soundOut.Play();
+                waitHandle.WaitOne(waitTime);
+                soundOut.Stop();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

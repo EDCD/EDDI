@@ -1,13 +1,6 @@
 ﻿using Cottle.Functions;
-using CSCore;
-using CSCore.Codecs;
-using CSCore.SoundOut;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -19,6 +12,9 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.Play;
         public NativeFunction function => new NativeFunction((values) =>
         {
+            // The file to play
+            string fileName = values[0].AsString;
+
             // Whether the audio should be played asynchronously
             bool async = false;
             if (values.Count > 1)
@@ -26,61 +22,19 @@ namespace EddiSpeechResponder.CustomFunctions
                 async = values[1].AsBoolean;
             }
 
-            // The volume override (where 100 is normal volume)
+            // The volume override (where 100 is normal max volume)
             decimal? volumeOverride = null;
             if (values.Count > 2)
             {
                 volumeOverride = values[2].AsNumber;
             }
 
-            try
+            // Use a psuedo-SSML tag to pass the result to the Speech Service
+            if (volumeOverride != null)
             {
-                ISoundOut GetSoundOut()
-                {
-                    if (WasapiOut.IsSupportedOnCurrentPlatform)
-                    {
-                        return new WasapiOut();
-                    }
-                    else
-                    {
-                        return new DirectSoundOut();
-                    }
-                }
-
-                // Play the audio, waiting for the audio to complete unless we're in async mode
-                void playAudio()
-                {
-                    using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
-                    using (var soundOut = GetSoundOut())
-                    {
-                        var source = CodecFactory.Instance.GetCodec(values[0].AsString);
-                        var waitTime = source.GetTime(source.Length);
-                        soundOut.Initialize(source);
-                        if (volumeOverride != null)
-                        {
-                            soundOut.Volume = (float)volumeOverride / 100;
-                        }
-                        soundOut.Play();
-                        waitHandle.WaitOne(waitTime);
-                        soundOut.Stop();
-                    }
-                }
-                if (async) 
-                { 
-                    Task.Run(playAudio); 
-                }
-                else
-                {
-                    playAudio();
-                }
+                return $@"<audio src=""{fileName}"" async=""{async}"" volume=""{volumeOverride}"" />";
             }
-            catch (Exception e)
-            {
-                Logging.Warn(e.Message, e);
-                return e.Message;
-            }
-
-            return "";
+            return $@"<audio src=""{fileName}"" async=""{async}"" />";
         }, 1, 3);
     }
 }
