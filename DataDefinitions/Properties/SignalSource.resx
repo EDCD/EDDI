@@ -457,4 +457,8 @@
     <value>Crash Site</value>
     <comment>Crash Site</comment>
   </data>
+  <data name="CrashedShip" xml:space="preserve">
+    <value>Crashed Ship</value>
+    <comment>POI CrashedShip</comment>
+  </data>
 </root>

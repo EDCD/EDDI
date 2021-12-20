@@ -74,6 +74,7 @@ namespace EddiDataDefinitions
             var AbandonedBuggyEasy = new SignalSource("Abandoned_Buggy_Easy");
             var AbandonedBuggyMedium = new SignalSource("Abandoned_Buggy_Medium");
             var AbandonedBuggyHard = new SignalSource("Abandoned_Buggy_Hard");
+            var CrashedShip = new SignalSource("CrashedShip");
             var DamagedEagleAssassinationEasy = new SignalSource("Damaged_Eagle_Assassination_Easy");
             var DamagedEagleAssassinationMedium = new SignalSource("Damaged_Eagle_Assassination_Medium");
             var DamagedEagleAssassinationHard = new SignalSource("Damaged_Eagle_Assassination_Hard");
@@ -133,6 +134,7 @@ namespace EddiDataDefinitions
                 {
                     string tidiedFrom = from
                         .Replace("$", "")
+                        .Replace("POI_", "")
                         .Replace("POIScenario_", "")
                         .Replace("POIScene_", "")
                         .Replace("Watson_", "")

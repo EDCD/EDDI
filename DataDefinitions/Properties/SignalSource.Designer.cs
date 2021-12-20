@@ -142,6 +142,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crashed Ship.
+        /// </summary>
+        public static string CrashedShip {
+            get {
+                return ResourceManager.GetString("CrashedShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ENCRYPTED SIGNAL.
         /// </summary>
         public static string Damaged_Eagle_Assassination_Easy {
