@@ -825,7 +825,7 @@ namespace EddiDataDefinitions
             var SensorFastScan4 = new Blueprint(128740155, "SensorSurfaceScannerFastScan4", "SensorFastScan", 4);
             var SensorFastScan5 = new Blueprint(128740156, "SensorSurfaceScannerFastScan5", "SensorFastScan", 5);
 
-            var DecorativeRed = new Blueprint(129008722, "DecorativeRed", "DecorativeRed", 5);
+            var DecorativeRed = new Blueprint(129008722, "DecorativeRed", null, 5);
 
         }
         public static readonly Blueprint None;

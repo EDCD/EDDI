@@ -506,6 +506,7 @@ namespace EddiDataDefinitions
 
         new public static BlueprintTemplate FromEDName(string edname)
         {
+            if (string.IsNullOrEmpty(edname)) { return null; }
             string normalizedEDName = normalizeEDName(edname);
             BlueprintTemplate result = ResourceBasedLocalizedEDName<BlueprintTemplate>.FromEDName(normalizedEDName);
             return result;
