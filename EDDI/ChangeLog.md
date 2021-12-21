@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Docking granted` script revised to reference automated docking if such a module is installed.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
       * `Material required report` updated to fix a typo.
       * `Module purchased` updated to fix broken weapon mount details.
