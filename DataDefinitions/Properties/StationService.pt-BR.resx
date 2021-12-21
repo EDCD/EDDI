@@ -261,9 +261,24 @@
     <value>Espaço social</value>
     <comment>Station Service SocialSpace</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Bartender" xml:space="preserve">
+    <value>Bartender</value>
+    <comment>Station Service Bartender</comment>
+  </data>
+  <data name="VistaGenomics" xml:space="preserve">
+    <value>Vista Genomics</value>
+    <comment>Station Service VistaGenomics</comment>
+  </data>
+  <data name="PioneerSupplies" xml:space="preserve">
+    <value>Pioneer Supplies</value>
+    <comment>Station Service PioneerSupplies</comment>
+  </data>
+  <data name="ApexInterstellar" xml:space="preserve">
+    <value>Apex Interstellar</value>
+    <comment>Station Service ApexInterstellar</comment>
+  </data>
+  <data name="FrontlineSolutions" xml:space="preserve">
+    <value>Frontline Solutions</value>
+    <comment>Station Service FrontlineSolutions</comment>
+  </data>
 </root>
