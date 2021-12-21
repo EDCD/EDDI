@@ -741,10 +741,7 @@
     <value>Bière de Kongga</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  <data name="KoroKungPellets" xml:space="preserve">
-    <value>Boulettes Koro Kung</value>
-    <comment>Commodity KoroKungPellets</comment>
-  </data>
+  
   <data name="Landmines" xml:space="preserve">
     <value>Mines terrestres</value>
     <comment>Commodity Landmines</comment>
@@ -1661,10 +1658,7 @@
     <value>Alexandrite</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  <data name="Opal" xml:space="preserve">
-    <value>Opales du vide</value>
-    <comment>Commodity Opal</comment>
-  </data>
+  
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Matière biologique Thargoïde</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1769,5 +1763,6 @@
     <value>Ailes à faible gravité Uzumoku</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
+  
   
 </root>
