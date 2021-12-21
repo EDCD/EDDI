@@ -123,9 +123,6 @@
   <data name="add_button_desc" xml:space="preserve">
     <value>Consenti di aggiungere manualmente un reato nei confronti di una fazione minore.</value>
   </data>
-  <data name="add_button_text" xml:space="preserve">
-    <value>Aggiungi Reato:</value>
-  </data>
   <data name="blank_faction" xml:space="preserve">
     <value>Inserisci il nome della Fazione</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="find_button_desc" xml:space="preserve">
     <value>Avvia una ricerca per la stazione o il sistema più vicino che presenti un Contatto con le Agenzie Interstellari.</value>
-  </data>
-  <data name="find_button_text" xml:space="preserve">
-    <value>Trova Servizi Legali:</value>
   </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Taglie</value>
@@ -162,31 +156,16 @@
   <data name="header_system" xml:space="preserve">
     <value>Sistema</value>
   </data>
-  <data name="orbital_station_checkbox" xml:space="preserve">
-    <value>Dai priorità alle stazioni orbitali:</value>
-  </data>
-  <data name="p1" xml:space="preserve">
-    <value>Suggerimento: aumenta la distanza di ricerca stazioni per ridurre i tempi di ricerca stessi.</value>
-  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Rimuovi</value>
   </data>
   <data name="remove_button_desc" xml:space="preserve">
     <value>Consenti la rimozione manuale di un reato verso una fazione minore.</value>
   </data>
-  <data name="remove_button_text" xml:space="preserve">
-    <value>Rimuovi:</value>
-  </data>
-  <data name="tab_station_distance" xml:space="preserve">
-    <value>Distanza massima fra la stazione e la stella principale (Ls):</value>
-  </data>
   <data name="update_button" xml:space="preserve">
     <value>Aggiorna</value>
   </data>
   <data name="update_button_desc" xml:space="preserve">
     <value>Aggiorna le informazioni riguardanti la fazione minore (sistema, stazione, eccetera).</value>
-  </data>
-  <data name="update_button_text" xml:space="preserve">
-    <value>Aggiorna:</value>
   </data>
 </root>
