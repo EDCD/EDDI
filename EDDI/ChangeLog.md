@@ -40,7 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Module sold from storage` updated to fix broken weapon mount details.
       * `Module stored` updated to fix broken weapon mount details.
       * `Module swapped` updated to fix broken weapon mount details.
-      * `Module transfer` updated to fix broken weapon mount details.
+      * `Module transfer` updated to fix broken weapon mount details and refine time estimates.
       * `Modules stored` updated to fix broken weapon mount details.
       * `Mission accepted` updated to remove mission counting and reduce verbosity.
       * `Mission check system` updated to improve grammar.
@@ -51,6 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Route details` revised to remove obsolete `cancel` and `set` responses.
       * `Ship repaired` updated to fix broken weapon mount details.
+      * `Ship transfer initiated` updated to refine time estimates.
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` updated to indicate the body containing the signals, when available.
