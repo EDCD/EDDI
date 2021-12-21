@@ -741,7 +741,10 @@
     <value>Cerveja de Kongga</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  
+  <data name="KorroKungPellets" xml:space="preserve">
+    <value>Pastilhas de Koro Kung</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Minas Terrestres</value>
     <comment>Commodity Landmines</comment>
@@ -1658,7 +1661,10 @@
     <value>Alexandrita</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Opalas do Vazio</value>
+    <comment>Commodity Opal</comment>
+  </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Matéria Biológica Thargoide</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1763,6 +1769,12 @@
     <value>Asas de Baixa Gravidade de Uzumoku</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
-  
-  
+  <data name="OnionHeadC" xml:space="preserve">
+    <value>Cepa Gama de Onionhead</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+  </data>
+  <data name="ClassifiedExperimentalEquipment" xml:space="preserve">
+    <value>Equipamento Experimental Secreto</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+  </data>
 </root>
