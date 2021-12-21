@@ -172,14 +172,6 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
     <value>Begyűjthető roncs</value>
     <comment>Salvageable Wreckage signal source</comment>
@@ -192,5 +184,41 @@
     <value>Segélykérő hívás</value>
     <comment>Distress Call</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 </root>
