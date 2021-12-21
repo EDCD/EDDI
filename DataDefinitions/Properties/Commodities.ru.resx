@@ -741,10 +741,7 @@
     <value>Эль с Кунгги</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  <data name="KoroKungPellets" xml:space="preserve">
-    <value>Корокунгские катышки</value>
-    <comment>Commodity KoroKungPellets</comment>
-  </data>
+  
   <data name="Landmines" xml:space="preserve">
     <value>Мины</value>
     <comment>Commodity Landmines</comment>
@@ -1661,10 +1658,7 @@
     <value>Александрит</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  <data name="Opal" xml:space="preserve">
-    <value>Опалы бездны</value>
-    <comment>Commodity Opal</comment>
-  </data>
+  
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Таргоидская биомасса</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1773,4 +1767,5 @@
     <value>Луковая головка, сорт гамма</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
+  
 </root>
