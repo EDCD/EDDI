@@ -1639,8 +1639,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
-      "default": true,
+      "script": "{OneOf(\"Current destination is\", \"En route to\")}\r\n{if event.body && event.name = event.body.bodyname:\r\n    {event.body.bodytype} {P(event.body.shortname, 'body')}\r\n|else:\r\n    {if event.localizedName: \r\n        {event.localizedName} \r\n    |else: \r\n        {event.name}\r\n    }\r\n}.", "default": true,
       "name": "Next destination",
       "description": "Triggered when selecting an in-system destination"
     },
