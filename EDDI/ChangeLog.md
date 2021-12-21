@@ -50,6 +50,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` script updated to indicate the body containing the signals, when available.
+      * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
 ### 4.0.1
