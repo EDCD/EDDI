@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Discovery scan` updated to incorporate new `System materials report` invoked script.
       * `Docking granted` revised to reference automated docking if such a module is installed.
       * `Entered normal space` revised to correct grammar when dropping out near a ring.
       * `Entered supercruise` revised to reset a state variable after updating you on your crime status.
@@ -49,7 +50,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
-      * `Surface signals detected` script updated to indicate the body containing the signals, when available.
+      * `Surface signals detected` updated to indicate the body containing the signals, when available.
+      * `System materials report` added, triggered by a discovery scan when the commander has an SRV and after we have data for all system bodies.
       * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
