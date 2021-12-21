@@ -2196,8 +2196,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n    {F(\"Star report\")}\r\n}",
-      "default": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n\r\n    {if event.mainstar && !event.alreadydiscovered && event.scantype = \"AutoScan\":\r\n        This system \r\n        {OneOf(\r\n            \"is not {Occasionally(2, 'yet')} registered\",\r\n            \"isn't registered\"\r\n            \"has yet to be logged\",\r\n            \"hasn't been logged\"\r\n        )}\r\n        with Universal Cartographics.\r\n        {Pause(500)}\r\n    }\r\n\r\n    {F(\"Star report\")}\r\n}", "default": true,
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
     },

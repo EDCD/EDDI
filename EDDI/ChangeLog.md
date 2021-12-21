@@ -48,6 +48,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Route details` revised to remove obsolete `cancel` and `set` responses.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Star report` revised to correct a grammar bug when reporting star class.
+      * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` script updated to indicate the body containing the signals, when available.
       * `System state report` updated to facilitate localization and to add several newer faction states.
       
