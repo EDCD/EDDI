@@ -847,7 +847,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n\r\n{Pause(1000)}\r\n\r\n{Occasionally(2, \"{ShipName()} has\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n{_ Report on the state of any pending fines, bounties, or claims }\r\n{if state.eddi_context_criminal_record_change:\r\n    {set crimeCheck to F(\"Crime check system\")}\r\n    {if crimeCheck:\r\n        {Pause(1000)}\r\n        {crimeCheck}\r\n    }\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n\r\n{Pause(1000)}\r\n\r\n{Occasionally(2, \"{ShipName()} has\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n{_ Report on the state of any pending fines, bounties, or claims }\r\n{if state.eddi_context_criminal_record_change:\r\n    {set crimeCheck to F(\"Crime check system\")}\r\n    {if crimeCheck:\r\n        {Pause(1000)}\r\n        {crimeCheck}\r\n    }\r\n    {SetState('eddi_context_criminal_record_change', false)}\r\n}",
       "default": true,
       "name": "Entered supercruise",
       "description": "Triggered when your ship enters supercruise"
