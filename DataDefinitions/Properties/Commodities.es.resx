@@ -742,10 +742,7 @@
     <value>Cerveza de Kongga</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  <data name="KoroKungPellets" xml:space="preserve">
-    <value>Gránulos de Koro Kung</value>
-    <comment>Commodity KoroKungPellets</comment>
-  </data>
+  
   <data name="Landmines" xml:space="preserve">
     <value>Minas terrestres</value>
     <comment>Commodity Landmines</comment>
@@ -1662,10 +1659,7 @@
     <value>Alejandrita</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  <data name="Opal" xml:space="preserve">
-    <value>Ópalos de vacío</value>
-    <comment>Commodity Opal</comment>
-  </data>
+  
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Materia Biológica Zargoide</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1774,4 +1768,5 @@
     <value>Cepa gamma de Cebollazo</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
+  
 </root>
