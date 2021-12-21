@@ -22,6 +22,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
+      * `Body report` revised to improve grammar (around "days").
+      * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
