@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scorpion SRV.
+        /// </summary>
+        internal static string CombatMulticrewSRV01 {
+            get {
+                return ResourceManager.GetString("CombatMulticrewSRV01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GU-97 .
         /// </summary>
         internal static string Empire {
@@ -115,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SRV Scarab.
+        ///   Looks up a localized string similar to Scarab SRV.
         /// </summary>
         internal static string TestBuggy {
             get {

@@ -2311,7 +2311,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_LEGS;
             }
-            else if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel == "SRV")
+            else if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel.Contains("SRV"))
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }
