@@ -732,8 +732,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.",
-      "default": true,
+      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"DockOffline\":\r\n    because the dock is\r\n    {OneOf(\"off line\", \"off line and currently unavailable\", \"currently off line\")}\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.", "default": true,
       "name": "Docking denied",
       "description": "Triggered when your ship is denied docking at a station or outpost"
     },
