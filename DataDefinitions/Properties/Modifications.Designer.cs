@@ -430,6 +430,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decorative Red.
+        /// </summary>
+        public static string DecorativeRed {
+            get {
+                return ResourceManager.GetString("DecorativeRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light Weight Electronic Counter Measures.
         /// </summary>
         public static string ECMLightWeight {

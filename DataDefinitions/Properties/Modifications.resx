@@ -643,4 +643,7 @@
   <data name="TorpedoSturdy" xml:space="preserve">
     <value>Sturdy Torpedo</value>
   </data>
+  <data name="DecorativeRed" xml:space="preserve">
+    <value>Decorative Red</value>
+  </data>
 </root>
