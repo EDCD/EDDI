@@ -25,6 +25,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Crime check station` updated remove obsolete references to `shipid`.
       * `Docking granted` script revised to reference automated docking if such a module is installed.
+      * `Entered normal space` script revised to correct grammar when dropping out near a ring.
       * `Entered supercruise` script revised to reset a state variable after updating you on your crime status.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
       * `Material required report` updated to fix a typo.
