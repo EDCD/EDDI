@@ -421,14 +421,44 @@
     <value>Luogo dell'impatto</value>
     <comment>Impact Site</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Wreckage_Satellite_Medium" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite_Hard" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Cargo" xml:space="preserve">
+    <value>Relitto minore</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wrecks_Eagle_Easy" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Medium" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Hard" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Easy" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Medium" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Hard" xml:space="preserve">
+    <value>Luogo dello schianto</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="CrashedShip" xml:space="preserve">
+    <value>Nave schiantata</value>
+    <comment>POI CrashedShip</comment>
+  </data>
 </root>
