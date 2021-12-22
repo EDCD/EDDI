@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="Fixed" xml:space="preserve">
+    <value>Fisso</value>
+    <comment>Hardpoint fixed mount</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>Torretta</value>
+    <comment>Hardpoint turreted mount</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>Cardanico</value>
+    <comment>Hardpoint gimballed mount</comment>
+  </data>
 </root>
