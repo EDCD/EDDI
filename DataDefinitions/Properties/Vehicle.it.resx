@@ -135,6 +135,10 @@
   <data name="Independent" xml:space="preserve">
     <value>Taipan</value>
   </data>
-  
-  
+  <data name="TestBuggy" xml:space="preserve">
+    <value>Scarab SRV</value>
+  </data>
+  <data name="CombatMulticrewSRV01" xml:space="preserve">
+    <value>Scorpion SRV</value>
+  </data>
 </root>
