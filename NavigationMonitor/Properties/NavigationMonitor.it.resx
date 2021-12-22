@@ -150,12 +150,18 @@
   <data name="header_longitude" xml:space="preserve">
     <value>Longitudine:</value>
   </data>
-  
+  <data name="header_poi" xml:space="preserve">
+    <value>Stazione / P.d.I.</value>
+  </data>
   <data name="header_system" xml:space="preserve">
     <value>Sistema</value>
   </data>
-  
-  
+  <data name="navigation_monitor_desc" xml:space="preserve">
+    <value>Eseguire procedure di navigazione, creare e utilizzare segnaposti</value>
+  </data>
+  <data name="navigation_monitor_name" xml:space="preserve">
+    <value>Controllore di Navigazione</value>
+  </data>
   <data name="no_station" xml:space="preserve">
     <value>Nessuna stazione</value>
   </data>
@@ -189,14 +195,30 @@
   <data name="search_query_crime_facilitator" xml:space="preserve">
     <value>Servizi legali</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="search_query_missions_expiring" xml:space="preserve">
+    <value>Sistema con missioni in scadenza</value>
+  </data>
+  <data name="search_query_missions_farthest" xml:space="preserve">
+    <value>Sistema con missioni più distante</value>
+  </data>
+  <data name="search_query_missions_most" xml:space="preserve">
+    <value>Sistema con maggior numero di missioni</value>
+  </data>
+  <data name="search_query_missions_nearest" xml:space="preserve">
+    <value>Sistema con missioni più vicino</value>
+  </data>
+  <data name="search_query_missions_route" xml:space="preserve">
+    <value>Sistema con percorso più breve</value>
+  </data>
+  <data name="search_query_missions_source" xml:space="preserve">
+    <value>Sistema in cui prelevare il Carico</value>
+  </data>
+  <data name="search_query_missions_update" xml:space="preserve">
+    <value>Sistema in cui si aggiorna la Missione</value>
+  </data>
+  <data name="search_query_services_encoded" xml:space="preserve">
+    <value>Mercante di materiali codificati</value>
+  </data>
   <data name="search_query_services_guardian" xml:space="preserve">
     <value>Mercante di tecnologia dei Guardiani</value>
   </data>
