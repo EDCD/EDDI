@@ -308,7 +308,13 @@
     <value>Prigionieri Politici</value>
     <comment>Bulk passenger type</comment>
   </data>
-  
-  
-  
+  <data name="Assassination" xml:space="preserve">
+    <value>Assassinio</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>Rapina</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>Punto di interesse</value>
+  </data>
 </root>
