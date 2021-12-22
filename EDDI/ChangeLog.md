@@ -50,6 +50,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
+      * `Permit acquired` added, triggered when you acquire a permit from the mission board.
       * `Route details` revised to remove obsolete `cancel` and `set` responses.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.

@@ -3031,60 +3031,69 @@ namespace EddiJournalMonitor
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
                                     var wing = JsonParsing.getBool(data, "Wing");
 
-                                    // Missions with destinations
-                                    var destinationsystem = JsonParsing.getString(data, "DestinationSystem");
-                                    var destinationstation = JsonParsing.getString(data, "DestinationStation");
-
-                                    // Missions with commodities (which may include on-foot micro-resources)
-                                    var c = JsonParsing.getString(data, "Commodity");
-                                    var fallbackC = JsonParsing.getString(data, "Commodity_Localised");
-                                    CommodityDefinition commodity = null;
-                                    MicroResource microResource = null;
-
-                                    if (!string.IsNullOrEmpty(c))
+                                    if (name == "MISSION_genericPermit1")
                                     {
-                                        if (MicroResource.EDNameExists(c))
+                                        // This is a permit mission where the permit is granted immediately once it is accepted.
+                                        // There are no other mission related events generated from this (no mission completion event).
+                                        events.Add(new PermitAcquiredEvent(timestamp, faction) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        // Missions with destinations
+                                        var destinationsystem = JsonParsing.getString(data, "DestinationSystem");
+                                        var destinationstation = JsonParsing.getString(data, "DestinationStation");
+
+                                        // Missions with commodities (which may include on-foot micro-resources)
+                                        var c = JsonParsing.getString(data, "Commodity");
+                                        var fallbackC = JsonParsing.getString(data, "Commodity_Localised");
+                                        CommodityDefinition commodity = null;
+                                        MicroResource microResource = null;
+
+                                        if (!string.IsNullOrEmpty(c))
                                         {
-                                            // This is an on-foot micro-resource
-                                            microResource = MicroResource.FromEDName(c);
-                                            microResource.fallbackLocalizedName = fallbackC;
+                                            if (MicroResource.EDNameExists(c))
+                                            {
+                                                // This is an on-foot micro-resource
+                                                microResource = MicroResource.FromEDName(c);
+                                                microResource.fallbackLocalizedName = fallbackC;
+                                            }
+                                            else
+                                            {
+                                                // This is (probably) a traditional ship commodity
+                                                commodity = CommodityDefinition.FromEDName(c);
+                                                commodity.fallbackLocalizedName = fallbackC;
+                                            }
                                         }
-                                        else
+                                        data.TryGetValue("Count", out val);
+                                        var amount = (int?)(long?)val;
+
+                                        // Missions with targets
+                                        var target = JsonParsing.getString(data, "Target");
+                                        var targettype = JsonParsing.getString(data, "TargetType");
+                                        var targetfaction = getFactionName(data, "TargetFaction");
+                                        data.TryGetValue("KillCount", out val);
+                                        if (val != null)
                                         {
-                                            // This is (probably) a traditional ship commodity
-                                            commodity = CommodityDefinition.FromEDName(c);
-                                            commodity.fallbackLocalizedName = fallbackC;
+                                            amount = (int?)(long?)val;
                                         }
+
+                                        // Missions with passengers
+                                        var passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
+                                        var passengertype = JsonParsing.getString(data, "PassengerType");
+                                        var passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
+                                        var passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
+                                        data.TryGetValue("PassengerCount", out val);
+                                        if (val != null)
+                                        {
+                                            amount = (int?)(long?)val;
+                                        }
+
+                                        // Impact on influence and reputation
+                                        var influence = JsonParsing.getString(data, "Influence");
+                                        var reputation = JsonParsing.getString(data, "Reputation");
+
+                                        events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
                                     }
-                                    data.TryGetValue("Count", out val);
-                                    var amount = (int?)(long?)val;
-
-                                    // Missions with targets
-                                    var target = JsonParsing.getString(data, "Target");
-                                    var targettype = JsonParsing.getString(data, "TargetType");
-                                    var targetfaction = getFactionName(data, "TargetFaction");
-                                    data.TryGetValue("KillCount", out val);
-                                    if (val != null)
-                                    {
-                                        amount = (int?)(long?)val;
-                                    }
-
-                                    // Missions with passengers
-                                    var passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
-                                    var passengertype = JsonParsing.getString(data, "PassengerType");
-                                    var passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
-                                    var passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
-                                    data.TryGetValue("PassengerCount", out val);
-                                    if (val != null)
-                                    {
-                                        amount = (int?)(long?)val;
-                                    }
-
-                                    // Impact on influence and reputation
-                                    var influence = JsonParsing.getString(data, "Influence");
-                                    var reputation = JsonParsing.getString(data, "Reputation");
-
-                                    events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

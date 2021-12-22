@@ -732,7 +732,8 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"DockOffline\":\r\n    because the dock is\r\n    {OneOf(\"off line\", \"off line and currently unavailable\", \"currently off line\")}\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.", "default": true,
+      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"DockOffline\":\r\n    because the dock is\r\n    {OneOf(\"off line\", \"off line and currently unavailable\", \"currently off line\")}\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.",
+      "default": true,
       "name": "Docking denied",
       "description": "Triggered when your ship is denied docking at a station or outpost"
     },
@@ -1575,7 +1576,8 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set GetMountName(m) to:\r\n    {if m:\r\n        {if m.invariantName = \"Fixed\":\r\n            {return \"fixed\"}\r\n        |elif m.invariantName = \"Gimballed\":\r\n            {return \"giimballed\"}\r\n        |elif m.invariantName = \"Turreted\":\r\n            {return \"turreted\"}\r\n        }\r\n    }\r\n}\r\n\r\nYou have transferred a \r\n{if icao_active:\r\n    {event.module.class} {ICAO(event.module.grade)}\r\n|else:\r\n    {Spacialise(cat(event.module.class, event.module.grade))}\r\n}\r\n{GetMountName(event.module.Mount)}\r\n{event.module.name} \r\n\r\n{if event.transfercost: for a cost of {Humanise(event.transfercost)} credits}.\r\n\r\n{set t_remaining to event.transfertime}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n    {if t_remaining >= (60*60*24):\r\n        {set t_days to floor(t_remaining/(60*60*24))}\r\n        {if t_days > 1:\r\n            {t_days} days,\r\n        |else:\r\n            1 day,\r\n        }\r\n        {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n    }\r\n\r\n    {if t_remaining >= 3600:\r\n        {set t_hours to floor(t_remaining/3600)}\r\n        {if t_hours > 1:\r\n            {t_hours} hours,\r\n        |else:\r\n            1 hour,\r\n        }\r\n        {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n    }\r\n\r\n    {if t_remaining >= 0:\r\n        {if t_days || t_hours: and}\r\n        {set t_minutes to round(t_remaining/(60),0)}\r\n        {if t_minutes > 1:\r\n            {t_minutes} minutes.\r\n        |else:\r\n            {if t_remaining < 60: less than} 1 minute.\r\n        }\r\n    }\r\n}", "default": true,
+      "script": "{set GetMountName(m) to:\r\n    {if m:\r\n        {if m.invariantName = \"Fixed\":\r\n            {return \"fixed\"}\r\n        |elif m.invariantName = \"Gimballed\":\r\n            {return \"giimballed\"}\r\n        |elif m.invariantName = \"Turreted\":\r\n            {return \"turreted\"}\r\n        }\r\n    }\r\n}\r\n\r\nYou have transferred a \r\n{if icao_active:\r\n    {event.module.class} {ICAO(event.module.grade)}\r\n|else:\r\n    {Spacialise(cat(event.module.class, event.module.grade))}\r\n}\r\n{GetMountName(event.module.Mount)}\r\n{event.module.name} \r\n\r\n{if event.transfercost: for a cost of {Humanise(event.transfercost)} credits}.\r\n\r\n{set t_remaining to event.transfertime}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n    {if t_remaining >= (60*60*24):\r\n        {set t_days to floor(t_remaining/(60*60*24))}\r\n        {if t_days > 1:\r\n            {t_days} days,\r\n        |else:\r\n            1 day,\r\n        }\r\n        {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n    }\r\n\r\n    {if t_remaining >= 3600:\r\n        {set t_hours to floor(t_remaining/3600)}\r\n        {if t_hours > 1:\r\n            {t_hours} hours,\r\n        |else:\r\n            1 hour,\r\n        }\r\n        {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n    }\r\n\r\n    {if t_remaining >= 0:\r\n        {if t_days || t_hours: and}\r\n        {set t_minutes to round(t_remaining/(60),0)}\r\n        {if t_minutes > 1:\r\n            {t_minutes} minutes.\r\n        |else:\r\n            {if t_remaining < 60: less than} 1 minute.\r\n        }\r\n    }\r\n}",
+      "default": true,
       "name": "Module transfer",
       "description": "Triggered when you transfer a module from storage at another station"
     },
@@ -1686,6 +1688,15 @@
       "default": true,
       "name": "Passengers",
       "description": "Triggered at session start from Passengers event"
+    },
+    "Permit acquired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.faction} has granted you a new permit.",
+      "default": true,
+      "name": "Permit acquired",
+      "description": "Triggered when you acquire a permit from the mission board"
     },
     "Power commodity delivered": {
       "enabled": true,
@@ -2087,7 +2098,8 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipName(event.shipid, event.ship)} {OneOf(\"on its way\",\"being transferred\", \"transfer initiated\", \"being transported\", \"being transferred\")} from {P(event.system, \"starsystem\")}\r\n\r\n{if event.transfercost: for a cost of {Humanise(event.price)} credits.}\r\n\r\n{set t_remaining to event.time}\r\n\r\n{if t_remaining:\r\n\r\n    {Pause(1000)}\r\n    Expected arrival in:\r\n\r\n    {if t_remaining >= (60*60*24):\r\n        {set t_days to floor(t_remaining/(60*60*24))}\r\n        {if t_days > 1:\r\n            {t_days} days,\r\n        |else:\r\n            1 day,\r\n        }\r\n        {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n    }\r\n\r\n    {if t_remaining >= 3600:\r\n        {set t_hours to floor(t_remaining/3600)}\r\n        {if t_hours > 1:\r\n            {t_hours} hours,\r\n        |else:\r\n            1 hour,\r\n        }\r\n        {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n    }\r\n\r\n    {if t_remaining >= 0:\r\n        {if t_days || t_hours: and}\r\n        {set t_minutes to round(t_remaining/(60),0)}\r\n        {if t_minutes > 1:\r\n            {t_minutes} minutes.\r\n        |else:\r\n            {if t_remaining < 60: less than} 1 minute.\r\n        }\r\n    }\r\n}", "default": true,
+      "script": "{ShipName(event.shipid, event.ship)} {OneOf(\"on its way\",\"being transferred\", \"transfer initiated\", \"being transported\", \"being transferred\")} from {P(event.system, \"starsystem\")}\r\n\r\n{if event.transfercost: for a cost of {Humanise(event.price)} credits.}\r\n\r\n{set t_remaining to event.time}\r\n\r\n{if t_remaining:\r\n\r\n    {Pause(1000)}\r\n    Expected arrival in:\r\n\r\n    {if t_remaining >= (60*60*24):\r\n        {set t_days to floor(t_remaining/(60*60*24))}\r\n        {if t_days > 1:\r\n            {t_days} days,\r\n        |else:\r\n            1 day,\r\n        }\r\n        {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n    }\r\n\r\n    {if t_remaining >= 3600:\r\n        {set t_hours to floor(t_remaining/3600)}\r\n        {if t_hours > 1:\r\n            {t_hours} hours,\r\n        |else:\r\n            1 hour,\r\n        }\r\n        {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n    }\r\n\r\n    {if t_remaining >= 0:\r\n        {if t_days || t_hours: and}\r\n        {set t_minutes to round(t_remaining/(60),0)}\r\n        {if t_minutes > 1:\r\n            {t_minutes} minutes.\r\n        |else:\r\n            {if t_remaining < 60: less than} 1 minute.\r\n        }\r\n    }\r\n}",
+      "default": true,
       "name": "Ship transfer initiated",
       "description": "Triggered when you initiate a ship transfer"
     },

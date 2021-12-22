@@ -78,6 +78,7 @@
     <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="FinePaidEvent.cs" />
     <Compile Include="FlightAssistEvent.cs" />
+    <Compile Include="PermitAcquiredEvent.cs" />
     <Compile Include="NearBookmarkEvent.cs" />
     <Compile Include="NextDestinationEvent.cs" />
     <Compile Include="GalnetNewsPublishedEvent.cs" />
