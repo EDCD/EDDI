@@ -231,7 +231,9 @@
   <data name="search_query_services_raw" xml:space="preserve">
     <value>Mercante di materiali grezzi</value>
   </data>
-  
+  <data name="search_query_galaxy_scoop" xml:space="preserve">
+    <value>Stella per rifornimento</value>
+  </data>
   <data name="search_type_crime" xml:space="preserve">
     <value>Crimine</value>
   </data>
