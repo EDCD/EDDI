@@ -151,9 +151,7 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Désactiver Escadrille</value>
   </data>
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Acquisition de permis</value>
-  </data>
+  
   <data name="Hack" xml:space="preserve">
     <value>Piratage</value>
   </data>
