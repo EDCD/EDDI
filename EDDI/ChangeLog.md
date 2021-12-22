@@ -53,6 +53,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Route details` revised to remove obsolete `cancel` and `set` responses.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
+      * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source.
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` updated to indicate the body containing the signals, when available.
