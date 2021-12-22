@@ -124,7 +124,7 @@
     <value>raggi laser fissi e dissipatori termici</value>
   </data>
   <data name="EmpireThree" xml:space="preserve">
-    <value>laser ad impulso fissi e punto di difesa automatizzata</value>
+    <value>laser ad impulso fissi e difesa a puntamento</value>
   </data>
   <data name="EmpireTwo" xml:space="preserve">
     <value>ripetitori al plasma fissi e sistema AntiRadar</value>
@@ -139,7 +139,7 @@
     <value>laser ad impulso fissi e dissipatori termici</value>
   </data>
   <data name="FederationThree" xml:space="preserve">
-    <value>ripetitore al plasma a sospensione fissa e punto di difesa automatizzata</value>
+    <value>ripetitori al plasma fissi e difesa a puntamento</value>
   </data>
   <data name="FederationTwo" xml:space="preserve">
     <value>cannone a ripetizione fisso e sistema AntiRadar</value>
@@ -166,7 +166,7 @@
     <value>raggi laser fissi e dissipatori termici</value>
   </data>
   <data name="IndependentThree" xml:space="preserve">
-    <value>laser ad impulso fissi e punto di difesa automatizzata</value>
+    <value>laser ad impulso fissi e difesa a puntamento</value>
   </data>
   <data name="IndependentTwo" xml:space="preserve">
     <value>ripetitori al plasma fissi e sistema AntiRadar</value>
