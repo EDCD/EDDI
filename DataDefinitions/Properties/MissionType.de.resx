@@ -153,9 +153,7 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Wing auflösen</value>
   </data>
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Einreisegenehmigung</value>
-  </data>
+  
   <data name="Hack" xml:space="preserve">
     <value>Hacken</value>
   </data>
