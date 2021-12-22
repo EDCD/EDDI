@@ -131,9 +131,7 @@
   
   
   
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Engedély megszerzése</value>
-  </data>
+  
   
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedíció</value>
