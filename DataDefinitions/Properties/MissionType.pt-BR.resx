@@ -153,9 +153,7 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Desabilitar em Esquadrão</value>
   </data>
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Aquisição de Permissão</value>
-  </data>
+  
   <data name="Hack" xml:space="preserve">
     <value>Invasão</value>
   </data>
