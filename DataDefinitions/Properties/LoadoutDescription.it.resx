@@ -121,16 +121,16 @@
     <value>raggi laser cardanici e dissipatori termici</value>
   </data>
   <data name="EmpireOne" xml:space="preserve">
-    <value>raggi laser a sospensione fissa ed emettitore dispersore di calore</value>
+    <value>raggi laser fissi e dissipatori termici</value>
   </data>
   <data name="EmpireThree" xml:space="preserve">
-    <value>laser ad impulso a sospensione fissa e punto di difesa automatizzata</value>
+    <value>laser ad impulso fissi e punto di difesa automatizzata</value>
   </data>
   <data name="EmpireTwo" xml:space="preserve">
-    <value>ripetitore al plasma fisso e sistema AntiRadar</value>
+    <value>ripetitori al plasma fissi e sistema AntiRadar</value>
   </data>
   <data name="EmpireZero" xml:space="preserve">
-    <value>laser ad Impulso cardanico e sistema AntiRadar</value>
+    <value>laser ad Impulso cardanici e sistema AntiRadar</value>
   </data>
   <data name="FederationFour" xml:space="preserve">
     <value>raggi laser cardanici e dissipatori termici</value>
@@ -145,7 +145,7 @@
     <value>cannone a ripetizione fisso e sistema AntiRadar</value>
   </data>
   <data name="FederationZero" xml:space="preserve">
-    <value>laser ad Impulso cardanico e sistema AntiRadar</value>
+    <value>laser ad Impulso cardanici e sistema AntiRadar</value>
   </data>
   <data name="GdnHybridV1" xml:space="preserve">
     <value>auto cannone al plasma</value>
@@ -166,13 +166,13 @@
     <value>raggi laser fissi e dissipatori termici</value>
   </data>
   <data name="IndependentThree" xml:space="preserve">
-    <value>laser ad impulso a sospensione fissa e punto di difesa automatizzata</value>
+    <value>laser ad impulso fissi e punto di difesa automatizzata</value>
   </data>
   <data name="IndependentTwo" xml:space="preserve">
-    <value>ripetitore al plasma fisso e sistema AntiRadar</value>
+    <value>ripetitori al plasma fissi e sistema AntiRadar</value>
   </data>
   <data name="IndependentZero" xml:space="preserve">
-    <value>laser ad impulso cardanico e sistema AntiRadar</value>
+    <value>laser ad impulso cardanici e sistema AntiRadar</value>
   </data>
   <data name="Starter" xml:space="preserve">
     <value>doppio ripetitore al plasma</value>
