@@ -277,9 +277,18 @@
     <value>Antiche Rovine</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
+  <data name="Ancient_Small" xml:space="preserve">
+    <value>Struttura dei Guardiani</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny" xml:space="preserve">
+    <value>Struttura dei Guardiani</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium" xml:space="preserve">
+    <value>Struttura dei Guardiani</value>
+    <comment>Guardian Structure</comment>
+  </data>
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
     <value>Campo di Detriti</value>
     <comment>Debris field</comment>
@@ -308,32 +317,110 @@
     <value>Chiamata di Soccorso</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Abandoned_Buggy_Easy" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Medium" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Hard" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Easy" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Medium" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Hard" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Easy" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Medium" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Hard" xml:space="preserve">
+    <value>SEGNALE CRIPTATO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Easy" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Medium" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Hard" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Easy" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Medium" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Hard" xml:space="preserve">
+    <value>Radiofaro di emergenza</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Smugglers_Cache_Easy" xml:space="preserve">
+    <value>Marcatori irregolari</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Smugglers_Cache_Medium" xml:space="preserve">
+    <value>Marcatori irregolari</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Smugglers_Cache_Hard" xml:space="preserve">
+    <value>Marcatori irregolari</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Trap_Cargo" xml:space="preserve">
+    <value>Marcatori irregolari</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Wreckage_Buggy_Easy" xml:space="preserve">
+    <value>Relitto minore</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Buggy_Medium" xml:space="preserve">
+    <value>Relitto minore</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Buggy_Hard" xml:space="preserve">
+    <value>Relitto minore</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe_Easy" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Probe_Medium" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Probe_Hard" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite_Easy" xml:space="preserve">
+    <value>Luogo dell'impatto</value>
+    <comment>Impact Site</comment>
+  </data>
   
   
   
