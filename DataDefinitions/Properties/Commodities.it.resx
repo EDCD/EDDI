@@ -741,7 +741,10 @@
     <value>Birra di Kongga</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  
+  <data name="KorroKungPellets" xml:space="preserve">
+    <value>Fertilizzante di Koro Kung</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Mine</value>
     <comment>Commodity Landmines</comment>
@@ -1658,7 +1661,10 @@
     <value>Alessandrite</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Opale del vuoto</value>
+    <comment>Commodity Opal</comment>
+  </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Materiale Biologico Thargoid</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1767,5 +1773,8 @@
     <value>Distillato Gamma di Testa di Cipolla</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
-  
+  <data name="ClassifiedExperimentalEquipment" xml:space="preserve">
+    <value>Equipaggiamento sperimentale classificato</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+  </data>
 </root>
