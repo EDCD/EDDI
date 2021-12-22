@@ -593,9 +593,24 @@
     <value>Laser Punitivo</value>
     <comment>Module RetributorBeamLaser</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="MultiDroneControl_Mining" xml:space="preserve">
+    <value>MultiControllore Droni di Estrazione</value>
+    <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Operations" xml:space="preserve">
+    <value>MultiControllore Droni Operativi</value>
+    <comment>Module MultiDroneControl_Operations</comment>
+  </data>
+  <data name="MultiDroneControl_Rescue" xml:space="preserve">
+    <value>MultiControllore Droni di Salvataggio</value>
+    <comment>Module MultiDroneControl_Rescue</comment>
+  </data>
+  <data name="MultiDroneControl_Xeno" xml:space="preserve">
+    <value>MultiControllore Droni per Xenoanalisi</value>
+    <comment>Module MultiDroneControl_Xeno</comment>
+  </data>
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>MultiControllore Droni Multiuso</value>
+    <comment>Module MultiDroneControl_Universal</comment>
+  </data>
 </root>
