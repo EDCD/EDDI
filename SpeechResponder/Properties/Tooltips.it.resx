@@ -150,5 +150,7 @@
   <data name="word_wrap" xml:space="preserve">
     <value>Vai a Capo Automaticamente</value>
   </data>
-  
+  <data name="folding" xml:space="preserve">
+    <value>A capo</value>
+  </data>
 </root>
