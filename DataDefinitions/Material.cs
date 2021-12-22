@@ -98,8 +98,8 @@ namespace EddiDataDefinitions
             var SecurityFirmwarePatch = new Material("securityfirmware", Data, Rare);
             // Grade 4 Xeno
             var AncientHistoricalData = new Material("ancienthistoricaldata", Data, Rare); // Rare per FDev spreadsheet but very common per in-game right panel description.
-            var AncientCulturalData = new Material("ancientculturaldata", Data, Common); // Rare per FDev spreadsheet but common per in-game right panel description.
-            var AncientBiologicalData = new Material("ancientbiologicaldata", Data, Standard); // Rare per FDev spreadsheet but standard per in-game right panel description.
+            var AncientCulturalData = new Material("ancientculturaldata", Data, Rare); // Rare per FDev spreadsheet but common per in-game right panel description.
+            var AncientBiologicalData = new Material("ancientbiologicaldata", Data, Rare); // Rare per FDev spreadsheet but standard per in-game right panel description.
             var AncientLanguageData = new Material("ancientlanguagedata", Data, Rare);
             var AncientTechnologicalData = new Material("ancienttechnologicaldata", Data, Rare);
             var Tg_ShipFlightData = new Material("tg_shipflightdata", Data, Rare);
