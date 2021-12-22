@@ -302,16 +302,16 @@
     <value>Scanner di Carico Protetto</value>
   </data>
   <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
-    <value>Capacità Munizioni Bersagli Fantasma</value>
+    <value>Capacità munizioni AntiRadar</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>Emettitore Bersagli Fantasma Alleggerito</value>
+    <value>Sistema AntiRadar alleggerito</value>
   </data>
   <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>Emettitore Bersagli Fantasma Rinforzato</value>
+    <value>Sistema AntiRadar rinforzato</value>
   </data>
   <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>Emettitore Bersagli Fantasma Protetto</value>
+    <value>Sistema AntiRadar schermato</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Raccolta Alleggerito</value>
@@ -347,16 +347,16 @@
     <value>Controllore Droni di Manomissione Portelli Protetto</value>
   </data>
   <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
-    <value>Capacità Munizioni Dispersori di Calore</value>
+    <value>Capacità munizioni dissipatori termici</value>
   </data>
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
-    <value>Emettitore Dispersori di Calore Alleggerito</value>
+    <value>Espulsore dissipatori termici alleggerito</value>
   </data>
   <data name="HeatSinkLauncherReinforced" xml:space="preserve">
-    <value>Emettitore Dispersori di Calore Rinforzato</value>
+    <value>Espulsore dissipatori termici rinforzato</value>
   </data>
   <data name="HeatSinkLauncherShielded" xml:space="preserve">
-    <value>Emettitore Dispersori di Calore Protetto</value>
+    <value>Espulsore dissipatori termici schermato</value>
   </data>
   <data name="KillWarrantScannerLightWeight" xml:space="preserve">
     <value>Scanner di Mandati di Eliminazione Alleggerito</value>
