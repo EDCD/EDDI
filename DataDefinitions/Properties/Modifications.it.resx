@@ -380,16 +380,16 @@
     <value>Supporto Vitale Protetto</value>
   </data>
   <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
-    <value>Capacità Munizioni per Punto di Difesa Automatizzata</value>
+    <value>Capacità munizioni torretta difensiva a puntamento</value>
   </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
-    <value>Punto di Difesa Automatizzata Alleggerito</value>
+    <value>Torretta difensiva a puntamento alleggerita</value>
   </data>
   <data name="PointDefenceReinforced" xml:space="preserve">
-    <value>Punto di Difesa Automatizzata Rinforzato</value>
+    <value>Torretta difensiva a puntamento rinforzata</value>
   </data>
   <data name="PointDefenceShielded" xml:space="preserve">
-    <value>Punto di Difesa Automatizzata Protetto</value>
+    <value>Torretta difensiva a puntamento schermata</value>
   </data>
   <data name="RefineriesShielded" xml:space="preserve">
     <value>Raffineria Protetta</value>
