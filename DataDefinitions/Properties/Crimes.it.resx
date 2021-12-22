@@ -249,8 +249,17 @@
     <value>Sconfinamento</value>
     <comment>Crime onFoot_trespass</comment>
   </data>
+  <data name="onFoot_carryingStolenGoods" xml:space="preserve">
+    <value>Possesso di refurtiva</value>
+    <comment>Crime onFoot_carryingStolenGoods</comment>
+  </data>
   
-  
-  
-  
+  <data name="onFoot_carryingIllegalData" xml:space="preserve">
+    <value>Trasporto di dati illegali</value>
+    <comment>Crime onFoot_carryingIllegalData</comment>
+  </data>
+  <data name="onFoot_dataTransfer" xml:space="preserve">
+    <value>Trasferimento di dati illegali</value>
+    <comment>Crime onFoot_dataTransfer</comment>
+  </data>
 </root>
