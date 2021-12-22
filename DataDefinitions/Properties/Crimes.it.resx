@@ -253,7 +253,10 @@
     <value>Possesso di refurtiva</value>
     <comment>Crime onFoot_carryingStolenGoods</comment>
   </data>
-  
+  <data name="onFoot_arcCutterUse" xml:space="preserve">
+    <value>Utilizzo di trancia ad arco</value>
+    <comment>Crime onFoot_arcCutterUse</comment>
+  </data>
   <data name="onFoot_carryingIllegalData" xml:space="preserve">
     <value>Trasporto di dati illegali</value>
     <comment>Crime onFoot_carryingIllegalData</comment>
