@@ -174,7 +174,7 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Emettitore Bersagli Fantasma</value>
+    <value>Sistema AntiRadar</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
@@ -286,7 +286,7 @@
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
-    <value>Emettitore Dispersori di Calore</value>
+    <value>Espulsore dissipatori termici</value>
     <comment>Module HeatSinkLauncher</comment>
   </data>
   <data name="HullReinforcementPackage" xml:space="preserve">
