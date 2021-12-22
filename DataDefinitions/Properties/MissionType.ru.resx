@@ -153,9 +153,7 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Wing Disable</value>
   </data>
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Разрешение на приобретение</value>
-  </data>
+  
   <data name="Hack" xml:space="preserve">
     <value>Взлом базы</value>
   </data>
