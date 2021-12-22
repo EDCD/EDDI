@@ -117,6 +117,78 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="bm_import_button" xml:space="preserve">
+    <value>Importa segnalibri</value>
+  </data>
+  <data name="bm_import_button_tooltip" xml:space="preserve">
+    <value>Importa segnalibri da un file .csv</value>
+  </data>
+  <data name="bm_location_button" xml:space="preserve">
+    <value>Posizione del segnalibro</value>
+  </data>
+  <data name="bm_location_button_tooltip" xml:space="preserve">
+    <value>Aggiungi segnalibro dalla posizione corrente</value>
+  </data>
+  <data name="add_button" xml:space="preserve">
+    <value>Aggiungi segnalibro</value>
+  </data>
+  <data name="add_button_tooltip" xml:space="preserve">
+    <value>Aggiungi segnalibro dai risultati della ricerca</value>
+  </data>
+  <data name="find_text" xml:space="preserve">
+    <value>Trova:</value>
+  </data>
+  <data name="header_body" xml:space="preserve">
+    <value>Corpo Celeste</value>
+  </data>
+  <data name="header_comment" xml:space="preserve">
+    <value>Commento</value>
+  </data>
+  <data name="header_latitude" xml:space="preserve">
+    <value>Latitudine:</value>
+  </data>
+  <data name="header_longitude" xml:space="preserve">
+    <value>Longitudine:</value>
+  </data>
+  
+  <data name="header_system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  
+  
+  <data name="no_station" xml:space="preserve">
+    <value>Nessuna stazione</value>
+  </data>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Anteporre le stazioni orbitali?</value>
+  </data>
+  <data name="search_distance_tooltip" xml:space="preserve">
+    <value>Consiglio: massimizza la distanza consentita per ridurre i tempi di ricerca.</value>
+  </data>
+  <data name="remove_button" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="remove_button_tooltip" xml:space="preserve">
+    <value>Permette la rimozione manuale di un segnalibro.</value>
+  </data>
+  <data name="remove_caption" xml:space="preserve">
+    <value>Elimina segnalibro</value>
+  </data>
+  <data name="remove_message" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare questo segnalibro?</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="search_button_tooltip" xml:space="preserve">
+    <value>Esegui la query di ricerca</value>
+  </data>
+  <data name="search_distance" xml:space="preserve">
+    <value>Massima distanza consentita fra stella principale e stazione (in Ls):</value>
+  </data>
+  <data name="search_query_crime_facilitator" xml:space="preserve">
+    <value>Servizi legali</value>
+  </data>
   
   
   
@@ -144,31 +216,7 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="bm_nearby_radius_tooltip" xml:space="preserve">
+    <value>Il raggio (in metri) entro il quale viene lanciato l'evento `Near bookmark`</value>
+  </data>
 </root>
