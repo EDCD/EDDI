@@ -197,25 +197,61 @@
   
   
   
+  <data name="search_query_services_guardian" xml:space="preserve">
+    <value>Mercante di tecnologia dei Guardiani</value>
+  </data>
+  <data name="search_query_services_human" xml:space="preserve">
+    <value>Mercante di tecnologia umana</value>
+  </data>
+  <data name="search_query_services_manufactured" xml:space="preserve">
+    <value>Mercante di materiali manufatti</value>
+  </data>
+  <data name="search_query_services_raw" xml:space="preserve">
+    <value>Mercante di materiali grezzi</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="search_type_crime" xml:space="preserve">
+    <value>Crimine</value>
+  </data>
+  <data name="search_type_missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="search_type_services" xml:space="preserve">
+    <value>Servizi</value>
+  </data>
+  <data name="search_type_galaxy" xml:space="preserve">
+    <value>Galassia</value>
+  </data>
+  <data name="station_textbox_desc" xml:space="preserve">
+    <value>Stazione:</value>
+  </data>
+  <data name="system_textbox_desc" xml:space="preserve">
+    <value>Sistema:</value>
+  </data>
+  <data name="update_button" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="update_button_tooltip" xml:space="preserve">
+    <value>Aggiorna la posizione del segnaposto dalla tua attuale latitudine e longitudine</value>
+  </data>
+  <data name="route_details_desc" xml:space="preserve">
+    <value>Una ricerca con risultati lancia un evento "Route details".</value>
+  </data>
+  <data name="bm_export_button" xml:space="preserve">
+    <value>Esporta segnalibri</value>
+  </data>
+  <data name="bm_export_button_tooltip" xml:space="preserve">
+    <value>Esporta segnalibri da un file .csv</value>
+  </data>
+  <data name="header_heading" xml:space="preserve">
+    <value>Direzione:</value>
+  </data>
+  <data name="header_distanceKm" xml:space="preserve">
+    <value>Distanza (km):</value>
+  </data>
+  <data name="bm_nearby_radius" xml:space="preserve">
+    <value>Raggio di Prossimità (m):</value>
+  </data>
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Il raggio (in metri) entro il quale viene lanciato l'evento `Near bookmark`</value>
   </data>
