@@ -154,11 +154,11 @@
     <comment>Where {0} is a whole number</comment>
   </data>
   <data name="justOverMinus" xml:space="preserve">
-    <value>poco più di meno {0}</value>
+    <value>Circa meno {0}</value>
     <comment>Where {0} is a negative whole number	</comment>
   </data>
   <data name="justOverMinusMillion" xml:space="preserve">
-    <value>poco più di meno {0} milione</value>
+    <value>Circa meno {0} milione</value>
     <comment>Where {0} is a negative whole number in the millions order</comment>
   </data>
   <data name="justOverMillion" xml:space="preserve">
@@ -170,7 +170,7 @@
     <comment>Where {0} is a whole number in the billions order</comment>
   </data>
   <data name="justOverMinusBillion" xml:space="preserve">
-    <value>poco più di meno {0} miliardo</value>
+    <value>Circa meno {0} miliardo</value>
     <comment>Where {0} is a negative whole number in the billions order</comment>
   </data>
   <data name="justOverTrillion" xml:space="preserve">
@@ -178,11 +178,11 @@
     <comment>Where {0} is a whole number in the trillions order</comment>
   </data>
   <data name="justOverMinusTrillion" xml:space="preserve">
-    <value>poco più di meno {0} bilione</value>
+    <value>Circa meno {0} bilione</value>
     <comment>Where {0} is a negative whole number in the trillions order</comment>
   </data>
   <data name="justOverMinusQuadrillion" xml:space="preserve">
-    <value>poco più di meno {0} biliardo</value>
+    <value>Circa meno {0} biliardo</value>
     <comment>Where {0} is a negative whole number in the quadrillions order</comment>
   </data>
   <data name="justOverQuadrillion" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>Where {0} is a whole number in the quadrillions order</comment>
   </data>
   <data name="justOverMinusQuintillion" xml:space="preserve">
-    <value>poco più di meno {0} trilione</value>
+    <value>Circa meno {0} trilione</value>
     <comment>Where {0} is a negative whole number in the quintillions order</comment>
   </data>
   <data name="justOverQuintillion" xml:space="preserve">
@@ -202,7 +202,7 @@
     <comment>Where {0} is a whole number</comment>
   </data>
   <data name="overMinus" xml:space="preserve">
-    <value>oltre meno {0}</value>
+    <value>Circa meno {0}</value>
     <comment>Where {0} is a negative whole number</comment>
   </data>
   <data name="overThousand" xml:space="preserve">
