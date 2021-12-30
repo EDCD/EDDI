@@ -926,8 +926,8 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                // Nothing above, so remove the item
-                EDDI.Instance.State.Remove(stateVariableName);
+                // Nothing above, so set the item to null
+                EDDI.Instance.State[stateVariableName] = null;
             }
             catch (Exception e)
             {

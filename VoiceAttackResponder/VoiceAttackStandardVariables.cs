@@ -98,9 +98,15 @@ namespace EddiVoiceAttackResponder
         {
             foreach (string key in dict.Keys)
             {
+                string varname = "EDDI " + prefix + " " + key;
                 object value = dict[key];
                 if (value == null)
                 {
+                    // No idea what it might have been so reset everything
+                    vaProxy.SetText(varname, null);
+                    vaProxy.SetInt(varname, null);
+                    vaProxy.SetDecimal(varname, null);
+                    vaProxy.SetBoolean(varname, null);
                     continue;
                 }
                 Type valueType = value.GetType();
@@ -108,8 +114,6 @@ namespace EddiVoiceAttackResponder
                 {
                     valueType = Nullable.GetUnderlyingType(valueType);
                 }
-
-                string varname = "EDDI " + prefix + " " + key;
 
                 if (valueType == typeof(string))
                 {
@@ -140,7 +144,6 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("Not handling state value type " + valueType);
                 }
             }
-
         }
 
         /// <summary>Set values for a station</summary>

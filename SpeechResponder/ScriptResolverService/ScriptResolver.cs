@@ -321,6 +321,7 @@ namespace EddiSpeechResponder.Service
                 object value = EDDI.Instance.State[key];
                 if (value == null)
                 {
+                    // Null values should not be included in our Cottle state
                     continue;
                 }
                 Type valueType = value.GetType();

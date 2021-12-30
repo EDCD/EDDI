@@ -17,8 +17,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new Navigation Monitor with support for both planetary and galactic bookmarking. Planetary bookmarks, when selected, will provide compass heading and distance.
   * Speech Responder
     * Functions
-      * Fixed a bug that could cause the TrafficDetails() function to fail.
-      * Fixed a bug that prevented Pause() from affecting Play().
+      * Fixed a bug that could cause the `TrafficDetails()` function to fail.
+      * Fixed a bug that prevented `Pause()` from affecting `Play()`.
+      * The `SetState()` function now allows variables to be set to `void`.
     * Scripts
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
@@ -61,7 +62,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `System materials report` added, triggered by a discovery scan when the commander has an SRV and after we have data for all system bodies.
       * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization, add several newer faction states, and improve grammar around recent conflicts.
-      
+  * VoiceAttack Responder
+    * The `setstate` plugin function now allows variables to be set to `Not set`.
+
+
 ### 4.0.1
   * Core
     * Promote 4.0.1-rc1 to 4.0.1

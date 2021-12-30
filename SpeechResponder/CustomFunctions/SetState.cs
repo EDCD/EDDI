@@ -31,6 +31,11 @@ namespace EddiSpeechResponder.CustomFunctions
                 EDDI.Instance.State[name] = value.AsString;
                 store["state"] = ScriptResolver.buildState();
             }
+            else if (value.Type == Cottle.ValueContent.Void)
+            {
+                EDDI.Instance.State[name] = null;
+                store["state"] = ScriptResolver.buildState();
+            }
             // Ignore other possibilities
             return "";
         }, 2);
