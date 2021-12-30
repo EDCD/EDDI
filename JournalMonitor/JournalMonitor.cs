@@ -3249,7 +3249,7 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("MissionID", out object val);
                                     long missionid = (long)val;
-                                    string name = JsonParsing.getString(data, "MissionName");
+                                    string name = JsonParsing.getString(data, "Name");
                                     string newdestinationstation = JsonParsing.getString(data, "NewDestinationStation");
                                     string olddestinationstation = JsonParsing.getString(data, "OldDestinationStation");
                                     string newdestinationsystem = JsonParsing.getString(data, "NewDestinationSystem");
