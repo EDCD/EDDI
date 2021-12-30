@@ -153,7 +153,9 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Disabilitazione di Gruppo</value>
   </data>
-  
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Occasione per il Lasciapassare</value>
+  </data>
   <data name="Hack" xml:space="preserve">
     <value>Hackeraggio</value>
   </data>
