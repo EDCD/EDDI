@@ -1658,7 +1658,10 @@
     <value>Alexandrit</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Leerenopal</value>
+    <comment>Commodity Opal</comment>
+  </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Thargoidenmaterie</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1767,5 +1770,8 @@
     <value>Onionhead (Gamma)</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
-  
+  <data name="ClassifiedExperimentalEquipment" xml:space="preserve">
+    <value>Klassifizierte experimentelle Ausrüstung</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+  </data>
 </root>
