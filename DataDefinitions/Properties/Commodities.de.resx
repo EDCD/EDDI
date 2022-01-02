@@ -741,7 +741,10 @@
     <value>Kongga Bier</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  
+  <data name="KorroKungPellets" xml:space="preserve">
+    <value>Koro Kung Tabletten</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Landminen</value>
     <comment>Commodity Landmines</comment>
