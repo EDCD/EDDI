@@ -277,9 +277,18 @@
     <value>Uralte Ruinen</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
+  <data name="Ancient_Small" xml:space="preserve">
+    <value>kleines Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny" xml:space="preserve">
+    <value>winziges Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium" xml:space="preserve">
+    <value>mittelgroßes Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
     <value>Trümmerfeld</value>
     <comment>Debris field</comment>
@@ -308,6 +317,42 @@
     <value>Notruf</value>
     <comment>Distress Call</comment>
   </data>
+  <data name="Abandoned_Buggy_Easy" xml:space="preserve">
+    <value>Notrufsender</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Medium" xml:space="preserve">
+    <value>Notrufsender</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Abandoned_Buggy_Hard" xml:space="preserve">
+    <value>Notrufsender</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Easy" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Medium" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination_Hard" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Easy" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Medium" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination_Hard" xml:space="preserve">
+    <value>VERSCHLÜSSELTES SIGNAL</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
   
   
   
@@ -327,21 +372,36 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Wreckage_Cargo" xml:space="preserve">
+    <value>Kleinere Wrackteile</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wrecks_Eagle_Easy" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Medium" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Eagle_Hard" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Easy" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Medium" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder_Hard" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="CrashedShip" xml:space="preserve">
+    <value>Abgestürztes Schiff</value>
+    <comment>POI CrashedShip</comment>
+  </data>
 </root>
