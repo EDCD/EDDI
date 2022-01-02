@@ -124,10 +124,10 @@
     <value>Credits</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
-    <value>Attentat</value>
+    <value>Attentatmission</value>
   </data>
   <data name="AssassinateWing" xml:space="preserve">
-    <value>Attentat im Wing</value>
+    <value>Attentatmission im Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Abholung</value>
@@ -161,13 +161,13 @@
     <value>Expedition</value>
   </data>
   <data name="Massacre" xml:space="preserve">
-    <value>Massaker</value>
+    <value>Massakermission</value>
   </data>
   <data name="MassacreThargoid" xml:space="preserve">
-    <value>Thargoiden Massaker</value>
+    <value>Thargoiden Massakermission</value>
   </data>
   <data name="MassacreWing" xml:space="preserve">
-    <value>Massaker im Wing</value>
+    <value>Massakermission im Wing</value>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Abbau</value>
@@ -306,7 +306,13 @@
     <value>Politische Gefangene</value>
     <comment>Bulk passenger type</comment>
   </data>
-  
-  
-  
+  <data name="Assassination" xml:space="preserve">
+    <value>Attentatmission</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>Raub</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>Interessanter Ort</value>
+  </data>
 </root>
