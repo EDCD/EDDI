@@ -142,7 +142,7 @@
     <value>Datenlieferung</value>
   </data>
   <data name="Delivery" xml:space="preserve">
-    <value>Lieferung</value>
+    <value>Liefermission</value>
   </data>
   <data name="DeliveryWing" xml:space="preserve">
     <value>Lieferung im Wing</value>
@@ -153,7 +153,9 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Wing auflösen</value>
   </data>
-  
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Einreisegenehmigung</value>
+  </data>
   <data name="Hack" xml:space="preserve">
     <value>Hacken</value>
   </data>
@@ -176,16 +178,16 @@
     <value>Abbau im Wing</value>
   </data>
   <data name="PassengerBulk" xml:space="preserve">
-    <value>Transport</value>
+    <value>Massentransport</value>
   </data>
   <data name="PassengerVIP" xml:space="preserve">
-    <value>Transport</value>
+    <value>VIP-Transport</value>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
   <data name="Rescue" xml:space="preserve">
-    <value>Fracht retten</value>
+    <value>Frachtrettung</value>
   </data>
   <data name="Salvage" xml:space="preserve">
     <value>Bergung</value>
@@ -212,7 +214,7 @@
     <value>Verdeckte Operation</value>
   </data>
   <data name="Chain" xml:space="preserve">
-    <value>Verbundene Mission</value>
+    <value>Kettenmission</value>
     <comment>Sequential chained (joined) mission</comment>
   </data>
   <data name="Welcome" xml:space="preserve">
@@ -225,13 +227,13 @@
     <value>Illegal</value>
   </data>
   <data name="Planetary" xml:space="preserve">
-    <value>Planetarisch</value>
+    <value>Planetenmission</value>
   </data>
   <data name="RankFed" xml:space="preserve">
-    <value>Föderaler Auftrag</value>
+    <value>Föderale Aufstiegsmission</value>
   </data>
   <data name="RankEmp" xml:space="preserve">
-    <value>Imperialer Auftrag</value>
+    <value>Imperiale Aufstiegsmission</value>
   </data>
   <data name="DisableMegaship" xml:space="preserve">
     <value>Megaschiff ausschalten</value>
