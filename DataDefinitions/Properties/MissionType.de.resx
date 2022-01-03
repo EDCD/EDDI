@@ -130,7 +130,7 @@
     <value>Attentatmission im Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
-    <value>Abholung</value>
+    <value>Sammlung</value>
   </data>
   <data name="CollectWing" xml:space="preserve">
     <value>Sammlung im Wing</value>
