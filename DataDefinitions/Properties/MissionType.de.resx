@@ -121,13 +121,13 @@
     <value>Spende</value>
   </data>
   <data name="Credits" xml:space="preserve">
-    <value>Credits</value>
+    <value>Geldspende</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
-    <value>Attentatmission</value>
+    <value>Mordmission</value>
   </data>
   <data name="AssassinateWing" xml:space="preserve">
-    <value>Attentatmission im Wing</value>
+    <value>Mordanschlag im Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Sammlung</value>
@@ -307,7 +307,7 @@
     <comment>Bulk passenger type</comment>
   </data>
   <data name="Assassination" xml:space="preserve">
-    <value>Attentatmission</value>
+    <value>Mordanschlag</value>
   </data>
   <data name="Heist" xml:space="preserve">
     <value>Raub</value>
