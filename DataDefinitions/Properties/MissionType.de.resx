@@ -302,7 +302,7 @@
     <comment>Sabotage type</comment>
   </data>
   <data name="Planet" xml:space="preserve">
-    <value>Planetarisch</value>
+    <value>Planetenmission</value>
   </data>
   <data name="PolPrisoner" xml:space="preserve">
     <value>Politische Gefangene</value>
