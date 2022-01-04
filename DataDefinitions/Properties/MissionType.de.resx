@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Altruism" xml:space="preserve">
-    <value>Spende</value>
+    <value>Spendenmission</value>
   </data>
   <data name="Credits" xml:space="preserve">
-    <value>Geldspende</value>
+    <value>Spendenmission</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Mordauftrag</value>
   </data>
   <data name="AssassinateWing" xml:space="preserve">
-    <value>Mordanschlag im Wing</value>
+    <value>Mordauftrag im Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
-    <value>Sammlung</value>
+    <value>Beschaffungsmission</value>
   </data>
   <data name="CollectWing" xml:space="preserve">
-    <value>Sammlung im Wing</value>
+    <value>Beschaffung im Wing</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Gemeinschaftsziel</value>
@@ -172,13 +172,13 @@
     <value>Massakermission im Wing</value>
   </data>
   <data name="Mining" xml:space="preserve">
-    <value>Abbau</value>
+    <value>Abbaumission</value>
   </data>
   <data name="MiningWing" xml:space="preserve">
     <value>Abbau im Wing</value>
   </data>
   <data name="PassengerBulk" xml:space="preserve">
-    <value>Massentransport</value>
+    <value>Touristentransport</value>
   </data>
   <data name="PassengerVIP" xml:space="preserve">
     <value>VIP-Transport</value>
@@ -190,7 +190,7 @@
     <value>Frachtrettung</value>
   </data>
   <data name="Salvage" xml:space="preserve">
-    <value>Bergung</value>
+    <value>Bergungsmission</value>
   </data>
   <data name="Scan" xml:space="preserve">
     <value>Oberflächenscan</value>
@@ -202,7 +202,7 @@
     <value>Schmuggel</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Spezial</value>
+    <value>Spezialmission</value>
   </data>
   <data name="StartZone" xml:space="preserve">
     <value>Startzone</value>
@@ -239,13 +239,13 @@
     <value>Megaschiff ausschalten</value>
   </data>
   <data name="Founder" xml:space="preserve">
-    <value>Gründer</value>
+    <value>Gründermission</value>
   </data>
   <data name="HackMegaship" xml:space="preserve">
     <value>Megaschiff hacken</value>
   </data>
   <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Bürgerkriegsziele</value>
+    <value>Massakermission</value>
     <comment>Massacre mission type</comment>
   </data>
   <data name="ConflictWar" xml:space="preserve">
@@ -305,14 +305,14 @@
     <value>Planetenmission</value>
   </data>
   <data name="PolPrisoner" xml:space="preserve">
-    <value>Politische Gefangene</value>
+    <value>Transport politischer Gefangene</value>
     <comment>Bulk passenger type</comment>
   </data>
   <data name="Assassination" xml:space="preserve">
     <value>Mordanschlag</value>
   </data>
   <data name="Heist" xml:space="preserve">
-    <value>Raub</value>
+    <value>Raubüberfall</value>
   </data>
   <data name="POI" xml:space="preserve">
     <value>Interessanter Ort</value>
