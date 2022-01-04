@@ -641,7 +641,7 @@ namespace EddiStatusMonitor
         private void SetFuelExtras(Status status)
         {
             decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
-            FuelPercentAndTime(status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
+            FuelPercentAndTime(status.vehicle, status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
             status.fuel_percent = fuel_percent;
             status.fuel_seconds = fuel_seconds;
         }
@@ -674,7 +674,7 @@ namespace EddiStatusMonitor
             return 0;
         }
 
-        private void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
+        private void FuelPercentAndTime(string vehicle, decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
         {
             fuel_percent = null;
             fuel_seconds = null;
@@ -684,7 +684,7 @@ namespace EddiStatusMonitor
                 return;
             }
 
-            if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
+            if (vehicle == Constants.VEHICLE_SHIP)
             {
                 Ship ship = EDDI.Instance.CurrentShip;
                 if (ship?.fueltanktotalcapacity > 0)
@@ -695,7 +695,7 @@ namespace EddiStatusMonitor
                     fuel_seconds = fuelPerSecond > 0 ? (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond) : null;
                 }
             }
-            else if (currentStatus.vehicle == Constants.VEHICLE_SRV)
+            else if (vehicle == Constants.VEHICLE_SRV)
             {
                 const decimal srvFuelTankCapacity = 0.45M;
                 decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
