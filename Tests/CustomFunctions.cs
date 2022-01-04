@@ -56,12 +56,17 @@ namespace UnitTests
         [TestMethod]
         public void TestShipDetails()
         {
+            // The inputs to this function might include phonetic SSML tags (added to improve phonetic pronunciations).
+            // Test that we can correctly identify all such ship models.
             foreach (var model in ShipDefinitions.ShipModels)
             {
                 var ship = ShipDefinitions.FromModel(model);
                 var spokenModel = ship.SpokenModel();
-                var resolvedModel = ResolveScript("{ShipDetails('" + spokenModel + "').model}");
-                Assert.AreEqual(model, resolvedModel);
+                if (model != spokenModel)
+                {
+                    var resolvedModel = ResolveScript("{ShipDetails('" + spokenModel + "').model}");
+                    Assert.AreEqual(model, resolvedModel);
+                }
             }
         }
     }
