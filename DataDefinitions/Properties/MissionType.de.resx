@@ -151,7 +151,7 @@
     <value>Oberflächeneinrichtung abschalten</value>
   </data>
   <data name="DisableWing" xml:space="preserve">
-    <value>Wing auflösen</value>
+    <value>Abschalten im Wing</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Einreisegenehmigung</value>
@@ -172,13 +172,13 @@
     <value>Massakermission im Wing</value>
   </data>
   <data name="Mining" xml:space="preserve">
-    <value>Abbaumission</value>
+    <value>Bergbaumission</value>
   </data>
   <data name="MiningWing" xml:space="preserve">
-    <value>Abbau im Wing</value>
+    <value>Bergbau im Wing</value>
   </data>
   <data name="PassengerBulk" xml:space="preserve">
-    <value>Touristentransport</value>
+    <value>Passagiertransport</value>
   </data>
   <data name="PassengerVIP" xml:space="preserve">
     <value>VIP-Transport</value>
@@ -199,7 +199,7 @@
     <value>Besichtigung</value>
   </data>
   <data name="Smuggle" xml:space="preserve">
-    <value>Schmuggel</value>
+    <value>Schmuggelmission</value>
   </data>
   <data name="Special" xml:space="preserve">
     <value>Spezialmission</value>
