@@ -52,5 +52,17 @@ namespace UnitTests
             var actual = ResolveScript(rawCottle);
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestShipDetails()
+        {
+            foreach (var model in ShipDefinitions.ShipModels)
+            {
+                var ship = ShipDefinitions.FromModel(model);
+                var spokenModel = ship.SpokenModel();
+                var resolvedModel = ResolveScript("{ShipDetails('" + spokenModel + "').model}");
+                Assert.AreEqual(model, resolvedModel);
+            }
+        }
     }
 }
