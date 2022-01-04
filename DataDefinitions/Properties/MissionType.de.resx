@@ -124,7 +124,7 @@
     <value>Geldspende</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
-    <value>Mordmission</value>
+    <value>Mordauftrag</value>
   </data>
   <data name="AssassinateWing" xml:space="preserve">
     <value>Mordanschlag im Wing</value>
@@ -139,7 +139,7 @@
     <value>Gemeinschaftsziel</value>
   </data>
   <data name="Courier" xml:space="preserve">
-    <value>Datenlieferung</value>
+    <value>Kurierauftrag</value>
   </data>
   <data name="Delivery" xml:space="preserve">
     <value>Liefermission</value>
@@ -249,7 +249,7 @@
     <comment>Massacre mission type</comment>
   </data>
   <data name="ConflictWar" xml:space="preserve">
-    <value>Kriegsziele</value>
+    <value>Massakermission</value>
     <comment>Massacre mission type</comment>
   </data>
   <data name="Skimmer" xml:space="preserve">
