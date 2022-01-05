@@ -87,6 +87,7 @@
     <Compile Include="MarketInfo.cs" />
     <Compile Include="NavRouteInfo.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="NpcAuthorityShip.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\MessageChannels.Designer.cs">
@@ -118,6 +119,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModuleMount.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\NpcAuthorityShip.Designer.cs">
+      <DependentUpon>NpcAuthorityShip.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
@@ -767,6 +773,10 @@
     <EmbeddedResource Include="Properties\ExobiologistRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExobiologistRatings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\NpcAuthorityShip.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NpcAuthorityShip.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Suit.cs.resx" />
     <EmbeddedResource Include="Properties\Suit.de.resx" />

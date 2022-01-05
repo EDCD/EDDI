@@ -22,19 +22,19 @@ namespace EddiDataDefinitions
         // Not intended to be user facing
 
         [JsonIgnore]
-        public CombatRating combatRating { get; }
+        private CombatRating combatRating { get; }
 
         [JsonIgnore]
-        public Ship killerShip { get; }
+        private Ship killerShip { get; }
 
         [JsonIgnore]
-        public VehicleDefinition killerVehicle { get; }
+        private VehicleDefinition killerVehicle { get; }
 
         [JsonIgnore]
-        public NpcSuitLoadout killerNpcSuitLoadout { get; }
+        private NpcSuitLoadout killerNpcSuitLoadout { get; }
 
         [JsonIgnore]
-        public Suit killerCmdrSuit { get; }
+        private Suit killerCmdrSuit { get; }
 
         public Killer(string edName, string edModel, CombatRating rating)
         {
