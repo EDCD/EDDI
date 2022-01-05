@@ -1346,7 +1346,7 @@ namespace EddiCore
         {
             Cmdr.Power = @event.toPower;
             // Merits are halved upon defection
-            Cmdr.powermerits = (int)Math.Round((double)Cmdr.powermerits / 2, 0);
+            Cmdr.powermerits = (int)Math.Round((double)(Cmdr.powermerits ?? 0) / 2, 0);
             if (Cmdr.powermerits > 10000)
             {
                 Cmdr.powerrating = 4;
@@ -1427,28 +1427,28 @@ namespace EddiCore
 
         private bool eventFriends(FriendsEvent @event)
         {
-            bool passEvent = false;
-            Friend cmdr = new Friend
+            var passEvent = false;
+            var friend = new Friend
             {
                 name = @event.name,
                 status = @event.status
             };
 
-            /// Does this friend exist in our friends list?
-            int index = Cmdr.friends.FindIndex(friend => friend.name == @event.name);
+            // Does this friend exist in our friends list?
+            int index = Cmdr.friends.FindIndex(f => f.name == @event.name);
             if (index >= 0)
             {
                 if (Cmdr.friends[index].status != @event.status)
                 {
-                    /// This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
-                    Cmdr.friends[index] = cmdr;
+                    // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
+                    Cmdr.friends[index] = friend;
                     passEvent = true;
                 }
             }
             else
             {
-                /// This is a new friend, add them to the list
-                Cmdr.friends.Add(cmdr);
+                // This is a new friend, add them to the list
+                Cmdr.friends.Add(friend);
             }
             return passEvent;
         }
@@ -2026,15 +2026,15 @@ namespace EddiCore
             // Update the body 
             if (CurrentStarSystem != null)
             {
-                Body body = CurrentStarSystem.bodies?.Find(s => s.bodyname == bodyName);
+                var body = CurrentStarSystem.bodies?.Find(s => s.bodyname == bodyName);
                 if (body == null)
                 {
                     // We may be near a ring. For rings, we want to select the parent body
-                    List<Body> ringedBodies = CurrentStarSystem.bodies?
-                        .Where(b => b?.rings?.Count > 0).ToList();
-                    foreach (Body ringedBody in ringedBodies)
+                    var ringedBodies = CurrentStarSystem.bodies?
+                        .Where(b => b?.rings?.Count > 0).ToList() ?? new List<Body>();
+                    foreach (var ringedBody in ringedBodies)
                     {
-                        Ring ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
+                        var ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
                         if (ring != null)
                         {
                             body = ringedBody;
