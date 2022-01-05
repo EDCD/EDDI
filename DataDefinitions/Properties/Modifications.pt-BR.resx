@@ -647,6 +647,12 @@
     <value>Vermelho Decorativo</value>
     <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
   </data>
-  
-  
+  <data name="DecorativeGreen" xml:space="preserve">
+    <value>Verde Decorativo</value>
+    <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
+  </data>
+  <data name="DecorativeYellow" xml:space="preserve">
+    <value>Amarelo Decorativo</value>
+    <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
+  </data>
 </root>
