@@ -430,11 +430,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decorative Green.
+        /// </summary>
+        public static string DecorativeGreen {
+            get {
+                return ResourceManager.GetString("DecorativeGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decorative Red.
         /// </summary>
         public static string DecorativeRed {
             get {
                 return ResourceManager.GetString("DecorativeRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decorative Yellow.
+        /// </summary>
+        public static string DecorativeYellow {
+            get {
+                return ResourceManager.GetString("DecorativeYellow", resourceCulture);
             }
         }
         
