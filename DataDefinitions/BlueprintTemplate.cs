@@ -471,6 +471,18 @@ namespace EddiDataDefinitions
                 { 4, new List<MaterialAmount>() { new MaterialAmount(Material.FromEDName("zinc"), 1), new MaterialAmount(Material.FromEDName("molybdenum"), 1), new MaterialAmount(Material.FromEDName("tungsten"), 1) } },
                 { 5, new List<MaterialAmount>() { new MaterialAmount(Material.FromEDName("molybdenum"), 1), new MaterialAmount(Material.FromEDName("technetium"), 1), new MaterialAmount(Material.FromEDName("highdensitycomposites"), 1) } },
             });
+            var DecorativeGreen = new BlueprintTemplate("DecorativeGreen", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 5, new List<MaterialAmount>() }
+            });
+            var DecorativeRed = new BlueprintTemplate("DecorativeRed", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 5, new List<MaterialAmount>() }
+            });
+            var DecorativeYellow = new BlueprintTemplate("DecorativeYellow", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 5, new List<MaterialAmount>() }
+            });
         }
         public static readonly BlueprintTemplate None;
 
