@@ -237,21 +237,13 @@ namespace UnitTests
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             Assert.AreEqual("Claim", mission.statusEDName);
 
-            //MissionAcceptedEvent - 'Permit'
-            line = "{ \"timestamp\":\"2018-09-20T01:12:57Z\", \"event\":\"MissionAccepted\", \"Faction\":\"Sublime Order of van Maanen's Star\", \"Name\":\"MISSION_genericPermit1\", \"LocalisedName\":\"Permit Acquisition Opportunity\", \"Wing\":false, \"Influence\":\"None\", \"Reputation\":\"None\", \"MissionID\":420098082 }";
-            events = JournalMonitor.ParseJournalEntry(line);
-            Assert.IsTrue(events.Count == 1);
-            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
-            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 420098082);
-            Assert.AreEqual(5, missionMonitor.missions.Count);
-
             //MissionAcceptedEvent - 'Smuggle'
             line = @"{ ""timestamp"":""2018-09-21T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 414732731);
-            Assert.AreEqual(6, missionMonitor.missions.Count);
+            Assert.AreEqual(5, missionMonitor.missions.Count);
             Assert.IsNotNull(mission);
             Assert.IsTrue(mission.edTags.Contains("Smuggle"));
             Assert.IsFalse(mission.originreturn);
@@ -264,7 +256,7 @@ namespace UnitTests
             missionMonitor.handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
             Assert.AreEqual("Complete", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413563829)?.statusEDName);
             missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(5, missionMonitor.missions.Count);
+            Assert.AreEqual(4, missionMonitor.missions.Count);
 
             //MissionFailedEvent
             line = @"{ ""timestamp"":""2018-09-23T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
@@ -287,7 +279,7 @@ namespace UnitTests
             missionMonitor.handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual("Failed", missionMonitor.missions.SingleOrDefault(m => m.missionid == 413748324)?.statusEDName); 
             missionMonitor._postHandleMissionFailedEvent((MissionFailedEvent)events[0]);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.AreEqual(3, missionMonitor.missions.Count);
 
             //MissionCompletedEvent - Donation
             line = @"{ ""timestamp"":""2018-12-18T19:14:32Z"", ""event"":""MissionCompleted"", ""Faction"":""Movement for Rabakshany Democrats"", ""Name"":""Mission_AltruismCredits_name"", ""MissionID"":442085549, ""Donation"":""1000000"", ""Donated"":1000000, ""FactionEffects"":[ { ""Faction"":""Movement for Rabakshany Democrats"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":8605201797850, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";

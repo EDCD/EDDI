@@ -372,7 +372,7 @@ namespace EddiDataDefinitions
             elements.RemoveAll(t => FactionState
                 .AllOfThem
                 .Select(s => s.edname)
-                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+                .Contains(t.Replace("elections", "election"), StringComparer.InvariantCultureIgnoreCase));
 
             // Skip government elements
             elements.RemoveAll(t => Government

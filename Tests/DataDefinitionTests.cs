@@ -289,7 +289,7 @@ namespace UnitTests
             JObject json = DeserializeJsonResource<JObject>(Resources.vehicle);
             Vehicle v0 = Vehicle.FromJson(0, json);
             Assert.AreEqual(0, v0.subslot, "testing v0 subslot from JSON");
-            Assert.AreEqual(v0.localizedName, "SRV Scarab");
+            Assert.AreEqual(v0.localizedName, "Scarab SRV");
             Assert.AreEqual(v0.localizedDescription, "dual plasma repeaters");
 
             Vehicle v1 = Vehicle.FromJson(1, json);
