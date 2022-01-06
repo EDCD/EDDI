@@ -20,6 +20,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using Utilities;
 using Application = System.Windows.Application;
 
@@ -96,7 +97,10 @@ namespace Eddi
             Rect windowPosition = eddiConfiguration.MainWindowPosition;
             Visibility = Visibility.Collapsed;
 
-            if (windowPosition != Rect.Empty && isWindowValid(windowPosition))
+            // WPF uses DPI scaled units rather than true pixels.
+            // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
+            var dpiScale = VisualTreeHelper.GetDpi(this); 
+            if (windowPosition != Rect.Empty && isWindowValid(windowPosition, dpiScale))
             {
                 // Hook Loaded event to handle minimized/maximized state restore
                 Loaded += windowLoaded;
@@ -111,16 +115,16 @@ namespace Eddi
             else
             {
                 // Revert to default values if the prior size and position are no longer valid
-                Left = centerWindow(Screen.PrimaryScreen.Bounds.Width, designedWidth);
-                Top = centerWindow(Screen.PrimaryScreen.Bounds.Height, designedHeight);
-                Width = Math.Min(Screen.PrimaryScreen.Bounds.Width, designedWidth);
-                Height = Math.Min(Screen.PrimaryScreen.Bounds.Height, designedHeight);
+                Left = centerWindow(applyDpiScale(Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX), designedWidth);
+                Top = centerWindow(applyDpiScale(Screen.PrimaryScreen.Bounds.Height, dpiScale.DpiScaleY), designedHeight);
+                Width = Math.Min(Screen.PrimaryScreen.Bounds.Width / dpiScale.DpiScaleX, designedWidth);
+                Height = Math.Min(Screen.PrimaryScreen.Bounds.Height / dpiScale.DpiScaleY, designedHeight);
             }
 
             tabControl.SelectedIndex = eddiConfiguration.SelectedTab;
 
             // Check detected monitors to see if the saved window size and location is valid
-            bool isWindowValid(Rect rect)
+            bool isWindowValid(Rect rect, DpiScale dpi)
             {
                 // Check for minimum window size
                 if ((int)rect.Width < designedWidth || (int)rect.Height < designedHeight)
@@ -133,11 +137,11 @@ namespace Eddi
                 bool testLowerRight = false;
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    if (rect.X >= screen.Bounds.X && rect.Y >= screen.Bounds.Y) // The upper and left bounds fall on a valid screen
+                    if (rect.X >= applyDpiScale(screen.Bounds.X, dpi.DpiScaleX) && rect.Y >= applyDpiScale(screen.Bounds.Y, dpi.DpiScaleY)) // The upper and left bounds fall on a valid screen
                     {
                         testUpperLeft = true;
                     }
-                    if (screen.Bounds.Width >= rect.X + rect.Width && screen.Bounds.Height >= rect.Y + rect.Height) // The lower and right bounds fall on a valid screen 
+                    if (applyDpiScale(screen.Bounds.Width, dpi.DpiScaleX) >= rect.X + rect.Width && applyDpiScale(screen.Bounds.Height, dpi.DpiScaleY) >= rect.Y + rect.Height) // The lower and right bounds fall on a valid screen 
                     {
                         testLowerRight = true;
                     }
@@ -152,6 +156,11 @@ namespace Eddi
             int centerWindow(int measure, int defaultValue)
             {
                 return (measure - Math.Min(measure, defaultValue)) / 2;
+            }
+
+            int applyDpiScale(int originalValue, double dpiScaleFactor)
+            {
+                return (int)Math.Round(originalValue / dpiScaleFactor);
             }
         }
 
