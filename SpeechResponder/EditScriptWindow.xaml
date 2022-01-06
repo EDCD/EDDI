@@ -9,7 +9,12 @@
         mc:Ignorable="d"
         Title="Edit script" 
         ResizeMode="CanResizeWithGrip"
-        Height="600" Width="800">
+        MinHeight="600" MinWidth="800"
+        Height="{Binding Source={x:Static resx:Settings.Default}, Path=Height, Delay=500, Mode=TwoWay}"
+        Width="{Binding Source={x:Static resx:Settings.Default}, Path=Width, Delay=500, Mode=TwoWay}"
+        Left="{Binding Source={x:Static resx:Settings.Default}, Path=Left, Delay=500, Mode=TwoWay}"
+        Top="{Binding Source={x:Static resx:Settings.Default}, Path=Top, Delay=500, Mode=TwoWay}"
+        WindowState="{Binding Source={x:Static resx:Settings.Default}, Path=WindowState, Delay=500, Mode=TwoWay}">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <ToolBarTray DockPanel.Dock="Top" Background="#FFE5E5E5" IsLocked="True">
             <ToolBar Background="#FFE5E5E5">

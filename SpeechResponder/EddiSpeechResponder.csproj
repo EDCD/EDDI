@@ -136,6 +136,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ScriptResolverService\ICustomFunction.cs" />
     <Compile Include="CustomFunctions\OneOf.cs" />
     <Compile Include="MarkdownWindow.xaml.cs">
@@ -270,6 +275,10 @@
     </None>
     <None Include="eddi.pt-BR.json" />
     <None Include="eddi.ru.json" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="SpeechResponderHelp.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
