@@ -448,10 +448,12 @@ namespace EddiJournalMonitor
                                     string faction = getFactionName(data, "Faction");
                                     string victim = JsonParsing.getString(data, "Victim");
 
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")) || NpcAuthorityShip.EDNameExists(victim))
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
                                     {
-                                        // This is an NPC authority ship
-                                        victim = NpcAuthorityShip.FromEDName(victim)?.localizedName ?? JsonParsing.getString(data, "Victim_Localised");
+                                        // This is an NPC with a symbolic name
+                                        victim = NpcAuthorityShip.EDNameExists(victim)
+                                            ? NpcAuthorityShip.FromEDName(victim)?.localizedName
+                                            : JsonParsing.getString(data, "Victim_Localised");
                                     }
 
                                     // Might be a fine or a bounty
@@ -1698,10 +1700,12 @@ namespace EddiJournalMonitor
                                     string faction = getFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")) || NpcAuthorityShip.EDNameExists(interdictor))
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
                                     {
                                         // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.FromEDName(interdictor)?.localizedName ?? JsonParsing.getString(data, "Interdictor_Localised");
+                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
+                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
+                                            : JsonParsing.getString(data, "Interdictor_Localised");
                                     }
 
                                     events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
@@ -1713,10 +1717,12 @@ namespace EddiJournalMonitor
                                     string interdictor = JsonParsing.getString(data, "Interdictor");
                                     bool iscommander = JsonParsing.getBool(data, "IsPlayer");
 
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")) || NpcAuthorityShip.EDNameExists(interdictor))
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
                                     {
                                         // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.FromEDName(interdictor)?.localizedName ?? JsonParsing.getString(data, "Interdictor_Localised");
+                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
+                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
+                                            : JsonParsing.getString(data, "Interdictor_Localised");
                                     }
 
                                     events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
@@ -1733,10 +1739,12 @@ namespace EddiJournalMonitor
                                     string faction = getFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")) || NpcAuthorityShip.EDNameExists(interdictee))
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
                                     {
-                                        // This is an NPC authority ship
-                                        interdictee = NpcAuthorityShip.FromEDName(interdictee)?.localizedName ?? JsonParsing.getString(data, "Interdicted_Localised");
+                                        // This is an NPC with a symbolic name
+                                        interdictee = NpcAuthorityShip.EDNameExists(interdictee) 
+                                            ? NpcAuthorityShip.FromEDName(interdictee)?.localizedName 
+                                            : JsonParsing.getString(data, "Interdicted_Localised");
                                     }
 
                                     events.Add(new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
@@ -1890,10 +1898,12 @@ namespace EddiJournalMonitor
                                         {
                                             source = MessageSource.FromMessage(from, message);
                                             from = JsonParsing.getString(data, "From");
-                                            if (!string.IsNullOrEmpty(JsonParsing.getString(data, "From_Localised")) || NpcAuthorityShip.EDNameExists(from))
+                                            if (!string.IsNullOrEmpty(JsonParsing.getString(data, "From_Localised")))
                                             {
                                                 // This is an NPC with a symbolic name
-                                                from = NpcAuthorityShip.FromEDName(from)?.localizedName ?? JsonParsing.getString(data, "From_Localised");
+                                                from = NpcAuthorityShip.EDNameExists(from) 
+                                                    ? NpcAuthorityShip.FromEDName(from)?.localizedName 
+                                                    : JsonParsing.getString(data, "From_Localised");
                                             }
                                         }
                                         else if (message.StartsWith("$STATION_") || message.Contains("$Docking"))
@@ -2068,10 +2078,12 @@ namespace EddiJournalMonitor
 
                                     // Scan stage >= 1
                                     string name = JsonParsing.getString(data, "PilotName");
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "PilotName_Localised")) || NpcAuthorityShip.EDNameExists(name))
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "PilotName_Localised")))
                                     {
                                         // This is an NPC with a symbolic name
-                                        name = NpcAuthorityShip.FromEDName(name)?.localizedName ?? JsonParsing.getString(data, "PilotName_Localised");
+                                        name = NpcAuthorityShip.EDNameExists(name) 
+                                            ? NpcAuthorityShip.FromEDName(name)?.localizedName 
+                                            : JsonParsing.getString(data, "PilotName_Localised");
                                     }
 
                                     CombatRating rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
@@ -2109,10 +2121,12 @@ namespace EddiJournalMonitor
                                     {
                                         // Property names differ if there is a single killer vs. multiple killers
                                         var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
-                                        if (!string.IsNullOrEmpty(JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised")) || NpcAuthorityShip.EDNameExists(name))
+                                        if (!string.IsNullOrEmpty(JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised")))
                                         {
                                             // This is an NPC with a symbolic name
-                                            name = NpcAuthorityShip.FromEDName(name)?.localizedName ?? JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised");
+                                            name = NpcAuthorityShip.EDNameExists(name)
+                                                ? NpcAuthorityShip.FromEDName(name)?.localizedName
+                                                : JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised");
                                         }
 
                                         var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
