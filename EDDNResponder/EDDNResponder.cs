@@ -87,6 +87,8 @@ namespace EDDNResponder
         // Are we in an invalid state?
         public bool invalidState { get; private set; }
 
+        public static readonly List<string> invalidSchemas = new List<string>();
+
         private StarSystemRepository starSystemRepository;
 
         public string ResponderName()
@@ -179,7 +181,7 @@ namespace EDDNResponder
                 CheckLocationData(data);
             }
 
-            if (LocationIsSet())
+            if (!invalidState && LocationIsSet())
             {
                 if (fullLocationEvents.Contains(edType) || partialLocationEvents.Contains(edType))
                 {
@@ -414,8 +416,15 @@ namespace EDDNResponder
                     schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
-                Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
-                sendMessage(body);
+                if (invalidSchemas.Contains(body.schemaRef))
+                {
+                    Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
+                }
+                else
+                {
+                    Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
+                    sendMessage(body);
+                }
             }
             catch (Exception ex)
             {
@@ -563,21 +572,56 @@ namespace EDDNResponder
                 try
                 {
                     response = client.Execute(request);
-                    if (response != null)
+                    Logging.Debug("Response content is " + response.Content);
+                    switch (response.StatusCode)
                     {
-                        Logging.Debug("Response content is " + response.Content);
-                        switch (response.StatusCode)
+                        // Invalid status codes are defined at https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md
+                        case System.Net.HttpStatusCode.BadRequest: // Code 400
+                            {
+                            throw new ArgumentException();
+                        }
+                        case System.Net.HttpStatusCode.RequestTimeout: // Code 408
+                        case System.Net.HttpStatusCode.GatewayTimeout: // Code 504
+                            {
+                            Logging.Debug("Request timed out, retrying in 30 seconds.");
+                            System.Threading.Tasks.Task.Run(() =>
+                            {
+                                Thread.Sleep(TimeSpan.FromSeconds(30));
+                                sendMessage(body);
+                            });
+                            break;
+                        }
+                        case System.Net.HttpStatusCode.RequestEntityTooLarge: // Code 413
+                            {
+                            // Note that this applies to the plain text size of the message,
+                            // irrespective of any compression used during sending.
+                            throw new System.Net.WebException("EDDN service is unable to process the message. Payload too large.");
+                        }
+                        case System.Net.HttpStatusCode.UpgradeRequired: // Code 426
+                            {
+                            // Note that this deviates from the typical usage of code 426
+                            // (which typically indicates that this client is using an obsolete security protocol.
+                            invalidSchemas.Add(body.schemaRef);
+                            Logging.Warn($"EDDN service is unable to process the message. Schema {body.schemaRef} is obsolete.");
+                            break;
+                        }
+                        case System.Net.HttpStatusCode.ServiceUnavailable: // Code 503
+                            {
+                            Logging.Debug("EDDN service is unavailable, retrying in 2 minutes");
+                            System.Threading.Tasks.Task.Run(() =>
+                            {
+                                Thread.Sleep(TimeSpan.FromMinutes(2));
+                                sendMessage(body);
+                            });
+                            break;
+                        }
+                        default:
                         {
-                            // Invalid status codes are defined at https://github.com/EDSM-NET/EDDN/blob/master/src/eddn/Gateway.py
-                            case System.Net.HttpStatusCode.BadRequest: // Code 400
-                                {
-                                    throw new ArgumentException();
-                                }
-                            case System.Net.HttpStatusCode.UpgradeRequired: // Code 426
-                                {
-                                    Logging.Warn("EDDN schema " + body.schemaRef + " is obsolete");
-                                    break;
-                                }
+                            if ((int)response.StatusCode >= 400)
+                            {
+                                throw new System.Net.WebException("Unexpected EDDN service response");
+                            }
+                            break;
                         }
                     }
                 }
