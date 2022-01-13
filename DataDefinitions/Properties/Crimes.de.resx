@@ -253,7 +253,10 @@
     <value>Mitführen von gestohlenen Waren</value>
     <comment>Crime onFoot_carryingStolenGoods</comment>
   </data>
-  
+  <data name="onFoot_arcCutterUse" xml:space="preserve">
+    <value>Plasma-Schneider</value>
+    <comment>Crime onFoot_arcCutterUse</comment>
+  </data>
   <data name="onFoot_carryingIllegalData" xml:space="preserve">
     <value>Mitführen von illegalen Daten</value>
     <comment>Crime onFoot_carryingIllegalData</comment>
