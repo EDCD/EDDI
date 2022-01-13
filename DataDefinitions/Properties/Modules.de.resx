@@ -609,5 +609,8 @@
     <value>Xeno-Multi-Drohnensteuerung</value>
     <comment>Module MultiDroneControl_Xeno</comment>
   </data>
-  
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>Universelle Multi-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Universal</comment>
+  </data>
 </root>
