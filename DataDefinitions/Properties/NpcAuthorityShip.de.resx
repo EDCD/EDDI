@@ -118,11 +118,29 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="Military_Independent" xml:space="preserve">
+    <value>Systemverteidigung</value>
+    
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="Police_Empire" xml:space="preserve">
+    <value>Imperialer Sicherheitsservice</value>
+    
+  </data>
+  <data name="Police_Federation" xml:space="preserve">
+    <value>Förderaler Sicherheitsserce</value>
+    
+  </data>
+  <data name="Police_Alliance" xml:space="preserve">
+    <value>Verbündetes Polizeischiff</value>
+    
+  </data>
+  <data name="Military_Federation" xml:space="preserve">
+    <value>Förderales Marineschiff</value>
+    
+  </data>
+  <data name="Police_Independent" xml:space="preserve">
+    <value>Systempolizei</value>
+    
+  </data>
 </root>
