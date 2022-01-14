@@ -122,7 +122,7 @@
     <comment>Empire rank None</comment>
   </data>
   <data name="Outsider" xml:space="preserve">
-    <value>Außenseiterin</value>
+    <value>Fremde</value>
     <comment>Empire rank Outsider</comment>
   </data>
   <data name="Serf" xml:space="preserve">
