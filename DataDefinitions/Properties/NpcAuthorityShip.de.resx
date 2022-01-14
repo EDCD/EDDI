@@ -117,12 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Military_Empire" xml:space="preserve">
+    <value>Imperiales Marineschiff</value>
+    
+  </data>
   <data name="Military_Independent" xml:space="preserve">
     <value>Systemverteidigung</value>
     
   </data>
-  
+  <data name="Military_Alliance" xml:space="preserve">
+    <value>Verteidigungsschiff der Allianz</value>
+    
+  </data>
   <data name="Police_Empire" xml:space="preserve">
     <value>Imperialer Sicherheitsservice</value>
     
