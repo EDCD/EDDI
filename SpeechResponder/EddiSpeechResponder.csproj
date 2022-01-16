@@ -72,7 +72,7 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AvalonEdit\CottleHighlightingDefinition.cs" />
+    <Compile Include="AvalonEdit\CottleHighlighting.cs" />
     <Compile Include="CustomFunctions\BlueprintDetails.cs" />
     <Compile Include="CustomFunctions\CargoDetails.cs" />
     <Compile Include="CustomFunctions\CommodityMarketDetails.cs" />
