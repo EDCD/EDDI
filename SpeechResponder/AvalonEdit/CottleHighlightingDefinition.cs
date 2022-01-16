@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Media;
 using System.Xml;
 
-namespace EddiSpeechResponder
+namespace EddiSpeechResponder.AvalonEdit
 {
     internal class CottleHighlightingDefinition
     {
@@ -16,7 +16,7 @@ namespace EddiSpeechResponder
 
         private void RegisterCottleDefinition()
         {
-            using (Stream s = typeof(CottleHighlightingDefinition).Assembly.GetManifestResourceStream("EddiSpeechResponder.Cottle.xshd"))
+            using (Stream s = typeof(CottleHighlightingDefinition).Assembly.GetManifestResourceStream("EddiSpeechResponder.AvalonEdit.Cottle.xshd"))
             {
                 using (XmlReader reader = new XmlTextReader(s))
                 {

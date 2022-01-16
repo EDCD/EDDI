@@ -31,7 +31,7 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 #pragma warning disable IDE0052 // Remove unread private members: instantiating this registers the Cottle Highlighting Definition
-        private readonly CottleHighlightingDefinition cottleHighlightingDefinition = new CottleHighlightingDefinition();
+        private readonly AvalonEdit.CottleHighlightingDefinition cottleHighlightingDefinition = new AvalonEdit.CottleHighlightingDefinition();
 #pragma warning restore IDE0052 // Remove unread private members
 
         public static Status currentStatus;

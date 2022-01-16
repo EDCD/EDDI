@@ -68,11 +68,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FoldingStrategy.cs" />
+    <Compile Include="AvalonEdit\FoldingStrategy.cs" />
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CottleHighlightingDefinition.cs" />
+    <Compile Include="AvalonEdit\CottleHighlightingDefinition.cs" />
     <Compile Include="CustomFunctions\BlueprintDetails.cs" />
     <Compile Include="CustomFunctions\CargoDetails.cs" />
     <Compile Include="CustomFunctions\CommodityMarketDetails.cs" />
@@ -241,7 +241,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Cottle.xshd" />
+    <EmbeddedResource Include="AvalonEdit\Cottle.xshd" />
     <EmbeddedResource Include="Properties\CustomFunctions.Untranslated.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
@@ -372,6 +372,7 @@
   <ItemGroup>
     <Resource Include="Images\Folding.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(ProjectDir)eddi.json" "$(ProjectDir)$(OutDir)"

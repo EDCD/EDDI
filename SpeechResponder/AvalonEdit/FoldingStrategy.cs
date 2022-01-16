@@ -2,7 +2,7 @@
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
 
-namespace EddiSpeechResponder
+namespace EddiSpeechResponder.AvalonEdit
 {
     public class FoldingStrategy
     {

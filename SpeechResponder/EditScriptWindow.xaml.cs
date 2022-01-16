@@ -23,7 +23,7 @@ namespace EddiSpeechResponder
 
         public ScriptRecoveryService ScriptRecoveryService { get; set; }
 
-        private FoldingStrategy foldingStrategy;
+        private readonly AvalonEdit.FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
         public EditScriptWindow(Script script, Dictionary<string, Script> scripts)
@@ -63,7 +63,7 @@ namespace EddiSpeechResponder
             scriptView.TextChanged += ScriptView_TextChanged;
 
             // Implement collapsible sections (called `Foldings`)
-            foldingStrategy = new FoldingStrategy('{', '}');
+            foldingStrategy = new AvalonEdit.FoldingStrategy('{', '}');
             foldingStrategy.CreateNewFoldings(scriptView.Document);
             InitializeOrUpdateFolding();
             scriptView.Options.AllowScrollBelowDocument = true;
