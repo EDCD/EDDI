@@ -54,14 +54,19 @@ namespace EddiSpeechResponder
                 resetToDefaultButton.IsEnabled = false;
             }
 
+            // Set our editor content
             scriptView.Text = editorScript.Value;
+
+            // Set up our Script Recovery Service
             ScriptRecoveryService = new ScriptRecoveryService(this);
             ScriptRecoveryService.BeginScriptRecovery();
             scriptView.TextChanged += ScriptView_TextChanged;
 
+            // Implement collapsible sections (called `Foldings`)
             foldingStrategy = new FoldingStrategy('{', '}');
             foldingStrategy.CreateNewFoldings(scriptView.Document);
             InitializeOrUpdateFolding();
+            scriptView.Options.AllowScrollBelowDocument = true;
 
             // Monitor window size and position
             WindowStartupLocation = WindowStartupLocation.Manual;
