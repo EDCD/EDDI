@@ -32,6 +32,9 @@ namespace EddiSpeechResponder
 
         public EditScriptWindow(Script script, Dictionary<string, Script> scripts)
         {
+            // Register our highlighting definition before we initialize the window
+            var highlightingDefinition = new AvalonEdit.CottleHighlighting().Definition;
+
             InitializeComponent();
             DataContext = this;
 
@@ -74,8 +77,8 @@ namespace EddiSpeechResponder
             // Set up our search window
             SearchPanel.Install(scriptView);
 
-            // Set up our Cottle highlighting definition
-            documentHighlighter = new DocumentHighlighter(scriptView.Document, new AvalonEdit.CottleHighlighting().Definition);
+            // Set up our Cottle highlighter
+            documentHighlighter = new DocumentHighlighter(scriptView.Document, highlightingDefinition);
 
             // Monitor window size and position
             WindowStartupLocation = WindowStartupLocation.Manual;
