@@ -317,30 +317,72 @@
     <value>Pedido de Ajuda</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Abandoned_Buggy" xml:space="preserve">
+    <value>Sinalizador de Socorro</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination" xml:space="preserve">
+    <value>SINAL ENCRIPTADO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination" xml:space="preserve">
+    <value>SINAL ENCRIPTADO</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle" xml:space="preserve">
+    <value>Sinalizador de Socorro</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder" xml:space="preserve">
+    <value>Sinalizador de Socorro</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Smugglers_Cache" xml:space="preserve">
+    <value>Marcadores Irregulares</value>
+    <comment>Irregular Markers</comment>
+  </data>
   <data name="Trap_Cargo" xml:space="preserve">
     <value>Marcadores Irregulares</value>
     <comment>Irregular Markers</comment>
   </data>
-  
-  
-  
+  <data name="Wreckage_Buggy" xml:space="preserve">
+    <value>Destroços Menores</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe" xml:space="preserve">
+    <value>Local de Impacto</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite" xml:space="preserve">
+    <value>Local de Impacto</value>
+    <comment>Impact Site</comment>
+  </data>
   <data name="Wreckage_Cargo" xml:space="preserve">
     <value>Destroços Menores</value>
     <comment>Minor Wreckage</comment>
   </data>
-  
-  
+  <data name="Wrecks_Eagle" xml:space="preserve">
+    <value>Local de Acidente</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder" xml:space="preserve">
+    <value>Local de Acidente</value>
+    <comment>Crash Site</comment>
+  </data>
   <data name="CrashedShip" xml:space="preserve">
     <value>Nave Caída</value>
     <comment>POI CrashedShip</comment>
   </data>
-  
-  
-  
+  <data name="Gro_controlScenarioTitle" xml:space="preserve">
+    <value>Revolta Armada</value>
+    <comment>Gro_controlScenarioTitle</comment>
+  </data>
+  <data name="Trap_Data" xml:space="preserve">
+    <value>Marcadores Irregulares</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Perimeter" xml:space="preserve">
+    <value>Fonte de Energia Ativa</value>
+    <comment>Active Power Source</comment>
+  </data>
 </root>
