@@ -263,11 +263,11 @@
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
     <value>Piratenaktivität</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 6]</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
     <value>Piratenaktivität</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 7]</comment>
   </data>
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
     <value>Guardian Oberflächensignal</value>
@@ -317,148 +317,30 @@
     <value>Notruf</value>
     <comment>Distress Call</comment>
   </data>
-  <data name="Abandoned_Buggy_Easy" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Abandoned_Buggy_Medium" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Abandoned_Buggy_Hard" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Eagle_Assassination_Easy" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Eagle_Assassination_Medium" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Eagle_Assassination_Hard" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Assassination_Easy" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Assassination_Medium" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Assassination_Hard" xml:space="preserve">
-    <value>VERSCHLÜSSELTES SIGNAL</value>
-    <comment>ENCRYPTED SIGNAL</comment>
-  </data>
-  <data name="Damaged_Eagle_Easy" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Eagle_Medium" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Eagle_Hard" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Easy" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Medium" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Damaged_Sidewinder_Hard" xml:space="preserve">
-    <value>Notrufsender</value>
-    <comment>Distress Beacon</comment>
-  </data>
-  <data name="Smugglers_Cache_Easy" xml:space="preserve">
-    <value>irreguläre Markierungen</value>
-    <comment>Irregular Markers</comment>
-  </data>
-  <data name="Smugglers_Cache_Medium" xml:space="preserve">
-    <value>irreguläre Markierungen</value>
-    <comment>Irregular Markers</comment>
-  </data>
-  <data name="Smugglers_Cache_Hard" xml:space="preserve">
-    <value>irreguläre Markierungen</value>
-    <comment>Irregular Markers</comment>
-  </data>
+  
+  
+  
+  
+  
+  
   <data name="Trap_Cargo" xml:space="preserve">
     <value>irreguläre Markierungen</value>
     <comment>Irregular Markers</comment>
   </data>
-  <data name="Wreckage_Buggy_Easy" xml:space="preserve">
-    <value>Kleinere Wrackteile</value>
-    <comment>Minor Wreckage</comment>
-  </data>
-  <data name="Wreckage_Buggy_Medium" xml:space="preserve">
-    <value>Kleinere Wrackteile</value>
-    <comment>Minor Wreckage</comment>
-  </data>
-  <data name="Wreckage_Buggy_Hard" xml:space="preserve">
-    <value>Kleinere Wrackteile</value>
-    <comment>Minor Wreckage</comment>
-  </data>
-  <data name="Wreckage_Probe_Easy" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
-  <data name="Wreckage_Probe_Medium" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
-  <data name="Wreckage_Probe_Hard" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
-  <data name="Wreckage_Satellite_Easy" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
-  <data name="Wreckage_Satellite_Medium" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
-  <data name="Wreckage_Satellite_Hard" xml:space="preserve">
-    <value>Aufprallstelle</value>
-    <comment>Impact Site</comment>
-  </data>
+  
+  
+  
   <data name="Wreckage_Cargo" xml:space="preserve">
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
   </data>
-  <data name="Wrecks_Eagle_Easy" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
-  <data name="Wrecks_Eagle_Medium" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
-  <data name="Wrecks_Eagle_Hard" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
-  <data name="Wrecks_Sidewinder_Easy" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
-  <data name="Wrecks_Sidewinder_Medium" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
-  <data name="Wrecks_Sidewinder_Hard" xml:space="preserve">
-    <value>Absturzstelle</value>
-    <comment>Crash Site</comment>
-  </data>
+  
+  
   <data name="CrashedShip" xml:space="preserve">
     <value>Abgestürztes Schiff</value>
     <comment>POI CrashedShip</comment>
   </data>
+  
+  
+  
 </root>
