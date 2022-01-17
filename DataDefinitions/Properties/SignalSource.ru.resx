@@ -263,11 +263,11 @@
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
     <value>Активность пиратов</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 6]</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
     <value>Активность пиратов</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 7]</comment>
   </data>
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
     <value>Поверхностный сигнал стражей</value>
@@ -308,25 +308,6 @@
     <value>Сигнал о помощи</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   
