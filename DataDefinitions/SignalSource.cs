@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -27,18 +28,18 @@ namespace EddiDataDefinitions
             var CombatZoneLow = new SignalSource("Warzone_PointRace_Low");
             var CombatZoneThargoid = new SignalSource("Warzone_TG");
 
-            var Aftermath = new SignalSource("USS_Type_Aftermath");
+            var Aftermath = new SignalSource("USS_Type_Aftermath", "USS_SalvageHaulageWreckage");
             var Anomaly = new SignalSource("USS_Type_Anomaly");
-            var Ceremonial = new SignalSource("USS_Type_Ceremonial");
-            var Convoy = new SignalSource("USS_Type_Convoy");
-            var DegradedEmissions = new SignalSource("USS_Type_Salvage");
-            var Distress = new SignalSource("USS_Type_DistressSignal");
+            var Ceremonial = new SignalSource("USS_Type_Ceremonial", "USS_CeremonialComms");
+            var Convoy = new SignalSource("USS_Type_Convoy", "USS_ConvoyDispersalPattern");
+            var DegradedEmissions = new SignalSource("USS_Type_Salvage", "USS_DegradedEmissions");
+            var Distress = new SignalSource("USS_Type_DistressSignal", "USS_DistressCall");
             var EncodedEmissions = new SignalSource("USS_Type_ValuableSalvage");
-            var HighGradeEmissions = new SignalSource("USS_Type_VeryValuableSalvage");
+            var HighGradeEmissions = new SignalSource("USS_Type_VeryValuableSalvage", "USS_HighGradeEmissions");
             var MissionTarget = new SignalSource("USS_Type_MissionTarget");
-            var NonHuman = new SignalSource("USS_Type_NonHuman");
-            var TradingBeacon = new SignalSource("USS_Type_TradingBeacon");
-            var WeaponsFire = new SignalSource("USS_Type_WeaponsFire");
+            var NonHuman = new SignalSource("USS_Type_NonHuman", "USS_NonHumanSignalSource");
+            var TradingBeacon = new SignalSource("USS_Type_TradingBeacon", "USS_TradingBeacon");
+            var WeaponsFire = new SignalSource("USS_Type_WeaponsFire", "USS_WeaponsFire");
 
             var UnregisteredCommsBeacon = new SignalSource("NumberStation");
             var ListeningPost = new SignalSource("ListeningPost");
@@ -71,42 +72,24 @@ namespace EddiDataDefinitions
             var ThargoidBarnacle = new SignalSource("Settlement_Unflattened_Unknown");
             var ThargoidCrashSite = new SignalSource("Settlement_Unflattened_WreckedUnknown");
 
-            var AbandonedBuggyEasy = new SignalSource("Abandoned_Buggy_Easy");
-            var AbandonedBuggyMedium = new SignalSource("Abandoned_Buggy_Medium");
-            var AbandonedBuggyHard = new SignalSource("Abandoned_Buggy_Hard");
+            var AbandonedBuggy = new SignalSource("Abandoned_Buggy");
+            var ActivePowerSource = new SignalSource("Perimeter");
             var CrashedShip = new SignalSource("CrashedShip");
-            var DamagedEagleAssassinationEasy = new SignalSource("Damaged_Eagle_Assassination_Easy");
-            var DamagedEagleAssassinationMedium = new SignalSource("Damaged_Eagle_Assassination_Medium");
-            var DamagedEagleAssassinationHard = new SignalSource("Damaged_Eagle_Assassination_Hard");
-            var DamagedSidewinderAssassinationEasy = new SignalSource("Damaged_Sidewinder_Assassination_Easy");
-            var DamagedSidewinderAssassinationMedium = new SignalSource("Damaged_Sidewinder_Assassination_Medium");
-            var DamagedSidewinderAssassinationHard = new SignalSource("Damaged_Sidewinder_Assassination_Hard");
-            var DamagedEagleEasy = new SignalSource("Damaged_Eagle_Easy");
-            var DamagedEagleMedium = new SignalSource("Damaged_Eagle_Medium");
-            var DamagedEagleHard = new SignalSource("Damaged_Eagle_Hard");
-            var DamagedSidewinderEasy = new SignalSource("Damaged_Sidewinder_Easy");
-            var DamagedSidewinderMedium = new SignalSource("Damaged_Sidewinder_Medium");
-            var DamagedSidewinderHard = new SignalSource("Damaged_Sidewinder_Hard");
-            var SmugglersCacheEasy = new SignalSource("Smugglers_Cache_Easy");
-            var SmugglersCacheMedium = new SignalSource("Smugglers_Cache_Medium");
-            var SmugglersCacheHard = new SignalSource("Smugglers_Cache_Hard");
+            var DamagedEagleAssassination = new SignalSource("Damaged_Eagle_Assassination");
+            var DamagedSidewinderAssassination = new SignalSource("Damaged_Sidewinder_Assassination");
+            var DamagedEagle = new SignalSource("Damaged_Eagle");
+            var DamagedSidewinder = new SignalSource("Damaged_Sidewinder");
+            var SmugglersCache = new SignalSource("Smugglers_Cache");
             var TrapCargo = new SignalSource("Trap_Cargo");
-            var WreckageBuggyEasy = new SignalSource("Wreckage_Buggy_Easy");
-            var WreckageBuggyMedium = new SignalSource("Wreckage_Buggy_Medium");
-            var WreckageBuggyHard = new SignalSource("Wreckage_Buggy_Hard");
+            var TrapData = new SignalSource("Trap_Data");
+            var WreckageBuggy = new SignalSource("Wreckage_Buggy");
             var WreckageCargo = new SignalSource("Wreckage_Cargo");
-            var WreckageProbeEasy = new SignalSource("Wreckage_Probe_Easy");
-            var WreckageProbeMedium = new SignalSource("Wreckage_Probe_Medium");
-            var WreckageProbeHard = new SignalSource("Wreckage_Probe_Hard");
-            var WreckageSatelliteEasy = new SignalSource("Wreckage_Satellite_Easy");
-            var WreckageSatelliteMedium = new SignalSource("Wreckage_Satellite_Medium");
-            var WreckageSatelliteHard = new SignalSource("Wreckage_Satellite_Hard");
-            var WrecksEagleEasy = new SignalSource("Wrecks_Eagle_Easy");
-            var WrecksEagleMedium = new SignalSource("Wrecks_Eagle_Medium");
-            var WrecksEagleHard = new SignalSource("Wrecks_Eagle_Hard");
-            var WrecksSidewinderEasy = new SignalSource("Wrecks_Sidewinder_Easy");
-            var WrecksSidewinderMedium = new SignalSource("Wrecks_Sidewinder_Medium");
-            var WrecksSidewinderHard = new SignalSource("Wrecks_Sidewinder_Hard");
+            var WreckageProbe = new SignalSource("Wreckage_Probe");
+            var WreckageSatellite = new SignalSource("Wreckage_Satellite");
+            var WrecksEagle = new SignalSource("Wrecks_Eagle");
+            var WrecksSidewinder = new SignalSource("Wrecks_Sidewinder");
+
+            var ArmedRevolt = new SignalSource("Gro_controlScenarioTitle");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
@@ -119,12 +102,17 @@ namespace EddiDataDefinitions
         public FactionState spawningState { get; set; }
         public long? systemAddress { get; set; }
 
+        // Not intended to be user facing
+        public string altEdName { get; private set; }
+
         // dummy used to ensure that the static constructor has run
         public SignalSource() : this("")
         { }
 
-        private SignalSource(string edname) : base(edname, edname)
-        { }
+        private SignalSource(string edname, string altEdName = null) : base(edname, edname)
+        {
+            this.altEdName = altEdName;
+        }
 
         public new static SignalSource FromEDName(string from)
         {
@@ -134,13 +122,19 @@ namespace EddiDataDefinitions
                 {
                     string tidiedFrom = from
                         .Replace("$", "")
-                        .Replace("POI_", "")
-                        .Replace("POIScenario_", "")
-                        .Replace("POIScene_", "")
-                        .Replace("Watson_", "")
-                        .Replace("_Heist", "")
-                        .Replace("_Salvage", "")
                         .Replace(";", "");
+
+                    // Remove various prefix and suffix tags from non-USS sources
+                    if (!tidiedFrom.StartsWith("USS_"))
+                    {
+                        tidiedFrom = tidiedFrom
+                            .Replace("POI_", "")
+                            .Replace("POIScenario_", "")
+                            .Replace("POIScene_", "")
+                            .Replace("Watson_", "")
+                            .Replace("_Heist", "")
+                            .Replace("_Salvage", "");
+                    }
 
                     // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
                     if (tidiedFrom.Contains(":#type="))
@@ -155,7 +149,31 @@ namespace EddiDataDefinitions
                     {
                         string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
                         if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
-                        tidiedFrom = fromArray[0];
+                        tidiedFrom = fromArray[0]
+                            .Replace("_Easy", "")
+                            .Replace("_Medium", "")
+                            .Replace("_Hard", "");
+                    }
+                    else
+                    {
+                        // Derive threat levels for Odyssey content from "Easy", "Medium", and "Hard" suffix tags
+                        if (tidiedFrom.Contains("_Easy"))
+                        {
+                            threatLvl = 1;
+                            tidiedFrom = tidiedFrom.Replace("_Easy", "");
+                        }
+                        else if (tidiedFrom.Contains("_Medium") && !tidiedFrom.StartsWith("Ancient_"))
+                        {
+                            // We need to use size to distinguish between guardian structures so preserve the "Medium" tag
+                            // when it represents the size of an ancient guardian structures. Remove it when it describes the difficulty of the encounter.
+                            threatLvl = 2;
+                            tidiedFrom = tidiedFrom.Replace("_Medium", "");
+                        }
+                        else if (tidiedFrom.Contains("_Hard"))
+                        {
+                            threatLvl = 3;
+                            tidiedFrom = tidiedFrom.Replace("_Hard", "");
+                        }
                     }
 
                     // Extract any index value which might be present and then strip the index value
@@ -176,8 +194,15 @@ namespace EddiDataDefinitions
                     }
                     tidiedFrom = string.Join("_", parts);
 
+                    // Use the USS Type for USS signals (since those are always unique)
+                    // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` symbol.
+                    if (tidiedFrom.StartsWith("USS_") && !tidiedFrom.Contains("Type_"))
+                    {
+                        tidiedFrom = AllOfThem.FirstOrDefault(s => s.altEdName == tidiedFrom)?.edname ?? tidiedFrom;
+                    }
+
                     // Find our signal source
-                    SignalSource result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom.Trim());
+                    var result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom.Trim());
 
                     // Include our index value with our result
                     result.index = indexResult;
