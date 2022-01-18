@@ -24,7 +24,7 @@ namespace EddiNavigationMonitor
     {
         // Observable collection for us to handle changes
         public readonly ObservableCollection<NavBookmark> bookmarks;
-        private static readonly object bookmarksLock = new object();
+        public static readonly object bookmarksLock = new object();
         public static event EventHandler BookmarksUpdatedEvent;
 
         // Navigation route data

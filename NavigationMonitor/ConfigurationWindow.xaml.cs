@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -212,7 +213,19 @@ namespace EddiNavigationMonitor
         private void exportBookmarks(object sender, RoutedEventArgs e)
         {
             // Select bookmarks
-            var selectedBookmarks = navigationMonitor().bookmarks;
+            // TODO: Create a dialog to select which bookmarks to export
+            var selectedBookmarks = new List<NavBookmark>();
+            foreach (NavBookmark item in bookmarksData.SelectedItems)
+            {
+                selectedBookmarks.Add(item);
+            }
+            if (!selectedBookmarks.Any())
+            {
+                foreach (NavBookmark item in bookmarksData.Items)
+                {
+                    selectedBookmarks.Add(item);
+                }
+            }
 
             // Package up bookmarks
             var sb = new StringBuilder();
@@ -220,13 +233,14 @@ namespace EddiNavigationMonitor
             {
                 sb.AppendLine(JsonConvert.SerializeObject(navBookmark));
             }
+            if (sb.Length <= 0) { return; }
 
             // Export to a file (.jsonl format)
             var fileDialog = new SaveFileDialog
             {
-                InitialDirectory = Constants.DATA_DIR, 
-                AddExtension = true, 
-                OverwritePrompt = true, 
+                InitialDirectory = Constants.DATA_DIR,
+                AddExtension = true,
+                OverwritePrompt = true,
                 ValidateNames = true,
                 DefaultExt = ".bkmks",
                 Filter = "Bookmark files|*.bkmks",
@@ -251,24 +265,23 @@ namespace EddiNavigationMonitor
             };
             if (fileDialog.ShowDialog() ?? false)
             {
-                var importedBookmarks = new HashSet<NavBookmark>();
+                // Start by retrieving our current bookmarks
+                var newBookmarks = new List<NavBookmark>();
+                
+                // Import bookmarks
                 foreach (var fileName in fileDialog.FileNames)
                 {
+                    if (!fileName.EndsWith(".bkmks")) { continue; }
                     var fileContents = Files.Read(fileName);
                     using (var sr = new StringReader(fileContents))
                     {
                         string line;
                         while ((line = await sr.ReadLineAsync()) != null)
                         {
+                            NavBookmark navBookmark = null;
                             try
                             {
-                                var navBookmark = JsonConvert.DeserializeObject<NavBookmark>(line);
-                                if (importedBookmarks.Add(navBookmark))
-                                { }
-                                else
-                                {
-                                    Logging.Warn("Failed to import bookmark, duplicate entry");
-                                }
+                                navBookmark = JsonConvert.DeserializeObject<NavBookmark>(line);
                             }
                             catch (Exception exception)
                             {
@@ -279,19 +292,30 @@ namespace EddiNavigationMonitor
                                 };
                                 Logging.Warn("Failed to import bookmark", data);
                             }
+                            if (navBookmark != null)
+                            {
+                                newBookmarks.Add(navBookmark);
+                            }
                         }
                     }
                 }
 
                 // Select bookmarks
-                var selectedBookmarks = importedBookmarks;
+                // TODO: Create a dialog to select which bookmarks to import
+                var selectedBookmarks = newBookmarks;
 
-                // Add bookmarks to Navigation Monitor
-                foreach (var navBookmark in selectedBookmarks)
+                // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
+                lock (NavigationMonitor.bookmarksLock)
                 {
-                    navigationMonitor().bookmarks.Add(navBookmark);
+                    foreach (var navBookmark in selectedBookmarks)
+                    {
+                        if (!navigationMonitor().bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
+                        {
+                            navigationMonitor().bookmarks.Add(navBookmark);
+                        }
+                    }
+                    navigationMonitor().writeBookmarks();
                 }
-                navigationMonitor().writeBookmarks();
             }
         }
 

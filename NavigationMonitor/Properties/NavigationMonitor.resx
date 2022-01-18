@@ -265,7 +265,7 @@
     <value>Export Bookmarks</value>
   </data>
   <data name="bm_export_button_tooltip" xml:space="preserve">
-    <value>Export bookmarks from .csv file</value>
+    <value>Export bookmarks to .csv file</value>
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Heading:</value>
