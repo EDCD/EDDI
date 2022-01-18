@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Utilities;
 
-namespace Eddi
+namespace EddiNavigationService
 {
     public class JumpCalcs
     {

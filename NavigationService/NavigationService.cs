@@ -231,7 +231,7 @@ namespace EddiNavigationService
                         }
                         else
                         {
-                            distance = Eddi.JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance;
+                            distance = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance;
                         }
                         return GetNearestScoopSystem(distance ?? 100);
                     }

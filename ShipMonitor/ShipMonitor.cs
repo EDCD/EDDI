@@ -3,6 +3,7 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiNavigationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
