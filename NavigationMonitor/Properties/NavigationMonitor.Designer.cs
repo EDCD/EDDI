@@ -151,6 +151,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show or hide additional details about the selected planetary bookmark.
+        /// </summary>
+        public static string extra_details_tooltip {
+            get {
+                return ResourceManager.GetString("extra_details_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find:.
         /// </summary>
         public static string find_text {

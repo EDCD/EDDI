@@ -9,7 +9,6 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -685,6 +685,27 @@ namespace EddiNavigationMonitor
         private static decimal? SurfaceDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
             return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
+        }
+
+        private void RowDetailsButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggleButton)
+            {
+                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                if (selectedRow != null)
+                {
+                    if (toggleButton.IsChecked ?? false)
+                    {
+                        toggleButton.Content = "⯆";
+                        selectedRow.DetailsVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        toggleButton.Content = "⯈";
+                        selectedRow.DetailsVisibility = Visibility.Collapsed;
+                    }
+                }
+            }
         }
     }
 }
