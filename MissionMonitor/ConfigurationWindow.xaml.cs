@@ -3,7 +3,9 @@ using EddiCore;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -57,6 +59,27 @@ namespace EddiMissionMonitor
             Regex regex = new Regex(@"[0-9]");
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void RowDetailsButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggleButton)
+            {
+                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                if (selectedRow != null)
+                {
+                    if (toggleButton.IsChecked ?? false)
+                    {
+                        toggleButton.Content = "⯆";
+                        selectedRow.DetailsVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        toggleButton.Content = "⯈";
+                        selectedRow.DetailsVisibility = Visibility.Collapsed;
+                    }
+                }
+            }
         }
     }
 }

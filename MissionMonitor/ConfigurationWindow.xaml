@@ -67,6 +67,13 @@
         </StackPanel>
         <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" ToolTip="{x:Static resx:MissionMonitor.extra_details_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_name}" MinWidth="140" IsReadOnly="True" Binding="{Binding Path=localisedname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -142,8 +149,7 @@
                                         Value="{StaticResource missionDataTemplate}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding communal}" Value="True">
-                                        <Setter Property="ContentTemplate"
-                                                Value="{StaticResource communityGoalDataTemplate}" />
+                                        <Setter Property="ContentTemplate" Value="{StaticResource communityGoalDataTemplate}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
