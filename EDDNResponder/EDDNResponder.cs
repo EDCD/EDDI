@@ -8,7 +8,10 @@ using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -576,13 +579,13 @@ namespace EDDNResponder
                     switch (response.StatusCode)
                     {
                         // Invalid status codes are defined at https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md
-                        case System.Net.HttpStatusCode.BadRequest: // Code 400
-                            {
+                        case HttpStatusCode.BadRequest: // Code 400
+                        {
                             throw new ArgumentException();
                         }
-                        case System.Net.HttpStatusCode.RequestTimeout: // Code 408
-                        case System.Net.HttpStatusCode.GatewayTimeout: // Code 504
-                            {
+                        case HttpStatusCode.RequestTimeout: // Code 408
+                        case HttpStatusCode.GatewayTimeout: // Code 504
+                        {
                             Logging.Debug("Request timed out, retrying in 30 seconds.");
                             System.Threading.Tasks.Task.Run(() =>
                             {
@@ -591,22 +594,36 @@ namespace EDDNResponder
                             });
                             break;
                         }
-                        case System.Net.HttpStatusCode.RequestEntityTooLarge: // Code 413
+                        case HttpStatusCode.RequestEntityTooLarge: // Code 413
+                        {
+                            // Payload too large. Retry with G-Zipped data
+                            Logging.Warn("EDDN service is unable to process the message. Payload too large. Retrying with compressed data.");
+                            request = new RestRequest("upload/", Method.POST);
+                            request.AddHeader("Content-Encoding", "gzip");
+                            var messageConverterStream = new MemoryStream(byte.Parse(msgBody));
+                            using (GZipStream compressionStream = new GZipStream(messageConverterStream, CompressionMode.Compress))
                             {
-                            // Note that this applies to the plain text size of the message,
-                            // irrespective of any compression used during sending.
-                            throw new System.Net.WebException("EDDN service is unable to process the message. Payload too large.");
+                                request.AddParameter("application/json", compressionStream.AsOutputStream(), ParameterType.RequestBody);
+                            }
+                            response = client.Execute(request);
+                            Logging.Debug("Response content is " + response.Content);
+                            if (response.StatusCode != HttpStatusCode.Accepted)
+                            {
+                                throw new WebException("Failed to resend to EDDN service with compressed data.");
+                            }
+                            break;
                         }
-                        case System.Net.HttpStatusCode.UpgradeRequired: // Code 426
-                            {
+                        case HttpStatusCode.UpgradeRequired: // Code 426
+                        {
                             // Note that this deviates from the typical usage of code 426
                             // (which typically indicates that this client is using an obsolete security protocol.
                             invalidSchemas.Add(body.schemaRef);
-                            Logging.Warn($"EDDN service is unable to process the message. Schema {body.schemaRef} is obsolete.");
+                            Logging.Warn(
+                                $"EDDN service is unable to process the message. Schema {body.schemaRef} is obsolete.");
                             break;
                         }
-                        case System.Net.HttpStatusCode.ServiceUnavailable: // Code 503
-                            {
+                        case HttpStatusCode.ServiceUnavailable: // Code 503
+                        {
                             Logging.Debug("EDDN service is unavailable, retrying in 2 minutes");
                             System.Threading.Tasks.Task.Run(() =>
                             {
@@ -619,7 +636,7 @@ namespace EDDNResponder
                         {
                             if ((int)response.StatusCode >= 400)
                             {
-                                throw new System.Net.WebException("Unexpected EDDN service response");
+                                throw new WebException("Unexpected EDDN service response");
                             }
                             break;
                         }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace EDDNResponder
@@ -8,7 +9,7 @@ namespace EDDNResponder
     /// </summary>
     class EDDNBody
     {
-        public EDDNHeader header;
+        [UsedImplicitly] public EDDNHeader header;
         [JsonProperty("$schemaRef")]
         public string schemaRef;
         public IDictionary<string, object> message;
