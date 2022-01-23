@@ -385,17 +385,23 @@ namespace EddiNavigationMonitor
 
         public void CheckBookmarkPosition(NavBookmark bookmark, Status status, bool emitEvent = true)
         {
+            if (bookmark is null || status is null) { return; }
+
             // Calculate our position relative to the bookmark and whether we're nearby
             if (currentStatus.bodyname == bookmark.bodyname && currentStatus.near_surface)
             {
                 // Update our bookmark heading and distance
-                var surfaceDistanceKm = SurfaceConstantHeadingDistanceKm(currentStatus, bookmark.latitude, bookmark.longitude);
+                var surfaceDistanceKm = bookmark.useStraightPath
+                    ? SurfaceConstantHeadingDistanceKm(currentStatus, bookmark.latitude, bookmark.longitude)
+                    : SurfaceShortestPathDistanceKm(currentStatus, bookmark.latitude, bookmark.longitude);
                 if (surfaceDistanceKm != null)
                 {
                     var trueDistanceKm = (decimal) Math.Sqrt(Math.Pow((double)surfaceDistanceKm, 2) +
                                                              Math.Pow((double?) (status.altitude / 1000) ?? 0, 2));
                     bookmark.distanceKm = trueDistanceKm;
-                    bookmark.heading = SurfaceConstantHeadingDegrees(currentStatus, bookmark.latitude, bookmark.longitude);
+                    bookmark.heading = bookmark.useStraightPath
+                        ? SurfaceConstantHeadingDegrees(currentStatus, bookmark.latitude, bookmark.longitude)
+                        : SurfaceShortestPathDegrees(currentStatus, bookmark.latitude, bookmark.longitude);
 
                     var trueDistanceMeters = trueDistanceKm * 1000;
                     if (!bookmark.nearby && trueDistanceMeters < bookmark.arrivalRadiusMeters)
@@ -442,6 +448,22 @@ namespace EddiNavigationMonitor
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000;
             return Functions.SurfaceConstantHeadingDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
+        }
+
+        private static decimal? SurfaceShortestPathDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceHeadingDegrees(curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
+        }
+
+        private static decimal? SurfaceShortestPathDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
+        {
+            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
+                ?.radius * 1000;
+            return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

@@ -282,4 +282,10 @@
   <data name="extra_details_tooltip" xml:space="preserve">
     <value>Show or hide additional details about the selected planetary bookmark</value>
   </data>
+  <data name="use_straight_path" xml:space="preserve">
+    <value>Use straight path?</value>
+  </data>
+  <data name="use_straight_path_tooltip" xml:space="preserve">
+    <value>The shortest path around a sphere is curved</value>
+  </data>
 </root>

@@ -126,7 +126,14 @@ namespace EddiDataDefinitions
 
         public bool nearby = false;
 
-        // Default Constructor
+        public bool useStraightPath
+        {
+            get => _useStraightPath;
+            set => _useStraightPath = value;
+        }
+        [JsonIgnore] private bool _useStraightPath;
+
+            // Default Constructor
         public NavBookmark() { }
 
         [JsonConstructor]

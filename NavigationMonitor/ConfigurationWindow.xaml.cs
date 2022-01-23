@@ -707,5 +707,18 @@ namespace EddiNavigationMonitor
                 }
             }
         }
+
+        private void UseStraightestPathButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox && checkBox.DataContext is NavBookmark selectedBookmark)
+            {
+                if (checkBox.IsChecked != selectedBookmark.useStraightPath)
+                {
+                    selectedBookmark.useStraightPath = checkBox.IsChecked ?? false;
+                    navigationMonitor().CheckBookmarkPosition(selectedBookmark, currentStatus, false);
+                    navigationMonitor().writeBookmarks();
+                }
+            }
+        }
     }
 }

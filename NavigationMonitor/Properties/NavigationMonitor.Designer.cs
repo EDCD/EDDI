@@ -554,5 +554,23 @@ namespace EddiNavigationMonitor.Properties {
                 return ResourceManager.GetString("update_button_tooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use straight path?.
+        /// </summary>
+        public static string use_straight_path {
+            get {
+                return ResourceManager.GetString("use_straight_path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The shortest path around a sphere is curved.
+        /// </summary>
+        public static string use_straight_path_tooltip {
+            get {
+                return ResourceManager.GetString("use_straight_path_tooltip", resourceCulture);
+            }
+        }
     }
 }
