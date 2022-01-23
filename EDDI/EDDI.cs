@@ -157,17 +157,6 @@ namespace EddiCore
         }
         private StarSystem destinationStarSystem;
 
-        public Station DestinationStation
-        {
-            get => destinationStation;
-            private set
-            {
-                destinationStation = value;
-                OnPropertyChanged();
-            }
-        }
-        private Station destinationStation;
-
         public decimal DestinationDistanceLy 
         {
             get => destinationDistanceLy;
@@ -357,7 +346,7 @@ namespace EddiCore
                 Cmdr.name = configuration.CommanderName;
                 Cmdr.phoneticName = configuration.PhoneticName;
                 Cmdr.gender = configuration.Gender;
-                Task.Run(() => updateDestinationSystemStation(configuration));
+                Task.Run(() => updateDestinationSystem(configuration.DestinationSystem));
                 Task.Run(() =>
                 {
                     // Set up the Frontier API service
@@ -3075,12 +3064,6 @@ namespace EddiCore
             RESTART_NO_REBOOT = 64
         }
 
-        public void updateDestinationSystemStation(EDDIConfiguration configuration)
-        {
-            updateDestinationSystem(configuration.DestinationSystem);
-            updateDestinationStation(configuration.DestinationStation);
-        }
-
         public void updateDestinationSystem(string destinationSystem)
         {
             EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
@@ -3104,30 +3087,6 @@ namespace EddiCore
                 DestinationStarSystem = null;
             }
             configuration.DestinationSystem = destinationSystem;
-            ConfigService.Instance.eddiConfiguration = configuration;
-        }
-
-        public void updateDestinationStation(string destinationStation)
-        {
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            if (destinationStation != null && DestinationStarSystem?.stations != null)
-            {
-                string destinationStationName = destinationStation.Trim();
-                Station station = DestinationStarSystem.stations.FirstOrDefault(s => s.name == destinationStationName);
-                if (station != null)
-                {
-                    if (station.name != DestinationStation?.name)
-                    {
-                        Logging.Debug("Destination station is " + station.name);
-                        DestinationStation = station;
-                    }
-                }
-            }
-            else
-            {
-                DestinationStation = null;
-            }
-            configuration.DestinationStation = destinationStation;
             ConfigService.Instance.eddiConfiguration = configuration;
         }
 

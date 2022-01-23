@@ -15,6 +15,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Moved navigation functions to the Navigation Monitor
   * Navigation Monitor
     * Added new Navigation Monitor with support for both planetary and galactic bookmarking. Planetary bookmarks, when selected, will provide compass heading and distance.
+    * The `DestinationSystem` object has been revised to match your current in-game route's final destination.
+    * The `DestinationStation` object has been removed.
+    * Navigation commands (e.g. via `RouteDetails()` or the `route` VoiceAttack command) will no longer generate a route in EDDI independent of your in-game routing.
   * Speech Responder
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
@@ -53,7 +56,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Permit acquired` added, triggered when you acquire a permit from the mission board.
-      * `Route details` revised to remove obsolete `cancel` and `set` responses.
+      * `Route details` revised to remove obsolete `cancel`, `next`, and `set` arguments.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
       * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source.

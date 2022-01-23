@@ -668,12 +668,6 @@ An orbital or planetary station.
   - *updatedat* - the timestamp at which the station information was last updated
   - *commoditiesupdatedat* - the timestamp at which the station commodities information was last updated
 
-#### Destination station
-
-Information about your destination station is available under the *destinationstation* object. 
-Any values might be missing, depending on EDDI's configuration and the information available about the station.
-Values are as described in the 'Station' object.
-
 #### Home station
 
 Information about your home station is available under the *homestation*  object.

@@ -472,7 +472,6 @@ This function will produce a destination/route for valid mission destinations. I
 
 - 'Type variable' (text variable) is a mandatory parameter containing the type of update to execute.
 
-  * `cancel` Cancel the currently stored route.
   * `encoded` Nearest encoded materials trader.
   * `expiring` Destination of your next expiring mission.
   * `facilitator` Nearest 'Legal Facilities' contact.
@@ -480,27 +479,18 @@ This function will produce a destination/route for valid mission destinations. I
   * `guardian` Nearest guardian technology broker.
   * `human` Nearest human technology broker.
   * `manufactured` Nearest manufactured materials trader.
-  * `most` Nearest system with the most missions.
+  * `most` Mission destination with the most missions.
   * `nearest` Mission destination nearest to your current location.
-  * `next` Next destination in the currently stored route.
   * `raw` Nearest raw materials trader.
-  * `route` 'Traveling Salesman' (RNNA) route for all active missions.
+  * `route` Next mission destination in 'Traveling Salesman' (RNNA) route of all active missions.
   * `scoop` Nearest scoopable star system.
-  * `set` Set destination route to the last star system name returned from a `Route details` event. 
   * `source` Destination to nearest mission 'cargo source'.
-  * `update` Update to the next mission route destination (use this once all missions in the current system are completed).
+  * `update` Update to the next mission destination (use this once all missions in the current system are completed).
 
-- 'System variable' (text variable) is an optional parameter for the following route update types. 
+- 'System variable' (text variable) is an optional parameter for the following update types. 
 
-  * `most` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-  * `route` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-  * `set` If set, the resulting route shall proceed directly to the specified single star system rather than to the last star system identified in a route search.
-  * `source` If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
-  * `update` If set, the specified star system shall be removed from the route rather than removing the prior mission route destination.
-
-- 'Station variable' (text variable) is an optional parameter for the following route update types
-
-  * `set` If set, the resulting route shall proceed directly to the specified single star system and station rather than to the last star system and station identified in a route search.
+  * `route` If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
+  * `source` If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
 
 To use this function in your own commands set the 'Type variable' parameter and when appropriate the `System variable` and 'Station variable' parameters then use the 'Execute an external plugin function' command with the plugin context set to 'route'. Upon success, a '((EDDI route details))' event is triggered, providing event data as described [in the appropriate wiki page](https://github.com/EDCD/EDDI/wiki/Route-details-event).
 

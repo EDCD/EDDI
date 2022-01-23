@@ -213,11 +213,6 @@ namespace EddiSpeechResponder.Service
                 dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
             }
 
-            if (EDDI.Instance.DestinationStation != null)
-            {
-                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
-            }
-
             if (NavigationService.Instance.SearchStarSystem != null)
             {
                 dict["searchsystem"] = new ReflectionValue(NavigationService.Instance.SearchStarSystem);

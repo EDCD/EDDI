@@ -18,9 +18,6 @@ namespace EddiConfigService
         [JsonProperty("destinationSystem")]
         public string DestinationSystem { get; set; }
 
-        [JsonProperty("destinationStation")]
-        public string DestinationStation { get; set; }
-
         [JsonProperty("squadronName")]
         public string SquadronName { get; set; }
 
