@@ -337,25 +337,52 @@
     <value>Notrufsender</value>
     <comment>Distress Beacon</comment>
   </data>
-  
+  <data name="Smugglers_Cache" xml:space="preserve">
+    <value>Unregelmäßige Markierung</value>
+    <comment>Irregular Markers</comment>
+  </data>
   <data name="Trap_Cargo" xml:space="preserve">
     <value>irreguläre Markierungen</value>
     <comment>Irregular Markers</comment>
   </data>
-  
-  
-  
+  <data name="Wreckage_Buggy" xml:space="preserve">
+    <value>Kleinere Wrackteile</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe" xml:space="preserve">
+    <value>Aufprallstelle</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite" xml:space="preserve">
+    <value>Aufprallstelle</value>
+    <comment>Impact Site</comment>
+  </data>
   <data name="Wreckage_Cargo" xml:space="preserve">
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
   </data>
-  
-  
+  <data name="Wrecks_Eagle" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder" xml:space="preserve">
+    <value>Absturzstelle</value>
+    <comment>Crash Site</comment>
+  </data>
   <data name="CrashedShip" xml:space="preserve">
     <value>Abgestürztes Schiff</value>
     <comment>POI CrashedShip</comment>
   </data>
-  
-  
-  
+  <data name="Gro_controlScenarioTitle" xml:space="preserve">
+    <value>Bewaffneter Aufstand</value>
+    <comment>Gro_controlScenarioTitle</comment>
+  </data>
+  <data name="Trap_Data" xml:space="preserve">
+    <value>Unregelmäßige Markierung</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Perimeter" xml:space="preserve">
+    <value>Aktive Energiequelle</value>
+    <comment>Active Power Source</comment>
+  </data>
 </root>
