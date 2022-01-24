@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiMaterialMonitor"
+             xmlns:def="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:resx="clr-namespace:EddiMaterialMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
@@ -14,12 +15,57 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin ="5" Text="{x:Static resx:MaterialMonitor.p2}"/>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.type_header}" Width="100" IsReadOnly="True" Binding="{Binding Path=category}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>                    
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.type_header}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=category}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="{x:Static resx:MaterialMonitor.grade_header}" Width="Auto" IsReadOnly="True" SortMemberPath="Rarity.level">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="def:MaterialAmount">
+                            <Image MaxWidth="30" Stretch="UniformToFill" Margin="2">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{DynamicResource GradeUnknownImage}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Rarity.level}" Value="1">
+                                                <Setter Property="Source" Value="{DynamicResource Grade1Image}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Rarity.level}" Value="2">
+                                                <Setter Property="Source" Value="{DynamicResource Grade2Image}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Rarity.level}" Value="3">
+                                                <Setter Property="Source" Value="{DynamicResource Grade3Image}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Rarity.level}" Value="4">
+                                                <Setter Property="Source" Value="{DynamicResource Grade4Image}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Rarity.level}" Value="5">
+                                                <Setter Property="Source" Value="{DynamicResource Grade5Image}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.inventory_header}" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
@@ -28,6 +74,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
@@ -36,20 +83,114 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
-
                 </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.max_header}" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <DrawingImage x:Key="GradeUnknownImage"/>
+                <DrawingImage x:Key="Grade1Image">
+                    <DrawingImage.Drawing>
+                        <DrawingGroup ClipGeometry="M0,0 V26 H30 V0 H0 Z">
+                            <DrawingGroup.Transform>
+                                <TranslateTransform X="0.61900001764297485" Y="0" />
+                            </DrawingGroup.Transform>
+                            <DrawingGroup Opacity="1" Transform="0.036036037,0,0,0.036036037,0.08610796,0">
+                                <DrawingGroup Opacity="1">
+                                    <DrawingGroup Opacity="1">
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M189.656,83.5L166.185,45.262 0,316.231 46.921,316.235 189.656,83.5" />
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M247.811,2.078L272.367,42.081 554.445,42.1 578.973,2.102 247.811,2.078" />
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M637.621,82.756L780.801,316.286 827.721,316.288 661.083,44.495 637.621,82.756" />
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M46.303,408.393L-0.619,408.392 164.598,677.869 188.061,639.607 46.303,408.393" />
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M582.581,723.602L558.027,683.6 269.201,683.58 244.673,723.578 582.581,723.602" />
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M639.396,639.996L662.869,678.233 828.326,408.449 781.406,408.445 639.396,639.996" />
+                                    </DrawingGroup>
+                                </DrawingGroup>
+                                <DrawingGroup Opacity="1">
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M305.878,483.814L537.143,371.866 544.426,237.686 353.592,322.151 305.878,483.814" />
+                                </DrawingGroup>
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+                <DrawingImage x:Key="Grade2Image">
+                    <DrawingImage.Drawing>
+                        <DrawingGroup ClipGeometry="M0,0 V26 H30 V0 H0 Z">
+                            <DrawingGroup.Transform>
+                                <TranslateTransform X="0.0234375" Y="0" />
+                            </DrawingGroup.Transform>
+                            <DrawingGroup Opacity="1">
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M1.699219,11.3125L7.792969,1.441406 22.199219,1.441406 28.289062,11.3125 29.988281,11.3125 23.011719,0 6.980469,0 0,11.3125z M1.699219,11.3125" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M28.3125,14.632812L22.199219,24.542969 7.792969,24.542969 1.679688,14.632812 -0.0234375,14.632812 6.980469,25.980469 23.011719,25.980469 30.011719,14.632812z M28.3125,14.632812" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M21.414062,11.882812L12.710938,15.171875 12.023438,19.960938 19.179688,17.53125z M21.414062,11.882812" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,26z M0,0z M9.488281,14.0625L18.191406,10.777344 18.878906,5.984375 11.722656,8.414062z M9.488281,14.0625" />
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+                <DrawingImage x:Key="Grade3Image">
+                    <DrawingImage.Drawing>
+                        <DrawingGroup ClipGeometry="M0,0 V24 H30 V0 H0 Z">
+                            <DrawingGroup Opacity="1" Transform="0.033264033,0,0,0.033264033,0.2832265,0">
+                                <DrawingGroup Opacity="1">
+                                    <DrawingGroup Opacity="1">
+                                        <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M641.24,40L837.925,360.75 641.24,681.5 243.605,681.5 46.921,360.75 243.605,40 641.24,40z M663.634,0L221.212,0 0,360.75 221.212,721.5 663.63403,721.5 884.84607,360.75 663.634,0z" />
+                                    </DrawingGroup>
+                                </DrawingGroup>
+                                <DrawingGroup Opacity="1">
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M536.651,407.253L279.718,407.516 214.818,525.182 423.395,532.09 536.651,407.253" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M454.899,266.047L583.593,488.426 717.944,485.799 619.64,301.711 454.899,266.047" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M373.487,407.449L501.726,184.809 432.275,69.77 322.003,246.948 373.487,407.449" />
+                                </DrawingGroup>
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+                <DrawingImage x:Key="Grade4Image">
+                    <DrawingImage.Drawing>
+                        <DrawingGroup ClipGeometry="M0,0 V24 H30 V0 H0 Z">
+                            <DrawingGroup Opacity="1" Transform="0.04081598,0,0,0.04081598,0.28324804,0">
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M278.98,294.23L415.5,157.01 387.241,59.797 272.614,167.405 278.98,294.23" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M360.79,375.586L223.571,239.066 126.358,267.325 233.966,381.951 360.79,375.586" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M442.147,293.776L305.626,430.996 333.885,528.208 448.512,420.6 442.147,293.776" />
+                                <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M360.336,212.419L497.557,348.939 594.769,320.681 487.161,206.054 360.336,212.419" />
+                                <DrawingGroup Opacity="1">
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M518.452,40L674.205,294.002 518.452,548.005 202.676,548.005 46.921,294.002 202.676,40 518.452,40z M540.846,0L180.282,0 0,294.002 180.282,588.005 540.845,588.005 721.126,294.002 540.846,0z" />
+                                </DrawingGroup>
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+                <DrawingImage x:Key="Grade5Image">
+                    <DrawingImage.Drawing>
+                        <DrawingGroup ClipGeometry="M0,0 V24 H30 V0 H0 Z">
+                            <DrawingGroup Opacity="1" Transform="0.03709428,0,0,0.03709428,0.21496186,0">
+                                <DrawingGroup Opacity="1">
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M566.08,54L733.58,323.5 566.08,593 231.08002,593 63.58,323.5 231.08,54 565.58,54 566.08,54z M596.098,0L566.08,0 231.08002,0 201.06201,0 185.21602,25.245 17.717,294.62 0,323.063 17.717,351.537 185.217,621.271 201.063,647 231.08101,647 566.081,647 596.099,647 611.945,621.255 779.445,351.63 797.162,323.06302 779.445,294.52603 611.943,25.26 596.098,0z" />
+                                </DrawingGroup>
+                                <DrawingGroup Opacity="1">
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M206.58,144.333L227.914,316.667 345.914,394.139 312.58,182.333 206.58,144.333" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M170.278,449.701L340.77,482.666 450.914,394.381 239.175,360.632 170.278,449.701" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M449.482,578.59L533.519,426.63 483.591,294.595 386.063,485.542 449.482,578.59" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M658.342,352.88L539.787,225.998 398.786,232.682 550.25,384.442 658.342,352.88" />
+                                    <GeometryDrawing Brush="Black" Geometry="F1 M30,24z M0,0z M508.22,84.494L350.913,158.038 313.697,294.203 504.836,197.05 508.22,84.494" />
+                                </DrawingGroup>
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </DataGrid.Resources>
         </DataGrid>
     </DockPanel>
 </UserControl>

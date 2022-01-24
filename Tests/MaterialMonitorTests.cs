@@ -126,7 +126,7 @@ namespace UnitTests
             var antimony = materialMonitor.inventory.Single(m => string.Equals(m.edname, "antimony", StringComparison.InvariantCultureIgnoreCase));
             if (antimony is null)
             {
-                antimony = new MaterialAmount("antimony", 5, 25, 50, 75);
+                antimony = new MaterialAmount("antimony", Rarity.Rare, 5, 25, 50, 75);
                 materialMonitor.inventory.Add(antimony);
             }
             else

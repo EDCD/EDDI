@@ -1,6 +1,9 @@
 ﻿using EddiCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
+using EddiDataDefinitions;
 
 namespace EddiMaterialMonitor
 {
@@ -9,6 +12,10 @@ namespace EddiMaterialMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        public IEnumerable<MaterialCategory> categories => MaterialCategory.AllOfThem;
+
+        public IEnumerable<Rarity> rarities => Rarity.AllOfThem;
+
         private MaterialMonitor materialMonitor()
         {
             return (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
