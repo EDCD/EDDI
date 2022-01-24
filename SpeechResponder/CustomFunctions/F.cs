@@ -13,7 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.F;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            return resolver.resolveFromName(values[0].AsString, store, false);
+            return resolver.resolveFromName(values[0].AsString, store, false)?.Trim();
         }, 1);
         
         // Implement nesting
