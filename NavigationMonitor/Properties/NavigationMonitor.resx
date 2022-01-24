@@ -286,6 +286,6 @@
     <value>Use straight path?</value>
   </data>
   <data name="use_straight_path_tooltip" xml:space="preserve">
-    <value>The shortest path around a sphere is curved</value>
+    <value>The shortest path around a sphere may be curved</value>
   </data>
 </root>

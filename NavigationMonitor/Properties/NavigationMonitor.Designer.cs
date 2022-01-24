@@ -565,7 +565,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The shortest path around a sphere is curved.
+        ///   Looks up a localized string similar to The shortest path around a sphere may be curved.
         /// </summary>
         public static string use_straight_path_tooltip {
             get {
