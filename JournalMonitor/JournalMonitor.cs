@@ -1930,7 +1930,7 @@ namespace EddiJournalMonitor
                                         {
                                             events.Add(new StationNoFireZoneExitedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
                                         }
-                                        else if (message.Contains("_StartInterdiction"))
+                                        else if (message.Contains("_StartInterdiction") || message.Contains("_Hitman_Interdiction"))
                                         {
                                             // Find out who is doing the interdicting
                                             MessageSource by = MessageSource.FromMessage(from, message);
