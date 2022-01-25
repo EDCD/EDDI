@@ -377,7 +377,7 @@ namespace EddiDataDefinitions
             // Skip government elements
             elements.RemoveAll(t => Government
                 .AllOfThem
-                .Select(s => s.edname)
+                .Select(s => s.edname.Replace("$government_", "").Replace(";", ""))
                 .Contains(t, StringComparer.InvariantCultureIgnoreCase));
 
             // Skip economy elements
