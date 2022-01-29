@@ -49,6 +49,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Module transfer` updated to fix broken weapon mount details and refine time estimates.
       * `Modules stored` updated to fix broken weapon mount details.
       * `Mission accepted` updated to remove mission counting and reduce verbosity.
+      * `Mission check station` updated to improve grammar.
       * `Mission check system` updated to improve grammar.
       * `Mission faction state` updated to correct incorrect faction names and reduce verbosity.
       * `Mission failed` updated to prevent speech if no mission is found matching the mission id.
