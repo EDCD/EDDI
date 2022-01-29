@@ -758,7 +758,7 @@ namespace EddiShipMonitor
 
         private void handleShipRepairedEvent(ShipRepairedEvent @event)
         {
-            if (@event.itemEDNames.Contains("Wear"))
+            if (@event.itemEDNames.Contains("All") || @event.itemEDNames.Contains("Wear"))
             {
                 var currentShip = GetCurrentShip();
                 currentShip.health = 100M;
