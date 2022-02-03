@@ -498,10 +498,7 @@ namespace EddiDataDefinitions
 
         public static CommodityDefinition FromNameOrEDName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(name)) { return null; }
 
             string normalizedName = NormalizedName(name);
 
@@ -551,13 +548,14 @@ namespace EddiDataDefinitions
 
         new public static CommodityDefinition FromEDName(string rawName)
         {
+            if (string.IsNullOrEmpty(rawName)) { return null; }
             string edName = NormalizedName(rawName);
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
         }
 
         public static bool EDNameExists(string edName)
         {
-            if (edName == null) { return false; }
+            if (string.IsNullOrEmpty(edName)) { return false; }
             return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
         }
 

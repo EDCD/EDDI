@@ -14,7 +14,7 @@ namespace EddiEvents
         [PublicAPI("The name of the engineer with whom you have progressed")]
         public string engineer => Engineer.name;
 
-        [PublicAPI("The type of contribution (Commodity, Material)")]
+        [PublicAPI("The type of contribution (Commodity, Materials)")]
         public string contributiontype { get; private set; }
 
         [PublicAPI("The resource contributed")]
@@ -37,7 +37,7 @@ namespace EddiEvents
 
         public CommodityAmount commodityAmount { get; private set; }
 
-        public EngineerContributedEvent(DateTime timestamp, Engineer Engineer, CommodityAmount commodityAmount, MaterialAmount materialAmount, string contributionType, int amount, int total) : base(timestamp, NAME)
+        public EngineerContributedEvent(DateTime timestamp, Engineer Engineer, string contributionType, int amount, int total, CommodityAmount commodityAmount = null, MaterialAmount materialAmount = null) : base(timestamp, NAME)
         {
             this.Engineer = Engineer;
             this.contributiontype = contributionType;
@@ -56,7 +56,7 @@ namespace EddiEvents
                 contribution = definition?.localizedName;
                 category = definition?.Category?.localizedName;
             }
-            else if (contributiontype == "Material")
+            else if (contributiontype == "Materials")
             {
                 Material definition = Material.FromEDName(materialAmount?.edname);
                 contribution = definition?.localizedName;

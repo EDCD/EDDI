@@ -2367,31 +2367,33 @@ namespace EddiJournalMonitor
                                     long engineerId = JsonParsing.getLong(data, "EngineerID");
                                     Engineer engineer = Engineer.FromNameOrId(name, engineerId);
 
-                                    string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                    string contributionType =
+                                        JsonParsing.getString(data,
+                                            "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                    int amount = JsonParsing.getInt(data, "Quantity");
+                                    int total = JsonParsing.getInt(data, "TotalQuantity");
                                     switch (contributionType)
                                     {
                                         case "Commodity":
                                             {
                                                 string edname = JsonParsing.getString(data, "Commodity");
-                                                int amount = JsonParsing.getInt(data, "Quantity");
-                                                int total = JsonParsing.getInt(data, "TotalQuantity");
                                                 CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
-                                                events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line, fromLoad = fromLogLoad });
+                                                events.Add(new EngineerContributedEvent(timestamp, engineer, contributionType, amount, total, commodity, null) { raw = line, fromLoad = fromLogLoad });
                                             }
                                             break;
                                         case "Materials":
                                             {
                                                 string edname = JsonParsing.getString(data, "Material");
-                                                int amount = JsonParsing.getInt(data, "Quantity");
-                                                int total = JsonParsing.getInt(data, "TotalQuantity");
                                                 MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
-                                                events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line, fromLoad = fromLogLoad });
+                                                events.Add(new EngineerContributedEvent(timestamp, engineer, contributionType, amount, total, null, material) { raw = line, fromLoad = fromLogLoad });
                                             }
                                             break;
                                         case "Credits":
                                         case "Bond":
                                         case "Bounty":
-                                            { } // We don't currently handle credit changes from these types.
+                                            {
+                                                // We don't currently handle these types.
+                                            }
                                             break;
                                     }
                                 }

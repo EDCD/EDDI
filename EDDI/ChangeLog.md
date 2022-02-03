@@ -35,6 +35,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
       * `Docking denied` updated to add new `DockOffline` reason.
       * `Docking granted` revised to reference automated docking if such a module is installed.
+      * `Engineer contributed` revised to correct grammar when contributing materials to an engineer unlock.
       * `Entered normal space` revised to correct grammar when dropping out near a ring.
       * `Entered supercruise` revised to reset a state variable after updating you on your crime status.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.

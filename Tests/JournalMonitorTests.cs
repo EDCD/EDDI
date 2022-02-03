@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security;
 using System.Text;
 using Tests.Properties;
 using Utilities;
@@ -1815,6 +1816,33 @@ namespace UnitTests
             Assert.AreEqual(expectedGrade, @event.Suit.grade);
             Assert.AreEqual(expectedSuitId, @event.Suit.suitId);
             Assert.AreEqual(expectedPrice, @event.price);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{ ""timestamp"":""2019-06-12T05:12:24Z"", ""event"":""EngineerContribution"", ""Engineer"":""Petra Olmanova"", ""EngineerID"":300130, ""Type"":""Commodity"", ""Commodity"":""progenitorcells"", ""Commodity_Localised"":""Progenitor Cells"", ""Quantity"":168, ""TotalQuantity"":168 }", "Petra Olmanova", "Commodity", "Progenitor Cells", null, "Medicines", 168, 168)]
+        [DataRow(@"{ ""timestamp"":""2022-02-02T23:13:17Z"", ""event"":""EngineerContribution"", ""Engineer"":""Chloe Sedesi"", ""EngineerID"":300300, ""Type"":""Materials"", ""Material"":""unknownenergysource"", ""Material_Localised"":""Sensor Fragment"", ""Quantity"":32, ""TotalQuantity"":200 }", "Chloe Sedesi", "Materials", null, "Sensor Fragment", "Manufactured", 32, 200)]
+        public void TestEngineerContributedEvent(string line, string engineer, string contributiontype, string commodity, string material, string category, int amount, int total)
+        {
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            var @event = (EngineerContributedEvent)events[0];
+
+            Assert.AreEqual(engineer, @event.Engineer.name);
+            Assert.AreEqual(contributiontype, @event.contributiontype);
+            var commodityDefinition = CommodityDefinition.FromEDName(@event.commodityAmount?.edname);
+            if (commodityDefinition != null)
+            {
+                Assert.AreEqual(commodity, commodityDefinition.invariantName);
+                Assert.AreEqual(category, commodityDefinition?.Category?.invariantName);
+            }
+            var materialDefinition = Material.FromEDName(@event.materialAmount?.edname);
+            if (materialDefinition != null)
+            {
+                Assert.AreEqual(material, materialDefinition.invariantName);
+                Assert.AreEqual(category, materialDefinition?.Category?.invariantName);
+            }
+            Assert.AreEqual(amount, @event.amount);
+            Assert.AreEqual(total, @event.total);
         }
     }
 }
