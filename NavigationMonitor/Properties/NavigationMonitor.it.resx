@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,167 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="bm_import_button" xml:space="preserve">
+    <value>Importa segnalibri</value>
+  </data>
+  <data name="bm_import_button_tooltip" xml:space="preserve">
+    <value>Importa segnalibri da un file .csv</value>
+  </data>
+  <data name="bm_location_button" xml:space="preserve">
+    <value>Posizione del segnalibro</value>
+  </data>
+  <data name="bm_location_button_tooltip" xml:space="preserve">
+    <value>Aggiungi segnalibro dalla posizione corrente</value>
+  </data>
+  <data name="add_button" xml:space="preserve">
+    <value>Aggiungi segnalibro</value>
+  </data>
+  <data name="add_button_tooltip" xml:space="preserve">
+    <value>Aggiungi segnalibro dai risultati della ricerca</value>
+  </data>
+  <data name="find_text" xml:space="preserve">
+    <value>Trova:</value>
+  </data>
+  <data name="header_body" xml:space="preserve">
+    <value>Corpo Celeste</value>
+  </data>
+  <data name="header_comment" xml:space="preserve">
+    <value>Commento</value>
+  </data>
+  <data name="header_latitude" xml:space="preserve">
+    <value>Latitudine:</value>
+  </data>
+  <data name="header_longitude" xml:space="preserve">
+    <value>Longitudine:</value>
+  </data>
+  <data name="header_poi" xml:space="preserve">
+    <value>Stazione / P.d.I.</value>
+  </data>
+  <data name="header_system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  <data name="navigation_monitor_desc" xml:space="preserve">
+    <value>Eseguire procedure di navigazione, creare e utilizzare segnaposti</value>
+  </data>
+  <data name="navigation_monitor_name" xml:space="preserve">
+    <value>Controllore di Navigazione</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Nessuna stazione</value>
+  </data>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Anteporre le stazioni orbitali?</value>
+  </data>
+  <data name="search_distance_tooltip" xml:space="preserve">
+    <value>Consiglio: massimizza la distanza consentita per ridurre i tempi di ricerca.</value>
+  </data>
+  <data name="remove_button" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="remove_button_tooltip" xml:space="preserve">
+    <value>Permette la rimozione manuale di un segnalibro.</value>
+  </data>
+  <data name="remove_caption" xml:space="preserve">
+    <value>Elimina segnalibro</value>
+  </data>
+  <data name="remove_message" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare questo segnalibro?</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="search_button_tooltip" xml:space="preserve">
+    <value>Esegui la query di ricerca</value>
+  </data>
+  <data name="search_distance" xml:space="preserve">
+    <value>Massima distanza consentita fra stella principale e stazione (in Ls):</value>
+  </data>
+  <data name="search_query_crime_facilitator" xml:space="preserve">
+    <value>Servizi legali</value>
+  </data>
+  <data name="search_query_missions_expiring" xml:space="preserve">
+    <value>Sistema con missioni in scadenza</value>
+  </data>
+  <data name="search_query_missions_farthest" xml:space="preserve">
+    <value>Sistema con missioni più distante</value>
+  </data>
+  <data name="search_query_missions_most" xml:space="preserve">
+    <value>Sistema con maggior numero di missioni</value>
+  </data>
+  <data name="search_query_missions_nearest" xml:space="preserve">
+    <value>Sistema con missioni più vicino</value>
+  </data>
+  <data name="search_query_missions_route" xml:space="preserve">
+    <value>Sistema con percorso più breve</value>
+  </data>
+  <data name="search_query_missions_source" xml:space="preserve">
+    <value>Sistema in cui prelevare il Carico</value>
+  </data>
+  <data name="search_query_missions_update" xml:space="preserve">
+    <value>Sistema in cui si aggiorna la Missione</value>
+  </data>
+  <data name="search_query_services_encoded" xml:space="preserve">
+    <value>Mercante di materiali codificati</value>
+  </data>
+  <data name="search_query_services_guardian" xml:space="preserve">
+    <value>Mercante di tecnologia dei Guardiani</value>
+  </data>
+  <data name="search_query_services_human" xml:space="preserve">
+    <value>Mercante di tecnologia umana</value>
+  </data>
+  <data name="search_query_services_manufactured" xml:space="preserve">
+    <value>Mercante di materiali manufatti</value>
+  </data>
+  <data name="search_query_services_raw" xml:space="preserve">
+    <value>Mercante di materiali grezzi</value>
+  </data>
+  <data name="search_query_galaxy_scoop" xml:space="preserve">
+    <value>Stella per rifornimento</value>
+  </data>
+  <data name="search_type_crime" xml:space="preserve">
+    <value>Crimine</value>
+  </data>
+  <data name="search_type_missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="search_type_services" xml:space="preserve">
+    <value>Servizi</value>
+  </data>
+  <data name="search_type_galaxy" xml:space="preserve">
+    <value>Galassia</value>
+  </data>
+  <data name="station_textbox_desc" xml:space="preserve">
+    <value>Stazione:</value>
+  </data>
+  <data name="system_textbox_desc" xml:space="preserve">
+    <value>Sistema:</value>
+  </data>
+  <data name="update_button" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="update_button_tooltip" xml:space="preserve">
+    <value>Aggiorna la posizione del segnaposto dalla tua attuale latitudine e longitudine</value>
+  </data>
+  <data name="route_details_desc" xml:space="preserve">
+    <value>Una ricerca con risultati lancia un evento "Route details".</value>
+  </data>
+  <data name="bm_export_button" xml:space="preserve">
+    <value>Esporta segnalibri</value>
+  </data>
+  
+  <data name="header_heading" xml:space="preserve">
+    <value>Direzione:</value>
+  </data>
+  <data name="header_distanceKm" xml:space="preserve">
+    <value>Distanza (km):</value>
+  </data>
+  <data name="bm_nearby_radius" xml:space="preserve">
+    <value>Raggio di Prossimità (m):</value>
+  </data>
+  <data name="bm_nearby_radius_tooltip" xml:space="preserve">
+    <value>Il raggio (in metri) entro il quale viene lanciato l'evento `Near bookmark`</value>
+  </data>
+  
+  
+  
 </root>
