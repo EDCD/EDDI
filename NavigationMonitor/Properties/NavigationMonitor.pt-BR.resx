@@ -264,7 +264,9 @@
   <data name="bm_export_button" xml:space="preserve">
     <value>Exportar marcadores</value>
   </data>
-  
+  <data name="bm_export_button_tooltip" xml:space="preserve">
+    <value>Exportar marcadores para arquivo .csv</value>
+  </data>
   <data name="header_heading" xml:space="preserve">
     <value>Cabeçalho:</value>
   </data>
@@ -277,7 +279,13 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>O raio (em metros) que dispara os eventos 'Próximo do marcador'</value>
   </data>
-  
-  
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Mostrar ou ocultar detalhes adicionais sobre o marcador planetário selecionado</value>
+  </data>
+  <data name="use_straight_path" xml:space="preserve">
+    <value>Usar caminho direto?</value>
+  </data>
+  <data name="use_straight_path_tooltip" xml:space="preserve">
+    <value>O caminho mais curto em volta de uma esfera pode ser curvo</value>
+  </data>
 </root>
