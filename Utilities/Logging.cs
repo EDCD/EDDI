@@ -315,18 +315,6 @@ namespace Utilities
             };
             RollbarLocator.RollbarInstance.Configure(config);
             TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 50));
-
-        }
-
-        public static void ExceptionHandler(Exception exception)
-        {
-            Dictionary<string, object> trace = new Dictionary<string, object>
-            {
-                { "StackTrace", exception.StackTrace ?? "StackTrace not available" }
-            };
-
-            Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ":" + exception);
-            RollbarLocator.RollbarInstance.Error(exception, trace);
         }
     }
 }

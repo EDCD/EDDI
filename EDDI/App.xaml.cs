@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -117,34 +118,39 @@ namespace Eddi
             if (_Rollbar.TelemetryEnabled)
             {
                 // Generate an id unique to this app run for bug tracking
-                _Rollbar.configureRollbar(Guid.NewGuid().ToString(), FromVA);
+                var telemetryID = Guid.NewGuid().ToString();
+                _Rollbar.configureRollbar(telemetryID, FromVA);
 
-                // Catch and send unhandled exceptions from Windows forms
+                // Catch and send unhandled exceptions from the UI
                 System.Windows.Forms.Application.ThreadException += (sender, args) =>
                 {
-                    Exception exception = args.Exception;
-                    _Rollbar.ExceptionHandler(exception);
-                    ReloadAndRecover(exception);
+                    HandleException(args.Exception, telemetryID);
+                };
+                Current.DispatcherUnhandledException += (sender, args) =>
+                {
+                    HandleException(args.Exception, telemetryID);
                 };
                 // Catch and send unhandled exceptions from non-UI threads
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
-                    Exception exception = args.ExceptionObject as Exception;
-                    _Rollbar.ExceptionHandler(exception);
-                    ReloadAndRecover(exception);
+                    HandleException(args.ExceptionObject as Exception, telemetryID);
                 };
                 // Catch and send unhandled exceptions from the task scheduler
                 TaskScheduler.UnobservedTaskException += (sender, args) =>
                 {
-                    Exception exception = args.Exception;
-                    _Rollbar.ExceptionHandler(exception);
-                    ReloadAndRecover(exception);
+                    HandleException(args.Exception, telemetryID);
                 };
                 // Catch and write managed exceptions to the local debug console (but do not send)
-                AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+                AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
                 {
-                    Debug.WriteLine(eventArgs.Exception.ToString());
+                    Debug.WriteLine(args.Exception.ToString());
                 };
+            }
+
+            void HandleException(Exception ex, string telemetryID)
+            {
+                ex.Data.Add("Anonymous ID", telemetryID);
+                Logging.Error($"Unhandled exception: {ex.Message}.", ex);
             }
         }
 
@@ -172,16 +178,6 @@ namespace Eddi
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
             }
-        }
-
-        private static void ReloadAndRecover(Exception exception)
-        {
-#if DEBUG
-#else
-            Logging.Debug("Reloading after unhandled exception: " + exception.ToString());
-            EDDI.Instance.Stop();
-            EDDI.Instance.Start();
-#endif
         }
     }
 }
