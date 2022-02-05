@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection;
@@ -6,9 +7,10 @@ using Utilities;
 
 namespace EddiConfigService
 {
-    public partial class ConfigService
+    public sealed partial class ConfigService
     {
-        /// <summary> Obtain configuration from a json. </summary>
+        /// <summary> Obtain configuration from a json (for unit testing). </summary>
+        [UsedImplicitly]
         internal static T FromJson<T>(dynamic json) where T : new()
         {
             T configuration = new T();
@@ -52,7 +54,6 @@ namespace EddiConfigService
                 configuration = new T();
             }
 
-            configuration.dataPath = filename;
             return configuration;
         }
 

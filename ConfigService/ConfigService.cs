@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace EddiConfigService
 {
-    public partial class ConfigService : INotifyPropertyChanged
+    public sealed partial class ConfigService : INotifyPropertyChanged
     {
         #region Configurations
 
@@ -135,8 +136,13 @@ namespace EddiConfigService
         }
 
         /// <summary>Saves configurations from the specified data directory</summary>
-        public ConcurrentDictionary<string, Config> ReadConfigurations(string directory)
+        private ConcurrentDictionary<string, Config> ReadConfigurations(string directory = null)
         {
+            if (string.IsNullOrEmpty(directory))
+            {
+                // Use our current commander data directory, unless directed otherwise
+                directory = GetDataDirectory(commanderFID);
+            }
             return new ConcurrentDictionary<string, Config> (new Dictionary<string, Config>
             {
                 {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
@@ -156,6 +162,9 @@ namespace EddiConfigService
 
         #endregion
 
+        // The current commander FID
+        private string commanderFID { get; set; }
+
         // The directory to use for reading and saving configuration files
         private string dataDirectory { get; set; }
 
@@ -163,9 +172,11 @@ namespace EddiConfigService
 
         private static readonly object configurationsLock = new object();
 
-        public ConfigService(string commanderFID = null)
+        public static bool unitTesting { get; set; }
+
+        private ConfigService()
         {
-            SetCommander(commanderFID);
+            SetCommander();
             PropertyChanged += ConfigChanged;
         }
 
@@ -173,7 +184,7 @@ namespace EddiConfigService
         {
             foreach (var config in currentConfigs)
             {
-                if (config.Key == e.PropertyName)
+                if (config.Key == e.PropertyName && !unitTesting)
                 {
                     ToFile(config.Value, dataDirectory);
                 }
@@ -204,7 +215,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Sets the current commander FID and corresponding data directory (if null, we'll default to the legacy directory location)</summary>
-        public void SetCommander(string commanderFID)
+        public void SetCommander(string newCommanderFID = null)
         {
             lock (configurationsLock)
             {
@@ -213,24 +224,30 @@ namespace EddiConfigService
                     SaveConfigurations(dataDirectory, currentConfigs);
                 }
 
-                dataDirectory = GetDataDirectory(commanderFID);
-                currentConfigs = ReadConfigurations(dataDirectory);
+                var newDataDirectory = GetDataDirectory(newCommanderFID);
+                if (string.IsNullOrEmpty(commanderFID) && !string.IsNullOrEmpty(newCommanderFID))
+                {
+                    // When we first transition from the legacy file structure (i.e. all configurations in the root data directory)
+                    // to the new file structure, move a copy of our current configuration with us.
+                    CopyConfigurations(dataDirectory, newDataDirectory);
+                    DeleteConfigurations(dataDirectory, currentConfigs);
+                }
+                commanderFID = newCommanderFID;
+                currentConfigs = ReadConfigurations(newDataDirectory);
+                dataDirectory = newDataDirectory;
             }
         }
 
         /// <summary>Gets the data directory for the specified commander FID</summary>
-        private string GetDataDirectory(string commanderFID)
+        private string GetDataDirectory(string _commanderFID = null)
         {
-            return $@"{Constants.DATA_DIR}{(!string.IsNullOrEmpty(commanderFID) ? @"\" + commanderFID : null)}";
+            return $@"{Constants.DATA_DIR}{(!string.IsNullOrEmpty(_commanderFID) ? @"\" + _commanderFID : null)}";
         }
 
         /// <summary>Saves configurations to the specified data directory</summary>
-        public void SaveConfigurations(string directory, ConcurrentDictionary<string, Config> configurations)
+        private void SaveConfigurations(string directory, ConcurrentDictionary<string, Config> configurations)
         {
-            if (configurations is null)
-            {
-                return;
-            }
+            if (configurations is null || unitTesting) { return; }
 
             if (!string.IsNullOrEmpty(directory))
             {
@@ -245,15 +262,28 @@ namespace EddiConfigService
         }
 
         /// <summary>Copies configurations from one directory to another</summary>
-        public void CopyConfigurations(string fromDirectory, string toDirectory)
+        private void CopyConfigurations(string fromDirectory, string toDirectory)
         {
             SaveConfigurations(toDirectory, ReadConfigurations(fromDirectory));
+        }
+
+        private void DeleteConfigurations(string fromDirectory, ConcurrentDictionary<string, Config> configurations)
+        {
+            if (configurations is null || unitTesting) { return; }
+            foreach (var config in configurations.Values)
+            {
+                var filename = fromDirectory + (config.GetType().GetCustomAttribute(typeof(RelativePathAttribute)) as RelativePathAttribute)?.relativePath;
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
