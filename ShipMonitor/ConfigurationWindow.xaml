@@ -104,7 +104,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="eddi:Ship">
                             <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:ShipMonitor.export_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
