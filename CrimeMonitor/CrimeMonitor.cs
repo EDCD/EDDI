@@ -520,40 +520,60 @@ namespace EddiCrimeMonitor
 
         private bool _handleBountyPaidEvent(BountyPaidEvent @event)
         {
+            void PayBounty(FactionRecord record)
+            {
+                // Get all bounties incurred, excluding the discrepancy report
+                List<FactionReport> reports = record.factionReports
+                    .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
+                    .ToList();
+
+                // Check for discrepancy in logged bounties incurred
+                long total = reports.Sum(r => r.amount);
+                if (total < @event.amount)
+                {
+                    // Adjust the discrepancy report & remove when zeroed out
+                    FactionReport report = record.factionReports
+                        .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
+                    if (report != null)
+                    {
+                        report.amount -= Math.Min(@event.amount - total, report.amount);
+                        if (report.amount == 0) { reports.Add(report); }
+                    }
+                }
+                // Remove associated records
+                record.factionReports = record.factionReports.Except(reports).ToList();
+
+                // Adjust the total bounties incurred amount
+                record.bounties -= Math.Min(@event.amount, record.bounties);
+
+                RemoveRecordIfEmpty(record);
+            }
+
             bool update = false;
             foreach (FactionRecord record in criminalrecord.ToList())
             {
                 if (@event.allbounties || record.faction == @event.faction)
                 {
-                    // Get all bounties incurred, excluding the discrepancy report
-                    List<FactionReport> reports = record.factionReports
-                        .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
-                        .ToList();
-                    long total = reports.Sum(r => r.amount);
-
-                    // Check for discrepancy in logged bounties incurred
-                    if (total < @event.amount)
-                    {
-                        // Adjust the discrepancy report & remove when zeroed out
-                        FactionReport report = record.factionReports
-                            .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
-                        if (report != null)
-                        {
-                            report.amount -= Math.Min(@event.amount - total, report.amount);
-                            if (report.amount == 0) { reports.Add(report); }
-                        }
-                    }
-                    // Remove associated records
-                    record.factionReports = record.factionReports.Except(reports).ToList();
-
-                    // Adjust the total bounties incurred amount
-                    record.bounties -= Math.Min(@event.amount, record.bounties);
-                    
-                    RemoveRecordIfEmpty(record);
+                    PayBounty(record);
                     update = true;
                     if (record.faction == @event.faction) { break; }
                 }
             }
+            if (!update)
+            {
+                // The bounty may have been converted to a Superpower bounty. See if we can find a record w/ a matching bounty.
+                var superpower = Superpower.FromNameOrEdName(@event.faction);
+                if (superpower != null)
+                {
+                    var record = criminalrecord.ToList().SingleOrDefault(r => r.Allegiance == superpower && r.bounties == @event.amount);
+                    if (record != null)
+                    {
+                        PayBounty(record);
+                        update = true;
+                    }
+                }
+            }
+
             return update;
         }
 
