@@ -161,4 +161,7 @@
     <value>Faction Members</value>
     <comment>Massacre Mission Target: Faction Members</comment>
   </data>
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>Guard</value>
+  </data>
 </root>

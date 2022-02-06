@@ -13,6 +13,7 @@
 
             var BountyHunter = new TargetType("BountyHunter");
             var Civilian = new TargetType("Civilian");
+            var GuardHumanoid = new TargetType("GuardHumanoid");
             var Hostage = new TargetType("Hostage");
             var Miner = new TargetType("Miner");
             var Pirate = new TargetType("Pirate");
