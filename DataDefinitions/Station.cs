@@ -20,7 +20,12 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The controlling faction</summary>
-        public Faction Faction { get; set; } = new Faction();
+        public Faction Faction
+        {
+            get => _faction;
+            set { _faction = value; OnPropertyChanged();}
+        }
+        private Faction _faction = new Faction();
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
@@ -61,7 +66,12 @@ namespace EddiDataDefinitions
         public long? marketId { get; set; }
 
         /// <summary>A list of the services offered by this station</summary>
-        public List<StationService> stationServices { get; set; } = new List<StationService>();
+        public List<StationService> stationServices
+        {
+            get => _stationServices;
+            set { _stationServices = value; OnPropertyChanged();}
+        }
+        private List<StationService> _stationServices = new List<StationService>();
 
         /// <summary>A localized list of the services offered by this station</summary>
         [PublicAPI]
@@ -83,7 +93,7 @@ namespace EddiDataDefinitions
         public bool? hasrefuel
         {
             get { return stationServices.Exists(s => s?.edname == "Refuel"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have rearm facilities?</summary>
@@ -91,7 +101,7 @@ namespace EddiDataDefinitions
         public bool? hasrearm
         {
             get { return stationServices.Exists(s => s?.edname == "Rearm"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have repair facilities?</summary>
@@ -99,7 +109,7 @@ namespace EddiDataDefinitions
         public bool? hasrepair
         {
             get { return stationServices.Exists(s => s?.edname == "Repair"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have outfitting?</summary>
@@ -107,7 +117,7 @@ namespace EddiDataDefinitions
         public bool? hasoutfitting
         {
             get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have a shipyard?</summary>
@@ -115,7 +125,7 @@ namespace EddiDataDefinitions
         public bool? hasshipyard
         {
             get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have a market?</summary>
@@ -123,7 +133,7 @@ namespace EddiDataDefinitions
         public bool? hasmarket
         {
             get { return stationServices.Exists(s => s?.edname == "Commodities"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station have a black market?</summary>
@@ -131,7 +141,7 @@ namespace EddiDataDefinitions
         public bool? hasblackmarket
         {
             get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); OnPropertyChanged();} }
         }
 
         /// <summary>Does this station allow docking?</summary>
@@ -139,7 +149,7 @@ namespace EddiDataDefinitions
         public bool? hasdocking
         {
             get { return stationServices.Exists(s => s?.edname == "Dock"); }
-            set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); } }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); OnPropertyChanged();} }
         }
 
         /// <summary>The model of the station</summary>
@@ -214,6 +224,7 @@ namespace EddiDataDefinitions
                     }
                 }
                 _economyShares = updatedEconomyShares;
+                OnPropertyChanged();
             }
         }
         [JsonIgnore]
@@ -236,7 +247,12 @@ namespace EddiDataDefinitions
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         [PublicAPI]
-        public List<CommodityMarketQuote> commodities { get; set; }
+        public List<CommodityMarketQuote> commodities
+        {
+            get => _commodities;
+            set { _commodities = value; OnPropertyChanged();}
+        }
+        private List<CommodityMarketQuote> _commodities;
 
         /// <summary>Which commodities are imported by the station</summary>
         [PublicAPI, JsonIgnore]
@@ -254,14 +270,29 @@ namespace EddiDataDefinitions
 
         /// <summary>Which commodities are prohibited at the station</summary>
         [PublicAPI]
-        public List<CommodityDefinition> prohibited { get; set; }
+        public List<CommodityDefinition> prohibited
+        {
+            get => _prohibited;
+            set { _prohibited = value; OnPropertyChanged();}
+        }
+        private List<CommodityDefinition> _prohibited;
 
         /// <summary>Which modules are available for outfitting at the station</summary>
         [PublicAPI]
-        public List<Module> outfitting { get; set; }
+        public List<Module> outfitting
+        {
+            get => _outfitting;
+            set { _outfitting = value; OnPropertyChanged();}
+        }
+        private List<Module> _outfitting;
 
         /// <summary>Which ships are available for purchase at the station</summary>
-        public List<Ship> shipyard { get; set; }
+        public List<Ship> shipyard
+        {
+            get => _shipyard;
+            set { _shipyard = value; OnPropertyChanged();}
+        }
+        private List<Ship> _shipyard;
 
         // Admin - the last time the information present changed
         [PublicAPI]
@@ -311,11 +342,13 @@ namespace EddiDataDefinitions
             Model == StationModel.SurfaceStation && 
             hasdocking != true; }
 
+        #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+        #endregion
     }
 }

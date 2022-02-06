@@ -62,7 +62,7 @@ namespace EddiDataDefinitions
                 if (_value != value)
                 {
                     _value = value;
-                    NotifyPropertyChanged("value");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace EddiDataDefinitions
                 if (_hullvalue != value)
                 {
                     _hullvalue = value;
-                    NotifyPropertyChanged("hullvalue");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace EddiDataDefinitions
                 if (_modulesvalue != value)
                 {
                     _modulesvalue = value;
-                    NotifyPropertyChanged("modulesvalue");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -113,7 +113,13 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship's rebuy, in credits</summary>
         [PublicAPI]
-        public long rebuy { get; set; }
+        public long rebuy
+        {
+            get => _rebuy;
+            set { _rebuy = value; OnPropertyChanged();}
+        }
+
+        private long _rebuy;
 
         /// <summary>the name of this ship</summary>
         [PublicAPI]
@@ -128,7 +134,7 @@ namespace EddiDataDefinitions
                 if (_name != value)
                 {
                     _name = value;
-                    NotifyPropertyChanged("name");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -147,7 +153,7 @@ namespace EddiDataDefinitions
                 if (_model != value)
                 {
                     _model = value;
-                    NotifyPropertyChanged("model");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -168,7 +174,7 @@ namespace EddiDataDefinitions
                 if (_ident != value)
                 {
                     _ident = value;
-                    NotifyPropertyChanged("ident");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -189,9 +195,10 @@ namespace EddiDataDefinitions
                 }
                 else if (IPA.IsValid(value))
                 {
-                    NotifyPropertyChanged("phoneticName");
+                    OnPropertyChanged();
                     _phoneticName = value;
                 }
+                OnPropertyChanged();
             }
         }
         
@@ -213,6 +220,7 @@ namespace EddiDataDefinitions
             {
                 Role rDef = Role.FromEDName(value);
                 this.Role = rDef;
+                OnPropertyChanged();
             }
         }
 
@@ -228,7 +236,7 @@ namespace EddiDataDefinitions
                 if (_Role != value)
                 {
                     _Role = value;
-                    NotifyPropertyChanged("Role");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -265,7 +273,6 @@ namespace EddiDataDefinitions
         /// <summary>
         /// The raw JSON from the companion API for this ship
         /// </summary>
-        private string _raw;
         public string raw
         {
             get
@@ -277,10 +284,11 @@ namespace EddiDataDefinitions
                 if (_raw != value)
                 {
                     _raw = value;
-                    NotifyPropertyChanged("RawIsNotNull");
+                    OnPropertyChanged();
                 }
             }
         }
+        private string _raw;
 
         public bool RawIsNotNull => !string.IsNullOrEmpty(_raw);
 
@@ -299,7 +307,7 @@ namespace EddiDataDefinitions
                 if (_hot != value)
                 {
                     _hot = value;
-                    NotifyPropertyChanged("hot");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -322,7 +330,7 @@ namespace EddiDataDefinitions
                 if (_starsystem != value)
                 {
                     _starsystem = value;
-                    NotifyPropertyChanged("starsystem");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -335,91 +343,196 @@ namespace EddiDataDefinitions
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
 
         [PublicAPI]
-        public string station { get; set; }
+        public string station
+        {
+            get => _station;
+            set { _station = value; OnPropertyChanged();}
+        }
+        private string _station;
 
         [PublicAPI]
-        public long? marketid { get; set; }
-        
+        public long? marketid
+        {
+            get => _marketid;
+            set { _marketid = value; OnPropertyChanged();}
+        }
+        private long? _marketid;
+
         public decimal? x { get; set; }
         
         public decimal? y { get; set; }
         
         public decimal? z { get; set; }
 
-        // Other properties for when this ship is stored
-
-        [PublicAPI]
         public bool intransit { get; set; }
 
-        [PublicAPI]
         public long? transferprice { get; set; }
 
-        [PublicAPI]
         public long? transfertime { get; set; }
 
         [PublicAPI]
-        public decimal? distance { get; set; }
+        public decimal? distance
+        {
+            get => _distance;
+            set { _distance = value; OnPropertyChanged();}
+        }
+
+        private decimal? _distance;
 
         [PublicAPI]
-        public decimal health { get; set; }
+        public decimal health
+        {
+            get => _health;
+            set { _health = value; OnPropertyChanged();}
+        }
 
-        public Module cargohatch { get; set; }
-
-        [PublicAPI]
-        public Module bulkheads { get; set; }
-
-        public Module canopy { get; set; }
-
-        [PublicAPI]
-        public Module powerplant { get; set; }
+        private decimal _health;
 
         [PublicAPI]
-        public Module thrusters { get; set; }
+        public Module cargohatch
+        {
+            get => _cargohatch;
+            set { _cargohatch = value; OnPropertyChanged();}
+        }
+        private Module _cargohatch;
 
         [PublicAPI]
-        public Module frameshiftdrive { get; set; }
+        public Module bulkheads
+        {
+            get => _bulkheads;
+            set { _bulkheads = value; OnPropertyChanged();}
+        }
+        private Module _bulkheads;
 
         [PublicAPI]
-        public Module lifesupport { get; set; }
+        public Module canopy
+        {
+            get => _canopy;
+            set { _canopy = value; OnPropertyChanged();}
+        }
+        private Module _canopy;
 
         [PublicAPI]
-        public Module powerdistributor { get; set; }
+        public Module powerplant
+        {
+            get => _powerplant;
+            set { _powerplant = value; OnPropertyChanged();}
+        }
+
+        private Module _powerplant;
 
         [PublicAPI]
-        public Module sensors { get; set; }
+        public Module thrusters
+        {
+            get => _thrusters;
+            set { _thrusters = value; OnPropertyChanged();}
+        }
+        private Module _thrusters;
 
         [PublicAPI]
-        public Module fueltank { get; set; }
+        public Module frameshiftdrive
+        {
+            get => _frameshiftdrive;
+            set { _frameshiftdrive = value; OnPropertyChanged();}
+        }
+        private Module _frameshiftdrive;
 
         [PublicAPI]
-        public List<Hardpoint> hardpoints { get; set; }
+        public Module lifesupport
+        {
+            get => _lifesupport;
+            set { _lifesupport = value; OnPropertyChanged();}
+        }
+        private Module _lifesupport;
 
         [PublicAPI]
-        public List<Compartment> compartments { get; set; }
+        public Module powerdistributor
+        {
+            get => _powerdistributor;
+            set { _powerdistributor = value; OnPropertyChanged();}
+        }
+        private Module _powerdistributor;
 
         [PublicAPI]
-        public List<LaunchBay> launchbays { get; set; }
+        public Module sensors
+        {
+            get => _sensors;
+            set { _sensors = value; OnPropertyChanged();}
+        }
+        private Module _sensors;
+
+        [PublicAPI]
+        public Module fueltank
+        {
+            get => _fueltank;
+            set { _fueltank = value; OnPropertyChanged();}
+        }
+        private Module _fueltank;
+
+        [PublicAPI]
+        public List<Hardpoint> hardpoints
+        {
+            get => _hardpoints;
+            set { _hardpoints = value; OnPropertyChanged();}
+        }
+        private List<Hardpoint> _hardpoints;
+
+        [PublicAPI]
+        public List<Compartment> compartments
+        {
+            get => _compartments;
+            set { _compartments = value; OnPropertyChanged();}
+        }
+        private List<Compartment> _compartments;
+
+        [PublicAPI]
+        public List<LaunchBay> launchbays
+        {
+            get => _launchbays;
+            set { _launchbays = value; OnPropertyChanged();}
+        }
+        private List<LaunchBay> _launchbays;
 
         public string paintjob { get; set; }
 
         [PublicAPI]
-        public decimal? fueltankcapacity { get; set; } // Core capacity
+        public decimal? fueltankcapacity // Core capacity
+        {
+            get => _fueltankcapacity;
+            set { _fueltankcapacity = value; OnPropertyChanged();}
+        }
+        private decimal? _fueltankcapacity;
 
         [PublicAPI]
-        public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
+        public decimal? fueltanktotalcapacity // Capacity including additional tanks
+        {
+            get => _fueltanktotalcapacity;
+            set { _fueltanktotalcapacity = value; OnPropertyChanged();}
+        }
+        private decimal? _fueltanktotalcapacity;
 
         public decimal activeFuelReservoirCapacity { get; set; }
 
         // Ship jump properties
 
         [PublicAPI]
-        public decimal maxjumprange { get; set; }
+        public decimal maxjumprange
+        {
+            get => _maxjumprange;
+            set { _maxjumprange = value; OnPropertyChanged();}
+        }
+        private decimal _maxjumprange;
 
         [JsonIgnore, Obsolete("Please use maxjumprange instead")]
         public decimal maxjump => maxjumprange;
 
         [PublicAPI]
-        public decimal maxfuelperjump { get; set; }
+        public decimal maxfuelperjump
+        {
+            get => _maxfuelperjump;
+            set { _maxfuelperjump = value; OnPropertyChanged();}
+        }
+        private decimal _maxfuelperjump;
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
         public decimal maxfuel => maxfuelperjump;
@@ -613,7 +726,7 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

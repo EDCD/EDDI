@@ -37,7 +37,12 @@ namespace EddiDataDefinitions
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [PublicAPI, JsonProperty] // Required to deserialize to the private setter
-        public ImmutableList<Body> bodies { get; private set; }
+        public ImmutableList<Body> bodies
+        {
+            get => _bodies;
+            private set { _bodies = value; OnPropertyChanged();}
+        }
+        private ImmutableList<Body> _bodies;
 
         public Body BodyWithID(long? bodyID)
         {
@@ -140,7 +145,12 @@ namespace EddiDataDefinitions
         public bool scoopable => bodies.Any(b => b.scoopable);
 
         /// <summary>The reserve level applicable to the system's rings</summary>
-        public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
+        public ReserveLevel Reserve
+        {
+            get => _reserve;
+            set { _reserve = value; OnPropertyChanged();}
+        }
+        private ReserveLevel _reserve = ReserveLevel.None;
 
         [PublicAPI, JsonIgnore]
         public string reserves => (Reserve ?? ReserveLevel.None).localizedName;
@@ -152,8 +162,13 @@ namespace EddiDataDefinitions
 
         [PublicAPI, JsonIgnore]
         public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
-        
-        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
+
+        public List<Economy> Economies
+        {
+            get => _economies;
+            set { _economies = value; OnPropertyChanged();}
+        }
+        private List<Economy> _economies = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
@@ -178,10 +193,20 @@ namespace EddiDataDefinitions
         public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
-        public Faction Faction { get; set; } = new Faction();
+        public Faction Faction
+        {
+            get => _faction;
+            set { _faction = value; OnPropertyChanged();}
+        }
+        private Faction _faction = new Faction();
 
         [PublicAPI]
-        public List<Faction> factions { get; set; }
+        public List<Faction> factions
+        {
+            get => _factions;
+            set { _factions = value; OnPropertyChanged();}
+        }
+        private List<Faction> _factions;
 
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
         public string faction => Faction.name;
@@ -193,11 +218,21 @@ namespace EddiDataDefinitions
         public string government => Faction.government;
 
         [JsonIgnore]
-        public List<Conflict> conflicts { get; set; }
+        public List<Conflict> conflicts
+        {
+            get => _conflicts;
+            set { _conflicts = value; OnPropertyChanged();}
+        }
+        private List<Conflict> _conflicts;
 
         /// <summary>Details of stations</summary>
         [PublicAPI]
-        public List<Station> stations { get; set; }
+        public List<Station> stations
+        {
+            get => _stations;
+            set { _stations = value; OnPropertyChanged();}
+        }
+        private List<Station> _stations;
 
         /// <summary>Summary info for stations</summary>
         [PublicAPI, JsonIgnore]
@@ -231,6 +266,7 @@ namespace EddiDataDefinitions
             set 
             {
                 _signalSources = value; 
+                OnPropertyChanged();
             } 
         }
 
@@ -265,7 +301,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Number of visits</summary>
         [PublicAPI, JsonIgnore]
-        public long estimatedvalue => estimateSystemValue(bodies);
+        public long estimatedvalue => estimateSystemValue();
 
         /// <summary>Number of visits</summary>
         [PublicAPI]
@@ -275,7 +311,7 @@ namespace EddiDataDefinitions
         public DateTime? lastvisit => visitLog.LastOrDefault();
 
         /// <summary>Visit log</summary>
-        public SortedSet<DateTime> visitLog { get; set; } = new SortedSet<DateTime>();
+        public readonly SortedSet<DateTime> visitLog = new SortedSet<DateTime>();
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
         [PublicAPI, JsonIgnore]
@@ -310,7 +346,12 @@ namespace EddiDataDefinitions
 
         // Discoverable bodies as reported by a discovery scan "honk"
         [PublicAPI, JsonProperty("discoverableBodies")]
-        public int totalbodies;
+        public int totalbodies
+        {
+            get => _totalbodies;
+            set { _totalbodies = value; OnPropertyChanged();}
+        }
+        private int _totalbodies;
 
         [PublicAPI, JsonIgnore]
         public int scannedbodies => bodies.Count(b => b.scanned != null);
@@ -374,12 +415,12 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private long estimateSystemValue(IList<Body> bodies)
+        private long estimateSystemValue()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
@@ -397,7 +438,7 @@ namespace EddiDataDefinitions
             }
 
             // Bonus for fully discovering a system
-            if (totalbodies == bodies.Where(b => b.scanned != null).Count())
+            if (totalbodies == bodies.Count(b => b.scanned != null))
             {
                 value += totalbodies * 1000;
 

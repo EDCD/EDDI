@@ -112,9 +112,86 @@ namespace EddiVoiceAttackResponder
                 // Add notifiers for changes in variables we want to react to 
                 // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
                 EDDI.Instance.PropertyChanged += (s, e) => updateStandardValues(e);
-                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeechState(e);
-                CompanionAppService.Instance.StateChanged += (oldState, newState) => setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
+
+
+                //EDDI.Instance.CurrentStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref App.vaProxy);
+                //};
+                //EDDI.Instance.LastStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref App.vaProxy);
+                //};
+                //EDDI.Instance.NextStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.vaProxy);
+                //};
+                //EDDI.Instance.DestinationStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.vaProxy);
+                //    App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
+                //};
+                //NavigationService.Instance.SearchStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy);
+                //    App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
+                //}; 
+                //NavigationService.Instance.SearchStation.PropertyChanged += (s, e) =>
+                //{
+                //    setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy);
+                //};
+                //EDDI.Instance.SquadronStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.vaProxy);
+                //};
+                //EDDI.Instance.HomeStarSystem.PropertyChanged += (s, e) =>
+                //{
+                //    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref App.vaProxy);
+
+                //    // Backwards-compatibility with 1.x documented variables
+                //    try
+                //    {
+                //        App.vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
+                //        App.vaProxy.SetText("Home system (spoken)",
+                //            Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
+                //        if (EDDI.Instance.HomeStation != null)
+                //        {
+                //            App.vaProxy.SetText("Home station", EDDI.Instance.HomeStation?.name);
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Logging.Error("Failed to set 1.x home system values", ex);
+                //    }
+                //};
+                //EDDI.Instance.CurrentStellarBody.PropertyChanged += (s, e) =>
+                //{
+                //    setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref App.vaProxy);
+                //};
+                //EDDI.Instance.CurrentStation.PropertyChanged += (s, e) =>
+                //{
+                //    setStationValues(EDDI.Instance.CurrentStation, "Last station", ref App.vaProxy);
+                //};
+                //EDDI.Instance.HomeStation.PropertyChanged += (s, e) =>
+                //{
+                //    setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.vaProxy);
+                //};
+                //EDDI.Instance.Cmdr.PropertyChanged += (s, e) =>
+                //{
+                //    setCommanderValues(EDDI.Instance.Cmdr, ref App.vaProxy);
+                //};
+                EDDI.Instance.State.CollectionChanged += (s, e) =>
+                {
+                    setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+                };
+                SpeechService.Instance.PropertyChanged += (s, e) =>
+                {
+                    setSpeechState(e);
+                };
+                CompanionAppService.Instance.StateChanged += (oldState, newState) =>
+                {
+                    setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
+                };
                 StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");

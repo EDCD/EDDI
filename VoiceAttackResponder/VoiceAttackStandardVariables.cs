@@ -47,7 +47,7 @@ namespace EddiVoiceAttackResponder
                     catch (Exception ex)
                     {
                         Logging.Error("Failed to set 1.x home system values", ex);
-                    } 
+                    }
                 } },
             { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref App.vaProxy) },
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Last station", ref App.vaProxy) },
@@ -147,7 +147,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Set values for a station</summary>
-        private static void setStationValues(Station station, string prefix, ref dynamic vaProxy)
+        protected static void setStationValues(Station station, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting station information");
 
@@ -172,7 +172,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set station information");
         }
 
-        private static void setCommanderValues(Commander cmdr, ref dynamic vaProxy)
+        protected static void setCommanderValues(Commander cmdr, ref dynamic vaProxy)
         {
             try
             {
@@ -420,7 +420,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
+        protected static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting system information (" + prefix + ")");
             try
@@ -492,7 +492,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
-        private static void setDetailedBodyValues(Body body, string prefix, ref dynamic vaProxy)
+        protected static void setDetailedBodyValues(Body body, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting current stellar body information");
             vaProxy.SetText(prefix + " type", (body?.bodyType ?? BodyType.None).localizedName);

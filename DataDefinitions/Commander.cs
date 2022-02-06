@@ -90,8 +90,8 @@ namespace EddiDataDefinitions
                 }
                 else
                 {
-                    NotifyPropertyChanged("phoneticName");
                     _phoneticName = value;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -101,45 +101,95 @@ namespace EddiDataDefinitions
         public string phoneticname => SpokenName();
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
-        public string title { get; set; }
+        public string title
+        {
+            get => _title;
+            set { _title = value; OnPropertyChanged();}
+        }
+        private string _title;
 
         /// <summary> The commander's gender.  This is set in EDDI's configuration</summary>
         [PublicAPI]
-        public string gender { get; set; }
+        public string gender
+        {
+            get => _gender;
+            set { _gender = value; OnPropertyChanged();}
+        }
+        private string _gender;
 
         /// <summary>The commander's powerplay power (if pledged)</summary>
-        public Power Power { get; set; }
+        public Power Power
+        {
+            get => _power;
+            set { _power = value; OnPropertyChanged();}
+        }
+        private Power _power;
 
         /// <summary>The commander's powerplay power (localized) (if pledged)</summary>
         [PublicAPI]
         public string power => (Power ?? Power.None)?.localizedName;
 
         /// <summary>The commander's powerplay merits (if pledged)</summary>
-        public int? powermerits { get; set; }
+        public int? powermerits
+        {
+            get => _powermerits;
+            set { _powermerits = value; OnPropertyChanged();}
+        }
+        private int? _powermerits;
 
         /// <summary>The commander's squadron name</summary>
         [PublicAPI]
-        public string squadronname { get; set; }
+        public string squadronname
+        {
+            get => _squadronname;
+            set { _squadronname = value; OnPropertyChanged();}
+        }
+        private string _squadronname;
 
         /// <summary>The commander's squadron ID</summary>
         [PublicAPI]
-        public string squadronid { get; set; }
+        public string squadronid
+        {
+            get => _squadronid;
+            set { _squadronid = value; OnPropertyChanged();}
+        }
+        private string _squadronid;
 
         /// <summary>The commander's squadron rank</summary>
         [PublicAPI]
-        public SquadronRank squadronrank { get; set; }
+        public SquadronRank squadronrank
+        {
+            get => _squadronrank;
+            set { _squadronrank = value; OnPropertyChanged();}
+        }
+        private SquadronRank _squadronrank;
 
         /// <summary>The commander's squadron superpower</summary>
         [PublicAPI]
-        public Superpower squadronallegiance { get; set; }
+        public Superpower squadronallegiance
+        {
+            get => _squadronallegiance;
+            set { _squadronallegiance = value; OnPropertyChanged();}
+        }
+        private Superpower _squadronallegiance;
 
         /// <summary>The commander's squadron power</summary>
         [PublicAPI]
-        public Power squadronpower { get; set; }
+        public Power squadronpower
+        {
+            get => _squadronpower;
+            set { _squadronpower = value; OnPropertyChanged();}
+        }
+        private Power _squadronpower;
 
         /// <summary>The commander's squadron faction</summary>
         [PublicAPI]
-        public string squadronfaction { get; set; }
+        public string squadronfaction
+        {
+            get => _squadronfaction;
+            set { _squadronfaction = value; OnPropertyChanged();}
+        }
+        private string _squadronfaction;
 
         /// <summary>The insurance excess percentage the commander has to pay</summary>
         public decimal? insurance { get; set; } = 0.05M;
@@ -154,7 +204,7 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

@@ -549,6 +549,7 @@ All bodies have the following data:
   - *alreadydiscovered* - whether another commander has already submitted a scan of the body to Universal Cartographics (scan required to fill this value)
   - *alreadymapped* - whether another commander has already submitted mapping data for the body to Universal Cartographics (scan required to fill this value)
   - *estimatedvalue* - the current estimated value of the body, taking into account scans and mapping.
+  - *maxestimatedvalue* - the estimated maximum obtainable value of the body, assuming efficient mapping.
   - *periapsis* - the argument of periapsis of the body, in degrees (as applicable)
   - *tilt* - the axial tilt of the body, in degrees  (as applicable)
   - *eccentricity* - the orbital eccentricity of the body  (as applicable)

@@ -16,8 +16,6 @@ namespace EddiDataDefinitions
         /// <summary>The ID of this body in the star system</summary>
         public long? bodyId { get; set; }
 
-        public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);
-        
         /// <summary>The ID of this body in EDSM</summary>
         public long? EDSMID { get; set; }
 
@@ -68,7 +66,12 @@ namespace EddiDataDefinitions
 
         /// <summary>When we scanned this object, if we have (DateTime)</summary>
         [PublicAPI]
-        public DateTime? scanned { get; set; }
+        public DateTime? scanned
+        {
+            get => _scanned;
+            set { _scanned = value; OnPropertyChanged(); }
+        }
+        [JsonIgnore] private DateTime? _scanned;
 
         /// <summary>Whether we're the first commander to map this body</summary>
         [PublicAPI]
@@ -76,15 +79,32 @@ namespace EddiDataDefinitions
 
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
         [PublicAPI]
-        public DateTime? mapped { get; set; }
+        public DateTime? mapped
+        {
+            get => _mapped;
+            set { _mapped = value; OnPropertyChanged(); }
+        }
+        [JsonIgnore] private DateTime? _mapped;
 
         /// <summary>Whether we received an efficiency bonus when mapping this body</summary>
-        public bool mappedEfficiently { get; set; }
+        public bool mappedEfficiently
+        {
+            get => _mappedEfficiently;
+            set { _mappedEfficiently = value; OnPropertyChanged(); }
+        }
+        [JsonIgnore] private bool _mappedEfficiently;
 
         /// <summary>The estimated value of the body</summary>
         [PublicAPI, JsonIgnore]
-        public long estimatedvalue => scanned == null ? 0 :
-            solarmass == null ? estimateBodyValue() : estimateStarValue();
+        public long estimatedvalue => scanned == null ? 0 : solarmass == null 
+                ? estimateBodyValue(mapped != null, mappedEfficiently) 
+                : estimateStarValue();
+
+        /// <summary>The estimated maximum value of the body</summary>
+        [PublicAPI, JsonIgnore]
+        public long maxestimatedvalue => scanned == null ? 0 : solarmass == null
+            ? estimateBodyValue(true, true)
+            : estimateStarValue();
 
         // Orbital characteristics
 
@@ -144,24 +164,17 @@ namespace EddiDataDefinitions
                     }
                 }
                 _parents = value;
+                OnPropertyChanged();
             }
         }
+        [JsonIgnore] private List<IDictionary<string, object>> _parents;
 
         /// <summary> Density in Kg per cubic meter </summary>
         [PublicAPI, JsonIgnore]
-        public decimal? density
-        {
-            get { return GetDensity(); }
-            set { _density = value; }
-        }
-        [JsonIgnore]
-        private decimal? _density;
+        public decimal? density => GetDensity();
 
         public Body()
         { }
-
-        [JsonIgnore]
-        private List<IDictionary<string, object>> _parents;
 
         // Additional calculated statistics
 
@@ -206,7 +219,7 @@ namespace EddiDataDefinitions
 
         /// <summary>If this body is the main star</summary>
         [PublicAPI, JsonIgnore]
-        public bool? mainstar => distance == 0 ? true : false;
+        public bool? mainstar => distance == 0;
 
         /// <summary>The stellar class of the star</summary>
         [PublicAPI]
@@ -293,9 +306,6 @@ namespace EddiDataDefinitions
             // Scan details
             this.alreadydiscovered = alreadydiscovered;
             this.alreadymapped = alreadymapped;
-
-            // Other calculations
-            this.density = GetDensity();
         }
 
         // Additional calculated star statistics
@@ -454,9 +464,6 @@ namespace EddiDataDefinitions
             // Scan details
             this.alreadydiscovered = alreadydiscovered;
             this.alreadymapped = alreadymapped;
-
-            // Other calculations
-            this.density = GetDensity();
         }
 
         // Additional calculated planet and moon statistics
@@ -472,7 +479,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
         public decimal? solarsurfacevelocity => (2 * (decimal)Math.PI * radius * 1000) / (solarday * 86400);
 
-        private long estimateBodyValue()
+        private long estimateBodyValue(bool isMapped, bool isMappedEfficiently)
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
@@ -533,7 +540,7 @@ namespace EddiDataDefinitions
             // Terraformability is a scale from 0-100%, but since we don't know the % we'll assume 100% for the time being.
             k = terraformable ? (k + k_terraformable) : k;
 
-            if (mapped != null)
+            if (isMapped)
             {
                 if (!alreadyDiscovered && !alreadyMapped) // First to discover and first to map
                 {
@@ -547,7 +554,7 @@ namespace EddiDataDefinitions
                 {
                     mappingMultiplier = 3.3333333333;
                 }
-                mappingMultiplier *= (mappedEfficiently) ? efficientMappingMultiplier : 1;
+                mappingMultiplier *= (isMappedEfficiently) ? efficientMappingMultiplier : 1;
             }
 
             // Calculate exploration scan values
@@ -614,8 +621,14 @@ namespace EddiDataDefinitions
             return null;
         }
 
-        // Convert legacy data
+        public static string GetShortName(string bodyname, string systemname)
+        {
+            return (systemname == null || bodyname == systemname) ? bodyname : bodyname?.Replace(systemname, "").Trim();
+        }
 
+        public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);
+
+        #region Legacy data conversions
         [JsonExtensionData]
         private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
@@ -638,22 +651,17 @@ namespace EddiDataDefinitions
                 }
             }
 
-            // Calculate our density if possible to do so.
-            density = GetDensity();
-
             _additionalData = null;
         }
+        #endregion
 
+        #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberNameAttribute] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-
-        public static string GetShortName(string bodyname, string systemname)
-        {
-            return (systemname == null || bodyname == systemname) ? bodyname : bodyname?.Replace(systemname, "").Trim();
-        }
+        #endregion
     }
 }

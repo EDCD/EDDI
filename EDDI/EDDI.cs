@@ -117,6 +117,12 @@ namespace EddiCore
             get => homeStarSystem;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(HomeStarSystem));
+                }
+                if (homeStarSystem != null) { homeStarSystem.PropertyChanged -= childPropertyChangedHandler;}
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler;}
                 homeStarSystem = value;
                 OnPropertyChanged();
             }
@@ -128,6 +134,12 @@ namespace EddiCore
             get => homeStation;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(HomeStation));
+                }
+                if (homeStation != null) { homeStation.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 homeStation = value;
                 OnPropertyChanged();
             }
@@ -139,6 +151,12 @@ namespace EddiCore
             get => squadronStarSystem;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(SquadronStarSystem));
+                }
+                if (squadronStarSystem != null) { squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 squadronStarSystem = value;
                 OnPropertyChanged();
             }
@@ -151,6 +169,12 @@ namespace EddiCore
             get => destinationStarSystem;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(DestinationStarSystem));
+                }
+                if (destinationStarSystem != null) { destinationStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 destinationStarSystem = value;
                 OnPropertyChanged();
             }
@@ -174,6 +198,12 @@ namespace EddiCore
             get => cmdr;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(Cmdr));
+                }
+                if (cmdr != null) { cmdr.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 cmdr = value;
                 OnPropertyChanged();
             }
@@ -198,6 +228,12 @@ namespace EddiCore
             {
                 setSystemDistanceFromHome(value);
                 setSystemDistanceFromDestination(value);
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(CurrentStarSystem));
+                }
+                if (currentStarSystem != null) { currentStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 currentStarSystem = value;
                 OnPropertyChanged(); 
             } 
@@ -210,6 +246,12 @@ namespace EddiCore
             private set
             {
                 setSystemDistanceFromHome(value);
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(LastStarSystem));
+                }
+                if (lastStarSystem != null) { lastStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 lastStarSystem = value;
                 OnPropertyChanged();
             }
@@ -222,6 +264,12 @@ namespace EddiCore
             private set
             {
                 setSystemDistanceFromHome(value);
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(NextStarSystem));
+                }
+                if (nextStarSystem != null) { nextStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 nextStarSystem = value;
                 OnPropertyChanged();
             }
@@ -233,6 +281,12 @@ namespace EddiCore
             get => currentStation;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(CurrentStation));
+                }
+                if (currentStation != null) { currentStation.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 currentStation = value;
                 OnPropertyChanged();
             }
@@ -244,6 +298,12 @@ namespace EddiCore
             get => currentStellarBody;
             private set
             {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged(nameof(CurrentStellarBody));
+                }
+                if (currentStellarBody != null) { currentStellarBody.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
                 currentStellarBody = value;
                 OnPropertyChanged();
             }
@@ -3254,7 +3314,7 @@ namespace EddiCore
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
