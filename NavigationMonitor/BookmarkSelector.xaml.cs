@@ -1,6 +1,8 @@
 ﻿using System;
 using EddiDataDefinitions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +13,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class BookmarkSelector : Window
     {
-        public readonly List<NavBookmark> SelectedBookmarks = new List<NavBookmark>();
+        public List<NavBookmark> SelectedBookmarks = new List<NavBookmark>();
 
         public BookmarkSelector(IEnumerable<NavBookmark> bookmarks)
         {
@@ -53,7 +55,7 @@ namespace EddiNavigationMonitor
             Close();
         }
 
-        private void OKButtonClicked(object sender, RoutedEventArgs e)
+        private void SelectedButtonClicked(object sender, RoutedEventArgs e)
         {
             if (SelectedBookmarks.Count > 0)
             {
@@ -63,6 +65,13 @@ namespace EddiNavigationMonitor
             {
                 DialogResult = false;
             }
+            Close();
+        }
+
+        private void AllButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SelectedBookmarks = ((ObservableCollection<NavBookmark>)bookmarksData.Items.SourceCollection).ToList();
+            DialogResult = true;
             Close();
         }
     }

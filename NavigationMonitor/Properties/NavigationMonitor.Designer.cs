@@ -79,6 +79,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string bm_all {
+            get {
+                return ResourceManager.GetString("bm_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string bm_cancel {
@@ -160,11 +169,11 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OK.
+        ///   Looks up a localized string similar to Selected.
         /// </summary>
-        public static string bm_ok {
+        public static string bm_selected {
             get {
-                return ResourceManager.GetString("bm_ok", resourceCulture);
+                return ResourceManager.GetString("bm_selected", resourceCulture);
             }
         }
         

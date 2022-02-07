@@ -35,8 +35,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid Grid.Row="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="Column" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+        <DataGrid Grid.Row="0" Grid.ColumnSpan="3" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="Column" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -125,7 +126,8 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="1" Grid.Column="0" Margin="0,5" HorizontalAlignment="Center" MinWidth="60" Click="OKButtonClicked" Content="{x:Static resx:NavigationMonitor.bm_ok}" />
-        <Button Grid.Row="1" Grid.Column="1" Margin="0,5" HorizontalAlignment="Center" MinWidth="60" Click="CancelButtonClicked" Content="{x:Static resx:NavigationMonitor.bm_cancel}" />
+        <Button Grid.Row="1" Grid.Column="0" Margin="0,5" HorizontalAlignment="Center" MinWidth="60" Click="SelectedButtonClicked" Content="{x:Static resx:NavigationMonitor.bm_selected}" />
+        <Button Grid.Row="1" Grid.Column="1" Margin="0,5" HorizontalAlignment="Center" MinWidth="60" Click="AllButtonClicked" Content="{x:Static resx:NavigationMonitor.bm_all}" />
+        <Button Grid.Row="1" Grid.Column="2" Margin="0,5" HorizontalAlignment="Center" MinWidth="60" Click="CancelButtonClicked" Content="{x:Static resx:NavigationMonitor.bm_cancel}" />
     </Grid>
 </Window>
