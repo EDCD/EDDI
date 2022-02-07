@@ -78,7 +78,8 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private decimal? _longitude;
 
-        public bool landable { get; set; }
+        [JsonIgnore] 
+        public bool landable => latitude != null && longitude != null;
 
         [JsonIgnore]
         public decimal? heading
@@ -137,7 +138,7 @@ namespace EddiDataDefinitions
         public NavBookmark() { }
 
         [JsonConstructor]
-        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool landable, bool nearby)
+        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool nearby)
         {
             this.systemname = systemname;
             this.x = x;
@@ -148,7 +149,6 @@ namespace EddiDataDefinitions
             this.isstation = isstation;
             this.latitude = latitude;
             this.longitude = longitude;
-            this.landable = landable;
             this.nearby = nearby;
         }
 

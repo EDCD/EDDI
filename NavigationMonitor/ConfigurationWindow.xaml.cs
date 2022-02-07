@@ -96,7 +96,6 @@ namespace EddiNavigationMonitor
             string poi = null;
             decimal? latitude = null;
             decimal? longitude = null;
-            var landable = false;
             var nearby = false;
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
@@ -136,7 +135,6 @@ namespace EddiNavigationMonitor
                             }
                         }
                     }
-                    landable = true;
                 }
                 else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
@@ -146,7 +144,6 @@ namespace EddiNavigationMonitor
                         poi = currentStation.name;
                         latitude = currentStatus?.latitude;
                         longitude = currentStatus?.longitude;
-                        landable = currentStatus?.near_surface ?? false;
                         nearby = true;
                     }
                 }
@@ -161,7 +158,6 @@ namespace EddiNavigationMonitor
                     if (currentStatus != null && currentStatus.near_surface)
                     {
                         GetSurfaceCoordinates(currentStatus, out latitude, out longitude);
-                        landable = true;
                     }
                 }
                 else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
@@ -169,12 +165,11 @@ namespace EddiNavigationMonitor
                     if (currentStatus != null && currentStatus.near_surface)
                     {
                         GetSurfaceCoordinates(currentStatus, out latitude, out longitude);
-                        landable = true;
                     }
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
-                    currentStatus?.bodyname, poi, isStation, latitude, longitude, landable, nearby);
+                    currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
                 navigationMonitor().bookmarks.Add(navBookmark);
                 navigationMonitor().writeBookmarks();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
@@ -198,7 +193,7 @@ namespace EddiNavigationMonitor
             }
             bool nearby = system.systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress && stationName == EDDI.Instance.CurrentStation?.name;
 
-            NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, stationName, isStation, null, null, landable, nearby);
+            NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, stationName, isStation, null, null, nearby);
             navigationMonitor().bookmarks.Add(navBookmark);
             navigationMonitor().writeBookmarks();
             EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "query", navBookmark));
@@ -376,7 +371,6 @@ namespace EddiNavigationMonitor
                                     }
                                 }
                             }
-                            navBookmark.landable = true;
                             navBookmark.bodyname = currentStatus.bodyname;
                         }
                         else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
@@ -384,7 +378,6 @@ namespace EddiNavigationMonitor
                             if (currentStatus.near_surface)
                             {
                                 GetSurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
-                                navBookmark.landable = currentBody?.landable ?? false;
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
                                 navBookmark.bodyname = currentStatus.bodyname;
