@@ -157,4 +157,9 @@
   <data name="TerroristLeader" xml:space="preserve">
     <value>Terroristenführer</value>
   </data>
+  <data name="AIHumanoid" xml:space="preserve">
+    <value>Fraktionsmitglied</value>
+    <comment>Massacre Mission Target: Faction Members</comment>
+  </data>
+  
 </root>
