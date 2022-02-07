@@ -79,6 +79,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string bm_cancel {
+            get {
+                return ResourceManager.GetString("bm_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Bookmarks.
         /// </summary>
         public static string bm_export_button {
@@ -147,6 +156,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string bm_nearby_radius_tooltip {
             get {
                 return ResourceManager.GetString("bm_nearby_radius_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string bm_ok {
+            get {
+                return ResourceManager.GetString("bm_ok", resourceCulture);
             }
         }
         

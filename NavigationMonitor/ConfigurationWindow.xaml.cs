@@ -213,42 +213,35 @@ namespace EddiNavigationMonitor
         private void exportBookmarks(object sender, RoutedEventArgs e)
         {
             // Select bookmarks
-            // TODO: Create a dialog to select which bookmarks to export
-            var selectedBookmarks = new List<NavBookmark>();
-            foreach (NavBookmark item in bookmarksData.SelectedItems)
+            var bookmarksSelector = new BookmarkSelector(bookmarksData.Items.SourceCollection as IEnumerable<NavBookmark>);
+            EDDI.Instance.SpeechResponderModalWait = true;
+            bookmarksSelector.ShowDialog();
+            EDDI.Instance.SpeechResponderModalWait = false;
+            if (bookmarksSelector.DialogResult ?? false)
             {
-                selectedBookmarks.Add(item);
-            }
-            if (!selectedBookmarks.Any())
-            {
-                foreach (NavBookmark item in bookmarksData.Items)
+                // Package up bookmarks (in .jsonl format)
+                var sb = new StringBuilder();
+                foreach (var navBookmark in bookmarksSelector.SelectedBookmarks)
                 {
-                    selectedBookmarks.Add(item);
+                    sb.AppendLine(JsonConvert.SerializeObject(navBookmark));
                 }
-            }
+                if (sb.Length <= 0) { return; }
 
-            // Package up bookmarks
-            var sb = new StringBuilder();
-            foreach (var navBookmark in selectedBookmarks)
-            {
-                sb.AppendLine(JsonConvert.SerializeObject(navBookmark));
-            }
-            if (sb.Length <= 0) { return; }
-
-            // Export to a file (.jsonl format)
-            var fileDialog = new SaveFileDialog
-            {
-                InitialDirectory = Constants.DATA_DIR,
-                AddExtension = true,
-                OverwritePrompt = true,
-                ValidateNames = true,
-                DefaultExt = ".bkmks",
-                Filter = "Bookmark files|*.bkmks",
-                FilterIndex = 0
-            };
-            if (fileDialog.ShowDialog() ?? false)
-            {
-                Files.Write(fileDialog.FileName, sb.ToString());
+                // Export to a file
+                var fileDialog = new SaveFileDialog
+                {
+                    InitialDirectory = Constants.DATA_DIR,
+                    AddExtension = true,
+                    OverwritePrompt = true,
+                    ValidateNames = true,
+                    DefaultExt = ".bkmks",
+                    Filter = "Bookmark files|*.bkmks",
+                    FilterIndex = 0
+                };
+                if (fileDialog.ShowDialog() ?? false)
+                {
+                    Files.Write(fileDialog.FileName, sb.ToString());
+                }
             }
         }
 
@@ -265,10 +258,8 @@ namespace EddiNavigationMonitor
             };
             if (fileDialog.ShowDialog() ?? false)
             {
-                // Start by retrieving our current bookmarks
-                var newBookmarks = new List<NavBookmark>();
-                
                 // Import bookmarks
+                var newBookmarks = new List<NavBookmark>();
                 foreach (var fileName in fileDialog.FileNames)
                 {
                     if (!fileName.EndsWith(".bkmks")) { continue; }
@@ -301,13 +292,15 @@ namespace EddiNavigationMonitor
                 }
 
                 // Select bookmarks
-                // TODO: Create a dialog to select which bookmarks to import
-                var selectedBookmarks = newBookmarks;
+                var bookmarksSelector = new BookmarkSelector(newBookmarks);
+                EDDI.Instance.SpeechResponderModalWait = true;
+                bookmarksSelector.ShowDialog();
+                EDDI.Instance.SpeechResponderModalWait = false;
 
                 // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
                 lock (NavigationMonitor.bookmarksLock)
                 {
-                    foreach (var navBookmark in selectedBookmarks)
+                    foreach (var navBookmark in bookmarksSelector.SelectedBookmarks)
                     {
                         if (!navigationMonitor().bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
                         {

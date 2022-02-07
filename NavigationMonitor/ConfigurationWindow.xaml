@@ -162,7 +162,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -175,7 +175,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

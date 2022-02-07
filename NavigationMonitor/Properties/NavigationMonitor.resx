@@ -288,4 +288,10 @@
   <data name="use_straight_path_tooltip" xml:space="preserve">
     <value>The shortest path around a sphere may be curved</value>
   </data>
+  <data name="bm_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="bm_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>
