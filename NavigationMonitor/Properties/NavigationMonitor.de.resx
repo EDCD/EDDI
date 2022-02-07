@@ -264,7 +264,9 @@
   <data name="bm_export_button" xml:space="preserve">
     <value>Lesezeichen exportieren</value>
   </data>
-  
+  <data name="bm_export_button_tooltip" xml:space="preserve">
+    <value>Lesezeichen in eine .csv-Datei exportieren</value>
+  </data>
   <data name="header_heading" xml:space="preserve">
     <value>Richtung:</value>
   </data>
@@ -277,10 +279,24 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Der Radius (in Metern), der das Ereignis "Nächstes Lesezeichen" auslöst</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Zusätzliche Details über das ausgewählte planetarische Lesezeichen ein- oder ausblenden</value>
+  </data>
+  <data name="use_straight_path" xml:space="preserve">
+    <value>Direkten Weg verwenden?</value>
+  </data>
+  <data name="use_straight_path_tooltip" xml:space="preserve">
+    <value>Der kürzeste Weg um eine Kugel kann gekrümmt sein</value>
+  </data>
+  <data name="bm_selected" xml:space="preserve">
+    <value>Ausgewählt</value>
+    <comment>Import or export selected</comment>
+  </data>
+  <data name="bm_cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="bm_all" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Import or export all</comment>
+  </data>
 </root>
