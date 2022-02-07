@@ -288,7 +288,15 @@
   <data name="use_straight_path_tooltip" xml:space="preserve">
     <value>O caminho mais curto em volta de uma esfera pode ser curvo</value>
   </data>
-  
-  
-  
+  <data name="bm_selected" xml:space="preserve">
+    <value>Selecionado</value>
+    <comment>Import or export selected</comment>
+  </data>
+  <data name="bm_cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="bm_all" xml:space="preserve">
+    <value>Todos</value>
+    <comment>Import or export all</comment>
+  </data>
 </root>
