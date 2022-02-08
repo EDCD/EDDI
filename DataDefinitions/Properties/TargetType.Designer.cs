@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guard.
+        ///   Looks up a localized string similar to Faction Guards.
         /// </summary>
         internal static string GuardHumanoid {
             get {
