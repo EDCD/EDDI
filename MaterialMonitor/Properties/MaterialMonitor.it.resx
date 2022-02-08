@@ -147,5 +147,7 @@
   <data name="type_header" xml:space="preserve">
     <value>Tipo</value>
   </data>
-  
+  <data name="grade_header" xml:space="preserve">
+    <value>Grado</value>
+  </data>
 </root>
