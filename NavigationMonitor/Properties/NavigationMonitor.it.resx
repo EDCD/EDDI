@@ -280,7 +280,15 @@
   
   
   
-  
-  
-  
+  <data name="bm_selected" xml:space="preserve">
+    <value>Selezionato</value>
+    <comment>Import or export selected</comment>
+  </data>
+  <data name="bm_cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="bm_all" xml:space="preserve">
+    <value>Tutti</value>
+    <comment>Import or export all</comment>
+  </data>
 </root>
