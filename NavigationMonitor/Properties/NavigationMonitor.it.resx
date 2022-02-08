@@ -264,7 +264,9 @@
   <data name="bm_export_button" xml:space="preserve">
     <value>Esporta segnalibri</value>
   </data>
-  
+  <data name="bm_export_button_tooltip" xml:space="preserve">
+    <value>Esporta segnalibri da un file .csv</value>
+  </data>
   <data name="header_heading" xml:space="preserve">
     <value>Direzione:</value>
   </data>
@@ -277,7 +279,9 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Il raggio (in metri) entro il quale viene lanciato l'evento `Near bookmark`</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Mostra o nasconde ulteriori dettagli riguardanti il segnalibro planetario selezionato</value>
+  </data>
   
   
   <data name="bm_selected" xml:space="preserve">
