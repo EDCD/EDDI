@@ -207,5 +207,7 @@
   <data name="header_cg_reward" xml:space="preserve">
     <value>Ricompensa (Crediti):</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Mostra o nasconde ulteriori dettagli riguardanti la missione selezionata</value>
+  </data>
 </root>
