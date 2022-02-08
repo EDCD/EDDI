@@ -282,8 +282,12 @@
   <data name="extra_details_tooltip" xml:space="preserve">
     <value>Mostra o nasconde ulteriori dettagli riguardanti il segnalibro planetario selezionato</value>
   </data>
-  
-  
+  <data name="use_straight_path" xml:space="preserve">
+    <value>Utilizzare il percorso rettilineo?</value>
+  </data>
+  <data name="use_straight_path_tooltip" xml:space="preserve">
+    <value>Il percorso più breve attorno a una sfera potrebbe essere una curva</value>
+  </data>
   <data name="bm_selected" xml:space="preserve">
     <value>Selezionato</value>
     <comment>Import or export selected</comment>
