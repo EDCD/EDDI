@@ -480,10 +480,10 @@ namespace EddiStatusMonitor
 
                         // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` edName.
                         // When this occurs, we need to fall back to our generic signal source name.
-                        var signalSource = thisStatus.destinationName != "$USS_HighGradeEmissions;"
-                            ? EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
-                                s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName)
-                            : SignalSource.GenericSignalSource;
+                        var signalSource = thisStatus.destinationName == "$USS_HighGradeEmissions;"
+                            ? SignalSource.GenericSignalSource
+                            : EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
+                                  s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName);
 
                         // Might be a body (including the primary star of a different system if selecting a star system)
                         if (body != null && thisStatus.destinationName == body.bodyname)
