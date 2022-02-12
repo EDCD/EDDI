@@ -144,6 +144,8 @@ namespace EddiSpeechResponder
         public void Stop()
         {
             EDDI.Instance.State["speechresponder_quiet"] = true;
+            SpeechService.Instance.ShutUp();
+            SpeechService.Instance.StopAudio();
         }
 
         public void Reload()

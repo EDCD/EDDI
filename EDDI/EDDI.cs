@@ -548,7 +548,6 @@ namespace EddiCore
                 }
             }
 
-            SpeechService.Instance.ShutUp();
             started = false;
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
         }

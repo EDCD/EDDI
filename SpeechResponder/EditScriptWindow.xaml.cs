@@ -225,24 +225,32 @@ namespace EddiSpeechResponder
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
-            if (!SpeechService.Instance.eddiSpeaking)
+            if (SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking)
             {
-                ScriptRecoveryService.SaveRecoveryScript(editorScript);
-
-                // Splice the new script in to the existing scripts
-                editorScript.Value = scriptView.Text;
-                Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
-                Script testScript = new Script(editorScript.Name, editorScript.Description, false, editorScript.Value);
-                newScripts.Remove(editorScript.Name);
-                newScripts.Add(editorScript.Name, testScript);
-
-                SpeechResponder speechResponder = new SpeechResponder();
-                speechResponder.Start();
-                speechResponder.TestScript(editorScript.Name, newScripts);
+                SpeechService.Instance.StopAudio();
             }
             else
             {
-                SpeechService.Instance.ShutUp();
+                if (!SpeechService.Instance.eddiSpeaking)
+                {
+                    ScriptRecoveryService.SaveRecoveryScript(editorScript);
+
+                    // Splice the new script in to the existing scripts
+                    editorScript.Value = scriptView.Text;
+                    Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
+                    Script testScript = new Script(editorScript.Name, editorScript.Description, false, editorScript.Value);
+                    newScripts.Remove(editorScript.Name);
+                    newScripts.Add(editorScript.Name, testScript);
+
+                    SpeechResponder speechResponder = new SpeechResponder();
+                    speechResponder.Start();
+                    speechResponder.TestScript(editorScript.Name, newScripts);
+                }
+                else
+                {
+                    SpeechService.Instance.ShutUp();
+                    SpeechService.Instance.StopAudio();
+                }
             }
         }
 

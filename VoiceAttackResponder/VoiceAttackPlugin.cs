@@ -877,6 +877,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 SpeechService.Instance.ShutUp();
+                SpeechService.Instance.StopAudio();
             }
             catch (Exception e)
             {

@@ -59,6 +59,7 @@ namespace EddiSpeechService
             }
         }
         private int activeSpeechPriority;
+        private ISoundOut activeAudio;
 
         public readonly SpeechQueue speechQueue = SpeechQueue.Instance;
 
@@ -75,6 +76,8 @@ namespace EddiSpeechService
                 }
             }
         }
+
+        public bool eddiAudioPlaying => activeAudio != null;
 
         private static SpeechService instance;
         private static readonly object instanceLock = new object();
@@ -411,7 +414,7 @@ namespace EddiSpeechService
                 if (activeSpeech != null)
                 {
                     Logging.Debug("Stopping active speech");
-                    FadeOutCurrentSpeech();
+                    FadeOut(activeSpeech);
                     activeSpeech.Stop();
                     Logging.Debug("Disposing of active speech");
                     activeSpeech.Dispose();
@@ -421,14 +424,14 @@ namespace EddiSpeechService
             }
         }
 
-        private void FadeOutCurrentSpeech()
+        private void FadeOut(ISoundOut soundOut)
         {
-            if (activeSpeech?.PlaybackState == PlaybackState.Playing)
+            if (soundOut?.PlaybackState == PlaybackState.Playing)
             {
-                float fadePer10Milliseconds = (activeSpeech.Volume / ActiveSpeechFadeOutMilliseconds) * 10;
-                while (activeSpeech.Volume > 0)
+                float fadePer10Milliseconds = (soundOut.Volume / ActiveSpeechFadeOutMilliseconds) * 10;
+                while (soundOut.Volume > 0)
                 {
-                    activeSpeech.Volume -= fadePer10Milliseconds;
+                    soundOut.Volume -= fadePer10Milliseconds;
                     Thread.Sleep(10);
                 }
             }
@@ -504,6 +507,7 @@ namespace EddiSpeechService
             {
                 var audioSource = CodecFactory.Instance.GetCodec(fileName);
                 var waitTime = audioSource.GetTime(audioSource.Length);
+                activeAudio = soundOut;
                 soundOut.Initialize(audioSource);
                 if (volumeOverride != null)
                 {
@@ -511,7 +515,18 @@ namespace EddiSpeechService
                 }
                 soundOut.Play();
                 waitHandle.WaitOne(waitTime);
-                soundOut.Stop();
+                StopAudio();
+            }
+        }
+
+        public void StopAudio()
+        {
+            if (eddiAudioPlaying)
+            {
+                FadeOut(activeAudio);
+                activeAudio.Stop();
+                activeAudio.Dispose();
+                activeAudio = null;
             }
         }
 

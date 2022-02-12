@@ -201,16 +201,24 @@ namespace EddiSpeechResponder
 
         private void testScript(object sender, RoutedEventArgs e)
         {
-            if (!SpeechService.Instance.eddiSpeaking)
+            if (SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking)
             {
-                var script = getScriptFromContext(sender);
-                SpeechResponder responder = new SpeechResponder();
-                responder.Start();
-                responder.TestScript(script.Name, Personality.Scripts);
+                SpeechService.Instance.StopAudio();
             }
             else
             {
-                SpeechService.Instance.ShutUp();
+                if (!SpeechService.Instance.eddiSpeaking)
+                {
+                    var script = getScriptFromContext(sender);
+                    SpeechResponder responder = new SpeechResponder();
+                    responder.Start();
+                    responder.TestScript(script.Name, Personality.Scripts);
+                }
+                else
+                {
+                    SpeechService.Instance.ShutUp();
+                    SpeechService.Instance.StopAudio();
+                }
             }
         }
 
