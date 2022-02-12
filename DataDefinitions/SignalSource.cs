@@ -13,6 +13,7 @@ namespace EddiDataDefinitions
             missingEDNameHandler = edname => new SignalSource(edname);
 
             UnidentifiedSignalSource = new SignalSource("USS");
+            GenericSignalSource = new SignalSource("GenericSignalSource");
 
             var NavBeacon = new SignalSource("MULTIPLAYER_SCENARIO42_TITLE");
             var CompromisedNavBeacon = new SignalSource("MULTIPLAYER_SCENARIO80_TITLE");
@@ -93,6 +94,7 @@ namespace EddiDataDefinitions
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
+        public static readonly SignalSource GenericSignalSource;
 
         public int index;
         public string spawningFaction { get; set; }

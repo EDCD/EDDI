@@ -259,6 +259,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Signal Source.
+        /// </summary>
+        public static string GenericSignalSource {
+            get {
+                return ResourceManager.GetString("GenericSignalSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Armed Revolt.
         /// </summary>
         public static string Gro_controlScenarioTitle {

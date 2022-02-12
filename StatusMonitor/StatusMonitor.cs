@@ -483,7 +483,7 @@ namespace EddiStatusMonitor
                         var signalSource = thisStatus.destinationName != "$USS_HighGradeEmissions;"
                             ? EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
                                 s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName)
-                            : SignalSource.UnidentifiedSignalSource;
+                            : SignalSource.GenericSignalSource;
 
                         // Might be a body (including the primary star of a different system if selecting a star system)
                         if (body != null && thisStatus.destinationName == body.bodyname)
