@@ -319,19 +319,19 @@ namespace EddiStatusMonitor
                         {
                             status.destinationSystemAddress = JsonParsing.getOptionalLong(destinationInfo, "System");
                             status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
-                            status.destinationName = JsonParsing.getString(destinationInfo, "Name");
-                            status.destinationLocalizedName = JsonParsing.getString(destinationInfo, "Name_Localised");
+                            status.destination_name = JsonParsing.getString(destinationInfo, "Name");
+                            status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised");
 
                             // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
                             var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
-                            if (string.IsNullOrEmpty(status.destinationLocalizedName) && fleetCarrierRegex.IsMatch(status.destinationName))
+                            if (string.IsNullOrEmpty(status.destination_localized_name) && fleetCarrierRegex.IsMatch(status.destination_name))
                             {
                                 // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
-                                var fleetCarrierParts = fleetCarrierRegex.Matches(status.destinationName)[0].Groups;
+                                var fleetCarrierParts = fleetCarrierRegex.Matches(status.destination_name)[0].Groups;
                                 if (fleetCarrierParts.Count == 3)
                                 {
-                                    status.destinationName = fleetCarrierParts[2].Value;
-                                    status.destinationLocalizedName = fleetCarrierParts[1].Value;
+                                    status.destination_name = fleetCarrierParts[2].Value;
+                                    status.destination_localized_name = fleetCarrierParts[1].Value;
                                 }
                             }
                         }
@@ -467,33 +467,33 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.enqueueEvent(new FlightAssistEvent(thisStatus.timestamp, thisStatus.flight_assist_off));
                 }
-                if (!string.IsNullOrEmpty(thisStatus.destinationName) && thisStatus.destinationName != lastStatus.destinationName
+                if (!string.IsNullOrEmpty(thisStatus.destination_name) && thisStatus.destination_name != lastStatus.destination_name
                     && thisStatus.vehicle == lastStatus.vehicle)
                 {
                     if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress ==
-                        thisStatus.destinationSystemAddress && thisStatus.destinationName != lastDestinationPOI)
+                        thisStatus.destinationSystemAddress && thisStatus.destination_name != lastDestinationPOI)
                     {
                         var body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b =>
                             b.bodyId == thisStatus.destinationBodyId);
                         var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
-                            s.name == thisStatus.destinationName);
+                            s.name == thisStatus.destination_name);
 
                         // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` edName.
                         // When this occurs, we need to fall back to our generic signal source name.
-                        var signalSource = thisStatus.destinationName == "$USS_HighGradeEmissions;"
+                        var signalSource = thisStatus.destination_name == "$USS_HighGradeEmissions;"
                             ? SignalSource.GenericSignalSource
                             : EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault(s =>
-                                  s.edname == thisStatus.destinationName) ?? SignalSource.FromEDName(thisStatus.destinationName);
+                                  s.edname == thisStatus.destination_name) ?? SignalSource.FromEDName(thisStatus.destination_name);
 
                         // Might be a body (including the primary star of a different system if selecting a star system)
-                        if (body != null && thisStatus.destinationName == body.bodyname)
+                        if (body != null && thisStatus.destination_name == body.bodyname)
                         {
                             EDDI.Instance.enqueueEvent(new NextDestinationEvent(
                                 thisStatus.timestamp,
                                 thisStatus.destinationSystemAddress,
                                 thisStatus.destinationBodyId,
-                                thisStatus.destinationName,
-                                thisStatus.destinationLocalizedName,
+                                thisStatus.destination_name,
+                                thisStatus.destination_localized_name,
                                 body));
                         }
                         // Might be a station (including megaship or fleet carrier)
@@ -503,15 +503,15 @@ namespace EddiStatusMonitor
                                 thisStatus.timestamp,
                                 thisStatus.destinationSystemAddress,
                                 thisStatus.destinationBodyId,
-                                thisStatus.destinationName,
-                                thisStatus.destinationLocalizedName,
+                                thisStatus.destination_name,
+                                thisStatus.destination_localized_name,
                                 body,
                                 station));
                         }
                         // Might be a non-station signal source
                         else if (signalSource != null)
                         {
-                            signalSource.fallbackLocalizedName = thisStatus.destinationLocalizedName;
+                            signalSource.fallbackLocalizedName = thisStatus.destination_localized_name;
                             EDDI.Instance.enqueueEvent(new NextDestinationEvent(
                                 thisStatus.timestamp,
                                 thisStatus.destinationSystemAddress,
@@ -522,17 +522,17 @@ namespace EddiStatusMonitor
                                 null,
                                 signalSource));
                         }
-                        else if (thisStatus.destinationName != lastDestinationPOI)
+                        else if (thisStatus.destination_name != lastDestinationPOI)
                         {
                             EDDI.Instance.enqueueEvent(new NextDestinationEvent(
                                 thisStatus.timestamp,
                                 thisStatus.destinationSystemAddress,
                                 thisStatus.destinationBodyId,
-                                thisStatus.destinationName,
-                                thisStatus.destinationLocalizedName,
+                                thisStatus.destination_name,
+                                thisStatus.destination_localized_name,
                                 body));
                         }
-                        lastDestinationPOI = thisStatus.destinationName;
+                        lastDestinationPOI = thisStatus.destination_name;
                     }
                 }
                 if (gliding && thisStatus.fsd_status == "cooldown")

@@ -270,8 +270,12 @@ namespace EddiDataDefinitions
 
         public long? destinationSystemAddress;
         public int? destinationBodyId; // Multiple destinations either on or orbiting the same body may share a single bodyId
-        public string destinationName;
-        public string destinationLocalizedName; // Typically only written for signal source
+
+        [PublicAPI("The name of the currently selected destination (including in-system destinations)")]
+        public string destination_name;
+
+        [PublicAPI("The localized name of the currently selected destination, if available")]
+        public string destination_localized_name; // Typically only written for signal sources and fleet carriers
         
         public Status(Flags flags = Flags.None, Flags2 flags2 = Flags2.None)
         {

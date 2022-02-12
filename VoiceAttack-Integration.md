@@ -99,6 +99,8 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status low oxygen} true if you are on foot and oxygen is running low.
   * {BOOL:Status low health} true if you are on foot and health is running low.
   * {TXT:Status on foot temperature} the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
+  * {TXT:Status destination} the currently selected destination (including in-system destinations)
+  * {TXT:Status localized destination} the localized name of the currently selected destination, if available
 
 ## Ship Variables
 Note: "Tiny" hardpoints are utility slots.

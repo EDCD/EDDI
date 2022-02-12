@@ -17,19 +17,25 @@ namespace EddiEvents
         [PublicAPI("The localized name of the next in-system destination, if known")]
         public string localizedName { get; private set; }
 
-        [PublicAPI("The body destination, if known")]
-        public Body body { get; private set; }
+        [PublicAPI("If the destination is an body")] 
+        public bool isBody => body != null;
 
-        [PublicAPI("The station destination, if known")]
-        public Station station { get; private set; }
+        [PublicAPI("If the destination is an station (including megaship or fleet carrier)")]
+        public bool isStation => station != null;
 
-        [PublicAPI("The signal source destination, if known")]
-        public SignalSource signalSource { get; private set; }
+        [PublicAPI("If the destination is an station signal source")]
+        public bool isSignalSource => signalSource != null;
 
         // Not intended to be user facing
         public long? systemAddress { get; private set; }
 
         public int? bodyId { get; private set; }
+
+        public Body body { get; private set; }
+
+        public Station station { get; private set; }
+
+        public SignalSource signalSource { get; private set; }
 
         public NextDestinationEvent(DateTime timestamp, long? systemAddress, int? bodyId, string name, string localizedName = null, Body body = null, Station station = null, SignalSource signalSource = null) : base(timestamp, NAME)
         {

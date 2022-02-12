@@ -655,6 +655,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetBoolean(prefix + " low oxygen", status?.low_oxygen);
                 vaProxy.SetBoolean(prefix + " low health", status?.low_health);
                 vaProxy.SetText(prefix + " on foot temperature", status?.on_foot_temperature);
+                vaProxy.SetText(prefix + " destination", status?.destination_name);
+                vaProxy.SetText(prefix + " localized destination", status?.destination_localized_name);
             }
             catch (Exception e)
             {
