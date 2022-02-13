@@ -154,7 +154,7 @@
     <value>Wing Disable</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
-    <value>Разрешение на приобретение</value>
+    <value>Возможность получения разрешений</value>
   </data>
   <data name="Hack" xml:space="preserve">
     <value>Взлом базы</value>
@@ -307,5 +307,14 @@
   <data name="PolPrisoner" xml:space="preserve">
     <value>Политический заключенный</value>
     <comment>Bulk passenger type</comment>
+  </data>
+  <data name="Assassination" xml:space="preserve">
+    <value>Заказное убийство</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>Ограбление</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>Точка интереса</value>
   </data>
 </root>
