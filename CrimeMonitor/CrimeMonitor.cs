@@ -550,7 +550,9 @@ namespace EddiCrimeMonitor
             }
 
             bool update = false;
-            foreach (FactionRecord record in criminalrecord.ToList())
+            foreach (FactionRecord record in criminalrecord.ToList()
+                // Filter out records from factions within the current star system
+                .Where(r => !(EDDI.Instance.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
             {
                 if (@event.allbounties || record.faction == @event.faction)
                 {
