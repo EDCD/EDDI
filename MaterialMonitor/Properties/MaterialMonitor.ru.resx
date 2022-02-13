@@ -147,5 +147,7 @@
   <data name="type_header" xml:space="preserve">
     <value>Тип</value>
   </data>
-  
+  <data name="grade_header" xml:space="preserve">
+    <value>Оценка</value>
+  </data>
 </root>
