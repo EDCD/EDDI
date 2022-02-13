@@ -207,5 +207,7 @@
   <data name="header_cg_reward" xml:space="preserve">
     <value>Вознаграждение (кредиты):</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Показать/Спрятать дополнительную информацию о выбранной миссии</value>
+  </data>
 </root>
