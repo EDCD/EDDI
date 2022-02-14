@@ -161,5 +161,8 @@
     <value>Membros da Facção</value>
     <comment>Massacre Mission Target: Faction Members</comment>
   </data>
-  
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>Guardas da Facção</value>
+    <comment>Massacre Mission Target: Faction Guards</comment>
+  </data>
 </root>
