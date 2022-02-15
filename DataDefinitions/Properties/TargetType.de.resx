@@ -161,5 +161,8 @@
     <value>Fraktionsmitglied</value>
     <comment>Massacre Mission Target: Faction Members</comment>
   </data>
-  
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>Fraktionswachen</value>
+    <comment>Massacre Mission Target: Faction Guards</comment>
+  </data>
 </root>
