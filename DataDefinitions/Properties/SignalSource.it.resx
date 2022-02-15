@@ -385,5 +385,8 @@
     <value>Fonte attiva di energia</value>
     <comment>Active Power Source</comment>
   </data>
-  
+  <data name="GenericSignalSource" xml:space="preserve">
+    <value>Sorgente di segnale</value>
+    <comment>When the signal source may be one of several types</comment>
+  </data>
 </root>
