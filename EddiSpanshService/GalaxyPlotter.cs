@@ -11,7 +11,7 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Galaxy Plotter.
-        public static async Task<List<NavWaypoint>> GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
+        public List<NavWaypoint> GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
         {
             if (ship is null) { return null; }
 
@@ -19,9 +19,8 @@ namespace EddiSpanshService
                 out decimal base_mass, out decimal tank_size, out decimal internal_tank_size,
                 out decimal max_fuel_per_jump, out decimal range_boost);
 
-            var client = new RestClient("https://spansh.co.uk/api/");
             var request = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, is_supercharged, use_supercharge, use_injections, exclude_secondary);
-            var initialResponse = client.Get(request);
+            var initialResponse = spanshRestClient.Get(request);
 
             if (string.IsNullOrEmpty(initialResponse.Content))
             {
@@ -29,12 +28,12 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var route = await Task.FromResult(GetRouteResponse(initialResponse.Content));
+            var route = Task.FromResult(GetRouteResponse(initialResponse.Content)).Result;
 
             return ParseGalaxyRoute(route);
         }
 
-        private static void GetShipJumpDetails(Ship ship, out decimal fuel_power, out decimal fuel_multiplier, out decimal optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out decimal range_boost)
+        private void GetShipJumpDetails(Ship ship, out decimal fuel_power, out decimal fuel_multiplier, out decimal optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out decimal range_boost)
         {
             // Optimal mass
             optimal_mass = ship.optimalmass;
@@ -67,7 +66,7 @@ namespace EddiSpanshService
             internal_tank_size = ship.activeFuelReservoirCapacity;
         }
 
-        private static IRestRequest GalaxyRouteRequest(string currentSystem, string targetSystem, int? cargoCarriedTons, decimal fuel_power, decimal fuel_multiplier, decimal optimal_mass, decimal base_mass, decimal tank_size, decimal internal_tank_size, decimal max_fuel_per_jump, decimal range_boost, bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary)
+        private IRestRequest GalaxyRouteRequest(string currentSystem, string targetSystem, int? cargoCarriedTons, decimal fuel_power, decimal fuel_multiplier, decimal optimal_mass, decimal base_mass, decimal tank_size, decimal internal_tank_size, decimal max_fuel_per_jump, decimal range_boost, bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary)
         {
             var request = new RestRequest("generic/route");
             request
@@ -93,7 +92,7 @@ namespace EddiSpanshService
             return request;
         }
         
-        private static List<NavWaypoint> ParseGalaxyRoute(JToken routeResult)
+        private List<NavWaypoint> ParseGalaxyRoute(JToken routeResult)
         {
             var results = new List<NavWaypoint>();
 

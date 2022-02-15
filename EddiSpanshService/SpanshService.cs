@@ -1,13 +1,20 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json.Linq;
+using RestSharp;
 using System.Threading;
-using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiSpanshService
 {
-    public partial class SpanshService
+    public partial class SpanshService : ISpanshService
     {
-        private static JToken GetRouteResponse(string route)
+        private const string baseUrl = "https://spansh.co.uk/api/";
+        internal IRestClient spanshRestClient;
+        public SpanshService(RestClient restClient = null)
+        {
+            spanshRestClient = restClient ?? new RestClient(baseUrl);
+        }
+
+        private JToken GetRouteResponse(string route)
         {
             var routeResponse = JObject.Parse(route);
             if (routeResponse["error"] != null)
@@ -39,12 +46,10 @@ namespace EddiSpanshService
         /// </summary>
         /// <param name="job">The ID of the job which must be retrieved</param>
         /// <returns></returns>
-        private static JObject GetJobResponse(string job)
+        private JObject GetJobResponse(string job)
         {
-            var client = new RestClient("https://spansh.co.uk/api/");
             var Jobrequest = new RestRequest("results/" + job);
-
-            var response = client.Get(Jobrequest);
+            var response = spanshRestClient.Get(Jobrequest);
             return JObject.Parse(response.Content);
         }
     }

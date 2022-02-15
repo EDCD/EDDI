@@ -11,11 +11,10 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Neutron Plotter.
-        public static async Task<List<NavWaypoint>> GetNeutronRoute(string currentSystem, string targetSystem, decimal jumpRangeLy, int efficiency = 60)
+        public List<NavWaypoint> GetNeutronRoute(string currentSystem, string targetSystem, decimal jumpRangeLy, int efficiency = 60)
         {
-            var client = new RestClient("https://spansh.co.uk/api/");
             var request = NeutronRouteRequest(currentSystem, targetSystem, jumpRangeLy, efficiency);
-            var initialResponse = client.Get(request);
+            var initialResponse = spanshRestClient.Get(request);
 
             if (string.IsNullOrEmpty(initialResponse.Content))
             {
@@ -23,12 +22,12 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var route = await Task.FromResult(GetRouteResponse(initialResponse.Content));
+            var route = Task.FromResult(GetRouteResponse(initialResponse.Content)).Result;
 
             return ParseNeutronRoute(route);
         }
 
-        private static IRestRequest NeutronRouteRequest(string currentSystem, string targetSystem, decimal jumpRangeLy, int efficiency)
+        private IRestRequest NeutronRouteRequest(string currentSystem, string targetSystem, decimal jumpRangeLy, int efficiency)
         {
             var request = new RestRequest("route");
             return request.AddParameter("efficiency", efficiency)
@@ -37,7 +36,7 @@ namespace EddiSpanshService
                 .AddParameter("to", targetSystem);
         }
 
-        public static List<NavWaypoint> ParseNeutronRoute(JToken routeResult)
+        public List<NavWaypoint> ParseNeutronRoute(JToken routeResult)
         {
             var results = new List<NavWaypoint>();
 

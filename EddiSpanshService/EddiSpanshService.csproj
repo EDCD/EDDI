@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CarrierRouter.cs" />
     <Compile Include="GalaxyPlotter.cs" />
+    <Compile Include="ISpanshService.cs" />
     <Compile Include="NeutronPlotter.cs" />
     <Compile Include="SpanshService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

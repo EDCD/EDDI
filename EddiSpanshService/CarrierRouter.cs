@@ -10,11 +10,10 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Carrier Plotter.
-        public static async Task<List<NavWaypoint>> GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
+        public List<NavWaypoint> GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
         {
-            var client = new RestClient("https://spansh.co.uk/api/");
             var request = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
-            var initialResponse = client.Get(request);
+            var initialResponse = spanshRestClient.Get(request);
 
             if (string.IsNullOrEmpty(initialResponse.Content))
             {
@@ -22,12 +21,12 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var route = await Task.FromResult(GetRouteResponse(initialResponse.Content));
+            var route = Task.FromResult(GetRouteResponse(initialResponse.Content)).Result;
 
             return ParseCarrierRoute(route);
         }
 
-        private static IRestRequest CarrierRouteRequest(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired, string[] refuel_destinations)
+        private IRestRequest CarrierRouteRequest(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired, string[] refuel_destinations)
         {
             var request = new RestRequest("fleetcarrier/route");
             request
@@ -50,7 +49,7 @@ namespace EddiSpanshService
             return request;
         }
         
-        private static List<NavWaypoint> ParseCarrierRoute(JToken routeResult)
+        private List<NavWaypoint> ParseCarrierRoute(JToken routeResult)
         {
             var results = new List<NavWaypoint>();
 
