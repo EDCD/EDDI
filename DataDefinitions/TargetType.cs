@@ -8,7 +8,7 @@
         static TargetType()
         {
             resourceManager = Properties.TargetType.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new TargetType(edname);
 
             var BountyHunter = new TargetType("BountyHunter");
@@ -24,6 +24,7 @@
             var TerroristLeader = new TargetType("TerroristLeader");
             var Trader = new TargetType("Trader");
             var VenerableGeneral = new TargetType("VenerableGeneral");
+            var Deserter = new TargetType("Deserter");
             var DeserterASS = new TargetType("DeserterASS");
             var AIHumanoid = new TargetType("AIHumanoid");
         }

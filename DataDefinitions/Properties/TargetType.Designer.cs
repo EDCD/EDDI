@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deserters.
+        /// </summary>
+        internal static string Deserter {
+            get {
+                return ResourceManager.GetString("Deserter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deserter.
         /// </summary>
         internal static string DeserterASS {
