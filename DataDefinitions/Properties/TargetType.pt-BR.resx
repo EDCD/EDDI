@@ -165,5 +165,8 @@
     <value>Guardas da Facção</value>
     <comment>Massacre Mission Target: Faction Guards</comment>
   </data>
-  
+  <data name="Deserter" xml:space="preserve">
+    <value>Desertores</value>
+    <comment>Massacre Mission Target</comment>
+  </data>
 </root>
