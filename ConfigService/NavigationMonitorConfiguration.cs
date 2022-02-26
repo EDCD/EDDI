@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EddiConfigService
@@ -35,5 +36,15 @@ namespace EddiConfigService
         public decimal? tdLong { get; set; }
 
         public string tdPOI { get; set; }
+
+        // Current in-game route
+        public List<NavWaypoint> navRouteList { get; set; }
+        public decimal navRouteDistance { get; set; }
+
+        // Plotted route
+        public bool routeGuidanceEnabled { get; set; }
+        public List<NavWaypoint> plottedRouteList { get; set; }
+        public decimal plottedRouteDistance { get; set; }
+
     }
 }
