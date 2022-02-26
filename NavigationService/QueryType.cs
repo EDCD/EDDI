@@ -5,6 +5,7 @@
         // ReSharper disable once UnusedMember.Global
         None, // null
 
+        cancel,
         encoded,
         expiring,
         facilitator,
@@ -17,6 +18,7 @@
         raw,
         route,
         scoop,
+        set,
         source,
         update
     }
