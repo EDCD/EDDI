@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -41,6 +42,7 @@ namespace EddiDataDefinitions
         public bool visited { get; set; }
 
         // Default constructor
+        [JsonConstructor]
         public NavWaypoint(string systemName, decimal x, decimal y, decimal z)
         {
             this.systemName = systemName;
