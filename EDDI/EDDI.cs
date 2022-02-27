@@ -334,6 +334,7 @@ namespace EddiCore
         // The event queue
         private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
         private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
+        private Task eventConsumerThread = null;
 
         private string multicrewVehicleHolder;
 
@@ -524,9 +525,6 @@ namespace EddiCore
                         }
                     }
                 }
-
-                // Start our event handler thread
-                Task.Run(dequeueEvents);
 
                 started = true;
             }
@@ -750,6 +748,12 @@ namespace EddiCore
             if (!eventQueue.IsAddingCompleted)
             {
                 eventQueue.Add(@event);
+            }
+
+            // Start (or restart) our event handler thread
+            if (eventConsumerThread?.Status != TaskStatus.Running)
+            {
+                eventConsumerThread = Task.Run(dequeueEvents);
             }
         }
 
