@@ -37,30 +37,6 @@ namespace EddiNavigationMonitor
 
         private Status currentStatus { get; set; }
 
-        private readonly List<string> searchType = new List<string> {
-            "crime",
-            "galaxy",
-            "missions",
-            "services"
-        };
-
-        private readonly List<string> searchQuery = new List<string> {
-            "encoded",
-            "expiring",
-            "farthest",
-            "guardian",
-            "human",
-            "facilitator",
-            "manufactured",
-            "most",
-            "nearest",
-            "raw",
-            "route",
-            "scoop",
-            "source",
-            "update"
-        };
-
         private NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
@@ -69,13 +45,16 @@ namespace EddiNavigationMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
-            bookmarksData.ItemsSource = navigationMonitor().bookmarks;
+            bookmarksData.ItemsSource = navigationMonitor().Bookmarks;
+            navRouteData.ItemsSource = navigationMonitor().NavRouteList;
+            plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList;
 
             ConfigureSearchTypeOptions();
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+
             searchTypeDropDown.SelectedItem = Properties.NavigationMonitor.search_type_missions;
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
 
-            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
 
@@ -170,13 +149,13 @@ namespace EddiNavigationMonitor
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
                     currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
-                navigationMonitor().bookmarks.Add(navBookmark);
-                navigationMonitor().writeBookmarks();
+                navigationMonitor().Bookmarks.Add(navBookmark);
+                navigationMonitor().WriteNavConfig();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
             }
         }
 
-        private void bookmarkQuery(object sender, RoutedEventArgs e)
+        private void addBookmark(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(dropdownSearchSystem)) { return; }
 
@@ -184,25 +163,35 @@ namespace EddiNavigationMonitor
             StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName, false);
 
             string stationName = dropdownSearchStation;
-            bool isStation = false;
-            bool landable = false;
-            if (stationName != null)
-            {
-                isStation = true;
-                landable = system.stations.FirstOrDefault(s => s.name == stationName)?.IsPlanetary() ?? false;
-            }
+            bool isStation = stationName != null;
             bool nearby = system.systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress && stationName == EDDI.Instance.CurrentStation?.name;
 
             NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, stationName, isStation, null, null, nearby);
-            navigationMonitor().bookmarks.Add(navBookmark);
-            navigationMonitor().writeBookmarks();
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "query", navBookmark));
+            navigationMonitor().Bookmarks.Add(navBookmark);
+            navigationMonitor().WriteNavConfig();
+            SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
+            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
+        }
+
+        private void SwitchToTab(string tabHeader)
+        {
+            int index = 0;
+            for (int i = 0; i < tabControl.Items.Count; i++)
+            {
+                if ((TabItem)tabControl.Items[i] is TabItem tabItem
+                    && tabItem.Header.Equals(tabHeader))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            tabControl.SelectedIndex = index;
         }
 
         private void bookmarkUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the bookmark list
-            navigationMonitor()?.writeBookmarks();
+            navigationMonitor()?.WriteNavConfig();
         }
 
         private void exportBookmarks(object sender, RoutedEventArgs e)
@@ -293,16 +282,16 @@ namespace EddiNavigationMonitor
                 EDDI.Instance.SpeechResponderModalWait = false;
 
                 // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
-                lock (NavigationMonitor.bookmarksLock)
+                lock (NavigationMonitor.navConfigLock)
                 {
                     foreach (var navBookmark in bookmarksSelector.SelectedBookmarks)
                     {
-                        if (!navigationMonitor().bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
+                        if (!navigationMonitor().Bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
                         {
-                            navigationMonitor().bookmarks.Add(navBookmark);
+                            navigationMonitor().Bookmarks.Add(navBookmark);
                         }
                     }
-                    navigationMonitor().writeBookmarks();
+                    navigationMonitor().WriteNavConfig();
                 }
             }
         }
@@ -310,6 +299,7 @@ namespace EddiNavigationMonitor
         private void removeBookmark(object sender, RoutedEventArgs e)
         {
             var index = bookmarksData.SelectedIndex;
+            var bookmark = bookmarksData.SelectedItem as NavBookmark;
             string messageBoxText = Properties.NavigationMonitor.remove_message;
             string caption = Properties.NavigationMonitor.remove_caption;
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -319,7 +309,8 @@ namespace EddiNavigationMonitor
                     {
                         // Remove the bookmark from the list
                         navigationMonitor().RemoveBookmarkAt(index);
-                        navigationMonitor().writeBookmarks();
+                        navigationMonitor().WriteNavConfig();
+                        EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "remove", bookmark));
                     }
                     break;
             }
@@ -396,7 +387,7 @@ namespace EddiNavigationMonitor
                     }
 
                     navBookmark.nearby = true;
-                    navigationMonitor().writeBookmarks();
+                    navigationMonitor().WriteNavConfig();
                     EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "update", navBookmark));
                 }
             }
@@ -419,7 +410,7 @@ namespace EddiNavigationMonitor
             if (navConfig.prioritizeOrbitalStations != isChecked)
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
-                navigationMonitor().writeBookmarks();
+                navigationMonitor().WriteNavConfig();
             }
         }
 
@@ -446,7 +437,7 @@ namespace EddiNavigationMonitor
                 if (distance != navConfig.maxSearchDistanceFromStarLs)
                 {
                     navConfig.maxSearchDistanceFromStarLs = distance;
-                    navigationMonitor().writeBookmarks();
+                    navigationMonitor().WriteNavConfig();
                 }
             }
             catch
@@ -464,7 +455,7 @@ namespace EddiNavigationMonitor
                 {
                     selectedBookmark.arrivalRadiusMeters = arrivalRadiusMeters;
                     navigationMonitor().CheckBookmarkPosition(selectedBookmark, currentStatus, false);
-                    navigationMonitor().writeBookmarks();
+                    navigationMonitor().WriteNavConfig();
                 }
             }
         }
@@ -473,21 +464,21 @@ namespace EddiNavigationMonitor
         {
             List<string> SearchTypeOptions = new List<string>();
 
-            foreach (string type in searchType)
+            foreach (var group in Enum.GetNames(typeof(QueryGroup)))
             {
-                SearchTypeOptions.Add(Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + type));
+                SearchTypeOptions.Add(Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + group));
             }
             searchTypeDropDown.ItemsSource = SearchTypeOptions;
         }
 
         private void searchTypeDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            foreach (string type in searchType)
+            foreach (var group in Enum.GetNames(typeof(QueryGroup)))
             {
-                string property = Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + type);
+                var property = Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + group);
                 if (property == searchTypeDropDown.SelectedItem?.ToString())
                 {
-                    searchTypeSelection = type;
+                    searchTypeSelection = group;
                     break;
                 }
             }
@@ -522,7 +513,7 @@ namespace EddiNavigationMonitor
         private void ConfigureSearchQueryOptions(string type)
         {
             var SearchQueryOptions = new List<string>();
-            foreach (string query in searchQuery)
+            foreach (var query in Enum.GetNames(typeof(QueryType)))
             {
                 string property = Properties.NavigationMonitor.ResourceManager.GetString("search_query_"
                     + type + "_" + query);
@@ -534,12 +525,12 @@ namespace EddiNavigationMonitor
         private void searchQueryDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             bool found = false;
-            foreach (string type in searchType)
+            foreach (var group in Enum.GetNames(typeof(QueryGroup)))
             {
-                foreach (string query in searchQuery)
+                foreach (var query in Enum.GetNames(typeof(QueryType)))
                 {
-                    string property = Properties.NavigationMonitor.ResourceManager.GetString("search_query_"
-                        + type + "_" + query);
+                    var property = Properties.NavigationMonitor.ResourceManager.GetString("search_query_"
+                        + group + "_" + query);
                     if (property == searchQueryDropDown.SelectedItem?.ToString())
                     {
                         searchQuerySelection = query;
@@ -702,7 +693,7 @@ namespace EddiNavigationMonitor
                 {
                     selectedBookmark.useStraightPath = checkBox.IsChecked ?? false;
                     navigationMonitor().CheckBookmarkPosition(selectedBookmark, currentStatus, false);
-                    navigationMonitor().writeBookmarks();
+                    navigationMonitor().WriteNavConfig();
                 }
             }
         }

@@ -2,6 +2,7 @@ using Eddi;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
 using Newtonsoft.Json;
@@ -281,13 +282,13 @@ namespace EddiMissionMonitor
                             // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                             case "sightseeing":
                             {
-                                DestinationSystem system = mission.destinationsystems
-                                    .FirstOrDefault(s => s.name == EDDI.Instance?.CurrentStarSystem?.systemname);
+                                var system = mission.destinationsystems
+                                    .FirstOrDefault(s => s.systemName == EDDI.Instance?.CurrentStarSystem?.systemname);
                                 if (system != null)
                                 {
                                     system.visited = true;
                                     string waypointSystemName = mission.destinationsystems?
-                                        .FirstOrDefault(s => s.visited == false)?.name;
+                                        .FirstOrDefault(s => s.visited == false)?.systemName;
                                     if (!string.IsNullOrEmpty(waypointSystemName))
                                     {
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
@@ -760,13 +761,14 @@ namespace EddiMissionMonitor
                         .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
                         .Split('#');
 
-                    foreach (string system in systems)
+                    var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
+                    foreach (var system in starSystems)
                     {
-                        mission.destinationsystems.Add(new DestinationSystem(system));
+                        mission.destinationsystems.Add(new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0) { isMissionSystem = true });
                     }
 
                     // Load the first destination system.
-                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).name;
+                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).systemName;
                 }
                 else
                 {

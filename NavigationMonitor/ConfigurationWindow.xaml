@@ -9,7 +9,7 @@
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="bookmarkDataTemplate" />
         <DataTemplate x:Key="landableDataTemplate" DataType="eddiDataDefinitions:NavBookmark">
@@ -52,63 +52,241 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <Grid DockPanel.Dock="Top" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="20" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.route_details_desc}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" VerticalAlignment="Center" />
-            <ComboBox x:Name="searchTypeDropDown" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="1" MinWidth="100" Margin="5" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
-            <ComboBox x:Name="searchQueryDropDown" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan ="1" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
-            <Button HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3" Height="20" MinWidth="60" Margin="5, 0" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
-            <TextBlock Grid.Row="1" Grid.Column="4" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
-        </Grid>
-        <Grid DockPanel.Dock="Top" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="41.18" />
-                <ColumnDefinition Width="208.82"/>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Label x:Name ="maxSearchDistanceLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
-            <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="2" Margin="0,0"
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+        <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Top" Background="#FFE5E5E5">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="MinWidth" Value="150" />
+                    <Setter Property="Height" Value="Auto" />
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_bookmarks}">
+                <DockPanel LastChildFill="True">
+                    <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+                        <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
+                        <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
+                        <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />
+                    </UniformGrid>
+                    <DataGrid AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated" HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding landable}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=systemname}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </utility:DataGridNumericColumn>
+                            <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </utility:DataGridNumericColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn MinWidth="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="ContentTemplate"
+                                        Value="{StaticResource bookmarkDataTemplate}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding landable}" Value="True">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource landableDataTemplate}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}">
+                <DockPanel LastChildFill="True">
+                    <DataGrid AutoGenerateColumns="False" x:Name="navRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="Column">
+                        <DataGrid.Resources>
+                            <utility:DataGridRowIndexConverter x:Key="RowIndexConverter"/>
+                        </DataGrid.Resources>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource RowIndexConverter}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=visited}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="*" IsReadOnly="True" Binding="{Binding Path=systemName}"/>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_remaining_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distanceRemaining}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_stellar_class}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=stellarclass}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_scoopable}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=isScoopable}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_scoopable}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_neutron_star}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=hasNeutronStar}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_neutron_star}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_missions}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=isMissionSystem}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_missions}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_route_plotter}">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="20" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.route_details_desc}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" VerticalAlignment="Center" />
+                        <ComboBox x:Name="searchTypeDropDown" Grid.Row="1" Grid.Column="1" MinWidth="100" Margin="5" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
+                        <ComboBox x:Name="searchQueryDropDown" Grid.Row="1" Grid.Column="2" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
+                        <Button HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3" Height="20" MinWidth="60" Margin="5, 0" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="4" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
+                    </Grid>
+                    <Grid DockPanel.Dock="Top" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="41.18" />
+                            <ColumnDefinition Width="208.82"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name ="maxSearchDistanceLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
+                        <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="2" Margin="0,0"
                      PreviewTextInput="EnsureValidInteger"
                      KeyDown="maxSearchDistance_KeyDown"
                      LostFocus="maxSearchDistance_LostFocus"
                      TextAlignment="Center"
                      VerticalContentAlignment="Center" Height="20" Width="60"
                      ToolTip="{x:Static resx:NavigationMonitor.search_distance_tooltip}"/>
-        </Grid>
-        <Grid DockPanel.Dock="Top" Margin="0,5" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="20" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
-            <local:SearchSystemComboBox x:Name="searchSystemDropDown"
+                    </Grid>
+                    <Grid DockPanel.Dock="Top" Margin="0,5" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="20" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
+                        <local:SearchSystemComboBox x:Name="searchSystemDropDown"
                                   IsEditable="True"
                                   IsReadOnly="False"
                                   IsTextSearchEnabled="False"
@@ -116,116 +294,92 @@
                                   Grid.Row="0"
                                   Grid.Column="1"
                                   Grid.ColumnSpan ="1"
-                                  Height="20"
+                                  Height="Auto"
                                   MinWidth="175"
                                   Margin="5, 0"
                                   VerticalContentAlignment="Center"
                                   LostFocus="SearchSystemDropDown_LostFocus"
                                   SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
-            <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
-            <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Height="20" MinWidth="175" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
-            <Button HorizontalAlignment="Center"  Click="bookmarkQuery" Grid.Row="0" Grid.Column="4" Margin="10, 0" Height="20" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}" />
-        </Grid>
-        <Grid DockPanel.Dock="Top" Margin="15,0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-        </Grid>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
-            <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
-            <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
-            <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />
-        </UniformGrid>
-        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated" HeadersVisibility="Column">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding landable}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=systemname}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTemplateColumn MinWidth="60">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-            <DataGrid.RowDetailsTemplate>
-                <DataTemplate>
-                    <ContentControl Content="{Binding}">
-                        <ContentControl.Style>
-                            <Style TargetType="ContentControl">
-                                <Setter Property="ContentTemplate"
-                                        Value="{StaticResource bookmarkDataTemplate}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding landable}" Value="True">
-                                        <Setter Property="ContentTemplate" Value="{StaticResource landableDataTemplate}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
+                        <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
+                        <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Height="Auto" MinWidth="175" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
+                        <Button HorizontalAlignment="Center"  Click="addBookmark" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="4" MinWidth="100" Margin="10, 0" Height="Auto" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}" />
+                    </Grid>
+                    <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+                        <!--<Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
+                        <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
+                        <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />-->
+                    </UniformGrid>
+                    <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="Column">
+                        <DataGrid.Resources>
+                            <utility:DataGridRowIndexConverter x:Key="RowIndexConverter"/>
+                        </DataGrid.Resources>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                             </Style>
-                        </ContentControl.Style>
-                    </ContentControl>
-                </DataTemplate>
-            </DataGrid.RowDetailsTemplate>
-        </DataGrid>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="Auto" IsReadOnly="True" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource RowIndexConverter}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>                            
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=visited}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="*" IsReadOnly="True" Binding="{Binding Path=systemName}"/>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_remaining_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distanceRemaining}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_stellar_class}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=stellarclass}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_scoopable}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=isScoopable}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_scoopable}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_refuel}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=refuelRecommended}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_refuel_recommended}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_neutron_star}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=hasNeutronStar}">
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_neutron_star}"/>
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </UserControl>

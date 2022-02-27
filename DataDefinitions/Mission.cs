@@ -263,7 +263,7 @@ namespace EddiDataDefinitions
         // Destination systems for chained missions
 
         [Utilities.PublicAPI]
-        public List<DestinationSystem> destinationsystems { get; set; }
+        public List<NavWaypoint> destinationsystems { get; set; }
 
         // Community goal details, if applicable
         public int communalPercentileBand { get; set; }
@@ -324,7 +324,7 @@ namespace EddiDataDefinitions
             this.statusDef = Status;
             this.shared = Shared;
             this.expiring = false;
-            destinationsystems = new List<DestinationSystem>();
+            destinationsystems = new List<NavWaypoint>();
         }
 
         public void UpdateTimeRemaining()

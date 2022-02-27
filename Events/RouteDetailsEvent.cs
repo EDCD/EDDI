@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using EddiDataDefinitions;
 using Utilities;
 
 namespace EddiEvents
@@ -20,8 +22,8 @@ namespace EddiEvents
         [PublicAPI("The destination station, if applicable")]
         public string station { get; private set; }
 
-        [PublicAPI("Delimited systems list, if applicable")]
-        public string route { get; private set; }
+        [PublicAPI("List of system names, if applicable")]
+        public List<string> route => Route.Select(r => r.systemName).ToList();
 
         [PublicAPI("Count of missions, systems, or expiry seconds, depending on route type")]
         public long count { get; private set; }
@@ -35,12 +37,15 @@ namespace EddiEvents
         [PublicAPI("The mission ID(s) associated with the destination system, if applicable")]
         public List<long> missionids { get; private set; }
 
-        public RouteDetailsEvent(DateTime timestamp, string routetype, string system, string station, string route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public List<NavWaypoint> Route { get; private set; }
+
+        public RouteDetailsEvent(DateTime timestamp, string routetype, string system, string station, List<NavWaypoint> route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
         {
             this.routetype = routetype;
             this.system = system;
             this.station = station;
-            this.route = route;
+            this.Route = route;
             this.count = count;
             this.distance = distance;
             this.routedistance = routedistance;

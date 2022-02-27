@@ -214,6 +214,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distance (LY).
+        /// </summary>
+        public static string header_distance_ly {
+            get {
+                return ResourceManager.GetString("header_distance_ly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining (LY).
+        /// </summary>
+        public static string header_distance_remaining_ly {
+            get {
+                return ResourceManager.GetString("header_distance_remaining_ly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distance (km):.
         /// </summary>
         public static string header_distanceKm {
@@ -250,6 +268,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missions?.
+        /// </summary>
+        public static string header_missions {
+            get {
+                return ResourceManager.GetString("header_missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neutron Star?.
+        /// </summary>
+        public static string header_neutron_star {
+            get {
+                return ResourceManager.GetString("header_neutron_star", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Station / POI.
         /// </summary>
         public static string header_poi {
@@ -259,11 +295,47 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refuel?.
+        /// </summary>
+        public static string header_refuel {
+            get {
+                return ResourceManager.GetString("header_refuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scoopable?.
+        /// </summary>
+        public static string header_scoopable {
+            get {
+                return ResourceManager.GetString("header_scoopable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Star Class.
+        /// </summary>
+        public static string header_stellar_class {
+            get {
+                return ResourceManager.GetString("header_stellar_class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System.
         /// </summary>
         public static string header_system {
             get {
                 return ResourceManager.GetString("header_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visited?.
+        /// </summary>
+        public static string header_visited {
+            get {
+                return ResourceManager.GetString("header_visited", resourceCulture);
             }
         }
         
@@ -561,6 +633,78 @@ namespace EddiNavigationMonitor.Properties {
         public static string system_textbox_desc {
             get {
                 return ResourceManager.GetString("system_textbox_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bookmarks.
+        /// </summary>
+        public static string tab_bookmarks {
+            get {
+                return ResourceManager.GetString("tab_bookmarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Plotted Route.
+        /// </summary>
+        public static string tab_plotted_route {
+            get {
+                return ResourceManager.GetString("tab_plotted_route", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Route Plotter.
+        /// </summary>
+        public static string tab_route_plotter {
+            get {
+                return ResourceManager.GetString("tab_route_plotter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is this a mission destination?.
+        /// </summary>
+        public static string tooltip_missions {
+            get {
+                return ResourceManager.GetString("tooltip_missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is this a neutron star which may be used to supercharge your FSD?.
+        /// </summary>
+        public static string tooltip_neutron_star {
+            get {
+                return ResourceManager.GetString("tooltip_neutron_star", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refueling at this location is recommended..
+        /// </summary>
+        public static string tooltip_refuel_recommended {
+            get {
+                return ResourceManager.GetString("tooltip_refuel_recommended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can you refuel at this location with a fuel scoop?.
+        /// </summary>
+        public static string tooltip_scoopable {
+            get {
+                return ResourceManager.GetString("tooltip_scoopable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Have you already visited this route waypoint?.
+        /// </summary>
+        public static string tooltip_visited {
+            get {
+                return ResourceManager.GetString("tooltip_visited", resourceCulture);
             }
         }
         

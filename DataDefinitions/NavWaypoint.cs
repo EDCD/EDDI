@@ -14,8 +14,6 @@ namespace EddiDataDefinitions
         public decimal distanceTraveled { get; set; }
         public decimal distanceRemaining { get; set; }
 
-        public int index { get; set; }
-
         // NavRoute only
         public string stellarclass { get; set; }
 

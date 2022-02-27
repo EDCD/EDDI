@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QueryGroup.cs" />
     <Compile Include="JumpCalcs.cs" />
     <Compile Include="QueryType.cs" />
     <Compile Include="NavigationService.cs" />

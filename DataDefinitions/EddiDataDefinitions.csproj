@@ -278,7 +278,6 @@
       <DependentUpon>StationModels.resx</DependentUpon>
     </Compile>
     <Compile Include="StationModel.cs" />
-    <Compile Include="DestinationSystem.cs" />
     <Compile Include="Haulage.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />

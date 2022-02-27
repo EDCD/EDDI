@@ -1,7 +1,7 @@
-﻿using EddiDataDefinitions;
+﻿using System.Collections.Generic;
+using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
@@ -98,15 +98,9 @@ namespace EddiSpanshService
 
             foreach (var jump in routeResult["jumps"].ToObject<JArray>())
             {
-                var waypoint = new NavWaypoint()
+                var waypoint = new NavWaypoint(jump["name"].ToObject<string>(), jump["x"].ToObject<decimal>(), jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
                 {
-                    systemName = jump["name"].ToObject<string>(),
                     systemAddress = jump["id64"].ToObject<ulong?>(),
-                    x = jump["x"].ToObject<decimal>(),
-                    y = jump["y"].ToObject<decimal>(),
-                    z = jump["z"].ToObject<decimal>(),
-                    distanceTravelled = jump["distance"].ToObject<decimal>(),
-                    distanceRemaining = jump["distance_to_destination"].ToObject<decimal>(),
                     hasNeutronStar = jump["has_neutron"].ToObject<bool>(),
                     isScoopable = jump["is_scoopable"].ToObject<bool?>(),
                     refuelRecommended = jump["must_refuel"].ToObject<bool?>()

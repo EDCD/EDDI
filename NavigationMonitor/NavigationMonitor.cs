@@ -3,7 +3,6 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiNavigationService;
 using EddiStatusMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,15 +21,22 @@ namespace EddiNavigationMonitor
 {
     public class NavigationMonitor : EDDIMonitor
     {
-        // Observable collection for us to handle changes
-        public readonly ObservableCollection<NavBookmark> bookmarks;
-        public static readonly object bookmarksLock = new object();
+        // Observable collection for us to handle changes to Bookmarks
+        public readonly ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
+        public static readonly object navConfigLock = new object();
         public static event EventHandler BookmarksUpdatedEvent;
 
         // Navigation route data
-        private string navDestination;
-        private string navRouteList;
+        public ObservableCollection<NavWaypoint> NavRouteList = new ObservableCollection<NavWaypoint>();
         private decimal navRouteDistance;
+        public static event EventHandler NavRouteUpdatedEvent;
+
+        // Plotted route data
+        public ObservableCollection<NavWaypoint> PlottedRouteList = new ObservableCollection<NavWaypoint>();
+        private decimal plottedRouteDistance;
+        public static event EventHandler PlottedRouteUpdatedEvent;
+        public bool GuidanceEnabled;
+
         private DateTime updateDat;
 
         private Status currentStatus { get; set; }
@@ -57,29 +63,32 @@ namespace EddiNavigationMonitor
 
         public NavigationMonitor()
         {
-            bookmarks = new ObservableCollection<NavBookmark>();
-            BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
+            BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
             initializeNavigationMonitor();
         }
 
         public void initializeNavigationMonitor()
         {
-            readBookmarks();
+            ReadNavConfig();
             Logging.Info($"Initialized {MonitorName()}");
         }
 
-        private void Bookmarks_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        private void NavigationMonitor_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
         {
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock);
+                BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(NavRouteList, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(PlottedRouteList, navConfigLock);
             }
             else
             {
                 // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRouteList, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRouteList, navConfigLock); });
             }
         }
 
@@ -96,7 +105,7 @@ namespace EddiNavigationMonitor
 
         public void Reload()
         {
-            readBookmarks();
+            ReadNavConfig();
             Logging.Info($"Reloaded {MonitorName()}");
         }
 
@@ -107,12 +116,16 @@ namespace EddiNavigationMonitor
 
         public void EnableConfigBinding(MainWindow configWindow)
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRouteList, navConfigLock); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRouteList, navConfigLock); });
         }
 
         public void DisableConfigBinding(MainWindow configWindow)
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(bookmarks); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(Bookmarks); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(NavRouteList); });
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(PlottedRouteList); });
         }
 
         public void HandleProfile(JObject profile)
@@ -152,6 +165,10 @@ namespace EddiNavigationMonitor
             {
                 handleNavRouteEvent(navRouteEvent);
             }
+            else if (@event is RouteDetailsEvent routeDetailsEvent)
+            {
+                handleRouteDetailsEvent(routeDetailsEvent);
+            }
         }
 
         public void PostHandle(Event @event)
@@ -183,7 +200,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0));
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0));
             }
         }
 
@@ -211,7 +229,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0));
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0));
             }
         }
 
@@ -220,7 +239,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress);
             }
         }
 
@@ -229,7 +249,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress);
             }
         }
 
@@ -238,29 +259,46 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
+                var routeDistance = 0M;
 
-                List<NavRouteInfoItem> route = @event.route;
-                List<string> routeList = new List<string>();
-
-                navDestination = null;
-                navRouteList = null;
-                navRouteDistance = 0;
-
-                if (route.Count > 1 && route[0].systemname == EDDI.Instance?.CurrentStarSystem?.systemname)
+                var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
+                if (routeList != null && routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                 {
-                    routeList.Add(route[0].systemname);
-                    for (int i = 0; i < route.Count - 1; i++)
+                    routeList[0].visited = true;
+                    CalculateRouteDistances(ref routeList, ref routeDistance);
+
+                    // Supplement w/ mission info
+                    var missionMultiDestinationSystems = ConfigService.Instance.missionMonitorConfiguration.missions
+                        .Where(m => m.destinationsystems != null)
+                        .SelectMany(m => m.destinationsystems.Select(s => s.systemName));
+                    var missionSingleDestinationSystems = ConfigService.Instance.missionMonitorConfiguration.missions
+                        .Where(m => !string.IsNullOrEmpty(m.destinationsystem))
+                        .Select(m => m.destinationsystem);
+                    var missionSystems = missionMultiDestinationSystems.Concat(missionSingleDestinationSystems).Distinct();
+                    foreach (var system in missionSystems)
                     {
-                        navRouteDistance += Functions.StellarDistanceLy(route[i].x, route[i].y, route[i].z, route[i + 1].x, route[i + 1].y, route[i + 1].z) ?? 0;
-                        routeList.Add(route[i + 1].systemname);
+                        foreach (var waypoint in routeList)
+                        {
+                            if (waypoint.systemName == system)
+                            {
+                                waypoint.isMissionSystem = true;
+                            }
+                        }
                     }
-                    navDestination = route[route.Count - 1].systemname;
-                    navRouteList = string.Join("_", routeList);
-                    UpdateDestinationData(navDestination, navRouteDistance);
+
+                    UpdateDestinationData(routeList.Last().systemName, routeDistance);
+                    NavRouteList.Clear();
+                    foreach (var waypoint in routeList)
+                    {
+                        NavRouteList.Add(waypoint);
+                    }
                 }
 
+                // Raise on UI thread
+                RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+
                 // Update the navigation configuration 
-                writeBookmarks();
+                WriteNavConfig();
             }
         }
 
@@ -307,35 +345,77 @@ namespace EddiNavigationMonitor
             }
         }
 
+        private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
+        {
+            if (routeDetailsEvent.Route != null)
+            {
+                var routeList = routeDetailsEvent.Route;
+                var routeDistance = 0M;
+                CalculateRouteDistances(ref routeList, ref routeDistance);
+                plottedRouteDistance = routeDistance;
+                PlottedRouteList.Clear();
+                foreach (var waypoint in routeDetailsEvent.Route)
+                {
+                    PlottedRouteList.Add(waypoint);
+                }
+            }
+            else
+            {
+                PlottedRouteList.Clear();
+                plottedRouteDistance = 0M;
+            }
+
+            if (routeDetailsEvent.routetype == "set")
+            {
+                GuidanceEnabled = true;
+            }
+            else if (routeDetailsEvent.routetype == "cancel")
+            {
+                GuidanceEnabled = true;
+            }
+
+            // Raise on UI thread
+            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
+
+            // Update the navigation configuration 
+            WriteNavConfig();
+        }
+
         public IDictionary<string, object> GetVariables()
         {
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["bookmarks"] = new List<NavBookmark>(bookmarks),
-                ["navRouteList"] = navRouteList,
+                ["bookmarks"] = new List<NavBookmark>(Bookmarks),
+                ["navRouteList"] = NavRouteList,
                 ["orbitalpriority"] = navConfig.prioritizeOrbitalStations
             };
             return variables;
         }
 
-        public void writeBookmarks()
+        public void WriteNavConfig()
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
-                // Write bookmarks configuration with current list
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                navConfig.bookmarks = bookmarks;
+                navConfig.bookmarks = Bookmarks;
+                navConfig.navRouteList = NavRouteList.ToList();
+                navConfig.navRouteDistance = navRouteDistance;
+                navConfig.plottedRouteList = PlottedRouteList.ToList();
+                navConfig.plottedRouteDistance = plottedRouteDistance;
+                navConfig.routeGuidanceEnabled = GuidanceEnabled;
                 navConfig.updatedat = updateDat;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
             // Make sure the UI is up to date
-            RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
+            RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
+            RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
         }
 
-        private void readBookmarks()
+        private void ReadNavConfig()
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
@@ -343,21 +423,44 @@ namespace EddiNavigationMonitor
                 updateDat = navConfig.updatedat;
 
                 // Build a new bookmark list
-                bookmarks.Clear();
-                foreach (NavBookmark bookmark in navConfig.bookmarks)
+                Bookmarks.Clear();
+                foreach (var bookmark in navConfig.bookmarks)
                 {
-                    bookmarks.Add(bookmark);
+                    Bookmarks.Add(bookmark);
                 }
+
+                // Restore our in-game routing
+                NavRouteList.Clear();
+                if (navConfig.navRouteList != null)
+                {
+                    foreach (var waypoint in navConfig.navRouteList)
+                    {
+                        NavRouteList.Add(waypoint);
+                    }
+                }
+                navRouteDistance = navConfig.navRouteDistance;
+
+                // Restore our plotted routing
+                PlottedRouteList.Clear();
+                if (navConfig.plottedRouteList != null)
+                {
+                    foreach (var waypoint in navConfig.plottedRouteList)
+                    {
+                        PlottedRouteList.Add(waypoint);
+                    }
+                }
+                plottedRouteDistance = navConfig.plottedRouteDistance;
+                GuidanceEnabled = navConfig.routeGuidanceEnabled;
             }
         }
 
         public void RemoveBookmarkAt(int index)
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
-                bookmarks.RemoveAt(index);
+                Bookmarks.RemoveAt(index);
                 // Make sure the UI is up to date
-                RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
+                RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
             }
         }
 
@@ -376,7 +479,7 @@ namespace EddiNavigationMonitor
                     currentStatus = status;
                 });
 
-                foreach (var bookmark in bookmarks)
+                foreach (var bookmark in Bookmarks)
                 {
                     CheckBookmarkPosition(bookmark, currentStatus);
                 }
@@ -464,6 +567,44 @@ namespace EddiNavigationMonitor
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000;
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
+        }
+
+        public bool IsNavRouteComplete(List<NavWaypoint> routeList, bool completeWithFinalWaypoint = false)
+        {
+            return completeWithFinalWaypoint
+                ? routeList.LastOrDefault()?.visited ?? true
+                : routeList.All(w => w.visited);
+        }
+
+        private void CalculateRouteDistances(ref List<NavWaypoint> routeList, ref decimal routeDistance)
+        {
+            // Calculate distance of each hop and total distance traveled
+            navRouteDistance = 0M;
+            routeList.First().distanceTraveled = 0;
+            for (int i = 0; i < routeList.Count - 1; i++)
+            {
+                routeList[i + 1].distance = Functions.StellarDistanceLy(routeList[i].x, routeList[i].y, routeList[i].z,
+                    routeList[i + 1].x, routeList[i + 1].y, routeList[i + 1].z) ?? 0;
+                navRouteDistance += routeList[i + 1].distance;
+                routeList[i + 1].distanceTraveled = navRouteDistance;
+            }
+
+            // Calculate distance remaining
+            foreach (var waypoint in routeList)
+            {
+                waypoint.distanceRemaining = navRouteDistance - waypoint.distanceTraveled;
+            }
+        }
+
+        private void UpdateVisitedStatus(ref ObservableCollection<NavWaypoint> routeList, ulong systemAddress)
+        {
+            foreach (var waypoint in routeList)
+            {
+                if (!waypoint.visited && waypoint.systemAddress == systemAddress)
+                {
+                    waypoint.visited = true;
+                }
+            }
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

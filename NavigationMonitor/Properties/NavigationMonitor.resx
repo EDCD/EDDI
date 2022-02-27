@@ -299,4 +299,52 @@
     <value>All</value>
     <comment>Import or export all</comment>
   </data>
+  <data name="tab_bookmarks" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="tab_plotted_route" xml:space="preserve">
+    <value>Current Plotted Route</value>
+  </data>
+  <data name="tab_route_plotter" xml:space="preserve">
+    <value>Route Plotter</value>
+  </data>
+  <data name="header_distance_remaining_ly" xml:space="preserve">
+    <value>Remaining (LY)</value>
+  </data>
+  <data name="header_distance_ly" xml:space="preserve">
+    <value>Distance (LY)</value>
+  </data>
+  <data name="header_stellar_class" xml:space="preserve">
+    <value>Star Class</value>
+  </data>
+  <data name="header_scoopable" xml:space="preserve">
+    <value>Scoopable?</value>
+  </data>
+  <data name="header_neutron_star" xml:space="preserve">
+    <value>Neutron Star?</value>
+  </data>
+  <data name="tooltip_scoopable" xml:space="preserve">
+    <value>Can you refuel at this location with a fuel scoop?</value>
+  </data>
+  <data name="tooltip_neutron_star" xml:space="preserve">
+    <value>Is this a neutron star which may be used to supercharge your FSD?</value>
+  </data>
+  <data name="header_missions" xml:space="preserve">
+    <value>Missions?</value>
+  </data>
+  <data name="tooltip_missions" xml:space="preserve">
+    <value>Is this a mission destination?</value>
+  </data>
+  <data name="header_visited" xml:space="preserve">
+    <value>Visited?</value>
+  </data>
+  <data name="tooltip_visited" xml:space="preserve">
+    <value>Have you already visited this route waypoint?</value>
+  </data>
+  <data name="header_refuel" xml:space="preserve">
+    <value>Refuel?</value>
+  </data>
+  <data name="tooltip_refuel_recommended" xml:space="preserve">
+    <value>Refueling at this location is recommended.</value>
+  </data>
 </root>
