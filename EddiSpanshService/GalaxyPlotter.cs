@@ -13,7 +13,11 @@ namespace EddiSpanshService
         // Request a route from the Spansh Galaxy Plotter.
         public List<NavWaypoint> GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
         {
-            if (ship is null) { return null; }
+            if (ship is null)
+            {
+                Logging.Debug("Neutron route plotting is not available, ship details are unknown.");
+                return null;
+            }
 
             GetShipJumpDetails(ship, out decimal fuel_power, out decimal fuel_multiplier, out decimal optimal_mass,
                 out decimal base_mass, out decimal tank_size, out decimal internal_tank_size,
