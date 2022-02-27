@@ -492,7 +492,12 @@ namespace EddiNavigationService
             var systems = new List<string>();      // List of eligible mission destination systems
             var missionids = new List<long>();       // List of mission IDs for the next system
 
-            var homeStarSystem = new NavWaypoint(dataProviderService.GetSystemData(homeSystem, true, false, false, false, false));
+            var homeStarSystem = dataProviderService.GetSystemData(homeSystem, true, false, false, false, false);
+            NavWaypoint homeSystemWaypoint = null;
+            if (homeStarSystem != null)
+            {
+                homeSystemWaypoint = new NavWaypoint(homeStarSystem);
+            }
 
             if (missions.Count > 0)
             {
@@ -558,7 +563,7 @@ namespace EddiNavigationService
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
                 var navWaypoints = dataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false).Select(s => new NavWaypoint(s)).ToList();
-                if (CalculateRNNA(navWaypoints, homeStarSystem, missions, ref systemsRoute, ref routeDistance))
+                if (CalculateRNNA(navWaypoints, homeSystemWaypoint, missions, ref systemsRoute, ref routeDistance))
                 {
                     searchSystem = systemsRoute[0].systemName;
                     StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
