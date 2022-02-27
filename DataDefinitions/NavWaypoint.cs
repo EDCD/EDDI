@@ -14,6 +14,8 @@ namespace EddiDataDefinitions
         public decimal distanceTraveled { get; set; }
         public decimal distanceRemaining { get; set; }
 
+        public int index { get; set; }
+
         // NavRoute only
         public string stellarclass { get; set; }
 
@@ -36,7 +38,7 @@ namespace EddiDataDefinitions
         public bool isMissionSystem { get; set; }
 
         // Whether we've already visited the system during our current route
-        public bool visited;
+        public bool visited { get; set; }
 
         // Default constructor
         public NavWaypoint(string systemName, decimal x, decimal y, decimal z)

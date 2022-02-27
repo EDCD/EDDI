@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiNavigationService;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -362,11 +363,11 @@ namespace EddiNavigationMonitor
                 plottedRouteDistance = 0M;
             }
 
-            if (routeDetailsEvent.routetype == "set")
+            if (routeDetailsEvent.routetype == QueryType.set.ToString())
             {
                 GuidanceEnabled = true;
             }
-            else if (routeDetailsEvent.routetype == "cancel")
+            else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
             {
                 GuidanceEnabled = true;
             }
@@ -586,10 +587,12 @@ namespace EddiNavigationMonitor
                 routeList[i + 1].distanceTraveled = routeDistance;
             }
 
-            // Calculate distance remaining
+            // Calculate distance remaining and set index value
+            int j = 0;
             foreach (var waypoint in routeList)
             {
                 waypoint.distanceRemaining = routeDistance - waypoint.distanceTraveled;
+                waypoint.index = j++;
             }
         }
 

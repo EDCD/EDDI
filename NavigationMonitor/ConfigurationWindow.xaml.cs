@@ -548,15 +548,42 @@ namespace EddiNavigationMonitor
             searchButton.Foreground = Brushes.DarkBlue;
             searchButton.FontWeight = FontWeights.Bold;
 
-            string resultSystem = string.Empty;
-            string resultStation = string.Empty;
+            var resultSystem = string.Empty;
+            var resultStation = string.Empty;
+
+            var searchSystemArg = searchSystemDropDown.Text;
+            var searchStationArg = searchStationDropDown.Text;
 
             var search = Task.Run(() =>
             {
                 RouteDetailsEvent @event = null;
-                if (Enum.TryParse(searchQuerySelection, true, out QueryType result))
+                if (Enum.TryParse(searchQuerySelection, true, out QueryType queryType))
                 {
-                    @event = NavigationService.Instance.NavQuery(result);
+                    dynamic[] args = null;
+                    switch (queryType)
+                    {
+                        // Add a system name as an argument
+                        case QueryType.neutron:
+                        case QueryType.route:
+                        case QueryType.source:
+                        {
+                            // For a neutron route the system name is a mandatory argument
+                            if (queryType == QueryType.neutron && string.IsNullOrEmpty(searchSystemArg))
+                            {
+                                MessageBox.Show(Properties.NavigationMonitor.search_err_mandatory_neutron_target_system, Properties.NavigationMonitor.search_query_galaxy_neutron, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                                return;
+                            }
+                            args = new dynamic[] { searchSystemArg };
+                            break;
+                        }
+                        // Add optional system and station name arguments
+                        case QueryType.set:
+                        {
+                            args = new dynamic[] { searchSystemArg, searchStationArg }; 
+                            break;
+                        }
+                    }
+                    @event = NavigationService.Instance.NavQuery(queryType, args);
                 }
                 if (@event == null) { return; }
                 resultSystem = @event.system;
@@ -696,6 +723,11 @@ namespace EddiNavigationMonitor
                     navigationMonitor().WriteNavConfig();
                 }
             }
+        }
+
+        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex()).ToString();
         }
     }
 }

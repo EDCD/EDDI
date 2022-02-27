@@ -70,7 +70,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add bookmark from query results.
+        ///   Looks up a localized string similar to Add bookmark from route waypoint.
         /// </summary>
         public static string add_button_tooltip {
             get {
@@ -457,11 +457,29 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target system is a mandatory field for plotting a neutron route..
+        /// </summary>
+        public static string search_err_mandatory_neutron_target_system {
+            get {
+                return ResourceManager.GetString("search_err_mandatory_neutron_target_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Legal Facilities.
         /// </summary>
         public static string search_query_crime_facilitator {
             get {
                 return ResourceManager.GetString("search_query_crime_facilitator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neutron Route.
+        /// </summary>
+        public static string search_query_galaxy_neutron {
+            get {
+                return ResourceManager.GetString("search_query_galaxy_neutron", resourceCulture);
             }
         }
         

@@ -28,8 +28,6 @@ namespace EddiConfigService
 
         public string searchStation { get; set; }
 
-        public decimal searchDistance { get; set; }
-
         // Ship touchdown data
         public decimal? tdLat { get; set; }
 

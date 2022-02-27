@@ -133,7 +133,7 @@
     <value>Add bookmark</value>
   </data>
   <data name="add_button_tooltip" xml:space="preserve">
-    <value>Add bookmark from query results</value>
+    <value>Add bookmark from route waypoint</value>
   </data>
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
@@ -346,5 +346,11 @@
   </data>
   <data name="tooltip_refuel_recommended" xml:space="preserve">
     <value>Refueling at this location is recommended.</value>
+  </data>
+  <data name="search_query_galaxy_neutron" xml:space="preserve">
+    <value>Neutron Route</value>
+  </data>
+  <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
+    <value>The target system is a mandatory field for plotting a neutron route.</value>
   </data>
 </root>
