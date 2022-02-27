@@ -463,6 +463,7 @@ namespace EddiNavigationMonitor
 
             foreach (var group in Enum.GetNames(typeof(QueryGroup)))
             {
+                if (group == QueryGroup.None.ToString()) { continue; }
                 SearchTypeOptions.Add(Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + group));
             }
             searchTypeDropDown.ItemsSource = SearchTypeOptions;
@@ -512,6 +513,7 @@ namespace EddiNavigationMonitor
             var SearchQueryOptions = new List<string>();
             foreach (var query in Enum.GetNames(typeof(QueryType)))
             {
+                if (query == QueryType.None.ToString()) { continue; }
                 string property = Properties.NavigationMonitor.ResourceManager.GetString("search_query_"
                     + type + "_" + query);
                 if (property != null) { SearchQueryOptions.Add(property); }
