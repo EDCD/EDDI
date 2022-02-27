@@ -753,7 +753,7 @@ namespace EddiCore
             // Start (or restart) our event handler thread
             if (eventConsumerThread?.Status != TaskStatus.Running)
             {
-                eventConsumerThread = Task.Run(dequeueEvents);
+                eventConsumerThread = Task.Run(dequeueEvents, eventHandlerTS.Token);
             }
         }
 
