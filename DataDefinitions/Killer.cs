@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
         public string name { get; }
 
         [PublicAPI]
-        public string rating => combatRating.localizedName;
+        public string rating => combatRating?.localizedName;
 
         [PublicAPI]
         public string equipment => killerShip?.SpokenModel()
