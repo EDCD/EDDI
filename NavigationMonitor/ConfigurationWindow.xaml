@@ -168,7 +168,7 @@
             </TabItem>
             <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}">
                 <DockPanel LastChildFill="True">
-                    <DataGrid AutoGenerateColumns="False" x:Name="navRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow">
+                    <DataGrid AutoGenerateColumns="False" x:Name="navRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow"  SelectionUnit="Cell">
                         <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}" HorizontalAlignment="Center"/>
@@ -187,7 +187,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}" SortMemberPath="{Binding Path=systemName}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -243,10 +243,10 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTemplateColumn MinWidth="100">
+                            <DataGridTemplateColumn MinWidth="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button HorizontalAlignment="Stretch" Click="addBookmark" Height="Auto" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}"/>
+                                        <Button HorizontalAlignment="Stretch" Click="addBookmark" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -336,7 +336,7 @@
                         <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
                         <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />-->
                     </UniformGrid>
-                    <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow">
+                    <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow" SelectionUnit="Cell">
                         <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}" HorizontalAlignment="Center"/>
@@ -355,7 +355,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}" SortMemberPath="{Binding Path=systemName}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -397,7 +397,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTemplateColumn MinWidth="100">
+                            <DataGridTemplateColumn MinWidth="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button HorizontalAlignment="Stretch" Click="addBookmark" Height="Auto" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}"/>
