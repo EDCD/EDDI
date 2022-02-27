@@ -259,13 +259,12 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                var routeDistance = 0M;
 
                 var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
                 if (routeList != null && routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                 {
                     routeList[0].visited = true;
-                    CalculateRouteDistances(ref routeList, ref routeDistance);
+                    CalculateRouteDistances(ref routeList, out navRouteDistance);
 
                     // Supplement w/ mission info
                     var missionMultiDestinationSystems = ConfigService.Instance.missionMonitorConfiguration.missions
@@ -286,7 +285,7 @@ namespace EddiNavigationMonitor
                         }
                     }
 
-                    UpdateDestinationData(routeList.Last().systemName, routeDistance);
+                    UpdateDestinationData(routeList.Last().systemName, navRouteDistance);
                     NavRouteList.Clear();
                     foreach (var waypoint in routeList)
                     {
@@ -350,9 +349,7 @@ namespace EddiNavigationMonitor
             if (routeDetailsEvent.Route != null)
             {
                 var routeList = routeDetailsEvent.Route;
-                var routeDistance = 0M;
-                CalculateRouteDistances(ref routeList, ref routeDistance);
-                plottedRouteDistance = routeDistance;
+                CalculateRouteDistances(ref routeList, out plottedRouteDistance);
                 PlottedRouteList.Clear();
                 foreach (var waypoint in routeDetailsEvent.Route)
                 {
@@ -576,23 +573,23 @@ namespace EddiNavigationMonitor
                 : routeList.All(w => w.visited);
         }
 
-        private void CalculateRouteDistances(ref List<NavWaypoint> routeList, ref decimal routeDistance)
+        private void CalculateRouteDistances(ref List<NavWaypoint> routeList, out decimal routeDistance)
         {
             // Calculate distance of each hop and total distance traveled
-            navRouteDistance = 0M;
+            routeDistance = 0M;
             routeList.First().distanceTraveled = 0;
             for (int i = 0; i < routeList.Count - 1; i++)
             {
                 routeList[i + 1].distance = Functions.StellarDistanceLy(routeList[i].x, routeList[i].y, routeList[i].z,
                     routeList[i + 1].x, routeList[i + 1].y, routeList[i + 1].z) ?? 0;
-                navRouteDistance += routeList[i + 1].distance;
-                routeList[i + 1].distanceTraveled = navRouteDistance;
+                routeDistance += routeList[i + 1].distance;
+                routeList[i + 1].distanceTraveled = routeDistance;
             }
 
             // Calculate distance remaining
             foreach (var waypoint in routeList)
             {
-                waypoint.distanceRemaining = navRouteDistance - waypoint.distanceTraveled;
+                waypoint.distanceRemaining = routeDistance - waypoint.distanceTraveled;
             }
         }
 
