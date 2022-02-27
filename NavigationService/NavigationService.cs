@@ -334,7 +334,7 @@ namespace EddiNavigationService
         {
             decimal distance = 0;
             List<NavWaypoint> navRouteList;
-            List<long> missionIds = null;
+            List<long> missionIds;
 
             // Use our saved route if a named system is not provided
             if (string.IsNullOrEmpty(system))

@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiNavigationMonitor"
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
-             xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d" 
@@ -52,6 +51,13 @@
                 <Button Grid.Row="0" Grid.Column="9" Grid.RowSpan="2" Click="updateBookmark" MinWidth="60" HorizontalAlignment="Right" Margin="2" Content="{x:Static resx:NavigationMonitor.update_button}" ToolTip="{x:Static resx:NavigationMonitor.update_button_tooltip}" />
             </Grid>
         </DataTemplate>
+        <ContextMenu x:Key="ContextMenu">
+            <MenuItem Command="Copy">
+                <MenuItem.Icon>
+                    <Image Source="Images/Copy.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Top" Background="#FFE5E5E5">
@@ -68,7 +74,7 @@
                         <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
                         <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />
                     </UniformGrid>
-                    <DataGrid AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated" HeadersVisibility="Column">
+                    <DataGrid AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated" HeadersVisibility="Column" SelectionUnit="Cell">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
@@ -77,7 +83,21 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="160" IsReadOnly="True" Binding="{Binding Path=systemname}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemname}" SortMemberPath="{Binding Path=systemname}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Left" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -87,26 +107,15 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextAlignment" Value="Center" />
                                         <Setter Property="Margin" Value="5, 0" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
-                            </utility:DataGridNumericColumn>
-                            <utility:DataGridNumericColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
-                                <DataGridTextColumn.HeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.HeaderStyle>
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center" />
-                                        <Setter Property="Margin" Value="5, 0" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </utility:DataGridNumericColumn>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
                                     </Style>
                                 </DataGridTextColumn.HeaderStyle>
                                 <DataGridTextColumn.ElementStyle>
@@ -129,7 +138,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn MinWidth="60">
+                            <DataGridTemplateColumn MinWidth="62">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
@@ -162,7 +171,7 @@
                     <DataGrid AutoGenerateColumns="False" x:Name="navRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow">
                         <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}"></TextBlock>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}" HorizontalAlignment="Center"/>
                             </DataTemplate>
                         </DataGrid.RowHeaderTemplate>
                         <DataGrid.ColumnHeaderStyle>
@@ -171,14 +180,27 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=visited}">
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" MinWidth="50" IsReadOnly="True" Binding="{Binding Path=visited}">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="*" IsReadOnly="True" Binding="{Binding Path=systemName}"/>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}" SortMemberPath="{Binding Path=systemName}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Left" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
@@ -317,7 +339,7 @@
                     <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow">
                         <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}"></TextBlock>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}" HorizontalAlignment="Center"/>
                             </DataTemplate>
                         </DataGrid.RowHeaderTemplate>
                         <DataGrid.ColumnHeaderStyle>
@@ -326,18 +348,24 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=visited}">
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" MinWidth="50" IsReadOnly="True" Binding="{Binding Path=visited}">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" Width="*" IsReadOnly="True" Binding="{Binding Path=systemName}"/>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}" SortMemberPath="{Binding Path=systemName}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Setter Property="TextAlignment" Value="Left" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>

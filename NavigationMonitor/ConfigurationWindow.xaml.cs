@@ -157,20 +157,17 @@ namespace EddiNavigationMonitor
 
         private void addBookmark(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(dropdownSearchSystem)) { return; }
-
-            string systemName = dropdownSearchSystem;
-            StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName, false);
-
-            string stationName = dropdownSearchStation;
-            bool isStation = stationName != null;
-            bool nearby = system.systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress && stationName == EDDI.Instance.CurrentStation?.name;
-
-            NavBookmark navBookmark = new NavBookmark(systemName, system?.x, system?.y, system?.z, null, stationName, isStation, null, null, nearby);
-            navigationMonitor().Bookmarks.Add(navBookmark);
-            navigationMonitor().WriteNavConfig();
-            SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
-            EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
+            if (sender is Button button)
+            {
+                if (button.DataContext is NavWaypoint navWaypoint)
+                {
+                    var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
+                    navigationMonitor().Bookmarks.Add(navBookmark);
+                    navigationMonitor().WriteNavConfig();
+                    SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
+                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
+                }
+            }
         }
 
         private void SwitchToTab(string tabHeader)
