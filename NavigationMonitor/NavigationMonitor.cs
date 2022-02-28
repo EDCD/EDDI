@@ -36,7 +36,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavWaypoint> PlottedRouteList = new ObservableCollection<NavWaypoint>();
         private decimal plottedRouteDistance;
         public static event EventHandler PlottedRouteUpdatedEvent;
-        public bool GuidanceEnabled;
+        public bool GuidanceEnabled { get; set; }
 
         private DateTime updateDat;
 
@@ -347,29 +347,31 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
-            if (routeDetailsEvent.Route != null)
-            {
-                var routeList = routeDetailsEvent.Route;
-                CalculateRouteDistances(ref routeList, out plottedRouteDistance);
-                PlottedRouteList.Clear();
-                foreach (var waypoint in routeDetailsEvent.Route)
-                {
-                    PlottedRouteList.Add(waypoint);
-                }
-            }
-            else
-            {
-                PlottedRouteList.Clear();
-                plottedRouteDistance = 0M;
-            }
-
             if (routeDetailsEvent.routetype == QueryType.set.ToString())
             {
                 GuidanceEnabled = true;
             }
             else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
             {
-                GuidanceEnabled = true;
+                GuidanceEnabled = false;
+            }
+            else
+            {
+                if (routeDetailsEvent.Route != null)
+                {
+                    var routeList = routeDetailsEvent.Route;
+                    CalculateRouteDistances(ref routeList, out plottedRouteDistance);
+                    PlottedRouteList.Clear();
+                    foreach (var waypoint in routeDetailsEvent.Route)
+                    {
+                        PlottedRouteList.Add(waypoint);
+                    }
+                }
+                else
+                {
+                    PlottedRouteList.Clear();
+                    plottedRouteDistance = 0M;
+                }
             }
 
             // Raise on UI thread

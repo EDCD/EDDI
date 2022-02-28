@@ -187,7 +187,7 @@
     <value>Search</value>
   </data>
   <data name="search_button_tooltip" xml:space="preserve">
-    <value>Execute search query</value>
+    <value>A successful search triggers a "Route details" event.</value>
   </data>
   <data name="search_distance" xml:space="preserve">
     <value>Max Search Distance From Main Star (Ls):</value>
@@ -257,9 +257,6 @@
   </data>
   <data name="update_button_tooltip" xml:space="preserve">
     <value>Update the bookmark's location data from your current latitude and longitude</value>
-  </data>
-  <data name="route_details_desc" xml:space="preserve">
-    <value>A successful search triggers a "Route details" event.</value>
   </data>
   <data name="bm_export_button" xml:space="preserve">
     <value>Export Bookmarks</value>
@@ -352,5 +349,26 @@
   </data>
   <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
     <value>The target system is a mandatory field for plotting a neutron route.</value>
+  </data>
+  <data name="enable_guidance_button" xml:space="preserve">
+    <value>Enable Guidance</value>
+  </data>
+  <data name="enable_guidance_button_tooltip" xml:space="preserve">
+    <value>Guide the ship along the plotted route</value>
+  </data>
+  <data name="disable_guidance_button" xml:space="preserve">
+    <value>Cancel Guidance</value>
+  </data>
+  <data name="disable_guidance_button_tooltip" xml:space="preserve">
+    <value>Stop guiding the ship along the plotted route.</value>
+  </data>
+  <data name="reverse_route_button" xml:space="preserve">
+    <value>Reverse Route</value>
+  </data>
+  <data name="reverse_route_button_tooltip" xml:space="preserve">
+    <value>Reverse the direction of the plotted route</value>
+  </data>
+  <data name="header_station" xml:space="preserve">
+    <value>Station</value>
   </data>
 </root>

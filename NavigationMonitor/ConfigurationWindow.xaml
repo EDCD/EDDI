@@ -83,7 +83,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemname}" SortMemberPath="{Binding Path=systemname}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemname}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -256,85 +256,71 @@
             </TabItem>
             <TabItem Header ="{x:Static resx:NavigationMonitor.tab_route_plotter}">
                 <DockPanel LastChildFill="True">
-                    <Grid DockPanel.Dock="Top" >
+                    <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="20" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.route_details_desc}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" VerticalAlignment="Center" />
-                        <ComboBox x:Name="searchTypeDropDown" Grid.Row="1" Grid.Column="1" MinWidth="100" Margin="5" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
-                        <ComboBox x:Name="searchQueryDropDown" Grid.Row="1" Grid.Column="2" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
-                    </Grid>
-                    <Grid DockPanel.Dock="Top" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="41.18" />
-                            <ColumnDefinition Width="208.82"/>
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label x:Name ="maxSearchDistanceLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
-                        <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="2" Margin="0,0"
-                             PreviewTextInput="EnsureValidInteger"
-                             KeyDown="maxSearchDistance_KeyDown"
-                             LostFocus="maxSearchDistance_LostFocus"
-                             TextAlignment="Center"
-                             VerticalContentAlignment="Center" Height="20" Width="60"
-                             ToolTip="{x:Static resx:NavigationMonitor.search_distance_tooltip}"/>
-                        <TextBlock Grid.Row="0" Grid.Column="4" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
-
+                        <DockPanel Grid.Column="0">
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" TextWrapping="Wrap" MinWidth="40" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" VerticalAlignment="Center" />
+                                <ComboBox x:Name="searchTypeDropDown" Grid.Column="1" MinWidth="100" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
+                                <ComboBox x:Name="searchQueryDropDown" Grid.Column="2" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
+                            </Grid>
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
+                                <local:SearchSystemComboBox x:Name="searchSystemDropDown"
+                                      IsEditable="True"
+                                      IsReadOnly="False"
+                                      IsTextSearchEnabled="False"
+                                      TextBoxBase.TextChanged="SearchSystemText_TextChanged"
+                                      Grid.Row="0"
+                                      Grid.Column="1"
+                                      MinWidth="175"
+                                      Margin="10, 5"
+                                      VerticalContentAlignment="Center"
+                                      LostFocus="SearchSystemDropDown_LostFocus"
+                                      SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
+                                <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
+                                <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Height="Auto" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
+                            </Grid>
+                            <Grid DockPanel.Dock="Top" x:Name="StationParametersGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Margin="0,0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
+                                <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="1" Margin="10,5"
+                                         PreviewTextInput="EnsureValidInteger"
+                                         KeyDown="maxSearchDistance_KeyDown"
+                                         LostFocus="maxSearchDistance_LostFocus"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center" MinWidth="60"
+                                         ToolTip="{x:Static resx:NavigationMonitor.search_distance_tooltip}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
+                            </Grid>
+                        </DockPanel>
+                        <Button HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
                     </Grid>
-                    <Grid DockPanel.Dock="Top" Margin="0,5" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="20" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
-                        <local:SearchSystemComboBox x:Name="searchSystemDropDown"
-                                  IsEditable="True"
-                                  IsReadOnly="False"
-                                  IsTextSearchEnabled="False"
-                                  TextBoxBase.TextChanged="SearchSystemText_TextChanged"
-                                  Grid.Row="0"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan ="1"
-                                  Height="Auto"
-                                  MinWidth="175"
-                                  Margin="5, 0"
-                                  VerticalContentAlignment="Center"
-                                  LostFocus="SearchSystemDropDown_LostFocus"
-                                  SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
-                        <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
-                        <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan ="1" Height="Auto" MinWidth="175" Margin="5, 0" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
-                        <Button HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="4" Height="Auto" MinWidth="60" Margin="5, 0" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
-                    </Grid>
-                    <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
-                        <!--<Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
-                        <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
-                        <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />-->
+                    <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="5">
+                        <Button x:Name="GuidanceButton" HorizontalAlignment="Center" Click="GuidanceButton_Click" Content="{x:Static resx:NavigationMonitor.enable_guidance_button}" ToolTip="{x:Static resx:NavigationMonitor.enable_guidance_button_tooltip}" MinWidth="150" />
+                        <Button HorizontalAlignment="Center" Click="ReverseRouteButton_Click" Content="{x:Static resx:NavigationMonitor.reverse_route_button}" ToolTip="{x:Static resx:NavigationMonitor.reverse_route_button_tooltip}" MinWidth="150" />
                     </UniformGrid>
                     <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow" SelectionUnit="Cell">
                         <DataGrid.RowHeaderTemplate>
@@ -355,7 +341,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemName}">
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="*" Binding="{Binding Path=systemName}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -366,6 +352,27 @@
                                         <Setter Property="TextAlignment" Value="Left" />
                                         <Setter Property="Margin" Value="5, 0" />
                                         <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn x:Name="StationColumn" Header="{x:Static resx:NavigationMonitor.header_station}" IsReadOnly="True" Width="*" Binding="{Binding Path=stationName}">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Left" />
+                                        <Setter Property="Margin" Value="5, 0" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
@@ -383,7 +390,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_refuel}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=refuelRecommended}">
+                            <DataGridCheckBoxColumn x:Name="RefuelColumn" Header="{x:Static resx:NavigationMonitor.header_refuel}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=refuelRecommended}">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_refuel_recommended}"/>

@@ -30,7 +30,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private string searchTypeSelection = string.Empty;
+        private string searchGroupSelection = string.Empty;
         private string searchQuerySelection = string.Empty;
         private string dropdownSearchSystem = null;
         private string dropdownSearchStation = null;
@@ -57,6 +57,17 @@ namespace EddiNavigationMonitor
 
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
+
+            if (navConfig.routeGuidanceEnabled)
+            {
+                GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
+                GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
+            }
+            else
+            {
+                GuidanceButton.Content = Properties.NavigationMonitor.enable_guidance_button;
+                GuidanceButton.ToolTip = Properties.NavigationMonitor.enable_guidance_button_tooltip;
+            }
 
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
         }
@@ -476,14 +487,14 @@ namespace EddiNavigationMonitor
                 var property = Properties.NavigationMonitor.ResourceManager.GetString("search_type_" + group);
                 if (property == searchTypeDropDown.SelectedItem?.ToString())
                 {
-                    searchTypeSelection = group;
+                    searchGroupSelection = group;
                     break;
                 }
             }
-            ConfigureSearchQueryOptions(searchTypeSelection);
+            ConfigureSearchQueryOptions(searchGroupSelection);
 
             // Set the default query
-            switch (searchTypeSelection)
+            switch (searchGroupSelection)
             {
                 case "crime":
                     {
@@ -538,6 +549,48 @@ namespace EddiNavigationMonitor
                     }
                 }
                 if (found) { break; }
+            }
+
+            // Prompt for arguments as applicable
+            if (found)
+            {
+                Enum.TryParse(searchQuerySelection, out QueryType queryType);
+
+                switch (queryType)
+                {
+                    // Queries which may return a station result
+                    case QueryType.encoded:
+                    case QueryType.facilitator:
+                    case QueryType.guardian:
+                    case QueryType.human:
+                    case QueryType.manufactured:
+                    {
+                        // Arguments
+                        StationParametersGrid.Visibility = Visibility.Visible;
+                        // Columns
+                        StationColumn.Visibility = Visibility.Visible;
+                        RefuelColumn.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+                    case QueryType.neutron:
+                    {
+                        // Arguments
+                        StationParametersGrid.Visibility = Visibility.Collapsed;
+                        // Columns
+                        StationColumn.Visibility = Visibility.Collapsed;
+                        RefuelColumn.Visibility = Visibility.Visible;
+                        break;
+                    }
+                    default:
+                    {
+                        // Arguments
+                        StationParametersGrid.Visibility = Visibility.Collapsed;
+                        // Columns
+                        StationColumn.Visibility = Visibility.Collapsed;
+                        RefuelColumn.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+                }
             }
         }
 
@@ -727,6 +780,46 @@ namespace EddiNavigationMonitor
         private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex()).ToString();
+        }
+
+        private void GuidanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            if (navConfig.routeGuidanceEnabled)
+            {
+                navConfig.routeGuidanceEnabled = false;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                GuidanceButton.Content = Properties.NavigationMonitor.enable_guidance_button;
+                GuidanceButton.ToolTip = Properties.NavigationMonitor.enable_guidance_button_tooltip;
+                var @event = NavigationService.Instance.NavQuery(QueryType.cancel);
+                if (@event == null) { return; }
+                EDDI.Instance?.enqueueEvent(@event);
+            }
+            else
+            {
+                navConfig.routeGuidanceEnabled = true;
+                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
+                GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
+                var @event = NavigationService.Instance.NavQuery(QueryType.set);
+                if (@event == null) { return; }
+                EDDI.Instance?.enqueueEvent(@event);
+            }
+        }
+
+        private void ReverseRouteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var plottedRoute = ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList;
+            plottedRoute.Reverse();
+            ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList = plottedRoute;
+
+            int j = 0;
+            navigationMonitor().PlottedRouteList.Clear();
+            foreach (var waypoint in plottedRoute)
+            {
+                waypoint.index = j++;
+                navigationMonitor().PlottedRouteList.Add(waypoint);
+            }
         }
     }
 }

@@ -17,6 +17,8 @@ namespace EddiDataDefinitions
 
         public int index { get; set; }
 
+        public string stationName { get; set; }
+
         // NavRoute only
         public string stellarclass { get; set; }
 

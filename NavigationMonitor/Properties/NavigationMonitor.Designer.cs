@@ -178,6 +178,42 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel Guidance.
+        /// </summary>
+        public static string disable_guidance_button {
+            get {
+                return ResourceManager.GetString("disable_guidance_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop guiding the ship along the plotted route..
+        /// </summary>
+        public static string disable_guidance_button_tooltip {
+            get {
+                return ResourceManager.GetString("disable_guidance_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Guidance.
+        /// </summary>
+        public static string enable_guidance_button {
+            get {
+                return ResourceManager.GetString("enable_guidance_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guide the ship along the plotted route.
+        /// </summary>
+        public static string enable_guidance_button_tooltip {
+            get {
+                return ResourceManager.GetString("enable_guidance_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show or hide additional details about the selected planetary bookmark.
         /// </summary>
         public static string extra_details_tooltip {
@@ -313,6 +349,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Station.
+        /// </summary>
+        public static string header_station {
+            get {
+                return ResourceManager.GetString("header_station", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Star Class.
         /// </summary>
         public static string header_stellar_class {
@@ -412,11 +457,20 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A successful search triggers a &quot;Route details&quot; event..
+        ///   Looks up a localized string similar to Reverse Route.
         /// </summary>
-        public static string route_details_desc {
+        public static string reverse_route_button {
             get {
-                return ResourceManager.GetString("route_details_desc", resourceCulture);
+                return ResourceManager.GetString("reverse_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse the direction of the plotted route.
+        /// </summary>
+        public static string reverse_route_button_tooltip {
+            get {
+                return ResourceManager.GetString("reverse_route_button_tooltip", resourceCulture);
             }
         }
         
@@ -430,7 +484,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute search query.
+        ///   Looks up a localized string similar to A successful search triggers a &quot;Route details&quot; event..
         /// </summary>
         public static string search_button_tooltip {
             get {
