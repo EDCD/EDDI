@@ -23,7 +23,7 @@ namespace EddiEvents
         public string station { get; private set; }
 
         [PublicAPI("List of system names, if applicable")]
-        public List<string> route => Route.Select(r => r.systemName).ToList();
+        public List<string> route => (Route ?? new List<NavWaypoint>()).Select(r => r.systemName).ToList();
 
         [PublicAPI("Count of missions, systems, or expiry seconds, depending on route type")]
         public long count { get; private set; }
