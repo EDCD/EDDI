@@ -117,7 +117,7 @@ namespace EddiCompanionAppService
                 return station;
             }
 
-            try 
+            try
             {
                 station.economyShares = economyShares.Select(e => e.ToEconomyShare()).ToList();
                 station.stationServices = stationServices.Select(s => StationService.FromEDName(s.Key)).ToList();
@@ -138,7 +138,7 @@ namespace EddiCompanionAppService
             {
                 try
                 {
-                    station.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).ToList();
+                    station.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).Where(c => c != null).ToList();
                     station.prohibited = prohibitedCommodities.Select(p => CommodityDefinition.CommodityDefinitionFromEliteID(p.Key) ?? CommodityDefinition.FromEDName(p.Value)).ToList();
                     station.commoditiesupdatedat = commoditiesupdatedat;
                 }
@@ -156,9 +156,9 @@ namespace EddiCompanionAppService
             }
             if (outfittingupdatedat != null && (station.outfittingupdatedat ?? 0) < outfittingupdatedat)
             {
-                try 
+                try
                 {
-                    station.outfitting = outfitting.Select(m => m.ToModule()).ToList();
+                    station.outfitting = outfitting.Select(m => m.ToModule()).Where(m => m != null).ToList();
                     station.outfittingupdatedat = outfittingupdatedat;
                 }
                 catch (Exception e)
@@ -175,9 +175,9 @@ namespace EddiCompanionAppService
             }
             if (shipyardupdatedat != null && (station.shipyardupdatedat ?? 0) < shipyardupdatedat)
             {
-                try 
+                try
                 {
-                    station.shipyard = ships.Select(s => s.ToShip()).ToList();
+                    station.shipyard = ships.Select(s => s.ToShip()).Where(s => s != null).ToList();
                     station.shipyardupdatedat = shipyardupdatedat;
                 }
                 catch (Exception e)
