@@ -24,10 +24,6 @@ namespace EddiConfigService
 
         public dynamic[] searchQueryArgs { get; set; }
 
-        public string searchSystem { get; set; }
-
-        public string searchStation { get; set; }
-
         // Ship touchdown data
         public decimal? tdLat { get; set; }
 
@@ -43,6 +39,6 @@ namespace EddiConfigService
         public bool routeGuidanceEnabled { get; set; }
         public List<NavWaypoint> plottedRouteList { get; set; }
         public decimal plottedRouteDistance { get; set; }
-
+        public bool fillVisitedGaps { get; set; }
     }
 }

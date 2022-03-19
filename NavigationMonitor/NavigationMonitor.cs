@@ -37,6 +37,7 @@ namespace EddiNavigationMonitor
         private decimal plottedRouteDistance;
         public static event EventHandler PlottedRouteUpdatedEvent;
         public bool GuidanceEnabled { get; set; }
+        public bool FillVisitedGaps { get; set; }
 
         private DateTime updateDat;
 
@@ -201,8 +202,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0));
-                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0));
+                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0), FillVisitedGaps);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0), FillVisitedGaps);
             }
         }
 
@@ -230,8 +231,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0));
-                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0));
+                UpdateVisitedStatus(ref NavRouteList, (ulong)(@event.systemAddress ?? 0), FillVisitedGaps);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)(@event.systemAddress ?? 0), FillVisitedGaps);
             }
         }
 
@@ -240,8 +241,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress);
-                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress, FillVisitedGaps);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress, FillVisitedGaps);
             }
         }
 
@@ -250,8 +251,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress);
-                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress);
+                UpdateVisitedStatus(ref NavRouteList, (ulong)@event.systemAddress, FillVisitedGaps);
+                UpdateVisitedStatus(ref PlottedRouteList, (ulong)@event.systemAddress, FillVisitedGaps);
             }
         }
 
@@ -347,6 +348,7 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
+            FillVisitedGaps = false;
             if (routeDetailsEvent.routetype == QueryType.set.ToString())
             {
                 GuidanceEnabled = true;
@@ -354,6 +356,10 @@ namespace EddiNavigationMonitor
             else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
             {
                 GuidanceEnabled = false;
+            }
+            else if (routeDetailsEvent.routetype == QueryType.neutron.ToString())
+            {
+                FillVisitedGaps = true;
             }
             else
             {
@@ -404,6 +410,7 @@ namespace EddiNavigationMonitor
                 navConfig.plottedRouteList = PlottedRouteList.ToList();
                 navConfig.plottedRouteDistance = plottedRouteDistance;
                 navConfig.routeGuidanceEnabled = GuidanceEnabled;
+                navConfig.fillVisitedGaps = FillVisitedGaps;
                 navConfig.updatedat = updateDat;
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
@@ -451,6 +458,7 @@ namespace EddiNavigationMonitor
                 }
                 plottedRouteDistance = navConfig.plottedRouteDistance;
                 GuidanceEnabled = navConfig.routeGuidanceEnabled;
+                FillVisitedGaps = navConfig.fillVisitedGaps;
             }
         }
 
@@ -598,13 +606,24 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void UpdateVisitedStatus(ref ObservableCollection<NavWaypoint> routeList, ulong systemAddress)
+        private void UpdateVisitedStatus(ref ObservableCollection<NavWaypoint> routeList, ulong systemAddress, bool fillVisitedGaps)
         {
-            foreach (var waypoint in routeList)
+            if (fillVisitedGaps)
             {
-                if (!waypoint.visited && waypoint.systemAddress == systemAddress)
+                var waypoint = routeList.FirstOrDefault(n => n.systemAddress == systemAddress);
+                for (var i = 0; i < waypoint?.index; i++)
                 {
-                    waypoint.visited = true;
+                    routeList[i++].visited = true;
+                }
+            }
+            else
+            {
+                foreach (var waypoint in routeList)
+                {
+                    if (!waypoint.visited && waypoint.systemAddress == systemAddress)
+                    {
+                        waypoint.visited = true;
+                    }
                 }
             }
         }

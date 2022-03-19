@@ -54,6 +54,7 @@ namespace EddiNavigationMonitor
 
             searchTypeDropDown.SelectedItem = Properties.NavigationMonitor.search_type_missions;
             searchQueryDropDown.SelectedItem = Properties.NavigationMonitor.search_query_missions_route;
+            configureSearchArgumentOptions(QueryType.route);
 
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
@@ -70,6 +71,11 @@ namespace EddiNavigationMonitor
             }
 
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+
+            if (Enum.TryParse(navConfig.searchQuery, true, out QueryType queryType))
+            {
+                configureRoutePlotterColumns(queryType);
+            }
         }
 
         private void OnStatusUpdated(object sender, EventArgs e)
@@ -555,72 +561,113 @@ namespace EddiNavigationMonitor
             if (found)
             {
                 Enum.TryParse(searchQuerySelection, out QueryType queryType);
+                configureSearchArgumentOptions(queryType);
+            }
+        }
 
-                switch (queryType)
-                {
-                    // Queries which may return a station result
-                    case QueryType.encoded:
-                    case QueryType.facilitator:
-                    case QueryType.guardian:
-                    case QueryType.human:
-                    case QueryType.manufactured:
+        private void configureRoutePlotterColumns(QueryType queryType)
+        {
+            // Configure view by query type
+            switch (queryType)
+            {
+                case QueryType.encoded:
+                case QueryType.facilitator:
+                case QueryType.guardian:
+                case QueryType.human:
+                case QueryType.manufactured:
                     {
-                        // Arguments
-                        StationParametersGrid.Visibility = Visibility.Visible;
-                        // Columns
                         StationColumn.Visibility = Visibility.Visible;
                         RefuelColumn.Visibility = Visibility.Collapsed;
                         break;
                     }
-                    case QueryType.neutron:
+                case QueryType.neutron:
                     {
-                        // Arguments
-                        StationParametersGrid.Visibility = Visibility.Collapsed;
-                        // Columns
                         StationColumn.Visibility = Visibility.Collapsed;
                         RefuelColumn.Visibility = Visibility.Visible;
                         break;
                     }
-                    default:
+                default:
                     {
-                        // Arguments
-                        StationParametersGrid.Visibility = Visibility.Collapsed;
-                        // Columns
                         StationColumn.Visibility = Visibility.Collapsed;
                         RefuelColumn.Visibility = Visibility.Collapsed;
                         break;
                     }
-                }
+            }
+        }
+
+        private void configureSearchArgumentOptions(QueryType queryType)
+        {
+            switch (queryType)
+            {
+                case QueryType.encoded:
+                case QueryType.facilitator:
+                case QueryType.guardian:
+                case QueryType.human:
+                case QueryType.manufactured:
+                    {
+                        StationParametersGrid.Visibility = Visibility.Visible;
+                        navSearchSystemLabel.Visibility = Visibility.Collapsed;
+                        searchSystemDropDown.Visibility = Visibility.Collapsed;
+                        navSearchStationLabel.Visibility = Visibility.Collapsed;
+                        searchStationDropDown.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+                case QueryType.most:
+                case QueryType.neutron:
+                case QueryType.route:
+                case QueryType.source:
+                    {
+                        StationParametersGrid.Visibility = Visibility.Collapsed;
+                        navSearchSystemLabel.Visibility = Visibility.Visible;
+                        searchSystemDropDown.Visibility = Visibility.Visible;
+                        navSearchStationLabel.Visibility = Visibility.Collapsed;
+                        searchStationDropDown.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+                case QueryType.set:
+                    {
+                        StationParametersGrid.Visibility = Visibility.Collapsed;
+                        navSearchSystemLabel.Visibility = Visibility.Visible;
+                        searchSystemDropDown.Visibility = Visibility.Visible;
+                        navSearchStationLabel.Visibility = Visibility.Visible;
+                        searchStationDropDown.Visibility = Visibility.Visible;
+                        break;
+                    }
+                default:
+                    {
+                        StationParametersGrid.Visibility = Visibility.Collapsed;
+                        navSearchSystemLabel.Visibility = Visibility.Collapsed;
+                        searchSystemDropDown.Visibility = Visibility.Collapsed;
+                        navSearchStationLabel.Visibility = Visibility.Collapsed;
+                        searchStationDropDown.Visibility = Visibility.Collapsed;
+                        break;
+                    }
             }
         }
 
         private async void executeSearch(object sender, RoutedEventArgs e)
         {
             Button searchButton = (Button)sender;
-            searchButton.Foreground = Brushes.DarkBlue;
+            searchButton.Foreground = Brushes.Red;
             searchButton.FontWeight = FontWeights.Bold;
-
-            var resultSystem = string.Empty;
-            var resultStation = string.Empty;
 
             var searchSystemArg = searchSystemDropDown.Text;
             var searchStationArg = searchStationDropDown.Text;
 
+            QueryType queryType = QueryType.None;
             var search = Task.Run(() =>
             {
                 RouteDetailsEvent @event = null;
-                if (Enum.TryParse(searchQuerySelection, true, out QueryType queryType))
+                if (Enum.TryParse(searchQuerySelection, true, out queryType))
                 {
                     dynamic[] args = null;
                     switch (queryType)
                     {
                         // Add a system name as an argument
                         case QueryType.neutron:
-                        case QueryType.route:
-                        case QueryType.source:
                         {
                             // For a neutron route the system name is a mandatory argument
-                            if (queryType == QueryType.neutron && string.IsNullOrEmpty(searchSystemArg))
+                            if (string.IsNullOrEmpty(searchSystemArg))
                             {
                                 MessageBox.Show(Properties.NavigationMonitor.search_err_mandatory_neutron_target_system, Properties.NavigationMonitor.search_query_galaxy_neutron, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 return;
@@ -628,6 +675,13 @@ namespace EddiNavigationMonitor
                             args = new dynamic[] { searchSystemArg };
                             break;
                         }
+                        case QueryType.route:
+                        case QueryType.source:
+                        {
+                            args = new dynamic[] { searchSystemArg };
+                            break;
+                        }
+
                         // Add optional system and station name arguments
                         case QueryType.set:
                         {
@@ -638,26 +692,16 @@ namespace EddiNavigationMonitor
                     @event = NavigationService.Instance.NavQuery(queryType, args);
                 }
                 if (@event == null) { return; }
-                resultSystem = @event.system;
-                resultStation = @event.station;
                 EDDI.Instance?.enqueueEvent(@event);
             });
 
-            // Update our UI to match our results
             await Task.WhenAll(search);
-            if (searchSystemDropDown.Text != resultSystem)
-            {
-                dropdownSearchSystem = resultSystem;
-                searchSystemDropDown.Text = resultSystem;
-                ConfigureSearchStationOptions(resultSystem);
-            }
-            if (searchStationDropDown.Text != resultStation)
-            {
-                dropdownSearchStation = resultStation;
-                searchStationDropDown.Text = !string.IsNullOrEmpty(resultStation) ? resultStation : Properties.NavigationMonitor.no_station;
-            }
             searchButton.Foreground = Brushes.Black;
             searchButton.FontWeight = FontWeights.Normal;
+            if (queryType != QueryType.None)
+            {
+                configureRoutePlotterColumns(queryType);
+            }
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
@@ -820,6 +864,7 @@ namespace EddiNavigationMonitor
                 waypoint.index = j++;
                 navigationMonitor().PlottedRouteList.Add(waypoint);
             }
+            navigationMonitor().WriteNavConfig();
         }
     }
 }

@@ -205,6 +205,7 @@
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Setter Property="Margin" Value="5, 0" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
@@ -212,6 +213,7 @@
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Setter Property="Margin" Value="5, 0" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
@@ -278,6 +280,8 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
                                 <local:SearchSystemComboBox x:Name="searchSystemDropDown"
@@ -288,14 +292,14 @@
                                       Grid.Row="0"
                                       Grid.Column="1"
                                       MinWidth="175"
-                                      Margin="10, 5"
+                                      Margin="10, 7"
                                       VerticalContentAlignment="Center"
                                       LostFocus="SearchSystemDropDown_LostFocus"
                                       SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
                                 <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
-                                <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" Height="Auto" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
+                                <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
                             </Grid>
-                            <Grid DockPanel.Dock="Top" x:Name="StationParametersGrid">
+                            <Grid DockPanel.Dock="Top" x:Name="StationParametersGrid" Margin="0, 5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -304,15 +308,16 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Margin="0,0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
-                                <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="1" Margin="10,5"
+                                <Label Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.search_distance}"/>
+                                <TextBox x:Name="maxSearchDistanceInt" Grid.Row="0" Grid.Column="1"
                                          PreviewTextInput="EnsureValidInteger"
                                          KeyDown="maxSearchDistance_KeyDown"
                                          LostFocus="maxSearchDistance_LostFocus"
                                          TextAlignment="Center"
                                          VerticalContentAlignment="Center" MinWidth="60"
+                                         Margin="10, 0"
                                          ToolTip="{x:Static resx:NavigationMonitor.search_distance_tooltip}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="3" Margin="10, 0" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Margin="10, 5" TextWrapping="Wrap" Text="{x:Static resx:NavigationMonitor.orbital_station_checkbox}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
                             </Grid>
                         </DockPanel>
@@ -373,6 +378,7 @@
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Setter Property="Margin" Value="5, 0" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
@@ -380,6 +386,7 @@
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Right" />
+                                        <Setter Property="Margin" Value="5, 0" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
