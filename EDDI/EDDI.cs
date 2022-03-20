@@ -745,6 +745,8 @@ namespace EddiCore
 
         public void enqueueEvent(Event @event)
         {
+            if (@event is null) { return; }
+
             if (!eventQueue.IsAddingCompleted)
             {
                 eventQueue.Add(@event);
