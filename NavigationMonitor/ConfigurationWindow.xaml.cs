@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -46,8 +47,8 @@ namespace EddiNavigationMonitor
         {
             InitializeComponent();
             bookmarksData.ItemsSource = navigationMonitor().Bookmarks;
-            navRouteData.ItemsSource = navigationMonitor().NavRouteList;
-            plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList;
+            navRouteData.ItemsSource = navigationMonitor().NavRouteList.Waypoints;
+            plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList.Waypoints;
 
             ConfigureSearchTypeOptions();
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
@@ -59,7 +60,7 @@ namespace EddiNavigationMonitor
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
             maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
 
-            if (navConfig.routeGuidanceEnabled)
+            if (navigationMonitor().PlottedRouteList?.GuidanceEnabled ?? false)
             {
                 GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
@@ -597,6 +598,9 @@ namespace EddiNavigationMonitor
 
         private void configureSearchArgumentOptions(QueryType queryType)
         {
+            searchSystemDropDown.Text = string.Empty;
+            searchStationDropDown.Text = string.Empty;
+
             switch (queryType)
             {
                 case QueryType.encoded:
@@ -828,43 +832,27 @@ namespace EddiNavigationMonitor
 
         private void GuidanceButton_Click(object sender, RoutedEventArgs e)
         {
-            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            if (navConfig.routeGuidanceEnabled)
+            if (navigationMonitor().PlottedRouteList?.GuidanceEnabled ?? false)
             {
-                navConfig.routeGuidanceEnabled = false;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 GuidanceButton.Content = Properties.NavigationMonitor.enable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.enable_guidance_button_tooltip;
-                var @event = NavigationService.Instance.NavQuery(QueryType.cancel);
-                if (@event == null) { return; }
-                EDDI.Instance?.enqueueEvent(@event);
+                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel));
             }
             else
             {
-                navConfig.routeGuidanceEnabled = true;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
-                var @event = NavigationService.Instance.NavQuery(QueryType.set);
-                if (@event == null) { return; }
-                EDDI.Instance?.enqueueEvent(@event);
+                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set));
             }
         }
 
-        private void ReverseRouteButton_Click(object sender, RoutedEventArgs e)
+        private void ClearRouteButton_Click(object sender, RoutedEventArgs e)
         {
-            var plottedRoute = ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList;
-            plottedRoute.Reverse();
-            ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList = plottedRoute;
-
-            int j = 0;
-            navigationMonitor().PlottedRouteList.Clear();
-            foreach (var waypoint in plottedRoute)
+            if (plottedRouteData.Items.Count > 0)
             {
-                waypoint.index = j++;
-                navigationMonitor().PlottedRouteList.Add(waypoint);
+                navigationMonitor().PlottedRouteList.Waypoints.Clear();
+                navigationMonitor().WriteNavConfig();
             }
-            navigationMonitor().WriteNavConfig();
         }
     }
 }

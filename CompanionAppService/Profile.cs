@@ -66,7 +66,7 @@ namespace EddiCompanionAppService
         public string name { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        public long? systemAddress { get; set; }
+        public ulong? systemAddress { get; set; }
 
         /// <summary>The system in which this station resides</summary>
         public string systemname { get; set; }

@@ -27,7 +27,7 @@ namespace EddiEvents
         public bool isSignalSource => signalSource != null;
 
         // Not intended to be user facing
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public int? bodyId { get; private set; }
 
@@ -37,7 +37,7 @@ namespace EddiEvents
 
         public SignalSource signalSource { get; private set; }
 
-        public NextDestinationEvent(DateTime timestamp, long? systemAddress, int? bodyId, string name, string localizedName = null, Body body = null, Station station = null, SignalSource signalSource = null) : base(timestamp, NAME)
+        public NextDestinationEvent(DateTime timestamp, ulong? systemAddress, int? bodyId, string name, string localizedName = null, Body body = null, Station station = null, SignalSource signalSource = null) : base(timestamp, NAME)
         {
             this.systemAddress = systemAddress;
             this.bodyId = bodyId;

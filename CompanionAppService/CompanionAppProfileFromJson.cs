@@ -95,7 +95,7 @@ namespace EddiCompanionAppService
             return Profile;
         }
 
-        public Profile Station(long? systemAddress, string systemName)
+        public Profile Station(ulong? systemAddress, string systemName)
         {
             try 
             {

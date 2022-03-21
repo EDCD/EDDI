@@ -11,7 +11,7 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Galaxy Plotter.
-        public List<NavWaypoint> GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
+        public NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
         {
             if (ship is null)
             {
@@ -96,7 +96,7 @@ namespace EddiSpanshService
             return request;
         }
         
-        private List<NavWaypoint> ParseGalaxyRoute(JToken routeResult)
+        private NavWaypointCollection ParseGalaxyRoute(JToken routeResult)
         {
             var results = new List<NavWaypoint>();
 
@@ -112,7 +112,7 @@ namespace EddiSpanshService
                 results.Add(waypoint);
             }
 
-            return results;
+            return new NavWaypointCollection(results) {FillVisitedGaps = true};
         }
     }
 }

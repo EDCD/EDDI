@@ -166,9 +166,9 @@ namespace Utilities
             {
                 return l;
             }
-            if (val is ulong ul)
+            if (val is int i)
             {
-                return Convert.ToInt64(ul);
+                return i;
             }
             if (val is BigInteger bigInteger)
             {
@@ -190,9 +190,9 @@ namespace Utilities
             {
                 return l;
             }
-            if (val is ulong ul)
+            if (val is int i)
             {
-                return Convert.ToInt64(ul);
+                return i;
             }
             if (val is BigInteger bigInteger)
             {
@@ -202,37 +202,56 @@ namespace Utilities
             }
             throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
         }
-
-        public static BigInteger getBigInteger(IDictionary<string, object> data, string key)
+        
+        public static ulong getULong(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
-            return getBigInteger(key, val);
+            return getULong(key, val);
         }
 
-        public static BigInteger getBigInteger(string key, object val)
+        public static ulong getULong(string key, object val)
         {
+            if (val is ulong ul)
+            {
+                return ul;
+            }
+            if (val is long l)
+            {
+                return Convert.ToUInt64(l);
+            }
             if (val is BigInteger bigInteger)
             {
-                return bigInteger;
+                // Handle overflow conditions causing some very large numbers in the journal
+                var toLong = bigInteger + long.MinValue;
+                return (ulong)toLong;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
 
-        public static BigInteger? getOptionalBigInteger(IDictionary<string, object> data, string key)
+        public static ulong? getOptionalULong(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
             if (val == null)
             {
                 return null;
             }
-            else if (val is BigInteger bigInteger)
+            if (val is ulong ul)
             {
-                return bigInteger;
+                return ul;
             }
-
-            throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
+            if (val is long l)
+            {
+                return Convert.ToUInt64(l);
+            }
+            if (val is BigInteger bigInteger)
+            {
+                // Handle overflow conditions causing some very large numbers in the journal
+                var toLong = bigInteger + long.MinValue;
+                return (ulong)toLong;
+            }
+            throw new ArgumentException($"Expected value of type ulong for key {key}, instead got value of type {data.GetType().FullName}");
         }
-
+        
         public static bool getBool(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);

@@ -56,6 +56,7 @@ namespace EddiDataDefinitions
         public NavWaypoint(StarSystem starSystem)
         {
             this.systemName = starSystem.systemname;
+            this.systemAddress = starSystem.systemAddress;
             this.x = starSystem.x;
             this.y = starSystem.y;
             this.z = starSystem.z;

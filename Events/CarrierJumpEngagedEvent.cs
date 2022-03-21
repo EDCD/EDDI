@@ -26,7 +26,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
         
         public long? bodyId { get; private set; }
         
@@ -34,9 +34,9 @@ namespace EddiEvents
         
         public string originSystemName { get; private set; }
         
-        public long? originSystemAddress { get; private set; }
+        public ulong? originSystemAddress { get; private set; }
 
-        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, long systemAddress, string originSystemName, long? originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, ulong systemAddress, string originSystemName, ulong? originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

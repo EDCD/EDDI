@@ -10,8 +10,6 @@ namespace EddiConfigService
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\navigationmonitor.json")]
     public class NavigationMonitorConfiguration : Config
     {
-        public ObservableCollection<NavBookmark> bookmarks { get; set; } = new ObservableCollection<NavBookmark>();
-
         public DateTime updatedat { get; set; }
 
         // Search parameters
@@ -31,14 +29,13 @@ namespace EddiConfigService
 
         public string tdPOI { get; set; }
 
+        // Saved bookmarks
+        public ObservableCollection<NavBookmark> bookmarks { get; set; } = new ObservableCollection<NavBookmark>();
+
         // Current in-game route
-        public List<NavWaypoint> navRouteList { get; set; }
-        public decimal navRouteDistance { get; set; }
+        public NavWaypointCollection navRouteList { get; set; } = new NavWaypointCollection();
 
         // Plotted route
-        public bool routeGuidanceEnabled { get; set; }
-        public List<NavWaypoint> plottedRouteList { get; set; }
-        public decimal plottedRouteDistance { get; set; }
-        public bool fillVisitedGaps { get; set; }
+        public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
     }
 }

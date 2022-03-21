@@ -33,11 +33,11 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public GlideEvent(DateTime timestamp, bool gliding, string systemName, long? systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)
+        public GlideEvent(DateTime timestamp, bool gliding, string systemName, ulong? systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)
         {
             this.gliding = gliding;
             this.systemname = systemName;

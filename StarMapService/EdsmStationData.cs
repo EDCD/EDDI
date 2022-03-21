@@ -40,7 +40,7 @@ namespace EddiStarMapService
             if (response != null)
             {
                 string system = (string)response["name"];
-                long? systemAddress = (long?)response["id64"];
+                ulong? systemAddress = (ulong?)response["id64"];
                 JArray stations = (JArray)response["stations"];
 
                 if (stations != null)
@@ -57,7 +57,7 @@ namespace EddiStarMapService
             return Stations;
         }
 
-        private Station ParseStarMapStation(JObject station, string system, long? systemAddress)
+        private Station ParseStarMapStation(JObject station, string system, ulong? systemAddress)
         {
             try
             {

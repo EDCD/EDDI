@@ -114,7 +114,7 @@ namespace EddiJournalMonitor
                             case "Docked":
                                 {
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    ulong? systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
@@ -167,7 +167,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
                                     var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -192,7 +192,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
                                     var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -215,7 +215,7 @@ namespace EddiJournalMonitor
                             case "SupercruiseEntry":
                                 {
                                     string system = JsonParsing.getString(data, "StarySystem");
-                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
                                     events.Add(new EnteredSupercruiseEvent(timestamp, system, systemAddress, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
@@ -225,7 +225,7 @@ namespace EddiJournalMonitor
                             case "SupercruiseExit":
                                 {
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
@@ -238,7 +238,7 @@ namespace EddiJournalMonitor
                             case "FSDJump":
                                 {
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     data.TryGetValue("StarPos", out object val);
                                     List<object> starPos = (List<object>)val;
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
@@ -297,7 +297,7 @@ namespace EddiJournalMonitor
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                     decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                     decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     decimal? distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     string body = JsonParsing.getString(data, "Body");
@@ -807,7 +807,7 @@ namespace EddiJournalMonitor
                             case "ApproachBody":
                                 {
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
@@ -817,7 +817,7 @@ namespace EddiJournalMonitor
                             case "LeaveBody":
                                 {
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
@@ -828,7 +828,7 @@ namespace EddiJournalMonitor
                                 {
                                     string settlementname = JsonParsing.getString(data, "Name");
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons are reported as settlements without MarketID
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
 
@@ -849,7 +849,7 @@ namespace EddiJournalMonitor
                                     string scantype = JsonParsing.getString(data, "ScanType");
 
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
 
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
@@ -2182,7 +2182,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSSignalDiscovered":
                                 {
-                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     SignalSource source = GetSignalSourceName(data);
                                     source.spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
@@ -2234,7 +2234,7 @@ namespace EddiJournalMonitor
                                 {
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
@@ -4054,7 +4054,7 @@ namespace EddiJournalMonitor
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                     decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                     decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     Economy systemEconomy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     Economy systemEconomy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                     Faction systemfaction = getFaction(data, "System", systemName);
@@ -4140,7 +4140,7 @@ namespace EddiJournalMonitor
                             case "CarrierJumpRequest":
                                 {
                                     long carrierId = JsonParsing.getLong(data, "CarrierID");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string systemName = JsonParsing.getString(data, "SystemName");
                                     string bodyName = JsonParsing.getString(data, "Body");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
@@ -4185,7 +4185,7 @@ namespace EddiJournalMonitor
                                             int timeMs = (Constants.carrierPreJumpSeconds + varSeconds) * 1000;
                                             await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
                                             string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                                            long? originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+                                            var originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
                                             EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
                                         }, carrierJumpCancellationTS.Token));
 

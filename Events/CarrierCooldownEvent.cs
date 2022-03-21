@@ -34,7 +34,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public BodyType bodyType { get; private set; }
 
@@ -44,7 +44,7 @@ namespace EddiEvents
 
         public StationModel carrierType { get; private set; }
 
-        public CarrierCooldownEvent(DateTime timestamp, string systemName, long? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)
+        public CarrierCooldownEvent(DateTime timestamp, string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

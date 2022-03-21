@@ -2080,7 +2080,7 @@ namespace EddiCore
             setCommanderTitle();
         }
 
-        private void updateCurrentStellarBody(string bodyName, string systemName, long? systemAddress = null)
+        private void updateCurrentStellarBody(string bodyName, string systemName, ulong? systemAddress = null)
         {
             // Make sure our system information is up to date
             if (CurrentStarSystem == null || CurrentStarSystem.systemname != systemName)

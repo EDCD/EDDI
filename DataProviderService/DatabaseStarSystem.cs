@@ -6,7 +6,7 @@ namespace EddiDataProviderService
     {
         // Data as read from columns in our database
         public string systemName { get; private set; }
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
         public long? edsmId { get; private set; }
         public string systemJson { get; set; }
         public string comment { get; set; }
@@ -14,7 +14,7 @@ namespace EddiDataProviderService
         public DateTime? lastVisit { get; set; }
         public int totalVisits { get; set; }
 
-        public DatabaseStarSystem(string systemName, long? systemAddress, long? edsmId, string systemJson)
+        public DatabaseStarSystem(string systemName, ulong? systemAddress, long? edsmId, string systemJson)
         {
             this.systemName = systemName;
             this.systemAddress = systemAddress;

@@ -157,10 +157,10 @@ namespace EddiStarMapService
 
         public StarSystem ParseStarMapSystem(JObject response)
         {
-            StarSystem starSystem = new StarSystem
+            var starSystem = new StarSystem
             {
                 systemname = (string)response["name"],
-                systemAddress = (long?)response["id64"],
+                systemAddress = (ulong?)response["id64"],
                 EDSMID = (long?)response["id"]
             };
 

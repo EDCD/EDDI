@@ -76,7 +76,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public StationModel stationModel { get; private set; } = StationModel.None;
 
@@ -88,7 +88,7 @@ namespace EddiEvents
 
         public List<EconomyShare> economyShares { get; private set; } = new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };
 
-        public DockedEvent(DateTime timestamp, string system, long? systemAddress, long? marketId, string station, string state, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, ulong? systemAddress, long? marketId, string station, string state, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;

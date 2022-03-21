@@ -477,7 +477,7 @@ namespace EddiDataProviderService
         private DatabaseStarSystem ReadStarSystemEntry(SQLiteCommand cmd)
         {
             string systemName = string.Empty;
-            long? systemAddress = null;
+            ulong? systemAddress = null;
             long? edsmId = null;
             string starSystemJson = string.Empty;
             string comment = string.Empty;
@@ -493,7 +493,7 @@ namespace EddiDataProviderService
                     {
                         if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
                         {
-                            systemAddress = rdr.IsDBNull(i) ? null : (long?)rdr.GetInt64(i);
+                            systemAddress = rdr.IsDBNull(i) ? null : (ulong?)rdr.GetInt64(i);
                         }
                         if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "edsmid")
                         {

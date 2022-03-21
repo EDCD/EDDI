@@ -61,7 +61,7 @@ namespace EddiBgsService
         }
 
         /// <summary> Can return null </summary>
-        public StarSystem GetSystemBySystemAddress(long? systemAddress)
+        public StarSystem GetSystemBySystemAddress(ulong? systemAddress)
         {
             if (systemAddress is null) { return null; }
             List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
@@ -123,7 +123,7 @@ namespace EddiBgsService
                 };
                 // Stored in this API as a string. May be null.
                 var systemAddress = JsonParsing.getString(systemJson, "ed_system_address");
-                system.systemAddress = string.IsNullOrEmpty(systemAddress) ? null : (long?)long.Parse(systemAddress);
+                system.systemAddress = string.IsNullOrEmpty(systemAddress) ? null : (ulong?)ulong.Parse(systemAddress);
 
                 // Get powerplay data
                 // Note: EDDB does not report the following powerplay state ednames: 

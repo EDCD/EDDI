@@ -178,6 +178,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Route.
+        /// </summary>
+        public static string clear_route_button {
+            get {
+                return ResourceManager.GetString("clear_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the plotted route.
+        /// </summary>
+        public static string clear_route_button_tooltip {
+            get {
+                return ResourceManager.GetString("clear_route_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Guidance.
         /// </summary>
         public static string disable_guidance_button {
@@ -453,24 +471,6 @@ namespace EddiNavigationMonitor.Properties {
         public static string remove_message {
             get {
                 return ResourceManager.GetString("remove_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reverse Route.
-        /// </summary>
-        public static string reverse_route_button {
-            get {
-                return ResourceManager.GetString("reverse_route_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reverse the direction of the plotted route.
-        /// </summary>
-        public static string reverse_route_button_tooltip {
-            get {
-                return ResourceManager.GetString("reverse_route_button_tooltip", resourceCulture);
             }
         }
         

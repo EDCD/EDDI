@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         public decimal? z { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        public long? systemAddress { get; set; }
+        public ulong? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [PublicAPI, JsonProperty] // Required to deserialize to the private setter

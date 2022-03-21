@@ -268,7 +268,7 @@ namespace EddiDataDefinitions
         public LegalStatus legalStatus;
         public string raw;
 
-        public long? destinationSystemAddress;
+        public ulong? destinationSystemAddress;
         public int? destinationBodyId; // Multiple destinations either on or orbiting the same body may share a single bodyId
 
         [PublicAPI("The name of the currently selected destination (including in-system destinations)")]

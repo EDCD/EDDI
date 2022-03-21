@@ -8,7 +8,7 @@ namespace EddiSpanshService
         List<NavWaypoint> GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity,
             bool calculateTotalFuelRequired = true, string[] refuel_destinations = null);
 
-        List<NavWaypoint> GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship,
+        NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship,
             int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true,
             bool use_injections = false, bool exclude_secondary = false);
 

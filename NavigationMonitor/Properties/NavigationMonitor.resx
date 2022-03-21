@@ -362,11 +362,11 @@
   <data name="disable_guidance_button_tooltip" xml:space="preserve">
     <value>Stop guiding the ship along the plotted route.</value>
   </data>
-  <data name="reverse_route_button" xml:space="preserve">
-    <value>Reverse Route</value>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Clear Route</value>
   </data>
-  <data name="reverse_route_button_tooltip" xml:space="preserve">
-    <value>Reverse the direction of the plotted route</value>
+  <data name="clear_route_button_tooltip" xml:space="preserve">
+    <value>Clear the plotted route</value>
   </data>
   <data name="header_station" xml:space="preserve">
     <value>Station</value>

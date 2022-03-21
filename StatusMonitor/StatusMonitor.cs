@@ -317,7 +317,7 @@ namespace EddiStatusMonitor
                     {
                         if (destinationData is IDictionary<string, object> destinationInfo)
                         {
-                            status.destinationSystemAddress = JsonParsing.getOptionalLong(destinationInfo, "System");
+                            status.destinationSystemAddress = JsonParsing.getOptionalULong(destinationInfo, "System");
                             status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
                             status.destination_name = JsonParsing.getString(destinationInfo, "Name");
                             status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised");
