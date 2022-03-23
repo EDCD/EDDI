@@ -348,6 +348,7 @@
                                         FlowDirection="LeftToRight"
                                         Foreground="AliceBlue"
                                         Height="3"
+                                        MinWidth="30"
                                         VerticalAlignment="Bottom"
                                         HorizontalAlignment="Center"
                                         Visibility="Collapsed">
