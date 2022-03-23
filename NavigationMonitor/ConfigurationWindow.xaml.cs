@@ -483,27 +483,11 @@ namespace EddiNavigationMonitor
 
         private void searchGroupDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            ConfigureSearchQueryOptions((QueryGroup)searchGroupDropDown.SelectedItem);
+            var queryGroup = (QueryGroup)searchGroupDropDown.SelectedItem;
+            ConfigureSearchQueryOptions(queryGroup);
 
             // Set the default query
-            switch (searchGroupDropDown.SelectedItem)
-            {
-                case QueryGroup.galaxy:
-                    {
-                        searchQueryDropDown.SelectedItem = QueryType.neutron;
-                    }
-                    break;
-                case QueryGroup.missions:
-                    {
-                        searchQueryDropDown.SelectedItem = QueryType.route;
-                    }
-                    break;
-                case QueryGroup.services:
-                    {
-                        searchQueryDropDown.SelectedItem = QueryType.encoded;
-                    }
-                    break;
-            }
+            searchQueryDropDown.SelectedItem = queryGroup.DefaultQueryType();
         }
 
         private void ConfigureSearchQueryOptions(QueryGroup queryGroup)

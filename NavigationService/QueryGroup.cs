@@ -54,6 +54,29 @@ namespace EddiNavigationService
             }
         }
 
+        public static QueryType DefaultQueryType(this QueryGroup queryGroup)
+        {
+            switch (queryGroup)
+            {
+                case QueryGroup.galaxy:
+                {
+                    return QueryType.neutron;
+                }
+                case QueryGroup.missions:
+                {
+                    return QueryType.route;
+                }
+                case QueryGroup.services:
+                {
+                    return QueryType.encoded;
+                }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
         public static string LocalizedName(this QueryGroup queryGroup)
         {
             return Properties.NavigationService.ResourceManager
