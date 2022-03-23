@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EddiConfigService

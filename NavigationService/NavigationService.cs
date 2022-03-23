@@ -112,8 +112,7 @@ namespace EddiNavigationService
             var configuration = ConfigService.Instance.navigationMonitorConfiguration;
             if (Enum.TryParse(configuration.searchQuery, true, out QueryType queryType))
             {
-                if (queryType != QueryType.None
-                    && queryType != QueryType.cancel
+                if (queryType != QueryType.cancel
                     && queryType != QueryType.set
                     && queryType != QueryType.update)
                 {
@@ -161,8 +160,7 @@ namespace EddiNavigationService
             try
             {
                 // Keep track of the query (excluding route management queries)
-                if (queryType != QueryType.None
-                    && queryType != QueryType.cancel
+                if (queryType != QueryType.cancel
                     && queryType != QueryType.set
                     && queryType != QueryType.update)
                 {
@@ -290,11 +288,6 @@ namespace EddiNavigationService
                                 ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance;
                         }
                         return GetNearestScoopSystem(distance ?? 100);
-                    }
-
-                    case QueryType.None:
-                    {
-                        return null;
                     }
                     default:
                     {
@@ -571,7 +564,7 @@ namespace EddiNavigationService
                 {
                     // Prepend our current system to the route if it is not already present
                     if (EDDI.Instance?.CurrentStarSystem != null 
-                        && sortedRoute.FirstOrDefault()?.systemAddress != (ulong)(EDDI.Instance.CurrentStarSystem.systemAddress ?? 0))
+                        && sortedRoute.FirstOrDefault()?.systemAddress != (EDDI.Instance.CurrentStarSystem.systemAddress ?? 0))
                     {
                         sortedRoute = sortedRoute.Prepend(new NavWaypoint(EDDI.Instance.CurrentStarSystem)).ToList();
                         sortedRoute[0].visited = true;
@@ -1225,7 +1218,6 @@ namespace EddiNavigationService
                 LastUpdateMissionStation = null;
                 return null;
             }
-            if (LastQuery is QueryType.None) { LastQuery = QueryType.route; }
             var @event = NavQuery(LastQuery, LastQueryArgs);
             if (LastUpdateMissionStarSystem?.systemname == SearchStarSystem?.systemname
                 && LastUpdateMissionStation?.name == SearchStation?.name)

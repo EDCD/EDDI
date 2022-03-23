@@ -32,9 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,6 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\NavigationService.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NavigationService.resx</DependentUpon>
+    </Compile>
     <Compile Include="QueryGroup.cs" />
     <Compile Include="JumpCalcs.cs" />
     <Compile Include="QueryType.cs" />
@@ -102,6 +109,21 @@
     <PackageReference Include="System.Collections.Immutable">
       <Version>6.0.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\NavigationService.cs.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.de.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.es.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.fr.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.hu.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.it.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.ja.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.pt-BR.resx" />
+    <EmbeddedResource Include="Properties\NavigationService.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NavigationService.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\NavigationService.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

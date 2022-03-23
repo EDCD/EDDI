@@ -8,6 +8,7 @@
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:eddiNavigationService="clr-namespace:EddiNavigationService;assembly=EddiNavigationService"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
@@ -265,14 +266,30 @@
                         </Grid.ColumnDefinitions>
                         <DockPanel Grid.Column="0">
                             <Grid DockPanel.Dock="Top">
+                                <Grid.Resources>
+                                    <eddiNavigationService:QueryGroupConverter x:Key="QueryGroupConverter"/>
+                                    <eddiNavigationService:QueryTypeConverter x:Key="QueryTypeConverter"/>
+                                </Grid.Resources>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" TextWrapping="Wrap" MinWidth="40" Margin="5" Text="{x:Static resx:NavigationMonitor.find_text}" VerticalAlignment="Center" />
-                                <ComboBox x:Name="searchTypeDropDown" Grid.Column="1" MinWidth="100" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchTypeDropDownUpdated" />
-                                <ComboBox x:Name="searchQueryDropDown" Grid.Column="2" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated" />
+                                <ComboBox x:Name="searchGroupDropDown" Grid.Column="1" MinWidth="100" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchGroupDropDownUpdated">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource QueryGroupConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox x:Name="searchQueryDropDown" Grid.Column="2" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchQueryDropDownUpdated">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource QueryTypeConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </Grid>
                             <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
