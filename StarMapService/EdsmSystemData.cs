@@ -53,7 +53,7 @@ namespace EddiStarMapService
         }
 
         /// <summary> Partial of system name is required. </summary>
-        public List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
+        public List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = false, bool showSystemInformation = false)
         {
             if (system == null) { return new List<StarSystem>(); }
 

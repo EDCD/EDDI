@@ -19,7 +19,7 @@ namespace Eddi
                 ?? new List<string>();
         }
 
-        internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
+        public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
             if (Text == oldValue) { return; }
 
@@ -50,7 +50,7 @@ namespace Eddi
             changeHandler?.Invoke();
         }
 
-        internal void SelectionDidChange(Action<string> changeHandler)
+        public void SelectionDidChange(Action<string> changeHandler)
         {
             if (ItemsSource != null)
             {
@@ -59,7 +59,7 @@ namespace Eddi
             }
         }
 
-        internal void DidLoseFocus(string oldValue)
+        public void DidLoseFocus(string oldValue)
         {
             if (Text != oldValue)
             {

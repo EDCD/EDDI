@@ -4,6 +4,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:eddi="clr-namespace:Eddi;assembly=EDDI"
              xmlns:local="clr-namespace:EddiNavigationMonitor"
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
@@ -301,7 +302,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name ="navSearchSystemLabel" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.system_textbox_desc}" />
-                                <local:SearchSystemComboBox x:Name="searchSystemDropDown"
+                                <eddi:StarSystemComboBox x:Name="searchSystemDropDown"
                                       IsEditable="True"
                                       IsReadOnly="False"
                                       IsTextSearchEnabled="False"
