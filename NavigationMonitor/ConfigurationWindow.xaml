@@ -339,7 +339,25 @@
                                 <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
                             </Grid>
                         </DockPanel>
-                        <Button HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" Content="{x:Static resx:NavigationMonitor.search}" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}"/>
+                        <Button HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
+                            <Button.Content>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                                    <StackPanel.Resources>
+                                        <local:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+                                    </StackPanel.Resources>
+                                    <TextBlock Text="{x:Static resx:NavigationMonitor.search}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                    <ProgressBar x:Name="SearchProgressBar"
+                                        IsIndeterminate="True"
+                                        FlowDirection="LeftToRight"
+                                        Foreground="AliceBlue"
+                                        Height="3"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Center"
+                                        Visibility="Collapsed">
+                                    </ProgressBar>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </Grid>
                     <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="5">
                         <Button x:Name="GuidanceButton" HorizontalAlignment="Center" Click="GuidanceButton_Click" Content="{x:Static resx:NavigationMonitor.enable_guidance_button}" ToolTip="{x:Static resx:NavigationMonitor.enable_guidance_button_tooltip}" MinWidth="150" />

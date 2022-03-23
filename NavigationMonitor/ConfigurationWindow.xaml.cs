@@ -591,8 +591,9 @@ namespace EddiNavigationMonitor
         private async void executeSearch(object sender, RoutedEventArgs e)
         {
             Button searchButton = (Button)sender;
-            searchButton.Foreground = Brushes.Red;
-            searchButton.FontWeight = FontWeights.Bold;
+            //searchButton.Foreground = Brushes.Red;
+            //searchButton.FontWeight = FontWeights.Bold;
+            SearchProgressBar.Visibility = Visibility.Visible;
 
             var systemArg = searchSystemDropDown.Text;
             var stationArg = searchStationDropDown.Text;
@@ -637,8 +638,9 @@ namespace EddiNavigationMonitor
             });
 
             await Task.WhenAll(search);
-            searchButton.Foreground = Brushes.Black;
-            searchButton.FontWeight = FontWeights.Normal;
+            //searchButton.Foreground = Brushes.Black;
+            //searchButton.FontWeight = FontWeights.Normal;
+            SearchProgressBar.Visibility = Visibility.Collapsed;
             if (success)
             {
                 configureRoutePlotterColumns(queryType);
@@ -790,6 +792,28 @@ namespace EddiNavigationMonitor
                 navigationMonitor().PlottedRouteList.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();
             }
+        }
+    }
+
+    [ValueConversion(typeof(bool), typeof(Visibility))]
+    public class BoolVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null && value is bool)
+            {
+                if ((bool)value)
+                {
+                    return Visibility.Visible;
+                }
+            }
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
