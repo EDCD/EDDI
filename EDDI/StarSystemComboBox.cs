@@ -12,11 +12,10 @@ namespace Eddi
         private List<string> systemList = new List<string>();
         private int systemListSize = 10;
 
-        private List<string> SystemsBeginningWith(string systemName)
+        private List<string> SystemsBeginningWith(string partialSystemName)
         {
             IEdsmService edsmService = new StarMapService();
-            return edsmService.GetStarMapSystemsPartial(systemName, false, false)?.Select(s => s.systemname).ToList()
-                ?? new List<string>();
+            return edsmService.GetTypeAheadStarSystems(partialSystemName) ?? new List<string>();
         }
 
         public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
