@@ -591,8 +591,6 @@ namespace EddiNavigationMonitor
         private async void executeSearch(object sender, RoutedEventArgs e)
         {
             Button searchButton = (Button)sender;
-            //searchButton.Foreground = Brushes.Red;
-            //searchButton.FontWeight = FontWeights.Bold;
             SearchProgressBar.Visibility = Visibility.Visible;
 
             var systemArg = searchSystemDropDown.Text;
@@ -636,10 +634,8 @@ namespace EddiNavigationMonitor
                 if (@event == null) { success = false; return; }
                 EDDI.Instance?.enqueueEvent(@event);
             });
-
             await Task.WhenAll(search);
-            //searchButton.Foreground = Brushes.Black;
-            //searchButton.FontWeight = FontWeights.Normal;
+
             SearchProgressBar.Visibility = Visibility.Collapsed;
             if (success)
             {

@@ -1020,7 +1020,11 @@ namespace EddiNavigationService
                         navRouteList.Waypoints.Add(new NavWaypoint(currentSystem) { visited = true });
                         if (currentSystem.systemname != searchSystem.systemname)
                         {
-                            navRouteList.Waypoints.Add(new NavWaypoint(searchSystem) { visited = searchSystem.systemname == currentSystem.systemname });
+                            navRouteList.Waypoints.Add(new NavWaypoint(searchSystem)
+                            {
+                                visited = searchSystem.systemname == currentSystem.systemname,
+                                stationName = searchStation
+                            });
                         }
 
                         // Save the route data to the configuration
