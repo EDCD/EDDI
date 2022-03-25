@@ -3,7 +3,6 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiNavigationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -551,7 +550,6 @@ namespace EddiShipMonitor
             {
                 ship.frameshiftdrive = compartment.module;
                 ship.optimalmass = @event.optimalmass;
-                ship.maxfuelperjump = JumpCalcs.MaxFuelPerJump(ship);
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "LifeSupport");

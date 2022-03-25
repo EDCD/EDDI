@@ -866,7 +866,7 @@ namespace EddiNavigationService
         {
             if (searchRadius is null)
             {
-                searchRadius = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip,
+                searchRadius = EDDI.Instance.CurrentShip.JumpDetails("total",
                     currentStatus?.fuelInTanks,
                     ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance ?? 100;
             }

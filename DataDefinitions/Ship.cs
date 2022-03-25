@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Utilities;
@@ -526,13 +527,8 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use maxjumprange instead")]
         public decimal maxjump => maxjumprange;
 
-        [PublicAPI]
-        public decimal maxfuelperjump
-        {
-            get => _maxfuelperjump;
-            set { _maxfuelperjump = value; OnPropertyChanged();}
-        }
-        private decimal _maxfuelperjump;
+        [PublicAPI, JsonIgnore]
+        public decimal maxfuelperjump => MaxFuelPerJump();
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
         public decimal maxfuel => maxfuelperjump;
@@ -724,11 +720,87 @@ namespace EddiDataDefinitions
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
+        public JumpDetail JumpDetails(string type, decimal? fuelInTanks, int cargoCarried)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (string.IsNullOrEmpty(type) || fuelInTanks is null) { return null; }
+
+            decimal maxFuel = fueltanktotalcapacity ?? 0;
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                switch (type)
+                {
+                    case "next":
+                        {
+                            decimal jumpRange = JumpRange(fuelInTanks ?? 0, cargoCarried);
+                            return new JumpDetail(jumpRange, 1);
+                        }
+                    case "max":
+                        {
+                            decimal jumpRange = JumpRange(maxfuelperjump, cargoCarried);
+                            return new JumpDetail(jumpRange, 1);
+                        }
+                    case "total":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (fuelInTanks > 0)
+                            {
+                                total += JumpRange(fuelInTanks ?? 0, cargoCarried);
+                                jumps++;
+                                fuelInTanks -= Math.Min(fuelInTanks ?? 0, maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
+                    case "full":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (maxFuel > 0)
+                            {
+                                total += JumpRange(maxFuel, cargoCarried);
+                                jumps++;
+                                maxFuel -= Math.Min(maxFuel, maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
+                }
+            }
+            return null;
+        }
+
+        private decimal JumpRange(decimal currentFuel, int cargoCarried)
+        {
+            decimal boostConstant = 0;
+            Module module = compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
+            if (module != null)
+            {
+                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
+            }
+
+            Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out decimal ratingConstant);
+            Constants.powerConstantFSD.TryGetValue(frameshiftdrive.@class, out decimal powerConstant);
+            decimal massRatio = optimalmass / (unladenmass + currentFuel + cargoCarried);
+            decimal fuel = Math.Min(currentFuel, maxfuelperjump);
+
+            return ((decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio) + boostConstant;
+        }
+
+        private decimal MaxFuelPerJump()
+        {
+            // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
+            decimal boostConstant = 0;
+            Module module = compartments.FirstOrDefault(c => c?.module?.edname != null && c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
+            if (module != null)
+            {
+                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
+            }
+            Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out decimal ratingConstant);
+            Constants.powerConstantFSD.TryGetValue(frameshiftdrive.@class, out decimal powerConstant);
+            decimal maxJumpRange = Math.Max(maxjumprange - boostConstant, 0);
+            decimal massRatio = (unladenmass + maxfuelperjump) / optimalmass;
+
+            return ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * massRatio), (double)powerConstant) / 1000;
         }
 
         public static Ship FromShipyardInfo(ShipyardInfoItem item)
@@ -748,6 +820,13 @@ namespace EddiDataDefinitions
             ship.value = item.shipPrice;
 
             return ship;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

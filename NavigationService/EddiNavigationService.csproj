@@ -51,7 +51,6 @@
       <DependentUpon>NavigationService.resx</DependentUpon>
     </Compile>
     <Compile Include="QueryGroup.cs" />
-    <Compile Include="JumpCalcs.cs" />
     <Compile Include="QueryType.cs" />
     <Compile Include="NavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

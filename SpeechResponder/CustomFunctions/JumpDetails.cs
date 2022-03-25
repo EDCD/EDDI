@@ -21,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 return null;
             }
-            var result = JumpCalcs.JumpDetails(value, EDDI.Instance.CurrentShip, SpeechResponder.currentStatus?.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
+            var result = EDDI.Instance.CurrentShip?.JumpDetails(value, SpeechResponder.currentStatus?.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }
