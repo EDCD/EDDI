@@ -276,18 +276,12 @@ namespace EddiNavigationService
                     }
                     case QueryType.scoop:
                     {
-                        decimal? distance;
+                        decimal? distance = null;
                         if (args?[0] != null && Convert.ToDecimal(args[0]) > 0)
                         {
                             distance = Convert.ToDecimal(args[0]);
                         }
-                        else
-                        {
-                            distance = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip,
-                                currentStatus?.fuelInTanks,
-                                ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance;
-                        }
-                        return GetNearestScoopSystem(distance ?? 100);
+                        return GetNearestScoopSystem(distance);
                     }
                     default:
                     {
@@ -868,48 +862,64 @@ namespace EddiNavigationService
 
         /// <summary> Route to the nearest star system that is eligible for fuel scoop refueling </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetNearestScoopSystem(decimal searchRadius)
+        private RouteDetailsEvent GetNearestScoopSystem(decimal? searchRadius = null)
         {
+            if (searchRadius is null)
+            {
+                searchRadius = JumpCalcs.JumpDetails("total", EDDI.Instance.CurrentShip,
+                    currentStatus?.fuelInTanks,
+                    ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance ?? 100;
+            }
+
             string searchSystem = null;
             decimal searchDistance = 0;
             int searchCount = 0;
-            int searchIncrement = (int)Math.Ceiling(Math.Min(searchRadius, 100) / 4);
+            int searchIncrement = (int)Math.Ceiling(Math.Min((decimal)searchRadius, 100) / 4);
             var navRouteList = new NavWaypointCollection();
 
             var currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
             {
-                for (int i = 0; i < 4; i++)
+                if (currentSystem.scoopable)
                 {
-                    int startRadius = i * searchIncrement;
-                    var endRadius = (i + 1) * searchIncrement;
-                    var sphereSystems = edsmService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
-                    sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem)?.scoopable ?? false).ToList();
-                    searchCount = sphereSystems.Count;
-                    if (searchCount > 0)
+                    searchSystem = currentSystem.systemname;
+                    navRouteList.Waypoints.Add(new NavWaypoint(currentSystem) { visited = true });
+                    searchCount = 1;
+                }
+                else
+                {
+                    for (int i = 0; i < 4; i++)
                     {
-                        var nearestList = new SortedList<decimal, StarSystem>();
-                        foreach (Dictionary<string, object> system in sphereSystems)
+                        int startRadius = i * searchIncrement;
+                        var endRadius = (i + 1) * searchIncrement;
+                        var sphereSystems = edsmService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
+                        sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem)?.scoopable ?? false).ToList();
+                        searchCount = sphereSystems.Count;
+                        if (searchCount > 0)
                         {
-                            decimal distance = (decimal)system["distance"];
-                            if (!nearestList.ContainsKey(distance))
+                            var nearestList = new SortedList<decimal, StarSystem>();
+                            foreach (Dictionary<string, object> system in sphereSystems)
                             {
-                                nearestList.Add(distance, system["system"] as StarSystem);
+                                decimal distance = (decimal)system["distance"];
+                                if (!nearestList.ContainsKey(distance))
+                                {
+                                    nearestList.Add(distance, system["system"] as StarSystem);
+                                }
                             }
+
+                            // Nearest 'scoopable' system
+                            searchSystem = nearestList.Values.FirstOrDefault()?.systemname;
+                            searchDistance = nearestList.Keys.FirstOrDefault();
+
+                            // Update the navRouteList
+                            navRouteList.Waypoints.Add(new NavWaypoint(currentSystem) { visited = true });
+                            if (currentSystem.systemname != nearestList.Values.FirstOrDefault()?.systemname)
+                            {
+                                navRouteList.Waypoints.Add(new NavWaypoint(nearestList.Values.FirstOrDefault()) { visited = nearestList.Values.FirstOrDefault()?.systemname == currentSystem.systemname });
+                            }
+
+                            break;
                         }
-
-                        // Nearest 'scoopable' system
-                        searchSystem = nearestList.Values.FirstOrDefault()?.systemname;
-                        searchDistance = nearestList.Keys.FirstOrDefault();
-
-                        // Update the navRouteList
-                        navRouteList.Waypoints.Add(new NavWaypoint(currentSystem) { visited = true });
-                        if (currentSystem.systemname != nearestList.Values.FirstOrDefault()?.systemname)
-                        {
-                            navRouteList.Waypoints.Add(new NavWaypoint(nearestList.Values.FirstOrDefault()) {visited = nearestList.Values.FirstOrDefault()?.systemname == currentSystem.systemname });
-                        }
-
-                        break;
                     }
                 }
 
