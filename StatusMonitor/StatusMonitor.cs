@@ -379,11 +379,11 @@ namespace EddiStatusMonitor
                     Logging.Debug($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}", statusSummary);
 
                     EDDI.Instance.Vehicle = thisStatus.vehicle;
-                    if (EDDI.Instance.CurrentShip != null)
-                    {
-                        EDDI.Instance.CurrentShip.cargoCarried = thisStatus.cargo_carried ?? 0;
-                        EDDI.Instance.CurrentShip.fuelInTanks = thisStatus.fuelInTanks;
-                    }
+                }
+                if (thisStatus.vehicle == Constants.VEHICLE_SHIP && EDDI.Instance.CurrentShip != null)
+                {
+                    EDDI.Instance.CurrentShip.cargoCarried = thisStatus.cargo_carried ?? 0;
+                    EDDI.Instance.CurrentShip.fuelInTanks = thisStatus.fuelInTanks;
                 }
 
                 // Trigger events for changed status, as applicable

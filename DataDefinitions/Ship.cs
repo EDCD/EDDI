@@ -520,15 +520,22 @@ namespace EddiDataDefinitions
         public decimal maxjumprange
         {
             get => _maxjumprange;
-            set { _maxjumprange = value; OnPropertyChanged();}
+            set { _maxjumprange = value;
+                if (frameshiftdrive != null && optimalmass > 0) { maxfuelperjump = MaxFuelPerJump(); }
+                OnPropertyChanged();}
         }
         private decimal _maxjumprange;
 
         [JsonIgnore, Obsolete("Please use maxjumprange instead")]
         public decimal maxjump => maxjumprange;
 
-        [PublicAPI, JsonIgnore]
-        public decimal maxfuelperjump => MaxFuelPerJump();
+        [PublicAPI]
+        public decimal maxfuelperjump
+        {
+            get => _maxfuelperjump;
+            set { _maxfuelperjump = value; OnPropertyChanged(); }
+        }
+        private decimal _maxfuelperjump;
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
         public decimal maxfuel => maxfuelperjump;
