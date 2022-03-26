@@ -643,7 +643,7 @@ namespace EddiStatusMonitor
         {
             Dictionary<string, object> variables = new Dictionary<string, object>
             {
-                { "currentStatus", currentStatus },
+                { "status", currentStatus },
                 { "lastStatus", lastStatus }
             };
             return variables;
