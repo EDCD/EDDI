@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
-using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -64,8 +63,6 @@ namespace EddiSpeechResponder
             subtitles = configuration?.Subtitles ?? false;
             subtitlesOnly = configuration?.SubtitlesOnly ?? false;
             Logging.Info($"Initialized {ResponderName()}");
-
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
         }
 
         /// <summary>
@@ -286,17 +283,6 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
-            }
-        }
-
-        private void OnStatusUpdated(object sender, EventArgs e)
-        {
-            if (sender is Status status)
-            {
-                LockManager.GetLock(nameof(currentStatus), () =>
-                {
-                    currentStatus = status;
-                });
             }
         }
     }

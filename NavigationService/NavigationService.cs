@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EddiSpanshService;
-using EddiStatusMonitor;
 using Utilities;
 
 namespace EddiNavigationService
@@ -90,7 +89,6 @@ namespace EddiNavigationService
         private readonly DataProviderService dataProviderService;
         private static NavigationService instance;
         private static readonly object instanceLock = new object();
-        private Status currentStatus;
 
         // Search variables
         public StarSystem SearchStarSystem { get; private set; }
@@ -119,16 +117,6 @@ namespace EddiNavigationService
                     LastQuery = queryType;
                     LastQueryArgs = configuration.searchQueryArgs;
                 }
-            }
-
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
-        }
-
-        private void OnStatusUpdated(object sender, EventArgs e)
-        {
-            if (sender is Status status)
-            {
-                LockManager.GetLock(nameof(currentStatus), () => { currentStatus = status; });
             }
         }
 
@@ -866,9 +854,7 @@ namespace EddiNavigationService
         {
             if (searchRadius is null)
             {
-                searchRadius = EDDI.Instance.CurrentShip.JumpDetails("total",
-                    currentStatus?.fuelInTanks,
-                    ConfigService.Instance.cargoMonitorConfiguration.cargocarried)?.distance ?? 100;
+                searchRadius = EDDI.Instance.CurrentShip.JumpDetails("total")?.distance ?? 100;
             }
 
             string searchSystem = null;

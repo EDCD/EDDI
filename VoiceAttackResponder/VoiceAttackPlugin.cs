@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCompanionAppService;
-using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -1111,7 +1110,7 @@ namespace EddiVoiceAttackResponder
                 string type = vaProxy.GetText("Type variable");
                 if (!string.IsNullOrEmpty(type))
                 {
-                    var detail = EDDI.Instance.CurrentShip?.JumpDetails(type, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
+                    var detail = EDDI.Instance.CurrentShip?.JumpDetails(type);
                     vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
                     vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
                     vaProxy.SetText("Type variable", null);
