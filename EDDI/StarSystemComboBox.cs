@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Eddi
@@ -9,12 +10,27 @@ namespace Eddi
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : ComboBox
     {
+        public TextBox TextBox { get; private set; }
+
         private List<string> systemList = new List<string>();
         private int systemListSize = 10;
+        private readonly IEdsmService edsmService = new StarMapService();
+
+        public StarSystemComboBox()
+        {
+            this.GotFocus += OnGotFocus;
+        }
+
+        private void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (GetTemplateChild("PART_EditableTextBox") is TextBox textBox)
+            {
+                TextBox = textBox;
+            }
+        }
 
         private List<string> SystemsBeginningWith(string partialSystemName)
         {
-            IEdsmService edsmService = new StarMapService();
             return edsmService.GetTypeAheadStarSystems(partialSystemName) ?? new List<string>();
         }
 
@@ -25,7 +41,12 @@ namespace Eddi
             string systemName = Text;
             if (systemName.Length > 1)
             {
-                systemList = SystemsBeginningWith(systemName);
+                // Obtain a new systemList when the string is being shortened or when the current systemList no longer contains a valid entry
+                systemList = Text.Length > oldValue?.Length && systemList.Any(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)) 
+                    ? systemList.Where(s => s.StartsWith(Text)).ToList() 
+                    : SystemsBeginningWith(systemName);
+
+                var caretIndex = TextBox.CaretIndex;
                 if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                 {
                     ItemsSource = systemList.Take(1);
@@ -35,10 +56,10 @@ namespace Eddi
                 else
                 {
                     ItemsSource = systemList.Take(systemListSize);
+                    Text = systemName;
                     IsDropDownOpen = true;
-                    var cmbTextBox = (TextBox)Template.FindName("PART_EditableTextBox", this);
-                    cmbTextBox.CaretIndex = systemName.Length;
                 }
+                TextBox.CaretIndex = caretIndex;
             }
             else
             {

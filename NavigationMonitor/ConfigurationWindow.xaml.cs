@@ -1,4 +1,5 @@
-﻿using EddiConfigService;
+﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -658,21 +659,29 @@ namespace EddiNavigationMonitor
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            void changeHandler()
+            if (sender is StarSystemComboBox starSystemComboBox)
             {
-                // Reset the search station due to selecting new search system
-                if (NavigationService.Instance.LastQueryStationArg != null)
+                if (!starSystemComboBox.IsLoaded) { return; }
+
+                void changeHandler()
                 {
-                    NavigationService.Instance.LastQueryStationArg = null;
-                    searchStationDropDown.SelectedItem = Properties.NavigationMonitor.no_station;
-                    ConfigureSearchStationOptions(null);
+                    // Reset the search station due to selecting new search system
+                    if (searchStationDropDown.Visibility == Visibility.Visible && NavigationService.Instance.LastQueryStationArg != null)
+                    {
+                        NavigationService.Instance.LastQueryStationArg = null;
+                        searchStationDropDown.SelectedItem = Properties.NavigationMonitor.no_station;
+                        ConfigureSearchStationOptions(null);
+                    }
                 }
+
+                searchSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastQuerySystemArg, changeHandler);
             }
-            searchSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastQuerySystemArg, changeHandler);
         }
 
         private void SearchSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+
             void changeHandler(string newValue)
             {
                 // Update to new search system
@@ -696,7 +705,7 @@ namespace EddiNavigationMonitor
                     Properties.NavigationMonitor.no_station
                 };
 
-            if (system != null)
+            if (searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty(system))
             {
                 StarSystem SearchSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, false);
                 if (SearchSystem?.stations != null)

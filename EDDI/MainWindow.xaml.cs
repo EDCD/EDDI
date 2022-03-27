@@ -474,6 +474,8 @@ namespace Eddi
         // Handle changes to the editable home system combo box
         private void HomeSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             void changeHandler()
             {
@@ -491,6 +493,8 @@ namespace Eddi
 
         private void HomeSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+        
             void changeHandler(string newValue)
             {
                 // Update configuration to new home system
@@ -507,6 +511,8 @@ namespace Eddi
 
         private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             homeSystemDropDown.DidLoseFocus(oldValue: eddiConfiguration.HomeSystem);
         }
