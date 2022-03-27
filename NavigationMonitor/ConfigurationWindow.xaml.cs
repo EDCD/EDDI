@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -30,9 +30,6 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private string searchSystemArg = null;
-        private string searchStationArg = null;
-
         private Status currentStatus { get; set; }
 
         private NavigationMonitor navigationMonitor()
@@ -48,21 +45,22 @@ namespace EddiNavigationMonitor
             plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList.Waypoints;
 
             ConfigureSearchGroupOptions();
-            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            if (!Enum.TryParse(navConfig.searchQuery, true, out QueryType queryType))
+            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
+            maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
+            searchSystemDropDown.Text = navConfig.searchQuerySystemArg;
+            searchStationDropDown.Text = navConfig.searchQueryStationArg;
+
+            if (!Enum.TryParse(navConfig.searchQuery, out QueryType queryType))
             {
                 queryType = QueryType.route;
             }
-
             searchGroupDropDown.SelectedItem = queryType.Group();
             searchQueryDropDown.SelectedItem = queryType;
-
-            prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
-            maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
-
             configureSearchArgumentOptions(queryType);
             configureRoutePlotterColumns(queryType);
+
 
             if (navigationMonitor().PlottedRouteList?.GuidanceEnabled ?? false)
             {
@@ -76,7 +74,7 @@ namespace EddiNavigationMonitor
             }
 
             StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
-
+            NavigationService.Instance.PropertyChanged += OnNavServiceChange;
         }
 
         private void OnStatusUpdated(object sender, EventArgs e)
@@ -84,6 +82,61 @@ namespace EddiNavigationMonitor
             if (sender is Status status)
             {
                 currentStatus = status;
+            }
+        }
+
+        private void OnNavServiceChange(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(NavigationService.Instance.IsWorking):
+                {
+                    if (NavigationService.Instance.IsWorking)
+                    {
+                        Dispatcher.Invoke(() => { SearchProgressBar.Visibility = Visibility.Visible; });
+                    }
+                    else
+                    {
+                        Dispatcher.Invoke(() => { SearchProgressBar.Visibility = Visibility.Collapsed; });
+                    }
+                    break;
+                }
+                case nameof(NavigationService.Instance.LastQuery):
+                {
+                    var queryType = NavigationService.Instance.LastQuery;
+                    Dispatcher.Invoke(() =>
+                    {
+                        searchGroupDropDown.SelectedItem = queryType.Group();
+                        searchQueryDropDown.SelectedItem = queryType;
+                        configureSearchArgumentOptions(queryType);
+                        configureRoutePlotterColumns(queryType);
+                    });
+                    break;
+                }
+                case nameof(NavigationService.Instance.LastQuerySystemArg):
+                {
+                    var querySystem = NavigationService.Instance.LastQuerySystemArg;
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (searchSystemDropDown.Text != querySystem)
+                        {
+                            searchSystemDropDown.Text = querySystem;
+                        }
+                    });
+                    break;
+                }
+                case nameof(NavigationService.Instance.LastQueryStationArg):
+                {
+                    var queryStation = NavigationService.Instance.LastQueryStationArg;
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (searchStationDropDown.Text != queryStation)
+                        {
+                            searchStationDropDown.Text = queryStation;
+                        }
+                    });
+                    break;
+                }
             }
         }
 
@@ -537,8 +590,8 @@ namespace EddiNavigationMonitor
 
         private void configureSearchArgumentOptions(QueryType queryType)
         {
-            searchSystemDropDown.Text = string.Empty;
-            searchStationDropDown.Text = string.Empty;
+            NavigationService.Instance.LastQuerySystemArg = string.Empty;
+            NavigationService.Instance.LastQueryStationArg = string.Empty;
 
             switch (queryType)
             {
@@ -590,57 +643,17 @@ namespace EddiNavigationMonitor
 
         private async void executeSearch(object sender, RoutedEventArgs e)
         {
-            Button searchButton = (Button)sender;
-            SearchProgressBar.Visibility = Visibility.Visible;
-
             var systemArg = searchSystemDropDown.Text;
             var stationArg = searchStationDropDown.Text;
 
             QueryType queryType = (QueryType)searchQueryDropDown.SelectedItem;
-            bool success = true;
             var search = Task.Run(() =>
             {
-                dynamic[] args = null;
-                switch (queryType)
-                {
-                    // Add a system name as an argument
-                    case QueryType.neutron:
-                    {
-                        // For a neutron route the system name is a mandatory argument
-                        if (string.IsNullOrEmpty(systemArg))
-                        {
-                            MessageBox.Show(Properties.NavigationMonitor.search_err_mandatory_neutron_target_system, EddiNavigationService.Properties.NavigationService.query_type_neutron, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                            success = false;
-                            return;
-                        }
-                        args = new dynamic[] { systemArg };
-                        break;
-                    }
-                    case QueryType.route:
-                    case QueryType.source:
-                    {
-                        args = new dynamic[] { systemArg };
-                        break;
-                    }
-
-                    // Add optional system and station name arguments
-                    case QueryType.set:
-                    {
-                        args = new dynamic[] { systemArg, stationArg };
-                        break;
-                    }
-                }
-                var @event = NavigationService.Instance.NavQuery(queryType, args);
-                if (@event == null) { success = false; return; }
+                var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg);
+                if (@event == null) { return; }
                 EDDI.Instance?.enqueueEvent(@event);
             });
             await Task.WhenAll(search);
-
-            SearchProgressBar.Visibility = Visibility.Collapsed;
-            if (success)
-            {
-                configureRoutePlotterColumns(queryType);
-            }
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
@@ -648,14 +661,14 @@ namespace EddiNavigationMonitor
             void changeHandler()
             {
                 // Reset the search station due to selecting new search system
-                if (searchStationArg != null)
+                if (NavigationService.Instance.LastQueryStationArg != null)
                 {
-                    searchStationArg = null;
+                    NavigationService.Instance.LastQueryStationArg = null;
                     searchStationDropDown.SelectedItem = Properties.NavigationMonitor.no_station;
                     ConfigureSearchStationOptions(null);
                 }
             }
-            searchSystemDropDown.TextDidChange(sender, e, searchSystemArg, changeHandler);
+            searchSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastQuerySystemArg, changeHandler);
         }
 
         private void SearchSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -663,17 +676,17 @@ namespace EddiNavigationMonitor
             void changeHandler(string newValue)
             {
                 // Update to new search system
-                searchSystemArg = newValue;
+                NavigationService.Instance.LastQuerySystemArg = newValue;
 
                 // Update station options for new system
-                ConfigureSearchStationOptions(searchSystemArg);
+                ConfigureSearchStationOptions(NavigationService.Instance.LastQuerySystemArg);
             }
             searchSystemDropDown.SelectionDidChange(changeHandler);
         }
 
         private void SearchSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
-            searchSystemDropDown.DidLoseFocus(oldValue: searchSystemArg);
+            searchSystemDropDown.DidLoseFocus(oldValue: NavigationService.Instance.LastQuerySystemArg);
         }
 
         private void ConfigureSearchStationOptions(string system)
@@ -702,9 +715,9 @@ namespace EddiNavigationMonitor
         private void searchStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             string searchStationName = searchStationDropDown.SelectedItem?.ToString();
-            if (searchStationArg != searchStationName)
+            if (NavigationService.Instance.LastQueryStationArg != searchStationName)
             {
-                searchStationArg = searchStationName == Properties.NavigationMonitor.no_station ? null : searchStationName;
+                NavigationService.Instance.LastQueryStationArg = searchStationName == Properties.NavigationMonitor.no_station ? null : searchStationName;
             }
         }
 

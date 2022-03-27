@@ -27,62 +27,46 @@ namespace EddiSpeechResponder.CustomFunctions
                 if (Enum.TryParse(value, true, out QueryType queryType))
                 {
                     // Special case any queries which allow optional arguments
-                    dynamic[] args = null;
+                    string systemArg = null;
+                    string stationArg = null;
+                    decimal? distanceArg = null;
+
                     switch (queryType)
                     {
+                        case QueryType.most:
+                        case QueryType.neutron:
                         case QueryType.route:
+                        case QueryType.source:
+                        case QueryType.update:
                         {
-                            dynamic querySystem = null;
                             if (values.Count == 2)
                             {
-                                querySystem = values[1].AsString;
+                                systemArg = values[1].AsString;
                             }
-                            args = new[] {querySystem};
                             break;
                         }
                         case QueryType.scoop:
                         {
-                            dynamic searchDistance = null;
                             if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
                             {
-                                searchDistance = decimalDistance;
+                                distanceArg = decimalDistance;
                             }
-                            args = new[] { searchDistance };
                             break;
                         }
-                        case QueryType.source:
+                        case QueryType.set:
                         {
-                            dynamic querySystem = null;
-                            if (values.Count == 2)
+                            if (values.Count >= 2)
                             {
-                                querySystem = values[1].AsString;
+                                systemArg = values[1].AsString;
                             }
-                            args = new[] { querySystem };
-                            break;
-                        }
-                        case QueryType.update:
-                        {
-                            dynamic arg = null;
-                            if (values.Count == 2)
+                            if (values.Count == 3)
                             {
-                                if (bool.TryParse(values[1].AsString, out var boolArg))
-                                {
-                                    arg = boolArg;
-                                }
-                                else if (decimal.TryParse(values[1].AsString, out var decimalArg))
-                                {
-                                    arg = decimalArg;
-                                }
-                                else
-                                {
-                                    arg = values[1].AsString;
-                                }
+                                stationArg = values[2].AsString;
                             }
-                            args = new[] { arg };
                             break;
                         }
                     }
-                    @event = NavigationService.Instance.NavQuery(queryType, args);
+                    @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, distanceArg);
                 }
                 else
                 {

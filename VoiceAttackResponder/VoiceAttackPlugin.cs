@@ -1128,15 +1128,16 @@ namespace EddiVoiceAttackResponder
             {
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
+                string station = vaProxy.GetText("Station variable");
+
                 vaProxy.SetText("Type variable", null);
                 vaProxy.SetText("System variable", null);
+                vaProxy.SetText("Station variable", null);
 
                 RouteDetailsEvent @event = null;
                 if (Enum.TryParse(type, true, out QueryType result))
                 {
-                    @event = !string.IsNullOrEmpty(system) 
-                        ? NavigationService.Instance.NavQuery(result, new[] { (dynamic)system }) 
-                        : NavigationService.Instance.NavQuery(result);
+                    @event = NavigationService.Instance.NavQuery(result, system, station);
                 }
                 if (@event != null)
                 {

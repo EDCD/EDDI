@@ -19,8 +19,10 @@ namespace EddiConfigService
         // Search data
         public string searchQuery { get; set; }
 
-        public dynamic[] searchQueryArgs { get; set; }
+        public string searchQuerySystemArg { get; set; }
 
+        public string searchQueryStationArg { get; set; }
+        
         // Ship touchdown data
         public decimal? tdLat { get; set; }
 
