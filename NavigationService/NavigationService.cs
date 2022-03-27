@@ -1219,8 +1219,8 @@ namespace EddiNavigationService
                 return null;
             }
             var @event = NavQuery(LastQuery, LastQueryArgs);
-            if (LastUpdateMissionStarSystem?.systemname == SearchStarSystem?.systemname
-                && LastUpdateMissionStation?.name == SearchStation?.name)
+            if (@event is null || (LastUpdateMissionStarSystem?.systemname == SearchStarSystem?.systemname
+                && LastUpdateMissionStation?.name == SearchStation?.name))
             {
                 // Same result as last time. Suppress the repetition.
                 return null;
