@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Citizens.
+        /// </summary>
+        internal static string CitizenHumanoid {
+            get {
+                return ResourceManager.GetString("CitizenHumanoid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Civilian.
         /// </summary>
         internal static string Civilian {
