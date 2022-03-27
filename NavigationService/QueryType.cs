@@ -5,7 +5,7 @@ namespace EddiNavigationService
 {
     public enum QueryType
     {
-        cancel,
+        route,
         encoded,
         expiring,
         facilitator,
@@ -17,11 +17,11 @@ namespace EddiNavigationService
         nearest,
         neutron,
         raw,
-        route,
         scoop,
-        set,
         source,
-        update
+        set,
+        update,
+        cancel
     }
 
     public static class QueryTypeExtensions
