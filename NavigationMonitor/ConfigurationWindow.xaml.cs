@@ -645,7 +645,9 @@ namespace EddiNavigationMonitor
         private async void executeSearch(object sender, RoutedEventArgs e)
         {
             var systemArg = searchSystemDropDown.Text;
-            var stationArg = searchStationDropDown.Text;
+            var stationArg = searchStationDropDown.Text == Properties.NavigationMonitor.no_station 
+                ? null 
+                : searchStationDropDown.Text;
 
             QueryType queryType = (QueryType)searchQueryDropDown.SelectedItem;
             var search = Task.Run(() =>
