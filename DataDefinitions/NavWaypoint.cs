@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Linq;
 
 namespace EddiDataDefinitions
@@ -38,7 +39,9 @@ namespace EddiDataDefinitions
         public int? fuelUsed { get; set; } // The amount of tritium used to jump to this location
 
         // Info seeded from other monitors
-        public bool isMissionSystem { get; set; }
+        public bool isMissionSystem => missionids?.Any() ?? false;
+
+        public List<long> missionids { get; set; } = new List<long>();
 
         // Whether we've already visited the system during our current route
         public bool visited { get; set; }

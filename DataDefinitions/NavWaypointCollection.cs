@@ -100,5 +100,19 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
+        public void PopulateMissionIds(List<Mission> missions)
+        {
+            if (missions is null) { return; }
+            foreach (var waypoint in Waypoints)
+            {
+                var missionIds = missions
+                    .Where(m => m.destinationsystem == waypoint.systemName ||
+                                (m.destinationsystems != null
+                                 && m.destinationsystems.Any(w => w.systemName == waypoint.systemName)))
+                    .Select(m => m.missionid).ToList();
+                waypoint.missionids = missionIds;
+            }
+        }
     }
 }

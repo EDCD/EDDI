@@ -235,8 +235,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus((ulong)(@event.systemAddress ?? 0));
-                PlottedRouteList.UpdateVisitedStatus((ulong)(@event.systemAddress ?? 0));
+                NavRouteList.UpdateVisitedStatus(@event.systemAddress ?? 0);
+                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress ?? 0);
             }
         }
 
@@ -245,8 +245,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus((ulong)@event.systemAddress);
-                PlottedRouteList.UpdateVisitedStatus((ulong)@event.systemAddress);
+                NavRouteList.UpdateVisitedStatus(@event.systemAddress);
+                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress);
             }
         }
 
@@ -255,8 +255,8 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus((ulong)@event.systemAddress);
-                PlottedRouteList.UpdateVisitedStatus((ulong)@event.systemAddress);
+                NavRouteList.UpdateVisitedStatus(@event.systemAddress);
+                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress);
             }
         }
 
@@ -270,29 +270,10 @@ namespace EddiNavigationMonitor
                 if (routeList != null && routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                 {
                     routeList[0].visited = true;
-
-                    // Supplement w/ mission info
-                    var missionMultiDestinationSystems = ConfigService.Instance.missionMonitorConfiguration.missions
-                        .Where(m => m.destinationsystems != null)
-                        .SelectMany(m => m.destinationsystems.Select(s => s.systemName));
-                    var missionSingleDestinationSystems = ConfigService.Instance.missionMonitorConfiguration.missions
-                        .Where(m => !string.IsNullOrEmpty(m.destinationsystem))
-                        .Select(m => m.destinationsystem);
-                    var missionSystems = missionMultiDestinationSystems.Concat(missionSingleDestinationSystems).Distinct();
-                    foreach (var system in missionSystems)
-                    {
-                        foreach (var waypoint in routeList)
-                        {
-                            if (waypoint.systemName == system)
-                            {
-                                waypoint.isMissionSystem = true;
-                            }
-                        }
-                    }
-
                     UpdateDestinationData(routeList.Last().systemName, NavRouteList.RouteDistance);
                     NavRouteList.Waypoints.Clear();
                     NavRouteList.AddRange(routeList);
+                    NavRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
                 }
 
                 // Raise on UI thread
@@ -353,6 +334,7 @@ namespace EddiNavigationMonitor
                 PlottedRouteList.Waypoints.Clear();
                 PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
                 PlottedRouteList.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                PlottedRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
             }
             else
             {

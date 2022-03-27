@@ -22,7 +22,7 @@ namespace EddiConfigService
         public string searchQuerySystemArg { get; set; }
 
         public string searchQueryStationArg { get; set; }
-        
+
         // Ship touchdown data
         public decimal? tdLat { get; set; }
 

@@ -764,7 +764,9 @@ namespace EddiMissionMonitor
                     var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
                     foreach (var system in starSystems)
                     {
-                        mission.destinationsystems.Add(new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0) { isMissionSystem = true });
+                        var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
+                        dest.missionids.Add(mission.missionid);
+                        mission.destinationsystems.Add(dest);
                     }
 
                     // Load the first destination system.
