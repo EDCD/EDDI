@@ -329,7 +329,11 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
-            if (routeDetailsEvent.Route != null)
+            if (routeDetailsEvent.Route.Waypoints.GetHashCode() == PlottedRouteList.Waypoints.GetHashCode())
+            {
+                // Displayed route is correct, nothing to do here
+            }
+            else if (routeDetailsEvent.Route != null)
             {
                 PlottedRouteList.Waypoints.Clear();
                 PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
