@@ -163,5 +163,8 @@
   </data>
   
   
-  
+  <data name="CitizenHumanoid" xml:space="preserve">
+    <value>Cittadini</value>
+    <comment>Massacre Mission Target: Citizens</comment>
+  </data>
 </root>
