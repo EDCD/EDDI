@@ -169,5 +169,8 @@
     <value>Deserteure</value>
     <comment>Massacre Mission Target</comment>
   </data>
-  
+  <data name="CitizenHumanoid" xml:space="preserve">
+    <value>Bürger</value>
+    <comment>Massacre Mission Target: Citizens</comment>
+  </data>
 </root>
