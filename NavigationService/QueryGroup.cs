@@ -49,12 +49,12 @@ namespace EddiNavigationService
                 }
                 default:
                 {
-                    throw new ArgumentOutOfRangeException();
+                    return new QueryType[] { };
                 }
             }
         }
 
-        public static QueryType DefaultQueryType(this QueryGroup queryGroup)
+        public static QueryType? DefaultQueryType(this QueryGroup queryGroup)
         {
             switch (queryGroup)
             {
@@ -72,7 +72,7 @@ namespace EddiNavigationService
                 }
                 default:
                 {
-                    throw new ArgumentOutOfRangeException();
+                    return null;
                 }
             }
         }

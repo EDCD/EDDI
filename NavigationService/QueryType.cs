@@ -32,13 +32,13 @@ namespace EddiNavigationService
                 .GetString($"query_type_{queryType}".ToLowerInvariant());
         }
 
-        public static QueryGroup Group(this QueryType queryType)
+        public static QueryGroup? Group(this QueryType queryType)
         {
             foreach (var queryGroup in Enum.GetValues(typeof(QueryGroup)).Cast<QueryGroup>())
             {
                 if (queryGroup.QueryTypes().Contains(queryType)) { return queryGroup; }
             }
-            throw new ArgumentOutOfRangeException();
+            return null;
         }
     }
 
