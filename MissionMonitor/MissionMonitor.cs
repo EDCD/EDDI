@@ -473,7 +473,7 @@ namespace EddiMissionMonitor
         public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
             // Prune community goals not reported from the CommunityGoalsEvent.
-            foreach (var cgMissionID in missions.Where(m => m.communal).Select(m => m.missionid))
+            foreach (var cgMissionID in missions.ToList().Where(m => m.communal).Select(m => m.missionid))
             {
                 if (!@event.goals.Select(cg => (long)cg.cgid).Contains(cgMissionID))
                 {
