@@ -16,10 +16,10 @@ namespace EddiEvents
         [PublicAPI("Type of route query")]
         public string routetype { get; private set; }
 
-        [PublicAPI("The destination system")]
+        [PublicAPI("The search system")]
         public string system { get; private set; }
 
-        [PublicAPI("The destination station, if applicable")]
+        [PublicAPI("The search station, if applicable")]
         public string station { get; private set; }
 
         [PublicAPI("List of system names, if applicable")]
@@ -28,13 +28,13 @@ namespace EddiEvents
         [PublicAPI("Count of missions, systems, or expiry seconds, depending on route type")]
         public long count { get; private set; }
 
-        [PublicAPI("The distance to the destination system")]
+        [PublicAPI("The distance to the search system")]
         public decimal distance => Route?.Waypoints.Count > 1 ? Route?.Waypoints[1].distance ?? 0 : 0;
 
         [PublicAPI("The remaining distance of the missions route, if applicable")]
         public decimal routedistance => Route?.RouteDistance ?? 0;
 
-        [PublicAPI("The mission ID(s) associated with the destination system, if applicable")]
+        [PublicAPI("The mission ID(s) associated with the search system, if applicable")]
         public List<long> missionids { get; private set; }
 
         // Not intended to be user facing
