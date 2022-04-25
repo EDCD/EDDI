@@ -66,6 +66,12 @@ namespace EddiSpeechService.SpeechSynthesizers
                             continue;
                         }
 
+                        // Skip Amazon Polly neural voices - these tend to throw an internal error (cause unknown) with the system speech synthesizer and are not currently reliable.
+                        if (!string.IsNullOrEmpty(voiceDetails.name) && voiceDetails.name.StartsWith("Amazon Polly") && voiceDetails.name.EndsWith("Neural"))
+                        {
+                            continue;
+                        }
+
                         voiceStore.Add(voiceDetails);
                         Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
                     }
