@@ -2395,7 +2395,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n",
+      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n\r\n{set next_system to RouteDetails(\"update\")}",
       "default": true,
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"

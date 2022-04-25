@@ -70,6 +70,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `System materials report` added, triggered by a discovery scan when the commander has an SRV and after we have data for all system bodies.
       * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization, add several newer faction states, and improve grammar around recent conflicts.
+      * `Undocked` event updated to invoke RouteDetails("update").
   * Status Monitor
     * Fixed a bug that caused fuel percent calculations to not calculate immediately after a vehicle change.
   * VoiceAttack Responder
