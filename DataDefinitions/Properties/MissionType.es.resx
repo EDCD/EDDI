@@ -151,9 +151,7 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Deshabilitar escuadrón</value>
   </data>
-  <data name="GenericPermit1" xml:space="preserve">
-    <value>Permiso de Adquisición</value>
-  </data>
+  
   <data name="Hack" xml:space="preserve">
     <value>Hackeo</value>
   </data>
@@ -203,6 +201,9 @@
   <data name="StartZone" xml:space="preserve">
     <value>Zona de Inicio</value>
   </data>
+  
+  
+  
   
   
   
