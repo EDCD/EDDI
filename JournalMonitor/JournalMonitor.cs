@@ -2195,13 +2195,27 @@ namespace EddiJournalMonitor
                                     source.spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
 
                                     source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
-                                    source.isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
 
                                     bool unique = false;
                                     if (EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress == systemAddress)
                                     {
                                         unique = !EDDI.Instance.CurrentStarSystem.signalsources.Contains(source.localizedName);
                                         EDDI.Instance.CurrentStarSystem.AddOrUpdateSignalSource(source);
+
+                                        if (source.isStation ?? false)
+                                        {
+                                            // Add station signals to the current star system if they are not already present.
+                                            if (EDDI.Instance.CurrentStarSystem.stations.All(s => s.name != source.edname))
+                                            {
+                                                var station = new Station { name = source.edname };
+                                                if (!string.IsNullOrEmpty(source.localizedName) && source.edname != source.localizedName)
+                                                {
+                                                    // At present, fleet carriers are the only station model which may have a localized signal name
+                                                    station.Model = StationModel.FleetCarrier;
+                                                }
+                                                EDDI.Instance.CurrentStarSystem.stations.Add(station);
+                                            }
+                                        }
                                     }
                                     
                                     events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, unique) { raw = line, fromLoad = fromLogLoad });
@@ -4734,8 +4748,17 @@ namespace EddiJournalMonitor
             else
             {
                 string signalSource = JsonParsing.getString(data, "SignalName");
-                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
+                var isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
+                if (isStation)
+                {
+                    source = SignalSource.FromStationEDName(signalSource);
+                }
+                else
+                {
+                    source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                    source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
+                }
+                source.isStation = isStation;
             }
             return source;
         }

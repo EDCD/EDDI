@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EddiDataDefinitions
 {
@@ -214,6 +215,26 @@ namespace EddiDataDefinitions
                 }
             }
             return null;
+        }
+
+        public static SignalSource FromStationEDName(string from)
+        {
+            if (string.IsNullOrEmpty(from)) { return null; }
+
+            // Signal might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
+            var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
+            if (fleetCarrierRegex.IsMatch(from))
+            {
+                // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                var fleetCarrierParts = fleetCarrierRegex.Matches(from)[0].Groups;
+                if (fleetCarrierParts.Count == 3)
+                {
+                    var fleetCarrierName = fleetCarrierParts[2].Value;
+                    var fleetCarrierLocalizedName = fleetCarrierParts[1].Value;
+                    return new SignalSource(fleetCarrierName) { fallbackLocalizedName = fleetCarrierLocalizedName, isStation = true};
+                }
+            }
+            return new SignalSource(from) {isStation = true};
         }
     }
 }
