@@ -29,6 +29,7 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
+        private List<Mission> communityGoalHolder = new List<Mission>();
 
         private DateTime updateDat;
         public int goalsCount;
@@ -393,8 +394,19 @@ namespace EddiMissionMonitor
             // Remove strays from the mission log
             foreach (Mission missionEntry in missions.ToList())
             {
-                // Community goals aren't written by the `Missions` event so we exclude them from pruning
-                if (missionEntry.communal) { continue; }
+                // Community goals aren't written by the `Missions` event. We'll keep them until they expire, then once they expire we'll
+                // move them to a holder until we see another CommunityGoal event. If there is none, the entry is automatically removed.
+                if (missionEntry.communal)
+                {
+                    if (missionEntry.expiry is null)
+                    {
+                        communityGoalHolder.Add(missionEntry);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
                 
                 Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
                 if (mission == null || mission.name.Contains("StartZone"))
@@ -472,7 +484,16 @@ namespace EddiMissionMonitor
             foreach (var goal in @event.goals)
             {
                 // Find or create our mission (excluding completed goals without contributions)
-                Mission mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
+                var mission = communityGoalHolder.FirstOrDefault(m => m.missionid == goal.cgid);
+                if (mission != null)
+                {
+                    communityGoalHolder.Remove(mission);
+                    missions.Add(mission);
+                }
+                else
+                {
+                    mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
+                }
                 if (mission == null && (!goal.iscomplete || goal.iscomplete && goal.contribution > 0))
                 {
                     mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.FromEDName("Active"));
