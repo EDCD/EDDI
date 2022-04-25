@@ -46,12 +46,12 @@ namespace EddiDataDefinitions
         }
 
         // Spansh Galaxy plotter only
-        public bool? refuelRecommended { get; set; }
+        public bool? refuelRecommended { get; set; } = false;
 
         // Spansh Carrier plotter only
-        public bool? hasIcyRing { get; set; }
-        public bool? hasPristineMining { get; set; }
-        public bool? isDesiredDestination { get; set; } // If this is one of the destinations prescribed by the commander for the route
+        public bool? hasIcyRing { get; set; } = false;
+        public bool? hasPristineMining { get; set; } = false;
+        public bool? isDesiredDestination { get; set; } = false; // If this is one of the destinations prescribed by the commander for the route
         public int? fuelUsed { get; set; } // The amount of tritium used to jump to this location
 
         // Info seeded from other monitors
