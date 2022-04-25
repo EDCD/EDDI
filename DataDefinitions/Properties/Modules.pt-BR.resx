@@ -593,4 +593,24 @@
     <value>Laser Contínuo Retaliador</value>
     <comment>Module RetributorBeamLaser</comment>
   </data>
+  <data name="MultiDroneControl_Mining" xml:space="preserve">
+    <value>Multi Controlador de Drone de Mineração</value>
+    <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Operations" xml:space="preserve">
+    <value>Multi Controlador de Drone de Operações</value>
+    <comment>Module MultiDroneControl_Operations</comment>
+  </data>
+  <data name="MultiDroneControl_Rescue" xml:space="preserve">
+    <value>Multi Controlador de Drone de Resgate</value>
+    <comment>Module MultiDroneControl_Rescue</comment>
+  </data>
+  <data name="MultiDroneControl_Xeno" xml:space="preserve">
+    <value>Multi Controlador de Drone Xeno</value>
+    <comment>Module MultiDroneControl_Xeno</comment>
+  </data>
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>Multi Controlador de Drone Universal</value>
+    <comment>Module MultiDroneControl_Universal</comment>
+  </data>
 </root>
