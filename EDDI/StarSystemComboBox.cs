@@ -36,7 +36,7 @@ namespace Eddi
 
         public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
-            if (!e.Changes.Any()) { return; }
+            if (Text == oldValue) { return; }
 
             string systemName = Text;
             if (systemName.Length > 1)
