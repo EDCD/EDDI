@@ -474,7 +474,7 @@ namespace EddiDataDefinitions
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
         [PublicAPI, JsonIgnore] // The duration of a solar day on the body, in Earth days
-        public decimal? solarday => (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
+        public decimal? solarday => tidallylocked ?? false ? null : (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
 
         [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
         public decimal? solarsurfacevelocity => (2 * (decimal)Math.PI * radius * 1000) / (solarday * 86400);
