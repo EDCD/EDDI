@@ -31,7 +31,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Body report` revised to improve grammar (around "days").
       * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
-      * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
+      * `Crime check station` updated to remove obsolete references to `shipid`.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
       * `Docking denied` updated to add new `DockOffline` reason.
       * `Docking granted` revised to reference automated docking if such a module is installed.
