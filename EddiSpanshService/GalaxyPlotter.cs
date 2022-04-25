@@ -106,8 +106,8 @@ namespace EddiSpanshService
                 {
                     systemAddress = jump["id64"].ToObject<ulong?>(),
                     hasNeutronStar = jump["has_neutron"].ToObject<bool>(),
-                    isScoopable = jump["is_scoopable"].ToObject<bool?>(),
-                    refuelRecommended = jump["must_refuel"].ToObject<bool?>()
+                    isScoopable = jump["is_scoopable"].ToObject<bool?>() ?? false,
+                    refuelRecommended = jump["must_refuel"].ToObject<bool?>() ?? false
                 };
                 results.Add(waypoint);
             }
