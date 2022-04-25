@@ -331,13 +331,12 @@ namespace EddiNavigationService
         private RouteDetailsEvent SetRoute(string system, string station = null)
         {
             NavWaypointCollection navRouteList = new NavWaypointCollection();
-            List<long> missionIds;
-
+            NavWaypoint firstUnvisitedWaypoint;
             // Use our saved route if a named system is not provided
             if (string.IsNullOrEmpty(system))
             {
                 navRouteList = ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList ?? new NavWaypointCollection();
-                var firstUnvisitedWaypoint = navRouteList.Waypoints.FirstOrDefault(w => !w.visited);
+                firstUnvisitedWaypoint = navRouteList.Waypoints.FirstOrDefault(w => !w.visited);
                 if (firstUnvisitedWaypoint != null)
                 {
                     return new RouteDetailsEvent(DateTime.UtcNow, QueryType.set.ToString(), firstUnvisitedWaypoint.systemName, firstUnvisitedWaypoint.stationName, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint.missionids);
@@ -351,13 +350,12 @@ namespace EddiNavigationService
             // Set a course to a named system (and optionally station)
             var neutronRoute = NavQuery(QueryType.neutron, system);
             navRouteList = neutronRoute.Route;
-            var missionids = new List<long>();
             foreach (var wp in navRouteList.Waypoints)
             {
                 wp.missionids = GetSystemMissionIds(wp.systemName);
-                missionids.AddRange(wp.missionids);
             }
-            return new RouteDetailsEvent(DateTime.UtcNow, QueryType.set.ToString(), system, station, navRouteList, navRouteList.Waypoints.Count, missionids);
+            firstUnvisitedWaypoint = navRouteList.Waypoints.FirstOrDefault(w => !w.visited);
+            return new RouteDetailsEvent(DateTime.UtcNow, QueryType.set.ToString(), firstUnvisitedWaypoint?.systemName, firstUnvisitedWaypoint?.systemName == system ? station : null, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint?.missionids ?? new List<long>());
         }
 
         /// <summary> Route to the star system where missions shall expire first </summary>
