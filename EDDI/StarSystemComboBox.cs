@@ -36,14 +36,16 @@ namespace Eddi
 
         public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
-            if (Text == oldValue) { return; }
+            if (!e.Changes.Any()) { return; }
 
             string systemName = Text;
             if (systemName.Length > 1)
             {
                 // Obtain a new systemList when the string is being shortened or when the current systemList no longer contains a valid entry
-                systemList = Text.Length > oldValue?.Length && systemList.Any(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)) 
-                    ? systemList.Where(s => s.StartsWith(Text)).ToList() 
+                systemList = e.Changes.All(t => t.RemovedLength == 0) 
+                             && e.Changes.Any(t => t.AddedLength > 0) 
+                             && systemList.Any(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)) 
+                    ? systemList.Where(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)).ToList() 
                     : SystemsBeginningWith(systemName);
 
                 var caretIndex = TextBox.CaretIndex;
