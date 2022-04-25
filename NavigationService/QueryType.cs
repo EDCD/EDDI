@@ -17,6 +17,7 @@ namespace EddiNavigationService
         nearest,
         neutron,
         raw,
+        recalculating,
         scoop,
         source,
         set,

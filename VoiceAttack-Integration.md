@@ -474,6 +474,7 @@ This function will produce a destination/route for valid mission destinations. I
 
 - 'Type variable' (text variable) is a mandatory parameter containing the type of update to execute.
 
+  * `cancel` Deactivates guidance along the current plotted route.
   * `encoded` Nearest encoded materials trader.
   * `expiring` Destination of your next expiring mission.
   * `facilitator` Nearest 'Legal Facilities' contact.
@@ -486,8 +487,9 @@ This function will produce a destination/route for valid mission destinations. I
   * `raw` Nearest raw materials trader.
   * `route` Next mission destination in 'Traveling Salesman' (RNNA) route of all active missions.
   * `scoop` Nearest scoopable star system.
+  * `set` Activates guidance along the current plotted route. An optional second argument sets the route destination to the star system name specified instead. An optional third argument sets the destination station.
   * `source` Destination to nearest mission 'cargo source'.
-  * `update` Update to the next mission destination (use this once all missions in the current system are completed).
+  * `update` Update to the next route destination, once all missions in the current system are completed. Recalculate the route as required.
 
 - 'System variable' (text variable) is an optional parameter for the following update types. 
 

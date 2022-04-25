@@ -339,7 +339,7 @@
                                 <CheckBox x:Name="prioritizeOrbitalStations" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Checked="prioritizeOrbitalStationsEnabled" Unchecked="prioritizeOrbitalStationsDisabled"/>
                             </Grid>
                         </DockPanel>
-                        <Button HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
+                        <Button x:Name="SearchButton" HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
                             <Button.Content>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
                                     <TextBlock Text="{x:Static resx:NavigationMonitor.search}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
@@ -359,7 +359,7 @@
                     </Grid>
                     <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="5">
                         <Button x:Name="GuidanceButton" HorizontalAlignment="Center" Click="GuidanceButton_Click" Content="{x:Static resx:NavigationMonitor.enable_guidance_button}" ToolTip="{x:Static resx:NavigationMonitor.enable_guidance_button_tooltip}" MinWidth="150" />
-                        <Button HorizontalAlignment="Center" Click="ClearRouteButton_Click" Content="{x:Static resx:NavigationMonitor.clear_route_button}" ToolTip="{x:Static resx:NavigationMonitor.clear_route_button_tooltip}" MinWidth="150" />
+                        <Button x:Name="ClearRouteButton" HorizontalAlignment="Center" Click="ClearRouteButton_Click" Content="{x:Static resx:NavigationMonitor.clear_route_button}" ToolTip="{x:Static resx:NavigationMonitor.clear_route_button_tooltip}" MinWidth="150" />
                     </UniformGrid>
                     <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow" SelectionUnit="Cell">
                         <DataGrid.RowHeaderTemplate>

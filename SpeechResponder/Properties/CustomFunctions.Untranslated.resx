@@ -481,6 +481,7 @@ RouteDetails takes one mandatory argument, the `routetype`, and up to two option
 
 The following `routetype` values are valid:
 
+* `cancel` Deactivates guidance along the current plotted route.
 * `encoded` Nearest encoded materials trader.
 * `expiring` Destination of your next expiring mission.
 * `facilitator` Nearest 'Legal Facilities' contact.
@@ -493,8 +494,9 @@ The following `routetype` values are valid:
 * `raw` Nearest raw materials trader.
 * `route` Next mission destination in 'Traveling Salesman' (RNNA) route of all active missions. Takes a system name as an optional secondary argument. If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
 * `scoop` Nearest scoopable star system.
+* `set` Activates guidance along the current plotted route. An optional second argument sets the route destination to the star system name specified instead. An optional third argument sets the destination station.
 * `source` Destination to nearest mission 'cargo source'. Takes a system name as an optional secondary argument. If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system. 
-* `update` Update to the next mission destination, once all missions in current system are completed. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+* `update` Update to the next route destination, once all missions in the current system are completed. Recalculate the route as required.
 
 Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
 

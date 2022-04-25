@@ -26,7 +26,6 @@ namespace EddiNavigationMonitor
     {
         // Observable collection for us to handle changes to Bookmarks
         public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
-        public static readonly object navConfigLock = new object();
         public static event EventHandler BookmarksUpdatedEvent;
 
         // Navigation route data
@@ -36,6 +35,8 @@ namespace EddiNavigationMonitor
         // Plotted route data
         public NavWaypointCollection PlottedRouteList = new NavWaypointCollection();
         public static event EventHandler PlottedRouteUpdatedEvent;
+
+        public static readonly object navConfigLock = new object();
 
         private DateTime updateDat;
 
@@ -175,6 +176,22 @@ namespace EddiNavigationMonitor
             {
                 handleRouteDetailsEvent(routeDetailsEvent);
             }
+            else if (@event is FSDTargetEvent fsdTargetEvent)
+            {
+                handleFSDTargetEvent(fsdTargetEvent);
+            }
+        }
+
+        private void handleFSDTargetEvent(FSDTargetEvent @event)
+        {
+            // Update our plotted route star class data if this event provides new details about the targeted star class.
+            var wp = PlottedRouteList.Waypoints.FirstOrDefault(w => w.systemAddress == (ulong?)@event.systemAddress);
+            if (wp != null && wp.stellarclass != @event.starclass)
+            {
+                wp.stellarclass = @event.starclass;
+                wp.isScoopable = !string.IsNullOrEmpty(@event.starclass) && "KGBFOAM".Contains(@event.starclass);
+                wp.hasNeutronStar = !string.IsNullOrEmpty(@event.starclass) && "N".Contains(@event.starclass);
+            }
         }
 
         public void PostHandle(Event @event)
@@ -193,6 +210,19 @@ namespace EddiNavigationMonitor
             }
         }
 
+        private void updateNavigationData(ulong systemAddress, decimal? x, decimal? y, decimal? z)
+        {
+            NavRouteList.UpdateVisitedStatus(systemAddress);
+            PlottedRouteList.UpdateVisitedStatus(systemAddress);
+            NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
+                NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y, NavigationService.Instance.SearchStarSystem?.z) ?? 0;
+            if (PlottedRouteList.GuidanceEnabled && PlottedRouteList.Waypoints.All(w => w.visited))
+            {
+                // Deactivate guidance once we've reached our destination.
+                NavigationService.Instance.NavQuery(QueryType.cancel);
+            }
+        }
+
         private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
         {
             if (@event.timestamp >= updateDat)
@@ -206,8 +236,7 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus((ulong)(@event.systemAddress ?? 0));
-                PlottedRouteList.UpdateVisitedStatus((ulong)(@event.systemAddress ?? 0));
+                updateNavigationData(@event.systemAddress ?? 0, @event.x, @event.y, @event.z);
             }
         }
 
@@ -235,8 +264,7 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus(@event.systemAddress ?? 0);
-                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress ?? 0);
+                updateNavigationData(@event.systemAddress ?? 0, @event.x, @event.y, @event.z);
             }
         }
 
@@ -245,8 +273,7 @@ namespace EddiNavigationMonitor
             if (@event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus(@event.systemAddress);
-                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress);
+                updateNavigationData(@event.systemAddress, @event.x, @event.y, @event.z);
             }
         }
 
@@ -329,20 +356,23 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
-            if (routeDetailsEvent.Route.Waypoints.GetHashCode() == PlottedRouteList.Waypoints.GetHashCode())
+            if (!PlottedRouteList.GuidanceEnabled)
             {
-                // Displayed route is correct, nothing to do here
-            }
-            else if (routeDetailsEvent.Route != null)
-            {
-                PlottedRouteList.Waypoints.Clear();
-                PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
-                PlottedRouteList.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
-                PlottedRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
-            }
-            else
-            {
-                PlottedRouteList.Waypoints.Clear();
+                if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRouteList.Waypoints.GetHashCode())
+                {
+                    // Displayed route is correct, nothing to do here
+                }
+                else if (routeDetailsEvent.Route != null)
+                {
+                    PlottedRouteList.Waypoints.Clear();
+                    PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
+                    PlottedRouteList.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                    PlottedRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
+                }
+                else
+                {
+                    PlottedRouteList.Waypoints.Clear();
+                }
             }
 
             if (routeDetailsEvent.routetype == QueryType.set.ToString())
@@ -523,13 +553,6 @@ namespace EddiNavigationMonitor
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000;
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
-        }
-
-        public bool IsNavRouteComplete(List<NavWaypoint> routeList, bool completeWithFinalWaypoint = false)
-        {
-            return completeWithFinalWaypoint
-                ? routeList.LastOrDefault()?.visited ?? true
-                : routeList.All(w => w.visited);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

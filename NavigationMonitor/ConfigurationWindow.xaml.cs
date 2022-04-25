@@ -61,9 +61,18 @@ namespace EddiNavigationMonitor
             searchQueryDropDown.SelectedItem = queryType;
             configureSearchArgumentOptions(queryType);
             configureRoutePlotterColumns(queryType);
+            UpdateGuidanceLock(navigationMonitor().PlottedRouteList.GuidanceEnabled);
+            GuidanceButton.IsEnabled = !navigationMonitor().PlottedRouteList.GuidanceEnabled 
+                                       && navigationMonitor().PlottedRouteList.Waypoints.Count > 1;
 
+            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+            NavigationService.Instance.PropertyChanged += OnNavServiceChange;
+            navigationMonitor().PlottedRouteList.PropertyChanged += OnPlottedRouteChanged;
+        }
 
-            if (navigationMonitor().PlottedRouteList?.GuidanceEnabled ?? false)
+        private void UpdateGuidanceLock(bool guidanceEnabled)
+        {
+            if (guidanceEnabled)
             {
                 GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
@@ -73,9 +82,41 @@ namespace EddiNavigationMonitor
                 GuidanceButton.Content = Properties.NavigationMonitor.enable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.enable_guidance_button_tooltip;
             }
+            
+            // Lock out the query UI while guidance is activated
+            searchGroupDropDown.IsEnabled = !guidanceEnabled;
+            searchQueryDropDown.IsEnabled = !guidanceEnabled;
+            searchSystemDropDown.IsEnabled = !guidanceEnabled;
+            searchStationDropDown.IsEnabled = !guidanceEnabled;
+            maxSearchDistanceInt.IsEnabled = !guidanceEnabled;
+            prioritizeOrbitalStations.IsEnabled = !guidanceEnabled;
+            SearchButton.IsEnabled = !guidanceEnabled;
+        }
 
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
-            NavigationService.Instance.PropertyChanged += OnNavServiceChange;
+        private void OnPlottedRouteChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is NavWaypointCollection navWaypointCollection)
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(NavWaypointCollection.GuidanceEnabled):
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            UpdateGuidanceLock(navWaypointCollection.GuidanceEnabled);
+                        });
+                        break;
+                    }
+                    case nameof(NavWaypointCollection.Waypoints):
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            GuidanceButton.IsEnabled = !navWaypointCollection.GuidanceEnabled && navWaypointCollection.Waypoints.Count > 1;
+                        });
+                        break;
+                    }
+                }
+            }
         }
 
         private void OnStatusUpdated(object sender, EventArgs e)
@@ -88,6 +129,13 @@ namespace EddiNavigationMonitor
 
         private void OnNavServiceChange(object sender, PropertyChangedEventArgs e)
         {
+            // Don't update the UI while guidance is locked.
+            var config = ConfigService.Instance.navigationMonitorConfiguration;
+            if (config.plottedRouteList.GuidanceEnabled)
+            {
+                return;
+            }
+
             switch (e.PropertyName)
             {
                 case nameof(NavigationService.Instance.IsWorking):
@@ -791,16 +839,12 @@ namespace EddiNavigationMonitor
 
         private void GuidanceButton_Click(object sender, RoutedEventArgs e)
         {
-            if (navigationMonitor().PlottedRouteList?.GuidanceEnabled ?? false)
+            if (GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button)
             {
-                GuidanceButton.Content = Properties.NavigationMonitor.enable_guidance_button;
-                GuidanceButton.ToolTip = Properties.NavigationMonitor.enable_guidance_button_tooltip;
                 EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel));
             }
             else
             {
-                GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
-                GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
                 EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set));
             }
         }
@@ -809,6 +853,10 @@ namespace EddiNavigationMonitor
         {
             if (plottedRouteData.Items.Count > 0)
             {
+                if (navigationMonitor().PlottedRouteList.GuidanceEnabled)
+                {
+                    NavigationService.Instance.NavQuery(QueryType.cancel);
+                }
                 navigationMonitor().PlottedRouteList.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();
             }

@@ -624,12 +624,11 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///The following `routetype` values are valid:
         ///
+        ///* `cancel` Deactivates guidance along the current plotted route.
         ///* `encoded` Nearest encoded materials trader.
         ///* `expiring` Destination of your next expiring mission.
         ///* `facilitator` Nearest &apos;Legal Facilities&apos; contact.
-        ///* `farthest` Mission destination farthest from your current location.
-        ///* `guardian` Nearest guardian technology broker.
-        ///* `human [rest of string was truncated]&quot;;.
+        ///* `farthest` Mission destination farthest from your current loc [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RouteDetails {
             get {
