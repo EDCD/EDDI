@@ -174,7 +174,7 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Emettitore Bersagli Fantasma</value>
+    <value>Sistema AntiRadar</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
@@ -286,7 +286,7 @@
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
-    <value>Emettitore Dispersori di Calore</value>
+    <value>Espulsore dissipatori termici</value>
     <comment>Module HeatSinkLauncher</comment>
   </data>
   <data name="HullReinforcementPackage" xml:space="preserve">
@@ -378,7 +378,7 @@
     <comment>Module PlasmaAccelerator</comment>
   </data>
   <data name="PointDefence" xml:space="preserve">
-    <value>Punto di Difesa Automatizzata</value>
+    <value>Torretta difensiva a puntamento</value>
     <comment>Module PointDefence</comment>
   </data>
   <data name="PowerDistributor" xml:space="preserve">
@@ -592,5 +592,25 @@
   <data name="RetributorBeamLaser" xml:space="preserve">
     <value>Laser Punitivo</value>
     <comment>Module RetributorBeamLaser</comment>
+  </data>
+  <data name="MultiDroneControl_Mining" xml:space="preserve">
+    <value>MultiControllore Droni di Estrazione</value>
+    <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Operations" xml:space="preserve">
+    <value>MultiControllore Droni Operativi</value>
+    <comment>Module MultiDroneControl_Operations</comment>
+  </data>
+  <data name="MultiDroneControl_Rescue" xml:space="preserve">
+    <value>MultiControllore Droni di Salvataggio</value>
+    <comment>Module MultiDroneControl_Rescue</comment>
+  </data>
+  <data name="MultiDroneControl_Xeno" xml:space="preserve">
+    <value>MultiControllore Droni per Xenoanalisi</value>
+    <comment>Module MultiDroneControl_Xeno</comment>
+  </data>
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>MultiControllore Droni Multiuso</value>
+    <comment>Module MultiDroneControl_Universal</comment>
   </data>
 </root>
