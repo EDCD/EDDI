@@ -150,4 +150,7 @@
   <data name="word_wrap" xml:space="preserve">
     <value>Quebra de Linha</value>
   </data>
+  <data name="folding" xml:space="preserve">
+    <value>Colapso</value>
+  </data>
 </root>
