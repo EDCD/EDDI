@@ -214,7 +214,7 @@
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
-    <value>Impulsunterbrecher</value>
+    <value>Disruptor</value>
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
@@ -318,7 +318,7 @@
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
-    <value>Verzeichnisscanner</value>
+    <value>Ladungssensor</value>
     <comment>Module ManifestScanner</comment>
   </data>
   <data name="MetaAlloyHullReinforcement" xml:space="preserve">
@@ -592,5 +592,25 @@
   <data name="RetributorBeamLaser" xml:space="preserve">
     <value>Retributor</value>
     <comment>Module RetributorBeamLaser</comment>
+  </data>
+  <data name="MultiDroneControl_Mining" xml:space="preserve">
+    <value>Abbau-Multi-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Operations" xml:space="preserve">
+    <value>Operationen-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Operations</comment>
+  </data>
+  <data name="MultiDroneControl_Rescue" xml:space="preserve">
+    <value>Rettungs-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Rescue</comment>
+  </data>
+  <data name="MultiDroneControl_Xeno" xml:space="preserve">
+    <value>Xeno-Multi-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Xeno</comment>
+  </data>
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>Universelle Multi-Drohnensteuerung</value>
+    <comment>Module MultiDroneControl_Universal</comment>
   </data>
 </root>
