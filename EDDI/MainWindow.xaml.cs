@@ -427,7 +427,15 @@ namespace Eddi
                     speechOptions.Add(voice);
                 }
                 ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
+                ttsVoiceDropDown.Text =  speechOptions.Any(v => v == speechServiceConfiguration.StandardVoice) 
+                    ? speechServiceConfiguration.StandardVoice
+                    : "Windows TTS default";
+
+                // If the prior selected voice is no longer a valid option, we revert to the system default.
+                if (speechServiceConfiguration.StandardVoice != ttsVoiceDropDown.Text)
+                {
+                    speechServiceConfiguration.ToFile();
+                }
             }
             catch (Exception e)
             {

@@ -326,14 +326,13 @@ namespace EddiSpeechService
                     voice = Configuration.StandardVoice;
                 }
 
-                if (string.IsNullOrEmpty(voice))
+                if (allvoices.All(v => v != voice))
                 {
-                    voice = windowsMediaSynth?.voice;
-                }
+                    voice = windowsMediaSynth?.voice ?? systemSpeechSynth?.voice;
 
-                if (string.IsNullOrEmpty(voice))
-                {
-                    voice = systemSpeechSynth?.voice;
+                    // If the prior selected voice is no longer a valid option, we revert to the system default.
+                    Configuration.StandardVoice = null;
+                    Configuration.ToFile();
                 }
 
                 if (string.IsNullOrEmpty(voice))
