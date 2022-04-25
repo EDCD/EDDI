@@ -240,7 +240,7 @@
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
-                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_missions}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=isMissionSystem}">
+                            <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_missions}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=isMissionSystem, Mode=OneWay}">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_missions}"/>
