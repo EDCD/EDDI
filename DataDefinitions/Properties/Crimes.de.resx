@@ -249,4 +249,20 @@
     <value>Unbefugtes Betreten</value>
     <comment>Crime onFoot_trespass</comment>
   </data>
+  <data name="onFoot_carryingStolenGoods" xml:space="preserve">
+    <value>Mitführen von gestohlenen Waren</value>
+    <comment>Crime onFoot_carryingStolenGoods</comment>
+  </data>
+  <data name="onFoot_arcCutterUse" xml:space="preserve">
+    <value>Plasma-Schneider</value>
+    <comment>Crime onFoot_arcCutterUse</comment>
+  </data>
+  <data name="onFoot_carryingIllegalData" xml:space="preserve">
+    <value>Mitführen von illegalen Daten</value>
+    <comment>Crime onFoot_carryingIllegalData</comment>
+  </data>
+  <data name="onFoot_dataTransfer" xml:space="preserve">
+    <value>Übertragen illegaler Daten</value>
+    <comment>Crime onFoot_dataTransfer</comment>
+  </data>
 </root>
