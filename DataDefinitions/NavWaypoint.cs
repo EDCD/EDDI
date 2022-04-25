@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace EddiDataDefinitions
 {
-    public class NavWaypoint
+    public class NavWaypoint : INotifyPropertyChanged
     {
+        private bool _visited;
+        private List<long> _missionids = new List<long>();
+        private bool? _isScoopable;
+        private bool _hasNeutronStar;
+
         public string systemName { get; set; }
         public ulong? systemAddress { get; set; }
         public decimal? x { get; set; }
@@ -24,10 +32,18 @@ namespace EddiDataDefinitions
         public string stellarclass { get; set; }
 
         // NavRoute and Spansh Neutron and Galaxy plotters only
-        public bool hasNeutronStar { get; set; }
+        public bool hasNeutronStar
+        {
+            get => _hasNeutronStar;
+            set { _hasNeutronStar = value; OnPropertyChanged(); }
+        }
 
         // NavRoute and Spansh Galaxy plotter only
-        public bool? isScoopable { get; set; }
+        public bool? isScoopable
+        {
+            get => _isScoopable;
+            set { _isScoopable = value; OnPropertyChanged(); }
+        }
 
         // Spansh Galaxy plotter only
         public bool? refuelRecommended { get; set; }
@@ -41,10 +57,18 @@ namespace EddiDataDefinitions
         // Info seeded from other monitors
         public bool isMissionSystem => missionids?.Any() ?? false;
 
-        public List<long> missionids { get; set; } = new List<long>();
+        public List<long> missionids
+        {
+            get => _missionids;
+            set { _missionids = value; OnPropertyChanged();}
+        }
 
         // Whether we've already visited the system during our current route
-        public bool visited { get; set; }
+        public bool visited
+        {
+            get => _visited;
+            set { _visited = value; OnPropertyChanged(); }
+        }
 
         // Default constructor
         [JsonConstructor]
@@ -80,6 +104,14 @@ namespace EddiDataDefinitions
             stellarclass = navRouteItem.stellarclass;
             isScoopable = !string.IsNullOrEmpty(navRouteItem.stellarclass) && "KGBFOAM".Contains(navRouteItem.stellarclass);
             hasNeutronStar = !string.IsNullOrEmpty(navRouteItem.stellarclass) && "N".Contains(navRouteItem.stellarclass);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

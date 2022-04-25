@@ -1,16 +1,38 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public sealed class NavWaypointCollection
+    public sealed class NavWaypointCollection: INotifyPropertyChanged
     {
-        public decimal RouteDistance { get; private set; }
-        public bool GuidanceEnabled { get; set; }
-        public bool FillVisitedGaps { get; set; }
+        private decimal _routeDistance;
+        private bool _guidanceEnabled;
+        private bool _fillVisitedGaps;
+
+        public decimal RouteDistance
+        {
+            get => _routeDistance;
+            private set { _routeDistance = value; OnPropertyChanged();}
+        }
+
+        public bool GuidanceEnabled
+        {
+            get => _guidanceEnabled;
+            set { _guidanceEnabled = value; OnPropertyChanged();}
+        }
+
+        public bool FillVisitedGaps
+        {
+            get => _fillVisitedGaps;
+            set { _fillVisitedGaps = value; OnPropertyChanged();}
+        }
+
         public ObservableCollection<NavWaypoint> Waypoints { get; } = new ObservableCollection<NavWaypoint>();
 
         [JsonConstructor]
@@ -39,6 +61,24 @@ namespace EddiDataDefinitions
         private void NavWaypointList_CollectionChanged(object sender,
             System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            void childPropertyChangedHandler(object childSender, PropertyChangedEventArgs child_e)
+            {
+                OnPropertyChanged(nameof(Waypoints));
+            }
+            if (e.NewItems != null)
+            {
+                foreach (NavWaypoint item in e.NewItems)
+                {
+                    item.PropertyChanged += childPropertyChangedHandler;
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (NavWaypoint item in e.OldItems)
+                {
+                    item.PropertyChanged -= childPropertyChangedHandler;
+                }
+            }
             CalculateRouteDistances();
         }
 
@@ -66,9 +106,9 @@ namespace EddiDataDefinitions
                     Waypoints[i + 1].distanceTraveled = Waypoints[i].distanceTraveled + Waypoints[i + 1].distance;
                 }
                 RouteDistance = Waypoints.Last().distanceTraveled;
-
+                
                 Waypoints.Last().distanceTraveled = RouteDistance;
-
+                
                 // Calculate distance remaining and set index value
                 int j = 0;
                 foreach (var waypoint in Waypoints)
@@ -84,9 +124,9 @@ namespace EddiDataDefinitions
             if (FillVisitedGaps)
             {
                 var waypoint = Waypoints.FirstOrDefault(n => n.systemAddress == visitedSystemAddress);
-                for (var i = 0; i < waypoint?.index; i++)
+                for (var i = 0; i <= waypoint?.index; i++)
                 {
-                    Waypoints[i++].visited = true;
+                    Waypoints[i].visited = true;
                 }
             }
             else
@@ -113,6 +153,14 @@ namespace EddiDataDefinitions
                     .Select(m => m.missionid).ToList();
                 waypoint.missionids = missionIds;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
