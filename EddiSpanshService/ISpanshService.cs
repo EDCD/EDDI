@@ -11,8 +11,5 @@ namespace EddiSpanshService
         NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship,
             int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true,
             bool use_injections = false, bool exclude_secondary = false);
-
-        List<NavWaypoint> GetNeutronRoute(string currentSystem, string targetSystem, decimal jumpRangeLy,
-            int efficiency = 60);
     }
 }
