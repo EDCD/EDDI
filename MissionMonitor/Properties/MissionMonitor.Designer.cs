@@ -61,65 +61,11 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear Route.
-        /// </summary>
-        public static string clear_route_button {
-            get {
-                return ResourceManager.GetString("clear_route_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clears the missions route and Destination System..
-        /// </summary>
-        public static string clear_route_button_desc {
-            get {
-                return ResourceManager.GetString("clear_route_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Route:.
-        /// </summary>
-        public static string clear_route_button_text {
-            get {
-                return ResourceManager.GetString("clear_route_button_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Show or hide additional details about the selected mission.
         /// </summary>
         public static string extra_details_tooltip {
             get {
                 return ResourceManager.GetString("extra_details_tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get Route.
-        /// </summary>
-        public static string get_route_button {
-            get {
-                return ResourceManager.GetString("get_route_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiates calculation of the &apos;Nearest Neighbor&apos; algorithm for determining the shortest mission&apos;s route..
-        /// </summary>
-        public static string get_route_button_desc {
-            get {
-                return ResourceManager.GetString("get_route_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Get Route:.
-        /// </summary>
-        public static string get_route_button_text {
-            get {
-                return ResourceManager.GetString("get_route_button_text", resourceCulture);
             }
         }
         
@@ -174,15 +120,6 @@ namespace EddiMissionMonitor.Properties {
         public static string header_faction {
             get {
                 return ResourceManager.GetString("header_faction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mission ID.
-        /// </summary>
-        public static string header_missionid {
-            get {
-                return ResourceManager.GetString("header_missionid", resourceCulture);
             }
         }
         
@@ -259,33 +196,6 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next In Route.
-        /// </summary>
-        public static string next_route_button {
-            get {
-                return ResourceManager.GetString("next_route_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sets the Destination System to the next system in the missions route..
-        /// </summary>
-        public static string next_route_button_desc {
-            get {
-                return ResourceManager.GetString("next_route_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next In Route:.
-        /// </summary>
-        public static string next_route_button_text {
-            get {
-                return ResourceManager.GetString("next_route_button_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Below is a list of all your missions..
         /// </summary>
         public static string para1 {
@@ -309,33 +219,6 @@ namespace EddiMissionMonitor.Properties {
         public static string tab_mission_warning {
             get {
                 return ResourceManager.GetString("tab_mission_warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update Route.
-        /// </summary>
-        public static string update_route_button {
-            get {
-                return ResourceManager.GetString("update_route_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sets the Destination System to next system in the missions route, if all missions are completed..
-        /// </summary>
-        public static string update_route_button_desc {
-            get {
-                return ResourceManager.GetString("update_route_button_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update Route:.
-        /// </summary>
-        public static string update_route_button_text {
-            get {
-                return ResourceManager.GetString("update_route_button_text", resourceCulture);
             }
         }
     }

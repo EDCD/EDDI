@@ -117,32 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="clear_route_button" xml:space="preserve">
-    <value>Clear Route</value>
-  </data>
-  <data name="clear_route_button_desc" xml:space="preserve">
-    <value>Clears the missions route and Destination System.</value>
-  </data>
-  <data name="clear_route_button_text" xml:space="preserve">
-    <value>Clear Route:</value>
-  </data>
-  <data name="get_route_button" xml:space="preserve">
-    <value>Get Route</value>
-  </data>
-  <data name="get_route_button_desc" xml:space="preserve">
-    <value>Initiates calculation of the 'Nearest Neighbor' algorithm for determining the shortest mission's route.</value>
-  </data>
-  <data name="get_route_button_text" xml:space="preserve">
-    <value>Get Route:</value>
-  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Destination Station</value>
   </data>
   <data name="header_destinationsystem" xml:space="preserve">
     <value>Destination System</value>
-  </data>
-  <data name="header_missionid" xml:space="preserve">
-    <value>Mission ID</value>
   </data>
   <data name="header_remaining" xml:space="preserve">
     <value>Remaining</value>
@@ -159,15 +138,6 @@
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Mission Monitor</value>
   </data>
-  <data name="next_route_button" xml:space="preserve">
-    <value>Next In Route</value>
-  </data>
-  <data name="next_route_button_desc" xml:space="preserve">
-    <value>Sets the Destination System to the next system in the missions route.</value>
-  </data>
-  <data name="next_route_button_text" xml:space="preserve">
-    <value>Next In Route:</value>
-  </data>
   <data name="para1" xml:space="preserve">
     <value>Below is a list of all your missions.</value>
   </data>
@@ -176,15 +146,6 @@
   </data>
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Mission expiration warning threshold (Minutes):</value>
-  </data>
-  <data name="update_route_button" xml:space="preserve">
-    <value>Update Route</value>
-  </data>
-  <data name="update_route_button_desc" xml:space="preserve">
-    <value>Sets the Destination System to next system in the missions route, if all missions are completed.</value>
-  </data>
-  <data name="update_route_button_text" xml:space="preserve">
-    <value>Update Route:</value>
   </data>
   <data name="header_name" xml:space="preserve">
     <value>Name</value>
