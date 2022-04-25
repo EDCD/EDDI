@@ -98,11 +98,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Harmless" xml:space="preserve">
-    <value>harmlos</value>
+    <value>Harmlos</value>
     <comment>Combat rating Harmless</comment>
   </data>
   <data name="MostlyHarmless" xml:space="preserve">
-    <value>meistens harmlos</value>
+    <value>Meistens harmlos</value>
     <comment>Combat rating MostlyHarmless</comment>
   </data>
   <data name="Novice" xml:space="preserve">
@@ -110,7 +110,7 @@
     <comment>Combat rating Novice</comment>
   </data>
   <data name="Competent" xml:space="preserve">
-    <value>kompetent</value>
+    <value>Kompetent</value>
     <comment>Combat rating Competent</comment>
   </data>
   <data name="Expert" xml:space="preserve">
@@ -122,11 +122,11 @@
     <comment>Combat rating Master</comment>
   </data>
   <data name="Dangerous" xml:space="preserve">
-    <value>gefährlich</value>
+    <value>Gefährlich</value>
     <comment>Combat rating Dangerous</comment>
   </data>
   <data name="Deadly" xml:space="preserve">
-    <value>tödlich</value>
+    <value>Tödlich</value>
     <comment>Combat rating Deadly</comment>
   </data>
   <data name="Elite" xml:space="preserve">
