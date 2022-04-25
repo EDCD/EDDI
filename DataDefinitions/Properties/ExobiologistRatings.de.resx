@@ -117,12 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Cataloguer" xml:space="preserve">
+    <value>Verwalter</value>
+    <comment>Exobiologist rating Cataloguer</comment>
+  </data>
   <data name="Collector" xml:space="preserve">
     <value>Sammler</value>
     <comment>Exobiologist rating Collector</comment>
   </data>
-  
+  <data name="Compiler" xml:space="preserve">
+    <value>Compiler</value>
+    <comment>Exobiologist rating Compiler</comment>
+  </data>
   <data name="Directionless" xml:space="preserve">
     <value>Ziellos</value>
     <comment>Exobiologist rating Directionless</comment>
