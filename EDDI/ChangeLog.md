@@ -41,6 +41,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Entered normal space` revised to correct grammar when dropping out near a ring.
       * `Entered supercruise` revised to reset a state variable after updating you on your crime status.
       * `Fuel check` revised to move relevant data to the `Route details` script.
+      * `FSD Engaged` revised to move some speech to the `Jumped` event.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
       * `Location` updated to add local reputation, system state, and system engineer details.
       * `Material required report` updated to fix a typo.
