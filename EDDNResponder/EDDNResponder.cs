@@ -155,18 +155,33 @@ namespace EDDNResponder
                 {
                     handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
                 }
-                else if (edType == "ScanBaryCentre")
+                else if (edType == "NavBeaconScan")
                 {
-                    handleScanBaryCentreSchemaEvent(edType, data);
+                    handleNavBeaconScanSchemaEvent(edType, data);
                 }
                 else if (edType == "NavRoute")
                 {
                     handleNavRouteSchemaEvent(edType, data);
                 }
+                else if (edType == "ScanBaryCentre")
+                {
+                    handleScanBaryCentreSchemaEvent(edType, data);
+                }
                 else if (fullLocationJournalSchemaEvents.Contains(edType) || partialLocationJournalSchemaEvents.Contains(edType))
                 {
                     handleJournalSchemaEvents(edType, data);
                 }
+            }
+        }
+
+        private void handleNavBeaconScanSchemaEvent(string edType, IDictionary<string, object> data)
+        {
+            if (data == null) { return; }
+            if (CheckLocationData(edType, data))
+            {
+                data = EnrichLocationData(edType, data);
+                data = AddGameVersionData(data);
+                SendToEDDN("https://eddn.edcd.io/schemas/navbeaconscan/1", data);
             }
         }
 
