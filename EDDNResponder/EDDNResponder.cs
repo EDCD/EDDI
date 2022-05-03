@@ -126,21 +126,46 @@ namespace EDDNResponder
                 return;
             }
 
-            if (theEvent.fromLoad)
+            if (!string.IsNullOrEmpty(theEvent.raw)) // A null value may indicate a synthetic event used to pass data within EDDI
+                                                     // (which should always be ignored)
             {
-                // Don't do anything with data acquired during log loading
-                return;
-            }
+                IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
+                string edType = JsonParsing.getString(data, "event");
 
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
+                // Obtain data that should be handled whether or not the event is from log loading
 
-            if (theEvent is MarketInformationUpdatedEvent)
-            {
-                handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
-            }
-            else
-            {
-                handleRawEvent(theEvent);
+                // Attempt to obtain available game version data from the active event 
+                GetGameVersionData(edType, data);
+
+                // Ignore any events that we've blacklisted for contaminating our location data
+                if (ignoredEvents.Contains(edType)) { return; }
+
+                // We always start location data fresh when handling events containing complete location data
+                if (fullLocationEvents.Contains(edType))
+                {
+                    invalidState = false;
+                    ClearLocation();
+                }
+
+                // Except as noted above, always attempt to obtain available location data from the active event 
+                GetLocationData(data);
+
+                if (theEvent.fromLoad)
+                {
+                    // Don't do anything with data acquired during log loading
+                    return;
+                }
+
+                Logging.Debug("Received event " + theEvent.raw);
+
+                if (theEvent is MarketInformationUpdatedEvent)
+                {
+                    handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
+                }
+                else
+                {
+                    handleRawJournalEvent(edType, data);
+                }
             }
         }
 
@@ -157,27 +182,8 @@ namespace EDDNResponder
         {
         }
 
-        private void handleRawEvent(Event theEvent)
+        private void handleRawJournalEvent(string edType, IDictionary<string, object> data)
         {
-            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
-            string edType = JsonParsing.getString(data, "event");
-
-            // Ignore any events that we've blacklisted for contaminating our location data
-            if (ignoredEvents.Contains(edType)) { return; }
-
-            // We always start location data fresh when handling events containing complete location data
-            if (fullLocationEvents.Contains(edType))
-            {
-                invalidState = false;
-                ClearLocation();
-            }
-
-            // Except as noted above, always attempt to obtain available game version data from the active event 
-            GetGameVersionData(edType, data);
-
-            // Except as noted above, always attempt to obtain available location data from the active event 
-            GetLocationData(data);
-
             // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
             if (partialLocationEvents.Contains(edType))
             {
@@ -223,11 +229,16 @@ namespace EDDNResponder
                     gameVersion = JsonParsing.getString(data, "gameversion") ?? gameVersion;
                     gameBuild = JsonParsing.getString(data, "build") ?? gameBuild;
                 }
-
-                if (string.Equals("LoadGame", eventType, StringComparison.InvariantCultureIgnoreCase) 
-                    || string.Equals("Outfitting", eventType, StringComparison.InvariantCultureIgnoreCase) 
+                else if (string.Equals("Outfitting", eventType, StringComparison.InvariantCultureIgnoreCase) 
                     || string.Equals("Shipyard", eventType, StringComparison.InvariantCultureIgnoreCase))
                 {
+                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
+                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false;
+                }
+                else if (string.Equals("LoadGame", eventType, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    gameVersion = JsonParsing.getString(data, "gameversion") ?? gameVersion;
+                    gameBuild = JsonParsing.getString(data, "build") ?? gameBuild;
                     inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
                     inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false;
                 }
