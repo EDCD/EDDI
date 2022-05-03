@@ -195,6 +195,7 @@ namespace EDDNResponder
                     data.Add("StarPos", starpos);
                 }
                 data = AddGameVersionData(data);
+                if (data.ContainsKey("Progress")) { data.Remove("Progress"); } // Personal data
                 SendToEDDN("https://eddn.edcd.io/schemas/fssdiscoveryscan/1", data);
             }
         }
