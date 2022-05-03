@@ -145,13 +145,17 @@ namespace EDDNResponder
 
                 if (theEvent.fromLoad)
                 {
-                    // Don't do anything with data acquired during log loading
+                    // Don't do anything with data acquired during log loading except update our internal state
                     return;
                 }
 
                 Logging.Debug("Received event " + theEvent.raw);
 
-                if (theEvent is MarketInformationUpdatedEvent)
+                if (edType == "FSSDiscoveryScan")
+                {
+                    handleFSSDiscoveryScanSchemaEvent(edType, data);
+                }
+                else if (theEvent is MarketInformationUpdatedEvent)
                 {
                     handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
                 }
@@ -171,6 +175,27 @@ namespace EDDNResponder
                 {
                     handleJournalSchemaEvents(edType, data);
                 }
+            }
+        }
+
+        private void handleFSSDiscoveryScanSchemaEvent(string edType, IDictionary<string, object> data)
+        {
+            if (data == null) { return; }
+            if (CheckLocationData(edType, data))
+            {
+                // This event contains a `SystemName` property so we do not need to enrich it with the conventional `StarSystem` property
+                if (!data.ContainsKey("StarPos") && systemX != null && systemY != null && systemZ != null)
+                {
+                    IList<decimal> starpos = new List<decimal>
+                    {
+                        systemX.Value,
+                        systemY.Value,
+                        systemZ.Value
+                    };
+                    data.Add("StarPos", starpos);
+                }
+                data = AddGameVersionData(data);
+                SendToEDDN("https://eddn.edcd.io/schemas/fssdiscoveryscan/1", data);
             }
         }
 
