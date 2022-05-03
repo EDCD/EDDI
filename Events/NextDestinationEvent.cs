@@ -18,7 +18,7 @@ namespace EddiEvents
         public string localizedName { get; private set; }
 
         [PublicAPI("If the destination is an body")] 
-        public bool isBody => body != null && !isStation && !isSignalSource;
+        public bool isBody => body != null;
 
         [PublicAPI("If the destination is an station (including megaship or fleet carrier)")]
         public bool isStation => station != null;

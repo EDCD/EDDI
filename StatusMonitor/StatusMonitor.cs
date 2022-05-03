@@ -479,7 +479,8 @@ namespace EddiStatusMonitor
                         thisStatus.destinationSystemAddress && thisStatus.destination_name != lastDestinationPOI)
                     {
                         var body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b =>
-                            b.bodyId == thisStatus.destinationBodyId);
+                            b.bodyId == thisStatus.destinationBodyId
+                            && b.bodyname == thisStatus.destination_name);
                         var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
                             s.name == thisStatus.destination_name);
 
@@ -534,7 +535,7 @@ namespace EddiStatusMonitor
                                 thisStatus.destinationSystemAddress,
                                 thisStatus.destinationBodyId,
                                 thisStatus.destination_name,
-                                thisStatus.destination_localized_name,
+                                thisStatus.destination_localized_name ?? thisStatus.destination_name,
                                 body));
                         }
                         lastDestinationPOI = thisStatus.destination_name;
