@@ -1963,7 +1963,7 @@ namespace EddiCore
             if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
 
             // Post an update event for new market data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons, inOdyssey));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons, inOdyssey) {raw = theEvent.raw} );
 
             // Update the current station commodities
             if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
@@ -1988,7 +1988,7 @@ namespace EddiCore
             if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
 
             // Post an update event for new outfitting data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.edName).ToList(), null, inHorizons, inOdyssey));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.edName).ToList(), null, inHorizons, inOdyssey) { raw = theEvent.raw} );
 
             var modules = theEvent.info.Items
                 .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
@@ -2021,7 +2021,7 @@ namespace EddiCore
             if (theEvent.system != CurrentStarSystem?.systemname || theEvent.marketId != CurrentStation?.marketId) { return false; }
 
             // Post an update event for new shipyard data
-            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, theEvent.info.AllowCobraMkIV));
+            enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, theEvent.info.AllowCobraMkIV) { raw = theEvent.raw });
 
             var ships = theEvent.info.PriceList
                 .Select(s => Ship.FromShipyardInfo(s))
@@ -3064,7 +3064,7 @@ namespace EddiCore
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemAddress, CurrentStarSystem.systemname);
 
                                 // Post an update event
-                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemName, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.eddnCommodityMarketQuotes, stationProfile.LastStation.prohibitedCommodities?.Select(p => p.Value).ToList(), stationProfile.LastStation.outfitting?.Select(m => m.edName).ToList(), stationProfile.LastStation.ships?.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, profile.contexts.allowCobraMkIV);
+                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemName, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.eddnCommodityMarketQuotes, stationProfile.LastStation.prohibitedCommodities?.Select(p => p.Value).ToList(), stationProfile.LastStation.outfitting?.Select(m => m.edName).ToList(), stationProfile.LastStation.ships?.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, profile.contexts.allowCobraMkIV) { raw = stationProfile.json?.ToString() };
                                 enqueueEvent(@event);
 
                                 // See if we need to update our current station
