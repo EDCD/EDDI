@@ -83,9 +83,9 @@ namespace EDDNResponder
 
         public string gameBuild { get; private set; }
 
-        public bool inHorizons { get; private set; }
+        public bool? inHorizons { get; private set; }
 
-        public bool inOdyssey { get; private set; }
+        public bool? inOdyssey { get; private set; }
 
         // Are we in an invalid state?
         public bool invalidState { get; private set; }
@@ -277,15 +277,15 @@ namespace EDDNResponder
                 else if (string.Equals("Outfitting", eventType, StringComparison.InvariantCultureIgnoreCase) 
                     || string.Equals("Shipyard", eventType, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
-                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false;
+                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? inHorizons;
+                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? inOdyssey;
                 }
                 else if (string.Equals("LoadGame", eventType, StringComparison.InvariantCultureIgnoreCase))
                 {
                     gameVersion = JsonParsing.getString(data, "gameversion") ?? gameVersion;
                     gameBuild = JsonParsing.getString(data, "build") ?? gameBuild;
-                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false;
-                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false;
+                    inHorizons = JsonParsing.getOptionalBool(data, "Horizons") ?? inHorizons;
+                    inOdyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? inOdyssey;
                 }
             }
             catch (Exception ex)
@@ -466,11 +466,11 @@ namespace EDDNResponder
 
         private IDictionary<string, object> AddGameVersionData(IDictionary<string, object> data)
         {
-            if (!data.ContainsKey("horizons"))
+            if (!data.ContainsKey("horizons") && inHorizons != null)
             {
                 data.Add("horizons", inHorizons);
             }
-            if (!data.ContainsKey("odyssey"))
+            if (!data.ContainsKey("odyssey") && inOdyssey != null)
             {
                 data.Add("odyssey", inOdyssey);
             }
