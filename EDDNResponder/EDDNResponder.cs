@@ -163,7 +163,7 @@ namespace EDDNResponder
                 {
                     handleNavRouteSchemaEvent(edType, data);
                 }
-                else
+                else if (fullLocationJournalSchemaEvents.Contains(edType) || partialLocationJournalSchemaEvents.Contains(edType))
                 {
                     handleJournalSchemaEvents(edType, data);
                 }
@@ -191,20 +191,12 @@ namespace EDDNResponder
         private void handleJournalSchemaEvents(string edType, IDictionary<string, object> data)
         {
             if (data == null) { return; }
-
-            if (CheckLocationData(edType, data))
+            if (CheckLocationData(edType, data) && CheckSanity(edType, data))
             {
-                if (fullLocationJournalSchemaEvents.Contains(edType) || partialLocationJournalSchemaEvents.Contains(edType))
-                {
-                    if (CheckSanity(edType, data))
-                    {
-                        data = StripPersonalData(data);
-                        data = EnrichLocationData(edType, data);
-                        data = AddGameVersionData(data);
-
-                        SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
-                    }
-                }
+                data = StripPersonalData(data);
+                data = EnrichLocationData(edType, data);
+                data = AddGameVersionData(data);
+                SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
             }
         }
 
