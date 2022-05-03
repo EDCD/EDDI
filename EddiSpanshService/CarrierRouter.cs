@@ -21,9 +21,9 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var route = Task.FromResult(GetRouteResponse(initialResponse.Content)).Result;
-
-            return ParseCarrierRoute(route);
+            var routeTask = GetRouteResponseTask(initialResponse.Content);
+            Task.WhenAll(routeTask);
+            return ParseCarrierRoute(routeTask.Result);
         }
 
         private IRestRequest CarrierRouteRequest(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired, string[] refuel_destinations)

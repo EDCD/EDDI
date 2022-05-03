@@ -32,9 +32,9 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var route = Task.FromResult(GetRouteResponse(initialResponse.Content)).Result;
-
-            return ParseGalaxyRoute(route);
+            var routeTask = GetRouteResponseTask(initialResponse.Content);
+            Task.WhenAll(routeTask);
+            return ParseGalaxyRoute(routeTask.Result);
         }
 
         private void GetShipJumpDetails(Ship ship, out decimal fuel_power, out decimal fuel_multiplier, out decimal optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out decimal range_boost)
