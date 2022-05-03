@@ -159,11 +159,22 @@ namespace EDDNResponder
                 {
                     handleScanBaryCentreSchemaEvent(edType, data);
                 }
+                else if (edType == "NavRoute")
+                {
+                    handleNavRouteSchemaEvent(edType, data);
+                }
                 else
                 {
                     handleJournalSchemaEvents(edType, data);
                 }
             }
+        }
+
+        private void handleNavRouteSchemaEvent(string edType, IDictionary<string, object> data)
+        {
+            if (data == null) { return; }
+            data = AddGameVersionData(data);
+            SendToEDDN("https://eddn.edcd.io/schemas/navroute/1", data);
         }
 
         private void handleScanBaryCentreSchemaEvent(string edType, IDictionary<string, object> data)
@@ -173,7 +184,7 @@ namespace EDDNResponder
             {
                 data = EnrichLocationData(edType, data);
                 data = AddGameVersionData(data);
-                SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
+                SendToEDDN("https://eddn.edcd.io/schemas/scanbarycentre/1", data);
             }
         }
 

@@ -14,16 +14,15 @@ namespace EddiDataDefinitions
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static NavRouteInfo FromFile(string filename = null)
+        public static void FromFile(out NavRouteInfo info, out string rawRoute, string filename = null)
         {
-            NavRouteInfo info = new NavRouteInfo();
+            info = new NavRouteInfo();
 
-            string data = Files.FromSavedGames("NavRoute.json");
-            if (data != null)
+            rawRoute = Files.FromSavedGames("NavRoute.json");
+            if (rawRoute != null)
             {
-                info = JsonConvert.DeserializeObject<NavRouteInfo>(data);
+                info = JsonConvert.DeserializeObject<NavRouteInfo>(rawRoute);
             }
-            return info;
         }
     }
 }

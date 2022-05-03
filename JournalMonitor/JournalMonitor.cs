@@ -3610,8 +3610,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavRoute":
                                 {
-                                    var navRoute = NavRouteInfo.FromFile()?.Route ?? new List<NavRouteInfoItem>();
-                                    events.Add(new NavRouteEvent(timestamp, navRoute) { raw = line, fromLoad = fromLogLoad });
+                                    NavRouteInfo.FromFile(out NavRouteInfo navRoute, out string rawRoute);
+                                    events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
