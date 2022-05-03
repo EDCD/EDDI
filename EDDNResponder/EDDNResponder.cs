@@ -28,7 +28,7 @@ namespace EDDNResponder
         // Schema reference: https://github.com/EDSM-NET/EDDN/tree/master/schemas
 
         // We support sending these events to EDDN. These events contain full location data. 
-        private static readonly string[] fullLocationEvents =
+        private static readonly string[] fullLocationJournalSchemaEvents =
         {
             "FSDJump",
             "Location",
@@ -36,7 +36,7 @@ namespace EDDNResponder
         };
 
         // We support sending these events to EDDN. These events contain partial location data... location data will need to be enriched. 
-        private static readonly string[] partialLocationEvents =
+        private static readonly string[] partialLocationJournalSchemaEvents =
         {
             "Docked",
             "SAASignalsFound",
@@ -140,15 +140,8 @@ namespace EDDNResponder
                 // Ignore any events that we've blacklisted for contaminating our location data
                 if (ignoredEvents.Contains(edType)) { return; }
 
-                // We always start location data fresh when handling events containing complete location data
-                if (fullLocationEvents.Contains(edType))
-                {
-                    invalidState = false;
-                    ClearLocation();
-                }
-
                 // Except as noted above, always attempt to obtain available location data from the active event 
-                GetLocationData(data);
+                GetLocationData(edType, data);
 
                 if (theEvent.fromLoad)
                 {
@@ -162,9 +155,44 @@ namespace EDDNResponder
                 {
                     handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
                 }
+                else if (edType == "ScanBaryCentre")
+                {
+                    handleScanBaryCentreSchemaEvent(edType, data);
+                }
                 else
                 {
-                    handleRawJournalEvent(edType, data);
+                    handleJournalSchemaEvents(edType, data);
+                }
+            }
+        }
+
+        private void handleScanBaryCentreSchemaEvent(string edType, IDictionary<string, object> data)
+        {
+            if (data == null) { return; }
+            if (CheckLocationData(edType, data))
+            {
+                data = EnrichLocationData(edType, data);
+                data = AddGameVersionData(data);
+                SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
+            }
+        }
+
+        private void handleJournalSchemaEvents(string edType, IDictionary<string, object> data)
+        {
+            if (data == null) { return; }
+
+            if (CheckLocationData(edType, data))
+            {
+                if (fullLocationJournalSchemaEvents.Contains(edType) || partialLocationJournalSchemaEvents.Contains(edType))
+                {
+                    if (CheckSanity(edType, data))
+                    {
+                        data = StripPersonalData(data);
+                        data = EnrichLocationData(edType, data);
+                        data = AddGameVersionData(data);
+
+                        SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
+                    }
                 }
             }
         }
@@ -180,33 +208,6 @@ namespace EDDNResponder
 
         public void Reload()
         {
-        }
-
-        private void handleRawJournalEvent(string edType, IDictionary<string, object> data)
-        {
-            // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
-            if (partialLocationEvents.Contains(edType))
-            {
-                CheckLocationData(data);
-            }
-
-            if (!invalidState && LocationIsSet())
-            {
-                if (fullLocationEvents.Contains(edType) || partialLocationEvents.Contains(edType))
-                {
-                    if (CheckSanity(edType, data))
-                    {
-                        data = StripPersonalData(data);
-                        data = EnrichLocationData(edType, data);
-                        data = AddGameVersionData(data);
-
-                        if (data != null) 
-                        { 
-                            SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
-                        }
-                    }
-                }
-            }
         }
 
         private void ClearLocation()
@@ -249,8 +250,14 @@ namespace EDDNResponder
             }
         }
 
-        private void GetLocationData(IDictionary<string, object> data)
+        private void GetLocationData(string edType, IDictionary<string, object> data)
         {
+            // We always start location data fresh when handling events containing complete location data
+            if (fullLocationJournalSchemaEvents.Contains(edType))
+            {
+                ClearLocation();
+            }
+
             try
             {
                 systemName = JsonParsing.getString(data, "StarSystem") ?? systemName;
@@ -278,8 +285,11 @@ namespace EDDNResponder
             }
         }
 
-        private void CheckLocationData(IDictionary<string, object> data)
+        private bool CheckLocationData(string edType, IDictionary<string, object> data)
         {
+            // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
+            if (fullLocationJournalSchemaEvents.Contains(edType) && LocationIsSet()) { return true; }
+
             // Can only send journal data if we know our current location data is correct
             // If any location data is null, data shall not be sent to EDDN.
             if (LocationIsSet())
@@ -295,14 +305,16 @@ namespace EDDNResponder
                 {
                     // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
                     // but we do use it as an independent check to make sure our system address and coordinates are accurate
-                    ConfirmAddressAndCoordinates(systemName);
+                    ConfirmAddressAndCoordinates();
                 }
 
                 if (LocationIsSet())
                 {
                     invalidState = false;
+                    return true;
                 }
-                else if (!invalidState)
+                
+                if (!invalidState)
                 {
                     invalidState = true;
 #if DEBUG
@@ -313,6 +325,7 @@ namespace EDDNResponder
 #endif
                 }
             }
+            return false;
         }
 
         private bool CheckSanity(string edType, IDictionary<string, object> data)
@@ -394,7 +407,7 @@ namespace EDDNResponder
             {
                 data.Add("SystemAddress", systemAddress);
             }
-            if (!data.ContainsKey("StarPos"))
+            if (!data.ContainsKey("StarPos") && systemX != null && systemY != null && systemZ != null)
             {
                 IList<decimal> starpos = new List<decimal>
                 {
@@ -451,7 +464,7 @@ namespace EDDNResponder
         {
             // This event is triggered by an update to the profile via the Frontier API or via the `Market`, `Outfitting`, or `Shipyard` journal events.
             // Check to make sure the marketId from the event matches our current station's marketId before continuing
-            if (eventStationMatches(theEvent))
+            if (ConfirmStationMatchesLocation(theEvent))
             {
                 // When we dock we have access to commodity, outfitting, and shipyard information
                 sendCommodityInformation(theEvent);
@@ -680,12 +693,12 @@ namespace EDDNResponder
             return null;
         }
 
-        private bool ConfirmAddressAndCoordinates(string systemName)
+        private bool ConfirmAddressAndCoordinates()
         {
             if (systemName != null)
             {
                 StarSystem system;
-                if (systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
+                if (systemName == EDDI.Instance.CurrentStarSystem?.systemname)
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
@@ -740,7 +753,7 @@ namespace EDDNResponder
             return false;
         }
 
-        private bool eventStationMatches(MarketInformationUpdatedEvent theEvent)
+        private bool ConfirmStationMatchesLocation(MarketInformationUpdatedEvent theEvent)
         {
             if (theEvent.starSystem == systemName && theEvent.stationName == stationName && theEvent.marketId == marketId)
             {
