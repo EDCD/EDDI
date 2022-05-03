@@ -23,8 +23,11 @@ namespace EddiEvents
         [PublicAPI("If the destination is an station (including megaship or fleet carrier)")]
         public bool isStation => station != null;
 
-        [PublicAPI("If the destination is an station signal source")]
+        [PublicAPI("If the destination is a signal source")]
         public bool isSignalSource => signalSource != null;
+
+        [PublicAPI("If the destination is a Point of Interest / miscellaneous location")]
+        public bool isPOI => body == null && station == null && signalSource == null;
 
         // Not intended to be user facing
         public ulong? systemAddress { get; private set; }
