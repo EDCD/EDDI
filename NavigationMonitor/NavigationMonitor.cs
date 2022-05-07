@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
 using EddiStatusMonitor;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -16,7 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -32,7 +32,7 @@ namespace EddiNavigationMonitor
         public NavWaypointCollection NavRouteList = new NavWaypointCollection() { FillVisitedGaps = true };
         public static event EventHandler NavRouteUpdatedEvent;
 
-        // Plotted route data
+        // Plotted ship route data
         public NavWaypointCollection PlottedRouteList = new NavWaypointCollection();
         public static event EventHandler PlottedRouteUpdatedEvent;
 
