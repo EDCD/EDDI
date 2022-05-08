@@ -86,7 +86,7 @@ namespace EddiNavigationMonitor
 
         private void MarkdownWindow_OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (sender is WebBrowser wb)
+            if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
             {
                 wb.Navigate((Uri)null);
             }
@@ -94,7 +94,7 @@ namespace EddiNavigationMonitor
 
         private void MarkdownWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is WebBrowser wb)
+            if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
             {
                 string html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
                 html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;

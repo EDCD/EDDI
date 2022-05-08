@@ -9,7 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <DataTemplate x:Key="bookmarkDataTemplate" />
+        <DataTemplate x:Key="bookmarkDataTemplate">
+            <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded"/>
+        </DataTemplate>
         <DataTemplate x:Key="landableDataTemplate" DataType="eddiDataDefinitions:NavBookmark">
             <Grid Background="Azure">
                 <Grid.ColumnDefinitions>

@@ -406,5 +406,23 @@ namespace EddiNavigationMonitor
         {
             return Functions.SurfaceDistanceKm(curr.planetradius, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude);
         }
+
+        private void MarkdownWindow_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
+            {
+                wb.Navigate((Uri)null);
+            }
+        }
+
+        private void MarkdownWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
+            {
+                string html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
+                html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
+                wb.NavigateToString(html);
+            }
+        }
     }
 }
