@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.Net;
 using Utilities;
 
 namespace EddiNavigationService
@@ -26,7 +27,7 @@ namespace EddiNavigationService
 
                         var systemName = obj["galMapSearch"].ToString();
                         var systemAddress = obj["id64"]?.ToObject<ulong?>();
-                        var poiName = obj["name"].ToString();
+                        var poiName = WebUtility.HtmlDecode(obj["name"].ToString());
 
                         // Skip any items without a system name
                         if (string.IsNullOrEmpty(systemName))
