@@ -180,6 +180,9 @@ namespace EddiDataDefinitions
         // Galactic POI Description state
         [JsonIgnore] public bool descriptionMarkdownHasValue => !string.IsNullOrEmpty(descriptionMarkdown);
 
+        // Drop down visibility
+        [JsonIgnore] public bool hasRowDetails => descriptionMarkdownHasValue || landable;
+
         // Default Constructor
         public NavBookmark() { }
 

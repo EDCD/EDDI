@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -47,9 +48,16 @@ namespace EddiNavigationMonitor
                 if (button.DataContext is NavWaypoint navWaypoint)
                 {
                     var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.systemAddress, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
-                    navigationMonitor().Bookmarks.Add(navBookmark);
-                    navigationMonitor().WriteNavConfig();
-                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
+                    if (!navigationMonitor().Bookmarks
+                            .Any(b => b.systemname == navWaypoint.systemName 
+                                      && b.x == navWaypoint.x 
+                                      && b.y == navWaypoint.y 
+                                      && b.z == navWaypoint.z))
+                    {
+                        navigationMonitor().Bookmarks.Add(navBookmark);
+                        navigationMonitor().WriteNavConfig();
+                        EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
+                    }
                 }
             }
         }

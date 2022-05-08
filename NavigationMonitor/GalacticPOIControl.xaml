@@ -38,7 +38,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
-                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding descriptionMarkdownHasValue}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
+                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding hasRowDetails}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

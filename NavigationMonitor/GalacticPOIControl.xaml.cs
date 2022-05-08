@@ -77,9 +77,22 @@ namespace EddiNavigationMonitor
             {
                 if (button.DataContext is NavBookmark poiBookmark)
                 {
-                    navigationMonitor().Bookmarks.Add(poiBookmark);
-                    navigationMonitor().WriteNavConfig();
-                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", poiBookmark));
+                    if (Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl)
+                    {
+                        if (parentTabControl.Parent is DockPanel dockPanel)
+                        {
+                            if (dockPanel.Parent is ConfigurationWindow configurationWindow)
+                            {
+                                configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
+                            }
+                        }
+                    }
+                    if (!navigationMonitor().Bookmarks.Contains(poiBookmark))
+                    {
+                        navigationMonitor().Bookmarks.Add(poiBookmark);
+                        navigationMonitor().WriteNavConfig();
+                        EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", poiBookmark));
+                    }
                 }
             }
         }
