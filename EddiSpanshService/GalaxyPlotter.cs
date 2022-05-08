@@ -33,7 +33,7 @@ namespace EddiSpanshService
             }
 
             var routeTask = GetRouteResponseTask(initialResponse.Content);
-            Task.WhenAll(routeTask);
+            Task.WaitAll(routeTask);
             return ParseGalaxyRoute(routeTask.Result);
         }
 

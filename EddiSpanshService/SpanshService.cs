@@ -15,9 +15,9 @@ namespace EddiSpanshService
             spanshRestClient = restClient ?? new RestClient(baseUrl);
         }
 
-        private Task<JToken> GetRouteResponseTask(string route)
+        private async Task<JToken> GetRouteResponseTask(string route)
         {
-            return new Task<JToken>(() =>
+            return await Task.Run(() =>
             {
                 var routeResponse = JObject.Parse(route);
                 if (routeResponse["error"] != null)
