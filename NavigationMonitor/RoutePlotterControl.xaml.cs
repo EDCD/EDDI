@@ -22,6 +22,8 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class RoutePlotterControl : UserControl
     {
+        private Task searchTask;
+
         private NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
@@ -341,15 +343,19 @@ namespace EddiNavigationMonitor
             var stationArg = searchStationDropDown.Text == Properties.NavigationMonitor.no_station
                 ? null
                 : searchStationDropDown.Text;
-
             QueryType queryType = (QueryType)searchQueryDropDown.SelectedItem;
-            var search = Task.Run(() =>
+            if (searchTask?.Status == TaskStatus.Running)
+            { }
+            else
             {
-                var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg);
-                if (@event == null) { return; }
-                EDDI.Instance?.enqueueEvent(@event);
-            });
-            await Task.WhenAll(search);
+                searchTask = Task.Run(() =>
+                {
+                    var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg);
+                    if (@event == null) { return; }
+                    EDDI.Instance?.enqueueEvent(@event);
+                });
+            }
+            await Task.WhenAll(searchTask);
         }
 
         private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
