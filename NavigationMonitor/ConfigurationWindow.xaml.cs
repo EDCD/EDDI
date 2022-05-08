@@ -46,7 +46,7 @@ namespace EddiNavigationMonitor
             {
                 if (button.DataContext is NavWaypoint navWaypoint)
                 {
-                    var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
+                    var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.systemAddress, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
                     navigationMonitor().Bookmarks.Add(navBookmark);
                     navigationMonitor().WriteNavConfig();
                     EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));

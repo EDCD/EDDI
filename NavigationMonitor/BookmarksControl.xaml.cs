@@ -21,7 +21,7 @@ using Utilities;
 namespace EddiNavigationMonitor
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for BookmarksControl.xaml
     /// </summary>
     public partial class BookmarksControl : UserControl
     {
@@ -232,25 +232,12 @@ namespace EddiNavigationMonitor
                     }
                 }
 
-                NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.x, currentSystem.y, currentSystem.z,
+                NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.systemAddress, currentSystem.x, currentSystem.y, currentSystem.z,
                     currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
+                navBookmark.visitLog = currentSystem.visitLog;
                 navigationMonitor().Bookmarks.Add(navBookmark);
                 navigationMonitor().WriteNavConfig();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));
-            }
-        }
-
-        public void addBookmark(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                if (button.DataContext is NavWaypoint navWaypoint)
-                {
-                    var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
-                    navigationMonitor().Bookmarks.Add(navBookmark);
-                    navigationMonitor().WriteNavConfig();
-                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
-                }
             }
         }
 

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace EddiNavigationMonitor
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for PlottedRouteControl.xaml
     /// </summary>
     public partial class PlottedRouteControl : UserControl
     {

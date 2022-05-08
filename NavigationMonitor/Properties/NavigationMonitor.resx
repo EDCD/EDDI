@@ -223,7 +223,7 @@
     <value>The radius (in meters) which triggers `Near bookmark` events</value>
   </data>
   <data name="extra_details_tooltip" xml:space="preserve">
-    <value>Show or hide additional details about the selected planetary bookmark</value>
+    <value>Show or hide additional details about the selected item</value>
   </data>
   <data name="use_straight_path" xml:space="preserve">
     <value>Use straight path?</value>
@@ -282,7 +282,7 @@
     <value>Visited?</value>
   </data>
   <data name="tooltip_visited" xml:space="preserve">
-    <value>Have you already visited this route waypoint?</value>
+    <value>Have you already visited this locationt?</value>
   </data>
   <data name="header_refuel" xml:space="preserve">
     <value>Refuel?</value>
@@ -313,5 +313,14 @@
   </data>
   <data name="header_station" xml:space="preserve">
     <value>Station</value>
+  </data>
+  <data name="tab_galactic_poi" xml:space="preserve">
+    <value>Galactic POIs</value>
+  </data>
+  <data name="poi_search_filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="poi_hide_visited" xml:space="preserve">
+    <value>Hide visited locations?</value>
   </data>
 </root>

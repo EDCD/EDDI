@@ -18,6 +18,9 @@
             <TabItem Header ="{x:Static resx:NavigationMonitor.tab_bookmarks}">
                 <local:BookmarksControl/>
             </TabItem>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_galactic_poi}">
+                <local:GalacticPOIControl/>
+            </TabItem>
             <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}">
                 <local:PlottedRouteControl/>
             </TabItem>

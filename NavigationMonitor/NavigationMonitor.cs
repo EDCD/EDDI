@@ -2,6 +2,7 @@
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiStatusMonitor;
@@ -13,10 +14,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using EddiStarMapService;
 using Utilities;
 
 namespace EddiNavigationMonitor
@@ -28,7 +31,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
         public static event EventHandler BookmarksUpdatedEvent;
 
-        public ObservableCollection<NavBookmark> GalacticPOIs = EDAstro.GetPOIs();
+        public ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
 
         // Navigation route data
         public NavWaypointCollection NavRouteList = new NavWaypointCollection() { FillVisitedGaps = true };
@@ -146,11 +149,7 @@ namespace EddiNavigationMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is BookmarkDetailsEvent bookmarkDetailsEvent)
-            {
-                handleBookmarkDetailsEvent(bookmarkDetailsEvent);
-            }
-            else if (@event is CarrierJumpedEvent carrierJumpedEvent)
+            if (@event is CarrierJumpedEvent carrierJumpedEvent)
             {
                 handleCarrierJumpedEvent(carrierJumpedEvent);
             }
@@ -212,42 +211,64 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void updateNavigationData(ulong systemAddress, decimal? x, decimal? y, decimal? z)
+        private void updateNavigationData(DateTime timestamp, ulong? systemAddress, decimal? x = null, decimal? y = null,
+            decimal? z = null)
         {
-            NavRouteList.UpdateVisitedStatus(systemAddress);
-            PlottedRouteList.UpdateVisitedStatus(systemAddress);
-            NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
-                NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y, NavigationService.Instance.SearchStarSystem?.z) ?? 0;
-            if (PlottedRouteList.GuidanceEnabled && PlottedRouteList.Waypoints.All(w => w.visited))
-            {
-                // Deactivate guidance once we've reached our destination.
-                NavigationService.Instance.NavQuery(QueryType.cancel);
-            }
-        }
+            if (systemAddress is null) { return; }
 
-        private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
-        {
-            if (@event.timestamp >= updateDat)
+            // Distances Data
+            if (x != null && y != null && z != null)
             {
-                updateDat = @event.timestamp;
+                foreach (var navBookmark in Bookmarks.AsParallel())
+                {
+                    navBookmark.distanceLy =
+                        Functions.StellarDistanceLy(x, y, z, navBookmark.x, navBookmark.y, navBookmark.z);
+                    if (navBookmark.systemAddress == systemAddress)
+                    {
+                        navBookmark.visitLog.Add(timestamp);
+                    }
+                }
+
+                foreach (var poiBookmark in GalacticPOIs.AsParallel())
+                {
+                    poiBookmark.distanceLy =
+                        Functions.StellarDistanceLy(x, y, z, poiBookmark.x, poiBookmark.y, poiBookmark.z);
+                    if (poiBookmark.systemAddress == systemAddress)
+                    {
+                        poiBookmark.visitLog.Add(timestamp);
+                    }
+                }
+
+                NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
+                    NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y,
+                    NavigationService.Instance.SearchStarSystem?.z) ?? 0;
+            }
+
+            if (timestamp >= updateDat)
+            {
+                updateDat = timestamp;
+
+                // Visited Data
+                NavRouteList.UpdateVisitedStatus((ulong)systemAddress);
+                PlottedRouteList.UpdateVisitedStatus((ulong)systemAddress);
+                if (PlottedRouteList.GuidanceEnabled && PlottedRouteList.Waypoints.All(w => w.visited))
+                {
+                    // Deactivate guidance once we've reached our destination.
+                    NavigationService.Instance.NavQuery(QueryType.cancel);
+                }
             }
         }
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                updateNavigationData(@event.systemAddress ?? 0, @event.x, @event.y, @event.z);
-            }
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
         }
 
         private void handleDockedEvent(DockedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad)
             {
-                updateDat = @event.timestamp;
-
                 // Check if we're at a planetary location and capture our location if true
                 if ((currentStatus?.near_surface ?? false) && new Station { Model = @event.stationModel }.IsPlanetary())
                 {
@@ -263,38 +284,23 @@ namespace EddiNavigationMonitor
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                updateNavigationData(@event.systemAddress ?? 0, @event.x, @event.y, @event.z);
-            }
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
         }
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                updateNavigationData(@event.systemAddress, @event.x, @event.y, @event.z);
-            }
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
         }
 
         private void handleEnteredNormalSpaceEvent(EnteredNormalSpaceEvent @event)
         {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                NavRouteList.UpdateVisitedStatus(@event.systemAddress);
-                PlottedRouteList.UpdateVisitedStatus(@event.systemAddress);
-            }
+            updateNavigationData(@event.timestamp, @event.systemAddress);
         }
 
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (!@event.fromLoad)
             {
-                updateDat = @event.timestamp;
-
                 var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
                 if (routeList != null && routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                 {
@@ -315,10 +321,9 @@ namespace EddiNavigationMonitor
 
         private void handleTouchdownEvent(TouchdownEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad)
             {
-                updateDat = @event.timestamp;
-
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.tdLat = @event.latitude;
                 navConfig.tdLong = @event.longitude;
@@ -330,9 +335,9 @@ namespace EddiNavigationMonitor
 
         private void handleLiftoffEvent(LiftoffEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad)
             {
-                updateDat = @event.timestamp;
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.tdLat = null;
                 navConfig.tdLong = null;
@@ -344,9 +349,8 @@ namespace EddiNavigationMonitor
 
         private void handleUndockedEvent(UndockedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (!@event.fromLoad)
             {
-                updateDat = @event.timestamp;
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 navConfig.tdLat = null;
                 navConfig.tdLong = null;
@@ -433,6 +437,11 @@ namespace EddiNavigationMonitor
 
                 // Build a new bookmark list
                 Bookmarks = navConfig.bookmarks;
+                GetBookmarkExtras(Bookmarks);
+
+                // Build a Galactic POI list
+                GalacticPOIs = EDAstro.GetPOIs();
+                GetBookmarkExtras(GalacticPOIs);
 
                 // Restore our in-game routing
                 NavRouteList = navConfig.navRouteList;
@@ -569,6 +578,33 @@ namespace EddiNavigationMonitor
                 else
                 {
                     uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
+                }
+            }
+        }
+
+        private async void GetBookmarkExtras(ObservableCollection<NavBookmark> bookmarks)
+        {
+            // Retrieve extra details to supplement our bookmarks
+
+            var getSystems = Task.Run( () =>
+            {
+                var bookmarkSystems = bookmarks.Select(n => new StarSystem()
+                {
+                    systemname = n.systemname, 
+                    systemAddress = n.systemAddress
+                }).ToList();
+                var dataProviderService = new DataProviderService(new StarMapService());
+                return dataProviderService.syncFromStarMapService(bookmarkSystems);
+            });
+            await Task.WhenAll(getSystems);
+            foreach (var system in getSystems.Result)
+            {
+                var poi = bookmarks.FirstOrDefault(s =>
+                    s.systemname == system.systemname);
+                if (poi != null)
+                {
+                    poi.systemAddress = system.systemAddress;
+                    poi.visitLog = system.visitLog;
                 }
             }
         }

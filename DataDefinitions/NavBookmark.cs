@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -21,9 +24,26 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private string _systemname;
 
+        public ulong? systemAddress { get; set; }
+
         public decimal? x { get; set; }
         public decimal? y { get; set; }
         public decimal? z { get; set; }
+
+        [JsonIgnore]
+        public decimal? distanceLy
+        {
+            get => _distanceLy;
+            set
+            {
+                if (_distanceLy != value)
+                {
+                    _distanceLy = value;
+                    NotifyPropertyChanged(nameof(distanceLy));
+                }
+            }
+        }
+        [JsonIgnore] private decimal? _distanceLy;
 
         // The bookmark body
         [JsonProperty("body")]
@@ -134,13 +154,40 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private bool _useStraightPath;
 
-            // Default Constructor
+        [JsonIgnore]
+        public SortedSet<DateTime> visitLog
+        {
+            get => _visitLog;
+            set
+            {
+                if (_visitLog != value)
+                {
+                    _visitLog = value;
+                    NotifyPropertyChanged(nameof(visitLog));
+                }
+            }
+        }
+        [JsonIgnore] private SortedSet<DateTime> _visitLog = new SortedSet<DateTime>();
+
+        [JsonIgnore] public bool visited => visitLog.Any();
+
+        // Galactic POI URL
+        [JsonIgnore] public string url { get; set; }
+
+        // Galactic POI Description (markdown format)
+        [JsonIgnore] public string descriptionMarkdown { get; set; }
+
+        // Galactic POI Description state
+        [JsonIgnore] public bool descriptionMarkdownHasValue => !string.IsNullOrEmpty(descriptionMarkdown);
+
+        // Default Constructor
         public NavBookmark() { }
 
         [JsonConstructor]
-        public NavBookmark(string systemname, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool nearby)
+        public NavBookmark(string systemname, ulong? systemAddress, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool nearby)
         {
             this.systemname = systemname;
+            this.systemAddress = systemAddress;
             this.x = x;
             this.y = y;
             this.z = z;

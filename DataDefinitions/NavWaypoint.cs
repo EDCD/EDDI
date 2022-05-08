@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         // NavRoute only
         public string stellarclass { get; set; }
 
-        // NavRoute and Spansh Neutron and Galaxy plotters only
+        // NavRoute and Spansh Galaxy plotter only
         public bool hasNeutronStar
         {
             get => _hasNeutronStar;

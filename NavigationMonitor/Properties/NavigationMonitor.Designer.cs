@@ -232,7 +232,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show or hide additional details about the selected planetary bookmark.
+        ///   Looks up a localized string similar to Show or hide additional details about the selected item.
         /// </summary>
         public static string extra_details_tooltip {
             get {
@@ -439,6 +439,24 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide visited locations?.
+        /// </summary>
+        public static string poi_hide_visited {
+            get {
+                return ResourceManager.GetString("poi_hide_visited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter:.
+        /// </summary>
+        public static string poi_search_filter {
+            get {
+                return ResourceManager.GetString("poi_search_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {
@@ -547,6 +565,15 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Galactic POIs.
+        /// </summary>
+        public static string tab_galactic_poi {
+            get {
+                return ResourceManager.GetString("tab_galactic_poi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Plotted Route.
         /// </summary>
         public static string tab_plotted_route {
@@ -601,7 +628,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Have you already visited this route waypoint?.
+        ///   Looks up a localized string similar to Have you already visited this locationt?.
         /// </summary>
         public static string tooltip_visited {
             get {

@@ -67,12 +67,12 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
                             <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding landable}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemname}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" MinWidth="160" Binding="{Binding Path=systemname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -86,7 +86,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_body}" Width="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_body}" MinWidth="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -100,7 +100,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" MinWidth="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -136,7 +136,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
                     <ContentControl Content="{Binding}">
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">

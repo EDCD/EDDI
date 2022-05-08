@@ -440,6 +440,7 @@ namespace EddiStarMapService
         public string system { get; set; } // System name
 
         public long systemId { get; set; } // EDSM ID
+        public ulong? systemId64 { get; set; } // System address
         public DateTime date { get; set; }
     }
 

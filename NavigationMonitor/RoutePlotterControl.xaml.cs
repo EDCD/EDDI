@@ -18,7 +18,7 @@ using System.Windows.Input;
 namespace EddiNavigationMonitor
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for RoutePlotterControl.xaml
     /// </summary>
     public partial class RoutePlotterControl : UserControl
     {
