@@ -60,6 +60,15 @@
     <Compile Include="BookmarkSelector.xaml.cs">
       <DependentUpon>BookmarkSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookmarksControl.xaml.cs">
+      <DependentUpon>BookmarksControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlottedRouteControl.xaml.cs">
+      <DependentUpon>PlottedRouteControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RoutePlotterControl.xaml.cs">
+      <DependentUpon>RoutePlotterControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
@@ -122,6 +131,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BookmarkSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BookmarksControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlottedRouteControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RoutePlotterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
