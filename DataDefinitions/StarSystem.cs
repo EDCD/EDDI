@@ -73,7 +73,7 @@ namespace EddiDataDefinitions
         private void internalAddOrUpdateBody(Body body, ImmutableList<Body>.Builder builder)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            int index = builder.FindIndex(b => b.bodyname == body.bodyname);
+            int index = builder.FindIndex(b => b.bodyname == body.bodyname || ((b.mainstar ?? false) && b.mainstar == body.mainstar));
             if (index >= 0)
             {
                 builder[index] = body;

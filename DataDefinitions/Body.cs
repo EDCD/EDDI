@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         public BodyType bodyType { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
-        [PublicAPI, JsonProperty("name"), JsonRequired]
+        [PublicAPI, JsonProperty("name")]
         public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
@@ -246,7 +246,8 @@ namespace EddiDataDefinitions
         // Additional calculated star information
 
         [PublicAPI, JsonIgnore]
-        public bool scoopable => !string.IsNullOrEmpty(stellarclass) && "KGBFOAM".Contains(stellarclass);
+        public bool scoopable => !string.IsNullOrEmpty(stellarclass) 
+                                 && "KGBFOAM".Contains(stellarclass.Split('_')[0]);
 
         [PublicAPI, JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
@@ -664,6 +665,15 @@ namespace EddiDataDefinitions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+        #endregion
+
+        #region Newtonsoft ShouldSerialize logic
+
+        // Allow `bodyname` to be omitted when distance is set
+        // (so that we can create a temporary main star with a stellar class when
+        // the `bodyname` is still unknown)
+        public bool ShouldSerializebodyname() => distance is null || !string.IsNullOrEmpty(bodyname);
+
         #endregion
     }
 }

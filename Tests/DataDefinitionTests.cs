@@ -779,5 +779,47 @@ namespace UnitTests
             Assert.AreEqual(expectedIndex, source?.index ?? 0);
             Assert.AreEqual(expectedThreatLevel, source?.threatLevel ?? 0);
         }
+
+        [TestMethod]
+        public void BodyNameSerializationTest()
+        {
+            // `bodyname` should be considered a required serialization attribute
+            // except in the case of a main star (where the `bodyname` might still be unknown)
+
+            var starsystem = new StarSystem() { systemname = "Test System" };
+            var body = new Body();
+            starsystem.AddOrUpdateBody(body);
+            Assert.AreEqual(1, starsystem.bodies.Count);
+            try
+            {
+                _ = JsonConvert.SerializeObject(starsystem);
+                Assert.Fail("Serialization should fail - body has neither `bodyname` nor `distance` properties set.");
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            starsystem.bodies[0].bodyname = "Test body";
+            try
+            {
+                _ = JsonConvert.SerializeObject(starsystem);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Serialization should not fail - body has `bodyname` property set.");
+            }
+
+            starsystem.bodies[0].bodyname = null;
+            starsystem.bodies[0].distance = 0M;
+            try
+            {
+                _ = JsonConvert.SerializeObject(starsystem);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Serialization should not fail - body has `distance` property set.");
+            }
+        }
     }
 }

@@ -2149,6 +2149,20 @@ namespace EddiCore
         {
             // Set and prepare data about the next star system
             NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.system);
+            if (NextStarSystem != null && !NextStarSystem.bodies.Any(b => b.mainstar ?? false))
+            {
+                // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
+                var mainStar = new Body
+                {
+                    bodyType = BodyType.FromEDName("Star"),
+                    systemname = NextStarSystem.systemname,
+                    systemAddress = nextStarSystem.systemAddress,
+                    distance = 0M,
+                    stellarclass = @event.starclass
+                };
+                NextStarSystem.AddOrUpdateBody(mainStar);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(NextStarSystem);
+            }
             return true;
         }
 
@@ -2240,7 +2254,7 @@ namespace EddiCore
             }
 
             // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-            if (CurrentStellarBody == null && !string.IsNullOrEmpty(theEvent.star))
+            if ((CurrentStellarBody == null || string.IsNullOrEmpty(currentStellarBody.bodyname)) && !string.IsNullOrEmpty(theEvent.star))
             {
                 CurrentStellarBody = new Body()
                 {
