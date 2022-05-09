@@ -105,14 +105,13 @@ namespace EddiStarMapService
                 if ((string)body["type"] == "Star")
                 {
                     // Star-specific items 
-                    string stellarclass = ((string)body["subType"]).Split(' ')[0]; // Splits "B (Blue-White) Star" to "B" 
+                    string stellarclass = StarClass.FromName(((string)body["subType"]))?.edname; // Map back from the EDSM name to the edname 
                     int? stellarsubclass = null;
-                    string endOfStellarClass = stellarclass.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
-                    if (int.TryParse(endOfStellarClass, out int subclass))
+                    string endOfSpectralClass = ((string)body["spectralClass"])?.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
+                    if (int.TryParse(endOfSpectralClass, out int subclass))
                     {
-                        // If our stellarclass ends in a number, we need to separate the class from the subclass
+                        // If our spectralClass ends in a number, we need to separate the class from the subclass
                         stellarsubclass = subclass;
-                        stellarclass = stellarclass.Replace(endOfStellarClass, "");
                     }
 
                     long? ageMegaYears = (long?)body["age"]; // Age in megayears
