@@ -161,8 +161,14 @@
     <value>Membri della fazione</value>
     <comment>Massacre Mission Target: Faction Members</comment>
   </data>
-  
-  
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>Guardie della fazione</value>
+    <comment>Massacre Mission Target: Faction Guards</comment>
+  </data>
+  <data name="Deserter" xml:space="preserve">
+    <value>Disertori</value>
+    <comment>Massacre Mission Target</comment>
+  </data>
   <data name="CitizenHumanoid" xml:space="preserve">
     <value>Cittadini</value>
     <comment>Massacre Mission Target: Citizens</comment>
