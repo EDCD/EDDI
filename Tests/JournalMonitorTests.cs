@@ -280,7 +280,7 @@ namespace UnitTests
             Assert.AreEqual("AsteroidBase", theEvent.stationModel.edname);
 
             Assert.AreEqual(128169720, theEvent.marketId);
-            Assert.AreEqual(3107509474002, theEvent.systemAddress);
+            Assert.AreEqual((ulong)3107509474002, theEvent.systemAddress);
             Assert.AreEqual(1, theEvent.stationservices.Count);
             Assert.AreEqual("Refuel", theEvent.stationservices[0]);
             Assert.AreEqual(2, theEvent.economyShares.Count);
@@ -578,7 +578,7 @@ namespace UnitTests
             Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.bodyname);
             Assert.AreEqual("Station", normalSpaceEvent.bodytype);
             Assert.AreEqual("Wyrd", normalSpaceEvent.systemname);
-            Assert.AreEqual(5031654888146, normalSpaceEvent.systemAddress);
+            Assert.AreEqual((ulong)5031654888146, normalSpaceEvent.systemAddress);
         }
 
         [TestMethod]
@@ -675,7 +675,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             JumpedEvent jumpedEvent = (JumpedEvent)events[0];
             Assert.AreEqual("Diaguandri", jumpedEvent.system);
-            Assert.AreEqual(670417429889, jumpedEvent.systemAddress);
+            Assert.AreEqual((ulong)670417429889, jumpedEvent.systemAddress);
             Assert.AreEqual(-41.06250M, jumpedEvent.x);
             Assert.AreEqual(-62.15625M, jumpedEvent.y);
             Assert.AreEqual(-103.25000M, jumpedEvent.z);
@@ -896,7 +896,7 @@ namespace UnitTests
             Assert.AreEqual("Ray Gateway", @event.station);
             Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
             Assert.AreEqual("Diaguandri", @event.systemname);
-            Assert.AreEqual(670417429889, @event.systemAddress);
+            Assert.AreEqual((ulong)670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);
             Assert.AreEqual(-62.15625M, @event.y);
             Assert.AreEqual(-103.25000M, @event.z);
@@ -910,7 +910,7 @@ namespace UnitTests
             NearSurfaceEvent @event = (NearSurfaceEvent)events[0];
 
             Assert.AreEqual("Ageno", @event.systemname);
-            Assert.AreEqual(18262335038849, @event.systemAddress);
+            Assert.AreEqual((ulong)18262335038849, @event.systemAddress);
             Assert.AreEqual("Ageno B 2 a", @event.bodyname);
 
             string line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
@@ -918,7 +918,7 @@ namespace UnitTests
             NearSurfaceEvent @event2 = (NearSurfaceEvent)events[0];
 
             Assert.AreEqual("Ageno", @event2.systemname);
-            Assert.AreEqual(18262335038849, @event2.systemAddress);
+            Assert.AreEqual((ulong)18262335038849, @event2.systemAddress);
             Assert.AreEqual("Ageno B 2 a", @event2.bodyname);
         }
 
@@ -943,7 +943,7 @@ namespace UnitTests
             SettlementApproachedEvent @event = (SettlementApproachedEvent)events[0];
 
             Assert.AreEqual(3510380288, @event.marketId);
-            Assert.AreEqual(670417429889, @event.systemAddress);
+            Assert.AreEqual((ulong)670417429889, @event.systemAddress);
             Assert.AreEqual("Bulmer Enterprise", @event.name);
             Assert.AreEqual(-23.121552M, @event.latitude);
             Assert.AreEqual(-98.177559M, @event.longitude);
@@ -1145,7 +1145,8 @@ namespace UnitTests
             SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
-            Assert.AreEqual("PBSF SPACE ODDITY XBH-64Y", @event.signalSource.localizedName);
+            Assert.AreEqual("PBSF SPACE ODDITY", @event.signalSource.localizedName);
+            Assert.AreEqual("XBH-64Y", @event.signalSource.invariantName);
 
             var testSystem = new StarSystem() { systemname = "Test System" };
             testSystem.AddOrUpdateSignalSource(@event.signalSource);
@@ -1322,7 +1323,7 @@ namespace UnitTests
             Assert.AreEqual(1, @event.carrierEconomies.Count);
             Assert.AreEqual("Private Enterprise", @event.carrierEconomies[0].economy.invariantName);
             Assert.AreEqual("Aparctias", @event.systemname);
-            Assert.AreEqual(358797513434, @event.systemAddress);
+            Assert.AreEqual((ulong)358797513434, @event.systemAddress);
             Assert.AreEqual(25.1875M, @event.x);
             Assert.AreEqual(-56.375M, @event.y);
             Assert.AreEqual(22.90625M, @event.z);

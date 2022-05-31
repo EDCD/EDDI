@@ -356,7 +356,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.Count); // Commnunity goals are not removed from by the `Missions` event (where community goals are absent)
+            Assert.AreEqual(0, missionMonitor.missions.Count); // Community goals temporarily removed by the `Missions` event (where community goals are absent) until they are confirmed active again
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;

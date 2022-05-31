@@ -13,9 +13,9 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new SolidComposition(edname, 0);
 
-            var Ice = new SolidComposition("ice", 0);
-            var Rock = new SolidComposition("rock", 0);
-            var Metal = new SolidComposition("metal", 0);
+            var Ice = new SolidComposition("ice");
+            var Rock = new SolidComposition("rock");
+            var Metal = new SolidComposition("metal");
         }
 
         [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
@@ -34,10 +34,11 @@ namespace EddiDataDefinitions
         public string invariantComposition => invariantName;
         
         // dummy used to ensure that the static constructor has run
-        public SolidComposition() : this("", 0)
+        public SolidComposition() : this("")
         { }
 
-        public SolidComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
+        [JsonConstructor]
+        public SolidComposition(string edComposition, decimal percent = 0) : base(edComposition, edComposition)
         {
             this.percent = percent;
         }

@@ -13,19 +13,19 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new AtmosphereComposition(edname, 0);
 
-            var Water = new AtmosphereComposition("water", 0);
-            var Oxygen = new AtmosphereComposition("oxygen", 0);
-            var CarbonDioxide = new AtmosphereComposition("carbondioxide", 0);
-            var SulphurDioxide = new AtmosphereComposition("sulphurdioxide", 0);
-            var Ammonia = new AtmosphereComposition("ammonia", 0);
-            var Methane = new AtmosphereComposition("methane", 0);
-            var Nitrogen = new AtmosphereComposition("nitrogen", 0);
-            var Hydrogen = new AtmosphereComposition("hydrogen", 0);
-            var Helium = new AtmosphereComposition("helium", 0);
-            var Neon = new AtmosphereComposition("neon", 0);
-            var Argon = new AtmosphereComposition("argon", 0);
-            var Silicates = new AtmosphereComposition("silicates", 0);
-            var Iron = new AtmosphereComposition("iron", 0);
+            var Water = new AtmosphereComposition("water");
+            var Oxygen = new AtmosphereComposition("oxygen");
+            var CarbonDioxide = new AtmosphereComposition("carbondioxide");
+            var SulphurDioxide = new AtmosphereComposition("sulphurdioxide");
+            var Ammonia = new AtmosphereComposition("ammonia");
+            var Methane = new AtmosphereComposition("methane");
+            var Nitrogen = new AtmosphereComposition("nitrogen");
+            var Hydrogen = new AtmosphereComposition("hydrogen");
+            var Helium = new AtmosphereComposition("helium");
+            var Neon = new AtmosphereComposition("neon");
+            var Argon = new AtmosphereComposition("argon");
+            var Silicates = new AtmosphereComposition("silicates");
+            var Iron = new AtmosphereComposition("iron");
         }
 
         [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
@@ -43,10 +43,11 @@ namespace EddiDataDefinitions
         public string invariantComposition => invariantName;
 
         // dummy used to ensure that the static constructor has run
-        public AtmosphereComposition() : this("", 0)
+        public AtmosphereComposition() : this("")
         { }
 
-        public AtmosphereComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
+        [JsonConstructor]
+        public AtmosphereComposition(string edComposition, decimal percent = 0) : base(edComposition, edComposition)
         {
             this.percent = percent;
         }

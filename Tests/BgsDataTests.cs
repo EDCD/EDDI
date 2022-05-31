@@ -175,7 +175,7 @@ namespace UnitTests
             Assert.IsNotNull(system);
 
             // Test the star system core data
-            Assert.AreEqual(10477373803, system.systemAddress);
+            Assert.AreEqual((ulong)10477373803, system.systemAddress);
             Assert.AreEqual("Sol", system.systemname);
             Assert.AreEqual(27, system.EDSMID);
             Assert.AreEqual(1599446773, system.updatedat);
