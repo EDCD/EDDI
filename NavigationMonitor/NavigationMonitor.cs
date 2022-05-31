@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -228,7 +229,6 @@ namespace EddiNavigationMonitor
                         navBookmark.visitLog.Add(timestamp);
                     }
                 }
-
                 foreach (var poiBookmark in GalacticPOIs.AsParallel())
                 {
                     poiBookmark.distanceLy =
@@ -238,6 +238,14 @@ namespace EddiNavigationMonitor
                         poiBookmark.visitLog.Add(timestamp);
                     }
                 }
+                Application.Current.Dispatcher?.Invoke(() =>
+                {
+                    var configWindow = ConfigurationTabItem();
+                    if (configWindow.TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
+                    {
+                        poiView.Refresh();
+                    }
+                });
 
                 NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
                     NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y,

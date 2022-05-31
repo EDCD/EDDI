@@ -1,14 +1,16 @@
-﻿using System;
+﻿using EddiCore;
+using EddiDataDefinitions;
+using EddiEvents;
+using JetBrains.Annotations;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using EddiCore;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using EddiDataDefinitions;
-using EddiEvents;
-using JetBrains.Annotations;
+using System.Windows.Navigation;
 
 namespace EddiNavigationMonitor
 {
@@ -132,7 +134,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private bool poiData_Filter(object sender, [CallerMemberName] string caller = null)
+        private bool poiData_Filter(object sender)
         {
             if (!(sender is NavBookmark poiBookmark)) { return true; }
             var filterTxt = searchFilterText.Text;
@@ -157,6 +159,30 @@ namespace EddiNavigationMonitor
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void MarkdownWindow_OnNavigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (sender is WebBrowser wb)
+            {
+                if (wb.Document is null)
+                {
+                    // Page still needs to be loaded, allow it to continue
+                    return;
+                }
+
+                // Cancel navigation to the clicked link in the webBrowser control
+                if (e.Uri != null)
+                {
+                    e.Cancel = true;
+                    var startInfo = new ProcessStartInfo
+                    {
+                        FileName = e.Uri.ToString()
+                    };
+                    // Launch the link in the default web browser
+                    Process.Start(startInfo);
+                }
+            }
         }
     }
 }

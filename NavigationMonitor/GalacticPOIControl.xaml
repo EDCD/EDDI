@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="noDescriptionDataTemplate"/>
         <DataTemplate x:Key="poiDataTemplate"  DataType="eddiDataDefinitions:NavBookmark">
-            <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded"/>
+            <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded" Navigating="MarkdownWindow_OnNavigating"/>
         </DataTemplate>
         <ContextMenu x:Key="ContextMenu">
             <MenuItem Command="Copy">
@@ -63,7 +63,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distanceLy, TargetNullValue='-', StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" IsReadOnly="True" Width="Auto" Binding="{Binding Path=distanceLy, TargetNullValue='-', StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -76,24 +76,11 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" Width="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" IsReadOnly="True" Width="*" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue='-'}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
