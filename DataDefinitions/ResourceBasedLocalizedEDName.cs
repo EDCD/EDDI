@@ -53,6 +53,22 @@ namespace EddiDataDefinitions
                 // invoke the method
                 object[] parameters = new object[] { edname };
                 object result = method?.Invoke(null, parameters);
+
+                // add back in any secondary properties and fields in our derived classes (other than those associated with the `FromEDName` method)
+                var otherProperties = jsonObject.Values().Where(t => t.Path != "edname");
+                foreach (var prop in otherProperties)
+                {
+                    var propInfo = result?.GetType().GetProperty(prop.Path);
+                    if (propInfo != null && propInfo.CanWrite)
+                    {
+                        propInfo.SetValue(result, prop.ToObject(propInfo.PropertyType));
+                    }
+                    var fieldInfo = result?.GetType().GetField(prop.Path);
+                    if (fieldInfo != null)
+                    {
+                        fieldInfo.SetValue(result, prop.ToObject(fieldInfo.FieldType));
+                    }
+                }
                 return result;
             }
             catch (Exception)
