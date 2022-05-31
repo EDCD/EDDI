@@ -286,7 +286,7 @@ namespace EddiDataDefinitions
         /// <summary> Signals filtered to only return results with a carrier callsign </summary>
         [PublicAPI, JsonIgnore]
         public List<string> carriersignalsources => signalSources
-            .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.localizedName) 
+            .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.invariantName) 
                 && (s.isStation ?? false))
             .Select(s => s.localizedName)
             .ToList();
