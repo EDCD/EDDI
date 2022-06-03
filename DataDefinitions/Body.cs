@@ -501,8 +501,8 @@ namespace EddiDataDefinitions
             int k_terraformable = 93328;
             double mappingMultiplier = 1;
 
-            var alreadyDiscovered = (alreadydiscovered ?? false);
-            var alreadyMapped = (alreadymapped ?? false);
+            var alreadyDiscovered = (alreadydiscovered ?? true); 
+            var alreadyMapped = (alreadymapped ?? true); // If we don't know then we'll assume true to underestimate rather than overestimate the value
 
             // Override constants for specific types of bodies
             if (planetClass.edname == "AmmoniaWorld")

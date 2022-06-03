@@ -223,7 +223,7 @@ namespace EddiStarMapService
                     ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
                     DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
-                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, systemAddress)
+                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, null, systemName, systemAddress)
                     {
                         EDSMID = EDSMID,
                         updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)

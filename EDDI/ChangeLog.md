@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
     * Improved parsing of Odyssey settlements from EDSM API data.
+    * Don't assume that bodies retrieved from EDSM have already been mapped.
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
