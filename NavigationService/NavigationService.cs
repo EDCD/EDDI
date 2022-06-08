@@ -1178,8 +1178,7 @@ namespace EddiNavigationService
                 return null;
             }
 
-            var currentStarSystem = EDDI.Instance.CurrentStarSystem;
-            var currentWaypoint = currentPlottedRoute.Waypoints.FirstOrDefault(w => w.systemAddress == currentStarSystem?.systemAddress);
+            var currentWaypoint = currentPlottedRoute.Waypoints.FirstOrDefault(w => w.systemAddress == (EDDI.Instance.DestinationStarSystem ?? EDDI.Instance.CurrentStarSystem)?.systemAddress);
             var nextWaypoint = currentWaypoint is null ? null : currentPlottedRoute.Waypoints.FirstOrDefault(w => !w.visited && w.index > currentWaypoint.index);
             if (nextWaypoint != null)
             {
