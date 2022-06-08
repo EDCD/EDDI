@@ -51,8 +51,6 @@ namespace EddiNavigationMonitor
             configureSearchArgumentOptions(queryType);
             configureRoutePlotterColumns(queryType);
             UpdateGuidanceLock(navigationMonitor().PlottedRouteList.GuidanceEnabled);
-            GuidanceButton.IsEnabled = !navigationMonitor().PlottedRouteList.GuidanceEnabled
-                                       && navigationMonitor().PlottedRouteList.Waypoints.Count > 1;
             ClearRouteButton.IsEnabled = navigationMonitor().PlottedRouteList.Waypoints.Count > 0;
 
             NavigationService.Instance.PropertyChanged += OnNavServiceChange;
@@ -100,7 +98,6 @@ namespace EddiNavigationMonitor
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                GuidanceButton.IsEnabled = !navWaypointCollection.GuidanceEnabled && navWaypointCollection.Waypoints.Count > 1;
                                 ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
                             });
                             break;
