@@ -612,7 +612,7 @@ namespace EddiDataDefinitions
             }
             else
             {
-                result = $"{possessiveYour ?? Properties.Ship.your} {(defaultname ?? phoneticmodel) ?? Properties.Ship._ship}";
+                result = $"{Properties.Ship.ResourceManager.GetString(possessiveYour) ?? Properties.Ship.your} {(defaultname ?? phoneticmodel) ?? Properties.Ship._ship}";
             }
             return result;
         }
