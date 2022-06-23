@@ -623,7 +623,9 @@ namespace EddiDataDefinitions
 
         public static string GetShortName(string bodyname, string systemname)
         {
-            return (systemname == null || bodyname == systemname) ? bodyname : bodyname?.Replace(systemname, "").Trim();
+            return (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
+                ? bodyname 
+                : bodyname?.Replace(systemname, "").Trim();
         }
 
         public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);
