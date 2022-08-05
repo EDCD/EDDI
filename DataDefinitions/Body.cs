@@ -624,6 +624,7 @@ namespace EddiDataDefinitions
 
         public static string GetShortName(string bodyname, string systemname)
         {
+            if (bodyname is null) { return null; }
             return (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
                 ? bodyname 
                 : bodyname?.Replace(systemname, "").Trim();
