@@ -133,7 +133,7 @@
     <value>Add bookmark</value>
   </data>
   <data name="add_button_tooltip" xml:space="preserve">
-    <value>Add bookmark from route waypoint</value>
+    <value>Bookmark this location</value>
   </data>
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
@@ -175,7 +175,7 @@
     <value>Remove</value>
   </data>
   <data name="remove_button_tooltip" xml:space="preserve">
-    <value>Allows manual removal of a bookmark.</value>
+    <value>Remove this bookmark</value>
   </data>
   <data name="remove_caption" xml:space="preserve">
     <value>Remove bookmark</value>
@@ -322,5 +322,8 @@
   </data>
   <data name="poi_hide_visited" xml:space="preserve">
     <value>Hide visited locations?</value>
+  </data>
+  <data name="copy_system_button_tooltip" xml:space="preserve">
+    <value>Copy this system name to your clipboard</value>
   </data>
 </root>

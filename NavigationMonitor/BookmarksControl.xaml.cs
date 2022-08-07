@@ -341,6 +341,17 @@ namespace EddiNavigationMonitor
             }
         }
 
+        private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                if (button.DataContext is NavBookmark navBookmark)
+                {
+                    Clipboard.SetText(navBookmark.systemname);
+                }
+            }
+        }
+
         private void UseStraightestPathButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox checkBox && checkBox.DataContext is NavBookmark selectedBookmark)

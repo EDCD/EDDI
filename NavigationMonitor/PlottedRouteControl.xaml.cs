@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiDataDefinitions;
+using EddiCore;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -36,6 +37,17 @@ namespace EddiNavigationMonitor
                         configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
                         configurationWindow.addBookmark(sender, e);
                     }
+                }
+            }
+        }
+
+        private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                if (button.DataContext is NavWaypoint navWaypoint)
+                {
+                    Clipboard.SetText(navWaypoint.systemName);
                 }
             }
         }

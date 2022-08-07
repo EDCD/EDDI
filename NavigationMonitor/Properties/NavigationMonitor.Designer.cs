@@ -70,7 +70,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add bookmark from route waypoint.
+        ///   Looks up a localized string similar to Bookmark this location.
         /// </summary>
         public static string add_button_tooltip {
             get {
@@ -192,6 +192,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string clear_route_button_tooltip {
             get {
                 return ResourceManager.GetString("clear_route_button_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy this system name to your clipboard.
+        /// </summary>
+        public static string copy_system_button_tooltip {
+            get {
+                return ResourceManager.GetString("copy_system_button_tooltip", resourceCulture);
             }
         }
         
@@ -466,7 +475,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows manual removal of a bookmark..
+        ///   Looks up a localized string similar to Remove this bookmark.
         /// </summary>
         public static string remove_button_tooltip {
             get {

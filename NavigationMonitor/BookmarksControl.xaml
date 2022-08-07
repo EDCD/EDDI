@@ -113,6 +113,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -129,6 +130,17 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="copySystemNameToClipboard" MinWidth="30" HorizontalAlignment="Center" ToolTip="{x:Static resx:NavigationMonitor.copy_system_button_tooltip}">
+                                <StackPanel>
+                                    <Image Source="Images/Copy.png" Height="16"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn MinWidth="62">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

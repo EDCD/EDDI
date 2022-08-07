@@ -480,5 +480,16 @@ namespace EddiNavigationMonitor
                 }
             }
         }
+
+        private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                if (button.DataContext is NavWaypoint navWaypoint)
+                {
+                    Clipboard.SetText(navWaypoint.systemName);
+                }
+            }
+        }
     }
 }
