@@ -10,7 +10,7 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Carrier Plotter.
-        public List<NavWaypoint> GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
+        public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
         {
             var request = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
             var initialResponse = spanshRestClient.Get(request);
@@ -49,7 +49,7 @@ namespace EddiSpanshService
             return request;
         }
         
-        private List<NavWaypoint> ParseCarrierRoute(JToken routeResult)
+        private NavWaypointCollection ParseCarrierRoute(JToken routeResult)
         {
             var results = new List<NavWaypoint>();
 
@@ -66,7 +66,7 @@ namespace EddiSpanshService
                 results.Add(waypoint);
             }
 
-            return results;
+            return new NavWaypointCollection(results);
         }
     }
 }

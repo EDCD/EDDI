@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 
 namespace EddiSpanshService
 {
     public interface ISpanshService
     {
-        List<NavWaypoint> GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity,
+        NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity,
             bool calculateTotalFuelRequired = true, string[] refuel_destinations = null);
 
         NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship,
