@@ -52,7 +52,9 @@ namespace EddiDataDefinitions
         public bool? hasIcyRing { get; set; } = false;
         public bool? hasPristineMining { get; set; } = false;
         public bool? isDesiredDestination { get; set; } = false; // If this is one of the destinations prescribed by the commander for the route
-        public int? fuelUsed { get; set; } // The amount of tritium used to jump to this location
+        public int? fuelUsed { get; set; } // The amount of tritium used to jump to this location on this hop
+        public int? fuelUsedTotal { get; set; } // The amount of tritium used to jump to this location from the beginning of the route
+        public int? fuelNeeded { get; set; } // The amount of tritium needed for remaining hops in the route
 
         // Info seeded from other monitors
         public bool isMissionSystem => missionids?.Any() ?? false;

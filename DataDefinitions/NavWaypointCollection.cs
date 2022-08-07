@@ -14,6 +14,7 @@ namespace EddiDataDefinitions
         private decimal _routeDistance;
         private bool _guidanceEnabled;
         private bool _fillVisitedGaps;
+        private int? _fuelUsed;
 
         public decimal RouteDistance
         {
@@ -31,6 +32,12 @@ namespace EddiDataDefinitions
         {
             get => _fillVisitedGaps;
             set { _fillVisitedGaps = value; OnPropertyChanged();}
+        }
+
+        public int? FuelUsed
+        {
+            get => _fuelUsed;
+            set { _fuelUsed = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<NavWaypoint> Waypoints { get; } = new ObservableCollection<NavWaypoint>();
@@ -53,7 +60,10 @@ namespace EddiDataDefinitions
             {
                 Waypoints.Add(item);
             }
+
+            CalculateFuelUsed();
             CalculateRouteDistances();
+
             FillVisitedGaps = fillVisitedGaps;
             Waypoints.CollectionChanged += NavWaypointList_CollectionChanged;
         }
@@ -79,6 +89,7 @@ namespace EddiDataDefinitions
                     item.PropertyChanged -= childPropertyChangedHandler;
                 }
             }
+            CalculateFuelUsed();
             CalculateRouteDistances();
         }
 
@@ -88,7 +99,32 @@ namespace EddiDataDefinitions
             {
                 Waypoints.Add(item);
             }
+            CalculateFuelUsed();
             CalculateRouteDistances();
+        }
+
+        private void CalculateFuelUsed()
+        {
+            if (Waypoints.Any(w => w.fuelUsed > 0))
+            {
+                FuelUsed = 0;
+                if (Waypoints.Count > 0)
+                {
+                    // Calculate fuel for each hop and total fuel used
+                    Waypoints.First().fuelUsed = 0;
+                    for (int i = 0; i < Waypoints.Count - 1; i++)
+                    {
+                        Waypoints[i + 1].fuelUsedTotal = Waypoints[i].fuelUsedTotal + Waypoints[i + 1].fuelUsed;
+                    }
+                    FuelUsed = Waypoints.Last().fuelUsed;
+
+                    // Calculate remaining fuel needs
+                    foreach (var waypoint in Waypoints)
+                    {
+                        waypoint.fuelNeeded = FuelUsed - waypoint.fuelUsedTotal;
+                    }
+                }
+            }
         }
 
         private void CalculateRouteDistances()
