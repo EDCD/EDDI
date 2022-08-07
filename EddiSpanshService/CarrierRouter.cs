@@ -66,7 +66,7 @@ namespace EddiSpanshService
                 results.Add(waypoint);
             }
 
-            return new NavWaypointCollection(results);
+            return new NavWaypointCollection(results) { FillVisitedGaps = true };
         }
     }
 }
