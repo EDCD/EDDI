@@ -3114,6 +3114,7 @@ namespace EddiJournalMonitor
                                         // Missions with destinations
                                         var destinationsystem = JsonParsing.getString(data, "DestinationSystem");
                                         var destinationstation = JsonParsing.getString(data, "DestinationStation");
+                                        var destinationsettlement = JsonParsing.getString(data, "DestinationSettlement");
 
                                         // Missions with commodities (which may include on-foot micro-resources)
                                         var c = JsonParsing.getString(data, "Commodity");
@@ -3164,7 +3165,7 @@ namespace EddiJournalMonitor
                                         var influence = JsonParsing.getString(data, "Influence");
                                         var reputation = JsonParsing.getString(data, "Reputation");
 
-                                        events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation ?? destinationsettlement, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -4473,6 +4474,7 @@ namespace EddiJournalMonitor
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
+                            case "NavRouteClear":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
