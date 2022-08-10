@@ -12,7 +12,7 @@ namespace EddiCompanionAppService
     public partial class CompanionAppService
     {
         /// <summary>Create a  profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(string data, DateTime timestamp)
+        public static FrontierApiProfile ProfileFromJson(string data, DateTime timestamp)
         {
             if (!string.IsNullOrEmpty(data))
             {
@@ -22,9 +22,9 @@ namespace EddiCompanionAppService
         }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(JObject json, DateTime timestamp)
+        public static FrontierApiProfile ProfileFromJson(JObject json, DateTime timestamp)
         {
-            Profile Profile = new Profile
+            FrontierApiProfile Profile = new FrontierApiProfile
             {
                 json = json,
                 timestamp = timestamp
@@ -58,11 +58,11 @@ namespace EddiCompanionAppService
 
                 if (json["commander"]["capabilities"] != null)
                 {
-                    var contexts = new ProfileContexts 
-                    { 
-                        allowCobraMkIV = (bool?)json["commander"]["capabilities"]["AllowCobraMkIV"] ?? false, 
-                        hasHorizons = (bool?)json["commander"]["capabilities"]["Horizons"] ?? false, 
-                        hasOdyssey = (bool?)json["commander"]["capabilities"]["Odyssey"] ?? false 
+                    var contexts = new FrontierApiProfileContexts
+                    {
+                        allowCobraMkIV = (bool?)json["commander"]["capabilities"]["AllowCobraMkIV"] ?? false,
+                        hasHorizons = (bool?)json["commander"]["capabilities"]["Horizons"] ?? false,
+                        hasOdyssey = (bool?)json["commander"]["capabilities"]["Odyssey"] ?? false
                     };
                     Profile.contexts = contexts;
                 }
@@ -70,7 +70,7 @@ namespace EddiCompanionAppService
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
                 if (systemName != null)
                 {
-                    Profile.CurrentStarSystem = new ProfileStarSystem
+                    Profile.CurrentStarSystem = new FrontierApiProfileStarSystem
                     {
                         // Caution: The "id" property here may not match the systemAddress
                         systemName = systemName,
@@ -78,12 +78,12 @@ namespace EddiCompanionAppService
                     };
                 }
 
-                if (json["lastStarport"] != null)
+                if (json != null)
                 {
-                    Profile.LastStation = new ProfileStation
+                    Profile.LastStation = new FrontierApiProfileStation
                     {
-                        name = ((string)json["lastStarport"]["name"])?.ReplaceEnd('+'),
-                        marketId = (long?)json["lastStarport"]["id"]
+                        name = ((string)json["name"])?.ReplaceEnd('+'),
+                        marketId = (long?)json["id"]
                     };
                     if ((bool)json["commander"]["docked"])
                     {
@@ -95,15 +95,15 @@ namespace EddiCompanionAppService
             return Profile;
         }
 
-        public Profile Station(ulong? systemAddress, string systemName)
+        public FrontierApiProfile Station(ulong? systemAddress, string systemName)
         {
-            try 
+            try
             {
                 Logging.Debug("Getting station market data");
-                string market = obtainProfile(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
+                string market = obtainData(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
                 market = "{\"lastStarport\":" + market + "}";
                 JObject marketJson = JObject.Parse(market);
-                var lastStation = ProfileStation(marketTimestamp, marketJson);
+                var lastStation = ProfileStation(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
                 lastStation.systemAddress = systemAddress;
                 lastStation.systemname = systemName;
                 lastStation = ProfileStationOutfittingAndShipyard(lastStation);
@@ -117,14 +117,14 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-        public static ProfileStation ProfileStation(DateTime marketTimestamp, JObject marketJson)
+        public static FrontierApiProfileStation ProfileStation(DateTime marketTimestamp, JObject marketJson)
         {
-            ProfileStation lastStation = null;
+            FrontierApiProfileStation lastStation = null;
             try
             {
-                string lastStarport = ((string)marketJson["lastStarport"]["name"])?.ReplaceEnd('+');
-                long? marketId = (long?)marketJson["lastStarport"]["id"];
-                lastStation = new ProfileStation
+                string lastStarport = ((string)marketJson["name"])?.ReplaceEnd('+');
+                long? marketId = (long?)marketJson["id"];
+                lastStation = new FrontierApiProfileStation
                 {
                     name = lastStarport,
                     marketId = marketId,
@@ -136,7 +136,7 @@ namespace EddiCompanionAppService
                 };
 
                 List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
-                foreach (var jToken in marketJson["lastStarport"]["services"])
+                foreach (var jToken in marketJson["services"])
                 {
                     // These are key value pairs. The Key is the name of the service, the Value is its state.
                     var serviceJSON = (JProperty)jToken;
@@ -153,12 +153,12 @@ namespace EddiCompanionAppService
             return lastStation;
         }
 
-        private ProfileStation ProfileStationOutfittingAndShipyard(ProfileStation lastStation)
+        private FrontierApiProfileStation ProfileStationOutfittingAndShipyard(FrontierApiProfileStation lastStation)
         {
             if (lastStation.stationServices.Exists(s => s.Key.ToLowerInvariant() == "outfitting"))
             {
                 Logging.Debug("Getting station outfitting data");
-                string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
+                string outfitting = obtainData(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
                 outfitting = "{\"lastStarport\":" + outfitting + "}";
                 JObject outfittingJson = JObject.Parse(outfitting);
                 lastStation.outfitting = OutfittingFromProfile(outfittingJson);
@@ -168,7 +168,7 @@ namespace EddiCompanionAppService
             {
                 Logging.Debug("Getting station shipyard data");
                 Thread.Sleep(5000);
-                string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
+                string shipyard = obtainData(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
                 shipyard = "{\"lastStarport\":" + shipyard + "}";
                 JObject shipyardJson = JObject.Parse(shipyard);
                 lastStation.ships = ShipyardFromProfile(shipyardJson);
@@ -182,9 +182,9 @@ namespace EddiCompanionAppService
         {
             var edModules = new List<OutfittingInfoItem>();
 
-            if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
+            if (json != null && json["modules"] != null)
             {
-                foreach (var jToken in json["lastStarport"]["modules"])
+                foreach (var jToken in json["modules"])
                 {
                     var moduleJsonProperty = (JProperty)jToken;
                     JObject moduleJson = (JObject)moduleJsonProperty.Value;
@@ -206,18 +206,18 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of station economies from the profile
-        public static List<ProfileEconomyShare> EconomiesFromProfile(dynamic json)
+        public static List<FrontierApiEconomyShare> EconomiesFromProfile(dynamic json)
         {
-            var economyShares = new List<ProfileEconomyShare>();
+            var economyShares = new List<FrontierApiEconomyShare>();
 
-            if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
+            if (json != null && json["economies"] != null)
             {
-                foreach (dynamic economyJson in json["lastStarport"]["economies"])
+                foreach (dynamic economyJson in json["economies"])
                 {
                     dynamic economy = economyJson.Value;
                     string name = ((string)economy["name"]).Replace("Agri", "Agriculture");
                     decimal proportion = (decimal)economy["proportion"];
-                    economyShares.Add(new ProfileEconomyShare(name, proportion));
+                    economyShares.Add(new FrontierApiEconomyShare(name, proportion));
                 }
             }
             economyShares = economyShares.OrderByDescending(x => x.proportion).ToList();
@@ -229,9 +229,9 @@ namespace EddiCompanionAppService
         public static List<KeyValuePair<long, string>> ProhibitedCommoditiesFromProfile(dynamic json)
         {
             var edProhibitedCommodities = new List<KeyValuePair<long, string>>();
-            if (json["lastStarport"] != null && json["lastStarport"]["prohibited"] != null)
+            if (json != null && json["prohibited"] != null)
             {
-                foreach (JProperty prohibitedJSON in json["lastStarport"]["prohibited"])
+                foreach (JProperty prohibitedJSON in json["prohibited"])
                 {
                     var prohibitedCommodity = new KeyValuePair<long, string>(long.Parse(prohibitedJSON.Name), prohibitedJSON.Value.ToString());
                     edProhibitedCommodities.Add(prohibitedCommodity);
@@ -245,9 +245,9 @@ namespace EddiCompanionAppService
         public static List<MarketInfoItem> CommodityQuotesFromProfile(JObject json)
         {
             var eddnCommodityMarketQuotes = new List<MarketInfoItem>();
-            if (json["lastStarport"]?["commodities"] != null)
+            if (json?["commodities"] != null)
             {
-                eddnCommodityMarketQuotes = json["lastStarport"]["commodities"]
+                eddnCommodityMarketQuotes = json["commodities"]
                     .Select(c => JsonConvert.DeserializeObject<MarketInfoItem>(c.ToString())).ToList();
             }
             return eddnCommodityMarketQuotes;
@@ -257,14 +257,14 @@ namespace EddiCompanionAppService
         public static List<ShipyardInfoItem> ShipyardFromProfile(JObject json)
         {
             List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
-            if (json["lastStarport"]?["ships"] != null)
+            if (json?["ships"] != null)
             {
-                edShipyardShips = json["lastStarport"]?["ships"]["shipyard_list"].Children().Values()
+                edShipyardShips = json?["ships"]["shipyard_list"].Children().Values()
                     .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList();
 
-                if (json["lastStarport"]["ships"]["unavailable_list"] != null)
+                if (json["ships"]["unavailable_list"] != null)
                 {
-                    edShipyardShips.AddRange(json["lastStarport"]["ships"]["unavailable_list"]
+                    edShipyardShips.AddRange(json["ships"]["unavailable_list"]
                         .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList());
                 }
             }

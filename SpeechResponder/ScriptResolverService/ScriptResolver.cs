@@ -233,6 +233,11 @@ namespace EddiSpeechResponder.Service
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
+            if (EDDI.Instance.FleetCarrier != null)
+            {
+                dict["carrier"] = new ReflectionValue(EDDI.Instance.FleetCarrier);
+            }
+
             if (theEvent != null)
             {
                 dict["event"] = new ReflectionValue(theEvent);

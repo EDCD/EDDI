@@ -1,4 +1,5 @@
-﻿using EddiSpeechService;
+﻿using EddiDataDefinitions;
+using EddiSpeechService;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,10 +32,13 @@ namespace EddiCompanionAppService
         private static readonly string PROFILE_URL = "/profile";
         private static readonly string MARKET_URL = "/market";
         private static readonly string SHIPYARD_URL = "/shipyard";
+        private static readonly string FLEETCARRIER_URL = "/fleetcarrier";
 
         // We cache the profile to avoid spamming the service
-        private Profile cachedProfile;
+        private FrontierApiProfile cachedProfile;
+        private FrontierApiFleetCarrier cachedFleetCarrier;
         private DateTime cachedProfileExpires;
+        private DateTime cachedFleetCarrierExpires;
 
         private readonly CustomURLResponder URLResponder;
         private string verifier;
@@ -363,7 +367,7 @@ namespace EddiCompanionAppService
             CurrentState = State.LoggedOut;
         }
 
-        public Profile Profile(bool forceRefresh = false)
+        public FrontierApiProfile Profile(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
@@ -374,7 +378,7 @@ namespace EddiCompanionAppService
 
             try
             {
-                string data = obtainProfile(ServerURL() + PROFILE_URL, out DateTime timestamp);
+                string data = obtainData(ServerURL() + PROFILE_URL, out DateTime timestamp);
 
                 if (data == null || data == "Profile unavailable")
                 {
@@ -389,7 +393,7 @@ namespace EddiCompanionAppService
                     else
                     {
                         // Looks like login worked; try again
-                        data = obtainProfile(ServerURL() + PROFILE_URL, out timestamp);
+                        data = obtainData(ServerURL() + PROFILE_URL, out timestamp);
 
                         if (data == null || data == "Profile unavailable")
 
@@ -427,7 +431,70 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-        private string obtainProfile(string url, out DateTime timestamp)
+        public FrontierApiFleetCarrier FleetCarrier(bool forceRefresh = false)
+        {
+            if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
+            {
+                // return the cached version
+                Logging.Debug("Returning cached fleet carrier data");
+                return cachedFleetCarrier;
+            }
+
+            try
+            {
+                string data = obtainData(ServerURL() + FLEETCARRIER_URL, out DateTime timestamp);
+
+                if (data == null || !data.StartsWith("{"))
+                {
+                    // Happens if there is a problem with the API.  Logging in again might clear this...
+                    relogin();
+                    if (CurrentState != State.Authorized)
+                    {
+                        // No luck; give up
+                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                        Logout();
+                    }
+                    else
+                    {
+                        // Looks like login worked; try again
+                        data = obtainData(ServerURL() + FLEETCARRIER_URL, out timestamp);
+
+                        if (data == null || !data.StartsWith("{"))
+                        {
+                            // No luck with a relogin; give up
+                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                            Logout();
+                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                        }
+                    }
+                }
+
+                try
+                {
+                    cachedFleetCarrier = FleetCarrierFromJson(data, timestamp);
+                }
+                catch (JsonException ex)
+                {
+                    Logging.Error("Failed to parse companion api feet carrier data", ex);
+                    cachedFleetCarrier = null;
+                }
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
+            }
+
+            if (cachedFleetCarrier != null)
+            {
+                cachedFleetCarrierExpires = DateTime.UtcNow.AddSeconds(30);
+                Logging.Debug("Fleet carrier is " + JsonConvert.SerializeObject(cachedFleetCarrier));
+            }
+
+            return cachedFleetCarrier;
+        }
+
+        private string obtainData(string url, out DateTime timestamp)
         {
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
@@ -447,7 +514,12 @@ namespace EddiCompanionAppService
                         throw new EliteDangerousCompanionAppException("Failed to contact API server");
                     }
 
-                    if (response.StatusCode == HttpStatusCode.Found)
+                    if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        timestamp = DateTime.MinValue;
+                        return null;
+                    }
+                    else if (response.StatusCode == HttpStatusCode.Found)
                     {
                         timestamp = DateTime.MinValue;
                         return null;

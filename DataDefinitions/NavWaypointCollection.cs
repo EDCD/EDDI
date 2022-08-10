@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
         private decimal _routeDistance;
         private bool _guidanceEnabled;
         private bool _fillVisitedGaps;
-        private int? _fuelUsed;
+        private int? _routeFuelTotal;
 
         public decimal RouteDistance
         {
@@ -34,10 +34,10 @@ namespace EddiDataDefinitions
             set { _fillVisitedGaps = value; OnPropertyChanged();}
         }
 
-        public int? FuelUsed
+        public int? RouteFuelTotal
         {
-            get => _fuelUsed;
-            set { _fuelUsed = value; OnPropertyChanged(); }
+            get => _routeFuelTotal;
+            set { _routeFuelTotal = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<NavWaypoint> Waypoints { get; } = new ObservableCollection<NavWaypoint>();
@@ -107,21 +107,21 @@ namespace EddiDataDefinitions
         {
             if (Waypoints.Any(w => w.fuelUsed > 0))
             {
-                FuelUsed = 0;
+                RouteFuelTotal = 0;
                 if (Waypoints.Count > 0)
                 {
                     // Calculate fuel for each hop and total fuel used
-                    Waypoints.First().fuelUsed = 0;
+                    Waypoints.First().fuelUsedTotal = 0;
                     for (int i = 0; i < Waypoints.Count - 1; i++)
                     {
                         Waypoints[i + 1].fuelUsedTotal = Waypoints[i].fuelUsedTotal + Waypoints[i + 1].fuelUsed;
                     }
-                    FuelUsed = Waypoints.Last().fuelUsed;
+                    RouteFuelTotal = Waypoints.Last().fuelUsedTotal;
 
                     // Calculate remaining fuel needs
                     foreach (var waypoint in Waypoints)
                     {
-                        waypoint.fuelNeeded = FuelUsed - waypoint.fuelUsedTotal;
+                        waypoint.fuelNeeded = RouteFuelTotal - waypoint.fuelUsedTotal;
                     }
                 }
             }

@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FleetCarrier.cs" />
+    <Compile Include="FrontierApiProfile.cs" />
     <Compile Include="JumpDetail.cs" />
     <Compile Include="NavWaypointCollection.cs" />
     <Compile Include="NavWaypoint.cs" />

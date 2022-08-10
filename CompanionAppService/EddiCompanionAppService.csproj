@@ -63,11 +63,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompanionAppFleetCarrierFromJson.cs" />
     <Compile Include="CompanionAppProfileFromJson.cs" />
     <Compile Include="ClientId.cs" />
     <Compile Include="CompanionIllegalStateException.cs" />
     <Compile Include="CustomURLResponder.cs" />
-    <Compile Include="Profile.cs" />
     <Compile Include="CompanionAppService.cs" />
     <Compile Include="CompanionAppCredentials.cs" />
     <Compile Include="CompanionAppErrorException.cs" />

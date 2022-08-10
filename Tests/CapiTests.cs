@@ -81,14 +81,14 @@ namespace UnitTests
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
 
-            var expectedStation = new ProfileStation()
+            var expectedStation = new FrontierApiProfileStation()
             {
                 name = "Libby Horizons",
                 marketId = 3228854528,
-                economyShares = new List<ProfileEconomyShare>() 
+                economyShares = new List<FrontierApiEconomyShare>() 
                 {
-                    new ProfileEconomyShare("Refinery", 0.88M),
-                    new ProfileEconomyShare("Industrial", 0.12M),
+                    new FrontierApiEconomyShare("Refinery", 0.88M),
+                    new FrontierApiEconomyShare("Industrial", 0.12M),
                 },
                 eddnCommodityMarketQuotes = new List<MarketInfoItem>()
                 {
@@ -151,7 +151,7 @@ namespace UnitTests
                 }
             };
 
-            var actualStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+            var actualStation = CompanionAppService.ProfileStation(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
 
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
@@ -186,10 +186,10 @@ namespace UnitTests
             };
 
             // Set up our profile station
-            var profile = new Profile();
+            var profile = new FrontierApiProfile();
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            profile.LastStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+            profile.LastStation = CompanionAppService.ProfileStation(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
 
             var updatedStation = profile.LastStation.UpdateStation(DateTime.UtcNow, originalStation);
             Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 

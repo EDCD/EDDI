@@ -53,6 +53,7 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Last station", ref App.vaProxy) },
             { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.vaProxy) },
             { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, ref App.vaProxy) },
+            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", ref App.vaProxy) },
             { nameof(EDDI.Instance.Environment), () => App.vaProxy.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => App.vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
             { nameof(EDDI.Instance.inHorizons), () => App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
@@ -550,6 +551,35 @@ namespace EddiVoiceAttackResponder
             }
 
             Logging.Debug("Set body information (" + prefix + ")");
+        }
+        
+        private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, ref dynamic vaProxy)
+        {
+            var variables = new MetaVariables(fleetCarrier.GetType(), fleetCarrier);
+            var va_vars = variables.Results.AsVoiceAttackVariables(prefix);
+            foreach (var variable in va_vars)
+            {
+                if (variable.variableType == typeof(string))
+                {
+                    vaProxy.SetText(variable.key, variable.value);
+                }
+                else if (variable.variableType == typeof(int))
+                {
+                    vaProxy.SetInt(variable.key, variable.value);
+                }
+                else if (variable.variableType == typeof(bool))
+                {
+                    vaProxy.SetBoolean(variable.key, variable.value);
+                }
+                else if (variable.variableType == typeof(decimal))
+                {
+                    vaProxy.SetDecimal(variable.key, variable.value);
+                }
+                else if (variable.variableType == typeof(DateTime))
+                {
+                    vaProxy.SetDateTime(variable.key, variable.value);
+                }
+            }
         }
 
         protected static void setCAPIState(bool caPIactive, ref dynamic vaProxy)

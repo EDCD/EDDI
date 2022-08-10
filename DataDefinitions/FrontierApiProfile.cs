@@ -1,15 +1,14 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-namespace EddiCompanionAppService
+namespace EddiDataDefinitions
 {
     /// <summary> Profile information returned by the companion app service.
     /// To prevent accidentally passing incorrect information to EDDN, inputs should not include any information from EDDI data definitions. </summary>
-    public class Profile
+    public class FrontierApiProfile
     {
         /// <summary>The timestamp returned from the CAPI server</summary>
         public DateTime timestamp { get; set; }
@@ -21,10 +20,10 @@ namespace EddiCompanionAppService
         public FrontierApiCommander Cmdr { get; set; }
 
         /// <summary>The current starsystem</summary>
-        public ProfileStarSystem CurrentStarSystem { get; set; }
+        public FrontierApiProfileStarSystem CurrentStarSystem { get; set; }
 
         /// <summary>The last station the commander docked at</summary>
-        public ProfileStation LastStation { get; set; }
+        public FrontierApiProfileStation LastStation { get; set; }
 
         /// <summary>Whether this profile describes a docked commander</summary>
         public bool docked { get; set; }
@@ -36,10 +35,10 @@ namespace EddiCompanionAppService
         public bool alive { get; set; }
 
         /// <summary>The contexts (i.e. "capabilities") associated with this profile </summary>
-        public ProfileContexts contexts { get; set; }
+        public FrontierApiProfileContexts contexts { get; set; }
     }
 
-    public class ProfileContexts
+    public class FrontierApiProfileContexts
     {
         /// <summary>Whether this profile describes a commander with access to the Cobra Mk IV</summary>
         public bool allowCobraMkIV { get; set; }
@@ -51,13 +50,13 @@ namespace EddiCompanionAppService
         public bool hasOdyssey { get; set; }
     }
 
-    public class ProfileStarSystem
+    public class FrontierApiProfileStarSystem
     {
         /// <summary>System Name</summary>
         public string systemName { get; set; }
     }
 
-    public class ProfileStation
+    public class FrontierApiProfileStation
     {
         /// <summary>Unique 64 bit id value for station</summary>
         public long? marketId { get; set; }
@@ -75,7 +74,7 @@ namespace EddiCompanionAppService
         public List<KeyValuePair<string, string>> stationServices { get; set; } = new List<KeyValuePair<string, string>>();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<ProfileEconomyShare> economyShares { get; set; } = new List<ProfileEconomyShare>();
+        public List<FrontierApiEconomyShare> economyShares { get; set; } = new List<FrontierApiEconomyShare>();
 
         /// <summary>Commodity market quotes as-received from the profile</summary>
         public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = new List<MarketInfoItem>();
@@ -196,12 +195,12 @@ namespace EddiCompanionAppService
         }
     }
 
-    public class ProfileEconomyShare
+    public class FrontierApiEconomyShare
     {
         public string edName { get; }
         public decimal proportion { get; }
 
-        public ProfileEconomyShare(string edName, decimal proportion)
+        public FrontierApiEconomyShare(string edName, decimal proportion)
         {
             this.edName = edName;
             this.proportion = proportion;
