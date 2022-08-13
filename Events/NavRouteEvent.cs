@@ -1,6 +1,8 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -49,7 +51,14 @@ namespace EddiEvents
 
         private decimal? CalculateDirectDistance()
         {
-            return Functions.StellarDistanceLy(route[0].x, route[0].y, route[0].z, route[jumps].x, route[jumps].y, route[jumps].z) ?? 0;
+            if (route.Count > 1)
+            {
+                return Functions.StellarDistanceLy(route[0].x, route[0].y, route[0].z, route[jumps].x, route[jumps].y, route[jumps].z) ?? 0;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
