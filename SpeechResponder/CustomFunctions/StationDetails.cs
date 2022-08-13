@@ -35,7 +35,7 @@ namespace EddiSpeechResponder.CustomFunctions
                     // Named system
                     system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                 }
-                result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
+                result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name?.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
             }
             return new ReflectionValue(result ?? new object());
         }, 1, 2);
