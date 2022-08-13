@@ -371,7 +371,13 @@ namespace EddiCore
                 CompanionAppService.Instance.gameIsBeta = false;
 
                 // Retrieve commander preferences
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                var configuration = ConfigService.Instance.eddiConfiguration;
+                Cmdr.name = configuration.CommanderName;
+                Cmdr.phoneticName = configuration.PhoneticName;
+                Cmdr.gender = configuration.Gender;
+
+                // We always start in normal space
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
                 List<Task> essentialAsyncTasks = new List<Task>();
                 if (running)
@@ -421,10 +427,10 @@ namespace EddiCore
                     Logging.Info("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
                 }
 
+                // Make sure that our essential tasks have completed before we start
+                Task.WaitAll(essentialAsyncTasks.ToArray());
+
                 // Tasks we can start asynchronously and don't need to wait for
-                Cmdr.name = configuration.CommanderName;
-                Cmdr.phoneticName = configuration.PhoneticName;
-                Cmdr.gender = configuration.Gender;
                 Task.Run(() => updateDestinationSystem(configuration.DestinationSystem));
                 Task.Run(() =>
                 {
@@ -438,7 +444,7 @@ namespace EddiCore
                     {
                         Logging.Debug("Failed to obtain Frontier API profile: " + ex);
                     }
-                    
+
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the Frontier API is enabled.");
@@ -447,7 +453,7 @@ namespace EddiCore
                     {
                         Logging.Info("EDDI access to the Frontier API is not enabled.");
                     }
-                    
+
                     try
                     {
                         refreshFleetCarrier();
@@ -457,12 +463,6 @@ namespace EddiCore
                         Logging.Debug("Failed to obtain Frontier API fleet carrier: " + ex);
                     }
                 });
-
-                // Make sure that our essential tasks have completed before we start
-                Task.WaitAll(essentialAsyncTasks.ToArray());
-
-                // We always start in normal space
-                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
