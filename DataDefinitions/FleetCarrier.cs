@@ -5,7 +5,7 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class FleetCarrier : FrontierApiFleetCarrier, INotifyPropertyChanged
+    public class FleetCarrier : FrontierApiFleetCarrier
     {
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the fleet carrier definition.
@@ -71,13 +71,6 @@ namespace EddiDataDefinitions
             }
 
             return fleetCarrier;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 
@@ -376,7 +369,7 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
+        internal void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
