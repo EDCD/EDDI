@@ -3616,6 +3616,13 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "NavRouteClear":
+                                {
+                                    NavRouteInfo.FromFile(out NavRouteInfo navRoute, out string rawRoute);
+                                    events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "PowerplayJoin":
                                 {
                                     Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
@@ -4446,8 +4453,6 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "BuyWeapon":
-                            case "CargoTransfer": // Not needed for updating the cargo monitor, the `Cargo` event keeps us up to date.
                             case "CarrierBuy":
                             case "CarrierStats":
                             case "CarrierBankTransfer":
@@ -4461,6 +4466,7 @@ namespace EddiJournalMonitor
                             case "CarrierNameChange":
                             case "CarrierShipPack":
                             case "CarrierTradeOrder":
+                            case "BuyWeapon":
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "CollectItems":
@@ -4474,7 +4480,6 @@ namespace EddiJournalMonitor
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
-                            case "NavRouteClear":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
                             case "RestockVehicle":
@@ -4488,15 +4493,16 @@ namespace EddiJournalMonitor
                             case "SharedBookmarkToSquadron":
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
-                            case "TradeMicroResources": // This is always followed by `ShipLockerMaterials`, which we can use to keep our inventory up to date
                             case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":
-                            case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
                             case "WingLeave":
+                            case "CargoTransfer": // Not needed for updating the cargo monitor, the `Cargo` event keeps us up to date.
+                            case "TradeMicroResources": // This is always followed by `ShipLockerMaterials`, which we can use to keep our inventory up to date
+                            case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.
                             case "WonATrophyForSquadron":
                                 // we silently ignore these, but forward them to the responders
                                 break;
