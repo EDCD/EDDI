@@ -67,7 +67,7 @@ namespace EddiCompanionAppService
             fleetCarrier.nextStarSystem = json["itinerary"]?["currentJump"]?.ToString();
 
             // Finances
-            fleetCarrier.bankBalance = json["finance"]?["bankBalance"]?.ToObject<long>() ?? 0;
+            fleetCarrier.bankBalance = json["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
             fleetCarrier.bankReservedBalance = json["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
 
             // Inventories
