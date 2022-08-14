@@ -4454,6 +4454,16 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierBuy":
+                                {
+                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
+                                    var carrierStarSystem = JsonParsing.getString(data, "Location");
+                                    var carrierSystemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var price = JsonParsing.getOptionalLong(data, "Price");
+                                    events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierStats":
                             case "CarrierBankTransfer":
                             case "CarrierCancelDecommission":
