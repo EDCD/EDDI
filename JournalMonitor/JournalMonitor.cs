@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
 using System.Windows.Controls;
 using Utilities;
 
@@ -4465,6 +4466,48 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierStats":
+                                {
+                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
+                                    var carrierName = JsonParsing.getString(data, "Name");
+
+                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
+                                    var notoriousAccess = JsonParsing.getBool(data, "AllowNotorious");
+                                    var fuelLevel = JsonParsing.getInt(data, "FuelLevel");
+
+                                    int crewSpace = 0;
+                                    int cargoSpace = 0;
+                                    int cargoSpaceReserved = 0;
+                                    int shipPacks = 0;
+                                    int modulePacks = 0;
+                                    int freeSpace = 0;
+                                    if (data.TryGetValue("SpaceUsage", out object spaceUsage) && spaceUsage is Dictionary<string, object> space)
+                                    {
+                                        crewSpace = JsonParsing.getInt(space, "Crew");
+                                        cargoSpace = JsonParsing.getInt(space, "Cargo");
+                                        cargoSpaceReserved = JsonParsing.getInt(space, "CargoSpaceReserved");
+                                        shipPacks = JsonParsing.getInt(space, "ShipPacks");
+                                        modulePacks = JsonParsing.getInt(space, "ModulePacks");
+                                        freeSpace = JsonParsing.getInt(space, "FreeSpace");
+                                    }
+                                    var usedSpace = crewSpace 
+                                                    + cargoSpace 
+                                                    + cargoSpaceReserved 
+                                                    + shipPacks 
+                                                    + modulePacks;
+
+                                    ulong bankBalance = 0;
+                                    ulong bankReservedBalance = 0;
+                                    if (data.TryGetValue("Finance", out object finances) && finances is Dictionary<string, object> finance)
+                                    {
+                                        bankBalance = JsonParsing.getULong(finance, "CarrierBalance");
+                                        bankReservedBalance = JsonParsing.getULong(finance, "ReserveBalance");
+                                    }
+
+                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance ) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierBankTransfer":
                             case "CarrierCancelDecommission":
                             case "CarrierCrewServices":
