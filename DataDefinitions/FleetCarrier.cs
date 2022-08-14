@@ -44,8 +44,6 @@ namespace EddiDataDefinitions
             fleetCarrier.carrierID = frontierApiFleetCarrier.Market.marketId;
 
             // Information exclusively available from the Frontier API
-            fleetCarrier.currentStarSystem = frontierApiFleetCarrier.currentStarSystem;
-            fleetCarrier.nextStarSystem = frontierApiFleetCarrier.nextStarSystem;
             fleetCarrier.fuelInCargo = frontierApiFleetCarrier.fuelInCargo;
             fleetCarrier.Cargo = frontierApiFleetCarrier.Cargo;
             fleetCarrier.CarrierLockerAssets = frontierApiFleetCarrier.CarrierLockerAssets;
@@ -59,7 +57,9 @@ namespace EddiDataDefinitions
             // Information which might be newer, check timestamps prior to updating
             if (apiTimeStamp > journalTimeStamp)
             {
-                fleetCarrier.name = frontierApiFleetCarrier.name;
+                fleetCarrier.name = fleetCarrier.name ?? frontierApiFleetCarrier.name;
+                fleetCarrier.currentStarSystem = fleetCarrier.currentStarSystem ?? frontierApiFleetCarrier.currentStarSystem;
+                fleetCarrier.nextStarSystem = fleetCarrier.nextStarSystem ?? frontierApiFleetCarrier.nextStarSystem;
                 fleetCarrier.dockingAccess = frontierApiFleetCarrier.dockingAccess;
                 fleetCarrier.notoriousAccess = frontierApiFleetCarrier.notoriousAccess;
                 fleetCarrier.fuel = frontierApiFleetCarrier.fuel;
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions
         private bool _notoriousAccess;
         private int _usedCapacity;
         private int _freeCapacity;
-        private long _bankBalance;
+        private ulong _bankBalance;
         private ulong _bankReservedBalance;
         private JArray _cargo = new JArray();
         private JArray _carrierLockerAssets = new JArray();
@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
         private JArray _microresourceSalesOrders = new JArray();
         private JArray _microresourcePurchaseOrders = new JArray();
 
-        [PublicAPI]
+        [PublicAPI("The name of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
         public string name
         {
             get => _name;
@@ -111,7 +111,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The callsign (alphanumeric designation) of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
         public string callsign
         {
             get => _callsign;
@@ -123,7 +123,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The current location (star system) of the carrier (requires Frontier API access or a carrier jump to initially set)")]
         public string currentStarSystem
         {
             get => _currentStarSystem;
@@ -135,7 +135,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The next schedule location (star system) of the carrier")]
         public string nextStarSystem
         {
             get => _nextStarSystem;
@@ -147,7 +147,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The current tritium fuel level of the carrier (requires Frontier API access)")]
         public int fuel // Tritium Fuel Reserves
         {
             get => _fuel;
@@ -159,7 +159,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The stored tritium held in the carrier's cargo (requires Frontier API access)")]
         public int fuelInCargo // Tritium Fuel carried as cargo
         {
             get => _fuelInCargo;
@@ -171,6 +171,7 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI("The carrier's current operating state (requires Frontier API access) (one of 'normalOperation', 'debtState' (if services are offline due to lack of funds), or 'pendingDecomission')")]
         public string state // one of "normalOperation", "debtState" (if services are offline due to lack of funds), or "pendingDecomission" 
         {
             get => _state;
@@ -182,6 +183,7 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI("The carrier's current docking access (requires Frontier API access or a 'Carrier Stats' event) (one of one of 'all', 'squadronfriends', 'friends', or 'none')")]
         public string dockingAccess // one of "all", "squadronfriends", "friends", or "none"
         {
             get => _dockingAccess;
@@ -193,6 +195,7 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI("True if the carrier currently provides docking access to notorious commanders (requires Frontier API access or a 'Carrier Stats' event)")]
         public bool notoriousAccess
         {
             get => _notoriousAccess;
@@ -206,7 +209,7 @@ namespace EddiDataDefinitions
 
         // Capacity
 
-        [PublicAPI]
+        [PublicAPI("The current total used capacity of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
         public int usedCapacity
         {
             get => _usedCapacity;
@@ -218,7 +221,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
+        [PublicAPI("The current free capacity of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
         public int freeCapacity
         {
             get => _freeCapacity;
@@ -232,8 +235,8 @@ namespace EddiDataDefinitions
 
         // Finances
 
-        [PublicAPI]
-        public long bankBalance // "CarrierBalance" in CarrierStats
+        [PublicAPI("The current baknk balance of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
+        public ulong bankBalance
         {
             get => _bankBalance;
             set
@@ -244,8 +247,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI]
-        public ulong bankReservedBalance // "ReserveBalance" in CarrierStats
+        [PublicAPI("The current reserved bank balance of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
+        public ulong bankReservedBalance
         {
             get => _bankReservedBalance;
             set
