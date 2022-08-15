@@ -10,7 +10,6 @@ namespace EddiDataDefinitions
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the fleet carrier definition.
 
-        [PublicAPI]
         public long? carrierID
         {
             get => _carrierId;
@@ -44,7 +43,6 @@ namespace EddiDataDefinitions
             fleetCarrier.carrierID = frontierApiFleetCarrier.Market.marketId;
 
             // Information exclusively available from the Frontier API
-            fleetCarrier.fuelInCargo = frontierApiFleetCarrier.fuelInCargo;
             fleetCarrier.Cargo = frontierApiFleetCarrier.Cargo;
             fleetCarrier.CarrierLockerAssets = frontierApiFleetCarrier.CarrierLockerAssets;
             fleetCarrier.CarrierLockerGoods = frontierApiFleetCarrier.CarrierLockerGoods;
@@ -63,6 +61,7 @@ namespace EddiDataDefinitions
                 fleetCarrier.dockingAccess = frontierApiFleetCarrier.dockingAccess;
                 fleetCarrier.notoriousAccess = frontierApiFleetCarrier.notoriousAccess;
                 fleetCarrier.fuel = frontierApiFleetCarrier.fuel;
+                fleetCarrier.fuelInCargo = frontierApiFleetCarrier.fuelInCargo;
                 fleetCarrier.state = frontierApiFleetCarrier.state;
                 fleetCarrier.bankBalance = frontierApiFleetCarrier.bankBalance;
                 fleetCarrier.bankReservedBalance = frontierApiFleetCarrier.bankReservedBalance;
