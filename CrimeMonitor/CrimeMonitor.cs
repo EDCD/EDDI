@@ -998,7 +998,7 @@ namespace EddiCrimeMonitor
 
         public void GetFactionData(FactionRecord record, string homeSystem = null)
         {
-            if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
+            if (record == null || string.IsNullOrEmpty(record.faction) || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction from Elite BGS and set faction record values
             Faction faction = bgsService.GetFactionByName(record.faction);
