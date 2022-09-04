@@ -23,6 +23,8 @@ namespace EddiConfigService
 
         public string searchQueryStationArg { get; set; }
 
+        public string carrierDestinationArg { get; set; }
+
         // Ship touchdown data
         public decimal? tdLat { get; set; }
 
@@ -36,7 +38,12 @@ namespace EddiConfigService
         // Current in-game route
         public NavWaypointCollection navRouteList { get; set; } = new NavWaypointCollection();
 
-        // Plotted route
+        // Plotted routes
         public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
+
+        public NavWaypointCollection carrierPlottedRoute { get; set; } = new NavWaypointCollection();
+
+        // Fleet Carrier
+        public FleetCarrier fleetCarrier { get; set; }
     }
 }
