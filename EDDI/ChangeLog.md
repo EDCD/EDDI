@@ -20,6 +20,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `DestinationStation` object has been removed.
     * Navigation commands (e.g. via `RouteDetails()` or the `route` VoiceAttack command) will no longer generate a route in EDDI independent of your in-game routing.
   * Speech Responder
+    * Events
+      * 'Location' event updated to add `faction` and `conflicts` properties (like the `Jumped` event)
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.

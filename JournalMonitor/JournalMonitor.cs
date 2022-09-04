@@ -317,6 +317,30 @@ namespace EddiJournalMonitor
                                     StationModel stationtype = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
 
+                                    // Get station services data
+                                    data.TryGetValue("StationServices", out val);
+                                    List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+                                    List<StationService> stationServices = new List<StationService>();
+                                    foreach (string service in stationservices)
+                                    {
+                                        stationServices.Add(StationService.FromEDName(service));
+                                    }
+
+                                    // Get station economies and their shares
+                                    data.TryGetValue("StationEconomies", out object val2);
+                                    List<object> economies = val2 as List<object> ?? new List<object>();
+                                    List<EconomyShare> Economies = new List<EconomyShare>();
+                                    foreach (Dictionary<string, object> economyshare in economies)
+                                    {
+                                        var economyShare = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                        economyShare.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                        decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                        if (economyShare != Economy.None && share > 0)
+                                        {
+                                            Economies.Add(new EconomyShare(economyShare, share));
+                                        }
+                                    }
+
                                     // If landed
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
@@ -329,6 +353,14 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
+                                    // Parse conflicts array data
+                                    List<Conflict> conflicts = new List<Conflict>();
+                                    data.TryGetValue("Conflicts", out object conflictsVal);
+                                    if (conflictsVal != null)
+                                    {
+                                        conflicts = getConflicts(conflictsVal, factions);
+                                    }
+
                                     // Powerplay data (if pledged)
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
@@ -338,7 +370,15 @@ namespace EddiJournalMonitor
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
                                     
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                    // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
+                                    if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
+                                    {
+                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                }
                                 }
                                 handled = true;
                                 break;
@@ -4126,7 +4166,12 @@ namespace EddiJournalMonitor
                                     // Powerplay data (if pledged)
                                     getPowerplayData(data, out Power powerplayPower, out PowerplayState powerplayState);
 
-                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, systemfaction, factions, conflicts, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, docked, carrierName, carrierType, carrierId, stationFaction, stationServices, stationEconomies) { raw = line, fromLoad = fromLogLoad });
+                                    bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
+                                    bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
+                                    bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+                                    bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
+
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
