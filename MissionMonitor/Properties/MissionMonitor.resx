@@ -157,7 +157,7 @@
     <value>Origin Station:</value>
   </data>
   <data name="header_faction" xml:space="preserve">
-    <value>Faction:</value>
+    <value>Mission Provider:</value>
   </data>
   <data name="header_cg_tier" xml:space="preserve">
     <value>Tier:</value>

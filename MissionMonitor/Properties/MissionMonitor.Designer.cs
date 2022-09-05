@@ -115,7 +115,7 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Faction:.
+        ///   Looks up a localized string similar to Mission Provider:.
         /// </summary>
         public static string header_faction {
             get {

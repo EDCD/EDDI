@@ -99,6 +99,7 @@
     <EmbeddedResource Include="Properties\MissionMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MissionMonitor.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\MissionMonitor.ru.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.zh-CN.resx" />
