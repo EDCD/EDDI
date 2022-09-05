@@ -12,7 +12,6 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.ModelBinding;
 using System.Windows.Controls;
 using Utilities;
 
@@ -115,7 +114,7 @@ namespace EddiJournalMonitor
                             case "Docked":
                                 {
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    ulong? systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;

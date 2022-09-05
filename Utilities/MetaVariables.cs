@@ -129,6 +129,10 @@ namespace Utilities
                 {
                     Results.Add(new MetaVariable(keysPath, type, description, (long?)value));
                 }
+                else if (type == typeof(ulong))
+                {
+                    Results.Add(new MetaVariable(keysPath, type, description, (ulong?)value));
+                }
                 else if (type == typeof(double))
                 {
                     Results.Add(new MetaVariable(keysPath, type, description, (double?)value));
@@ -318,7 +322,7 @@ namespace Utilities
             this.description = description;
 
             // Convert doubles, floats, and longs to decimals
-            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long)))
+            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long) || variableType == typeof(ulong)))
             {
                 this.value = null;
                 this.variableType = typeof(decimal);
@@ -336,6 +340,11 @@ namespace Utilities
             else if (value is long l)
             {
                 this.value = Convert.ToDecimal(l);
+                this.variableType = typeof(decimal);
+            }
+            else if (value is ulong ul)
+            {
+                this.value = Convert.ToDecimal(ul);
                 this.variableType = typeof(decimal);
             }
             else

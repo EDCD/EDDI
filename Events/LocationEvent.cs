@@ -125,7 +125,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public Economy Economy { get; private set; }
 

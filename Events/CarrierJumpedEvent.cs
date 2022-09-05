@@ -84,7 +84,7 @@ namespace EddiEvents
         // These properties are not intended to be user facing
         public bool docked { get; private set; }
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public long? carrierId { get; private set; }
 

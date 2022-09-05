@@ -26,7 +26,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
         
         public long? bodyId { get; private set; }
         
