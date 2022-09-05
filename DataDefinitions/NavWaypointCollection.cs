@@ -28,6 +28,9 @@ namespace EddiDataDefinitions
             set { _guidanceEnabled = value; OnPropertyChanged();}
         }
 
+        /// <summary>
+        /// False when plotting missions and destinations may be visited out of order
+        /// </summary>
         public bool FillVisitedGaps
         {
             get => _fillVisitedGaps;
