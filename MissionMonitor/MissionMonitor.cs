@@ -336,13 +336,22 @@ namespace EddiMissionMonitor
                     {
                         case "Active":
                             {
-                                if (missionEntry.statusEDName == "Failed" || missionEntry.statusEDName == "Claim")
+                                if (missionEntry.statusEDName == "Failed")
                                 {
                                     if (mission.expiry > missionEntry.expiry)
                                     {
                                         // Fix status if erroneously reported as failed
                                         missionEntry.expiry = mission.expiry;
                                         missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                        update = true;
+                                    }
+                                }
+                                else if (missionEntry.statusEDName == "Claim")
+                                {
+                                    if (mission.expiry > missionEntry.expiry)
+                                    {
+                                        // Fix expiry if it has been extended by completion
+                                        missionEntry.expiry = mission.expiry;
                                         update = true;
                                     }
                                 }
