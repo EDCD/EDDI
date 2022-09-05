@@ -150,8 +150,8 @@
     <comment>BodyType "Station"</comment>
   </data>
   <data name="Null" xml:space="preserve">
-    <value>Body</value>
-    <comment>BodyType "Null"</comment>
+    <value>Barycenter</value>
+    <comment>BodyType "Null" (a Barycenter)</comment>
   </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Planetary Ring</value>
