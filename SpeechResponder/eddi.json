@@ -323,8 +323,17 @@
       "responder": true,
       "script": null,
       "default": true,
-      "name": "Carrier puchased",
+      "name": "Carrier purchased",
       "description": "Triggered when you purchase a fleet carrier"
+    },
+    "Carrier stats": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier stats",
+      "description": "Triggered when you open the carrier management screen"
     },
     "Cleared save": {
       "enabled": true,
