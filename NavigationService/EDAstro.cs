@@ -19,6 +19,22 @@ namespace EddiNavigationService
             if (!string.IsNullOrEmpty(jsonString))
             {
                 var jArray = JArray.Parse(jsonString);
+
+                // Iterate in reverse order to remove any duplicate entries which appear on both GEC and GMP lists
+                var unique = jArray
+                    .OrderBy(y => y["source"]) // Order alphabetically by source ("GEC" before "GMP")
+                    .GroupBy(x => x["galMapSearch"]) // Group POIs by system name
+                    .Select(x => x.First()) // Select only the GEC POI if both GEC and GMP POIs exist within the same group
+                    .ToList(); 
+                for (var i = jArray.Count - 1; i >= 0; i--)
+                {
+                    var token = jArray[i];
+                    if (!unique.Contains(token))
+                    {
+                        token.Remove();
+                    }
+                }
+
                 foreach (JToken jToken in jArray)
                 {
                     try
