@@ -1194,6 +1194,7 @@ namespace EddiCore
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
             {
                 // We are in witch space and in the ship.
+                @event.docked = true;
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
                 Vehicle = Constants.VEHICLE_SHIP;
 

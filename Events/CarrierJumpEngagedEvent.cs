@@ -24,6 +24,11 @@ namespace EddiEvents
         [PublicAPI("The short name of the destination body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
+        // State variables
+
+        [PublicAPI("True if docked with the carrier as it jumps")]
+        public bool docked { get; set; }
+
         // These properties are not intended to be user facing
 
         public ulong systemAddress { get; private set; }
