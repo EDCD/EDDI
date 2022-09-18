@@ -97,13 +97,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Friend" xml:space="preserve">
+    <value>フレンド</value>
+    
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>ローカル</value>
+    
+  </data>
+  <data name="MultiCrew" xml:space="preserve">
+    <value>マルチクルー</value>
+    
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>プレイヤー</value>
+    
+  </data>
+  <data name="Squadron" xml:space="preserve">
+    <value>スコードロン</value>
+    
+  </data>
+  <data name="StarSystem" xml:space="preserve">
+    <value>星系</value>
+    
+  </data>
+  <data name="VoiceChat" xml:space="preserve">
+    <value>ボイスチャット</value>
+    
+  </data>
+  <data name="Wing" xml:space="preserve">
+    <value>ウィング</value>
+    
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+    
+    
+  </data>
 </root>
