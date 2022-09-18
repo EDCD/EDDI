@@ -117,9 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
+  <data name="Consumable" xml:space="preserve">
+    <value>消耗品</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>データ</value>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>物品</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="Component" xml:space="preserve">
+    <value>資産</value>
+  </data>
 </root>
