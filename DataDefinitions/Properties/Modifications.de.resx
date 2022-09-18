@@ -643,4 +643,16 @@
   <data name="TorpedoSturdy" xml:space="preserve">
     <value>Stabiler Torpedo</value>
   </data>
+  <data name="DecorativeRed" xml:space="preserve">
+    <value>Dekoratives Rot</value>
+    <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
+  </data>
+  <data name="DecorativeGreen" xml:space="preserve">
+    <value>Dekoratives Grün</value>
+    <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
+  </data>
+  <data name="DecorativeYellow" xml:space="preserve">
+    <value>Dekoratives Gelb</value>
+    <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
+  </data>
 </root>
