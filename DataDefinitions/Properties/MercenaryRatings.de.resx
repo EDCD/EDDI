@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Deadeye" xml:space="preserve">
+    <value>Scharfschütze</value>
+    <comment>Mercenary rank Deadeye</comment>
+  </data>
   <data name="Defenceless" xml:space="preserve">
     <value>Wehrlos</value>
     <comment>Mercenary rank Defenceless</comment>
