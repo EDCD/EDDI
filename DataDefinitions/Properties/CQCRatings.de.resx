@@ -98,11 +98,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Helpless" xml:space="preserve">
-    <value>hilflos</value>
+    <value>Hilflos</value>
     <comment>CQC rating Helpless</comment>
   </data>
   <data name="MostlyHelpless" xml:space="preserve">
-    <value>meistens hilflos</value>
+    <value>Meistens hilflos</value>
     <comment>CQC rating MostlyHelpless</comment>
   </data>
   <data name="Amateur" xml:space="preserve">
