@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -263,11 +263,11 @@
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
     <value>Активность пиратов</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 6]</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
     <value>Активность пиратов</value>
-    <comment>Pirate Activity</comment>
+    <comment>Pirate Activity Detected [Threat 7]</comment>
   </data>
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
     <value>Поверхностный сигнал стражей</value>
@@ -316,5 +316,77 @@
   <data name="AttackAftermath" xml:space="preserve">
     <value>Сигнал о помощи</value>
     <comment>Distress Call</comment>
+  </data>
+  <data name="Abandoned_Buggy" xml:space="preserve">
+    <value>Маяк бедствия</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination" xml:space="preserve">
+    <value>Зашифрованный сигнал</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination" xml:space="preserve">
+    <value>Зашифрованный сигнал</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle" xml:space="preserve">
+    <value>Маяк бедствия</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder" xml:space="preserve">
+    <value>Маяк бедствия</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Smugglers_Cache" xml:space="preserve">
+    <value>Нерегулярные маркеры</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Trap_Cargo" xml:space="preserve">
+    <value>Нерегулярные маркеры</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Wreckage_Buggy" xml:space="preserve">
+    <value>Незначительные обломки</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe" xml:space="preserve">
+    <value>Место удара</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite" xml:space="preserve">
+    <value>Место удара</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Cargo" xml:space="preserve">
+    <value>Незначительные обломки</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wrecks_Eagle" xml:space="preserve">
+    <value>Место крушения</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder" xml:space="preserve">
+    <value>Место крушения</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="CrashedShip" xml:space="preserve">
+    <value>Потерпевший крушение корабль</value>
+    <comment>POI CrashedShip</comment>
+  </data>
+  <data name="Gro_controlScenarioTitle" xml:space="preserve">
+    <value>Вооруженное восстание</value>
+    <comment>Gro_controlScenarioTitle</comment>
+  </data>
+  <data name="Trap_Data" xml:space="preserve">
+    <value>Нерегулярные маркеры</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Perimeter" xml:space="preserve">
+    <value>Активный источник энергии</value>
+    <comment>Active Power Source</comment>
+  </data>
+  <data name="GenericSignalSource" xml:space="preserve">
+    <value>Источник сигнала</value>
+    <comment>When the signal source may be one of several types</comment>
   </data>
 </root>
