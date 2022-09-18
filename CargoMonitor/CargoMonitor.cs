@@ -3,6 +3,7 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -62,7 +63,7 @@ namespace EddiCargoMonitor
         /// Create a new CargoMonitor, reading the configuration from the default location on the file system.
         /// This is required for the DLL to load
         /// </summary>
-        [PublicAPI]
+        [UsedImplicitly]
         public CargoMonitor() : this(null)
         {}
 
@@ -328,21 +329,14 @@ namespace EddiCargoMonitor
                     cargo.CalculateNeed();
                     update = true;
                 }
-                if (haulage != null)
+                if (haulage != null && ((haulage.typeEDName?.Contains("mining") ?? false)
+                    || (haulage.typeEDName?.Contains("piracy") ?? false)
+                    || (haulage.typeEDName?.Contains("rescue") ?? false)
+                    || (haulage.typeEDName?.Contains("salvage") ?? false)))
                 {
-                    switch (haulage.typeEDName)
-                    {
-                        case "mining":
-                        case "piracy":
-                        case "rescue":
-                        case "salvage":
-                            {
-                                haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.systemname;
-                                haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.bodyname;
-                                update = true;
-                            }
-                            break;
-                    }
+                    haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+                    haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.bodyname;
+                    update = true;
                 }
             }
             return update;
