@@ -481,7 +481,10 @@
     <value>ˈluːpəs</value>
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
-  
+  <data name="luytens" xml:space="preserve">
+    <value>ˈlaɪtəns</value>
+    <comment>Optional phonetic pronunciation for luytens</comment>
+  </data>
   <data name="Lyncis" xml:space="preserve">
     <value>ˈlɪnsɪs</value>
     <comment>Optional phonetic pronunciation for Lyncis</comment>
@@ -782,15 +785,48 @@
     <value>ʈʂáŋ</value>
     <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Conn" xml:space="preserve">
+    <value>kɒn</value>
+    <comment>Optional phonetic pronunciation for Conn</comment>
+  </data>
+  <data name="Sterope" xml:space="preserve">
+    <value>ˈstɛrəpiː</value>
+    <comment>Optional phonetic pronunciation for Sterope</comment>
+  </data>
+  <data name="Draconis" xml:space="preserve">
+    <value>dreɪˈkəʊnɪs</value>
+    <comment>Optional phonetic pronunciation for Draconis</comment>
+  </data>
+  <data name="Orbital" xml:space="preserve">
+    <value>ˈɔː.bɪ.təl</value>
+    <comment>Optional phonetic pronunciation for Orbital</comment>
+  </data>
+  <data name="Slough" xml:space="preserve">
+    <value>slaʊ</value>
+    <comment>Optional phonetic pronunciation for Slough</comment>
+  </data>
+  <data name="Aachen" xml:space="preserve">
+    <value>ˈɑːxən</value>
+    <comment>Optional pronunciation for Aachen</comment>
+  </data>
+  <data name="Town" xml:space="preserve">
+    <value>taʊn</value>
+    <comment>Optional pronunciation for Town</comment>
+  </data>
+  <data name="Lalande" xml:space="preserve">
+    <value>lalɑ̃d</value>
+    <comment>Optional phonetic pronunciation for the Lalande star catalog</comment>
+  </data>
+  <data name="Luyten" xml:space="preserve">
+    <value>ˈlaɪtən</value>
+    <comment>Optional phonetic pronunciation for the Luyten star catalog</comment>
+  </data>
+  <data name="Gliese" xml:space="preserve">
+    <value>ˈɡliːzə</value>
+    <comment>Optional phonetic pronunciation for the Gliese star catalog</comment>
+  </data>
+  <data name="Carinae" xml:space="preserve">
+    <value>kəˈriːniː</value>
+    <comment>Otional phonetic translation for Carinae</comment>
+  </data>
 </root>
