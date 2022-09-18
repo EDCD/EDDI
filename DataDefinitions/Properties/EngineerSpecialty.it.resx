@@ -127,7 +127,7 @@
     <value>Cannoni</value>
   </data>
   <data name="ChaffAndHeatSinkLaunchers" xml:space="preserve">
-    <value>Emettitore di Bersagli Fantasma e Dispersori di Calore</value>
+    <value>Sistemi AntiRadar e Dissipatori Termici</value>
   </data>
   <data name="ECMs" xml:space="preserve">
     <value>Contromisure Elettroniche</value>
@@ -169,7 +169,7 @@
     <value>Acceleratori di plasma</value>
   </data>
   <data name="PointDefence" xml:space="preserve">
-    <value>Punto di Difesa Automatizzata</value>
+    <value>Torretta difensiva a puntamento</value>
   </data>
   <data name="PowerDistributors" xml:space="preserve">
     <value>Distributori di energia</value>
