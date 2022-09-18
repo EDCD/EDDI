@@ -157,4 +157,20 @@
   <data name="TerroristLeader" xml:space="preserve">
     <value>Líder Terrorista</value>
   </data>
+  <data name="AIHumanoid" xml:space="preserve">
+    <value>Membros da Facção</value>
+    <comment>Massacre Mission Target: Faction Members</comment>
+  </data>
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>Guardas da Facção</value>
+    <comment>Massacre Mission Target: Faction Guards</comment>
+  </data>
+  <data name="Deserter" xml:space="preserve">
+    <value>Desertores</value>
+    <comment>Massacre Mission Target</comment>
+  </data>
+  <data name="CitizenHumanoid" xml:space="preserve">
+    <value>Cidadãos</value>
+    <comment>Massacre Mission Target: Citizens</comment>
+  </data>
 </root>
