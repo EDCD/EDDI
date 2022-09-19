@@ -345,10 +345,10 @@ namespace EddiDataDefinitions
             if (string.IsNullOrEmpty(name)) { return; }
 
             var tidiedName = name.ToLowerInvariant()
+                .Replace("agriculture", "agri") // to match the `agri` economy definition
                 .Replace("altruismcredits", "altruism_credits")
+                .Replace("elections", "election") // to match the `election` faction state definition
                 .Replace("assassinationillegal", "assassinate_illegal")
-                .Replace("conflict_civilwar", "conflictcivilwar")
-                .Replace("conflict_war", "conflictwar")
                 .Replace("massacreillegal", "massacre_illegal")
                 .Replace("onslaughtillegal", "onslaught_illegal")
                 .Replace("salvageillegal", "salvage_illegal")
@@ -368,29 +368,22 @@ namespace EddiDataDefinitions
                 t == "mb"
             );
 
-            // Skip faction state elements
-            elements.RemoveAll(t => FactionState
-                .AllOfThem
-                .Select(s => s.edname)
-                .Contains(t.Replace("elections", "election"), StringComparer.InvariantCultureIgnoreCase));
-
-            // Skip government elements
-            elements.RemoveAll(t => Government
-                .AllOfThem
-                .Select(s => s.edname.Replace("$government_", "").Replace(";", ""))
-                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
-
-            // Skip economy elements
-            elements.RemoveAll(t => Economy
-                .AllOfThem
-                .Select(s => s.edname)
-                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
-
             // Skip passenger elements (we'll fill these using the `Passengers` event)
             elements.RemoveAll(t => PassengerType
                 .AllOfThem
                 .Select(s => s.edname)
                 .Contains(t, StringComparer.InvariantCultureIgnoreCase));
+
+            // Tidy up any government name embedded in the elements
+            for (var index = 0; index < elements.Count; index++)
+            {
+                var gov = Government.AllOfThem
+                    .FirstOrDefault(e => e.edname.ToLowerInvariant() == $"$government_{elements[index]};");
+                if (gov != null)
+                {
+                    elements[index] = gov.edname;
+                }
+            }
 
             // Skip numeric elements
             elements.RemoveAll(t => int.TryParse(t, out _));
@@ -402,9 +395,9 @@ namespace EddiDataDefinitions
             });
 
             this.tagsList = new List<MissionType>();
-            foreach (var type in elements)
+            foreach (var element in elements)
             {
-                var typeDef = MissionType.FromEDName(type);
+                var typeDef = MissionType.FromEDName(element);
                 if (typeDef != null)
                 {
                     this.tagsList.Add(typeDef);

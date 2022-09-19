@@ -13,10 +13,10 @@ namespace UnitTests
     [TestClass]
     public class MissionMonitorTests : TestBase
     {
-        MissionMonitor missionMonitor = new MissionMonitor();
-        Mission mission;
-        string line;
-        List<Event> events;
+        private readonly MissionMonitor missionMonitor = new MissionMonitor();
+        private Mission mission;
+        private string line;
+        private List<Event> events;
 
         [TestInitialize]
         public void StartTestMissionMonitor()
@@ -133,6 +133,7 @@ namespace UnitTests
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
             Assert.IsNotNull(mission);
             Assert.IsTrue(mission.edTags.Contains("Courier"));
+            Assert.IsTrue(mission.edTags.Contains("Election"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsFalse(mission.originreturn);
             Assert.IsTrue(mission.legal);
@@ -148,6 +149,7 @@ namespace UnitTests
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563829);
             Assert.IsNotNull(mission);
             Assert.IsTrue(mission.edTags.Contains("Salvage"));
+            Assert.IsTrue(mission.edTags.Contains("Planet"));
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);

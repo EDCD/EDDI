@@ -244,14 +244,6 @@
   <data name="HackMegaship" xml:space="preserve">
     <value>Hack Megaship</value>
   </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Civil War Targets</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>War Targets</value>
-    <comment>Massacre mission type</comment>
-  </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Skimmer Targets</value>
     <comment>Massacre type</comment>
@@ -316,5 +308,8 @@
   </data>
   <data name="POI" xml:space="preserve">
     <value>Point of Interest</value>
+  </data>
+  <data name="Conflict" xml:space="preserve">
+    <value>Conflict Targets</value>
   </data>
 </root>

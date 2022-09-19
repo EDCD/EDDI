@@ -142,20 +142,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civil War Targets.
+        ///   Looks up a localized string similar to Conflict Targets.
         /// </summary>
-        internal static string ConflictCivilWar {
+        internal static string Conflict {
             get {
-                return ResourceManager.GetString("ConflictCivilWar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to War Targets.
-        /// </summary>
-        internal static string ConflictWar {
-            get {
-                return ResourceManager.GetString("ConflictWar", resourceCulture);
+                return ResourceManager.GetString("Conflict", resourceCulture);
             }
         }
         
