@@ -2140,6 +2140,7 @@ namespace EddiCore
                         systemname = systemName,
                         systemAddress = systemAddress,
                     };
+                    CurrentStarSystem.AddOrUpdateBody(body);
                 }
                 CurrentStellarBody = body;
             }
