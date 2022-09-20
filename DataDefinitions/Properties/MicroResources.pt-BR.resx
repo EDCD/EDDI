@@ -703,7 +703,10 @@
     <value>Registros Médicos</value>
     <comment>A collection of medical data related to a specific group or population.</comment>
   </data>
-  
+  <data name="MedicalTrialRecords" xml:space="preserve">
+    <value>Registros Médicos</value>
+    <comment>Results of clinical research evaluating new medical procedures or inventions.</comment>
+  </data>
   <data name="MiningAnalytics" xml:space="preserve">
     <value>Análise de Mineração</value>
     <comment>Scientific data used to increase the safety and efficiency of a specific mining operation.</comment>

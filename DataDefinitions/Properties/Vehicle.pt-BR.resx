@@ -138,4 +138,7 @@
   <data name="TestBuggy" xml:space="preserve">
     <value>VRS Scarab</value>
   </data>
+  <data name="CombatMulticrewSRV01" xml:space="preserve">
+    <value>VRS Scorpion</value>
+  </data>
 </root>

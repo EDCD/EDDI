@@ -117,60 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BountyHunter" xml:space="preserve">
-    <value>Kopfgeldjäger</value>
+  <data name="Military_Empire" xml:space="preserve">
+    <value>Vascello della Marina Imperiale</value>
+    
   </data>
-  <data name="Civilian" xml:space="preserve">
-    <value>Zivilist</value>
+  <data name="Military_Independent" xml:space="preserve">
+    <value>Forza di difesa locale</value>
+    
   </data>
-  <data name="Hostage" xml:space="preserve">
-    <value>Geisel</value>
+  <data name="Military_Alliance" xml:space="preserve">
+    <value>Forza di Difesa dell'Alleanza</value>
+    
   </data>
-  <data name="Miner" xml:space="preserve">
-    <value>Bergmann</value>
+  <data name="Police_Empire" xml:space="preserve">
+    <value>Servizi di sicurezza interni</value>
+    
   </data>
-  <data name="Pirate" xml:space="preserve">
-    <value>Pirat</value>
+  <data name="Police_Federation" xml:space="preserve">
+    <value>Servizi di sicurezza Federali</value>
+    
   </data>
-  <data name="PirateLord" xml:space="preserve">
-    <value>Piratenfürst</value>
+  <data name="Police_Alliance" xml:space="preserve">
+    <value>Forze di polizia alleate</value>
+    
   </data>
-  <data name="Security" xml:space="preserve">
-    <value>Sicherheit</value>
+  <data name="Military_Federation" xml:space="preserve">
+    <value>Nave della Marina Federale</value>
+    
   </data>
-  <data name="Smuggler" xml:space="preserve">
-    <value>Schmuggler</value>
-  </data>
-  <data name="Terrorist" xml:space="preserve">
-    <value>Terrorist</value>
-  </data>
-  <data name="Trader" xml:space="preserve">
-    <value>Händler</value>
-  </data>
-  <data name="VenerableGeneral" xml:space="preserve">
-    <value>Ehrwürdiger General</value>
-  </data>
-  <data name="DeserterASS" xml:space="preserve">
-    <value>Deserteur</value>
-    <comment>Assassination mission target: Deserter</comment>
-  </data>
-  <data name="TerroristLeader" xml:space="preserve">
-    <value>Terroristenführer</value>
-  </data>
-  <data name="AIHumanoid" xml:space="preserve">
-    <value>Fraktionsmitglied</value>
-    <comment>Massacre Mission Target: Faction Members</comment>
-  </data>
-  <data name="GuardHumanoid" xml:space="preserve">
-    <value>Fraktionswachen</value>
-    <comment>Massacre Mission Target: Faction Guards</comment>
-  </data>
-  <data name="Deserter" xml:space="preserve">
-    <value>Deserteure</value>
-    <comment>Massacre Mission Target</comment>
-  </data>
-  <data name="CitizenHumanoid" xml:space="preserve">
-    <value>Bürger</value>
-    <comment>Massacre Mission Target: Citizens</comment>
+  <data name="Police_Independent" xml:space="preserve">
+    <value>Vascello delle autorità locali</value>
+    
   </data>
 </root>

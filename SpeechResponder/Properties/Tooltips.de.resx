@@ -150,4 +150,7 @@
   <data name="word_wrap" xml:space="preserve">
     <value>Zeilenumbruch</value>
   </data>
+  <data name="folding" xml:space="preserve">
+    <value>Einklappen</value>
+  </data>
 </root>

@@ -120,7 +120,9 @@
   <data name="Altruism" xml:space="preserve">
     <value>Donazione</value>
   </data>
-  
+  <data name="Credits" xml:space="preserve">
+    <value>Crediti</value>
+  </data>
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinio</value>
   </data>
@@ -152,7 +154,7 @@
     <value>Disabilitazione di Gruppo</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
-    <value>Acquisizione di Permesso</value>
+    <value>Occasione per il Lasciapassare</value>
   </data>
   <data name="Hack" xml:space="preserve">
     <value>Hackeraggio</value>
@@ -184,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Recupero di Carico</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Recupero</value>
   </data>
@@ -203,33 +207,114 @@
   <data name="StartZone" xml:space="preserve">
     <value>Area di Partenza</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="OnFoot" xml:space="preserve">
+    <value>A piedi</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>Operazioni clandestine</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>Serie</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Benvenuto</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Legale</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>Illegale</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>Planetario</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>Contratto per la Marina Federale</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>Contratto per la Marina Imperiale</value>
+  </data>
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>Disabilita Mega Vascello</value>
+  </data>
+  <data name="Founder" xml:space="preserve">
+    <value>Fondatore</value>
+  </data>
+  <data name="HackMegaship" xml:space="preserve">
+    <value>Viola Mega Vascello</value>
+  </data>
+  <data name="ConflictCivilWar" xml:space="preserve">
+    <value>Obiettivi della Guerra Civile</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="ConflictWar" xml:space="preserve">
+    <value>Obiettivi di Guerra</value>
+    <comment>Massacre mission type</comment>
+  </data>
+  <data name="Skimmer" xml:space="preserve">
+    <value>Obiettivi Skimmer</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Difficile</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>Segreto</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Insediamento disattivato</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>Assalto a Insediamento</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>Furto della produzione</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>Non violento</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Riattivazione di Insediamento</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>Riattivazione di Insediamento</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Disattivazione di Insediamento</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Sabotaggio della produzione di un Insediamento</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planetario</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>Prigionieri Politici</value>
+    <comment>Bulk passenger type</comment>
+  </data>
+  <data name="Assassination" xml:space="preserve">
+    <value>Assassinio</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>Rapina</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>Punto di interesse</value>
+  </data>
 </root>

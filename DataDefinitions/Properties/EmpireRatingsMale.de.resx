@@ -103,7 +103,7 @@
     <comment>Empire rank None</comment>
   </data>
   <data name="Outsider" xml:space="preserve">
-    <value>Außenseiter</value>
+    <value>Fremder</value>
     <comment>Empire rank Outsider</comment>
   </data>
   <data name="Serf" xml:space="preserve">
@@ -115,7 +115,7 @@
     <comment>Empire rank Master</comment>
   </data>
   <data name="Squire" xml:space="preserve">
-    <value>Landgraf</value>
+    <value>Knappe</value>
     <comment>Empire rank Squire</comment>
   </data>
   <data name="Knight" xml:space="preserve">
@@ -123,7 +123,7 @@
     <comment>Empire rank Knight</comment>
   </data>
   <data name="Lord" xml:space="preserve">
-    <value>Lord</value>
+    <value>Fürst</value>
     <comment>Empire rank Lord</comment>
   </data>
   <data name="Baron" xml:space="preserve">

@@ -136,6 +136,9 @@
     <value>Taipan</value>
   </data>
   <data name="TestBuggy" xml:space="preserve">
-    <value>SRV Scarab</value>
+    <value>Scarab SRV</value>
+  </data>
+  <data name="CombatMulticrewSRV01" xml:space="preserve">
+    <value>Scorpion SRV</value>
   </data>
 </root>
