@@ -552,32 +552,39 @@ namespace EddiVoiceAttackResponder
 
             Logging.Debug("Set body information (" + prefix + ")");
         }
-        
+
         private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, ref dynamic vaProxy)
         {
             var variables = new MetaVariables(fleetCarrier.GetType(), fleetCarrier);
             var va_vars = variables.Results.AsVoiceAttackVariables(prefix);
             foreach (var variable in va_vars)
             {
-                if (variable.variableType == typeof(string))
+                try
                 {
-                    vaProxy.SetText(variable.key, variable.value);
+                    if (variable.variableType == typeof(string))
+                    {
+                        vaProxy.SetText(variable.key, variable.value as string);
+                    }
+                    else if (variable.variableType == typeof(int))
+                    {
+                        vaProxy.SetInt(variable.key, variable.value as int?);
+                    }
+                    else if (variable.variableType == typeof(bool))
+                    {
+                        vaProxy.SetBoolean(variable.key, variable.value as bool?);
+                    }
+                    else if (variable.variableType == typeof(decimal))
+                    {
+                        vaProxy.SetDecimal(variable.key, variable.value as decimal?);
+                    }
+                    else if (variable.variableType == typeof(DateTime))
+                    {
+                        vaProxy.SetDateTime(variable.key, variable.value as DateTime?);
+                    }
                 }
-                else if (variable.variableType == typeof(int))
+                catch (Exception ex)
                 {
-                    vaProxy.SetInt(variable.key, variable.value);
-                }
-                else if (variable.variableType == typeof(bool))
-                {
-                    vaProxy.SetBoolean(variable.key, variable.value);
-                }
-                else if (variable.variableType == typeof(decimal))
-                {
-                    vaProxy.SetDecimal(variable.key, variable.value);
-                }
-                else if (variable.variableType == typeof(DateTime))
-                {
-                    vaProxy.SetDateTime(variable.key, variable.value);
+                    Logging.Warn(ex.Message, ex);
                 }
             }
         }
