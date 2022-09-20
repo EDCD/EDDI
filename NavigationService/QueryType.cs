@@ -16,6 +16,7 @@ namespace EddiNavigationService
         most,
         nearest,
         neutron,
+        carrier,
         raw,
         recalculating,
         scoop,

@@ -368,7 +368,7 @@ namespace EddiJournalMonitor
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
-                                    
+
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
@@ -377,7 +377,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
-                                }
+                                    }
                                 }
                                 handled = true;
                                 break;

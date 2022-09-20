@@ -178,6 +178,51 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allocated Space (T):.
+        /// </summary>
+        public static string carrier_current_load_textbox_desc {
+            get {
+                return ResourceManager.GetString("carrier_current_load_textbox_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current System:.
+        /// </summary>
+        public static string carrier_current_system_textbox_desc {
+            get {
+                return ResourceManager.GetString("carrier_current_system_textbox_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination System:.
+        /// </summary>
+        public static string carrier_destination_system_textbox_desc {
+            get {
+                return ResourceManager.GetString("carrier_destination_system_textbox_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --- Error: Connect to the Frontier API or visit the Carrier Management screen to obtain this value ---.
+        /// </summary>
+        public static string carrier_err_frontier_api_connection_recommended {
+            get {
+                return ResourceManager.GetString("carrier_err_frontier_api_connection_recommended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  --- Error: Connect to the Frontier API to obtain this value ---.
+        /// </summary>
+        public static string carrier_err_frontier_api_connection_required {
+            get {
+                return ResourceManager.GetString("carrier_err_frontier_api_connection_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Route.
         /// </summary>
         public static string clear_route_button {
@@ -304,11 +349,29 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fuel (T).
+        /// </summary>
+        public static string header_fuel_required {
+            get {
+                return ResourceManager.GetString("header_fuel_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Heading:.
         /// </summary>
         public static string header_heading {
             get {
                 return ResourceManager.GetString("header_heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icy Ring.
+        /// </summary>
+        public static string header_icy_ring {
+            get {
+                return ResourceManager.GetString("header_icy_ring", resourceCulture);
             }
         }
         
@@ -354,6 +417,15 @@ namespace EddiNavigationMonitor.Properties {
         public static string header_poi {
             get {
                 return ResourceManager.GetString("header_poi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pristine Mining.
+        /// </summary>
+        public static string header_pristine_mining {
+            get {
+                return ResourceManager.GetString("header_pristine_mining", resourceCulture);
             }
         }
         
@@ -583,20 +655,29 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current Plotted Route.
+        ///   Looks up a localized string similar to Plot Carrier Route.
         /// </summary>
-        public static string tab_plotted_route {
+        public static string tab_plot_carrier_route {
             get {
-                return ResourceManager.GetString("tab_plotted_route", resourceCulture);
+                return ResourceManager.GetString("tab_plot_carrier_route", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Route Plotter.
+        ///   Looks up a localized string similar to Plot Ship Route.
         /// </summary>
-        public static string tab_route_plotter {
+        public static string tab_plot_ship_route {
             get {
-                return ResourceManager.GetString("tab_route_plotter", resourceCulture);
+                return ResourceManager.GetString("tab_plot_ship_route", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Route.
+        /// </summary>
+        public static string tab_plotted_route {
+            get {
+                return ResourceManager.GetString("tab_plotted_route", resourceCulture);
             }
         }
         

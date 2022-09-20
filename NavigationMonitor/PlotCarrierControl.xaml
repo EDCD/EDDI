@@ -1,0 +1,209 @@
+﻿<UserControl x:Class="EddiNavigationMonitor.PlotCarrierControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:eddi="clr-namespace:Eddi;assembly=EDDI"
+             xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
+             xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+             xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:eddiNavigationService="clr-namespace:EddiNavigationService;assembly=EddiNavigationService"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ContextMenu x:Key="ContextMenu">
+            <MenuItem Command="Copy">
+                <MenuItem.Icon>
+                    <Image Source="Images/Copy.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" Margin="0, 10">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="carrierNameTextBlock"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="9" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_current_system_textbox_desc}" VerticalAlignment="Center" />
+                    <eddi:StarSystemComboBox x:Name="carrierOriginSystemDropDown"
+                                             IsEditable="True"
+                                             IsReadOnly="False"
+                                             IsTextSearchEnabled="False"
+                                             TextBoxBase.TextChanged="OriginSystemText_TextChanged"
+                                             Grid.Row="1"
+                                             Grid.Column="1"
+                                             MinWidth="175"
+                                             Margin="10, 7"
+                                             VerticalContentAlignment="Center"
+                                             LostFocus="OriginSystemText_LostFocus"
+                                             SelectionChanged="OriginSystemText_SelectionChanged"/>
+                    <TextBlock x:Name="carrierCurrentSystem" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_destination_system_textbox_desc}" VerticalAlignment="Center" />
+                    <eddi:StarSystemComboBox x:Name="destinationSystemDropDown"
+                                      IsEditable="True"
+                                      IsReadOnly="False"
+                                      IsTextSearchEnabled="False"
+                                      TextBoxBase.TextChanged="DestinationSystemText_TextChanged"
+                                      Grid.Row="1"
+                                      Grid.Column="4"
+                                      MinWidth="175"
+                                      Margin="10, 7"
+                                      VerticalContentAlignment="Center"
+                                      LostFocus="DestinationSystemText_LostFocus"
+                                      SelectionChanged="DestinationSystemText_SelectionChanged"/>
+                    <TextBlock Grid.Column="6" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_current_load_textbox_desc}" VerticalAlignment="Center" />
+                    <TextBox x:Name="carrierCurrentLoad" Grid.Column="7" Grid.Row="1"
+                             PreviewTextInput="EnsureValidInteger"
+                             KeyDown="carrierCurrentLoad_KeyDown"
+                             LostFocus="carrierCurrentLoad_LostFocus"
+                             TextAlignment="Center"
+                             VerticalContentAlignment="Center" 
+                             MinWidth="60"
+                             Margin="10, 5" />
+                </Grid>
+            </DockPanel>
+            <Button x:Name="SearchButton" HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
+                <Button.Content>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="{x:Static resx:NavigationMonitor.search}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                        <ProgressBar x:Name="SearchProgressBar"
+                                        IsIndeterminate="True"
+                                        FlowDirection="LeftToRight"
+                                        Foreground="AliceBlue"
+                                        Height="3"
+                                        MinWidth="30"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Center"
+                                        Visibility="Collapsed">
+                        </ProgressBar>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="5">
+            <Button x:Name="ClearRouteButton" HorizontalAlignment="Center" Click="ClearRouteButton_Click" Content="{x:Static resx:NavigationMonitor.clear_route_button}" ToolTip="{x:Static resx:NavigationMonitor.clear_route_button_tooltip}" MinWidth="150" />
+        </UniformGrid>
+        <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow" SelectionUnit="Cell">
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.(eddiDataDefinitions:NavWaypoint.index)}" HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" MinWidth="50" IsReadOnly="True" Binding="{Binding Path=visited}">
+                    <DataGridCheckBoxColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.HeaderStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="*" Binding="{Binding Path=systemName}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Left" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_remaining_ly}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=distanceRemaining, StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_fuel_required}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=fuelNeeded, StringFormat='{}{0:N0}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_icy_ring}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=hasIcyRing}">
+                    <DataGridCheckBoxColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_refuel_recommended}"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.HeaderStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_pristine_mining}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=hasPristineMining}">
+                    <DataGridCheckBoxColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_neutron_star}"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.HeaderStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTemplateColumn MinWidth="31">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="copySystemNameToClipboard" MinWidth="30" HorizontalAlignment="Center" ToolTip="{x:Static resx:NavigationMonitor.copy_system_button_tooltip}">
+                                <StackPanel>
+                                    <Image Source="Images/Copy.png" Height="16"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button HorizontalAlignment="Stretch" Click="addBookmark" Height="Auto" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

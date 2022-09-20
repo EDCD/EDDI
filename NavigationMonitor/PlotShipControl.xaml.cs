@@ -20,7 +20,7 @@ namespace EddiNavigationMonitor
     /// <summary>
     /// Interaction logic for RoutePlotterControl.xaml
     /// </summary>
-    public partial class RoutePlotterControl : UserControl
+    public partial class PlotShipControl : UserControl
     {
         private Task searchTask;
 
@@ -29,7 +29,7 @@ namespace EddiNavigationMonitor
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
 
-        public RoutePlotterControl()
+        public PlotShipControl()
         {
             InitializeComponent();
             plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList.Waypoints;

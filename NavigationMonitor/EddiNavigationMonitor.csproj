@@ -63,17 +63,24 @@
     <Compile Include="BookmarksControl.xaml.cs">
       <DependentUpon>BookmarksControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlottedRouteControl.xaml.cs">
-      <DependentUpon>PlottedRouteControl.xaml</DependentUpon>
+    <Compile Include="CurrentRouteControl.xaml.cs">
+      <DependentUpon>CurrentRouteControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RoutePlotterControl.xaml.cs">
-      <DependentUpon>RoutePlotterControl.xaml</DependentUpon>
+    <Compile Include="PlotCarrierControl.xaml.cs">
+      <DependentUpon>PlotCarrierControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlotShipControl.xaml.cs">
+      <DependentUpon>PlotShipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GalacticPOIControl.xaml.cs">
       <DependentUpon>GalacticPOIControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
+      <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
+      <Name>EddiCompanionAppService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
       <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
       <Name>EddiConfigService</Name>
@@ -85,6 +92,10 @@
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EddiDataProviderService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
+      <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
+      <Name>EddiStatusService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
@@ -101,10 +112,6 @@
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj">
-      <Project>{fec7ba2b-23c3-4f4f-96ef-bf1f1909eb03}</Project>
-      <Name>EddiStatusMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
@@ -141,13 +148,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PlottedRouteControl.xaml">
+    <Page Include="CurrentRouteControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RoutePlotterControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="PlotCarrierControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlotShipControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="GalacticPOIControl.xaml">
       <SubType>Designer</SubType>

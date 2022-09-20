@@ -88,6 +88,15 @@ namespace EddiNavigationService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carrier Route.
+        /// </summary>
+        public static string query_type_carrier {
+            get {
+                return ResourceManager.GetString("query_type_carrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encoded Materials Trader.
         /// </summary>
         public static string query_type_encoded {

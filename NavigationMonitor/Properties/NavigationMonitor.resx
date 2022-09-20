@@ -212,6 +212,7 @@
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Heading:</value>
+    <comment> A UI element describing a compass heading for surface navigation</comment>
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Distance (km):</value>
@@ -246,10 +247,10 @@
     <value>Bookmarks</value>
   </data>
   <data name="tab_plotted_route" xml:space="preserve">
-    <value>Current Plotted Route</value>
+    <value>Current Route</value>
   </data>
-  <data name="tab_route_plotter" xml:space="preserve">
-    <value>Route Plotter</value>
+  <data name="tab_plot_ship_route" xml:space="preserve">
+    <value>Plot Ship Route</value>
   </data>
   <data name="header_distance_remaining_ly" xml:space="preserve">
     <value>Remaining (LY)</value>
@@ -325,5 +326,32 @@
   </data>
   <data name="copy_system_button_tooltip" xml:space="preserve">
     <value>Copy this system name to your clipboard</value>
+  </data>
+  <data name="tab_plot_carrier_route" xml:space="preserve">
+    <value>Plot Carrier Route</value>
+  </data>
+  <data name="header_fuel_required" xml:space="preserve">
+    <value>Fuel (T)</value>
+  </data>
+  <data name="header_icy_ring" xml:space="preserve">
+    <value>Icy Ring</value>
+  </data>
+  <data name="header_pristine_mining" xml:space="preserve">
+    <value>Pristine Mining</value>
+  </data>
+  <data name="carrier_current_system_textbox_desc" xml:space="preserve">
+    <value>Current System:</value>
+  </data>
+  <data name="carrier_destination_system_textbox_desc" xml:space="preserve">
+    <value>Destination System:</value>
+  </data>
+  <data name="carrier_current_load_textbox_desc" xml:space="preserve">
+    <value>Allocated Space (T):</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_required" xml:space="preserve">
+    <value> --- Error: Connect to the Frontier API to obtain this value ---</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_recommended" xml:space="preserve">
+    <value>--- Error: Connect to the Frontier API or visit the Carrier Management screen to obtain this value ---</value>
   </data>
 </root>

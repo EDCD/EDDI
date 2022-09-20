@@ -313,11 +313,11 @@ namespace EddiCore
         public FleetCarrier FleetCarrier
         {
             get => fleetCarrier;
-            private set
+            set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(FleetCarrier));
+                    OnPropertyChanged();
                 }
                 if (fleetCarrier != null) { fleetCarrier.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -326,7 +326,6 @@ namespace EddiCore
             }
         }
         private FleetCarrier fleetCarrier;
-
 
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
@@ -452,15 +451,6 @@ namespace EddiCore
                     else
                     {
                         Logging.Info("EDDI access to the Frontier API is not enabled.");
-                    }
-
-                    try
-                    {
-                        refreshFleetCarrier();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to obtain Frontier API fleet carrier: " + ex);
                     }
                 });
 
@@ -981,14 +971,6 @@ namespace EddiCore
                     {
                         passEvent = eventPowerVoucherReceived(powerVoucherReceivedEvent);
                     }
-                    else if (@event is CarrierJumpCancelledEvent carrierJumpCancelledEvent)
-                    {
-                        passEvent = eventCarrierJumpCancelled(carrierJumpCancelledEvent);
-                    }
-                    else if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)
-                    {
-                        passEvent = eventCarrierJumpRequest(carrierJumpRequestEvent);
-                    }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
                         passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
@@ -1040,26 +1022,6 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
-        }
-
-        private bool eventCarrierJumpRequest(CarrierJumpRequestEvent carrierJumpRequestEvent)
-        {
-            if (FleetCarrier == null)
-            {
-                FleetCarrier = new FleetCarrier() { carrierID = carrierJumpRequestEvent.carrierId };
-            }
-            FleetCarrier.nextStarSystem = carrierJumpRequestEvent.systemname;
-            return true;
-        }
-
-        private bool eventCarrierJumpCancelled(CarrierJumpCancelledEvent carrierJumpCancelledEvent)
-        {
-            if (FleetCarrier == null)
-            {
-                FleetCarrier = new FleetCarrier() { carrierID = carrierJumpCancelledEvent.carrierId };
-            }
-            FleetCarrier.nextStarSystem = null;
-            return true;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)
@@ -1258,12 +1220,6 @@ namespace EddiCore
                 }
             }
 
-            if (FleetCarrier is null)
-            {
-                FleetCarrier = new FleetCarrier() { carrierID = @event.carrierId };
-            }
-            FleetCarrier.currentStarSystem = @event.systemname;
-
             return true;
         }
 
@@ -1415,15 +1371,6 @@ namespace EddiCore
                 Logging.Error("Whoops! CarrierJump event recorded when not docked.", @event);
                 throw new NotImplementedException();
             }
-
-
-            if (FleetCarrier is null)
-            {
-                FleetCarrier = new FleetCarrier() { carrierID = @event.carrierId, name = @event.carriername };
-            }
-            FleetCarrier.currentStarSystem = @event.systemname;
-            FleetCarrier.Market.name = @event.carriername;
-            FleetCarrier.Market.systemAddress = @event.systemAddress;
 
             return true;
         }
@@ -2899,35 +2846,6 @@ namespace EddiCore
                                 success = false;
                             }
                         }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Exception obtaining profile", ex);
-                    success = false;
-                }
-            }
-            return success;
-        }
-
-        /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
-        public bool refreshFleetCarrier()
-        {
-            bool success = true;
-            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
-            {
-                try
-                {
-                    var frontierApiCarrier = CompanionAppService.Instance.FleetCarrier();
-                    if (frontierApiCarrier != null)
-                    {
-                        // Update our Fleet Carrier object
-                        var updatedCarrier = FleetCarrier.FromFrontierApiFleetCarrier(FleetCarrier, frontierApiCarrier, frontierApiCarrier.timestamp, JournalTimeStamp, out bool carrierMatches);
-
-                        // Stop if the carrier returned from the profile does not match our expected carrier name
-                        if (!carrierMatches) { return false; }
-
-                        FleetCarrier = updatedCarrier;
                     }
                 }
                 catch (Exception ex)

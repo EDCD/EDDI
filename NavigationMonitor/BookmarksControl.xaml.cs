@@ -2,7 +2,6 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiStatusMonitor;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -25,8 +24,6 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class BookmarksControl : UserControl
     {
-        private Status currentStatus { get; set; }
-
         private NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
@@ -36,14 +33,6 @@ namespace EddiNavigationMonitor
         {
             InitializeComponent();
             bookmarksData.ItemsSource = navigationMonitor().Bookmarks;
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
-        }
-        private void OnStatusUpdated(object sender, EventArgs e)
-        {
-            if (sender is Status status)
-            {
-                currentStatus = status;
-            }
         }
 
         private void bookmarkUpdated(object sender, DataTransferEventArgs e)
@@ -182,15 +171,15 @@ namespace EddiNavigationMonitor
                     }
                     else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
                     {
-                        if (currentStatus != null)
+                        if (navigationMonitor().currentStatus != null)
                         {
-                            latitude = currentStatus.latitude;
-                            longitude = currentStatus.longitude;
+                            latitude = navigationMonitor().currentStatus.latitude;
+                            longitude = navigationMonitor().currentStatus.longitude;
 
                             if (navConfig.tdPOI != null)
                             {
                                 // Get current distance from `Touchdown` POI
-                                decimal? distanceKm = SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                decimal? distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                 if (distanceKm < 5)
                                 {
                                     poi = navConfig.tdPOI;
@@ -206,8 +195,8 @@ namespace EddiNavigationMonitor
                     {
                         isStation = true;
                         poi = currentStation.name;
-                        latitude = currentStatus?.latitude;
-                        longitude = currentStatus?.longitude;
+                        latitude = navigationMonitor().currentStatus?.latitude;
+                        longitude = navigationMonitor().currentStatus?.longitude;
                         nearby = true;
                     }
                 }
@@ -219,21 +208,44 @@ namespace EddiNavigationMonitor
                         poi = currentStation.name;
                         nearby = true;
                     }
-                    if (currentStatus != null && currentStatus.near_surface)
+
+                    if (navigationMonitor().currentStatus != null && navigationMonitor().currentStatus.near_surface)
                     {
-                        GetSurfaceCoordinates(currentStatus, out latitude, out longitude);
+                        if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP ||
+                            EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW ||
+                            EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
+                        {
+                            GetSurfaceCoordinates(navigationMonitor().currentStatus, out latitude, out longitude);
+                        }
+                        else
+                        {
+                            latitude = navigationMonitor().currentStatus.latitude;
+                            longitude = navigationMonitor().currentStatus.longitude;
+                            nearby = true;
+
+                            if (navConfig.tdPOI != null)
+                            {
+                                // Get current distance from `Touchdown` POI
+                                decimal? distanceKm =
+                                    SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                if (distanceKm < 5)
+                                {
+                                    poi = navConfig.tdPOI;
+                                }
+                            }
+                        }
                     }
                 }
                 else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                 {
-                    if (currentStatus != null && currentStatus.near_surface)
+                    if (navigationMonitor().currentStatus != null && navigationMonitor().currentStatus.near_surface)
                     {
-                        GetSurfaceCoordinates(currentStatus, out latitude, out longitude);
+                        GetSurfaceCoordinates(navigationMonitor().currentStatus, out latitude, out longitude);
                     }
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.systemAddress, currentSystem.x, currentSystem.y, currentSystem.z,
-                    currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
+                    navigationMonitor().currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
                 navBookmark.visitLog = currentSystem.visitLog;
                 navigationMonitor().Bookmarks.Add(navBookmark);
                 navigationMonitor().WriteNavConfig();
@@ -297,29 +309,29 @@ namespace EddiNavigationMonitor
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
                             {
-                                navBookmark.latitude = currentStatus.latitude;
-                                navBookmark.longitude = currentStatus.longitude;
+                                navBookmark.latitude = navigationMonitor().currentStatus.latitude;
+                                navBookmark.longitude = navigationMonitor().currentStatus.longitude;
 
                                 if (navConfig.tdPOI != null)
                                 {
                                     // Get current distance from `Touchdown` POI
-                                    decimal? distanceKm = SurfaceDistanceKm(currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                    decimal? distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                     if (distanceKm < 5)
                                     {
                                         navBookmark.poi = navConfig.tdPOI;
                                     }
                                 }
                             }
-                            navBookmark.bodyname = currentStatus.bodyname;
+                            navBookmark.bodyname = navigationMonitor().currentStatus.bodyname;
                         }
                         else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                         {
-                            if (currentStatus.near_surface)
+                            if (navigationMonitor().currentStatus.near_surface)
                             {
-                                GetSurfaceCoordinates(currentStatus, out decimal? latitude, out decimal? longitude);
+                                GetSurfaceCoordinates(navigationMonitor().currentStatus, out decimal? latitude, out decimal? longitude);
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
-                                navBookmark.bodyname = currentStatus.bodyname;
+                                navBookmark.bodyname = navigationMonitor().currentStatus.bodyname;
                             }
                         }
                     }
@@ -359,7 +371,7 @@ namespace EddiNavigationMonitor
                 if (checkBox.IsChecked != selectedBookmark.useStraightPath)
                 {
                     selectedBookmark.useStraightPath = checkBox.IsChecked ?? false;
-                    navigationMonitor().CheckBookmarkPosition(selectedBookmark, currentStatus, false);
+                    navigationMonitor().CheckBookmarkPosition(selectedBookmark, navigationMonitor().currentStatus, false);
                     navigationMonitor().WriteNavConfig();
                 }
             }
@@ -373,7 +385,7 @@ namespace EddiNavigationMonitor
                 if (arrivalRadiusMeters != selectedBookmark.arrivalRadiusMeters)
                 {
                     selectedBookmark.arrivalRadiusMeters = arrivalRadiusMeters;
-                    navigationMonitor().CheckBookmarkPosition(selectedBookmark, currentStatus, false);
+                    navigationMonitor().CheckBookmarkPosition(selectedBookmark, navigationMonitor().currentStatus, false);
                     navigationMonitor().WriteNavConfig();
                 }
             }

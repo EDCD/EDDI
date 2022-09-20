@@ -8,14 +8,14 @@ namespace EddiNavigationMonitor
     /// <summary>
     /// Interaction logic for PlottedRouteControl.xaml
     /// </summary>
-    public partial class PlottedRouteControl : UserControl
+    public partial class CurrentRouteControl : UserControl
     {
         private NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
 
-        public PlottedRouteControl()
+        public CurrentRouteControl()
         {
             InitializeComponent();
             navRouteData.ItemsSource = navigationMonitor().NavRouteList.Waypoints;

@@ -130,7 +130,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="31">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="copySystemNameToClipboard" MinWidth="30" HorizontalAlignment="Center" ToolTip="{x:Static resx:NavigationMonitor.copy_system_button_tooltip}">

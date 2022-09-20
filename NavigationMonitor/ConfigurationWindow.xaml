@@ -22,10 +22,13 @@
                 <local:GalacticPOIControl/>
             </TabItem>
             <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}">
-                <local:PlottedRouteControl/>
+                <local:CurrentRouteControl/>
             </TabItem>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_route_plotter}">
-                <local:RoutePlotterControl/>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_carrier_route}">
+                <local:PlotCarrierControl/>
+            </TabItem>
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_ship_route}">
+                <local:PlotShipControl/>
             </TabItem>
         </TabControl>
     </DockPanel>

@@ -136,7 +136,7 @@ namespace EddiNavigationMonitor
 
         private bool poiData_Filter(object sender)
         {
-            if (!(sender is NavBookmark poiBookmark)) { return true; }
+            if (!(sender is NavPOIBookmark poiBookmark)) { return true; }
             var filterTxt = searchFilterText.Text;
 
             // If filter applies, filter items.
@@ -189,9 +189,9 @@ namespace EddiNavigationMonitor
         {
             if (sender is Button button)
             {
-                if (button.DataContext is NavWaypoint navWaypoint)
+                if (button.DataContext is NavBookmark navBookmark)
                 {
-                    Clipboard.SetText(navWaypoint.systemName);
+                    Clipboard.SetText(navBookmark.systemname);
                 }
             }
         }
