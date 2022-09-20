@@ -166,4 +166,7 @@
     <value>Raw Materials Trader</value>
     <comment>RouteDetails `raw` query description</comment>
   </data>
+  <data name="query_type_carrier" xml:space="preserve">
+    <value>Carrier Route</value>
+  </data>
 </root>
