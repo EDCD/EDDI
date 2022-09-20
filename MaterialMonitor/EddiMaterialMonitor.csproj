@@ -105,6 +105,7 @@
       <LastGenOutput>MaterialMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\MaterialMonitor.ru.resx" />
+    <EmbeddedResource Include="Properties\MaterialMonitor.zh-CHS.resx" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -169,6 +169,7 @@
       <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\VoiceAttack.ru.resx" />
+    <EmbeddedResource Include="Properties\VoiceAttack.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

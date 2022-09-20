@@ -114,6 +114,7 @@
       <LastGenOutput>CrimeMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CrimeMonitor.ru.resx" />
+    <EmbeddedResource Include="Properties\CrimeMonitor.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

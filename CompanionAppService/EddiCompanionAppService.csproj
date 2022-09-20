@@ -128,6 +128,7 @@
       <LastGenOutput>CapiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CapiResources.ru.resx" />
+    <EmbeddedResource Include="Properties\CapiResources.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CredentialManagement">

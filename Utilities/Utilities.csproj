@@ -131,6 +131,7 @@
       <LastGenOutput>IPA.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\IPA.ru.resx" />
+    <EmbeddedResource Include="Properties\IPA.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GitInfo">

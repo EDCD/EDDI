@@ -120,6 +120,7 @@
       <LastGenOutput>EddnResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EddnResources.ru.resx" />
+    <EmbeddedResource Include="Properties\EddnResources.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

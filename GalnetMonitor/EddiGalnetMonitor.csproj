@@ -135,6 +135,7 @@
       <LastGenOutput>GalnetMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\GalnetMonitor.ru.resx" />
+    <EmbeddedResource Include="Properties\GalnetMonitor.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

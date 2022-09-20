@@ -140,6 +140,7 @@
     <EmbeddedResource Include="Properties\ShipMonitor.ru.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ShipMonitor.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommonMark.NET">

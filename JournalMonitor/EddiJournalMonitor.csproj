@@ -117,6 +117,7 @@
       <LastGenOutput>JournalMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\JournalMonitor.ru.resx" />
+    <EmbeddedResource Include="Properties\JournalMonitor.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

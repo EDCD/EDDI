@@ -106,6 +106,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\InaraResources.ru.resx" />
+    <EmbeddedResource Include="Properties\InaraResources.zh-CHS.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">
