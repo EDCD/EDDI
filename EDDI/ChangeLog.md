@@ -10,12 +10,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
+  * Inara Responder
+    * Fixed an issue with asset data not being reported correctly.
   * Material Monitor
     * Moved navigation functions to the Navigation Monitor
   * Mission Monitor
     * Moved navigation functions to the Navigation Monitor
   * Navigation Monitor
-    * Added new Navigation Monitor with support for both planetary and galactic bookmarking. Planetary bookmarks, when selected, will provide compass heading and distance.
+    * Added new Navigation Monitor with support for planetary and galactic bookmarking, ship and carrier route planning, and galactic POIs.
     * The `DestinationSystem` object has been revised to match your current in-game route's final destination.
     * The `DestinationStation` object has been removed.
     * Navigation commands (e.g. via `RouteDetails()` or the `route` VoiceAttack command) will no longer generate a route in EDDI independent of your in-game routing.
@@ -36,6 +38,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
+      * `Carrier purchased` added, triggered when you purchase a fleet carrier.
+      * `Carrier stats` added, triggered when you open the carrier management screen.
       * `Community goal` updated to refine responses upon goal completion.
       * `Crime check station` updated to remove obsolete references to `shipid`.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
