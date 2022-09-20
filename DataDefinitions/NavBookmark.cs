@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace EddiDataDefinitions
 {
@@ -171,17 +172,8 @@ namespace EddiDataDefinitions
 
         [JsonIgnore] public bool visited => visitLog.Any();
 
-        // Galactic POI URL
-        [JsonIgnore] public string url { get; set; }
-
-        // Galactic POI Description (markdown format)
-        [JsonIgnore] public string descriptionMarkdown { get; set; }
-
-        // Galactic POI Description state
-        [JsonIgnore] public bool descriptionMarkdownHasValue => !string.IsNullOrEmpty(descriptionMarkdown);
-
         // Drop down visibility
-        [JsonIgnore] public bool hasRowDetails => descriptionMarkdownHasValue || landable;
+        [JsonIgnore, UsedImplicitly] public bool hasRowDetails => landable;
 
         // Default Constructor
         public NavBookmark() { }

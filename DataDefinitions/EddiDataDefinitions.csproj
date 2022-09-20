@@ -64,6 +64,7 @@
     <Compile Include="FleetCarrier.cs" />
     <Compile Include="FrontierApiProfile.cs" />
     <Compile Include="JumpDetail.cs" />
+    <Compile Include="NavPOIBookmark.cs" />
     <Compile Include="NavWaypointCollection.cs" />
     <Compile Include="NavWaypoint.cs" />
     <Compile Include="ModuleMount.cs" />
@@ -666,6 +667,7 @@
     <EmbeddedResource Include="Properties\Body.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Body.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CombatRatings.de.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.es.resx" />
