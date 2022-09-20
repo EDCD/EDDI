@@ -269,6 +269,8 @@
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Направление:</value>
+    <comment>header_heading
+A UI element describing a compass heading for surface navigation</comment>
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Расстояние (км):</value>
