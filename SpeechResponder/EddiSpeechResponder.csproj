@@ -199,6 +199,10 @@
       <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
       <Name>EddiInaraService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
+      <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
+      <Name>EddiStatusService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>
@@ -230,10 +234,6 @@
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj">
-      <Project>{fec7ba2b-23c3-4f4f-96ef-bf1f1909eb03}</Project>
-      <Name>EddiStatusMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>

@@ -6,6 +6,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiStatusMonitor;
+using EddiStatusService;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -46,7 +47,7 @@ namespace EddiNavigationMonitor
 
         private DateTime updateDat;
 
-        private Status currentStatus { get; set; }
+        internal Status currentStatus { get; set; }
 
         public string MonitorName()
         {
@@ -71,7 +72,7 @@ namespace EddiNavigationMonitor
         public NavigationMonitor()
         {
             BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+            StatusService.StatusUpdatedEvent += OnStatusUpdated;
             initializeNavigationMonitor();
         }
 

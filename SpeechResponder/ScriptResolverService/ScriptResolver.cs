@@ -12,7 +12,6 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechService;
-using EddiStatusMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

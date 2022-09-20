@@ -10,7 +10,7 @@ using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
-using EddiStatusMonitor;
+using EddiStatusService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -123,7 +123,7 @@ namespace EddiVoiceAttackResponder
                 {
                     setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
                 };
-                StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+                StatusService.StatusUpdatedEvent += OnStatusUpdated;
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
@@ -147,7 +147,7 @@ namespace EddiVoiceAttackResponder
                     };
                 }
 
-                StatusMonitor.StatusUpdatedEvent += (s, e) =>
+                StatusService.StatusUpdatedEvent += (s, e) =>
                 {
                     if (s is Status status)
                     {

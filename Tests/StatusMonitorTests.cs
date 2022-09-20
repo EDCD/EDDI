@@ -1,6 +1,5 @@
-﻿using EddiCore;
-using EddiDataDefinitions;
-using EddiStatusMonitor;
+﻿using EddiDataDefinitions;
+using EddiStatusService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Utilities;
@@ -10,6 +9,8 @@ namespace UnitTests
     [TestClass]
     public class StatusMonitorTests : TestBase
     {
+        StatusService statusService = new StatusService();
+        
         [TestInitialize]
         public void start()
         {
@@ -20,7 +21,7 @@ namespace UnitTests
         public void TestParseStatusFlagsDocked()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":0, \"GuiFocus\":0 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = StatusService.Instance.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2018, 3, 25, 0, 39, 48, DateTimeKind.Utc);
@@ -55,7 +56,7 @@ namespace UnitTests
         public void TestParseStatusFlagsDockedOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:04:13Z\", \"event\":\"Status\", \"Flags\":151060493, \"Flags2\":0, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":32.000000, \"FuelReservoir\":0.630000 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 4, 13, DateTimeKind.Utc);
@@ -119,7 +120,7 @@ namespace UnitTests
         public void TestParseStatusFlagsDockedDropshipOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T23:10:06Z\", \"event\":\"Status\", \"Flags\":16842761, \"Flags2\":2, \"Pips\":[4,4,4], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":8.000000, \"FuelReservoir\":0.570000 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 23, 10, 06, DateTimeKind.Utc);
@@ -183,7 +184,7 @@ namespace UnitTests
         public void TestParseStatusFlagsSupercruiseTaxiOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T22:30:27Z\", \"event\":\"Status\", \"Flags\":16777240, \"Flags2\":2, \"Pips\":[4,4,4], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":8.000000, \"FuelReservoir\":0.360000 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 22, 30, 27, DateTimeKind.Utc);
@@ -247,7 +248,7 @@ namespace UnitTests
         public void TestParseStatusFlagsInFighterOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:15:30Z\", \"event\":\"Status\", \"Flags\":34078792, \"Flags2\":0, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":0.000000, \"FuelReservoir\":0.240000 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 15, 30, DateTimeKind.Utc);
@@ -311,7 +312,7 @@ namespace UnitTests
         public void TestParseStatusFlagsLandedInShipOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:24:57Z\", \"event\":\"Status\", \"Flags\":153157646, \"Flags2\":0, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":32.000000, \"FuelReservoir\":0.384769 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":40.761524, \"Longitude\":65.103111, \"Heading\":32, \"Altitude\":0, \"BodyName\":\"Nervi 2 a\", \"PlanetRadius\":866740.562500 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 24, 57, DateTimeKind.Utc);
@@ -375,7 +376,7 @@ namespace UnitTests
         public void TestParseStatusFlagsInSRVOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:26:19Z\", \"event\":\"Status\", \"Flags\":203423752, \"Flags2\":0, \"Pips\":[7,4,1], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":0.000000, \"FuelReservoir\":0.447595 }, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":40.745747, \"Longitude\":65.096542, \"Heading\":159, \"Altitude\":0, \"BodyName\":\"Nervi 2 a\", \"PlanetRadius\":866740.562500 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 26, 19, DateTimeKind.Utc);
@@ -439,7 +440,7 @@ namespace UnitTests
         public void TestParseStatusFlagsOnFootOnPlanetOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:30:38Z\", \"event\":\"Status\", \"Flags\":2097152, \"Flags2\":273, \"Oxygen\":1.000000, \"Health\":1.000000, \"Temperature\":163.527100, \"SelectedWeapon\":\"$humanoid_fists_name;\", \"SelectedWeapon_Localised\":\"Unarmed\", \"Gravity\":0.101595, \"LegalState\":\"Clean\", \"Latitude\":40.741016, \"Longitude\":65.076881, \"Heading\":-165, \"BodyName\":\"Nervi 2 a\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 30, 38, DateTimeKind.Utc);
@@ -508,7 +509,7 @@ namespace UnitTests
         public void TestParseStatusFlagsOnFootOnStationOdyssey()
         {
             string line = "{ \"timestamp\":\"2021-05-01T21:00:10Z\", \"event\":\"Status\", \"Flags\":0, \"Flags2\":9, \"Oxygen\":1.000000, \"Health\":1.000000, \"Temperature\":293.000000, \"SelectedWeapon\":\"\", \"LegalState\":\"Clean\", \"BodyName\":\"Savitskaya Vision\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2021, 5, 1, 21, 00, 10, DateTimeKind.Utc);
@@ -577,7 +578,7 @@ namespace UnitTests
         public void TestParseStatusFlagsNormalSpace()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777320, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             Assert.AreEqual(status.flags, (Status.Flags)16777320);
@@ -610,7 +611,7 @@ namespace UnitTests
         public void TestParseStatusFlagsSrv()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0, \"BodyName\":\"Myeia Thaa QI - B d13 - 1 1\", \"PlanetRadius\":2140275.000000}";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             Assert.AreEqual(status.flags, (Status.Flags)69255432);
@@ -645,7 +646,7 @@ namespace UnitTests
         public void TestParseStatusFlagsSupercruise()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777240, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":26.589718, \"FuelReservoir\":0.484983 }, \"Cargo\":3.000000, \"LegalState\":\"Clean\" }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             Assert.AreEqual((Status.Flags)16777240, status.flags);
@@ -662,7 +663,7 @@ namespace UnitTests
         public void TestParseStatusPips()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":0, \"GuiFocus\":0 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(2.5M, status.pips_sys);
             Assert.AreEqual(1M, status.pips_eng);
@@ -673,7 +674,7 @@ namespace UnitTests
         public void TestParseStatusFiregroup()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":1, \"GuiFocus\":0 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(1, status.firegroup);
         }
@@ -682,7 +683,7 @@ namespace UnitTests
         public void TestParseStatusGuiFocus()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":1, \"GuiFocus\":5 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual("station services", status.gui_focus);
         }
@@ -691,7 +692,7 @@ namespace UnitTests
         public void TestParseStatusGps1()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":1, \"GuiFocus\":0 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.IsNull(status.latitude);
             Assert.IsNull(status.longitude);
@@ -703,7 +704,7 @@ namespace UnitTests
         public void TestParseStatusGps2()
         {
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0}";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(-5.683115M, status.latitude);
             Assert.AreEqual(-10.957623M, status.longitude);
@@ -715,7 +716,7 @@ namespace UnitTests
         public void TestParseStatusFlagsAnalysisFssMode()
         {
             string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 41:06Z\", \"event\":\"Status\", \"Flags\":151519320, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":9, \"Fuel\":{ \"FuelMain\":15.260000, \"FuelReservoir\":0.444812 }, \"Cargo\":39.000000 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(true, status.analysis_mode);
             Assert.AreEqual("fss mode", status.gui_focus);
@@ -725,7 +726,7 @@ namespace UnitTests
         public void TestParseStatusFlagsAnalysisSaaMode()
         {
             string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 47:51Z\", \"event\":\"Status\", \"Flags\":150995032, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":10, \"Fuel\":{ \"FuelMain\":15.260000, \"FuelReservoir\":0.444812 }, \"Cargo\":39.000000 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(true, status.analysis_mode);
             Assert.AreEqual("saa mode", status.gui_focus);
@@ -735,7 +736,7 @@ namespace UnitTests
         public void TestParseStatusFlagsNightMode()
         {
             string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 58:37Z\", \"event\":\"Status\", \"Flags\":422117640, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":29.0, \"FuelReservoir\":0.564209 }, \"Cargo\":39.000000, \"Latitude\":88.365417, \"Longitude\":99.356514, \"Heading\":29, \"Altitude\":36 }";
-            Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
+            Status status = statusService.ParseStatusEntry(line);
 
             Assert.AreEqual(true, status.night_vision);
             Assert.AreEqual(true, status.lights_on);

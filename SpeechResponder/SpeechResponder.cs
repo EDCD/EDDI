@@ -30,8 +30,6 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
-        public static Status currentStatus;
-
         public string ResponderName()
         {
             return "Speech responder";

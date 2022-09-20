@@ -1,15 +1,11 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiStatusService;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Controls;
 using Utilities;
 
@@ -17,26 +13,10 @@ namespace EddiStatusMonitor
 {
     public class StatusMonitor : EDDIMonitor
     {
-        // What we are monitoring and what to do with it
-        private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
-        private string Directory = GetSavedGamesDir();
-        public Status currentStatus { get; private set; } = new Status();
-        public Status lastStatus { get; private set; } = new Status();
-
-        // Declare our constants
-        private const int pollingIntervalActiveMs = 500;
-        private const int pollingIntervalRelaxedMs = 5000;
-
         // Miscellaneous tracking
-        private bool gliding;
         private bool jumping;
-        private EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
+        private bool gliding;
         private string lastDestinationPOI;
-
-        // Keep track of status monitor 
-        private bool running;
-
-        public static event EventHandler StatusUpdatedEvent;
 
         public StatusMonitor()
         {
@@ -70,301 +50,16 @@ namespace EddiStatusMonitor
 
         public void Start()
         {
-            start();
+            StatusService.Instance.Start();
+            StatusService.StatusUpdatedEvent += HandleStatus;
         }
 
-        /// <summary>Monitor Status.json for changes</summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
-        public void start()
+        private void HandleStatus(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Directory))
+            if (StatusService.Instance.CurrentStatus != null)
             {
-                return;
-            }
-
-            running = true;
-
-            // Start off by moving to the end of the file
-            FileInfo fileInfo = null;
-            try
-            {
-                fileInfo = Files.FileInfo(Directory, "Status.json");
-            }
-            catch (NotSupportedException nsex)
-            {
-                Logging.Error("Directory " + Directory + " not supported: ", nsex);
-            }
-            if (fileInfo != null)
-            {
-                try
-                {
-                    using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                    {
-                        string lastStatusJson = reader.ReadLine() ?? string.Empty;
-
-                        // Main loop
-                        while (running)
-                        {
-                            if (Processes.IsEliteRunning())
-                            {
-                                if (!fileInfo.Exists)
-                                {
-                                    WaitForStatusFile(ref fileInfo);
-                                }
-                                else
-                                {
-                                    lastStatusJson = ReadStatus(lastStatusJson, fs, reader);
-                                }
-                                Thread.Sleep(pollingIntervalActiveMs);
-                            }
-                            else
-                            {
-                                Thread.Sleep(pollingIntervalRelaxedMs);
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    // file open elsewhere or being written, just wait for the next pass
-                }
-            }
-        }
-
-        private void WaitForStatusFile(ref FileInfo fileInfo)
-        {
-            // Status.json could not be found. Sleep until a Status.json file is found.
-            Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-            while (!fileInfo.Exists)
-            {
-                Thread.Sleep(pollingIntervalRelaxedMs);
-                fileInfo = Files.FileInfo(Directory, "Status.json");
-            }
-            Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
-        }
-
-        private string ReadStatus(string lastStatusJson, FileStream fs, StreamReader reader)
-        {
-            string thisStatusJson = string.Empty;
-            try
-            {
-                fs.Seek(0, SeekOrigin.Begin);
-                thisStatusJson = reader.ReadLine() ?? string.Empty;
-            }
-            catch (Exception)
-            {
-                // file open elsewhere or being written, just wait for the next pass
-            }
-            if (lastStatusJson != thisStatusJson && !string.IsNullOrWhiteSpace(thisStatusJson))
-            {
-                Status status = ParseStatusEntry(thisStatusJson);
-
-                // Spin off a thread to pass status entry updates in the background
-                Thread updateThread = new Thread(() => handleStatus(status))
-                {
-                    IsBackground = true
-                };
-                updateThread.Start();
-            }
-            lastStatusJson = thisStatusJson;
-            return lastStatusJson;
-        }
-
-        public void Stop()
-        {
-            running = false;
-        }
-
-        public void Reload()
-        {
-        }
-
-        public UserControl ConfigurationTabItem()
-        {
-            return null;
-        }
-
-        public Status ParseStatusEntry(string line)
-        {
-            Status status = new Status() { raw = line };
-            try
-            {
-                Match match = JsonRegex.Match(line);
-                if (match.Success)
-                {
-                    IDictionary<string, object> data = Deserializtion.DeserializeData(line);
-
-                    // Every status event has a timestamp field
-                    status.timestamp = DateTime.UtcNow;
-                    try
-                    {
-                        status.timestamp = JsonParsing.getDateTime("timestamp", data);
-                    }
-                    catch
-                    {
-                        Logging.Warn("Status without timestamp; using current time");
-                    }
-
-                    status.flags = (Status.Flags)(JsonParsing.getOptionalLong(data, "Flags") ?? 0);
-                    status.flags2 = (Status.Flags2)(JsonParsing.getOptionalLong(data, "Flags2") ?? 0);
-                    
-                    if (status.flags == Status.Flags.None && status.flags2 == Status.Flags2.None)
-                    {
-                        // No flags are set. We aren't in game.
-                        return status;
-                    }
-
-                    data.TryGetValue("Pips", out object val);
-                    List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
-                    status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
-                    status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
-                    status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
-
-                    status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
-                    int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
-                    switch (gui_focus)
-                    {
-                        case null:
-                        case 0: // No focus
-                            {
-                                status.gui_focus = "none";
-                                break;
-                            }
-                        case 1: // InternalPanel (right hand side)
-                            {
-                                status.gui_focus = "internal panel";
-                                break;
-                            }
-                        case 2: // ExternalPanel (left hand side)
-                            {
-                                status.gui_focus = "external panel";
-                                break;
-                            }
-                        case 3: // CommsPanel (top)
-                            {
-                                status.gui_focus = "communications panel";
-                                break;
-                            }
-                        case 4: // RolePanel (bottom)
-                            {
-                                status.gui_focus = "role panel";
-                                break;
-                            }
-                        case 5: // StationServices
-                            {
-                                status.gui_focus = "station services";
-                                break;
-                            }
-                        case 6: // GalaxyMap
-                            {
-                                status.gui_focus = "galaxy map";
-                                break;
-                            }
-                        case 7: // SystemMap
-                            {
-                                status.gui_focus = "system map";
-                                break;
-                            }
-                        case 8: // Orrery
-                            {
-                                status.gui_focus = "orrery";
-                                break;
-                            }
-                        case 9: // FSS mode
-                            {
-                                status.gui_focus = "fss mode";
-                                break;
-                            }
-                        case 10: // SAA mode
-                            {
-                                status.gui_focus = "saa mode";
-                                break;
-                            }
-                        case 11: // Codex
-                            {
-                                status.gui_focus = "codex";
-                                break;
-                            }
-                    }
-                    status.latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                    status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                    status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
-                    status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
-                    if (data.TryGetValue("Fuel", out object fuelData))
-                    {
-                        if (fuelData is IDictionary<string, object> fuelInfo)
-                        {
-                            status.fuelInTanks = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
-                            status.fuelInReservoir = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
-                        }
-                    }
-                    status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
-                    status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
-                    status.bodyname = JsonParsing.getString(data, "BodyName"); // Might be a station name if we're in an orbital station
-                    status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
-
-                    // When on foot
-                    status.oxygen = JsonParsing.getOptionalDecimal(data, "Oxygen") * 100; // Convert Oxygen to a 0-100 percent scale
-                    status.health = JsonParsing.getOptionalDecimal(data, "Health") * 100; // Convert Health to a 0-100 percent scale
-                    status.temperature = JsonParsing.getOptionalDecimal(data, "Temperature"); // In Kelvin
-                    status.selected_weapon = JsonParsing.getString(data, "SelectedWeapon_Localised") 
-                        ?? JsonParsing.getString(data, "SelectedWeapon"); // The name of the selected weapon
-                    status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
-
-                    // When not on foot
-                    if (data.TryGetValue("Destination", out object destinationData))
-                    {
-                        if (destinationData is IDictionary<string, object> destinationInfo)
-                        {
-                            status.destinationSystemAddress = JsonParsing.getOptionalULong(destinationInfo, "System");
-                            status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
-                            status.destination_name = JsonParsing.getString(destinationInfo, "Name");
-                            status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised");
-
-                            // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
-                            var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
-                            if (string.IsNullOrEmpty(status.destination_localized_name) && fleetCarrierRegex.IsMatch(status.destination_name))
-                            {
-                                // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
-                                var fleetCarrierParts = fleetCarrierRegex.Matches(status.destination_name)[0].Groups;
-                                if (fleetCarrierParts.Count == 3)
-                                {
-                                    status.destination_name = fleetCarrierParts[2].Value;
-                                    status.destination_localized_name = fleetCarrierParts[1].Value;
-                                }
-                            }
-                        }
-                    }
-
-                    // Calculated data
-                    SetFuelExtras(status);
-                    SetSlope(status);
-                    SetGliding(status); // Must be set after setting the slope
-
-                    return status;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
-                Logging.Error("", ex);
-            }
-            return null;
-        }
-
-        public void handleStatus(Status thisStatus)
-        {
-            if (thisStatus == null)
-            {
-                return;
-            }
-
-            if (currentStatus != thisStatus)
-            {
-                // Save our last status for reference and update our current status
-                lastStatus = currentStatus;
-                currentStatus = thisStatus;
+                var thisStatus = StatusService.Instance.CurrentStatus;
+                var lastStatus = StatusService.Instance.LastStatus;
 
                 // Update glide status
                 if (thisStatus.hyperspace || thisStatus.supercruise || thisStatus.docked || thisStatus.landed)
@@ -451,7 +146,7 @@ namespace EddiStatusMonitor
                         EDDI.Instance.enqueueEvent(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
-                if (thisStatus.landing_gear_down != lastStatus.landing_gear_down 
+                if (thisStatus.landing_gear_down != lastStatus.landing_gear_down
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP && lastStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     EDDI.Instance.enqueueEvent(new ShipLandingGearEvent(thisStatus.timestamp, thisStatus.landing_gear_down));
@@ -544,22 +239,22 @@ namespace EddiStatusMonitor
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
                     gliding = false;
-                    EDDI.Instance.enqueueEvent(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody?.systemname, EDDI.Instance.CurrentStellarBody?.systemAddress, EDDI.Instance.CurrentStellarBody?.bodyname, EDDI.Instance.CurrentStellarBody?.bodyType));
+                    EDDI.Instance.enqueueEvent(new GlideEvent(thisStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody?.systemname, EDDI.Instance.CurrentStellarBody?.systemAddress, EDDI.Instance.CurrentStellarBody?.bodyname, EDDI.Instance.CurrentStellarBody?.bodyType));
                 }
-                else if (!currentStatus.supercruise && lastStatus.supercruise)
+                else if (!thisStatus.supercruise && lastStatus.supercruise)
                 {
                     // We are exiting supercruise
-                    if (!gliding && lastEnteredNormalSpaceEvent != null)
+                    if (!gliding && StatusService.Instance.lastEnteredNormalSpaceEvent != null)
                     {
                         // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                        if (currentStatus.fsd_status == "ready"
-                            && currentStatus.slope >= -60 && currentStatus.slope <= -5
-                            && currentStatus.altitude < 100000
-                            && currentStatus.altitude < lastStatus.altitude)
+                        if (thisStatus.fsd_status == "ready"
+                            && thisStatus.slope >= -60 && thisStatus.slope <= -5
+                            && thisStatus.altitude < 100000
+                            && thisStatus.altitude < lastStatus.altitude)
                         {
                             // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
                             gliding = true;
-                            EnteredNormalSpaceEvent theEvent = lastEnteredNormalSpaceEvent;
+                            var theEvent = StatusService.Instance.lastEnteredNormalSpaceEvent;
                             EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { fromLoad = theEvent.fromLoad });
                         }
                     }
@@ -567,42 +262,31 @@ namespace EddiStatusMonitor
                 // Reset our fuel log if we change vehicles or refuel
                 if (thisStatus.vehicle != lastStatus.vehicle || thisStatus.fuel > lastStatus.fuel)
                 {
-                    fuelLog = null;
+                    StatusService.Instance.fuelLog = null;
                 }
                 // Detect whether we're in combat
                 if (lastStatus.in_danger && !thisStatus.in_danger)
                 {
                     EDDI.Instance.enqueueEvent(new SafeEvent(DateTime.UtcNow) { fromLoad = false });
                 }
-
-                // Pass the change in status to all subscribed processes
-                OnStatus(StatusUpdatedEvent, currentStatus);
             }
         }
 
-        private void OnStatus(EventHandler statusUpdatedEvent, Status status)
+        public void Stop()
         {
-            statusUpdatedEvent?.Invoke(status, EventArgs.Empty);
+            StatusService.Instance.Stop();
         }
 
-        private static string GetSavedGamesDir()
+        public void Reload()
         {
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
-            if (result >= 0)
-            {
-                return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
-            }
-            else
-            {
-                throw new ExternalException("Failed to find the saved games directory.", result);
-            }
         }
 
-        internal class NativeMethods
+        public UserControl ConfigurationTabItem()
         {
-            [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+            return null;
         }
+
+
 
         public void PreHandle(Event @event)
         {
@@ -620,7 +304,7 @@ namespace EddiStatusMonitor
         private void handleEnteredNormalSpaceEvent(Event @event)
         {
             // We can derive a "Glide" event from the context in our status
-            lastEnteredNormalSpaceEvent = (EnteredNormalSpaceEvent)@event;
+            StatusService.Instance.lastEnteredNormalSpaceEvent = (EnteredNormalSpaceEvent)@event;
         }
 
         private void handleFSDEngagedEvent(Event @event)
@@ -644,137 +328,10 @@ namespace EddiStatusMonitor
         {
             Dictionary<string, object> variables = new Dictionary<string, object>
             {
-                { "status", currentStatus },
-                { "lastStatus", lastStatus }
+                { "status", StatusService.Instance.CurrentStatus },
+                { "lastStatus", StatusService.Instance.LastStatus }
             };
             return variables;
-        }
-
-        private void SetFuelExtras(Status status)
-        {
-            decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
-            FuelPercentAndTime(status.vehicle, status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
-            status.fuel_percent = fuel_percent;
-            status.fuel_seconds = fuel_seconds;
-        }
-
-        private List<KeyValuePair<DateTime, decimal?>> fuelLog;
-        private decimal? FuelConsumptionPerSecond(DateTime timestamp, decimal? fuel, int trackingMinutes = 5)
-        {
-            if (fuel is null)
-            {
-                return null;
-            }
-
-            if (fuelLog is null)
-            {
-                fuelLog = new List<KeyValuePair<DateTime, decimal?>>();
-            }
-            else
-            {
-                fuelLog?.RemoveAll(log => (DateTime.UtcNow - log.Key).TotalMinutes > trackingMinutes);
-            }
-            fuelLog.Add(new KeyValuePair<DateTime, decimal?>(timestamp, fuel));
-            if (fuelLog.Count > 1)
-            {
-                decimal? fuelConsumed = fuelLog.FirstOrDefault().Value - fuelLog.LastOrDefault().Value;
-                TimeSpan timespan = fuelLog.LastOrDefault().Key - fuelLog.FirstOrDefault().Key;
-
-                return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
-            }
-            // Insufficient data, return 0.
-            return 0;
-        }
-
-        private void FuelPercentAndTime(string vehicle, decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
-        {
-            fuel_percent = null;
-            fuel_seconds = null;
-
-            if (fuelRemaining is null)
-            {
-                return;
-            }
-
-            if (vehicle == Constants.VEHICLE_SHIP)
-            {
-                Ship ship = EDDI.Instance.CurrentShip;
-                if (ship?.fueltanktotalcapacity > 0)
-                {
-                    // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
-                    decimal percent = (decimal)(fuelRemaining / (ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) * 100);
-                    fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
-                    fuel_seconds = fuelPerSecond > 0 ? (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond) : null;
-                }
-            }
-            else if (vehicle == Constants.VEHICLE_SRV)
-            {
-                const decimal srvFuelTankCapacity = 0.45M;
-                decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
-                fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
-                fuel_seconds = fuelPerSecond > 0 ? (int?)(srvFuelTankCapacity / fuelPerSecond) : null;
-            }
-            return; // At present, fighters do not appear to consume fuel.
-        }
-
-        /// <summary> Depends on slope calculations, which must be performed before this method is run </summary>
-        private void SetGliding(Status status)
-        {
-            // We are exiting supercruise
-            if (!status.gliding && lastEnteredNormalSpaceEvent != null)
-            {
-                // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                if (status.fsd_status == "ready"
-                    && status.slope >= -60 && currentStatus.slope <= -5
-                    && status.altitude < 100000
-                    && status.altitude < lastStatus.altitude)
-                {
-                    // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
-                    status.gliding = true;
-                }
-            }
-            if ((status.gliding && status.fsd_status == "cooldown")
-                || status.hyperspace 
-                || status.supercruise 
-                || status.docked 
-                || status.landed)
-            {
-                status.gliding = false;
-            }
-        }
-
-        ///<summary> Our calculated slope may be inaccurate if we are in normal space and thrusting
-        /// in a direction other than the direction we are oriented (e.g. if pointing down towards a
-        /// planet and applying reverse thrust to raise our altitude) </summary> 
-        private void SetSlope(Status status)
-        {
-            status.slope = null;
-            if (lastStatus?.planetradius != null && lastStatus?.altitude != null && lastStatus?.latitude != null && lastStatus?.longitude != null)
-            {
-                if (status.planetradius != null && status.altitude != null && status.latitude != null && status.longitude != null)
-                {
-                    double square(double x) => x * x;
-
-                    double radiusKm = (double)status.planetradius / 1000;
-                    double deltaAltKm = (double)(status.altitude - lastStatus.altitude) / 1000;
-
-                    // Convert latitude & longitude to radians
-                    double currentLat = (double)status.latitude * Math.PI / 180;
-                    double lastLat = (double)lastStatus.latitude * Math.PI / 180;
-                    double deltaLat = currentLat - lastLat;
-                    double deltaLong = (double)(status.longitude - lastStatus.longitude) * Math.PI / 180;
-
-                    // Calculate distance traveled using Law of Haversines
-                    double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
-                    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    double distanceKm = c * radiusKm;
-
-                    // Calculate the slope angle
-                    var slopeRadians = Math.Atan2(deltaAltKm, distanceKm);
-                    var slopeDegrees = slopeRadians * 180 / Math.PI;
-                    status.slope = Math.Round((decimal)slopeDegrees, 1);
-                }
-            }
         }
     }
 }
