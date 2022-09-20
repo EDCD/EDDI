@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Clean" xml:space="preserve">
+    <value>守法</value>
+    <comment>LegalStatus - Clean</comment>
+  </data>
+  <data name="Enemy" xml:space="preserve">
+    <value>敌人</value>
+    <comment>LegalStatus - Enemy</comment>
+  </data>
+  <data name="Hostile" xml:space="preserve">
+    <value>敌视</value>
+    <comment>LegalStatus - Hostile</comment>
+  </data>
+  <data name="Hunter" xml:space="preserve">
+    <value>猎人</value>
+    <comment>LegalStatus - Hunter</comment>
+  </data>
+  <data name="IllegalCargo" xml:space="preserve">
+    <value>非法货物</value>
+    <comment>LegalStatus - Illegal cargo</comment>
+  </data>
+  <data name="Lawless" xml:space="preserve">
+    <value>不法的</value>
+    <comment>LegalStatus - Lawless</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+    <comment>LegalStatus - None</comment>
+  </data>
+  <data name="PassengerWanted" xml:space="preserve">
+    <value>载有通缉犯</value>
+    <comment>LegalStatus - PassengerWanted</comment>
+  </data>
+  <data name="Speeding" xml:space="preserve">
+    <value>超速</value>
+    <comment>LegalStatus - Speeding</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>未知</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>被通缉</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>被通缉的敌人</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
+  <data name="Warrant" xml:space="preserve">
+    <value>被执行人</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
 </root>

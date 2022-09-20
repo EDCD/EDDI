@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>清除路线</value>
+  </data>
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>清除任务路线及其目的地星系。</value>
+  </data>
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>清除路线：</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>计算路线</value>
+  </data>
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>开始“最相邻”算法的计算，以确定最短的任务路线。</value>
+  </data>
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>计算路线:</value>
+  </data>
+  <data name="header_cg_percentileband" xml:space="preserve">
+    <value>百分比范围：</value>
+  </data>
+  <data name="header_cg_reward" xml:space="preserve">
+    <value>奖励 (信用点)：</value>
+  </data>
+  <data name="header_cg_tier" xml:space="preserve">
+    <value>等级：</value>
+  </data>
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>目的地站点</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>目的地星系</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>派系：</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>任务ID</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="header_originstation" xml:space="preserve">
+    <value>初始星系：</value>
+  </data>
+  <data name="header_originsystem" xml:space="preserve">
+    <value>初始星系：</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>剩余</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="header_tags" xml:space="preserve">
+    <value>标签：</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>跟踪有关您的任务的信息。</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>任务监视器</value>
+  </data>
+  <data name="next_route_button" xml:space="preserve">
+    <value>路线中的下一个星系</value>
+  </data>
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>将目标系统设置为任务路线中的下一个星系。</value>
+  </data>
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>路线中的下一个星系:</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>以下是您所有任务的列表。</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>请注意，如果您的任务日志不正确，您将需要启动或重新启动 Elite，此信息将被更新。</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>任务到期警告阈值（分钟）：</value>
+  </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>更新路线</value>
+  </data>
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>如果所有任务都已完成，则将目标系统设置为任务路线中的下一个系统。</value>
+  </data>
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>更新路线：</value>
+  </data>
 </root>

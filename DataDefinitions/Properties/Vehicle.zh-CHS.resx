@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Empire" xml:space="preserve">
+    <value>GU-97 </value>
+  </data>
+  <data name="Federation" xml:space="preserve">
+    <value>F63 协和</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>XG7 三叉戟</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>XG8 标枪</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>XG9 戣</value>
+  </data>
+  <data name="Independent" xml:space="preserve">
+    <value>太攀</value>
+  </data>
+  <data name="TestBuggy" xml:space="preserve">
+    <value>SRV 圣甲虫</value>
+  </data>
 </root>

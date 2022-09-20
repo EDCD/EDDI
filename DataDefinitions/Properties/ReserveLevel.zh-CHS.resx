@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CommonResources" xml:space="preserve">
+    <value>寻常</value>
+    <comment>Common reserves</comment>
+  </data>
+  <data name="DepletedResources" xml:space="preserve">
+    <value>挖空</value>
+    <comment>Depleted Reserves</comment>
+  </data>
+  <data name="LowResources" xml:space="preserve">
+    <value>次要</value>
+    <comment>Minor reserves</comment>
+  </data>
+  <data name="MajorResources" xml:space="preserve">
+    <value>主要</value>
+    <comment>Major reserves</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+    <comment>No reserves (no rings present)</comment>
+  </data>
+  <data name="PristineResources" xml:space="preserve">
+    <value>原始</value>
+    <comment>Pristine reserves</comment>
+  </data>
 </root>

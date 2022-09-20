@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>跟踪您的船只上的信息。</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="header_hot" xml:space="preserve">
+    <value>状态</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>型号</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>舷号</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>名称 (读音)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>价值</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>试听</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>国际音标</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>飞船监视器</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>这使您可以查看您的船只并赋予它们单独的角色。 该信息可供响应器调取，并在脚本中用于定制操作。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>如果 EDDI 很难发音您的船名，那么您可以使用</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>. 例如，如果您的船被称为“Pride of Achenar”，那么您的口语名称将是“praɪdɒvˈakɜːnɑ”（注意语音版本中没有空格）。</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>请注意，如果您尚未配置对 Frontier API 的访问权限，则以下某些数据将不准确或不可用。 此外，如果您在安装 EDDI 之前拥有多艘飞船，您需要将它们作为您的主要飞船进行交换，并等待片刻才能获得它们的完整信息。</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>EDDI 可以将您的船舶数据导出到Coriolis或 EDShipyard（第三方工具）。 选择您喜欢的工具。</value>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>合法</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>被追捕</value>
+    <comment>Ship is Hot</comment>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} 准备完成.</value>
+  </data>
 </root>

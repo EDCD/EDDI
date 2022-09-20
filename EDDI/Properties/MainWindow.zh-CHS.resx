@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,177 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>EDDI可更新至beta版</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>选择EDDI的语言（需要重新启动EDDI）:</value>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>选择EDDI的语言（需要重新启动VoiceAttack）:</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI状态: </value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>国际音标</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>没有站点</value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>有许多可以单独配置的功能。 共有三组不同类型的功能。</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>第一组用于获取和管理 EDDI 使用的基本信息。 这些是“指挥官详细信息”、“Frontier API”和“文本转语音”选项卡。 您应该逐一检查并配置它们，以便 EDDI 可以完全访问您精英：危险的信息。</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>第二组用于获取"事件"的信息。 这些选项卡名称以“监视器”结尾。 它们可以从不同的地方获取事件，并且只需要最少的配置（但需要配置后才可用）。</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>第三组用于响应"事件"。 这些是以“响应器”结尾的选项卡。 这些组件拥有或复杂或简洁的配置文件，但都可以在不改动的情况下开箱即用。</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>您可以在这里了解更多有关EDDI如何运转的信息：</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>上报问题</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>指挥官详细信息</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>人称代词和头衔的首选性别:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>女</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>男</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>都不是</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>家园站点:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>家园星系:</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>如果 EDDI 很难发出你的指挥官的名字，那么你可以使用</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. 例如，如果指挥官叫做 'Salomé' 那么您名字的发音为 'səˈloʊmi'。</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>您可以在这里选择您的家园星系和此星系中的家园站点。这会被传送至响应器作为您的“家园”或“故乡”。</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>名字 (发音，国际音标)</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>中队效忠:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>中队派系:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>中队 ID:</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>中队名称:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>中队Power:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>中队阶级:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>中队星系:</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>试听</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier 提供一个 API，允许 EDDI 获取有关您的船只、当前站点的市场和各种其他项目的信息。这些数据仅可从Frontier第一方获得。 如果您希望 EDDI 获取和使用此信息，您需要单击登录按钮并授权 EDDI 使用 Frontier 服务器上的此数据。</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Frontier API 在这个版本的 EDDI 中不可用。</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>如果您的关联出现问题，您可以重置它并重新登录，这样可以解决问题。</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI 使用自己的文本转语音引擎，根据飞船损坏情况和驾驶舱大小等特征处理语音。 您可以在此处调整声音的参数。</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>禁用音标拼读:</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>飞船损坏时扭曲飞行助手的声音：</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>文本转语音</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI 可以使用 ICAO规则，例如在说出恒星和天体名称时使用“alpha”而不是“A”。 这可以使星系名称更容易理解，但发音需要更长的时间。 如果您想听 ICAO 的发音，请选中下面的选项。 请注意，如果您在上面禁用了语音语音，这将不起作用。</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>启用ICAO:</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>声音处理级别:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI 使用音标拼读来发音各种难说的单词，并在语音之间放置停顿。 某些语音包（通常是 Microsoft 的语音包）在音标拼读方面存在问题，这可能导致 EDDI 挂起或崩溃。 如果您遇到这种情况，请尝试检查以下选项</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>语音速度:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>试音</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>试音 (飞船严重损坏)</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>您可以在下面测试语音助手的声音。 请注意，如果语音包不兼容，它将使用默认语音。</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>用于试音的飞船型号:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>语音包:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>音量:</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>解决常见问题</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>更新EDDI</value>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>启用详细日志记录（仅当 EDDI 开发人员要求您这样做时）</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>如果启用了详细日志记录，这将在您的桌面上创建日志的 zip 存档，准备好粘贴到 GitHub 上的问题报告中。 日志中不包含任何个人身份信息。</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>版本:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>项目 wiki</value>
+  </data>
 </root>

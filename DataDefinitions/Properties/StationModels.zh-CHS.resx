@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AsteroidBase" xml:space="preserve">
+    <value>小行星基地</value>
+    <comment>An Asteroid Base</comment>
+  </data>
+  <data name="Bernal" xml:space="preserve">
+    <value>奥瑟勒斯星港</value>
+    <comment>An Ocellus Starport (FDev sometimes use "Bernal" and sometimes use "Ocellus")</comment>
+  </data>
+  <data name="Coriolis" xml:space="preserve">
+    <value>科里奥利斯星港</value>
+    <comment>A Coriolis Starport</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>地面前哨站</value>
+    <comment>A Surface Outpost</comment>
+  </data>
+  <data name="CraterPort" xml:space="preserve">
+    <value>地面空港</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>舰队航母</value>
+    <comment>A Fleet Carrier</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>巨舰</value>
+    <comment>A Megaship</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>民用巨舰</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>未知站点</value>
+    <comment>Unknown Station</comment>
+  </data>
+  <data name="Ocellus" xml:space="preserve">
+    <value>奥瑟勒斯星港</value>
+    <comment>An Ocellus Starport</comment>
+  </data>
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>定居点</value>
+    <comment>An Odyssey style Settlement</comment>
+  </data>
+  <data name="Orbis" xml:space="preserve">
+    <value>奥比斯星港</value>
+    <comment>An Orbis Starport</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>前哨站</value>
+    <comment>An Outpost</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>科考站</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
+  <data name="SurfaceStation" xml:space="preserve">
+    <value>地面站</value>
+    <comment>A Surface Station</comment>
+  </data>
 </root>

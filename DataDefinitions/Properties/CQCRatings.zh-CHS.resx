@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Amateur" xml:space="preserve">
+    <value>业余选手</value>
+    <comment>CQC rating Amateur</comment>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>冠军选手</value>
+    <comment>CQC rating Champion</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>精英</value>
+    <comment>CQC rating Elite</comment>
+  </data>
+  <data name="EliteI" xml:space="preserve">
+    <value>精英一段</value>
+    <comment>CQC rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>精英二段</value>
+    <comment>CQC rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>精英三段</value>
+    <comment>CQC rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>精英四段</value>
+    <comment>CQC rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>精英五段</value>
+    <comment>CQC rating Elite V</comment>
+  </data>
+  <data name="Helpless" xml:space="preserve">
+    <value>无助参赛者</value>
+    <comment>CQC rating Helpless</comment>
+  </data>
+  <data name="Hero" xml:space="preserve">
+    <value>英雄选手</value>
+    <comment>CQC rating Hero</comment>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>传奇选手</value>
+    <comment>CQC rating Legend</comment>
+  </data>
+  <data name="MostlyHelpless" xml:space="preserve">
+    <value>不太行的参赛者</value>
+    <comment>CQC rating MostlyHelpless</comment>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>职业选手</value>
+    <comment>CQC rating Professional</comment>
+  </data>
+  <data name="SemiProfessional" xml:space="preserve">
+    <value>半职业选手</value>
+    <comment>CQC rating SemiProfessional</comment>
+  </data>
 </root>

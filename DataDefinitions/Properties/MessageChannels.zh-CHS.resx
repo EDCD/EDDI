@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Friend" xml:space="preserve">
+    <value>好友</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>本地</value>
+  </data>
+  <data name="MultiCrew" xml:space="preserve">
+    <value>多人机组</value>
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>npc</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>玩家</value>
+  </data>
+  <data name="Squadron" xml:space="preserve">
+    <value>中队</value>
+  </data>
+  <data name="StarSystem" xml:space="preserve">
+    <value>星系</value>
+  </data>
+  <data name="VoiceChat" xml:space="preserve">
+    <value>语音聊天</value>
+  </data>
+  <data name="Wing" xml:space="preserve">
+    <value>组队</value>
+  </data>
 </root>

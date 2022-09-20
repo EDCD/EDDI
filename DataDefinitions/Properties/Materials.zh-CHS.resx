@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,552 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Adaptive Encryptors Capture</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Pattern Alpha Obelisk Data (Biological)</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Pattern Beta Obelisk Data (Cultural)</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Pattern Gamma Obelisk Data (Historical)</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Pattern Delta Obelisk Data (Linguistic)</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Pattern Epsilon Obelisk Data (Technological)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>Antimony</value>
+    <comment>Material antimony</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Irregular Emission Data</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>Arsenic</value>
+    <comment>Material arsenic</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Basic Conductors</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Biotech Conductors</value>
+    <comment>Material biotechconductors</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>Boron</value>
+    <comment>Material boron</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Anomalous Bulk Scan Data</value>
+    <comment>Material bulkscandata</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>Cadmium</value>
+    <comment>Material cadmium</comment>
+  </data>
+  <data name="carbon" xml:space="preserve">
+    <value>Carbon</value>
+    <comment>Material carbon</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Chemical Distillery</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Chemical Manipulators</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Chemical Processors</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Chemical Storage Units</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>Chromium</value>
+    <comment>Material chromium</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Classified Scan Fragment</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Compact Composites</value>
+    <comment>Material compactcomposites</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Abnormal Compact Emission Data</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Compound Shielding</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Conductive Ceramics</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Conductive Components</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Conductive Polymers</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Configurable Components</value>
+    <comment>Material configurablecomponents</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Modified Consumer Firmware</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Crystal Shards</value>
+    <comment>Material crystalshards</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Datamined Wake Exceptions</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Decoded Emission Data</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Atypical Disrupted Wake Echoes</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Electrochemical Arrays</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Modified Embedded Firmware</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Unexpected Emission Data</value>
+    <comment>Material emissiondata</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Divergent Scan Data</value>
+    <comment>Material encodedscandata</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Unusual Encrypted Files</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Atypical Encryption Archives</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Tagged Encryption Codes</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Exquisite Focus Crystals</value>
+    <comment>Material exquisitefocuscrystals</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Core Dynamics Composites</value>
+    <comment>Material fedcorecomposites</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Proprietary Composites</value>
+    <comment>Material fedproprietarycomposites</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Filament Composites</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Focus Crystals</value>
+    <comment>Material focuscrystals</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Anomalous FSD Telemetry</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Galvanising Alloys</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>Germanium</value>
+    <comment>Material germanium</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Grid Resistors</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Guardian Module Blueprint</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Guardian Power Cell</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Guardian Power Conduit</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Guardian Sentinel Weapon Parts</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Guardian Sentinel Wreckage Components</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Guardian Technology Component</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Guardian Vessel Blueprint</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Guardian Weapon Blueprint</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Heat Conduction Wiring</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Heat Dispersion Plate</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Heat Exchangers</value>
+    <comment>Material heatexchangers</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Heat Resistant Ceramics</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Heat Vanes</value>
+    <comment>Material heatvanes</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>High Density Composites</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Hybrid Capacitors</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Eccentric Hyperspace Trajectories</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Imperial Shielding</value>
+    <comment>Material imperialshielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Improvised Components</value>
+    <comment>Material improvisedcomponents</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Cracked Industrial Firmware</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>Iron</value>
+    <comment>Material iron</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Lead</value>
+    <comment>Material lead</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Specialised Legacy Firmware</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Manganese</value>
+    <comment>Material manganese</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Mechanical Components</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Mechanical Equipment</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Mechanical Scrap</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>Mercury</value>
+    <comment>Material mercury</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Military Grade Alloys</value>
+    <comment>Material militarygradealloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Military Supercapacitors</value>
+    <comment>Material militarysupercapacitors</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>Molybdenum</value>
+    <comment>Material molybdenum</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>Nickel</value>
+    <comment>Material nickel</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>Niobium</value>
+    <comment>Material niobium</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Pharmaceutical Isolators</value>
+    <comment>Material pharmaceuticalisolators</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Phase Alloys</value>
+    <comment>Material phasealloys</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>Phosphorus</value>
+    <comment>Material phosphorus</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Polonium</value>
+    <comment>Material polonium</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Polymer Capacitors</value>
+    <comment>Material polymercapacitors</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Precipitated Alloys</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Proto Heat Radiators</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Proto Light Alloys</value>
+    <comment>Material protolightalloys</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Proto Radiolic Alloys</value>
+    <comment>Material protoradiolicalloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Refined Focus Crystals</value>
+    <comment>Material refinedfocuscrystals</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Rhenium</value>
+    <comment>Material rhenium</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Ruthenium</value>
+    <comment>Material ruthenium</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Salvaged Alloys</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Unidentified Scan Archives</value>
+    <comment>Material scanarchives</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Classified Scan Databanks</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Exceptional Scrambled Emission Data</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Security Firmware Patch</value>
+    <comment>Material securityfirmware</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Selenium</value>
+    <comment>Material selenium</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Distorted Shield Cycle Recordings</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Untypical Shield Scans</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Shield Emitters</value>
+    <comment>Material shieldemitters</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Peculiar Shield Frequency Data</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Shielding Sensors</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Aberrant Shield Pattern Analysis</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Inconsistent Shield Soak Analysis</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>Sulphur</value>
+    <comment>Material sulphur</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Open Symmetric Keys</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Technetium</value>
+    <comment>Material technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Tellurium</value>
+    <comment>Material tellurium</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Tempered Alloys</value>
+    <comment>Material temperedalloys</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Thargoid Bio-Mechanical Components</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Thargoid Material Composition Data</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Thargoid Propulsion Element</value>
+    <comment>Material tg_propulsionelement</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Thargoid Residue Data</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Thargoid Ship Flight Data</value>
+    <comment>Material tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Thargoid Ship Systems Data</value>
+    <comment>Material tg_shipsystemsdata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Thargoid Structural Data</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Thargoid Weapon Parts</value>
+    <comment>Material tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Thargoid Wreckage Components</value>
+    <comment>Material tg_wreckagecomponents</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Thermic Alloys</value>
+    <comment>Material thermicalloys</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Tin</value>
+    <comment>Material tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Tungsten</value>
+    <comment>Material tungsten</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Flawed Focus Crystals</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Thargoid Carapace</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Thargoid Energy Cell</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Sensor Fragment</value>
+    <comment>Material unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Thargoid Organic Circuitry</value>
+    <comment>Material unknownorganiccircuitry</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Thargoid Ship Signature</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Thargoid Technology Components</value>
+    <comment>Material unknowntechnologycomponents</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Thargoid Wake Data</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>Vanadium</value>
+    <comment>Material vanadium</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Strange Wake Solutions</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Worn Shield Emitters</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Yttrium</value>
+    <comment>Material yttrium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>Zinc</value>
+    <comment>Material zinc</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Zirconium</value>
+    <comment>Material zirconium</comment>
+  </data>
 </root>

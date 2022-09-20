@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmpireFour" xml:space="preserve">
+    <value>自稳定光束激光器和散热器发射器</value>
+  </data>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>固定光束激光器和散热器发射器</value>
+  </data>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>固定脉冲激光和点防御</value>
+  </data>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>固定等离子机炮和箔条发射器</value>
+  </data>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>自稳定脉冲激光器和箔条发射器</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>自稳定光束激光器和散热器发射器</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>固定脉冲激光器和散热器发射器</value>
+  </data>
+  <data name="FederationThree" xml:space="preserve">
+    <value>固定等离子机炮和点防御</value>
+  </data>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>固定多管炮和箔条发射器</value>
+  </data>
+  <data name="FederationZero" xml:space="preserve">
+    <value>自稳定脉冲激光器和箔条发射器</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>守护者等离子自动炮</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>守护者碎片发射器</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>守护者高斯聚焦炮</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>固定反八角多管炮</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>自稳定光束激光器和散热器</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>固定光束激光器和散热器发射器</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>固定脉冲激光和点防御</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>固定等离子机炮和箔条发射器</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>自稳定脉冲激光器和箔条发射器</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>双等离子机炮</value>
+  </data>
 </root>

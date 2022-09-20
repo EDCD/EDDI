@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,552 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>通过扫描绕行装置和类似地球的世界的卫星，或作为任务奖励获得……尤其是行星扫描任务。</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Antimony</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>从信号源或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>从地表勘探、小行星采矿或作为任务奖励获得。</value>
+    <comment>Material location Arsenic</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>从运输船的残骸中获得。</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>作为任务奖励获得。</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>通过小行星采矿获得。</value>
+    <comment>Material location Boron</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>通过扫描运输船只或作为任务奖励获得。</value>
+    <comment>Material location Anomalous Bulk Scan Data</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>从地表勘探或小行星采矿中获得。</value>
+    <comment>Material location Cadmium</comment>
+  </data>
+  <data name="carbon" xml:space="preserve">
+    <value>从地表勘探、小行星采矿和冰环采矿中获得。</value>
+    <comment>Material location Carbon</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>从运输船的残骸中获得。</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>从大型运输船的残骸中获得，通常是 T7和 T9，尤其是在处于无政府状态或患有疾病的系统中。这些也可以在 Dav's Hope 搞到。”</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>从运输船的残骸中获得或作为任务奖励。</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>从运输船的残骸中获得。</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>通过地表勘探、在原始岩石环中开采小行星或通过开采冰环获得。</value>
+    <comment>Material location Chromium</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>通过扫描地面基地的数据链、扫描军事和权威船只或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>从退化的信号源获得，包括表面信号。</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>通过扫描战舰、扫描深空数据信标和编码排放源或作为任务奖励获得。</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>从战舰残骸中获得或作为任务奖励和编码排放源，特别是在高度安全的系统、经济蓬勃发展的系统以及寻求撤退和巩固权力的系统中。这些也可以在 Dav's Hope 买到。</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>从运输船的残骸中获得，特别是在人口系统附近的无政府状态系统中。这些也可以在 Dav's Hope 搞到。</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>从运输船的残骸中获得，特别是在人口系统附近的无政府状态系统中。</value>
+    <comment>Material location Conductive Components</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>从 T9和白鲸班轮等大型运输和客船的残骸中，从表面信号源中获得，并作为任务奖励。这些也可以在 Dav's Hope 买到。</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>从运输船的残骸中获得，尤其是在低安全性系统中。这些也可以在 Dav's Hope 搞到。</value>
+    <comment>Material location Configurable Components</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>作为任务奖励或通过扫描地面基地的数据链或在系统处于选举或内战期间扫描编码信号源中的私人数据信标获得。</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>从战舰残骸和表面信号源中获得。</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>通过扫描船只的超空间跃迁尾迹、扫描编码数据信标或作为任务奖励获得。</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>通过扫描系统权威船只或作为任务奖励获得。</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>通过扫描船只的超空间跃迁尾流或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>从战斗和系统管理船只的残骸中获得，或者从其他人口稠密系统附近的无政府状态系统中的退化排放源获得。</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>通过扫描地面基地的数据链或作为任务奖励获得。</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>通过扫描战舰或信号源获得，尤其是在经济蓬勃发展或正在进行选举的系统中。</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>通过扫描地面基地的数据链或作为任务奖励获得。</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>从信号源获得，包括地面信号源，或作为任务奖励。这些往往在经济蓬勃发展的系统中更为常见。</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>通过扫描地面基地的数据链获得。</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>通过扫描地表数据点、绕行安装的卫星和类似地球的世界，或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>从战舰残骸中获得或作为任务奖励，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>从联邦控制系统中的高级信号源或联邦战舰残骸中获得。</value>
+    <comment>Material location Core Dynamics Composites</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>在联邦控制的高级信号源中获得或在选举期间作为联邦系统中的任务奖励获得。</value>
+    <comment>Material location Proprietary Composites</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>从军事和权威船只的残骸中获得。</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>从战舰残骸中获得，特别是在高安全性系统中。</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>通过扫描超空间跃迁尾迹或作为任务奖励获得。</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>从战舰残骸中获得或作为任务奖励，尤其是在举行选举的系统中。</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>从地表勘探或作为任务奖励获得，尤其是在患有疾病的系统中。</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>从小型战舰的残骸中获得或作为任务奖励。</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_powercell</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>从被称为守护者的外星物种的古代遗迹中获得。</value>
+    <comment>Material location guardian_weaponblueprint</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>从运输船的残骸中、信号源中或作为任务奖励获得。</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>从信号源中的运输船残骸中获得，特别是在经济繁荣的系统中，或作为任务奖励。</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>从运输船的残骸中获得，尤其是在其他人口密集系统附近的无政府状态系统中。</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>从军事和权威船只的残骸中获得。</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>从运输船的残骸中获得或作为任务奖励。这些也可以在 Dav's Hope 搞到。</value>
+    <comment>Material location Heat Vanes</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>从大型战舰的残骸中获得，通常是 Anacondas 和 Federal Corvettes。这些也可以在 Dav's Hope 搞到。</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>从大型战舰的残骸中获得，通常是 Anacondas 和 Federal Corvettes，或作为任务奖励。</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>通过扫描超空间跃迁尾迹获得。</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>在帝国控制下的系统中的高级信号源中获得或作为任务奖励获得。</value>
+    <comment>Material location Imperial Shielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>在独立空间系统、经济蓬勃发展的系统、遭受内乱、战争、内战或疾病的系统中的高级信号源中获得，或作为任务奖励获得。</value>
+    <comment>Material location Improvised Components</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>通过扫描地面基地的数据链或作为任务奖励获得。</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>从地表勘探、小行星采矿或冰环采矿中获得。</value>
+    <comment>Material location Iron</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>从小行星采矿中获得。</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>通过扫描地表数据点、绕行安装的卫星和类似地球的世界，或作为任务奖励获得。</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>通过地表勘探或作为任务奖励获得。</value>
+    <comment>Material location Manganese</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>从小型运输船的残骸中获得，尤其是在低安全性系统中。这些也可以在 Dav's Hope 买到。</value>
+    <comment>Material location Mechanical Components</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>从运输船的残骸中获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>从运输船的残骸中获得或作为任务奖励。</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Mercury</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>在战争或内战系统中的高级信号源中获得或作为任务奖励获得。</value>
+    <comment>Material location Military Grade Alloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>在战争或内战系统中的高级信号源中获得或作为任务奖励获得。</value>
+    <comment>Material location Military Supercapacitors</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>从地表勘探或小行星采矿中获得。</value>
+    <comment>Material location Molybdenum</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>从地表勘探、小行星采矿或冰环采矿中获得。</value>
+    <comment>Material location Nickel</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>从地表勘探或小行星采矿中获得。</value>
+    <comment>Material location Niobium</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>在高级信号源中获得，尤其是在爆发系统中，或作为任务奖励。</value>
+    <comment>Material location Pharmaceutical Isolators</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>从战舰残骸或经济蓬勃发展的系统中的信号源中获得。</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>从地表勘探、小行星采矿或冰矿开采中获得。</value>
+    <comment>Material location Phosphorus</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>通过地表勘探或作为任务奖励获得。</value>
+    <comment>Material location Polonium</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>从战斗和系统权威船只的残骸中获得，具有车队分散模式的信号源或作为任务奖励。</value>
+    <comment>Material location Polymer Capacitors</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>从战斗和系统权威船只的残骸中获得或作为任务奖励。</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>在经济蓬勃发展的系统中的高级信号源中获得或作为任务奖励。</value>
+    <comment>Material location Proto Heat Radiators</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>在经济蓬勃发展的系统中的高级信号源中获得或作为任务奖励。</value>
+    <comment>Material location Proto Light Alloys</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>在经济蓬勃发展的系统中的高级信号源中获得。</value>
+    <comment>Material location Proto Radiolic Alloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>在主动战斗信号源中获得或作为任务奖励获得。</value>
+    <comment>Material location Refined Focus Crystals</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>从小行星采矿中获得。</value>
+    <comment>Material location Rhenium</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Ruthenium</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>从战舰残骸中获得。</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>通过扫描运输船获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>通过扫描大型运输船（通常是 7 型和 9 型）以及扫描地面基地的数据链获得。</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>通过扫描船只、信号源或作为任务奖励获得。</value>
+    <comment>Material location Exceptional Scrambled Emission Data</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>通过扫描地面基地的数据链或作为任务奖励获得。</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>通过地表勘探或作为任务奖励获得。</value>
+    <comment>Material location Selenium</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>通过扫描运输船只或作为任务奖励获得。</value>
+    <comment>Material location Distorted Shield Cycle Recordings</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>通过扫描战舰获得。</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>从战舰残骸或信号源中获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>通过扫描船只或作为任务奖励获得。</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>从战舰残骸中获得或作为任务奖励。</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>通过扫描系统权限和战舰获得，或作为任务奖励，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>通过扫描运输船或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>从地表勘探、小行星采矿或冰环采矿中获得。</value>
+    <comment>Material location Sulphur</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>通过扫描地面基地或信号源中的数据链或作为任务奖励获得。</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Tellurium</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>从战舰的残骸中获得。</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>从 Thargoid 船只的残骸中获得。</value>
+    <comment>Material location tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>从 Thargoid 船只的残骸中获得。</value>
+    <comment>Material location tg_propulsionelement</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>通过扫描 Thargoid 血管获得。</value>
+    <comment>Material location tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>通过扫描 Thargoid 血管获得。</value>
+    <comment>Material location tg_shipsystemsdata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>从 Thargoid 船只的残骸中获得。</value>
+    <comment>Material location tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>从 Thargoid 船只的残骸中获得。</value>
+    <comment>Material location tg_wreckagecomponents</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>从战舰残骸中获得或作为任务奖励。</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>从具有原始储量的地区的地表勘探或小行星采矿中获得。</value>
+    <comment>Material location Tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Tungsten</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>从战舰残骸或战后信号源中获得。</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Organic Circuitry</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘表面地点或扫描 Thargoid 船只获得。</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>从被称为 Thargoids 的外星物种的神秘地表地点获得。</value>
+    <comment>Material location Thargoid Technological Components</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>通过扫描 Thargoid 船只留下的尾迹获得。</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>通过地表勘探、开采原始金属环或开采冰环获得。</value>
+    <comment>Material location Vanadium</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>通过扫描船只的高尾流或作为任务奖励获得，尤其是在经济蓬勃发展的系统中。</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>从战舰残骸中获得。</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Yttrium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>由地表勘探获得。</value>
+    <comment>Material location Zinc</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>从地表勘探或小行星采矿中获得。</value>
+    <comment>Material location Zirconium</comment>
+  </data>
 </root>
