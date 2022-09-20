@@ -2086,7 +2086,7 @@ namespace EddiCore
             StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
 
             LastStarSystem = CurrentStarSystem;
-            if (NextStarSystem?.systemname == name)
+            if (NextStarSystem != null && NextStarSystem.systemname == name)
             {
                 CurrentStarSystem = NextStarSystem;
                 NextStarSystem = null;
