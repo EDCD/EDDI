@@ -164,6 +164,8 @@
   </data>
   <data name="header_cg_percentileband" xml:space="preserve">
     <value>パーセンタイルバンド:</value>
+    <comment>header_cg_percentileband
+A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
   </data>
   <data name="header_cg_reward" xml:space="preserve">
     <value>報酬(クレジット):</value>
