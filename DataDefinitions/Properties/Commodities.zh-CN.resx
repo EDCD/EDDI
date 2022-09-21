@@ -503,7 +503,10 @@
   
   
   
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Void Opals</value>
+    <comment>Commodity Opal</comment>
+  </data>
   
   
   
