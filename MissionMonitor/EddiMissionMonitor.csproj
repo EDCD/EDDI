@@ -101,7 +101,6 @@
       <LastGenOutput>MissionMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\MissionMonitor.ru.resx" />
-    <EmbeddedResource Include="Properties\MissionMonitor.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

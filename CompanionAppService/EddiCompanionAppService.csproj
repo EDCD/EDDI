@@ -128,7 +128,6 @@
       <LastGenOutput>CapiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CapiResources.ru.resx" />
-    <EmbeddedResource Include="Properties\CapiResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\CapiResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

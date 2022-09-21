@@ -106,7 +106,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\InaraResources.ru.resx" />
-    <EmbeddedResource Include="Properties\InaraResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\InaraResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

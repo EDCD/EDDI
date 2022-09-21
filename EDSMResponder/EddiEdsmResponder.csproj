@@ -125,7 +125,6 @@
       <LastGenOutput>EDSMResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EDSMResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EDSMResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

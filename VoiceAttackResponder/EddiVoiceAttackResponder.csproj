@@ -169,7 +169,6 @@
       <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\VoiceAttack.ru.resx" />
-    <EmbeddedResource Include="Properties\VoiceAttack.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
