@@ -132,6 +132,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\IPA.ru.resx" />
     <EmbeddedResource Include="Properties\IPA.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\IPA.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GitInfo">

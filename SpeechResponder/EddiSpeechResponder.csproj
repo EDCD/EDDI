@@ -247,8 +247,10 @@
       <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CustomFunctions.Untranslated.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\CustomFunctions.Untranslated.zh-CN.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.cs.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\SpeechResponder.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Tooltips.cs.resx" />
     <EmbeddedResource Include="Properties\Tooltips.ru.resx" />
     <EmbeddedResource Include="Properties\Tooltips.pt-BR.resx" />
@@ -263,6 +265,7 @@
       <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Tooltips.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\Tooltips.zh-CN.resx" />
     <None Include="app.config" />
     <None Include="eddi.cs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

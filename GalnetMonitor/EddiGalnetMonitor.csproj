@@ -136,6 +136,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\GalnetMonitor.ru.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\GalnetMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

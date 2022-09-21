@@ -118,6 +118,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\JournalMonitor.ru.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\JournalMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">

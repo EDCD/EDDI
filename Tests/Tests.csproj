@@ -236,6 +236,7 @@
     <EmbeddedResource Include="Properties\loadout.json" />
     <EmbeddedResource Include="Properties\Resources.cs.resx" />
     <EmbeddedResource Include="Properties\Resources.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
     <EmbeddedResource Include="Properties\shipMonitor.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem1.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem2.json" />

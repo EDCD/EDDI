@@ -116,6 +116,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\NavigationMonitor.ru.resx" />
     <EmbeddedResource Include="Properties\NavigationMonitor.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\NavigationMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">

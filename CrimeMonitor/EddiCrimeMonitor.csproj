@@ -115,6 +115,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CrimeMonitor.ru.resx" />
     <EmbeddedResource Include="Properties\CrimeMonitor.zh-CHS.resx" />
+    <EmbeddedResource Include="Properties\CrimeMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
