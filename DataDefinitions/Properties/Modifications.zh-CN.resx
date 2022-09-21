@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AFMShielded" xml:space="preserve">
-    <value>维修单元结构增强</value>
-  </data>
   <data name="ArmourAdvanced" xml:space="preserve">
     <value>轻量化装甲</value>
   </data>
@@ -135,120 +132,6 @@
   <data name="ArmourThermic" xml:space="preserve">
     <value>抗热装甲</value>
   </data>
-  <data name="BeamLaserEfficient" xml:space="preserve">
-    <value>高效光束激光</value>
-  </data>
-  <data name="BeamLaserLightWeight" xml:space="preserve">
-    <value>轻量化光束激光</value>
-  </data>
-  <data name="BeamLaserLongRange" xml:space="preserve">
-    <value>远射程光束激光</value>
-  </data>
-  <data name="BeamLaserOvercharged" xml:space="preserve">
-    <value>过载光束激光</value>
-  </data>
-  <data name="BeamLaserShortRange" xml:space="preserve">
-    <value>近战光束激光</value>
-  </data>
-  <data name="BeamLaserSturdy" xml:space="preserve">
-    <value>光束激光结构增强</value>
-  </data>
-  <data name="BurstLaserEfficient" xml:space="preserve">
-    <value>高效 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserFocused" xml:space="preserve">
-    <value>聚焦 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserLightWeight" xml:space="preserve">
-    <value>轻量化 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserLongRange" xml:space="preserve">
-    <value>远射程 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserOvercharged" xml:space="preserve">
-    <value>过载 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserRapidFire" xml:space="preserve">
-    <value>速射 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserShortRange" xml:space="preserve">
-    <value>近战 多脉冲激光</value>
-  </data>
-  <data name="BurstLaserSturdy" xml:space="preserve">
-    <value>结构增强 多脉冲激光</value>
-  </data>
-  <data name="CannonEfficient" xml:space="preserve">
-    <value>高效 加农炮</value>
-  </data>
-  <data name="CannonHighCapacity" xml:space="preserve">
-    <value>高弹容量 加农炮</value>
-  </data>
-  <data name="CannonLightWeight" xml:space="preserve">
-    <value>轻量化 加农炮</value>
-  </data>
-  <data name="CannonLongRange" xml:space="preserve">
-    <value>远射程 加农炮</value>
-  </data>
-  <data name="CannonOvercharged" xml:space="preserve">
-    <value>过载 加农炮</value>
-  </data>
-  <data name="CannonRapidFire" xml:space="preserve">
-    <value>速射 加农炮</value>
-  </data>
-  <data name="CannonShortRange" xml:space="preserve">
-    <value>近战 加农炮</value>
-  </data>
-  <data name="CannonSturdy" xml:space="preserve">
-    <value>结构增强 加农炮</value>
-  </data>
-  <data name="CargoScannerFastScan" xml:space="preserve">
-    <value>快速货舱扫描仪</value>
-  </data>
-  <data name="CargoScannerLightWeight" xml:space="preserve">
-    <value>轻量化 货舱扫描仪</value>
-  </data>
-  <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>远程 扫描仪</value>
-  </data>
-  <data name="CargoScannerReinforced" xml:space="preserve">
-    <value>结构增强 货舱扫描仪</value>
-  </data>
-  <data name="CargoScannerShielded" xml:space="preserve">
-    <value>护甲遮蔽 货舱扫描仪</value>
-  </data>
-  <data name="CargoScannerWideAngle" xml:space="preserve">
-    <value>广角 扫描仪</value>
-  </data>
-  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
-    <value>箔条 弹药容量</value>
-  </data>
-  <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>轻量化 箔条发射器</value>
-  </data>
-  <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>结构增强 箔条发射器</value>
-  </data>
-  <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>护甲遮蔽 箔条发射器</value>
-  </data>
-  <data name="CollectionLimpetLightWeight" xml:space="preserve">
-    <value>轻量化 收集无人机</value>
-  </data>
-  <data name="CollectionLimpetReinforced" xml:space="preserve">
-    <value>结构增强 收集无人机</value>
-  </data>
-  <data name="CollectionLimpetShielded" xml:space="preserve">
-    <value>护甲遮蔽 收集无人机</value>
-  </data>
-  <data name="ECMLightWeight" xml:space="preserve">
-    <value>轻量化 电子对抗</value>
-  </data>
-  <data name="ECMReinforced" xml:space="preserve">
-    <value>结构增强 电子对抗</value>
-  </data>
-  <data name="ECMShielded" xml:space="preserve">
-    <value>护甲遮蔽 电子对抗</value>
-  </data>
   <data name="EngineDirty" xml:space="preserve">
     <value>高能低效推进器调教</value>
   </data>
@@ -257,27 +140,6 @@
   </data>
   <data name="EngineTuned" xml:space="preserve">
     <value>高能高效推进器调教</value>
-  </data>
-  <data name="FragCannonDoubleShot" xml:space="preserve">
-    <value>双发破片炮</value>
-  </data>
-  <data name="FragCannonEfficient" xml:space="preserve">
-    <value>高效 破片炮</value>
-  </data>
-  <data name="FragCannonHighCapacity" xml:space="preserve">
-    <value>高弹容量 破片炮</value>
-  </data>
-  <data name="FragCannonLightWeight" xml:space="preserve">
-    <value>轻量化 破片炮</value>
-  </data>
-  <data name="FragCannonOvercharged" xml:space="preserve">
-    <value>过载 破片炮</value>
-  </data>
-  <data name="FragCannonRapidFire" xml:space="preserve">
-    <value>速射 破片炮</value>
-  </data>
-  <data name="FragCannonSturdy" xml:space="preserve">
-    <value>结构增强 破片炮</value>
   </data>
   <data name="FSDFastBoot" xml:space="preserve">
     <value>加快 FSD 启动</value>
@@ -294,39 +156,6 @@
   <data name="FSDShielded" xml:space="preserve">
     <value>护甲遮蔽 FSD</value>
   </data>
-  <data name="FuelScoopShielded" xml:space="preserve">
-    <value>护甲遮蔽油勺</value>
-  </data>
-  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
-    <value>轻量化 加油无人机</value>
-  </data>
-  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
-    <value>结构增强 加油无人机</value>
-  </data>
-  <data name="FuelTransferLimpetShielded" xml:space="preserve">
-    <value>护甲遮蔽 加油无人机</value>
-  </data>
-  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
-    <value>轻量化 爆窃无人机</value>
-  </data>
-  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
-    <value>结构增强 爆窃无人机</value>
-  </data>
-  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
-    <value>护甲遮蔽 爆窃无人机</value>
-  </data>
-  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
-    <value>散热器 弹药容量</value>
-  </data>
-  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
-    <value>轻量化 散热器发射器</value>
-  </data>
-  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
-    <value>结构增强 散热器发射器</value>
-  </data>
-  <data name="HeatSinkLauncherShielded" xml:space="preserve">
-    <value>护甲遮蔽 散热器发射器</value>
-  </data>
   <data name="HullReinforcementAdvanced" xml:space="preserve">
     <value>轻量化 船体增强</value>
   </data>
@@ -341,126 +170,6 @@
   </data>
   <data name="HullReinforcementThermic" xml:space="preserve">
     <value>抗热 船体增强</value>
-  </data>
-  <data name="KillWarrantScannerFastScan" xml:space="preserve">
-    <value>快速追杀令扫描仪</value>
-  </data>
-  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
-    <value>轻量化 追杀令扫描仪</value>
-  </data>
-  <data name="KillWarrantScannerLongRange" xml:space="preserve">
-    <value>远程 扫描仪</value>
-  </data>
-  <data name="KillWarrantScannerReinforced" xml:space="preserve">
-    <value>结构增强 追杀令扫描仪</value>
-  </data>
-  <data name="KillWarrantScannerShielded" xml:space="preserve">
-    <value>护甲遮蔽 追杀令扫描仪</value>
-  </data>
-  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
-    <value>广角 扫描仪</value>
-  </data>
-  <data name="LifeSupportLightWeight" xml:space="preserve">
-    <value>轻量化 维生系统</value>
-  </data>
-  <data name="LifeSupportReinforced" xml:space="preserve">
-    <value>结构增强 维生系统</value>
-  </data>
-  <data name="LifeSupportShielded" xml:space="preserve">
-    <value>护甲遮蔽 维生系统</value>
-  </data>
-  <data name="MineHighCapacity" xml:space="preserve">
-    <value>高弹容量 水雷</value>
-  </data>
-  <data name="MineLightWeight" xml:space="preserve">
-    <value>轻量化 水雷</value>
-  </data>
-  <data name="MineRapidFire" xml:space="preserve">
-    <value>速射 水雷</value>
-  </data>
-  <data name="MineSturdy" xml:space="preserve">
-    <value>结构增强 水雷</value>
-  </data>
-  <data name="MiscLightWeight" xml:space="preserve">
-    <value>杂项 轻量化</value>
-  </data>
-  <data name="MissileHighCapacity" xml:space="preserve">
-    <value>高弹容量 导弹</value>
-  </data>
-  <data name="MissileLightWeight" xml:space="preserve">
-    <value>轻量化 导弹</value>
-  </data>
-  <data name="MissileRapidFire" xml:space="preserve">
-    <value>速射 导弹</value>
-  </data>
-  <data name="MissileSturdy" xml:space="preserve">
-    <value>结构增强 导弹</value>
-  </data>
-  <data name="MulticannonEfficient" xml:space="preserve">
-    <value>高效 多管炮</value>
-  </data>
-  <data name="MulticannonHighCapacity" xml:space="preserve">
-    <value>高弹容量 多管炮</value>
-  </data>
-  <data name="MulticannonLightWeight" xml:space="preserve">
-    <value>轻量化 多管炮</value>
-  </data>
-  <data name="MulticannonLongRange" xml:space="preserve">
-    <value>远射程 多管炮</value>
-  </data>
-  <data name="MulticannonOvercharged" xml:space="preserve">
-    <value>过载 多管炮</value>
-  </data>
-  <data name="MulticannonRapidFire" xml:space="preserve">
-    <value>速射 多管炮</value>
-  </data>
-  <data name="MulticannonShortRange" xml:space="preserve">
-    <value>近战 多管炮</value>
-  </data>
-  <data name="MulticannonSturdy" xml:space="preserve">
-    <value>结构增强 多管炮</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>无</value>
-  </data>
-  <data name="PAOvercharged" xml:space="preserve">
-    <value>过载 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
-    <value>高效 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorFocused" xml:space="preserve">
-    <value>聚焦 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
-    <value>轻量化 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
-    <value>远射程 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
-    <value>过载 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
-    <value>速射 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
-    <value>近战 等离子炮</value>
-  </data>
-  <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
-    <value>结构增强 等离子炮</value>
-  </data>
-  <data name="PointDefenceLightWeight" xml:space="preserve">
-    <value>轻量化 点防御</value>
-  </data>
-  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
-    <value>点防御 弹药容量</value>
-  </data>
-  <data name="PointDefenceReinforced" xml:space="preserve">
-    <value>结构增强 点防御</value>
-  </data>
-  <data name="PointDefenceShielded" xml:space="preserve">
-    <value>护甲遮蔽 点防御</value>
   </data>
   <data name="PowerDistributorHighCapacity" xml:space="preserve">
     <value>高电容能量分配器</value>
@@ -488,63 +197,6 @@
   </data>
   <data name="PowerPlantStealth" xml:space="preserve">
     <value>低散射 反应堆</value>
-  </data>
-  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
-    <value>轻量化 探测无人机</value>
-  </data>
-  <data name="ProspectingLimpetReinforced" xml:space="preserve">
-    <value>结构增强 探测无人机</value>
-  </data>
-  <data name="ProspectingLimpetShielded" xml:space="preserve">
-    <value>护甲遮蔽 探测无人机</value>
-  </data>
-  <data name="PulseLaserEfficient" xml:space="preserve">
-    <value>高效 脉冲激光</value>
-  </data>
-  <data name="PulseLaserFocused" xml:space="preserve">
-    <value>聚焦 脉冲激光</value>
-  </data>
-  <data name="PulseLaserLightWeight" xml:space="preserve">
-    <value>轻量化 脉冲激光</value>
-  </data>
-  <data name="PulseLaserLongRange" xml:space="preserve">
-    <value>远射程 脉冲激光</value>
-  </data>
-  <data name="PulseLaserOvercharged" xml:space="preserve">
-    <value>过载 脉冲激光</value>
-  </data>
-  <data name="PulseLaserRapidFire" xml:space="preserve">
-    <value>速射 脉冲激光</value>
-  </data>
-  <data name="PulseLaserShortRange" xml:space="preserve">
-    <value>近战 脉冲激光</value>
-  </data>
-  <data name="PulseLaserSturdy" xml:space="preserve">
-    <value>结构增强 脉冲激光</value>
-  </data>
-  <data name="RailGunHighCapacity" xml:space="preserve">
-    <value>高弹容量 磁轨炮</value>
-  </data>
-  <data name="RailGunLightWeight" xml:space="preserve">
-    <value>轻量化 磁轨炮</value>
-  </data>
-  <data name="RailGunLongRange" xml:space="preserve">
-    <value>远射程 磁轨炮</value>
-  </data>
-  <data name="RailGunShortRange" xml:space="preserve">
-    <value>近战 磁轨炮</value>
-  </data>
-  <data name="RailGunSturdy" xml:space="preserve">
-    <value>结构增强 磁轨炮</value>
-  </data>
-  <data name="RefineriesShielded" xml:space="preserve">
-    <value>护甲遮蔽 精炼器</value>
-  </data>
-  <data name="SensorExpanded" xml:space="preserve">
-    <value>高半径扫描仪</value>
-  </data>
-  <data name="SensorLightWeight" xml:space="preserve">
-    <value>轻量化 扫描仪</value>
   </data>
   <data name="SensorLongRange" xml:space="preserve">
     <value>远程 扫描仪</value>
@@ -585,34 +237,6 @@
   <data name="ShieldGeneratorThermic" xml:space="preserve">
     <value>抗热 护盾</value>
   </data>
-  <data name="SurfaceScannerExpanded" xml:space="preserve">
-    <value>高半径扫描探针</value>
-  </data>
-  <data name="TorpedoLightWeight" xml:space="preserve">
-    <value>轻量化 鱼雷</value>
-  </data>
-  <data name="TorpedoSturdy" xml:space="preserve">
-    <value>结构增强 鱼雷</value>
-  </data>
-  <data name="WakeScannerFastScan" xml:space="preserve">
-    <value>快速尾迹扫描仪</value>
-  </data>
-  <data name="WakeScannerLightWeight" xml:space="preserve">
-    <value>轻量化 尾迹扫描仪</value>
-  </data>
-  <data name="WakeScannerLongRange" xml:space="preserve">
-    <value>远程 扫描仪
-</value>
-  </data>
-  <data name="WakeScannerReinforced" xml:space="preserve">
-    <value>结构增强 尾迹扫描仪</value>
-  </data>
-  <data name="WakeScannerShielded" xml:space="preserve">
-    <value>护甲遮蔽 尾迹扫描仪</value>
-  </data>
-  <data name="WakeScannerWideAngle" xml:space="preserve">
-    <value>广角 扫描仪</value>
-  </data>
   <data name="WeaponDoubleShot" xml:space="preserve">
     <value>双发破片炮</value>
   </data>
@@ -643,4 +267,383 @@
   <data name="WeaponSturdy" xml:space="preserve">
     <value>结构增强套件</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="WakeScannerFastScan" xml:space="preserve">
+    <value>快速尾迹扫描仪</value>
+  </data>
+  <data name="WakeScannerLightWeight" xml:space="preserve">
+    <value>轻量化 尾迹扫描仪</value>
+  </data>
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>远程 扫描仪
+</value>
+  </data>
+  <data name="WakeScannerReinforced" xml:space="preserve">
+    <value>结构增强 尾迹扫描仪</value>
+  </data>
+  <data name="WakeScannerShielded" xml:space="preserve">
+    <value>护甲遮蔽 尾迹扫描仪</value>
+  </data>
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>广角 扫描仪</value>
+  </data>
+  <data name="AFMShielded" xml:space="preserve">
+    <value>维修单元结构增强</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>轻量化 货舱扫描仪</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>结构增强 货舱扫描仪</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>护甲遮蔽 货舱扫描仪</value>
+  </data>
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>箔条 弹药容量</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>轻量化 箔条发射器</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>结构增强 箔条发射器</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>护甲遮蔽 箔条发射器</value>
+  </data>
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>轻量化 收集无人机</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>结构增强 收集无人机</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>护甲遮蔽 收集无人机</value>
+  </data>
+  <data name="ECMShielded" xml:space="preserve">
+    <value>护甲遮蔽 电子对抗</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>护甲遮蔽油勺</value>
+  </data>
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>轻量化 加油无人机</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>结构增强 加油无人机</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>护甲遮蔽 加油无人机</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>轻量化 爆窃无人机</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>结构增强 爆窃无人机</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>护甲遮蔽 爆窃无人机</value>
+  </data>
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>散热器 弹药容量</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>轻量化 散热器发射器</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>结构增强 散热器发射器</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>护甲遮蔽 散热器发射器</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>轻量化 追杀令扫描仪</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>远程 扫描仪</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>结构增强 追杀令扫描仪</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>护甲遮蔽 追杀令扫描仪</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>轻量化 维生系统</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>结构增强 维生系统</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>护甲遮蔽 维生系统</value>
+  </data>
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>点防御 弹药容量</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>轻量化 点防御</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>结构增强 点防御</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>护甲遮蔽 点防御</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>护甲遮蔽 精炼器</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>轻量化 扫描仪</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>高半径扫描探针</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>快速货舱扫描仪</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>远程 扫描仪</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>广角 扫描仪</value>
+  </data>
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>轻量化 电子对抗</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>结构增强 电子对抗</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>快速追杀令扫描仪</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>广角 扫描仪</value>
+  </data>
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>过载 等离子炮</value>
+  </data>
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>轻量化 探测无人机</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>结构增强 探测无人机</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>护甲遮蔽 探测无人机</value>
+  </data>
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>杂项 轻量化</value>
+  </data>
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>高半径扫描仪</value>
+  </data>
+  <data name="FragCannonDoubleShot" xml:space="preserve">
+    <value>双发破片炮</value>
+  </data>
+  <data name="BeamLaserEfficient" xml:space="preserve">
+    <value>高效光束激光</value>
+  </data>
+  <data name="BurstLaserEfficient" xml:space="preserve">
+    <value>高效 多脉冲激光</value>
+  </data>
+  <data name="CannonEfficient" xml:space="preserve">
+    <value>高效 加农炮</value>
+  </data>
+  <data name="FragCannonEfficient" xml:space="preserve">
+    <value>高效 破片炮</value>
+  </data>
+  <data name="MulticannonEfficient" xml:space="preserve">
+    <value>高效 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
+    <value>高效 等离子炮</value>
+  </data>
+  <data name="PulseLaserEfficient" xml:space="preserve">
+    <value>高效 脉冲激光</value>
+  </data>
+  <data name="BurstLaserFocused" xml:space="preserve">
+    <value>聚焦 多脉冲激光</value>
+  </data>
+  <data name="PlasmaAcceleratorFocused" xml:space="preserve">
+    <value>聚焦 等离子炮</value>
+  </data>
+  <data name="PulseLaserFocused" xml:space="preserve">
+    <value>聚焦 脉冲激光</value>
+  </data>
+  <data name="CannonHighCapacity" xml:space="preserve">
+    <value>高弹容量 加农炮</value>
+  </data>
+  <data name="FragCannonHighCapacity" xml:space="preserve">
+    <value>高弹容量 破片炮</value>
+  </data>
+  <data name="MineHighCapacity" xml:space="preserve">
+    <value>高弹容量 水雷</value>
+  </data>
+  <data name="MissileHighCapacity" xml:space="preserve">
+    <value>高弹容量 导弹</value>
+  </data>
+  <data name="MulticannonHighCapacity" xml:space="preserve">
+    <value>高弹容量 多管炮</value>
+  </data>
+  <data name="RailGunHighCapacity" xml:space="preserve">
+    <value>高弹容量 磁轨炮</value>
+  </data>
+  <data name="BeamLaserLightWeight" xml:space="preserve">
+    <value>轻量化光束激光</value>
+  </data>
+  <data name="BurstLaserLightWeight" xml:space="preserve">
+    <value>轻量化 多脉冲激光</value>
+  </data>
+  <data name="CannonLightWeight" xml:space="preserve">
+    <value>轻量化 加农炮</value>
+  </data>
+  <data name="FragCannonLightWeight" xml:space="preserve">
+    <value>轻量化 破片炮</value>
+  </data>
+  <data name="MineLightWeight" xml:space="preserve">
+    <value>轻量化 水雷</value>
+  </data>
+  <data name="MissileLightWeight" xml:space="preserve">
+    <value>轻量化 导弹</value>
+  </data>
+  <data name="MulticannonLightWeight" xml:space="preserve">
+    <value>轻量化 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>轻量化 等离子炮</value>
+  </data>
+  <data name="PulseLaserLightWeight" xml:space="preserve">
+    <value>轻量化 脉冲激光</value>
+  </data>
+  <data name="RailGunLightWeight" xml:space="preserve">
+    <value>轻量化 磁轨炮</value>
+  </data>
+  <data name="TorpedoLightWeight" xml:space="preserve">
+    <value>轻量化 鱼雷</value>
+  </data>
+  <data name="BeamLaserLongRange" xml:space="preserve">
+    <value>远射程光束激光</value>
+  </data>
+  <data name="BurstLaserLongRange" xml:space="preserve">
+    <value>远射程 多脉冲激光</value>
+  </data>
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>远射程 加农炮</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>远射程 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
+    <value>远射程 等离子炮</value>
+  </data>
+  <data name="PulseLaserLongRange" xml:space="preserve">
+    <value>远射程 脉冲激光</value>
+  </data>
+  <data name="RailGunLongRange" xml:space="preserve">
+    <value>远射程 磁轨炮</value>
+  </data>
+  <data name="BeamLaserOvercharged" xml:space="preserve">
+    <value>过载光束激光</value>
+  </data>
+  <data name="BurstLaserOvercharged" xml:space="preserve">
+    <value>过载 多脉冲激光</value>
+  </data>
+  <data name="CannonOvercharged" xml:space="preserve">
+    <value>过载 加农炮</value>
+  </data>
+  <data name="FragCannonOvercharged" xml:space="preserve">
+    <value>过载 破片炮</value>
+  </data>
+  <data name="MulticannonOvercharged" xml:space="preserve">
+    <value>过载 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
+    <value>过载 等离子炮</value>
+  </data>
+  <data name="PulseLaserOvercharged" xml:space="preserve">
+    <value>过载 脉冲激光</value>
+  </data>
+  <data name="BurstLaserRapidFire" xml:space="preserve">
+    <value>速射 多脉冲激光</value>
+  </data>
+  <data name="CannonRapidFire" xml:space="preserve">
+    <value>速射 加农炮</value>
+  </data>
+  <data name="FragCannonRapidFire" xml:space="preserve">
+    <value>速射 破片炮</value>
+  </data>
+  <data name="MineRapidFire" xml:space="preserve">
+    <value>速射 水雷</value>
+  </data>
+  <data name="MissileRapidFire" xml:space="preserve">
+    <value>速射 导弹</value>
+  </data>
+  <data name="MulticannonRapidFire" xml:space="preserve">
+    <value>速射 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
+    <value>速射 等离子炮</value>
+  </data>
+  <data name="PulseLaserRapidFire" xml:space="preserve">
+    <value>速射 脉冲激光</value>
+  </data>
+  <data name="BeamLaserShortRange" xml:space="preserve">
+    <value>近战光束激光</value>
+  </data>
+  <data name="BurstLaserShortRange" xml:space="preserve">
+    <value>近战 多脉冲激光</value>
+  </data>
+  <data name="CannonShortRange" xml:space="preserve">
+    <value>近战 加农炮</value>
+  </data>
+  <data name="MulticannonShortRange" xml:space="preserve">
+    <value>近战 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
+    <value>近战 等离子炮</value>
+  </data>
+  <data name="PulseLaserShortRange" xml:space="preserve">
+    <value>近战 脉冲激光</value>
+  </data>
+  <data name="RailGunShortRange" xml:space="preserve">
+    <value>近战 磁轨炮</value>
+  </data>
+  <data name="BeamLaserSturdy" xml:space="preserve">
+    <value>光束激光结构增强</value>
+  </data>
+  <data name="BurstLaserSturdy" xml:space="preserve">
+    <value>结构增强 多脉冲激光</value>
+  </data>
+  <data name="CannonSturdy" xml:space="preserve">
+    <value>结构增强 加农炮</value>
+  </data>
+  <data name="FragCannonSturdy" xml:space="preserve">
+    <value>结构增强 破片炮</value>
+  </data>
+  <data name="MineSturdy" xml:space="preserve">
+    <value>结构增强 水雷</value>
+  </data>
+  <data name="MissileSturdy" xml:space="preserve">
+    <value>结构增强 导弹</value>
+  </data>
+  <data name="MulticannonSturdy" xml:space="preserve">
+    <value>结构增强 多管炮</value>
+  </data>
+  <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
+    <value>结构增强 等离子炮</value>
+  </data>
+  <data name="PulseLaserSturdy" xml:space="preserve">
+    <value>结构增强 脉冲激光</value>
+  </data>
+  <data name="RailGunSturdy" xml:space="preserve">
+    <value>结构增强 磁轨炮</value>
+  </data>
+  <data name="TorpedoSturdy" xml:space="preserve">
+    <value>结构增强 鱼雷</value>
+  </data>
+  
+  
+  
 </root>

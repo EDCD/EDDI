@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -121,49 +121,25 @@
     <value>攻击</value>
     <comment>Crime assault</comment>
   </data>
-  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
-    <value>禁止开火区内剐蹭</value>
-    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  <data name="murder" xml:space="preserve">
+    <value>谋杀</value>
+    <comment>Crime murder</comment>
   </data>
-  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
-    <value>禁止开火区内撞车</value>
-    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  <data name="piracy" xml:space="preserve">
+    <value>海盗行为</value>
+    <comment>Crime piracy</comment>
+  </data>
+  <data name="interdiction" xml:space="preserve">
+    <value>拦截合法船只</value>
+    <comment>Crime interdiction</comment>
+  </data>
+  <data name="illegalCargo" xml:space="preserve">
+    <value>装载非法货物</value>
+    <comment>Crime illegalCargo</comment>
   </data>
   <data name="disobeyPolice" xml:space="preserve">
     <value>妨碍执法</value>
     <comment>Crime disobeyPolice</comment>
-  </data>
-  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>阻塞气闸加重</value>
-    <comment>Crime dockingMajorBlockingAirlock</comment>
-  </data>
-  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
-    <value>阻挡停机坪加重</value>
-    <comment>Crime dockingMajorBlockingLandingPad</comment>
-  </data>
-  <data name="dockingMajorTresspass" xml:space="preserve">
-    <value>严重侵入</value>
-    <comment>Crime dockingMajorTresspass</comment>
-  </data>
-  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
-    <value>阻塞气闸</value>
-    <comment>Crime dockingMinorBlockingAirlock</comment>
-  </data>
-  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
-    <value>阻挡停机坪</value>
-    <comment>Crime dockingMinorBlockingLandingPad</comment>
-  </data>
-  <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>侵入</value>
-    <comment>Crime dockingMinorTresspass</comment>
-  </data>
-  <data name="dumpingDangerous" xml:space="preserve">
-    <value>倾倒危险货物</value>
-    <comment>Crime dumpingDangerous</comment>
-  </data>
-  <data name="dumpingNearStation" xml:space="preserve">
-    <value>在站点附近倾倒货物</value>
-    <comment>Crime dumpingNearStation</comment>
   </data>
   <data name="fireInNoFireZone" xml:space="preserve">
     <value>在禁止开火区设计</value>
@@ -173,21 +149,57 @@
     <value>在站点内设计</value>
     <comment>Crime fireInStation</comment>
   </data>
-  <data name="illegalCargo" xml:space="preserve">
-    <value>装载非法货物</value>
-    <comment>Crime illegalCargo</comment>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>倾倒危险货物</value>
+    <comment>Crime dumpingDangerous</comment>
   </data>
-  <data name="interdiction" xml:space="preserve">
-    <value>拦截合法船只</value>
-    <comment>Crime interdiction</comment>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>在站点附近倾倒货物</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>阻塞气闸</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>阻塞气闸加重</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>阻挡停机坪</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>阻挡停机坪加重</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>侵入</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>严重侵入</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>禁止开火区内剐蹭</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>禁止开火区内撞车</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>鲁莽发射武器</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>承载通缉犯</value>
+    <comment>Crime passengerWanted</comment>
   </data>
   <data name="missionFine" xml:space="preserve">
     <value>任务罚款</value>
     <comment>Crime missionFine</comment>
-  </data>
-  <data name="murder" xml:space="preserve">
-    <value>谋杀</value>
-    <comment>Crime murder</comment>
   </data>
   <data name="onFoot_assault" xml:space="preserve">
     <value>攻击</value>
@@ -237,16 +249,8 @@
     <value>侵入</value>
     <comment>Crime onFoot_trespass</comment>
   </data>
-  <data name="passengerWanted" xml:space="preserve">
-    <value>承载通缉犯</value>
-    <comment>Crime passengerWanted</comment>
-  </data>
-  <data name="piracy" xml:space="preserve">
-    <value>海盗行为</value>
-    <comment>Crime piracy</comment>
-  </data>
-  <data name="recklessWeaponsDischarge" xml:space="preserve">
-    <value>鲁莽发射武器</value>
-    <comment>Crime recklessWeaponsDischarge</comment>
-  </data>
+  
+  
+  
+  
 </root>

@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,34 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="alternateURL" xml:space="preserve">
-    <value>https://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss</value>
-    <comment>The URL the Galnet monitor should access for obtaining new news feed items, should sourceURL be unavailable.</comment>
-  </data>
-  <data name="categoryArticle" xml:space="preserve">
-    <value>文章</value>
-    <comment>Category (as seen by the user): Article</comment>
-  </data>
-  <data name="categoryCG" xml:space="preserve">
-    <value>社区目标</value>
-    <comment>Category (as seen by the user): Community Goal</comment>
-  </data>
-  <data name="categoryPowerplay" xml:space="preserve">
-    <value>Powerplay</value>
-    <comment>Category (as seen by the user): Powerplay</comment>
-  </data>
-  <data name="categoryStarportStatus" xml:space="preserve">
-    <value>星站状态更新</value>
-    <comment>Category (as seen by the user): Starport Status Update</comment>
-  </data>
-  <data name="categoryWeekInReview" xml:space="preserve">
-    <value>一周回顾</value>
-    <comment>Category (as seen by the user): Week in Review</comment>
-  </data>
-  <data name="contentFilterCgRegex" xml:space="preserve">
-    <value>&gt;@"(承诺会奖励飞行员)|(行动.+会持续一周)|(组织已经制定了为期一周的行动)|(收集.+奖励)|(如果.+如果最终目标早于预期时间完成，行动会立即结束)"</value>
-    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
-  </data>
   <data name="desc" xml:space="preserve">
     <value>监视 Galnet 的新新闻项目，并在发布新项目时生成“Galnet 新闻发布”事件。</value>
   </data>
@@ -160,17 +132,13 @@
   <data name="p2" xml:space="preserve">
     <value>不在线时阅读 Galnet 文章</value>
   </data>
-  <data name="sourceURL" xml:space="preserve">
-    <value>https://community.elitedangerous.com/en/galnet-rss</value>
-    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Powerplay: 将到来的更新</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
   </data>
   <data name="titleFilterCg" xml:space="preserve">
     <value>社区目标: </value>
     <comment>Title filter for determining whether an item is a Community Goal related item</comment>
-  </data>
-  <data name="titleFilterPowerplay" xml:space="preserve">
-    <value>Powerplay: 将到来的更新</value>
-    <comment>Title filter for determining whether an item is a Powerplay item</comment>
   </data>
   <data name="titleFilterStarportStatus" xml:space="preserve">
     <value>星站状态更新</value>
@@ -180,4 +148,27 @@
     <value>一周回顾</value>
     <comment>Title filter for determining whether an item is a "Week in Review</comment>
   </data>
+  
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(承诺会奖励飞行员)|(行动.+会持续一周)|(组织已经制定了为期一周的行动)|(收集.+奖励)|(如果.+如果最终目标早于预期时间完成，行动会立即结束)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
+  <data name="categoryArticle" xml:space="preserve">
+    <value>文章</value>
+    <comment>Category (as seen by the user): Article</comment>
+  </data>
+  
+  <data name="categoryCG" xml:space="preserve">
+    <value>社区目标</value>
+    <comment>Category (as seen by the user): Community Goal</comment>
+  </data>
+  <data name="categoryStarportStatus" xml:space="preserve">
+    <value>星站状态更新</value>
+    <comment>Category (as seen by the user): Starport Status Update</comment>
+  </data>
+  <data name="categoryWeekInReview" xml:space="preserve">
+    <value>一周回顾</value>
+    <comment>Category (as seen by the user): Week in Review</comment>
+  </data>
+  
 </root>

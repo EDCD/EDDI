@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,195 +117,68 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Altruism" xml:space="preserve">
-    <value>Donation</value>
-  </data>
-  <data name="Assassinate" xml:space="preserve">
-    <value>Assassination</value>
-  </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Wing Assassination</value>
-  </data>
-  <data name="BlOps" xml:space="preserve">
-    <value>Black Ops</value>
-  </data>
-  <data name="Chain" xml:space="preserve">
-    <value>Chain</value>
-    <comment>Sequential chained (joined) mission</comment>
-  </data>
-  <data name="Collect" xml:space="preserve">
-    <value>Collection</value>
-  </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Wing Collection</value>
-  </data>
-  <data name="CommunityGoal" xml:space="preserve">
-    <value>Community Goal</value>
-  </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Civil War Targets</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>War Targets</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="Courier" xml:space="preserve">
-    <value>Data Courier</value>
-  </data>
-  <data name="Covert" xml:space="preserve">
-    <value>Covert</value>
-  </data>
-  <data name="Credits" xml:space="preserve">
-    <value>Credits</value>
-  </data>
-  <data name="Delivery" xml:space="preserve">
-    <value>Delivery</value>
-  </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Wing Delivery</value>
-  </data>
-  <data name="Disable" xml:space="preserve">
-    <value>Disable Surface Installation</value>
-  </data>
-  <data name="DisableMegaship" xml:space="preserve">
-    <value>Disable Megaship</value>
-  </data>
-  <data name="DisableWing" xml:space="preserve">
-    <value>Wing Disable</value>
-  </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
-    <comment>Hack type</comment>
-  </data>
-  <data name="Founder" xml:space="preserve">
-    <value>Founder</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="GenericPermit1" xml:space="preserve">
     <value>Permit Aquisition</value>
   </data>
-  <data name="Hack" xml:space="preserve">
-    <value>Hacking</value>
-  </data>
-  <data name="HackMegaship" xml:space="preserve">
-    <value>Hack Megaship</value>
-  </data>
-  <data name="Hard" xml:space="preserve">
-    <value>Hard</value>
-    <comment>Mission difficulty</comment>
-  </data>
-  <data name="Illegal" xml:space="preserve">
-    <value>Illegal</value>
-  </data>
-  <data name="Legal" xml:space="preserve">
-    <value>Legal</value>
-  </data>
-  <data name="LongDistanceExpedition" xml:space="preserve">
-    <value>Expedition</value>
-  </data>
-  <data name="Massacre" xml:space="preserve">
-    <value>Massacre</value>
-  </data>
-  <data name="MassacreThargoid" xml:space="preserve">
-    <value>Thargoid Massacre</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Wing Massacre</value>
-  </data>
-  <data name="Mining" xml:space="preserve">
-    <value>Mining</value>
-  </data>
-  <data name="MiningWing" xml:space="preserve">
-    <value>Wing Mining</value>
-  </data>
-  <data name="NCD" xml:space="preserve">
-    <value>Nonviolent</value>
-  </data>
-  <data name="Offline" xml:space="preserve">
-    <value>Offline Settlement</value>
-    <comment>Odyssey settlement state</comment>
-  </data>
-  <data name="OnFoot" xml:space="preserve">
-    <value>On Foot</value>
-  </data>
-  <data name="Onslaught" xml:space="preserve">
-    <value>Settlement Raid</value>
-  </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Transport</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>Transport</value>
-  </data>
-  <data name="Piracy" xml:space="preserve">
-    <value>Piracy</value>
-  </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Planetary</value>
-  </data>
-  <data name="Planetary" xml:space="preserve">
-    <value>Planetary</value>
-  </data>
-  <data name="PolPrisoner" xml:space="preserve">
-    <value>Political Prisoners</value>
-    <comment>Bulk passenger type</comment>
-  </data>
-  <data name="Power" xml:space="preserve">
-    <value>Settlement Shutdown</value>
-    <comment>Sabotage type</comment>
-  </data>
-  <data name="Production" xml:space="preserve">
-    <value>Disrupt Settlement Production</value>
-    <comment>Sabotage type</comment>
-  </data>
-  <data name="ProductionHeist" xml:space="preserve">
-    <value>Production Heist</value>
-    <comment>Heist type</comment>
-  </data>
-  <data name="RankEmp" xml:space="preserve">
-    <value>Imperial Navy Contract</value>
-  </data>
-  <data name="RankFed" xml:space="preserve">
-    <value>Federal Navy Contract</value>
-  </data>
-  <data name="Reboot" xml:space="preserve">
-    <value>Settlement Reactivation</value>
-    <comment>Odyssey settlement state</comment>
-  </data>
-  <data name="RebootRestore" xml:space="preserve">
-    <value>Settlement Reactivation</value>
-    <comment>Odyssey settlement state</comment>
-  </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Rescue Cargo</value>
-  </data>
-  <data name="Salvage" xml:space="preserve">
-    <value>Salvage</value>
-  </data>
-  <data name="Scan" xml:space="preserve">
-    <value>Surface Scan</value>
-  </data>
-  <data name="Sightseeing" xml:space="preserve">
-    <value>Sightseeing</value>
-  </data>
-  <data name="Skimmer" xml:space="preserve">
-    <value>Skimmer Targets</value>
-    <comment>Massacre type</comment>
-  </data>
-  <data name="Smuggle" xml:space="preserve">
-    <value>Smuggling</value>
-  </data>
-  <data name="Special" xml:space="preserve">
-    <value>Special</value>
-  </data>
-  <data name="StartZone" xml:space="preserve">
-    <value>Start Zone</value>
-  </data>
-  <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-    <comment>Hack type</comment>
-  </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>Welcome</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

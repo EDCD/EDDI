@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -123,9 +123,6 @@
   <data name="add_button_desc" xml:space="preserve">
     <value>允许手动添加小派系记录。</value>
   </data>
-  <data name="add_button_text" xml:space="preserve">
-    <value>添加记录:</value>
-  </data>
   <data name="blank_faction" xml:space="preserve">
     <value>输入派系名称</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="find_button_desc" xml:space="preserve">
     <value>开始搜索最近的拥有Interstellar Factors Contact的星系和站点</value>
-  </data>
-  <data name="find_button_text" xml:space="preserve">
-    <value>查找 Legal Facilities:</value>
   </data>
   <data name="header_bounties" xml:space="preserve">
     <value>被悬赏额</value>
@@ -162,31 +156,16 @@
   <data name="header_system" xml:space="preserve">
     <value>星系</value>
   </data>
-  <data name="orbital_station_checkbox" xml:space="preserve">
-    <value>优先考虑空间站：</value>
-  </data>
-  <data name="p1" xml:space="preserve">
-    <value>提示：最大化允许的站点距离以最小化搜索时间。</value>
-  </data>
   <data name="remove_button" xml:space="preserve">
     <value>移除</value>
   </data>
   <data name="remove_button_desc" xml:space="preserve">
     <value>允许手动删除小派系记录。</value>
   </data>
-  <data name="remove_button_text" xml:space="preserve">
-    <value>移除:</value>
-  </data>
-  <data name="tab_station_distance" xml:space="preserve">
-    <value>距主星的最大距离 (Ls):</value>
-  </data>
   <data name="update_button" xml:space="preserve">
     <value>更新</value>
   </data>
   <data name="update_button_desc" xml:space="preserve">
     <value>更新小派系（系统、站点等）信息。</value>
-  </data>
-  <data name="update_button_text" xml:space="preserve">
-    <value>更新:</value>
   </data>
 </root>

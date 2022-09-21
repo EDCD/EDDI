@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -129,37 +129,9 @@
     <value>科里奥利斯星港</value>
     <comment>A Coriolis Starport</comment>
   </data>
-  <data name="CraterOutpost" xml:space="preserve">
-    <value>地面前哨站</value>
-    <comment>A Surface Outpost</comment>
-  </data>
-  <data name="CraterPort" xml:space="preserve">
-    <value>地面空港</value>
-    <comment>A Surface Port</comment>
-  </data>
-  <data name="FleetCarrier" xml:space="preserve">
-    <value>舰队航母</value>
-    <comment>A Fleet Carrier</comment>
-  </data>
   <data name="Megaship" xml:space="preserve">
     <value>巨舰</value>
     <comment>A Megaship</comment>
-  </data>
-  <data name="MegaShipCivilian" xml:space="preserve">
-    <value>民用巨舰</value>
-    <comment>A Civilian Megaship</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>未知站点</value>
-    <comment>Unknown Station</comment>
-  </data>
-  <data name="Ocellus" xml:space="preserve">
-    <value>奥瑟勒斯星港</value>
-    <comment>An Ocellus Starport</comment>
-  </data>
-  <data name="OnFootSettlement" xml:space="preserve">
-    <value>定居点</value>
-    <comment>An Odyssey style Settlement</comment>
   </data>
   <data name="Orbis" xml:space="preserve">
     <value>奥比斯星港</value>
@@ -169,12 +141,40 @@
     <value>前哨站</value>
     <comment>An Outpost</comment>
   </data>
+  <data name="SurfaceStation" xml:space="preserve">
+    <value>地面站</value>
+    <comment>A Surface Station</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>未知站点</value>
+    <comment>Unknown Station</comment>
+  </data>
+  <data name="CraterPort" xml:space="preserve">
+    <value>地面空港</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>地面前哨站</value>
+    <comment>A Surface Outpost</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>民用巨舰</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
   <data name="OutpostScientific" xml:space="preserve">
     <value>科考站</value>
     <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
   </data>
-  <data name="SurfaceStation" xml:space="preserve">
-    <value>地面站</value>
-    <comment>A Surface Station</comment>
+  <data name="Ocellus" xml:space="preserve">
+    <value>奥瑟勒斯星港</value>
+    <comment>An Ocellus Starport</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>舰队航母</value>
+    <comment>A Fleet Carrier</comment>
+  </data>
+  <data name="OnFootSettlement" xml:space="preserve">
+    <value>定居点</value>
+    <comment>An Odyssey style Settlement</comment>
   </data>
 </root>

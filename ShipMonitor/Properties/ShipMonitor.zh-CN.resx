@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -122,10 +122,6 @@
   </data>
   <data name="export_it_button" xml:space="preserve">
     <value>导出</value>
-  </data>
-  <data name="header_hot" xml:space="preserve">
-    <value>状态</value>
-    <comment>Header for column showing whether ship is Hot or Clean</comment>
   </data>
   <data name="header_location" xml:space="preserve">
     <value>位置</value>
@@ -169,8 +165,12 @@
   <data name="p4" xml:space="preserve">
     <value>请注意，如果您尚未配置对 Frontier API 的访问权限，则以下某些数据将不准确或不可用。 此外，如果您在安装 EDDI 之前拥有多艘飞船，您需要将它们作为您的主要飞船进行交换，并等待片刻才能获得它们的完整信息。</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDI 可以将您的船舶数据导出到Coriolis或 EDShipyard（第三方工具）。 选择您喜欢的工具。</value>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} 准备完成.</value>
+  </data>
+  <data name="header_hot" xml:space="preserve">
+    <value>状态</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
   </data>
   <data name="ship_clean" xml:space="preserve">
     <value>合法</value>
@@ -180,7 +180,7 @@
     <value>被追捕</value>
     <comment>Ship is Hot</comment>
   </data>
-  <data name="ship_ready" xml:space="preserve">
-    <value>{0} 准备完成.</value>
+  <data name="p5" xml:space="preserve">
+    <value>EDDI 可以将您的船舶数据导出到Coriolis或 EDShipyard（第三方工具）。 选择您喜欢的工具。</value>
   </data>
 </root>
