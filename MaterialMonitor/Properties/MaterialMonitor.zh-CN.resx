@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,61 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cancel_dest_button" xml:space="preserve">
-    <value>取消目的地</value>
-  </data>
-  <data name="desc" xml:space="preserve">
-    <value>跟踪材料数量并在达到所设限制时生成事件。</value>
-  </data>
-  <data name="desired_header" xml:space="preserve">
-    <value>期望的</value>
-  </data>
-  <data name="find_encoded_button" xml:space="preserve">
-    <value>查找 Encoded Trader</value>
-  </data>
-  <data name="find_guardian_button" xml:space="preserve">
-    <value>查找 Guardian Broker</value>
-  </data>
-  <data name="find_human_button" xml:space="preserve">
-    <value>查找 Human Broker</value>
-  </data>
-  <data name="find_manufactured_button" xml:space="preserve">
-    <value>查找 Manufactured Trader</value>
-  </data>
-  <data name="find_raw_button" xml:space="preserve">
-    <value>查找 Raw Trader</value>
-  </data>
-  <data name="inventory_header" xml:space="preserve">
-    <value>库存</value>
-  </data>
-  <data name="max_header" xml:space="preserve">
-    <value>最大</value>
-  </data>
-  <data name="min_header" xml:space="preserve">
-    <value>最小</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>材料监视器</value>
-  </data>
-  <data name="name_header" xml:space="preserve">
-    <value>名称</value>
-  </data>
-  <data name="p1" xml:space="preserve">
-    <value>以下是所有已知材料的列表。 您可以设置每个级别的最小、所需和最大级别的值，当您超出某级别时，EDDI 将生成事件。</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>请注意，如果您的库存不正确，您将需要启动或重新启动 Elite，此信息将被更新。</value>
-  </data>
-  <data name="p3" xml:space="preserve">
-    <value>提示：最大化允许的站点距离以最小化搜索时间。</value>
-  </data>
-  <data name="set_dest_button" xml:space="preserve">
-    <value>设置目的地</value>
-  </data>
-  <data name="tab_station_distance" xml:space="preserve">
-    <value>距主星的最大距离（Ls）：</value>
-  </data>
-  <data name="type_header" xml:space="preserve">
-    <value>类型</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
