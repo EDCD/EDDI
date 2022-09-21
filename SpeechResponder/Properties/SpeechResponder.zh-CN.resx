@@ -117,51 +117,134 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="active_personality" xml:space="preserve">
+    <value>启用人格</value>
+  </data>
+  <data name="button_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="button_copy" xml:space="preserve">
+    <value>复制人格</value>
+  </data>
+  <data name="button_delete" xml:space="preserve">
+    <value>删除人格</value>
+  </data>
+  <data name="button_new" xml:space="preserve">
+    <value>创建新脚本</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="compare_script_button" xml:space="preserve">
+    <value>与默认脚本比较</value>
+  </data>
+  <data name="compare_script_title" xml:space="preserve">
+    <value>与默认脚本比较</value>
+  </data>
+  <data name="default_is_read_only" xml:space="preserve">
+    <value>无法修改默认人格。 如果您想进行更改，请创建一个副本。</value>
+  </data>
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.zh-CN.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
+  <data name="delete_personality_caption" xml:space="preserve">
+    <value>删除人格</value>
+  </data>
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>您是否确定删除名为 "{0}" 的人格?</value>
+  </data>
+  <data name="delete_script" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="delete_script_caption" xml:space="preserve">
+    <value>删除脚本</value>
+  </data>
+  <data name="delete_script_message" xml:space="preserve">
+    <value>您是否确定删除脚本 "{0}" ?</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>根据事件中的信息，使用脚本语音响应事件。 并非所有事件都有脚本响应。 如果脚本响应为空，则禁用其“测试”和“查看”按钮。 基于事件的脚本可以禁用或重新设置优先级，但不能删除。</value>
+  </data>
+  <data name="edit_script" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="edit_script_caption" xml:space="preserve">
+    <value>编辑脚本</value>
+  </data>
+  <data name="header_description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="header_enabled" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="help_button" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>语音响应器</value>
+  </data>
+  <data name="reset_script_button" xml:space="preserve">
+    <value>重置为默认</value>
+  </data>
+  <data name="script_variables_button" xml:space="preserve">
+    <value>变量</value>
+    <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="subs" xml:space="preserve">
+    <value>将语音的文本副本写入文件 %APPDATA%\EDDI\speechresponder.out</value>
+  </data>
+  <data name="subs_only" xml:space="preserve">
+    <value>如上所述将文本写入文件时不要大声发音</value>
+  </data>
+  <data name="test_script" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="test_script_button" xml:space="preserve">
+    <value>测试脚本</value>
+  </data>
+  <data name="view_script" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="view_script_title" xml:space="preserve">
+    <value>预览脚本</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>优先级</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>了解语音响应器的功能</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>这里。</value>
+  </data>
+  <data name="localizedAnd" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>重置</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>被恢复的脚本</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI 已恢复程序意外关闭时正在编辑的脚本。 你想重新打开它吗？</value>
+  </data>
+  <data name="validation_tooltip_name_empty" xml:space="preserve">
+    <value>请提供一个名称</value>
+  </data>
+  <data name="validation_tooltip_name_taken" xml:space="preserve">
+    <value>那个名称已占用；请提供另一个</value>
+  </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>过滤器：</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>启用所有基于事件的脚本</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>停用所有基于事件的脚本</value>
+  </data>
 </root>
