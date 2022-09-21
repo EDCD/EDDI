@@ -97,6 +97,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>监视 Elite: Dangerous 的 journal.log 记录了许多常见事件。 除非您确定自己知道自己在做什么，否则不应禁用此功能，因为这将导致 EDDI 中的许多功能不再工作</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Journal 监视器</value>
+  </data>
 </root>
