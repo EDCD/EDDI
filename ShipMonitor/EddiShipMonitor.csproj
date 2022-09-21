@@ -140,7 +140,6 @@
     <EmbeddedResource Include="Properties\ShipMonitor.ru.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\ShipMonitor.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

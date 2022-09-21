@@ -120,7 +120,6 @@
       <LastGenOutput>EddnResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EddnResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\EddnResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

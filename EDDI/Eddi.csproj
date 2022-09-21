@@ -166,7 +166,6 @@
     <EmbeddedResource Include="Properties\EddiResources.ja.resx" />
     <EmbeddedResource Include="Properties\EddiResources.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EddiResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\EddiResources.zh-CN.resx" />
     <EmbeddedResource Include="Properties\MainWindow.cs.resx" />
     <EmbeddedResource Include="Properties\MainWindow.de.resx" />
@@ -187,7 +186,6 @@
       <LastGenOutput>EddiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\MainWindow.ru.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\MainWindow.zh-CN.resx" />
     <None Include="ChangeLog.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -135,7 +135,6 @@
       <LastGenOutput>EddpResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EddpResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EddpResources.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\EddpResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>

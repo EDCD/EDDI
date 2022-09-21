@@ -105,7 +105,6 @@
     <EmbeddedResource Include="Properties\CargoMonitor.cs.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.ru.resx" />
-    <EmbeddedResource Include="Properties\CargoMonitor.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.zh-CN.resx" />
     <Page Include="ConfigurationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

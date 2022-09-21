@@ -129,7 +129,6 @@
       <LastGenOutput>FormatOverrides.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\FormatOverrides.ru.resx" />
-    <EmbeddedResource Include="Properties\FormatOverrides.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\FormatOverrides.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Phonetics.cs.resx" />
     <EmbeddedResource Include="Properties\Phonetics.de.resx" />
@@ -144,7 +143,6 @@
       <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Phonetics.ru.resx" />
-    <EmbeddedResource Include="Properties\Phonetics.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\Phonetics.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Phrases.cs.resx" />
     <EmbeddedResource Include="Properties\Phrases.de.resx" />
@@ -159,7 +157,6 @@
       <LastGenOutput>Phrases.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Phrases.ru.resx" />
-    <EmbeddedResource Include="Properties\Phrases.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\Phrases.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
