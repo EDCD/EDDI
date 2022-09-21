@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>在 VoiceAttack 中生成大量变量并触发用户定义操作的响应器。</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack 响应器</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>要将 EDDI 与 VoiceAttack 集成，需要将 EDDI 安装在 VoiceAttack 的“apps”目录中。 默认路径是“C:\Program Files (x86)\VoiceAttack\Apps”，默认安装 EDDI。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI 仅适用于 VoiceAttack 1.5.12.22 及更高版本。 请注意，1.5.12.22是一个测试版。</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>安装 VoiceAttack 后，您需要启用插件支持。 为此，您必须单击 VoiceAttack 窗口右下角的设置图标（扳手）并选中“启用插件支持”选项并重新启动 VoiceAttack。 您应该会在 VoiceAttack 窗口中看到一条消息，内容为“已初始化插件 EDDI x.x.x”。</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>此时您可以将 EDDI 的变量与您自己的 VoiceAttack 脚本集成。 例如，您的指挥官姓名存储在“name”文本变量中，因此您只需在自己的命令中使用“{TXT:Name}”即可访问它。 您的指挥官、您的船只、当前的恒星系统和您所在的车站等等都有变量。 提供完整的变量列表</value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>在 EDDI 主页上</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>除了编写通过语音或键盘操作触发的脚本之外，您还可以编写在 Elite 内发生的事件上触发的脚本。 例如，如果您想在每次“停靠”事件发生时触发一个脚本，那么您将编写一个名为“((EDDIdocked))”的脚本（注意在名称周围使用双括号以避免它被意外调用，且docked的"d"用小写）。 这里还提供完整的活动列表</value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>在 EDDI 主页上</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>请关闭 VoiceAttack 并独立运行 Eddi 以进行升级。</value>
+  </data>
 </root>
