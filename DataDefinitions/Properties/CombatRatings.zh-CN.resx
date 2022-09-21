@@ -97,18 +97,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Harmless" xml:space="preserve">
+    <value>无害</value>
+    <comment>Combat rating Harmless</comment>
+  </data>
+  <data name="MostlyHarmless" xml:space="preserve">
+    <value>几乎无害</value>
+    <comment>Combat rating MostlyHarmless</comment>
+  </data>
+  <data name="Novice" xml:space="preserve">
+    <value>新手</value>
+    <comment>Combat rating Novice</comment>
+  </data>
+  <data name="Competent" xml:space="preserve">
+    <value>能干</value>
+    <comment>Combat rating Competent</comment>
+  </data>
+  <data name="Expert" xml:space="preserve">
+    <value>专家</value>
+    <comment>Combat rating Expert</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>大师</value>
+    <comment>Combat rating Master</comment>
+  </data>
+  <data name="Dangerous" xml:space="preserve">
+    <value>危险</value>
+    <comment>Combat rating Dangerous</comment>
+  </data>
+  <data name="Deadly" xml:space="preserve">
+    <value>致命</value>
+    <comment>Combat rating Deadly</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>精英</value>
+    <comment>Combat rating Elite</comment>
+  </data>
+  <data name="EliteI" xml:space="preserve">
+    <value>精英一段</value>
+    <comment>Combat rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>精英二段</value>
+    <comment>Combat rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>精英三段</value>
+    <comment>Combat rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>精英四段</value>
+    <comment>Combat rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>精英五段</value>
+    <comment>Combat rating Elite V</comment>
+  </data>
 </root>
