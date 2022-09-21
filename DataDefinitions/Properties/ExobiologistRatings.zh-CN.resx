@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,60 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cataloguer" xml:space="preserve">
-    <value>编目员</value>
-    <comment>Exobiologist rating Cataloguer</comment>
-  </data>
-  <data name="Collector" xml:space="preserve">
-    <value>收集者</value>
-    <comment>Exobiologist rating Collector</comment>
-  </data>
-  <data name="Compiler" xml:space="preserve">
-    <value>编纂者</value>
-    <comment>Exobiologist rating Compiler</comment>
-  </data>
-  <data name="Directionless" xml:space="preserve">
-    <value>盲目</value>
-    <comment>Exobiologist rating Directionless</comment>
-  </data>
-  <data name="Ecologist" xml:space="preserve">
-    <value>生态学家</value>
-    <comment>Exobiologist rating Ecologist</comment>
-  </data>
-  <data name="Elite" xml:space="preserve">
-    <value>精英</value>
-    <comment>Exobiologist rating Elite</comment>
-  </data>
-  <data name="EliteI" xml:space="preserve">
-    <value>精英一段</value>
-    <comment>Exobiologist rating Elite I</comment>
-  </data>
-  <data name="EliteII" xml:space="preserve">
-    <value>精英二段</value>
-    <comment>Exobiologist rating Elite II</comment>
-  </data>
-  <data name="EliteIII" xml:space="preserve">
-    <value>精英三段</value>
-    <comment>Exobiologist rating Elite III</comment>
-  </data>
-  <data name="EliteIV" xml:space="preserve">
-    <value>精英四段</value>
-    <comment>Exobiologist rating Elite IV</comment>
-  </data>
-  <data name="EliteV" xml:space="preserve">
-    <value>精英五段</value>
-    <comment>Exobiologist rating Elite V</comment>
-  </data>
-  <data name="Geneticist" xml:space="preserve">
-    <value>遗传学家</value>
-    <comment>Exobiologist rating Geneticist</comment>
-  </data>
-  <data name="MostlyDirectionless" xml:space="preserve">
-    <value>没有头绪</value>
-    <comment>Exobiologist rating Mostly Directionless</comment>
-  </data>
-  <data name="Taxonomist" xml:space="preserve">
-    <value>分类学家</value>
-    <comment>Exobiologist rating Taxonomist</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
