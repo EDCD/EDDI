@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,56 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Clean" xml:space="preserve">
-    <value>守法</value>
-    <comment>LegalStatus - Clean</comment>
-  </data>
-  <data name="Enemy" xml:space="preserve">
-    <value>敌人</value>
-    <comment>LegalStatus - Enemy</comment>
-  </data>
-  <data name="Hostile" xml:space="preserve">
-    <value>敌视</value>
-    <comment>LegalStatus - Hostile</comment>
-  </data>
-  <data name="Hunter" xml:space="preserve">
-    <value>猎人</value>
-    <comment>LegalStatus - Hunter</comment>
-  </data>
-  <data name="IllegalCargo" xml:space="preserve">
-    <value>非法货物</value>
-    <comment>LegalStatus - Illegal cargo</comment>
-  </data>
-  <data name="Lawless" xml:space="preserve">
-    <value>不法的</value>
-    <comment>LegalStatus - Lawless</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>无</value>
-    <comment>LegalStatus - None</comment>
-  </data>
-  <data name="PassengerWanted" xml:space="preserve">
-    <value>载有通缉犯</value>
-    <comment>LegalStatus - PassengerWanted</comment>
-  </data>
-  <data name="Speeding" xml:space="preserve">
-    <value>超速</value>
-    <comment>LegalStatus - Speeding</comment>
-  </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>未知</value>
-    <comment>LegalStatus - Unknown</comment>
-  </data>
-  <data name="Wanted" xml:space="preserve">
-    <value>被通缉</value>
-    <comment>LegalStatus - Wanted</comment>
-  </data>
-  <data name="WantedEnemy" xml:space="preserve">
-    <value>被通缉的敌人</value>
-    <comment>LegalStatus - WantedEnemy</comment>
-  </data>
-  <data name="Warrant" xml:space="preserve">
-    <value>被执行人</value>
-    <comment>LegalStatus - Warrant</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
