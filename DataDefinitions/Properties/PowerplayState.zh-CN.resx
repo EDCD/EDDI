@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Contested" xml:space="preserve">
+    <value>有争议的</value>
+  </data>
+  <data name="Controlled" xml:space="preserve">
+    <value>实际控制</value>
+  </data>
+  <data name="Exploited" xml:space="preserve">
+    <value>傀儡</value>
+  </data>
+  <data name="HomeSystem" xml:space="preserve">
+    <value>母星系</value>
+  </data>
+  <data name="InPrepareRadius" xml:space="preserve">
+    <value>在准备半径中</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="Prepared" xml:space="preserve">
+    <value>准备完成</value>
+  </data>
+  <data name="Turmoil" xml:space="preserve">
+    <value>动荡</value>
+  </data>
 </root>

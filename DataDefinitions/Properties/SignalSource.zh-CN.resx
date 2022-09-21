@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,236 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>Distress Call</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Ancient Ruins</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>Distress Call</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Capital Ship</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Checkpoint</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Convoy Beacon</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>Debris Field</value>
+    <comment>Debris field</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>Distribution Center</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Pirate Activity</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Pirate Activity</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Pirate Activity</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Notable Stellar Phenomena</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Notable Stellar Phenomena</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Listening Post</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Resource Extraction Site</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Nav Beacon</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Low Intensity Resource Extraction Site</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>High Intensity Resource Extraction Site</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Hazardous Resource Extraction Site</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Compromised Nav Beacon</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>Salvageable Wreckage</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Unregistered Comms Beacon</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Biological Surface Signal</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Geological Surface Signal</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Guardian Surface Signal</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Human Surface Signal</value>
+    <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>Other Surface Signal</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Thargoid Surface Signal</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Thargoid Barnacle</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>Crashed Thargoid ship</value>
+    <comment>Thargoid crash site</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Unidentified Signal Source</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Combat Aftermath</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomaly</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Ceremonial Comms</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Convoy Dispersal Pattern</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Distress Call</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Mission Target</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Non-Human Signal Source</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degraded Emissions</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Trading Beacon</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Encoded Emissions</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>High Grade Emissions</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Weapons Fire</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>High Intensity Conflict Zone</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Low Intensity Conflict Zone</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Medium Intensity Conflict Zone</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>AX Conflict Zone</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
 </root>

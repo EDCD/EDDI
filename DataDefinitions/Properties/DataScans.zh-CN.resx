@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbandonedDataLog" xml:space="preserve">
+    <value>Abandoned Data Log</value>
+    <comment>Data scan type AbandonedDataLog</comment>
+  </data>
+  <data name="AncientCodex" xml:space="preserve">
+    <value>Ancient Codex</value>
+    <comment>Data scan type AncientCodex</comment>
+  </data>
+  <data name="DataLink" xml:space="preserve">
+    <value>Data Link</value>
+    <comment>Data scan type DataLink</comment>
+  </data>
+  <data name="DataPoint" xml:space="preserve">
+    <value>Data Point</value>
+    <comment>Data scan type DataPoint</comment>
+  </data>
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>Data Point H.V.T.</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Listening Post</value>
+    <comment>Data scan type ListeningPost</comment>
+  </data>
+  <data name="SettlementUnknown" xml:space="preserve">
+    <value>Settlement Unknown</value>
+    <comment>Data scan type SettlementUnknown</comment>
+  </data>
+  <data name="ShipUplink" xml:space="preserve">
+    <value>Ship Uplink</value>
+    <comment>Data scan type ShipUplink</comment>
+  </data>
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Thargoid Device</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>Tourist Beacon</value>
+    <comment>Data scan type TouristBeacon</comment>
+  </data>
+  <data name="UnknownUplink" xml:space="preserve">
+    <value>Unknown Uplink</value>
+    <comment>Data scan type UnknownUplink</comment>
+  </data>
+  <data name="WreckedShip" xml:space="preserve">
+    <value>Wrecked Ship</value>
+    <comment>Data scan type WreckedShip</comment>
+  </data>
 </root>

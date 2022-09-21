@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ExplorationSuit" xml:space="preserve">
+    <value>阿尔忒弥斯探索服</value>
+    <comment>A player suit (Artemis)</comment>
+  </data>
+  <data name="FlightSuit" xml:space="preserve">
+    <value>飞行服</value>
+    <comment>A player suit (Flight)</comment>
+  </data>
+  <data name="TacticalSuit" xml:space="preserve">
+    <value>主宰者战斗服</value>
+    <comment>A player suit (Dominator)</comment>
+  </data>
+  <data name="UtilitySuit" xml:space="preserve">
+    <value>独行侠行动服</value>
+    <comment>A player suit (Maverick)</comment>
+  </data>
 </root>

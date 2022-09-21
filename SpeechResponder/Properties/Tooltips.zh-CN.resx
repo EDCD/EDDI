@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="copy" xml:space="preserve">
+    <value>复制 (Ctrl+C)</value>
+  </data>
+  <data name="cut" xml:space="preserve">
+    <value>剪切 (Ctrl+X)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>删除 (Del)</value>
+  </data>
+  <data name="delete_line" xml:space="preserve">
+    <value>删除行 (Ctrl+D)</value>
+  </data>
+  <data name="delete_line_no_shortcut" xml:space="preserve">
+    <value>删除行</value>
+  </data>
+  <data name="find" xml:space="preserve">
+    <value>寻找 (Ctrl+F)</value>
+  </data>
+  <data name="paste" xml:space="preserve">
+    <value>粘贴 (Ctrl+V)</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>恢复 (Ctrl+Y)</value>
+  </data>
+  <data name="show_line_numbers" xml:space="preserve">
+    <value>显示行数</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>撤销 (Ctrl+Z)</value>
+  </data>
+  <data name="word_wrap" xml:space="preserve">
+    <value>自动换行</value>
+  </data>
 </root>
