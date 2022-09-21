@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>氨行星</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>类地行星</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>有氨基生命的气态巨行星 </value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>有水基生命的气态巨行星</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>氦气态巨行星 </value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>富氦气态巨行星</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>高金属行星</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>冰行星</value>
+  </data>
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>富金属行星</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>岩石行星</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>冰岩行星</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>一级气态巨行星</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>二级气态巨行星</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>三级气态巨行星</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>四级气态巨行星</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>五级气态巨行星</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>水巨行星</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>有生命的水巨行星</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>水行星</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+  </data>
 </root>
