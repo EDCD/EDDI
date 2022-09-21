@@ -117,21 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>监视 Galnet 的新新闻项目，并在发布新项目时生成“Galnet 新闻发布”事件。</value>
+  </data>
+  <data name="language_label" xml:space="preserve">
+    <value>Galnet 文章语言</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Galnet 监视器</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>请注意，更改语言后，新的 Galnet 文章最多可能需要 2 分钟才能提供。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>不在线时阅读 Galnet 文章</value>
+  </data>
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Powerplay: 将到来的更新</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>社区目标: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
+  <data name="titleFilterStarportStatus" xml:space="preserve">
+    <value>星站状态更新</value>
+    <comment>Title filter for determining whether an item is a Starport Status Update</comment>
+  </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>一周回顾</value>
+    <comment>Title filter for determining whether an item is a "Week in Review</comment>
+  </data>
   
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(承诺会奖励飞行员)|(行动.+会持续一周)|(组织已经制定了为期一周的行动)|(收集.+奖励)|(如果.+如果最终目标早于预期时间完成，行动会立即结束)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
+  <data name="categoryArticle" xml:space="preserve">
+    <value>文章</value>
+    <comment>Category (as seen by the user): Article</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="categoryCG" xml:space="preserve">
+    <value>社区目标</value>
+    <comment>Category (as seen by the user): Community Goal</comment>
+  </data>
+  <data name="categoryStarportStatus" xml:space="preserve">
+    <value>星站状态更新</value>
+    <comment>Category (as seen by the user): Starport Status Update</comment>
+  </data>
+  <data name="categoryWeekInReview" xml:space="preserve">
+    <value>一周回顾</value>
+    <comment>Category (as seen by the user): Week in Review</comment>
+  </data>
   
 </root>
