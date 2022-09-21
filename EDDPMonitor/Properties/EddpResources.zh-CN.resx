@@ -117,16 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="anything" xml:space="preserve">
+    <value>(任何)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>监视 EDDP 以了解系统控制和状态的变化，并生成与监视列表匹配的事件。</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>派系</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>距离家园的最远距离</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>距离飞船的最远距离</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDP 监视器</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>新监控</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>您可以在下方创建、编辑和删除监控条目。 当 EDDI 收到有关银河系某处发生变化的信息时，它将依次将其与每个监控条目进行比较。 如果信息与给定监控条目的所有选定标准匹配，则它将触发一个事件。 请注意，这依赖于来自 EDDN 的信息，而这些信息又来自运行 EDDI 等程序的指挥官，因此只会报告网络上已知的变化。</value>
+  </data>
+  <data name="state_header" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>星系</value>
+  </data>
 </root>
