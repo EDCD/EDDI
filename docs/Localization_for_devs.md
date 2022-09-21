@@ -214,3 +214,23 @@ The simplest way to do this is to iterate the top-level subdirectories on the in
 
 The simplest way to add a new language to EDDI is via [ResXManager](https://github.com/tom-englert/ResXResourceManager/). In ResXManager, before making any other changes for the new language, select the `Add new language` button in ResXManager.
 ![Image of ResXManager](Localization_for_devs_ResXManager_AddLanguage.png)
+
+## CrowdIn configuration
+
+The CrowdIn configuration is stored locally in the file `crowdin.yml`:
+
+```yaml
+files:
+  - source: /**/*.resx
+    ignore:
+      - '*.*.resx'
+      - Tests
+    translation: /**/%file_name%.%two_letters_code%.resx
+```
+In English, this reads as: "Ignore the Tests folder and all top-level resx files. Translate resx files that are in subfolders and name the translated resx with the primary two-letter code of the language."
+
+We use only the primary two-letter code of the language so that, for example, all users of a French locale can benefit from the French translation regardless of which sub-locale they use. However, sometimes we need to make an exception. Currently we are doing this for `pt-BR` and `zh-CN`. Unfortunately, these are configured only on CrowdIn's server and not in local files.
+
+On CrowdIn, go to the Integrations settings and open the GitHub integration. Click the three dots against the `develop` branch and select Branch Configuration. The list of language mapping is buried in here.
+
+![img](CrowdIn_language_mappings.png)
