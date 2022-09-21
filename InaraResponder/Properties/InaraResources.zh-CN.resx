@@ -118,9 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>将您的旅行信息传送至 Inara (https://inara.cz). Inara 是一个第三方工具，可提供飞行员联合会成员的信息并生成可共享的个人资料，详细说明您自己的状态和成就。</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Inara 响应器</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>要连接到 Inara，您需要在他们那里注册一个帐户。 完成此操作后，您可以通过单击网站标题中的“设置”快捷方式，然后单击左侧面板中的“INARA API”来获取您的 API 密钥。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>输入 API 密钥后，EDDI 会开始将游戏客户端数据传输到 Inara。</value>
+  </data>
+  <data name="invalidKeyErr" xml:space="preserve">
+    <value>请输入一个有效的 Inara API 秘钥.</value>
+  </data>
 </root>
