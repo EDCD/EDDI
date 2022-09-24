@@ -193,7 +193,7 @@
     <value>Bergungsmission</value>
   </data>
   <data name="Scan" xml:space="preserve">
-    <value>Siedlungssuche</value>
+    <value>Oberflächenscan</value>
   </data>
   <data name="Sightseeing" xml:space="preserve">
     <value>Besichtigung</value>
