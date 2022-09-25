@@ -549,13 +549,17 @@ namespace EddiDataDefinitions
         public int cargoCarried { get; set; }
 
         // Admin
+
         // The ID in Elite: Dangerous' database
         [JsonIgnore]
         public long EDID { get; set; }
+
         // The name in Elite: Dangerous' database
         public string EDName { get; set; }
-        [JsonIgnore]
-        internal string possessiveYour { get; set; }
+
+        // The context for the possessive "your" used to describe your ship
+        [JsonIgnore] 
+        internal string possessiveYour { get; set; } = nameof(Properties.Ship.yourSidewinder); // Default context is a Sidewinder
 
         public Ship()
         {

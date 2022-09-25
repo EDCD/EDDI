@@ -82,8 +82,8 @@ namespace EddiCompanionAppService
                 {
                     Profile.LastStation = new FrontierApiProfileStation
                     {
-                        name = ((string)json["name"])?.ReplaceEnd('+'),
-                        marketId = (long?)json["id"]
+                        name = ((string)json["lastStarport"]?["name"])?.ReplaceEnd('+'),
+                        marketId = (long?)json["lastStarport"]?["id"]
                     };
                     if ((bool)json["commander"]["docked"])
                     {

@@ -27,7 +27,7 @@ namespace UnitTests
                 new OutfittingInfoItem(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", "weapon", 540900)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
+            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
             var actualModules = CompanionAppService.OutfittingFromProfile(json);
 
             Assert.AreEqual(165, actualModules.Count);
@@ -59,7 +59,7 @@ namespace UnitTests
                 new ShipyardInfoItem(128672145, "Federation_Dropship_MkII", 19814205)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
+            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
             var actualShips = CompanionAppService.ShipyardFromProfile(json);
 
             Assert.AreEqual(expectedShips.Count, actualShips.Count);
@@ -129,7 +129,7 @@ namespace UnitTests
                     new KeyValuePair<long, string>(128049243, "Slaves")
                 },
                 commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp),
-                json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons),
+                json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>(),
                 stationServices = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("dock", "ok"),
