@@ -15,7 +15,7 @@ namespace EddiEvents
         /// <summary> Whether this event was triggered during the initial journal load at launch or later.</summary>
         public bool fromLoad { get; set; }
 
-        public Event(DateTime timestamp, string type)
+        private protected Event(DateTime timestamp, string type)
         {
             this.timestamp = timestamp;
             this.type = type;
