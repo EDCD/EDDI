@@ -99,7 +99,7 @@ jobs:
       uses: ./.github/actions/TestWithCoverage
       with:
         opencover-console-path: \.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
-        opencover-console-args: -mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*" -register:Path32
+        opencover-console-args: -mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*" -register:Path32 -returntargetcode
         target-path: vstest.console.exe
         target-args: Tests/bin/Release/Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
         output-path: ./TestResults/coverage.xml
