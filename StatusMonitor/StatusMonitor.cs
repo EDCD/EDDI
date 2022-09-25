@@ -286,8 +286,6 @@ namespace EddiStatusMonitor
             return null;
         }
 
-
-
         public void PreHandle(Event @event)
         {
             // Some events can be derived from our status during a given event
