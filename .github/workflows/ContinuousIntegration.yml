@@ -10,11 +10,6 @@ env:
 on:
   push:
     branches-ignore: [ i10n_develop ]
-    paths-ignore:
-    - docs/*        # Every file in the root docs folder
-    - '**.html'     # HTML files anywhere in the repo
-    - '**.md'       # Markdown files anywhere in the repo
-    - '**.resx'     # RESX files anywhere in the repo
     # For CodeQL code scanning workflow files, don't use the paths-ignore or paths keywords with the on:push event 
     # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
     # compare new changes with the analysis of the previous commit.
@@ -103,6 +98,16 @@ jobs:
         target-path: vstest.console.exe
         target-args: Tests/bin/Release/Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
         output-path: ./TestResults/coverage.xml
+
+    # Report test results
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: Test Results          # Name of the check run which will be created
+        path: reports/jest-*.xml    # Path to test results
+        reporter: dotnet-trx        # Format of test results
+        fail-on-error: 'true'       # Sets action as failed if test report contains any failed test
 
     # Upload coverage results
     - name: Upload coverage to CodeCov (ref. https://github.com/codecov/codecov-action)
