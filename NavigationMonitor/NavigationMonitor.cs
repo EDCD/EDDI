@@ -83,7 +83,6 @@ namespace EddiNavigationMonitor
         {
             BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
             StatusService.StatusUpdatedEvent += OnStatusUpdated;
-            LoadMonitor();
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -128,11 +127,13 @@ namespace EddiNavigationMonitor
 
         public bool NeedsStart()
         {
-            return false;
+            return true;
         }
 
         public void Start()
-        { }
+        {
+            LoadMonitor();
+        }
 
         public void Stop()
         { }
