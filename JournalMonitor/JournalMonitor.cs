@@ -2901,12 +2901,7 @@ namespace EddiJournalMonitor
                                 {
                                     decimal amount = JsonParsing.getDecimal(data, "Scooped");
                                     decimal total = JsonParsing.getDecimal(data, "Total");
-                                    Ship currentShip = EDDI.Instance.CurrentShip;
-                                    bool full = currentShip?.fueltanktotalcapacity == null
-                                        ? false
-                                        : total == (currentShip?.fueltanktotalcapacity ?? 0M);
-
-                                    events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total, full) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

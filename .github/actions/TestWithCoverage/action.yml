@@ -33,23 +33,10 @@ runs:
       ECHO Invoking... $runCoverageCmd
       # Wrap the invokation so that we can act on its success or failure
       try {
-        Invoke-Expression $runCoverageCmd -ErrorVariable errVar
+        Invoke-Expression $runCoverageCmd
       } catch {
         # seems to have failed
         ECHO "::error::Tests failed"
       }
       ECHO LASTEXITCODE $LASTEXITCODE
-      ECHO Error $Error
-      ECHO ErrorVariable $errVar[0]
-
-      #$runCoverageCmd += ';$?'
-      #$result = Invoke-Expression $runCoverageCmd -ErrorVariable errVar
-      #ECHO $result
-      #if(-not $result){
-      #  # seems to have failed
-      #  ECHO "::error::Tests failed"
-      #}
-      #ECHO LASTEXITCODE $LASTEXITCODE
-      #ECHO Error $Error
-      #ECHO ErrorVariable $errVar[0]
     shell: pwsh

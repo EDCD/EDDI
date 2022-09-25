@@ -24,9 +24,9 @@ namespace EddiEvents
         public decimal? total { get; private set; }
 
         [PublicAPI("Whether this is a full refuel")]
-        public bool full { get; private set; }
+        public bool? full { get; set; }
 
-        public ShipRefuelledEvent(DateTime timestamp, string source, long? price, decimal amount, decimal? total, bool full = false) : base(timestamp, NAME)
+        public ShipRefuelledEvent(DateTime timestamp, string source, long? price, decimal amount, decimal? total, bool? full = null) : base(timestamp, NAME)
         {
             this.source = source;
             this.price = price;

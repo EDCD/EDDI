@@ -99,16 +99,6 @@ jobs:
         target-args: Tests/bin/Release/Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
         output-path: ./TestResults/coverage.xml
 
-    # Report test results
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: Test Results          # Name of the check run which will be created
-        path: reports/jest-*.xml    # Path to test results
-        reporter: dotnet-trx        # Format of test results
-        fail-on-error: 'true'       # Sets action as failed if test report contains any failed test
-
     # Upload coverage results
     - name: Upload coverage to CodeCov (ref. https://github.com/codecov/codecov-action)
       uses: codecov/codecov-action@master
