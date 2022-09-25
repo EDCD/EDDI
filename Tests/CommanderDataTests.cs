@@ -5552,7 +5552,7 @@ namespace UnitTests
             Assert.AreEqual("Snyder Enterprise", StoredShip1.station);
 
             // Voss Dock has a MarketID of 3226643968
-            Assert.AreEqual(3226643968, profile.LastStation.marketId);
+            Assert.AreEqual(3226643968, profile.LastStationMarketID);
 
             Assert.AreEqual(DateTime.MinValue, profile.timestamp);
         }
@@ -5600,7 +5600,7 @@ namespace UnitTests
         public void TestMarketIDFromProfile()
         {
             FrontierApiProfile profile = CompanionAppService.ProfileFromJson(data, DateTime.MinValue);
-            Assert.AreEqual(3226643968, profile.LastStation.marketId);
+            Assert.AreEqual(3226643968, profile.LastStationMarketID);
         }
     }
 }

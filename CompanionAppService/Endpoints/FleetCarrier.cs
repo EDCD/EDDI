@@ -1,12 +1,84 @@
 ﻿using EddiDataDefinitions;
+using EddiSpeechService;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using Utilities;
 
 namespace EddiCompanionAppService
 {
     public partial class CompanionAppService
     {
-        /// <summary>Create a  profile given the results from a /profile call</summary>
+        private const string FLEETCARRIER_URL = "/fleetcarrier";
+
+        // We cache data to avoid spamming the service
+        private FrontierApiFleetCarrier cachedFleetCarrier;
+        private DateTime cachedFleetCarrierExpires;
+
+        public FrontierApiFleetCarrier FleetCarrier(bool forceRefresh = false)
+        {
+            if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
+            {
+                // return the cached version
+                Logging.Debug("Returning cached fleet carrier data");
+                return cachedFleetCarrier;
+            }
+
+            try
+            {
+                string data = obtainData(ServerURL() + FLEETCARRIER_URL, out DateTime timestamp);
+
+                if (data == null || !data.StartsWith("{"))
+                {
+                    // Happens if there is a problem with the API.  Logging in again might clear this...
+                    relogin();
+                    if (CurrentState != State.Authorized)
+                    {
+                        // No luck; give up
+                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                        Logout();
+                    }
+                    else
+                    {
+                        // Looks like login worked; try again
+                        data = obtainData(ServerURL() + FLEETCARRIER_URL, out timestamp);
+
+                        if (data == null || !data.StartsWith("{"))
+                        {
+                            // No luck with a relogin; give up
+                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                            Logout();
+                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                        }
+                    }
+                }
+
+                try
+                {
+                    cachedFleetCarrier = FleetCarrierFromJson(data, timestamp);
+                }
+                catch (JsonException ex)
+                {
+                    Logging.Error("Failed to parse companion api fleet carrier data", ex);
+                    cachedFleetCarrier = null;
+                }
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
+            }
+
+            if (cachedFleetCarrier != null)
+            {
+                cachedFleetCarrierExpires = DateTime.UtcNow.AddSeconds(30);
+                Logging.Debug("Fleet carrier is " + JsonConvert.SerializeObject(cachedFleetCarrier));
+            }
+
+            return cachedFleetCarrier;
+        }
+
+        /// <summary>Create a fleetcarrier given the results from a /fleetcarrier call</summary>
         public static FrontierApiFleetCarrier FleetCarrierFromJson(string data, DateTime timestamp)
         {
             if (!string.IsNullOrEmpty(data))
@@ -16,7 +88,7 @@ namespace EddiCompanionAppService
             return null;
         }
 
-        /// <summary>Create a profile given the results from a /profile call</summary>
+        /// <summary>Create a fleetcarrier given the results from a /fleetcarrier call</summary>
         public static FrontierApiFleetCarrier FleetCarrierFromJson(JObject json, DateTime timestamp)
         {
             FrontierApiFleetCarrier fleetCarrier = new FrontierApiFleetCarrier
@@ -39,7 +111,7 @@ namespace EddiCompanionAppService
                 return ascii;
             }
             fleetCarrier.name = ConvertHexString(json["name"]["vanityName"]?.ToString());
-            
+
             fleetCarrier.callsign = json["name"]?["callsign"]?.ToString();
             fleetCarrier.currentStarSystem = json["currentStarSystem"]?.ToString();
             fleetCarrier.fuel = int.Parse(json["fuel"]?.ToString());
@@ -54,12 +126,12 @@ namespace EddiCompanionAppService
             var cargoNotForSale = json["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
             var reservedSpace = json["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
             var crew = json["capacity"]?["crew"]?.ToObject<int>() ?? 0;
-            fleetCarrier.usedCapacity = 
+            fleetCarrier.usedCapacity =
                 shipPacks +
                 modulePacks +
                 cargoForSale +
                 cargoNotForSale +
-                reservedSpace + 
+                reservedSpace +
                 crew;
             fleetCarrier.freeCapacity = json["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
 
@@ -83,8 +155,7 @@ namespace EddiCompanionAppService
             fleetCarrier.microresourceSalesOrders = JArray.FromObject(json["orders"]?["onfootmicroresources"]?["sales"]) ?? new JArray();
 
             // Station properties
-            fleetCarrier.Market = ProfileStation(timestamp, json["market"]?.ToObject<JObject>());
-            fleetCarrier.Market.systemname = fleetCarrier.currentStarSystem;
+            fleetCarrier.Market = MarketFromJson(timestamp, json["market"]?.ToObject<JObject>());
 
             // Misc - Tritium stored in cargo
             foreach (var cargo in fleetCarrier.Cargo)

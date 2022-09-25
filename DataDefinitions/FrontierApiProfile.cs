@@ -22,8 +22,11 @@ namespace EddiDataDefinitions
         /// <summary>The current starsystem</summary>
         public FrontierApiProfileStarSystem CurrentStarSystem { get; set; }
 
-        /// <summary>The last station the commander docked at</summary>
-        public FrontierApiProfileStation LastStation { get; set; }
+        /// <summary>The name of the last station the commander docked at</summary>
+        public string LastStationName { get; set; }
+
+        /// <summary>The market id of the last station the commander docked at</summary>
+        public long? LastStationMarketID { get; set; }
 
         /// <summary>Whether this profile describes a docked commander</summary>
         public bool docked { get; set; }
@@ -64,12 +67,6 @@ namespace EddiDataDefinitions
         /// <summary>The name</summary>
         public string name { get; set; }
 
-        /// <summary>Unique 64 bit id value for system</summary>
-        public ulong? systemAddress { get; set; }
-
-        /// <summary>The system in which this station resides</summary>
-        public string systemname { get; set; }
-
         /// <summary>A list of the services offered by this station</summary>
         public List<KeyValuePair<string, string>> stationServices { get; set; } = new List<KeyValuePair<string, string>>();
 
@@ -91,17 +88,14 @@ namespace EddiDataDefinitions
         /// <summary>The market JSON object</summary>
         public JObject json { get; set; }
 
-        // Admin - the last time the information present changed
-        public long? updatedat;
-
         // Admin - the last time the market information present changed
-        public long? commoditiesupdatedat;
+        public DateTime commoditiesupdatedat;
 
         // Admin - the last time the outfitting information present changed
-        public long? outfittingupdatedat;
+        public DateTime outfittingupdatedat;
 
         // Admin - the last time the shipyard information present changed
-        public long? shipyardupdatedat;
+        public DateTime shipyardupdatedat;
 
         public Station UpdateStation(DateTime profileTimeStamp, Station station)
         {
@@ -133,13 +127,14 @@ namespace EddiDataDefinitions
                 Logging.Error("Failed to update station economy and services from profile.", data);
             }
 
-            if (commoditiesupdatedat != null && (station.commoditiesupdatedat ?? 0) < commoditiesupdatedat)
+            if (commoditiesupdatedat != DateTime.MinValue &&
+                (station.commoditiesupdatedat ?? 0) < Dates.fromDateTimeToSeconds(commoditiesupdatedat))
             {
                 try
                 {
                     station.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).Where(c => c != null).ToList();
                     station.prohibited = prohibitedCommodities.Select(p => CommodityDefinition.CommodityDefinitionFromEliteID(p.Key) ?? CommodityDefinition.FromEDName(p.Value)).ToList();
-                    station.commoditiesupdatedat = commoditiesupdatedat;
+                    station.commoditiesupdatedat = Dates.fromDateTimeToSeconds(commoditiesupdatedat);
                 }
                 catch (Exception e)
                 {
@@ -153,12 +148,12 @@ namespace EddiDataDefinitions
                     Logging.Error("Failed to update station market from profile.", data);
                 }
             }
-            if (outfittingupdatedat != null && (station.outfittingupdatedat ?? 0) < outfittingupdatedat)
+            if (outfittingupdatedat != DateTime.MinValue && (station.outfittingupdatedat ?? 0) < Dates.fromDateTimeToSeconds(outfittingupdatedat))
             {
                 try
                 {
                     station.outfitting = outfitting.Select(m => m.ToModule()).Where(m => m != null).ToList();
-                    station.outfittingupdatedat = outfittingupdatedat;
+                    station.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingupdatedat);
                 }
                 catch (Exception e)
                 {
@@ -172,12 +167,12 @@ namespace EddiDataDefinitions
                 }
 
             }
-            if (shipyardupdatedat != null && (station.shipyardupdatedat ?? 0) < shipyardupdatedat)
+            if (shipyardupdatedat != DateTime.MinValue && (station.shipyardupdatedat ?? 0) < Dates.fromDateTimeToSeconds(shipyardupdatedat))
             {
                 try
                 {
                     station.shipyard = ships.Select(s => s.ToShip()).Where(s => s != null).ToList();
-                    station.shipyardupdatedat = shipyardupdatedat;
+                    station.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardupdatedat);
                 }
                 catch (Exception e)
                 {

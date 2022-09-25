@@ -1,123 +1,70 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
+using System;
+using System.Linq;
 using Utilities;
 
 namespace EddiCompanionAppService
 {
     public partial class CompanionAppService
     {
-        /// <summary>Create a  profile given the results from a /profile call</summary>
-        public static FrontierApiProfile ProfileFromJson(string data, DateTime timestamp)
+        private const string MARKET_URL = "/market";
+        private const string SHIPYARD_URL = "/shipyard";
+
+        // We cache the market to avoid spamming the service
+        private FrontierApiProfileStation cachedStation;
+        private DateTime cachedStationExpires;
+
+        public FrontierApiProfileStation Station(bool forceRefresh = false)
         {
-            if (!string.IsNullOrEmpty(data))
+            if ((!forceRefresh) && cachedStationExpires > DateTime.UtcNow)
             {
-                return ProfileFromJson(JObject.Parse(data), timestamp);
-            }
-            return null;
-        }
-
-        /// <summary>Create a profile given the results from a /profile call</summary>
-        public static FrontierApiProfile ProfileFromJson(JObject json, DateTime timestamp)
-        {
-            FrontierApiProfile Profile = new FrontierApiProfile
-            {
-                json = json,
-                timestamp = timestamp
-            };
-
-            if (json["commander"] != null)
-            {
-                FrontierApiCommander Commander = new FrontierApiCommander
-                {
-                    // Caution: The "id" property here may not match the FID returned from the player journal
-                    name = (string)json["commander"]["name"],
-                    combatrating = CombatRating.FromRank((int?)json["commander"]["rank"]["combat"] ?? 0),
-                    traderating = TradeRating.FromRank((int?)json["commander"]["rank"]["trade"] ?? 0),
-                    explorationrating = ExplorationRating.FromRank((int?)json["commander"]["rank"]["explore"] ?? 0),
-                    cqcrating = CQCRating.FromRank((int?)json["commander"]["rank"]["cqc"] ?? 0),
-                    empirerating = EmpireRating.FromRank((int?)json["commander"]["rank"]["empire"] ?? 0),
-                    federationrating = FederationRating.FromRank((int?)json["commander"]["rank"]["federation"] ?? 0),
-                    mercenaryrating = MercenaryRating.FromRank((int?)json["commander"]["rank"]["soldier"] ?? 0),
-                    exobiologistrating = ExobiologistRating.FromRank((int?)json["commander"]["rank"]["exobiologist"] ?? 0),
-                    crimerating = (int?)json["commander"]["rank"]["crime"] ?? 0,
-                    servicerating = (int?)json["commander"]["rank"]["service"] ?? 0,
-                    powerrating = (int?)json["commander"]["rank"]["power"] ?? 0,
-
-                    credits = (long?)json["commander"]["credits"] ?? 0,
-                    debt = (long?)json["commander"]["debt"] ?? 0
-                };
-                Profile.Cmdr = Commander;
-                Profile.docked = (bool)json["commander"]["docked"];
-                Profile.onFoot = (bool)json["commander"]["onfoot"];
-                Profile.alive = (bool)json["commander"]["alive"];
-
-                if (json["commander"]["capabilities"] != null)
-                {
-                    var contexts = new FrontierApiProfileContexts
-                    {
-                        allowCobraMkIV = (bool?)json["commander"]["capabilities"]["AllowCobraMkIV"] ?? false,
-                        hasHorizons = (bool?)json["commander"]["capabilities"]["Horizons"] ?? false,
-                        hasOdyssey = (bool?)json["commander"]["capabilities"]["Odyssey"] ?? false
-                    };
-                    Profile.contexts = contexts;
-                }
-
-                string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
-                if (systemName != null)
-                {
-                    Profile.CurrentStarSystem = new FrontierApiProfileStarSystem
-                    {
-                        // Caution: The "id" property here may not match the systemAddress
-                        systemName = systemName,
-                        // Caution: The "faction" property here may return the edName for the faction rather than the invariant name
-                    };
-                }
-
-                if (json != null)
-                {
-                    Profile.LastStation = new FrontierApiProfileStation
-                    {
-                        name = ((string)json["lastStarport"]?["name"])?.ReplaceEnd('+'),
-                        marketId = (long?)json["lastStarport"]?["id"]
-                    };
-                    if ((bool)json["commander"]["docked"])
-                    {
-                        Profile.LastStation.systemname = Profile.CurrentStarSystem.systemName;
-                    }
-                }
+                // return the cached version
+                Logging.Debug("Returning cached profile");
+                return cachedStation;
             }
 
-            return Profile;
-        }
-
-        public FrontierApiProfile Station(ulong? systemAddress, string systemName)
-        {
             try
             {
                 Logging.Debug("Getting station market data");
                 string market = obtainData(ServerURL() + MARKET_URL, out DateTime marketTimestamp);
                 market = "{\"lastStarport\":" + market + "}";
                 JObject marketJson = JObject.Parse(market);
-                var lastStation = ProfileStation(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
-                lastStation.systemAddress = systemAddress;
-                lastStation.systemname = systemName;
-                lastStation = ProfileStationOutfittingAndShipyard(lastStation);
-                cachedProfile.LastStation = lastStation;
+                var lastStation = MarketFromJson(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
+                
+                if (TryGetOutfitting(lastStation, out List<OutfittingInfoItem> outfitting, out DateTime outfittingUpdatedAt))
+                {
+                    lastStation.outfitting = outfitting;
+                    lastStation.outfittingupdatedat = outfittingUpdatedAt;
+                }
+
+                if (TryGetShipyard(lastStation, out List<ShipyardInfoItem> ships, out DateTime shipyardUpdatedAt))
+                {
+                    lastStation.ships = ships;
+                    lastStation.shipyardupdatedat = shipyardUpdatedAt;
+                }
+
+                cachedStation = lastStation;
             }
             catch (EliteDangerousCompanionAppException ex)
             {
                 // not Logging.Error as Rollbar is getting spammed when the server is down
                 Logging.Info(ex.Message);
             }
-            return cachedProfile;
+
+            if (cachedStation != null)
+            {
+                cachedStationExpires = DateTime.UtcNow.AddSeconds(30);
+                Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedStation));
+            }
+
+            return cachedStation;
         }
 
-        public static FrontierApiProfileStation ProfileStation(DateTime marketTimestamp, JObject marketJson)
+        public static FrontierApiProfileStation MarketFromJson(DateTime marketTimestamp, JObject marketJson)
         {
             FrontierApiProfileStation lastStation = null;
             try
@@ -131,7 +78,7 @@ namespace EddiCompanionAppService
                     economyShares = EconomiesFromProfile(marketJson),
                     eddnCommodityMarketQuotes = CommodityQuotesFromProfile(marketJson),
                     prohibitedCommodities = ProhibitedCommoditiesFromProfile(marketJson),
-                    commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp),
+                    commoditiesupdatedat = marketTimestamp,
                     json = marketJson
                 };
 
@@ -153,28 +100,37 @@ namespace EddiCompanionAppService
             return lastStation;
         }
 
-        private FrontierApiProfileStation ProfileStationOutfittingAndShipyard(FrontierApiProfileStation lastStation)
+        private bool TryGetOutfitting(FrontierApiProfileStation lastStation, out List<OutfittingInfoItem> outfitting, out DateTime outfittingUpdatedAt)
         {
+            outfitting = null;
+            outfittingUpdatedAt = DateTime.MinValue;
             if (lastStation.stationServices.Exists(s => s.Key.ToLowerInvariant() == "outfitting"))
             {
                 Logging.Debug("Getting station outfitting data");
-                string outfitting = obtainData(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
-                outfitting = "{\"lastStarport\":" + outfitting + "}";
-                JObject outfittingJson = JObject.Parse(outfitting);
-                lastStation.outfitting = OutfittingFromProfile(outfittingJson);
-                lastStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingTimestamp);
+                string outfittingData = obtainData(ServerURL() + SHIPYARD_URL, out DateTime outfittingTimestamp);
+                outfittingData = "{\"lastStarport\":" + outfittingData + "}";
+                JObject outfittingJson = JObject.Parse(outfittingData);
+                outfitting = OutfittingFromProfile(outfittingJson);
+                outfittingUpdatedAt = outfittingTimestamp;
             }
+            return outfitting != null;
+        }
+
+        private bool TryGetShipyard (FrontierApiProfileStation lastStation, out List<ShipyardInfoItem> ships, out DateTime shipyardUpdatedAt)
+        {
+            ships = null;
+            shipyardUpdatedAt = DateTime.MinValue;
             if (lastStation.stationServices.Exists(s => s.Key.ToLowerInvariant() == "shipyard"))
             {
                 Logging.Debug("Getting station shipyard data");
                 Thread.Sleep(5000);
-                string shipyard = obtainData(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
-                shipyard = "{\"lastStarport\":" + shipyard + "}";
-                JObject shipyardJson = JObject.Parse(shipyard);
-                lastStation.ships = ShipyardFromProfile(shipyardJson);
-                lastStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardTimestamp);
+                string shipyardData = obtainData(ServerURL() + SHIPYARD_URL, out DateTime shipyardTimestamp);
+                shipyardData = "{\"lastStarport\":" + shipyardData + "}";
+                JObject shipyardJson = JObject.Parse(shipyardData);
+                ships = ShipyardFromProfile(shipyardJson);
+                shipyardUpdatedAt = shipyardTimestamp;
             }
-            return lastStation;
+            return ships != null;
         }
 
         // Obtain the list of outfitting modules from the profile

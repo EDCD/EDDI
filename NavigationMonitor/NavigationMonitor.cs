@@ -283,7 +283,6 @@ namespace EddiNavigationMonitor
             var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId, name = @event.carriername };
             updatedCarrier.currentStarSystem = @event.systemname;
             updatedCarrier.Market.name = @event.carriername;
-            updatedCarrier.Market.systemAddress = @event.systemAddress;
             updatedCarrier.nextStarSystem = null;
             EDDI.Instance.FleetCarrier = updatedCarrier;
             CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);

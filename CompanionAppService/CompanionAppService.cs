@@ -29,20 +29,12 @@ namespace EddiCompanionAppService
         private static readonly string TOKEN_URL = "/token";
         private static readonly string AUDIENCE = "audience=steam,frontier,epic";
         private static readonly string SCOPE = "scope=capi";
-        private static readonly string PROFILE_URL = "/profile";
-        private static readonly string MARKET_URL = "/market";
-        private static readonly string SHIPYARD_URL = "/shipyard";
-        private static readonly string FLEETCARRIER_URL = "/fleetcarrier";
-
-        // We cache the profile to avoid spamming the service
-        private FrontierApiProfile cachedProfile;
-        private FrontierApiFleetCarrier cachedFleetCarrier;
-        private DateTime cachedProfileExpires;
-        private DateTime cachedFleetCarrierExpires;
 
         private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
+
+        #region CompanionApp State Variables
 
         public enum State
         {
@@ -70,10 +62,12 @@ namespace EddiCompanionAppService
         // This is not a UI event handler so I consider that CA1009 is just unnecessary ceremony for no benefit.
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
         public event StateChangeHandler StateChanged;
+        public bool active => CurrentState == State.Authorized;
+
+        #endregion
 
         public CompanionAppCredentials Credentials;
         public bool gameIsBeta { get; set; } = false;
-        public bool active => CurrentState == State.Authorized;
 
         private static CompanionAppService instance;
         private readonly string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
@@ -365,133 +359,6 @@ namespace EddiCompanionAppService
             Credentials.Clear();
             Credentials.Save();
             CurrentState = State.LoggedOut;
-        }
-
-        public FrontierApiProfile Profile(bool forceRefresh = false)
-        {
-            if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
-            {
-                // return the cached version
-                Logging.Debug("Returning cached profile");
-                return cachedProfile;
-            }
-
-            try
-            {
-                string data = obtainData(ServerURL() + PROFILE_URL, out DateTime timestamp);
-
-                if (data == null || data == "Profile unavailable")
-                {
-                    // Happens if there is a problem with the API.  Logging in again might clear this...
-                    relogin();
-                    if (CurrentState != State.Authorized)
-                    {
-                        // No luck; give up
-                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                        Logout();
-                    }
-                    else
-                    {
-                        // Looks like login worked; try again
-                        data = obtainData(ServerURL() + PROFILE_URL, out timestamp);
-
-                        if (data == null || data == "Profile unavailable")
-
-                        {
-                            // No luck with a relogin; give up
-                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                            Logout();
-                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
-                        }
-                    }
-                }
-
-                try
-                {
-                    cachedProfile = ProfileFromJson(data, timestamp);
-                }
-                catch (JsonException ex)
-                {
-                    Logging.Error("Failed to parse companion profile", ex);
-                    cachedProfile = null;
-                }
-            }
-            catch (EliteDangerousCompanionAppException ex)
-            {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
-                Logging.Info(ex.Message);
-            }
-
-            if (cachedProfile != null)
-            {
-                cachedProfileExpires = DateTime.UtcNow.AddSeconds(30);
-                Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
-            }
-
-            return cachedProfile;
-        }
-
-        public FrontierApiFleetCarrier FleetCarrier(bool forceRefresh = false)
-        {
-            if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
-            {
-                // return the cached version
-                Logging.Debug("Returning cached fleet carrier data");
-                return cachedFleetCarrier;
-            }
-
-            try
-            {
-                string data = obtainData(ServerURL() + FLEETCARRIER_URL, out DateTime timestamp);
-
-                if (data == null || !data.StartsWith("{"))
-                {
-                    // Happens if there is a problem with the API.  Logging in again might clear this...
-                    relogin();
-                    if (CurrentState != State.Authorized)
-                    {
-                        // No luck; give up
-                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                        Logout();
-                    }
-                    else
-                    {
-                        // Looks like login worked; try again
-                        data = obtainData(ServerURL() + FLEETCARRIER_URL, out timestamp);
-
-                        if (data == null || !data.StartsWith("{"))
-                        {
-                            // No luck with a relogin; give up
-                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                            Logout();
-                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
-                        }
-                    }
-                }
-
-                try
-                {
-                    cachedFleetCarrier = FleetCarrierFromJson(data, timestamp);
-                }
-                catch (JsonException ex)
-                {
-                    Logging.Error("Failed to parse companion api feet carrier data", ex);
-                    cachedFleetCarrier = null;
-                }
-            }
-            catch (EliteDangerousCompanionAppException ex)
-            {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
-                Logging.Info(ex.Message);
-            }
-
-            if (cachedFleetCarrier != null)
-            {
-                cachedFleetCarrierExpires = DateTime.UtcNow.AddSeconds(30);
-                Logging.Debug("Fleet carrier is " + JsonConvert.SerializeObject(cachedFleetCarrier));
-            }
-
-            return cachedFleetCarrier;
         }
 
         private string obtainData(string url, out DateTime timestamp)
