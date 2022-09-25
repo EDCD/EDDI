@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Utilities;
 
@@ -20,7 +21,8 @@ namespace EddiEvents
                 DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 List<Type> events = new List<Type>();
                 Type eventType = typeof(Event);
-                foreach (FileInfo file in dir.GetFiles("*.dll", SearchOption.AllDirectories))
+                foreach (FileInfo file in dir.GetFiles("*.dll", SearchOption.AllDirectories)
+                             .Where(f=> f.Name != "SQLite.Interop.dll")) // SQLite.Interop.dll contains unmanaged code and would throw a BadImageFormatException
                 {
                     Type currentEvent = null;
                     try
@@ -34,7 +36,6 @@ namespace EddiEvents
                         {
                             try
                             {
-
                                 foreach (Type type in assembly.GetTypes())
                                 {
                                     if (type.IsInterface || type.IsAbstract)
@@ -94,7 +95,7 @@ namespace EddiEvents
                     }
                     catch (BadImageFormatException)
                     {
-                        // Ignore this; probably due to CPU architecure mismatch
+                        // Ignore this; probably due to CPU architecture mismatch
                     }
                     catch (Exception ex)
                     {
