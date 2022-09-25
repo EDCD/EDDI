@@ -1,5 +1,4 @@
-﻿using EddiCore;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,8 @@ namespace EddiStatusService
         public Status LastStatus { get; private set; } = new Status();
         public static event EventHandler StatusUpdatedEvent;
 
-        // Public Write variables (set by the Status Monitor to assist with various calculations)
+        // Public Write variables (set elsewhere to assist with various calculations)
+        public Ship CurrentShip;
         public List<KeyValuePair<DateTime, decimal?>> fuelLog;
         public EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
 
@@ -411,15 +411,14 @@ namespace EddiStatusService
                 return;
             }
 
-            if (vehicle == Constants.VEHICLE_SHIP)
+            if (vehicle == Constants.VEHICLE_SHIP && CurrentShip != null)
             {
-                Ship ship = EDDI.Instance.CurrentShip;
-                if (ship?.fueltanktotalcapacity > 0)
+                if (CurrentShip?.fueltanktotalcapacity > 0)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
-                    decimal percent = (decimal)(fuelRemaining / (ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) * 100);
+                    decimal percent = (decimal)(fuelRemaining / (CurrentShip.fueltanktotalcapacity + CurrentShip.activeFuelReservoirCapacity) * 100);
                     fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
-                    fuel_seconds = fuelPerSecond > 0 ? (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond) : null;
+                    fuel_seconds = fuelPerSecond > 0 ? (int?)((CurrentShip.fueltanktotalcapacity + CurrentShip.activeFuelReservoirCapacity) / fuelPerSecond) : null;
                 }
             }
             else if (vehicle == Constants.VEHICLE_SRV)
