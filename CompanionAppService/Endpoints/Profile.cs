@@ -15,6 +15,9 @@ namespace EddiCompanionAppService
         private FrontierApiProfile cachedProfile;
         private DateTime cachedProfileExpires;
 
+        // Set up an event handler for data changes
+        public static event EventHandler ProfileUpdatedEvent;
+
         public FrontierApiProfile Profile(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
@@ -57,6 +60,12 @@ namespace EddiCompanionAppService
                 try
                 {
                     cachedProfile = ProfileFromJson(data, timestamp);
+                    ProfileUpdatedEvent?.Invoke(cachedProfile, EventArgs.Empty);
+                    if (cachedProfile != null)
+                    {
+                        cachedProfileExpires = DateTime.UtcNow.AddSeconds(30);
+                        Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                    }
                 }
                 catch (JsonException ex)
                 {
@@ -68,12 +77,6 @@ namespace EddiCompanionAppService
             {
                 // not Logging.Error as Rollbar is getting spammed when the server is down
                 Logging.Info(ex.Message);
-            }
-
-            if (cachedProfile != null)
-            {
-                cachedProfileExpires = DateTime.UtcNow.AddSeconds(30);
-                Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
             }
 
             return cachedProfile;

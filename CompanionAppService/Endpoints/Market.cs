@@ -18,6 +18,9 @@ namespace EddiCompanionAppService
         private FrontierApiProfileStation cachedStation;
         private DateTime cachedStationExpires;
 
+        // Set up an event handler for data changes
+        public static event EventHandler StationUpdatedEvent;
+
         public FrontierApiProfileStation Station(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedStationExpires > DateTime.UtcNow)
@@ -48,17 +51,18 @@ namespace EddiCompanionAppService
                 }
 
                 cachedStation = lastStation;
+                StationUpdatedEvent?.Invoke(cachedStation, EventArgs.Empty);
+
+                if (cachedStation != null)
+                {
+                    cachedStationExpires = DateTime.UtcNow.AddSeconds(30);
+                    Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedStation));
+                }
             }
             catch (EliteDangerousCompanionAppException ex)
             {
                 // not Logging.Error as Rollbar is getting spammed when the server is down
                 Logging.Info(ex.Message);
-            }
-
-            if (cachedStation != null)
-            {
-                cachedStationExpires = DateTime.UtcNow.AddSeconds(30);
-                Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedStation));
             }
 
             return cachedStation;

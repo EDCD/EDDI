@@ -15,6 +15,9 @@ namespace EddiCompanionAppService
         private FrontierApiFleetCarrier cachedFleetCarrier;
         private DateTime cachedFleetCarrierExpires;
 
+        // Set up an event handler for data changes
+        public static event EventHandler FleetCarrierUpdatedEvent;
+
         public FrontierApiFleetCarrier FleetCarrier(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
@@ -56,6 +59,12 @@ namespace EddiCompanionAppService
                 try
                 {
                     cachedFleetCarrier = FleetCarrierFromJson(data, timestamp);
+                    FleetCarrierUpdatedEvent?.Invoke(cachedFleetCarrier, EventArgs.Empty);
+                    if (cachedFleetCarrier != null)
+                    {
+                        cachedFleetCarrierExpires = DateTime.UtcNow.AddSeconds(30);
+                        Logging.Debug("Fleet carrier is " + JsonConvert.SerializeObject(cachedFleetCarrier));
+                    }
                 }
                 catch (JsonException ex)
                 {
@@ -67,12 +76,6 @@ namespace EddiCompanionAppService
             {
                 // not Logging.Error as Rollbar is getting spammed when the server is down
                 Logging.Info(ex.Message);
-            }
-
-            if (cachedFleetCarrier != null)
-            {
-                cachedFleetCarrierExpires = DateTime.UtcNow.AddSeconds(30);
-                Logging.Debug("Fleet carrier is " + JsonConvert.SerializeObject(cachedFleetCarrier));
             }
 
             return cachedFleetCarrier;
