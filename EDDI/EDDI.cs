@@ -118,7 +118,6 @@ namespace EddiCore
             get => homeStarSystem;
             private set
             {
-                if (Equals(value, homeStarSystem)) { return; }
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -136,7 +135,6 @@ namespace EddiCore
             get => homeStation;
             private set
             {
-                if (Equals(value, homeStation)) { return; }
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -154,7 +152,6 @@ namespace EddiCore
             get => squadronStarSystem;
             private set
             {
-                if (Equals(value, squadronStarSystem)) { return; }
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -173,7 +170,6 @@ namespace EddiCore
             get => destinationStarSystem;
             private set
             {
-                if (Equals(value, destinationStarSystem)) { return; }
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -204,7 +200,6 @@ namespace EddiCore
             get => cmdr;
             private set
             {
-                if (Equals(value, cmdr)) { return; }
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged(nameof(Cmdr));
@@ -234,7 +229,6 @@ namespace EddiCore
             get => currentStarSystem; 
             private set
             {
-                if (Equals(value, currentStarSystem)) { return; }
                 setSystemDistanceFromHome(value);
                 setSystemDistanceFromDestination(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
@@ -254,7 +248,6 @@ namespace EddiCore
             get => lastStarSystem;
             private set
             {
-                if (Equals(value, lastStarSystem)) { return;}
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -273,7 +266,6 @@ namespace EddiCore
             get => nextStarSystem;
             private set
             {
-                if (Equals(value, nextStarSystem)) { return;}
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -292,7 +284,6 @@ namespace EddiCore
             get => currentStation;
             private set
             {
-                if (Equals(value, currentStation)) { return;}
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -310,7 +301,6 @@ namespace EddiCore
             get => currentStellarBody;
             private set
             {
-                if (Equals(value, currentStellarBody)) { return;}
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
@@ -328,7 +318,6 @@ namespace EddiCore
             get => fleetCarrier;
             set
             {
-                if (Equals(value, fleetCarrier)) { return;}
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
                     OnPropertyChanged();
