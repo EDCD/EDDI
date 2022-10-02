@@ -1788,9 +1788,9 @@ namespace EddiShipMonitor
         {
             if (_refreshProfileDelayed == null || _refreshProfileDelayed.IsCompleted)
             {
-                _refreshProfileDelayed = new Task(async () =>
+                _refreshProfileDelayed = new Task(() =>
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
+                    Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
                     EDDI.Instance.refreshProfile();
                 });
                 _refreshProfileDelayed.Start();
