@@ -28,7 +28,8 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
-            var actualModules = CompanionAppService.OutfittingFromProfile(json);
+            var station = Station.FromFrontierApi(DateTime.MinValue, null, DateTime.UtcNow, json);
+            var actualModules = station.outfitting;
 
             Assert.AreEqual(165, actualModules.Count);
             foreach (var expectedModule in incompleteExpectedModules)
@@ -60,7 +61,8 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
-            var actualShips = CompanionAppService.ShipyardFromProfile(json);
+            var station = Station.FromFrontierApi(DateTime.MinValue, null, DateTime.UtcNow, json);
+            var actualShips = station.ships;
 
             Assert.AreEqual(expectedShips.Count, actualShips.Count);
             foreach (var expectedShip in expectedShips)
@@ -129,7 +131,7 @@ namespace UnitTests
                     new KeyValuePair<long, string>(128049243, "Slaves")
                 },
                 commoditiesupdatedat = marketTimestamp,
-                json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>(),
+                marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>(),
                 stationServices = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("dock", "ok"),
@@ -151,7 +153,7 @@ namespace UnitTests
                 }
             };
 
-            var actualStation = CompanionAppService.MarketFromJson(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
+            var actualStation = Station.FromFrontierApi(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]), DateTime.MinValue, null);
 
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
@@ -188,7 +190,7 @@ namespace UnitTests
             // Set up our profile station
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            var lastStation = CompanionAppService.MarketFromJson(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]));
+            var lastStation = Station.FromFrontierApi(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]), DateTime.MinValue, null);
 
             var updatedStation = lastStation.UpdateStation(DateTime.UtcNow, originalStation);
             Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 

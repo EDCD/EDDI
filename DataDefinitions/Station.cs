@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -341,6 +342,157 @@ namespace EddiDataDefinitions
         public bool IsPlanetarySettlement() { return
             Model == StationModel.SurfaceStation && 
             hasdocking != true; }
+
+        public static FrontierApiProfileStation FromFrontierApi(DateTime marketTimestamp, JObject marketJson, DateTime shipyardTimestamp, JObject shipyardJson)
+        {
+            if (marketJson != null && shipyardJson != null && marketJson["id"] != shipyardJson["id"])
+            {
+                throw new ArgumentException("Frontier API market and shipyard endpoint data are not synchronized.");
+            }
+
+            // Obtain the list of station economies
+            List<FrontierApiEconomyShare> EconomiesFromProfile(JObject json)
+            {
+                var economyShares = new List<FrontierApiEconomyShare>();
+
+                if (json != null && json["economies"] != null)
+                {
+                    foreach (dynamic economyJson in json["economies"])
+                    {
+                        dynamic economy = economyJson.Value;
+                        string name = ((string)economy["name"]).Replace("Agri", "Agriculture");
+                        decimal proportion = (decimal)economy["proportion"];
+                        economyShares.Add(new FrontierApiEconomyShare(name, proportion));
+                    }
+                }
+                economyShares = economyShares.OrderByDescending(x => x.proportion).ToList();
+                Logging.Debug("Economies are " + JsonConvert.SerializeObject(economyShares));
+                return economyShares;
+            }
+
+            // Obtain the list of commodities
+            List<MarketInfoItem> CommodityQuotesFromProfile(JObject json)
+            {
+                var eddnCommodityMarketQuotes = new List<MarketInfoItem>();
+                if (json?["commodities"] != null)
+                {
+                    eddnCommodityMarketQuotes = json["commodities"]
+                        .Select(c => JsonConvert.DeserializeObject<MarketInfoItem>(c.ToString())).ToList();
+                }
+                return eddnCommodityMarketQuotes;
+            }
+
+            // Obtain the list of prohibited commodities
+            List<KeyValuePair<long, string>> ProhibitedCommoditiesFromProfile(JObject json)
+            {
+                var edProhibitedCommodities = new List<KeyValuePair<long, string>>();
+                if (json != null && json["prohibited"] != null)
+                {
+                    foreach (var jToken in json["prohibited"])
+                    {
+                        var prohibitedJSON = (JProperty)jToken;
+                        var prohibitedCommodity = new KeyValuePair<long, string>(long.Parse(prohibitedJSON.Name), prohibitedJSON.Value.ToString());
+                        edProhibitedCommodities.Add(prohibitedCommodity);
+                    }
+                }
+                Logging.Debug("Prohibited Commodities are " + JsonConvert.SerializeObject(edProhibitedCommodities.Select(c => c.Value).ToList()));
+                return edProhibitedCommodities;
+            }
+
+            // Obtain the list of outfitting modules
+            List<OutfittingInfoItem> OutfittingFromProfile(JObject json)
+            {
+                var edModules = new List<OutfittingInfoItem>();
+
+                if (json != null && json["modules"] != null)
+                {
+                    foreach (var jToken in json["modules"])
+                    {
+                        var moduleJsonProperty = (JProperty)jToken;
+                        JObject moduleJson = (JObject)moduleJsonProperty.Value;
+                        // Not interested in paintjobs, decals, ...
+                        string moduleCategory =
+                            (string)moduleJson[
+                                "category"]; // need to convert from LINQ to string
+                        switch (moduleCategory)
+                        {
+                            case "weapon":
+                            case "module":
+                            case "utility":
+                                {
+                                    edModules.Add(
+                                        JsonConvert.DeserializeObject<OutfittingInfoItem>(
+                                            moduleJson.ToString()));
+                                }
+                                break;
+                        }
+                    }
+                }
+                return edModules;
+            }
+
+            // Obtain the list of ships available at the station from the profile
+            List<ShipyardInfoItem> ShipyardFromProfile(JObject json)
+            {
+                List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
+                if (json?["ships"] != null)
+                {
+                    edShipyardShips = json?["ships"]["shipyard_list"].Children().Values()
+                        .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList();
+
+                    if (json["ships"]["unavailable_list"] != null)
+                    {
+                        edShipyardShips.AddRange(json["ships"]["unavailable_list"]
+                            .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList());
+                    }
+                }
+                return edShipyardShips;
+            }
+
+            FrontierApiProfileStation lastStation = null;
+            try
+            {
+                string lastStarport = ((string)marketJson?["name"])?.ReplaceEnd('+') ?? ((string)shipyardJson?["name"])?.ReplaceEnd('+');
+                long? marketId = (long?)marketJson?["id"] ?? (long?)shipyardJson?["id"];
+                lastStation = new FrontierApiProfileStation
+                {
+                    name = lastStarport,
+                    marketId = marketId,
+                };
+                if (marketJson != null)
+                {
+                    lastStation.economyShares = EconomiesFromProfile(marketJson);
+                    lastStation.eddnCommodityMarketQuotes = CommodityQuotesFromProfile(marketJson);
+                    lastStation.prohibitedCommodities = ProhibitedCommoditiesFromProfile(marketJson);
+                    lastStation.commoditiesupdatedat = marketTimestamp;
+                    lastStation.marketJson = marketJson;
+
+                    List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
+                    foreach (var jToken in marketJson["services"])
+                    {
+                        // These are key value pairs. The Key is the name of the service, the Value is its state.
+                        var serviceJSON = (JProperty)jToken;
+                        var service = new KeyValuePair<string, string>(serviceJSON.Name, serviceJSON.Value.ToString());
+                        stationServices.Add(service);
+                    }
+                    lastStation.stationServices = stationServices;
+                }
+                if (shipyardJson != null)
+                {
+                    lastStation.outfitting = OutfittingFromProfile(shipyardJson);
+                    lastStation.ships = ShipyardFromProfile(shipyardJson);
+                    lastStation.shipyardJson = shipyardJson;
+                    lastStation.outfittingupdatedat = shipyardTimestamp;
+                    lastStation.shipyardupdatedat = shipyardTimestamp;
+                }
+            }
+            catch (JsonException ex)
+            {
+                Logging.Error("Failed to parse companion station data", ex);
+            }
+            Logging.Debug("Station is " + JsonConvert.SerializeObject(lastStation));
+            return lastStation;
+        }
 
         #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

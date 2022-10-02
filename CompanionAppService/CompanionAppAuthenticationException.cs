@@ -7,7 +7,7 @@ namespace EddiCompanionAppService
     [Serializable]
     public class EliteDangerousCompanionAppAuthenticationException : EliteDangerousCompanionAppException
     {
-        public EliteDangerousCompanionAppAuthenticationException() : base() { }
+        public EliteDangerousCompanionAppAuthenticationException() { }
 
         public EliteDangerousCompanionAppAuthenticationException(string message) : base(message) { }
 

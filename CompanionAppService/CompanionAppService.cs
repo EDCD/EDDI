@@ -1,6 +1,4 @@
-﻿using EddiDataDefinitions;
-using EddiSpeechService;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,7 +15,7 @@ using Utilities;
 
 namespace EddiCompanionAppService
 {
-    public partial class CompanionAppService : IDisposable, INotifyPropertyChanged
+    public class CompanionAppService : IDisposable, INotifyPropertyChanged
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
@@ -33,14 +31,18 @@ namespace EddiCompanionAppService
         private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
+        public CompanionAppCredentials Credentials;
 
-        #region CompanionApp State Variables
+        public bool gameIsBeta { get; set; } = false;
+
+        #region State Variables
 
         public enum State
         {
             LoggedOut,
             AwaitingCallback,
             Authorized,
+            ConnectionLost,
             NoClientIDConfigured,
             TokenRefresh,
         };
@@ -48,7 +50,7 @@ namespace EddiCompanionAppService
         public State CurrentState
         {
             get => _currentState;
-            private set
+            protected internal set
             {
                 if (_currentState == value) { return; }
                 State oldState = _currentState;
@@ -66,8 +68,7 @@ namespace EddiCompanionAppService
 
         #endregion
 
-        public CompanionAppCredentials Credentials;
-        public bool gameIsBeta { get; set; } = false;
+        #region Instance
 
         private static CompanionAppService instance;
         private readonly string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
@@ -91,6 +92,17 @@ namespace EddiCompanionAppService
                 return instance;
             }
         }
+
+        #endregion
+
+        #region Endpoints
+
+        public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new Endpoints.FleetCarrierEndpoint();
+        public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new Endpoints.ProfileEndpoint();
+        public readonly Endpoints.MarketEndpoint MarketEndpoint = new Endpoints.MarketEndpoint();
+        public readonly Endpoints.ShipyardEndpoint ShipyardEndpoint = new Endpoints.ShipyardEndpoint();
+
+        #endregion
 
         private CompanionAppService()
         {
@@ -132,7 +144,7 @@ namespace EddiCompanionAppService
             // dispose unmanaged resources
         }
 
-        private string ServerURL()
+        protected internal string ServerURL()
         {
             return gameIsBeta ? BETA_SERVER : LIVE_SERVER;
         }
@@ -278,7 +290,7 @@ namespace EddiCompanionAppService
         {
             if (Credentials.accessToken == null) { return null; }
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(AUTH_SERVER + DECODE_URL);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(AUTH_SERVER + DECODE_URL);
             request.AllowAutoRedirect = true;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
@@ -338,6 +350,7 @@ namespace EddiCompanionAppService
                     Credentials.Save();
                     if (Credentials.accessToken == null)
                     {
+                        CurrentState = State.ConnectionLost;
                         CurrentState = State.LoggedOut;
                         throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
                     }
@@ -345,6 +358,7 @@ namespace EddiCompanionAppService
                 }
                 else
                 {
+                    CurrentState = State.ConnectionLost;
                     CurrentState = State.LoggedOut;
                     throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token");
                 }
@@ -361,7 +375,7 @@ namespace EddiCompanionAppService
             CurrentState = State.LoggedOut;
         }
 
-        private string obtainData(string url, out DateTime timestamp)
+        protected internal Tuple<string, DateTime> obtainData(string url)
         {
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
@@ -383,24 +397,21 @@ namespace EddiCompanionAppService
 
                     if (response.StatusCode == HttpStatusCode.NoContent)
                     {
-                        timestamp = DateTime.MinValue;
-                        return null;
+                        return new Tuple<string, DateTime>(null, DateTime.MinValue);
                     }
                     else if (response.StatusCode == HttpStatusCode.Found)
                     {
-                        timestamp = DateTime.MinValue;
-                        return null;
+                        return new Tuple<string, DateTime>(null, DateTime.MinValue);
                     }
 
-                    timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
-                    return getResponseData(response);
+                    var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
+                    return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                 }
             }
             else
             {
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                timestamp = DateTime.MinValue;
-                return null;
+                return new Tuple<string, DateTime>(null, DateTime.MinValue);
             }
         }
 
@@ -408,7 +419,7 @@ namespace EddiCompanionAppService
          * Try to relogin if there is some issue that requires it.
          * Throws an exception if it failed to log in.
          */
-        private void relogin()
+        protected internal void relogin()
         {
             // Need to log in again.
             if (clientID == null) { return; }
@@ -455,7 +466,7 @@ namespace EddiCompanionAppService
         // Set up a request with the correct parameters for talking to the companion app
         private HttpWebRequest GetRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AllowAutoRedirect = true;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;

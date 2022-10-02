@@ -977,6 +977,7 @@ namespace Eddi
             switch (CompanionAppService.Instance.CurrentState)
             {
                 case CompanionAppService.State.LoggedOut:
+                case CompanionAppService.State.ConnectionLost:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
                     companionAppButton.Content = Properties.EddiResources.login;
                     companionAppButton.IsEnabled = !App.FromVA;

@@ -39,6 +39,73 @@ namespace EddiDataDefinitions
 
         /// <summary>The contexts (i.e. "capabilities") associated with this profile </summary>
         public FrontierApiProfileContexts contexts { get; set; }
+
+        /// <summary>Create a profile given the results from a /profile call</summary>
+        public static FrontierApiProfile FromFrontierApiProfile(JObject json, DateTime timestamp)
+        {
+            FrontierApiProfile Profile = new FrontierApiProfile
+            {
+                json = json,
+                timestamp = timestamp
+            };
+
+            if (json?["commander"] != null)
+            {
+                FrontierApiCommander Commander = new FrontierApiCommander
+                {
+                    // Caution: The "id" property here may not match the FID returned from the player journal
+                    name = (string)json["commander"]["name"],
+                    combatrating = CombatRating.FromRank((int?)json["commander"]["rank"]["combat"] ?? 0),
+                    traderating = TradeRating.FromRank((int?)json["commander"]["rank"]["trade"] ?? 0),
+                    explorationrating = ExplorationRating.FromRank((int?)json["commander"]["rank"]["explore"] ?? 0),
+                    cqcrating = CQCRating.FromRank((int?)json["commander"]["rank"]["cqc"] ?? 0),
+                    empirerating = EmpireRating.FromRank((int?)json["commander"]["rank"]["empire"] ?? 0),
+                    federationrating = FederationRating.FromRank((int?)json["commander"]["rank"]["federation"] ?? 0),
+                    mercenaryrating = MercenaryRating.FromRank((int?)json["commander"]["rank"]["soldier"] ?? 0),
+                    exobiologistrating = ExobiologistRating.FromRank((int?)json["commander"]["rank"]["exobiologist"] ?? 0),
+                    crimerating = (int?)json["commander"]["rank"]["crime"] ?? 0,
+                    servicerating = (int?)json["commander"]["rank"]["service"] ?? 0,
+                    powerrating = (int?)json["commander"]["rank"]["power"] ?? 0,
+
+                    credits = (long?)json["commander"]["credits"] ?? 0,
+                    debt = (long?)json["commander"]["debt"] ?? 0
+                };
+                Profile.Cmdr = Commander;
+                Profile.docked = (bool)json["commander"]["docked"];
+                Profile.onFoot = (bool)json["commander"]["onfoot"];
+                Profile.alive = (bool)json["commander"]["alive"];
+
+                if (json["commander"]["capabilities"] != null)
+                {
+                    var contexts = new FrontierApiProfileContexts
+                    {
+                        allowCobraMkIV = (bool?)json["commander"]["capabilities"]["AllowCobraMkIV"] ?? false,
+                        hasHorizons = (bool?)json["commander"]["capabilities"]["Horizons"] ?? false,
+                        hasOdyssey = (bool?)json["commander"]["capabilities"]["Odyssey"] ?? false
+                    };
+                    Profile.contexts = contexts;
+                }
+
+                string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
+                if (systemName != null)
+                {
+                    Profile.CurrentStarSystem = new FrontierApiProfileStarSystem
+                    {
+                        // Caution: The "id" property here may not match the systemAddress
+                        systemName = systemName,
+                        // Caution: The "faction" property here may return the edName for the faction rather than the invariant name
+                    };
+                }
+
+                if (json["lastStarport"] != null)
+                {
+                    Profile.LastStationName = ((string)json["lastStarport"]?["name"])?.ReplaceEnd('+');
+                    Profile.LastStationMarketID = (long?)json["lastStarport"]?["id"];
+                }
+            }
+
+            return Profile;
+        }
     }
 
     public class FrontierApiProfileContexts
@@ -86,7 +153,10 @@ namespace EddiDataDefinitions
         public List<ShipyardInfoItem> ships { get; set; } = new List<ShipyardInfoItem>();
 
         /// <summary>The market JSON object</summary>
-        public JObject json { get; set; }
+        public JObject marketJson { get; set; }
+
+        /// <summary>The shipyard JSON object</summary>
+        public JObject shipyardJson { get; set; }
 
         // Admin - the last time the market information present changed
         public DateTime commoditiesupdatedat;

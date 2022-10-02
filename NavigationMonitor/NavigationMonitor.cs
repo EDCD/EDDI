@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -83,7 +82,17 @@ namespace EddiNavigationMonitor
         {
             BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
             StatusService.StatusUpdatedEvent += OnStatusUpdated;
+            CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
             Logging.Info($"Initialized {MonitorName()}");
+        }
+
+        private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
+        {
+            // Obtain fleet carrier data once the Frontier API connects
+            if (newstate is CompanionAppService.State.Authorized)
+            {
+                RefreshFleetCarrierFromFrontierAPI();
+            }
         }
 
         private void LoadMonitor()
@@ -256,7 +265,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpRequestEvent(CarrierJumpRequestEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId };
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
             updatedCarrier.nextStarSystem = @event.systemname;
             EDDI.Instance.FleetCarrier = updatedCarrier;
             if (!@event.fromLoad && @event.timestamp >= updateDat)
@@ -268,7 +277,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpCancelledEvent(CarrierJumpCancelledEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId };
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
             updatedCarrier.nextStarSystem = null;
             EDDI.Instance.FleetCarrier = updatedCarrier;
             if (!@event.fromLoad && @event.timestamp >= updateDat)
@@ -280,7 +289,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId, name = @event.carriername };
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { name = @event.carriername };
             updatedCarrier.currentStarSystem = @event.systemname;
             updatedCarrier.Market.name = @event.carriername;
             updatedCarrier.nextStarSystem = null;
@@ -296,7 +305,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId };
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
             updatedCarrier.currentStarSystem = @event.systemname;
             EDDI.Instance.FleetCarrier = updatedCarrier;
             CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
@@ -309,7 +318,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierPurchasedEvent(CarrierPurchasedEvent @event)
         {
-            EDDI.Instance.FleetCarrier = new FleetCarrier() { carrierID = @event.carrierId, callsign = @event.callsign, currentStarSystem = @event.systemname };
+            EDDI.Instance.FleetCarrier = new FleetCarrier(@event.carrierId) { callsign = @event.callsign, currentStarSystem = @event.systemname };
             if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
@@ -319,8 +328,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierStatsEvent(CarrierStatsEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier() { carrierID = @event.carrierId, callsign = @event.callsign, name = @event.name };
-            updatedCarrier.name = @event.name;
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { callsign = @event.callsign, name = @event.name };
             updatedCarrier.dockingAccess = @event.dockingAccess;
             updatedCarrier.notoriousAccess = @event.notoriousAccess;
             updatedCarrier.fuel = @event.fuel;
@@ -912,28 +920,25 @@ namespace EddiNavigationMonitor
             {
                 try
                 {
-                    var frontierApiCarrier = CompanionAppService.Instance.FleetCarrier();
-                    if (frontierApiCarrier != null)
+                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier();
+                    var frontierApiCarrierJson = result.Item1;
+                    var timestamp = result.Item2;
+
+                    if (frontierApiCarrierJson != null)
                     {
                         // Update our Fleet Carrier object
-                        var updatedCarrier = FleetCarrier.FromFrontierApiFleetCarrier(FleetCarrier, frontierApiCarrier, frontierApiCarrier.timestamp, updateDat, out bool carrierMatches);
-
-                        // Stop if the carrier returned from the profile does not match our expected carrier id
-                        if (!carrierMatches) { return; }
-
-                        EDDI.Instance.FleetCarrier = updatedCarrier ?? FleetCarrier;
-
-                        updateDat = frontierApiCarrier.timestamp > updateDat ? frontierApiCarrier.timestamp : updateDat;
+                        EDDI.Instance.FleetCarrier = EDDI.Instance.FleetCarrier is null 
+                            ? new FleetCarrier(frontierApiCarrierJson, timestamp) 
+                            : EDDI.Instance.FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
+                        updateDat = timestamp > updateDat ? timestamp : updateDat;
                         WriteNavConfig();
                     }
                 }
                 catch (Exception ex)
                 {
                     Logging.Error("Exception obtaining fleet carrier Frontier API data", ex);
-                    return;
                 }
             }
-        }
         }
     }
 }

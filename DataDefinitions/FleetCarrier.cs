@@ -1,80 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class FleetCarrier : FrontierApiFleetCarrier
+    public class FleetCarrier : INotifyPropertyChanged
     {
-        // Parameters not obtained from the Frontier API
-        // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the fleet carrier definition.
-
-        public long? carrierID
-        {
-            get => _carrierId;
-            set
-            {
-                if (value == _carrierId) return;
-                _carrierId = value;
-                OnPropertyChanged();
-            }
-        }
         private long? _carrierId;
-
-        public static FleetCarrier FromFrontierApiFleetCarrier(FleetCarrier currentFleetCarrier, FrontierApiFleetCarrier frontierApiFleetCarrier, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool carrierMatches)
-        {
-            if (frontierApiFleetCarrier is null) { carrierMatches = true; return currentFleetCarrier; }
-
-            // Copy our current fleet carrier to a new object and update that new object
-            var fleetCarrier = currentFleetCarrier.Copy() ?? new FleetCarrier();
-
-            // Verify that the profile information matches the current fleet carrier callsign
-            if (fleetCarrier.callsign != null && frontierApiFleetCarrier.callsign != fleetCarrier.callsign)
-            {
-                Logging.Warn("Frontier API incorrectly configured: Returning information for Fleet Carrier " +
-                    frontierApiFleetCarrier.callsign + " rather than for " + fleetCarrier.callsign + ". Disregarding incorrect information.");
-                carrierMatches = false;
-                return fleetCarrier;
-            }
-
-            carrierMatches = true;
-            fleetCarrier.callsign = frontierApiFleetCarrier.callsign;
-            fleetCarrier.carrierID = frontierApiFleetCarrier.Market.marketId;
-
-            // Information exclusively available from the Frontier API
-            fleetCarrier.Cargo = frontierApiFleetCarrier.Cargo;
-            fleetCarrier.CarrierLockerAssets = frontierApiFleetCarrier.CarrierLockerAssets;
-            fleetCarrier.CarrierLockerGoods = frontierApiFleetCarrier.CarrierLockerGoods;
-            fleetCarrier.CarrierLockerData = frontierApiFleetCarrier.CarrierLockerData;
-            fleetCarrier.commodityPurchaseOrders = frontierApiFleetCarrier.commodityPurchaseOrders;
-            fleetCarrier.commoditySalesOrders = frontierApiFleetCarrier.commoditySalesOrders;
-            fleetCarrier.microresourcePurchaseOrders = frontierApiFleetCarrier.microresourcePurchaseOrders;
-            fleetCarrier.microresourceSalesOrders = frontierApiFleetCarrier.microresourceSalesOrders;
-
-            // Information which might be newer, check timestamps prior to updating
-            if (apiTimeStamp > journalTimeStamp)
-            {
-                fleetCarrier.name = fleetCarrier.name ?? frontierApiFleetCarrier.name;
-                fleetCarrier.currentStarSystem = fleetCarrier.currentStarSystem ?? frontierApiFleetCarrier.currentStarSystem;
-                fleetCarrier.nextStarSystem = fleetCarrier.nextStarSystem ?? frontierApiFleetCarrier.nextStarSystem;
-                fleetCarrier.dockingAccess = frontierApiFleetCarrier.dockingAccess;
-                fleetCarrier.notoriousAccess = frontierApiFleetCarrier.notoriousAccess;
-                fleetCarrier.fuel = frontierApiFleetCarrier.fuel;
-                fleetCarrier.fuelInCargo = frontierApiFleetCarrier.fuelInCargo;
-                fleetCarrier.state = frontierApiFleetCarrier.state;
-                fleetCarrier.bankBalance = frontierApiFleetCarrier.bankBalance;
-                fleetCarrier.bankReservedBalance = frontierApiFleetCarrier.bankReservedBalance;
-                fleetCarrier.usedCapacity = frontierApiFleetCarrier.usedCapacity;
-                fleetCarrier.freeCapacity = frontierApiFleetCarrier.freeCapacity;
-            }
-
-            return fleetCarrier;
-        }
-    }
-
-    public class FrontierApiFleetCarrier : INotifyPropertyChanged
-    {
         private FrontierApiProfileStation _market = new FrontierApiProfileStation();
         private string _name;
         private string _callsign;
@@ -97,6 +31,17 @@ namespace EddiDataDefinitions
         private JArray _commodityPurchaseOrders = new JArray();
         private JArray _microresourceSalesOrders = new JArray();
         private JArray _microresourcePurchaseOrders = new JArray();
+
+        public long? carrierID
+        {
+            get => _carrierId;
+            set
+            {
+                if (value == _carrierId) return;
+                _carrierId = value;
+                OnPropertyChanged();
+            }
+        }
 
         [PublicAPI("The name of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
         public string name
@@ -363,15 +308,160 @@ namespace EddiDataDefinitions
             }
         }
 
-        // Metadata
+        // Administrative Metadata
 
         public JObject json { get; set; } // The raw data from the endpoint as a JObject
 
         public DateTime timestamp { get; set; } // When the raw data was obtained
 
+        // Constructors
+
+        public FleetCarrier(long? carrierID)
+        {
+            this.carrierID = carrierID;
+        }
+
+        public FleetCarrier (JObject newJson, DateTime newTimeStamp)
+        {
+            json = newJson;
+            timestamp = newTimeStamp;
+
+            // Name must be converted from a hexadecimal to a string
+            string ConvertHexString(string hexString)
+            {
+                string ascii = string.Empty;
+                for (int i = 0; i < hexString.Length; i += 2)
+                {
+                    var hs = hexString.Substring(i, 2);
+                    var decval = Convert.ToUInt32(hs, 16);
+                    var character = Convert.ToChar(decval);
+                    ascii += character;
+                }
+                return ascii;
+            }
+            carrierID = newJson["market"]?["id"]?.ToObject<long?>();
+            callsign = newJson["name"]?["callsign"]?.ToString();
+            name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
+            currentStarSystem = newJson["currentStarSystem"]?.ToString();
+            fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
+            state = newJson["state"]?.ToString();
+            dockingAccess = newJson["dockingAccess"]?.ToString();
+            notoriousAccess = newJson["notoriousAccess"]?.ToObject<bool>() ?? false;
+
+            // Capacity
+            var shipPacks = newJson["capacity"]?["shipPacks"]?.ToObject<int>() ?? 0;
+            var modulePacks = newJson["capacity"]?["modulePacks"]?.ToObject<int>() ?? 0;
+            var cargoForSale = newJson["capacity"]?["cargoForSale"]?.ToObject<int>() ?? 0;
+            var cargoNotForSale = newJson["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
+            var reservedSpace = newJson["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
+            var crew = newJson["capacity"]?["crew"]?.ToObject<int>() ?? 0;
+            usedCapacity =
+                shipPacks +
+                modulePacks +
+                cargoForSale +
+                cargoNotForSale +
+                reservedSpace +
+                crew;
+            freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
+
+            // Itinerary
+            nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
+
+            // Finances
+            bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
+            bankReservedBalance = newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
+
+            // Inventories
+            Cargo = JArray.FromObject(newJson["cargo"]) ?? new JArray();
+            CarrierLockerAssets = JArray.FromObject(newJson["carrierLocker"]?["assets"]) ?? new JArray();
+            CarrierLockerGoods = JArray.FromObject(newJson["carrierLocker"]?["goods"]) ?? new JArray();
+            CarrierLockerData = JArray.FromObject(newJson["carrierLocker"]?["data"]) ?? new JArray();
+
+            // Market Buy/Sell Orders
+            commodityPurchaseOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"]) ?? new JArray();
+            commoditySalesOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["sales"]) ?? new JArray();
+            microresourcePurchaseOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["purchases"]) ?? new JArray();
+            microresourceSalesOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["sales"]) ?? new JArray();
+
+            // Station properties
+            Market = Station.FromFrontierApi(newTimeStamp, newJson["market"]?.ToObject<JObject>(), newTimeStamp, null);
+
+            // Misc - Tritium stored in cargo
+            foreach (var cargo in Cargo)
+            {
+                if (cargo["commodity"]?.ToString() is "Tritium")
+                {
+                    fuelInCargo += cargo["qty"].ToObject<int>();
+                }
+            }
+        }
+
+        // Methods
+
+        public FleetCarrier UpdateFrom(JObject newJson, DateTime newTimeStamp)
+        {
+            var newFleetCarrier = new FleetCarrier(newJson, newTimeStamp);
+            return UpdateFrom(newFleetCarrier);
+        }
+
+        public FleetCarrier UpdateFrom(FleetCarrier newFleetCarrier)
+        {
+            if (newFleetCarrier is null) { return this; } // Null data
+            if (json.DeepEquals(newFleetCarrier.json)) { return this; } // No changes
+            if (!CarrierMatches(newFleetCarrier)) { return this; } // Not the same carrier
+
+            var fleetCarrier = new FleetCarrier(newFleetCarrier.Market.marketId)
+            {
+                carrierID = newFleetCarrier.Market.marketId,
+                callsign = newFleetCarrier.callsign,
+
+                // Information exclusively available from the Frontier API
+                Cargo = newFleetCarrier.Cargo,
+                CarrierLockerAssets = newFleetCarrier.CarrierLockerAssets,
+                CarrierLockerGoods = newFleetCarrier.CarrierLockerGoods,
+                CarrierLockerData = newFleetCarrier.CarrierLockerData,
+                commodityPurchaseOrders = newFleetCarrier.commodityPurchaseOrders,
+                commoditySalesOrders = newFleetCarrier.commoditySalesOrders,
+                microresourcePurchaseOrders = newFleetCarrier.microresourcePurchaseOrders,
+                microresourceSalesOrders = newFleetCarrier.microresourceSalesOrders,
+                Market = newFleetCarrier.Market
+            };
+
+            // Information which might be newer, check timestamp prior to updating
+            if (newFleetCarrier.timestamp > timestamp)
+            {
+                fleetCarrier.name = newFleetCarrier.name;
+                fleetCarrier.currentStarSystem = newFleetCarrier.currentStarSystem;
+                fleetCarrier.nextStarSystem = newFleetCarrier.nextStarSystem;
+                fleetCarrier.dockingAccess = newFleetCarrier.dockingAccess;
+                fleetCarrier.notoriousAccess = newFleetCarrier.notoriousAccess;
+                fleetCarrier.fuel = newFleetCarrier.fuel;
+                fleetCarrier.fuelInCargo = newFleetCarrier.fuelInCargo;
+                fleetCarrier.state = newFleetCarrier.state;
+                fleetCarrier.bankBalance = newFleetCarrier.bankBalance;
+                fleetCarrier.bankReservedBalance = newFleetCarrier.bankReservedBalance;
+                fleetCarrier.usedCapacity = newFleetCarrier.usedCapacity;
+                fleetCarrier.freeCapacity = newFleetCarrier.freeCapacity;
+            };
+
+            return fleetCarrier;
+        }
+
+        public bool CarrierMatches(FleetCarrier newFleetCarrier)
+        {
+            // Verify that the profile information matches the current fleet carrier callsign
+            if (callsign != null && newFleetCarrier.callsign != callsign)
+            {
+                Logging.Warn("Frontier API incorrectly configured: Returning information for Fleet Carrier " +
+                             newFleetCarrier.callsign + " rather than for " + callsign + ". Disregarding incorrect information.");
+                return false;
+            }
+            return true;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
+        private void OnPropertyChanged([CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

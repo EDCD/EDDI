@@ -234,7 +234,6 @@
     <EmbeddedResource Include="Properties\edsmTraffic.json" />
     <EmbeddedResource Include="Properties\fighterLoadout.json" />
     <EmbeddedResource Include="Properties\loadout.json" />
-    <EmbeddedResource Include="Properties\Resources.cs.resx" />
     <EmbeddedResource Include="Properties\shipMonitor.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem1.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem2.json" />

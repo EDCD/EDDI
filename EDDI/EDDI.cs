@@ -2777,9 +2777,13 @@ namespace EddiCore
             {
                 try
                 {
-                    var profile = CompanionAppService.Instance.Profile();
-                    if (profile != null)
+                    var result = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+                    var profileJson = result.Item1;
+                    var profileTimestamp = result.Item2;
+                    if (profileJson != null)
                     {
+                        var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson, profileTimestamp);
+
                         // Update our commander object
                         var updatedCmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
 
@@ -2798,7 +2802,7 @@ namespace EddiCore
 
                             if (profile.docked && profile.CurrentStarSystem?.systemName == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
                             {
-                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID) 
+                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
                                                  ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
                                 if (CurrentStation != null)
                                 {
@@ -3105,9 +3109,14 @@ namespace EddiCore
                         }
 
                         // We do need to fetch an updated profile; do so
-                        var profile = CompanionAppService.Instance?.Profile();
-                        if (profile != null)
+                        var profileResult = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+                        var profileJson = profileResult.Item1;
+                        var profileTimestamp = profileResult.Item2;
+
+                        if (profileResult != null)
                         {
+                            var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson, profileTimestamp);
+
                             // Sanity check
                             if (profile.Cmdr != null && profile.Cmdr.name != Cmdr.name)
                             {
@@ -3128,7 +3137,15 @@ namespace EddiCore
                                 && (profile.docked || profile.onFoot) 
                                 && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
-                                var profileStation = CompanionAppService.Instance?.Station();
+                                var stationResult = CompanionAppService.Instance.MarketEndpoint.GetMarket();
+                                var marketJson = stationResult.Item1;
+                                var marketTimestamp = stationResult.Item2;
+
+                                var shipyardResult = CompanionAppService.Instance.ShipyardEndpoint.GetShipyard();
+                                var shipyardJson = shipyardResult.Item1;
+                                var shipyardTimestamp = shipyardResult.Item2;
+
+                                var profileStation = Station.FromFrontierApi(marketTimestamp, marketJson, shipyardTimestamp, shipyardJson);
                                 if (profileStation.name == profile.LastStationName &&
                                     profileStation.marketId == profile.LastStationMarketID)
                                 {
