@@ -40,14 +40,14 @@ namespace EddiNavigationMonitor
             destinationSystemDropDown.Text = navConfig.carrierDestinationArg;
             carrierNameTextBlock.Text = navConfig.fleetCarrier?.name;
             carrierOriginSystemDropDown.Text = navConfig.fleetCarrier?.currentStarSystem;
-            carrierCurrentLoad.Text = navConfig.fleetCarrier?.usedCapacity.ToString();
+            carrierCurrentLoad.Text = navConfig.fleetCarrier?.usedCapacity.ToString() ?? string.Empty;
 
-            navigationMonitor().PropertyChanged += OnNavigationMonitorPropertyChange;
+            EDDI.Instance.PropertyChanged += OnPropertyChange;
             NavigationService.Instance.PropertyChanged += OnNavServiceChange;
             navigationMonitor().CarrierPlottedRoute.PropertyChanged += OnCarrierPlottedRouteChanged;
         }
 
-        private void OnNavigationMonitorPropertyChange(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChange(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(FleetCarrier))
             {
@@ -59,10 +59,12 @@ namespace EddiNavigationMonitor
                     carrierNameTextBlock.Text = !string.IsNullOrEmpty(fleetCarrier?.name)
                         ? $@"{fleetCarrier?.name} ({fleetCarrier?.callsign})"
                         : fleetCarrier?.callsign ?? Properties.NavigationMonitor.carrier_err_frontier_api_connection_recommended;
-                    carrierOriginSystemDropDown.Text = LastCarrierOriginArg ?? Properties.NavigationMonitor.carrier_err_frontier_api_connection_required;
+                    carrierOriginSystemDropDown.Text = fleetCarrier?.currentStarSystem 
+                        ?? LastCarrierOriginArg 
+                        ?? Properties.NavigationMonitor.carrier_err_frontier_api_connection_required;
                     carrierCurrentLoad.Text = (fleetCarrier?.usedCapacity ?? 0).ToString();
 
-                    if (string.IsNullOrEmpty(carrierCurrentSystem.Text))
+                    if (string.IsNullOrEmpty(fleetCarrier?.currentStarSystem))
                     {
                         SearchButton.IsEnabled = false;
                     }

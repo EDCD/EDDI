@@ -7,7 +7,6 @@
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
-             xmlns:eddiNavigationService="clr-namespace:EddiNavigationService;assembly=EddiNavigationService"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -68,7 +67,6 @@
                                              VerticalContentAlignment="Center"
                                              LostFocus="OriginSystemText_LostFocus"
                                              SelectionChanged="OriginSystemText_SelectionChanged"/>
-                    <TextBlock x:Name="carrierCurrentSystem" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" VerticalAlignment="Center" />
                     <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_destination_system_textbox_desc}" VerticalAlignment="Center" />
                     <eddi:StarSystemComboBox x:Name="destinationSystemDropDown"
                                       IsEditable="True"

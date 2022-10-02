@@ -27,7 +27,7 @@ using Utilities;
 namespace EddiNavigationMonitor
 {
     [UsedImplicitly]
-    public class NavigationMonitor : EDDIMonitor, INotifyPropertyChanged
+    public class NavigationMonitor : EDDIMonitor
     {
         public FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
 
@@ -934,16 +934,6 @@ namespace EddiNavigationMonitor
                 }
             }
         }
-
-        #region ImplementINotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
     }
 }
