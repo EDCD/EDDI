@@ -1,7 +1,6 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiConfigService;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;

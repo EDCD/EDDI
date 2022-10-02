@@ -1,5 +1,5 @@
-﻿using System;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents

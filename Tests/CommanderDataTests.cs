@@ -1,5 +1,4 @@
-﻿using EddiCompanionAppService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiShipMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;

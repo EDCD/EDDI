@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
@@ -10,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using EddiCompanionAppService;
 using Utilities;
 
 namespace EddiVoiceAttackResponder

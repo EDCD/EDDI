@@ -1,8 +1,8 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using EddiConfigService;
 
 // Number of worker threads is automatic because `Workers` is set to 0.
 // There are 3 scopes of parallelization:

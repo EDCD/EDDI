@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using ICSharpCode.AvalonEdit.Document;
+﻿using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
+using System.Collections.Generic;
 
 namespace EddiSpeechResponder.AvalonEdit
 {

@@ -1,5 +1,4 @@
-﻿using EddiConfigService;
-using EddiSpeechResponder.Service;
+﻿using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;

@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using Cottle.Functions;
+﻿using Cottle.Functions;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System.Linq;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions

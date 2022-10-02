@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

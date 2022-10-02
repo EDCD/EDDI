@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using EddiDataDefinitions;
-using Newtonsoft.Json.Linq;
-using RestSharp;
 using Utilities;
 
 namespace EddiStarMapService

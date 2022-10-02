@@ -1,12 +1,11 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiConfigService;
 using Utilities;
 
 namespace Eddi

@@ -1,7 +1,7 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using System.Windows;
 using System.Windows.Controls;
-using EddiConfigService;
 
 namespace Eddi
 {

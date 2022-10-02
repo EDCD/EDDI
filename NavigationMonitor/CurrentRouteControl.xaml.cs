@@ -1,5 +1,5 @@
-﻿using EddiDataDefinitions;
-using EddiCore;
+﻿using EddiCore;
+using EddiDataDefinitions;
 using System.Windows;
 using System.Windows.Controls;
 

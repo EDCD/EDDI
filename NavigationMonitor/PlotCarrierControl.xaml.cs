@@ -1,9 +1,9 @@
-﻿using System;
-using Eddi;
+﻿using Eddi;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
