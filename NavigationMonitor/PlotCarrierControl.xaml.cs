@@ -38,9 +38,9 @@ namespace EddiNavigationMonitor
 
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             destinationSystemDropDown.Text = navConfig.carrierDestinationArg;
-            carrierNameTextBlock.Text = navConfig.fleetCarrier?.name;
-            carrierOriginSystemDropDown.Text = navConfig.fleetCarrier?.currentStarSystem;
-            carrierCurrentLoad.Text = navConfig.fleetCarrier?.usedCapacity.ToString() ?? string.Empty;
+            carrierNameTextBlock.Text = navigationMonitor().FleetCarrier?.name;
+            carrierOriginSystemDropDown.Text = navigationMonitor().FleetCarrier?.currentStarSystem;
+            carrierCurrentLoad.Text = navigationMonitor().FleetCarrier?.usedCapacity.ToString() ?? string.Empty;
 
             EDDI.Instance.PropertyChanged += OnPropertyChange;
             NavigationService.Instance.PropertyChanged += OnNavServiceChange;

@@ -55,7 +55,7 @@ namespace EddiNavigationMonitor
         public static readonly object navConfigLock = new object();
 
         private DateTime updateDat;
-        
+
         internal Status currentStatus { get; set; }
 
         public string MonitorName()
@@ -83,6 +83,7 @@ namespace EddiNavigationMonitor
             BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
             StatusService.StatusUpdatedEvent += OnStatusUpdated;
             CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
+            LoadMonitor();
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -102,16 +103,6 @@ namespace EddiNavigationMonitor
             // Build a Galactic POI list
             GalacticPOIs = EDAstro.GetPOIs();
             GetBookmarkExtras(GalacticPOIs);
-
-            // Retrieve the latest Fleet Carrier data
-            try
-            {
-                RefreshFleetCarrierFromFrontierAPI();
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to obtain Frontier API fleet carrier: " + ex);
-            }
         }
 
         private void NavigationMonitor_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -136,13 +127,11 @@ namespace EddiNavigationMonitor
 
         public bool NeedsStart()
         {
-            return true;
+            return false;
         }
 
         public void Start()
-        {
-            LoadMonitor();
-        }
+        { }
 
         public void Stop()
         { }
@@ -398,7 +387,6 @@ namespace EddiNavigationMonitor
                         {
                             FleetCarrier.currentStarSystem = @event.system;
                             CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
-                            navConfig.fleetCarrier = FleetCarrier;
                             navConfig.carrierPlottedRoute = CarrierPlottedRoute;
                         }
                     }
@@ -422,7 +410,6 @@ namespace EddiNavigationMonitor
                     {
                         FleetCarrier.currentStarSystem = @event.systemname;
                         CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
-                        navConfig.fleetCarrier = FleetCarrier;
                         navConfig.carrierPlottedRoute = CarrierPlottedRoute;
                     }
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
@@ -553,7 +540,6 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
-
             if (routeDetailsEvent.routetype == QueryType.carrier.ToString())
             {
                 if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == CarrierPlottedRoute.Waypoints.GetHashCode())
@@ -665,9 +651,6 @@ namespace EddiNavigationMonitor
                 navConfig.plottedRouteList = PlottedRouteList;
                 navConfig.carrierPlottedRoute = CarrierPlottedRoute;
 
-                // Fleet Carrier
-                navConfig.fleetCarrier = FleetCarrier;
-
                 // Misc
                 navConfig.updatedat = updateDat;
 
@@ -695,9 +678,6 @@ namespace EddiNavigationMonitor
                 // Restore our plotted routes
                 PlottedRouteList = navConfig.plottedRouteList;
                 CarrierPlottedRoute = navConfig.carrierPlottedRoute;
-
-                // Restore our Fleet Carrier data
-                EDDI.Instance.FleetCarrier = navConfig.fleetCarrier;
 
                 // Misc
                 updateDat = navConfig.updatedat;

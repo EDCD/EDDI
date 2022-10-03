@@ -324,6 +324,11 @@ namespace EddiCore
                 }
                 if (fleetCarrier != null) { fleetCarrier.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
+
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                configuration.fleetCarrier = value;
+                ConfigService.Instance.eddiConfiguration = configuration;
+
                 fleetCarrier = value;
                 OnPropertyChanged();
             }
@@ -388,11 +393,12 @@ namespace EddiCore
                 // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
                 CompanionAppService.Instance.gameIsBeta = false;
 
-                // Retrieve commander preferences
+                // Retrieve commander data
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Cmdr.name = configuration.CommanderName;
                 Cmdr.phoneticName = configuration.PhoneticName;
                 Cmdr.gender = configuration.Gender;
+                FleetCarrier = configuration.fleetCarrier;
 
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;

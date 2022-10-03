@@ -42,8 +42,5 @@ namespace EddiConfigService
         public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
 
         public NavWaypointCollection carrierPlottedRoute { get; set; } = new NavWaypointCollection();
-
-        // Fleet Carrier
-        public FleetCarrier fleetCarrier { get; set; }
     }
 }
