@@ -224,7 +224,7 @@ namespace EddiNavigationMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is CarrierJumpRequestEvent
+            if (!@event.fromLoad && @event is CarrierJumpRequestEvent
                      || @event is CarrierJumpEngagedEvent
                      || @event is CarrierJumpedEvent
                      || @event is CarrierPurchasedEvent
