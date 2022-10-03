@@ -312,7 +312,7 @@ namespace EddiStarMapService
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response?.msg ?? clientResponse.ErrorMessage);
+                        Logging.Warn("EDSM responded with " + response?.msg);
                     }
                 }
                 catch (ThreadAbortException)
