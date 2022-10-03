@@ -937,10 +937,21 @@ namespace EddiNavigationService
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetCarrierRoute(string currentSystemName, string targetSystemName, long usedCarrierCapacity = 0, string[] refuel_destinations = null)
+        private RouteDetailsEvent GetCarrierRoute(string startingSystemName, string targetSystemName, long usedCarrierCapacity = 0, string[] refuel_destinations = null)
         {
+            if (string.IsNullOrEmpty(startingSystemName))
+            {
+                Logging.Warn("Invalid query: starting star system is not identified.");
+                return null;
+            }
+            else if (string.IsNullOrEmpty(targetSystemName))
+            {
+                Logging.Warn("Invalid query: target star system is not identified.");
+                return null;
+            }
+
             var spanshService = new SpanshService();
-            var plottedRouteList = spanshService.GetCarrierRoute(currentSystemName, new[] { targetSystemName }, usedCarrierCapacity, false, refuel_destinations);
+            var plottedRouteList = spanshService.GetCarrierRoute(startingSystemName, new[] { targetSystemName }, usedCarrierCapacity, false, refuel_destinations);
 
             if (plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1) { return null; }
 
