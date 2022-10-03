@@ -232,7 +232,7 @@ namespace UnitTests
         {
             // Set up our original star systems
             StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem5);
-            List<DatabaseStarSystem> systemsToUpdate = new List<DatabaseStarSystem>() { new DatabaseStarSystem(system.systemname, system.systemAddress, system.EDSMID, JsonConvert.SerializeObject(system)) };
+            List<DatabaseStarSystem> systemsToUpdate = new List<DatabaseStarSystem>() { new DatabaseStarSystem(system.systemname, system.systemAddress, JsonConvert.SerializeObject(system)) };
 
             // Set up a copy where we mimic missing data not recovered from the server
             StarSystem systemCopy = system.Copy();
