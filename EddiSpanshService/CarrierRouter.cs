@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -12,6 +13,12 @@ namespace EddiSpanshService
         // Request a route from the Spansh Carrier Plotter.
         public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
         {
+            if (string.IsNullOrEmpty(currentSystem) || targetSystems.Any(s => string.IsNullOrEmpty(s)))
+            {
+                Logging.Warn("Carrier route plotting is not available, origin or target is not defined.");
+                return null;
+            }
+
             var request = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
             var initialResponse = spanshRestClient.Get(request);
 
@@ -51,6 +58,8 @@ namespace EddiSpanshService
         
         private NavWaypointCollection ParseCarrierRoute(JToken routeResult)
         {
+            if (routeResult is null) { return null; }
+
             var results = new List<NavWaypoint>();
 
             foreach (var jump in routeResult["jumps"].ToObject<JArray>())

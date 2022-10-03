@@ -1,60 +1,94 @@
 ﻿using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
 {
+    public interface ISpanshRestClient
+    {
+        Uri BuildUri(IRestRequest request);
+        IRestResponse<T> Execute<T>(IRestRequest request);
+        IRestResponse Get(IRestRequest request);
+    }
+
     public partial class SpanshService : ISpanshService
     {
         private const string baseUrl = "https://spansh.co.uk/api/";
-        private readonly IRestClient spanshRestClient;
-        public SpanshService(RestClient restClient = null)
+        private readonly ISpanshRestClient spanshRestClient;
+
+        // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
+        private const int DefaultTimeoutMilliseconds = 10000;
+
+        private class SpanshRestClient : ISpanshRestClient
         {
-            spanshRestClient = restClient ?? new RestClient(baseUrl);
+            private readonly RestClient restClient;
+
+            public SpanshRestClient(string baseUrl)
+            {
+                restClient = new RestClient(baseUrl)
+                {
+                    Timeout = DefaultTimeoutMilliseconds
+                };
+            }
+
+            public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
+
+            public IRestResponse<T> Execute<T>(IRestRequest request)
+            {
+                var response = restClient.Execute<T>(request);
+                return response;
+            }
+
+            public IRestResponse Get(IRestRequest request)
+            {
+                var response = Execute<object>(request);
+                return response;
+            }
         }
 
-        private async Task<JToken> GetRouteResponseTask(string route)
+        public SpanshService(ISpanshRestClient restClient = null)
+        {
+            spanshRestClient = restClient ?? new SpanshRestClient(baseUrl);
+        }
+
+        private async Task<JToken> GetRouteResponseTask(string data)
         {
             return await Task.Run(() =>
             {
-                var routeResponse = JObject.Parse(route);
-                if (routeResponse["error"] != null)
+                var jobID = GetJobID(data);
+                if (string.IsNullOrEmpty(jobID)) return null;
+                
+                var jobRequest = new RestRequest("results/" + jobID);
+                JObject routeResult = null;
+                while (routeResult is null || (routeResult["status"]?.ToString() == "queued"))
                 {
-                    Logging.Debug(routeResponse["error"].ToString());
-                    return null;
-                }
+                    Thread.Sleep(500);
+                    var response = spanshRestClient.Get(jobRequest);
+                    routeResult = JObject.Parse(response.Content);
 
-                var job = routeResponse["job"].ToString();
-                JObject routeResult = GetJobResponse(job);
-                while (routeResult["status"] != null && routeResult["status"].ToString() == "queued" &&
-                       routeResult["error"] == null)
-                {
-                    Thread.Sleep(1000);
-                    routeResult = GetJobResponse(job);
-                }
-
-                if (routeResult["error"] != null)
-                {
-                    Logging.Debug(routeResult["error"].ToString());
-                    return null;
+                    if (routeResult["error"] != null)
+                    {
+                        Logging.Debug(routeResult["error"].ToString());
+                        return null;
+                    }
                 }
 
                 return routeResult["result"];
             });
         }
 
-        /// <summary>
-        /// Fetch results from the the Spansh API
-        /// </summary>
-        /// <param name="job">The ID of the job which must be retrieved</param>
-        /// <returns></returns>
-        private JObject GetJobResponse(string job)
+        private string GetJobID(string route)
         {
-            var Jobrequest = new RestRequest("results/" + job);
-            var response = spanshRestClient.Get(Jobrequest);
-            return JObject.Parse(response.Content);
+            var routeResponse = JObject.Parse(route);
+            if (routeResponse["error"] != null)
+            {
+                Logging.Debug(routeResponse["error"].ToString());
+                return null;
+            }
+            return routeResponse["job"].ToString();
         }
     }
 }

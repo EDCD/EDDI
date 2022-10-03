@@ -5,10 +5,10 @@ namespace EddiSpanshService
     public interface ISpanshService
     {
         NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity,
-            bool calculateTotalFuelRequired = true, string[] refuel_destinations = null);
+            bool calculateTotalFuelRequired = true, string[] refuelDestinations = null);
 
         NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship,
-            int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true,
-            bool use_injections = false, bool exclude_secondary = false);
+            int? cargoCarriedTons = null, bool isSupercharged = false, bool useSupercharge = true,
+            bool useInjections = false, bool excludeSecondary = false);
     }
 }

@@ -15,7 +15,7 @@ namespace EddiSpanshService
         {
             if (ship is null)
             {
-                Logging.Debug("Neutron route plotting is not available, ship details are unknown.");
+                Logging.Warn("Neutron route plotting is not available, ship details are unknown.");
                 return null;
             }
 
@@ -98,6 +98,8 @@ namespace EddiSpanshService
         
         private NavWaypointCollection ParseGalaxyRoute(JToken routeResult)
         {
+            if (routeResult is null) { return null; }
+
             var results = new List<NavWaypoint>();
 
             foreach (var jump in routeResult["jumps"].ToObject<JArray>())
