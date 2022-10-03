@@ -135,6 +135,7 @@ namespace EddiNavigationMonitor
             {
                 if (!starSystemComboBox.IsLoaded) { return; }
                 destinationSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastCarrierDestinationArg, null);
+                UpdateSearchButtonEnabled();
             }
         }
 
@@ -146,6 +147,8 @@ namespace EddiNavigationMonitor
             {
                 // Update to new destination system
                 NavigationService.Instance.LastCarrierDestinationArg = newValue;
+
+                UpdateSearchButtonEnabled();
             }
             destinationSystemDropDown.SelectionDidChange(changeHandler);
         }
@@ -153,6 +156,7 @@ namespace EddiNavigationMonitor
         private void DestinationSystemText_LostFocus(object sender, RoutedEventArgs e)
         {
             destinationSystemDropDown.DidLoseFocus(NavigationService.Instance.LastCarrierDestinationArg);
+            UpdateSearchButtonEnabled();
         }
 
         private void OriginSystemText_TextChanged(object sender, TextChangedEventArgs e)
@@ -161,6 +165,7 @@ namespace EddiNavigationMonitor
             {
                 if (!starSystemComboBox.IsLoaded) { return; }
                 carrierOriginSystemDropDown.TextDidChange(sender, e, LastCarrierOriginArg, null);
+                UpdateSearchButtonEnabled();
             }
         }
 
@@ -172,6 +177,8 @@ namespace EddiNavigationMonitor
             {
                 // Update to new origin system
                 LastCarrierOriginArg = newValue;
+
+                UpdateSearchButtonEnabled();
             }
             carrierOriginSystemDropDown.SelectionDidChange(changeHandler);
         }
@@ -179,6 +186,7 @@ namespace EddiNavigationMonitor
         private void OriginSystemText_LostFocus(object sender, RoutedEventArgs e)
         {
             carrierOriginSystemDropDown.DidLoseFocus(LastCarrierOriginArg);
+            UpdateSearchButtonEnabled();
         }
 
         private void carrierCurrentLoad_KeyDown(object sender, KeyEventArgs e)
@@ -206,11 +214,19 @@ namespace EddiNavigationMonitor
                     navConfig.maxSearchDistanceFromStarLs = distance;
                     navigationMonitor().WriteNavConfig();
                 }
+                UpdateSearchButtonEnabled();
             }
             catch
             {
                 // Bad user input; ignore it
             }
+        }
+
+        private void UpdateSearchButtonEnabled()
+        {
+            SearchButton.IsEnabled = !string.IsNullOrEmpty(carrierOriginSystemDropDown.Text)
+                                     && !string.IsNullOrEmpty(destinationSystemDropDown.Text)
+                                     && !string.IsNullOrEmpty(carrierCurrentLoad.Text);
         }
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
