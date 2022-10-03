@@ -82,10 +82,6 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
-      <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
-      <Name>EddiSpeechService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
