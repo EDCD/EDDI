@@ -472,6 +472,7 @@ namespace EddiCore
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the Frontier API is enabled.");
+                        RefreshFleetCarrierFromFrontierAPI(true);
                     }
                     else
                     {
@@ -479,11 +480,22 @@ namespace EddiCore
                     }
                 });
 
+                CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
+
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
+            }
+        }
+
+        private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
+        {
+            // Obtain fleet carrier data once the Frontier API connects
+            if (newstate is CompanionAppService.State.Authorized)
+            {
+                RefreshFleetCarrierFromFrontierAPI(true);
             }
         }
 
@@ -2886,6 +2898,32 @@ namespace EddiCore
                 }
             }
             return success;
+        }
+
+        /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
+        public void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
+        {
+            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
+            {
+                try
+                {
+                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
+                    var frontierApiCarrierJson = result.Item1;
+                    var timestamp = result.Item2;
+
+                    if (frontierApiCarrierJson != null)
+                    {
+                        // Update our Fleet Carrier object
+                        FleetCarrier = FleetCarrier is null
+                            ? new FleetCarrier(frontierApiCarrierJson, timestamp)
+                            : FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Exception obtaining fleet carrier Frontier API data", ex);
+                }
+            }
         }
 
         private void setSystemDistanceFromHome(StarSystem system)

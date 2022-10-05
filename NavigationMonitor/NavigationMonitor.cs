@@ -82,18 +82,8 @@ namespace EddiNavigationMonitor
         {
             BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
             StatusService.StatusUpdatedEvent += OnStatusUpdated;
-            CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
             LoadMonitor();
             Logging.Info($"Initialized {MonitorName()}");
-        }
-
-        private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
-        {
-            // Obtain fleet carrier data once the Frontier API connects
-            if (newstate is CompanionAppService.State.Authorized)
-            {
-                RefreshFleetCarrierFromFrontierAPI(true);
-            }
         }
 
         private void LoadMonitor()
@@ -232,7 +222,7 @@ namespace EddiNavigationMonitor
             {
                 if (!@event.fromLoad)
                 {
-                    RefreshFleetCarrierFromFrontierAPI();
+                    EDDI.Instance.RefreshFleetCarrierFromFrontierAPI();
                 }
             }
             else if (@event is NavRouteEvent navRouteEvent)
@@ -892,34 +882,6 @@ namespace EddiNavigationMonitor
                 {
                     poi.systemAddress = system.systemAddress;
                     poi.visitLog = system.visitLog;
-                }
-            }
-        }
-
-        /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
-        private void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
-        {
-            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
-            {
-                try
-                {
-                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
-                    var frontierApiCarrierJson = result.Item1;
-                    var timestamp = result.Item2;
-
-                    if (frontierApiCarrierJson != null)
-                    {
-                        // Update our Fleet Carrier object
-                        EDDI.Instance.FleetCarrier = EDDI.Instance.FleetCarrier is null 
-                            ? new FleetCarrier(frontierApiCarrierJson, timestamp) 
-                            : EDDI.Instance.FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
-                        updateDat = timestamp > updateDat ? timestamp : updateDat;
-                        WriteNavConfig();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Exception obtaining fleet carrier Frontier API data", ex);
                 }
             }
         }
