@@ -392,26 +392,33 @@ namespace EddiCompanionAppService
 
             if (CurrentState == State.Authorized)
             {
-                HttpWebRequest request = GetRequest(url);
-                using (HttpWebResponse response = GetResponse(request))
+                try
                 {
-                    if (response == null)
+                    var request = GetRequest(url);
+                    using (var response = GetResponse(request))
                     {
-                        Logging.Debug("Failed to contact API server");
-                        throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                    }
+                        if (response == null)
+                        {
+                            Logging.Debug("Failed to contact API server");
+                            throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                        }
+                        if (response.StatusCode == HttpStatusCode.NoContent)
+                        {
+                            return new Tuple<string, DateTime>(null, DateTime.MinValue);
+                        }
+                        if (response.StatusCode == HttpStatusCode.Found)
+                        {
+                            return new Tuple<string, DateTime>(null, DateTime.MinValue);
+                        }
 
-                    if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return new Tuple<string, DateTime>(null, DateTime.MinValue);
+                        var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
+                        return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                     }
-                    else if (response.StatusCode == HttpStatusCode.Found)
-                    {
-                        return new Tuple<string, DateTime>(null, DateTime.MinValue);
-                    }
-
-                    var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
-                    return new Tuple<string, DateTime>(getResponseData(response), timestamp);
+                }
+                catch (WebException wex)
+                {
+                    Logging.Warn(wex.Message, wex);
+                    return new Tuple<string, DateTime>(null, DateTime.MinValue);
                 }
             }
             else
