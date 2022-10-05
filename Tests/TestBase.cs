@@ -1,4 +1,5 @@
-﻿using EddiConfigService;
+﻿using EddiCompanionAppService;
+using EddiConfigService;
 using EddiCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -25,6 +26,7 @@ namespace UnitTests
             // Don't write to permanent storage (do this before we initialize our EDDI instance)
             Utilities.Files.unitTesting = true;
             ConfigService.unitTesting = true;
+            CompanionAppService.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);

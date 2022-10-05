@@ -67,8 +67,14 @@ namespace EddiSpanshService
                 {
                     Thread.Sleep(500);
                     var response = spanshRestClient.Get(jobRequest);
-                    routeResult = JObject.Parse(response.Content);
 
+                    if (response.ResponseStatus == ResponseStatus.TimedOut)
+                    {
+                        Logging.Warn(response.ErrorMessage, jobRequest);
+                        return null;
+                    }
+
+                    routeResult = JObject.Parse(response.Content);
                     if (routeResult["error"] != null)
                     {
                         Logging.Debug(routeResult["error"].ToString());

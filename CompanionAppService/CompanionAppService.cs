@@ -34,6 +34,7 @@ namespace EddiCompanionAppService
         public CompanionAppCredentials Credentials;
 
         public bool gameIsBeta { get; set; } = false;
+        public static bool unitTesting;
 
         #region State Variables
 
@@ -114,6 +115,11 @@ namespace EddiCompanionAppService
             if (clientID == null)
             {
                 CurrentState = State.NoClientIDConfigured;
+                return;
+            }
+            if (unitTesting)
+            {
+                CurrentState = State.Authorized;
                 return;
             }
 
