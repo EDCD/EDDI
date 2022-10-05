@@ -118,7 +118,7 @@ namespace EddiSpeechService
             }
         }
 
-        private SpeechService()
+        public SpeechService()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates

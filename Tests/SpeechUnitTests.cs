@@ -11,7 +11,7 @@ namespace UnitTests
     [TestClass]
     public class SpeechUnitTests : TestBase
     {
-        PrivateObject speechService = new PrivateObject(SpeechService.Instance);
+        private readonly PrivateObject speechService = new PrivateObject(new SpeechService());
         private readonly HumanizeTests _humanizeTests = new HumanizeTests();
 
         [TestInitialize]
