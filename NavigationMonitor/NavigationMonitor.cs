@@ -92,7 +92,7 @@ namespace EddiNavigationMonitor
             // Obtain fleet carrier data once the Frontier API connects
             if (newstate is CompanionAppService.State.Authorized)
             {
-                RefreshFleetCarrierFromFrontierAPI();
+                RefreshFleetCarrierFromFrontierAPI(true);
             }
         }
 
@@ -224,11 +224,11 @@ namespace EddiNavigationMonitor
 
         public void PostHandle(Event @event)
         {
-            if (!@event.fromLoad && @event is CarrierJumpRequestEvent
-                     || @event is CarrierJumpEngagedEvent
-                     || @event is CarrierJumpedEvent
-                     || @event is CarrierPurchasedEvent
-                     || @event is CarrierStatsEvent)
+            if (@event is CarrierJumpRequestEvent 
+                || @event is CarrierJumpEngagedEvent
+                || @event is CarrierJumpedEvent
+                || @event is CarrierPurchasedEvent
+                || @event is CarrierStatsEvent)
             {
                 RefreshFleetCarrierFromFrontierAPI();
             }
@@ -894,13 +894,13 @@ namespace EddiNavigationMonitor
         }
 
         /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
-        private void RefreshFleetCarrierFromFrontierAPI()
+        private void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
         {
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
             {
                 try
                 {
-                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier();
+                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
                     var frontierApiCarrierJson = result.Item1;
                     var timestamp = result.Item2;
 

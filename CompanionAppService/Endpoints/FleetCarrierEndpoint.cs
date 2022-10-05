@@ -10,9 +10,9 @@ namespace EddiCompanionAppService.Endpoints
         private const string FLEETCARRIER_URL = "/fleetcarrier";
 
         // We cache data to avoid spamming the service
-        private JObject cachedFleetCarrierJson;
-        private DateTime cachedFleetCarrierTimeStamp;
-        private DateTime cachedFleetCarrierExpires => cachedFleetCarrierTimeStamp.AddSeconds(30);
+        private static JObject cachedFleetCarrierJson;
+        private static DateTime cachedFleetCarrierTimeStamp;
+        private static DateTime cachedFleetCarrierExpires => cachedFleetCarrierTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
         public static event EventHandler FleetCarrierUpdatedEvent;
