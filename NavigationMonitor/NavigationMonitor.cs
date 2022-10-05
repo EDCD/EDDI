@@ -224,13 +224,16 @@ namespace EddiNavigationMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is CarrierJumpRequestEvent 
+            if (@event is CarrierJumpRequestEvent
                 || @event is CarrierJumpEngagedEvent
                 || @event is CarrierJumpedEvent
                 || @event is CarrierPurchasedEvent
                 || @event is CarrierStatsEvent)
             {
-                RefreshFleetCarrierFromFrontierAPI();
+                if (!@event.fromLoad)
+                {
+                    RefreshFleetCarrierFromFrontierAPI();
+                }
             }
             else if (@event is NavRouteEvent navRouteEvent)
             {
