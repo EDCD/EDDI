@@ -236,7 +236,9 @@ namespace Eddi
             List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
-            chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
+            chooseLanguageDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideCulture) 
+                ? langs.Find(l => Equals(l.ci, CultureInfo.InvariantCulture))
+                : langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
                 LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
