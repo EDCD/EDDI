@@ -10,12 +10,12 @@ namespace EddiCompanionAppService.Endpoints
         private const string PROFILE_URL = "/profile";
 
         // We cache the profile to avoid spamming the service
-        private static JObject cachedProfileJson;
-        private static DateTime cachedProfileTimeStamp;
-        private static DateTime cachedProfileExpires => cachedProfileTimeStamp.AddSeconds(30);
+        private JObject cachedProfileJson;
+        private DateTime cachedProfileTimeStamp;
+        private DateTime cachedProfileExpires => cachedProfileTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
-        public static event EventHandler ProfileUpdatedEvent;
+        public event EventHandler ProfileUpdatedEvent;
 
         /// <summary>
         /// Contains information about the player's profile and commander

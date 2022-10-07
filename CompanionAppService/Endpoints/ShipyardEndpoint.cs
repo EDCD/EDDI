@@ -10,12 +10,12 @@ namespace EddiCompanionAppService.Endpoints
         private const string SHIPYARD_URL = "/shipyard";
 
         // We cache the market to avoid spamming the service
-        private static JObject cachedShipyardJson;
-        private static DateTime cachedShipyardTimeStamp;
-        private static DateTime cachedShipyardExpires => cachedShipyardTimeStamp.AddSeconds(30);
+        private JObject cachedShipyardJson;
+        private DateTime cachedShipyardTimeStamp;
+        private DateTime cachedShipyardExpires => cachedShipyardTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
-        private static event EventHandler ShipyardUpdatedEvent;
+        public event EventHandler ShipyardUpdatedEvent;
 
         /// <summary>
         /// Contains information about shipyard and outfitting at the last station visited

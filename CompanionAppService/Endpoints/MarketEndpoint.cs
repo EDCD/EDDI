@@ -10,12 +10,12 @@ namespace EddiCompanionAppService.Endpoints
         private const string MARKET_URL = "/market";
 
         // We cache the market to avoid spamming the service
-        private static JObject cachedMarketJson;
-        private static DateTime cachedMarketTimeStamp;
-        private static DateTime cachedMarketExpires => cachedMarketTimeStamp.AddSeconds(30);
+        private JObject cachedMarketJson;
+        private DateTime cachedMarketTimeStamp;
+        private DateTime cachedMarketExpires => cachedMarketTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
-        public static event EventHandler MarketUpdatedEvent;
+        public event EventHandler MarketUpdatedEvent;
 
         /// <summary>
         /// Contains information about the market at the last station visited
