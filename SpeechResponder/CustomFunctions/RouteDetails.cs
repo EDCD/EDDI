@@ -27,10 +27,11 @@ namespace EddiSpeechResponder.CustomFunctions
                 if (Enum.TryParse(value, true, out QueryType queryType))
                 {
                     // Special case any queries which allow optional arguments
-                    string systemArg = null;
-                    string stationArg = null;
-                    decimal? distanceArg = null;
+                    string stringArg0 = null;
+                    string stringArg1 = null;
+                    decimal? numericArg = null;
 
+                    // Set arguments as required
                     switch (queryType)
                     {
                         case QueryType.most:
@@ -41,32 +42,69 @@ namespace EddiSpeechResponder.CustomFunctions
                         {
                             if (values.Count == 2)
                             {
-                                systemArg = values[1].AsString;
+                                stringArg0 = values[1].AsString;
                             }
+
                             break;
                         }
                         case QueryType.scoop:
                         {
                             if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
                             {
-                                distanceArg = decimalDistance;
+                                numericArg = decimalDistance;
                             }
+
                             break;
                         }
                         case QueryType.set:
                         {
                             if (values.Count >= 2)
                             {
-                                systemArg = values[1].AsString;
+                                stringArg0 = values[1].AsString;
+                            }
+
+                            if (values.Count == 3)
+                            {
+                                stringArg1 = values[2].AsString;
+                            }
+
+                            break;
+                        }
+                        case QueryType.carrier:
+                        {
+                            if (values.Count == 2)
+                            {
+                                stringArg0 = EDDI.Instance.CurrentStarSystem.systemname;
+                                stringArg1 = values[1].AsString; // Destination system
+                                numericArg = EDDI.Instance.FleetCarrier.usedCapacity;
                             }
                             if (values.Count == 3)
                             {
-                                stationArg = values[2].AsString;
+                                if (decimal.TryParse(values[2].AsString, out var load) && load > 0)
+                                {
+                                    stringArg0 = EDDI.Instance.CurrentStarSystem.systemname;
+                                    stringArg1 = values[1].AsString; // Destination system
+                                    numericArg = load; // Used capacity
+                                }
+                                else
+                                {
+                                    stringArg0 = values[1].AsString; // Starting system
+                                    stringArg1 = values[2].AsString; // Destination system
+                                    numericArg = EDDI.Instance.FleetCarrier.usedCapacity;
+                                }
+                            }
+                            if (values.Count == 4)
+                            {
+                                stringArg0 = values[1].AsString; // Starting system
+                                stringArg1 = values[2].AsString; // Destination system
+                                numericArg = decimal.TryParse(values[3].AsString, out var load2) ? (decimal?)load2 : EDDI.Instance.FleetCarrier.usedCapacity;
                             }
                             break;
                         }
                     }
-                    @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, distanceArg);
+
+                    // Execute 
+                    @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1, numericArg);
                 }
                 else
                 {

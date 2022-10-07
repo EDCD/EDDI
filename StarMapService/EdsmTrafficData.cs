@@ -28,8 +28,6 @@ namespace EddiStarMapService
         public Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
-
-
             var request = new RestRequest("api-system-v1/traffic", Method.POST);
             request.AddParameter("systemName", systemName);
             if (edsmId != null) { request.AddParameter("systemId", edsmId); }
@@ -55,11 +53,12 @@ namespace EddiStarMapService
         public Traffic GetStarMapDeaths(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
-
-
             var request = new RestRequest("api-system-v1/deaths", Method.POST);
             request.AddParameter("systemName", systemName);
-            request.AddParameter("systemId", edsmId);
+            if (edsmId != null)
+            {
+                request.AddParameter("systemId", edsmId);
+            }
             var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
