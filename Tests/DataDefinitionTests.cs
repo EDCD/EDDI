@@ -530,11 +530,13 @@ namespace UnitTests
             Assert.AreEqual("Consumer", quote.StatusFlags.First());
         }
 
-        [TestMethod]
-        public void TestDataScanFromEDName()
+        [DataTestMethod]
+        [DataRow("$Datascan_DataPoint;", "Data Point")]
+        [DataRow("$Datascan_Unknown_Uplink;", "Thargoid Uplink")]
+        public void TestDataScanFromEDName(string edName, string invariantName)
         {
-            DataScan dataScan = DataScan.FromEDName("$Datascan_DataPoint;");
-            Assert.AreEqual("Data Point", dataScan.invariantName);
+            DataScan dataScan = DataScan.FromEDName(edName);
+            Assert.AreEqual(invariantName, dataScan.invariantName);
         }
 
         [TestMethod]

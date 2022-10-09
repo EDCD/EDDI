@@ -17,11 +17,11 @@ namespace EddiDataDefinitions
             var DataPoint = new DataScan("DataPoint");
             var DataPointHVT = new DataScan("DataPointHVT");
             var ListeningPost = new DataScan("ListeningPost");
-            var SettlementUnknown = new DataScan("Settlement_Unknown");
+            var SettlementUnknown = new DataScan("SettlementUnknown");
             var ShipUplink = new DataScan("ShipUplink");
             var TgTransmitter = new DataScan("TGTRANSMITTER");
             var TouristBeacon = new DataScan("TouristBeacon");
-            var UnknownUplink = new DataScan("Unknown_Uplink");
+            var UnknownUplink = new DataScan("UnknownUplink");
             var WreckedShip = new DataScan("WreckedShip");
         }
 
@@ -41,7 +41,7 @@ namespace EddiDataDefinitions
 
         private static string normalizeEDName(string edname)
         {
-            return edname?.Replace("$Datascan_", "").Replace(";", "");
+            return edname?.Replace("$Datascan_", "").Replace(";", "").Replace("_", "");
         }
     }
 }
