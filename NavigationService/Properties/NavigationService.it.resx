@@ -97,4 +97,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="query_group_galaxy" xml:space="preserve">
+    <value>Galassia</value>
+    
+  </data>
+  <data name="query_group_missions" xml:space="preserve">
+    <value>Missioni</value>
+    
+  </data>
+  <data name="query_group_services" xml:space="preserve">
+    <value>Servizi</value>
+    
+  </data>
+  <data name="query_type_neutron" xml:space="preserve">
+    <value>Neutron-Strada</value>
+    
+    <comment>RouteDetails `neutron` query description</comment>
+  </data>
+  <data name="query_type_expiring" xml:space="preserve">
+    <value>Rotta per le Missioni in scadenza</value>
+    <comment>RouteDetails `expiring` query description</comment>
+  </data>
+  <data name="query_type_farthest" xml:space="preserve">
+    <value>Rotta per le Missioni più distanti</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_most" xml:space="preserve">
+    <value>Rotta per il maggior numero di Missioni</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_nearest" xml:space="preserve">
+    <value>Rotta per le Missioni più vicine</value>
+    <comment>RouteDetails `nearest` query description</comment>
+  </data>
+  <data name="query_type_route" xml:space="preserve">
+    <value>Rotta per le Missioni più breve</value>
+    <comment>RouteDetails `route` query description</comment>
+  </data>
+  <data name="query_type_source" xml:space="preserve">
+    <value>Rotta di prelievo del carico</value>
+    <comment>RouteDetails `source` query description</comment>
+  </data>
+  <data name="query_type_encoded" xml:space="preserve">
+    <value>Mercante di materiali codificati</value>
+    <comment>RouteDetails `encoded` query description</comment>
+  </data>
+  <data name="query_type_facilitator" xml:space="preserve">
+    <value>Rotta per servizi legali</value>
+    <comment>RouteDetails `facilitator` query description</comment>
+  </data>
+  <data name="query_type_guardian" xml:space="preserve">
+    <value>Mediatore di tecnologia dei Guardiani</value>
+    <comment>RouteDetails `guardian` query description</comment>
+  </data>
+  <data name="query_type_human" xml:space="preserve">
+    <value>Mediatore di tecnologia umana</value>
+    <comment>RouteDetails `human` query description</comment>
+  </data>
+  <data name="query_type_manufactured" xml:space="preserve">
+    <value>Mercante di manufatti</value>
+    <comment>RouteDetails `manufactured` query description</comment>
+  </data>
+  <data name="query_type_raw" xml:space="preserve">
+    <value>Mercante di materiali grezzi</value>
+    <comment>RouteDetails `raw` query description</comment>
+  </data>
+  <data name="query_type_carrier" xml:space="preserve">
+    <value>Rotta per la Porta Navi</value>
+  </data>
 </root>
