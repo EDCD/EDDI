@@ -83,7 +83,7 @@ namespace EddiSpanshService
                 }
 
                 return routeResult["result"];
-            });
+            }).ConfigureAwait(false);
         }
 
         private string GetJobID(string route)

@@ -24,7 +24,7 @@ namespace EddiSpanshService
 
             if (string.IsNullOrEmpty(initialResponse.Content))
             {
-                Logging.Debug("Spansh API is not responding");
+                Logging.Warn("Spansh API is not responding");
                 return null;
             }
 
