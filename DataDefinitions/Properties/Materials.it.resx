@@ -246,7 +246,7 @@
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Telemetria Anomala FSD</value>
+    <value>Telemetria di Modulazione Anomala</value>
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
