@@ -822,6 +822,7 @@ namespace EddiDataDefinitions
                 new Module(128671337, "Int_ShieldGenerator_Size7_Class3_Fast", 1536, "Bi-Weave Shield Generator", 7, "C", 8548200),
                 new Module(128671338, "Int_ShieldGenerator_Size8_Class3_Fast", 1537, "Bi-Weave Shield Generator", 8, "C", 27097750),
                 new Module(128672317, "Int_PlanetApproachSuite", 1538, "PlanetaryApproachSuite", 1, "I", 500),
+                new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", 1699, "CorrosionResistantCargoRack", 4, "E", 0),
                 new Module(128975719, "Int_PlanetApproachSuite_Advanced", 1815, "PlanetaryApproachSuite", 1, "I", 500),
                 new Module(128049384, "Hpt_PulseLaser_Fixed_Huge", 1539, "PulseLaser", 4, "A", 0, ModuleMount.Fixed),
                 new Module(128049431, "Hpt_BeamLaser_Fixed_Huge", 1540, "BeamLaser", 4, "A", 0, ModuleMount.Fixed),
@@ -1231,8 +1232,15 @@ namespace EddiDataDefinitions
             Module module = ResourceBasedLocalizedEDName<Module>.FromEDName(edName);
             if (module == null)
             {
-                // Unknown module; report the full object so that we can update the definitions
-                Logging.Error("Unknown module edname: " + rawEDName, rawData);
+                // Unknown module; report the full object if we can so that we can update the definitions
+                if (rawData != null)
+                {
+                    Logging.Error("Unknown module edname: " + rawEDName, rawData);
+                }
+                else
+                {
+                    Logging.Warn("Unknown module edname: " + rawEDName);
+                }
             }
             return module;
         }
@@ -1242,8 +1250,15 @@ namespace EddiDataDefinitions
             ModulesByEliteID.TryGetValue(eliteID, out Module module);
             if (module == null)
             {
-                // Unknown module; report the full object so that we can update the definitions
-                Logging.Error("Unknown module Elite ID: " + eliteID, rawData);
+                // Unknown module; report the full object if we can so that we can update the definitions
+                if (rawData != null)
+                {
+                    Logging.Error("Unknown module Elite ID: " + eliteID, rawData);
+                }
+                else
+                {
+                    Logging.Warn("Unknown module Elite ID: " + eliteID);
+                }
             }
             return module;
         }
@@ -1258,7 +1273,9 @@ namespace EddiDataDefinitions
 
         public static Module FromOutfittingInfo(OutfittingInfoItem item)
         {
-            Module module = new Module(FromEliteID(item.EliteID, item) ?? FromEDName(item.edName, item) ?? new Module());
+            Module module = new Module(FromEliteID(item.EliteID, item) 
+                                       ?? FromEDName(item.edName, item) 
+                                       ?? new Module());
             if (module.invariantName == null)
             {
                 // Create a basic module & supplement from the info available

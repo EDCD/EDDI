@@ -243,7 +243,9 @@ namespace EddiShipMonitor
             long id = (long)json["module"]["id"];
             string edName = (string)json["module"]["name"];
 
-            Module module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
+            Module module = new Module(Module.FromEliteID(id, json["module"]) 
+                                       ?? Module.FromEDName(edName, json["module"]) 
+                                       ?? new Module());
             if (module.invariantName == null)
             {
                 // Unknown module; report the full object so that we can update the definitions

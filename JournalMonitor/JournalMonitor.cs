@@ -708,7 +708,7 @@ namespace EddiJournalMonitor
                                                     hardpoint.size = 4;
                                                 }
 
-                                                Module module = new Module(Module.FromEDName(item) ?? new Module());
+                                                Module module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                                                 if (module.edname == null)
                                                 {
                                                     Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -788,7 +788,7 @@ namespace EddiJournalMonitor
                                                 Compartment compartment = parseShipCompartment(ship, slot);
                                                 // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
-                                                Module module = new Module(Module.FromEDName(item) ?? new Module());
+                                                Module module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                                                 if (module.edname == null)
                                                 {
                                                     Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
