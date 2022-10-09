@@ -149,10 +149,7 @@
     <value>Station</value>
     <comment>BodyType "Station"</comment>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>Corps</value>
-    <comment>BodyType "Null"</comment>
-  </data>
+  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anneau planétaire</value>
     <comment>Body Type PlanetaryRing</comment>
