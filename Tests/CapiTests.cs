@@ -217,7 +217,7 @@ namespace UnitTests
                 StationService.FromEDName("shop"),
                 StationService.FromEDName("engineer"),
             }));
-            Assert.AreEqual(116, updatedStation.commodities.Count);
+            Assert.AreEqual(117, updatedStation.commodities.Count);
             Assert.IsTrue(new CommodityMarketQuote(CommodityDefinition.FromEDName("Tritium")) 
             { 
                 buyprice = 41179, 
