@@ -156,16 +156,13 @@
   <data name="header_originstation" xml:space="preserve">
     <value>Ursprungstation:</value>
   </data>
-  <data name="header_faction" xml:space="preserve">
-    <value>Fraktion:</value>
-  </data>
+  
   <data name="header_cg_tier" xml:space="preserve">
     <value>Stufe:</value>
   </data>
   <data name="header_cg_percentileband" xml:space="preserve">
     <value>Prozentbereich:</value>
-    <comment>header_cg_percentileband
-A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
+    <comment>A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
   </data>
   <data name="header_cg_reward" xml:space="preserve">
     <value>Belohnung (Credits):</value>
