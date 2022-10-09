@@ -15,6 +15,7 @@ on:
     # compare new changes with the analysis of the previous commit.
   pull_request:
     branches: [ develop, experimental/github-actions-ci ]
+    branches-ignore: [ i10n_develop ]
     paths-ignore:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
