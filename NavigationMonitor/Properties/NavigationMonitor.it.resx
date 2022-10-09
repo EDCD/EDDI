@@ -132,7 +132,9 @@
   <data name="add_button" xml:space="preserve">
     <value>Aggiungi segnalibro</value>
   </data>
-  
+  <data name="add_button_tooltip" xml:space="preserve">
+    <value>Aggiungi questo luogo ai segnalibri</value>
+  </data>
   <data name="find_text" xml:space="preserve">
     <value>Trova:</value>
   </data>
@@ -172,7 +174,9 @@
   <data name="remove_button" xml:space="preserve">
     <value>Elimina</value>
   </data>
-  
+  <data name="remove_button_tooltip" xml:space="preserve">
+    <value>Rimuovi questo segnalibro</value>
+  </data>
   <data name="remove_caption" xml:space="preserve">
     <value>Elimina segnalibro</value>
   </data>
@@ -182,7 +186,9 @@
   <data name="search" xml:space="preserve">
     <value>Cerca</value>
   </data>
-  
+  <data name="search_button_tooltip" xml:space="preserve">
+    <value>Una ricerca con risultati lancia un evento "Route details".</value>
+  </data>
   <data name="search_distance" xml:space="preserve">
     <value>Massima distanza consentita fra stella principale e stazione (in Ls):</value>
   </data>
@@ -217,7 +223,9 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Il raggio (in metri) entro il quale viene lanciato l'evento `Near bookmark`</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Mostra o nasconde ulteriori dettagli sulla voce selezionata</value>
+  </data>
   <data name="use_straight_path" xml:space="preserve">
     <value>Utilizzare il percorso rettilineo?</value>
   </data>
@@ -235,41 +243,101 @@
     <value>Tutti</value>
     <comment>Import or export all</comment>
   </data>
+  <data name="tab_bookmarks" xml:space="preserve">
+    <value>Segnalibri</value>
+  </data>
+  <data name="tab_plotted_route" xml:space="preserve">
+    <value>Rotta corrente</value>
+  </data>
+  
+  <data name="header_distance_remaining_ly" xml:space="preserve">
+    <value>Rimanenti (LY)</value>
+  </data>
+  <data name="header_distance_ly" xml:space="preserve">
+    <value>Distanza (LY)</value>
+  </data>
+  <data name="header_stellar_class" xml:space="preserve">
+    <value>Classe stellare</value>
+  </data>
+  
+  <data name="header_neutron_star" xml:space="preserve">
+    <value>Stella di neutroni?</value>
+  </data>
+  <data name="tooltip_scoopable" xml:space="preserve">
+    <value>Puoi rifornirti in questo luogo con un Concentratore di carburante?</value>
+  </data>
+  <data name="tooltip_neutron_star" xml:space="preserve">
+    <value>È una Stella di Neutroni che può essere usata per sovralimentare il Motore a Modulazione, questa?</value>
+  </data>
+  <data name="header_missions" xml:space="preserve">
+    <value>Missioni?</value>
+  </data>
+  <data name="tooltip_missions" xml:space="preserve">
+    <value>È la destinazione di una Missione?</value>
+  </data>
+  <data name="header_visited" xml:space="preserve">
+    <value>Già visitato?</value>
+  </data>
+  <data name="tooltip_visited" xml:space="preserve">
+    <value>Hai già visitato questo luogo?</value>
+  </data>
+  <data name="header_refuel" xml:space="preserve">
+    <value>Rifornimento?</value>
+  </data>
+  <data name="tooltip_refuel_recommended" xml:space="preserve">
+    <value>Rifornirsi qui è raccomandato.</value>
+  </data>
+  <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
+    <value>Il sistema di Arrivo è un campo obbligatorio per calcolare una Neutron-Strada.</value>
+  </data>
   
   
   
   
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Cancella la Rotta</value>
+  </data>
+  <data name="clear_route_button_tooltip" xml:space="preserve">
+    <value>Cancella la rotta pianificata</value>
+  </data>
+  <data name="header_station" xml:space="preserve">
+    <value>Stazione</value>
+  </data>
+  <data name="tab_galactic_poi" xml:space="preserve">
+    <value>Punti d'interesse galattici</value>
+  </data>
+  <data name="poi_search_filter" xml:space="preserve">
+    <value>Filtro:</value>
+  </data>
+  <data name="poi_hide_visited" xml:space="preserve">
+    <value>Nascondi i luoghi già visitati?</value>
+  </data>
+  <data name="copy_system_button_tooltip" xml:space="preserve">
+    <value>Copia il nome di questo sistema negli appunti</value>
+  </data>
+  <data name="tab_plot_carrier_route" xml:space="preserve">
+    <value>Calcola la rotta per la Porta Navi</value>
+  </data>
+  <data name="header_fuel_required" xml:space="preserve">
+    <value>Carburante (T)</value>
+  </data>
+  <data name="header_icy_ring" xml:space="preserve">
+    <value>Anello di ghiaccio</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="carrier_current_system_textbox_desc" xml:space="preserve">
+    <value>Sistema corrente:</value>
+  </data>
+  <data name="carrier_destination_system_textbox_desc" xml:space="preserve">
+    <value>Sistema di Arrivo:</value>
+  </data>
+  <data name="carrier_current_load_textbox_desc" xml:space="preserve">
+    <value>Spazio allocato (T):</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_required" xml:space="preserve">
+    <value> --- Errore: connettersi alla API di Frontier per ottenere questo valore ---</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_recommended" xml:space="preserve">
+    <value>--- Errore: connettersi alla API di Frontier o passare alla schermata di Amministrazione della Porta Navi per ottenere questo valore ---</value>
+  </data>
 </root>
