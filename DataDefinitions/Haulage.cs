@@ -6,8 +6,10 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
+    [JsonObject(MemberSerialization.OptOut)]
     public class Haulage
     {
+        [JsonIgnore]
         private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},

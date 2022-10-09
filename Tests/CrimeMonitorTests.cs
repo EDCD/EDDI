@@ -155,7 +155,7 @@ namespace UnitTests
             // Save original data
             var data = ConfigService.Instance.crimeMonitorConfiguration;
 
-            var config = ConfigService.FromJsonString<CrimeMonitorConfiguration>(crimeConfigJson);
+            var config = ConfigService.FromJson<CrimeMonitorConfiguration>(crimeConfigJson);
             Assert.AreEqual(3, config.criminalrecord.Count);
             Assert.AreEqual(275915, config.criminalrecord.Sum(r => r.claims));
             Assert.AreEqual(400, config.criminalrecord.Sum(r => r.fines));
@@ -190,7 +190,7 @@ namespace UnitTests
 
             var privateObject = new PrivateObject(crimeMonitor);
 
-            var config = ConfigService.FromJsonString<CrimeMonitorConfiguration>(crimeConfigJson);
+            var config = ConfigService.FromJson<CrimeMonitorConfiguration>(crimeConfigJson);
             crimeMonitor.readRecord(config);
 
             // Bond Awarded Event

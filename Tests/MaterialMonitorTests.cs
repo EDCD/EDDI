@@ -42,7 +42,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMaterialMonitor()
         {
-            var config = ConfigService.FromJsonString<MaterialMonitorConfiguration>(json);
+            var config = ConfigService.FromJson<MaterialMonitorConfiguration>(json);
             Assert.AreEqual(2, config.materials.Count);
 
             MaterialAmount zirconiumAmount = config.materials[1];
@@ -59,12 +59,23 @@ namespace UnitTests
         public void TestMaterialAmountFromJson()
         {
             string json = @"{
-                ""amount"": 1,
-                ""material"": ""Molybdenum""
+              ""edname"": ""molybdenum"",
+              ""amount"": 102,
+              ""minimum"": 60,
+              ""desired"": 100,
+              ""maximum"": 200,
+              ""Rarity"": {
+                ""edname"": ""standard""
+              }
             }";
             MaterialAmount materialAmount = JsonConvert.DeserializeObject<MaterialAmount>(json);
-            Assert.AreEqual(1, materialAmount.amount);
+            Assert.IsNotNull(materialAmount);
+            Assert.AreEqual(102, materialAmount.amount);
+            Assert.AreEqual(60, materialAmount.minimum);
+            Assert.AreEqual(100, materialAmount.desired);
+            Assert.AreEqual(200, materialAmount.maximum);
             Assert.AreEqual("Molybdenum", materialAmount.material);
+            Assert.AreEqual("standard", materialAmount.Rarity.edname);
         }
 
         [TestMethod]

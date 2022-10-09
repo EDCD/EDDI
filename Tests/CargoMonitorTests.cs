@@ -36,58 +36,53 @@ namespace UnitTests
         public void TestCargoConfig()
         {
             string cargoConfigJson = @"{
-                ""cargo"": [{
-                    ""edname"": ""DamagedEscapePod"",
-                    ""stolen"": 0,
-                    ""haulage"": 0,
-                    ""owned"": 4,
-                    ""need"": 0,
-                    ""total"": 4,
-                    ""ejected"": 0,
-                    ""price"": 11912,
-                    ""haulageData"": [{
-                        ""missionid"": 413563829,
-                        ""name"": ""Mission_Salvage_Expansion"",
-                        ""typeEDName"": ""Salvage"",
-                        ""status"": ""Active"",
-                        ""originsystem"": ""HIP 20277"",
-                        ""sourcesystem"": ""Bunuson"",
-                        ""sourcebody"": null,
-                        ""amount"": 4,
-                        ""remaining"": 4,
-                        ""startmarketid"": 0,
-                        ""endmarketid"": 0,
-                        ""collected"": 0,
-                        ""delivered"": 0,
-                        ""expiry"": null,
-                        ""shared"": false
-                    }]
-                },
-                {
-                    ""edname"": ""USSCargoBlackBox"",
-                    ""stolen"": 4,
-                    ""haulage"": 0,
-                    ""owned"": 0,
-                    ""need"": 0,
-                    ""total"": 4,
-                    ""ejected"": 0,
-                    ""price"": 6995,
-                    ""haulageData"": []
-                },
-                {
-                    ""edname"": ""Drones"",
-                    ""stolen"": 0,
-                    ""haulage"": 0,
-                    ""owned"": 21,
-                    ""need"": 0,
-                    ""total"": 21,
-                    ""ejected"": 0,
-                    ""price"": 101,
-                    ""haulageData"": []
-                }],
-                ""cargocarried"": 29
+                    ""cargo"": [{
+                        ""edname"": ""DamagedEscapePod"",
+                        ""stolen"": 0,
+                        ""haulage"": 0,
+                        ""owned"": 4,
+                        ""need"": 0,
+                        ""price"": 11912.0,
+                        ""haulageData"": [{
+                                ""missionid"": 413563829,
+                                ""name"": ""Mission_Salvage_Expansion"",
+                                ""typeEDName"": ""Salvage"",
+                                ""status"": ""Active"",
+                                ""originsystem"": ""HIP 20277"",
+                                ""sourcesystem"": ""Bunuson"",
+                                ""sourcebody"": null,
+                                ""amount"": 4,
+                                ""remaining"": 4,
+                                ""startmarketid"": 0,
+                                ""endmarketid"": 0,
+                                ""collected"": 0,
+                                ""delivered"": 0,
+                                ""expiry"": null,
+                                ""shared"": false
+                                }]
+                        }, 
+                        {
+                        ""edname"": ""USSCargoBlackBox"",
+                        ""stolen"": 4,
+                        ""haulage"": 0,
+                        ""owned"": 0,
+                        ""need"": 0,
+                        ""price"": 6995.0,
+                        ""haulageData"": []
+                        }, 
+                        {
+                        ""edname"": ""Drones"",
+                        ""stolen"": 0,
+                        ""haulage"": 0,
+                        ""owned"": 21,
+                        ""need"": 0,
+                        ""price"": 101.0,
+                        ""haulageData"": []
+                        }],
+                    ""cargocarried"": 29,
+                    ""updatedat"": ""2022-10-02T10:31:52Z""
             }";
-            var config = ConfigService.FromJsonString<CargoMonitorConfiguration>(cargoConfigJson);
+            var config = ConfigService.FromJson<CargoMonitorConfiguration>(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
             cargo = config.cargo.ToList().FirstOrDefault(c => c.edname == "DamagedEscapePod");

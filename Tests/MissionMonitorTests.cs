@@ -127,7 +127,7 @@ namespace UnitTests
             // Save original data
             var data = ConfigService.Instance.missionMonitorConfiguration;
 
-            var config = ConfigService.FromJsonString<MissionMonitorConfiguration>(missionConfigJson);
+            var config = ConfigService.FromJson<MissionMonitorConfiguration>(missionConfigJson);
             Assert.AreEqual(config.missionsCount, config.missions.Count);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);

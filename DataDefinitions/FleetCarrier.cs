@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -316,6 +317,7 @@ namespace EddiDataDefinitions
 
         // Constructors
 
+        [JsonConstructor]
         public FleetCarrier(long? carrierID)
         {
             this.carrierID = carrierID;
