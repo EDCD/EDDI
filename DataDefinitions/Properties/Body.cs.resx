@@ -149,10 +149,7 @@
     <value>Stanice</value>
     <comment>BodyType "Station"</comment>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>Těleso</value>
-    <comment>BodyType "Null"</comment>
-  </data>
+  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Planetární prstenec</value>
     <comment>Body Type PlanetaryRing</comment>
