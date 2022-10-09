@@ -244,14 +244,6 @@
   <data name="HackMegaship" xml:space="preserve">
     <value>Взлом Мегакоробля</value>
   </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Цели гражданской войны</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>Цели войны</value>
-    <comment>Massacre mission type</comment>
-  </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Цели беспелотники</value>
     <comment>Massacre type</comment>
@@ -317,4 +309,5 @@
   <data name="POI" xml:space="preserve">
     <value>Точка интереса</value>
   </data>
+  
 </root>
