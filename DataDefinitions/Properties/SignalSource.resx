@@ -393,4 +393,8 @@
     <value>Planetary Anomaly</value>
     <comment>Planetary Anomaly Surface Signal</comment>
   </data>
+  <data name="Cargo" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
 </root>

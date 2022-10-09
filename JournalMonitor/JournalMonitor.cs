@@ -181,7 +181,10 @@ namespace EddiJournalMonitor
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
                                     var nearestdestination = JsonParsing.getString(data, "NearestDestination");
                                     var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
-                                    nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
+                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    nearestDestination.fallbackLocalizedName = string.IsNullOrEmpty(localizedName) || localizedName.StartsWith("$") 
+                                        ? nearestdestination 
+                                        : localizedName;
 
                                     events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -206,7 +209,10 @@ namespace EddiJournalMonitor
                                     // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
                                     var nearestdestination = JsonParsing.getString(data, "NearestDestination");
                                     var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
-                                    nearestDestination.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? nearestdestination;
+                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    nearestDestination.fallbackLocalizedName = string.IsNullOrEmpty(localizedName) || localizedName.StartsWith("$")
+                                        ? nearestdestination
+                                        : localizedName;
 
                                     events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }

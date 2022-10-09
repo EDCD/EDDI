@@ -83,6 +83,7 @@ namespace EddiDataDefinitions
             var DamagedEagle = new SignalSource("Damaged_Eagle");
             var DamagedSidewinder = new SignalSource("Damaged_Sidewinder");
             var SmugglersCache = new SignalSource("Smugglers_Cache");
+            var Cargo = new SignalSource("Cargo");
             var TrapCargo = new SignalSource("Trap_Cargo");
             var TrapData = new SignalSource("Trap_Data");
             var WreckageBuggy = new SignalSource("Wreckage_Buggy");
