@@ -156,7 +156,9 @@
   <data name="header_originstation" xml:space="preserve">
     <value>Stazione d'origine:</value>
   </data>
-  
+  <data name="header_faction" xml:space="preserve">
+    <value>Committente:</value>
+  </data>
   <data name="header_cg_tier" xml:space="preserve">
     <value>Livello:</value>
   </data>
