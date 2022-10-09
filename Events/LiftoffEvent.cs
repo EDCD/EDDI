@@ -39,7 +39,7 @@ namespace EddiEvents
 
         public SignalSource nearestDestination { get; private set; }
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
 
@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public long? bodyId { get; private set; }
 
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, long? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;

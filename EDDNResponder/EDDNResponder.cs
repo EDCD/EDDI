@@ -71,7 +71,7 @@ namespace EDDNResponder
 
         // We keep track of the starsystem information locally
         public string systemName { get; private set; }
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
         public decimal? systemX { get; private set; }
         public decimal? systemY { get; private set; }
         public decimal? systemZ { get; private set; }
@@ -308,7 +308,7 @@ namespace EDDNResponder
 
                 // Some events are bugged and return a SystemAddress of 1, regardles of the system we are in.
                 // We need to ignore data that matches this pattern.
-                long? SystemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                ulong? SystemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                 systemAddress = (SystemAddress > 1 ? SystemAddress : systemAddress);
 
                 data.TryGetValue("StarPos", out object starpos);

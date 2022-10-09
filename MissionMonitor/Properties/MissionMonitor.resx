@@ -157,13 +157,14 @@
     <value>Origin Station:</value>
   </data>
   <data name="header_faction" xml:space="preserve">
-    <value>Faction:</value>
+    <value>Mission Provider:</value>
   </data>
   <data name="header_cg_tier" xml:space="preserve">
     <value>Tier:</value>
   </data>
   <data name="header_cg_percentileband" xml:space="preserve">
     <value>Percentile Band:</value>
+    <comment>A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
   </data>
   <data name="header_cg_reward" xml:space="preserve">
     <value>Reward (Credits):</value>

@@ -36,9 +36,9 @@ namespace EddiEvents
 
         public SignalSource signalSource { get; private set; }
 
-        public long? systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
+        public ulong? systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
 
-        public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, bool unique) : base(timestamp, NAME)
+        public SignalDetectedEvent(DateTime timestamp, ulong? systemAddress, SignalSource source, bool unique) : base(timestamp, NAME)
         {
             this.systemAddress = systemAddress;
             this.signalSource = source;

@@ -52,40 +52,6 @@ namespace EddiStarMapService
             return new List<StarSystem>();
         }
 
-        /// <summary> Partial of system name is required. </summary>
-        public List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
-        {
-            if (system == null) { return new List<StarSystem>(); }
-
-            var request = new RestRequest("api-v1/systems", Method.POST);
-
-            // Wildcard '%' is needed for partial system name's next character
-            request.AddParameter("systemName", system + "%");
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
-            request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
-            request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
-            var clientResponse = restClient.Execute<List<JObject>>(request);
-            if (clientResponse.IsSuccessful)
-            {
-                var token = JToken.Parse(clientResponse.Content);
-                if (token is JArray responses)
-                {
-                    List<StarSystem> starSystems = responses
-                        .AsParallel()
-                        .Select(s => ParseStarMapSystem(s.ToObject<JObject>()))
-                        .Where(s => s != null)
-                        .ToList();
-                    return starSystems;
-                }
-            }
-            else
-            {
-                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
-            }
-            return new List<StarSystem>();
-        }
-
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
         public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
@@ -157,10 +123,10 @@ namespace EddiStarMapService
 
         public StarSystem ParseStarMapSystem(JObject response)
         {
-            StarSystem starSystem = new StarSystem
+            var starSystem = new StarSystem
             {
                 systemname = (string)response["name"],
-                systemAddress = (long?)response["id64"],
+                systemAddress = (ulong?)response["id64"],
                 EDSMID = (long?)response["id"]
             };
 

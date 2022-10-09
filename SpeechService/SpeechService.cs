@@ -2,6 +2,7 @@
 using CSCore.Codecs;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiSpeechService.SpeechPreparation;
 using EddiSpeechService.SpeechSynthesizers;
@@ -117,7 +118,7 @@ namespace EddiSpeechService
             }
         }
 
-        private SpeechService()
+        public SpeechService()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
@@ -141,6 +142,17 @@ namespace EddiSpeechService
             
             // Sort results alphabetically by voice name
             allVoices = voiceStore.OrderBy(v => v.name).ToList();
+
+            // Monitor and respond appropriately to changes in the state of the CompanionAppService
+            CompanionAppService.Instance.StateChanged += CompanionAppService_StateChanged;
+        }
+
+        private void CompanionAppService_StateChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
+        {
+            if (newState == CompanionAppService.State.ConnectionLost)
+            {
+                Say(null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0);
+            }
         }
 
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)

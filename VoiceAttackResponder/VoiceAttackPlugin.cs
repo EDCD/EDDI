@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiCompanionAppService;
-using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -11,7 +10,7 @@ using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
-using EddiStatusMonitor;
+using EddiStatusService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -112,74 +111,6 @@ namespace EddiVoiceAttackResponder
                 // Add notifiers for changes in variables we want to react to 
                 // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
                 EDDI.Instance.PropertyChanged += (s, e) => updateStandardValues(e);
-
-
-                //EDDI.Instance.CurrentStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref App.vaProxy);
-                //};
-                //EDDI.Instance.LastStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref App.vaProxy);
-                //};
-                //EDDI.Instance.NextStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.vaProxy);
-                //};
-                //EDDI.Instance.DestinationStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.vaProxy);
-                //    App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
-                //};
-                //NavigationService.Instance.SearchStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy);
-                //    App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
-                //}; 
-                //NavigationService.Instance.SearchStation.PropertyChanged += (s, e) =>
-                //{
-                //    setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy);
-                //};
-                //EDDI.Instance.SquadronStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.vaProxy);
-                //};
-                //EDDI.Instance.HomeStarSystem.PropertyChanged += (s, e) =>
-                //{
-                //    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref App.vaProxy);
-
-                //    // Backwards-compatibility with 1.x documented variables
-                //    try
-                //    {
-                //        App.vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
-                //        App.vaProxy.SetText("Home system (spoken)",
-                //            Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
-                //        if (EDDI.Instance.HomeStation != null)
-                //        {
-                //            App.vaProxy.SetText("Home station", EDDI.Instance.HomeStation?.name);
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Logging.Error("Failed to set 1.x home system values", ex);
-                //    }
-                //};
-                //EDDI.Instance.CurrentStellarBody.PropertyChanged += (s, e) =>
-                //{
-                //    setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref App.vaProxy);
-                //};
-                //EDDI.Instance.CurrentStation.PropertyChanged += (s, e) =>
-                //{
-                //    setStationValues(EDDI.Instance.CurrentStation, "Last station", ref App.vaProxy);
-                //};
-                //EDDI.Instance.HomeStation.PropertyChanged += (s, e) =>
-                //{
-                //    setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.vaProxy);
-                //};
-                //EDDI.Instance.Cmdr.PropertyChanged += (s, e) =>
-                //{
-                //    setCommanderValues(EDDI.Instance.Cmdr, ref App.vaProxy);
-                //};
                 EDDI.Instance.State.CollectionChanged += (s, e) =>
                 {
                     setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
@@ -192,7 +123,7 @@ namespace EddiVoiceAttackResponder
                 {
                     setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
                 };
-                StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
+                StatusService.StatusUpdatedEvent += OnStatusUpdated;
 
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
@@ -216,7 +147,7 @@ namespace EddiVoiceAttackResponder
                     };
                 }
 
-                StatusMonitor.StatusUpdatedEvent += (s, e) =>
+                StatusService.StatusUpdatedEvent += (s, e) =>
                 {
                     if (s is Status status)
                     {
@@ -1111,7 +1042,7 @@ namespace EddiVoiceAttackResponder
                 string type = vaProxy.GetText("Type variable");
                 if (!string.IsNullOrEmpty(type))
                 {
-                    var detail = JumpCalcs.JumpDetails(type, EDDI.Instance.CurrentShip, currentStatus.fuelInTanks, ConfigService.Instance.cargoMonitorConfiguration.cargocarried);
+                    var detail = EDDI.Instance.CurrentShip?.JumpDetails(type);
                     vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
                     vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
                     vaProxy.SetText("Type variable", null);
@@ -1128,25 +1059,32 @@ namespace EddiVoiceAttackResponder
             try
             {
                 string type = vaProxy.GetText("Type variable");
-                string system = vaProxy.GetText("System variable");
+                string string0 = vaProxy.GetText("System variable");
+                string string1 = vaProxy.GetText("System variable 2") ?? vaProxy.GetText("Station variable");
+                decimal? numeric = vaProxy.GetDecimal("Numeric variable");
+
                 vaProxy.SetText("Type variable", null);
                 vaProxy.SetText("System variable", null);
+                vaProxy.SetText("System variable 2", null);
+                vaProxy.SetText("Station variable", null);
+                vaProxy.SetDecimal("Numeric variable", null);
 
-                RouteDetailsEvent @event = null;
                 if (Enum.TryParse(type, true, out QueryType result))
                 {
-                    @event = !string.IsNullOrEmpty(system) 
-                        ? NavigationService.Instance.NavQuery(result, new[] { (dynamic)system }) 
-                        : NavigationService.Instance.NavQuery(result);
+                    var @event = NavigationService.Instance.NavQuery(result, string0, string1, numeric);
+                    if (@event != null)
+                    {
+                        EDDI.Instance?.enqueueEvent(@event);
+                    }
                 }
-                if (@event != null)
+                else
                 {
-                    EDDI.Instance?.enqueueEvent(@event);
+                    Logging.Warn($"The search query '{type}' is unrecognized.");
                 }
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to get missions route", e);
+                setStatus(ref vaProxy, "Failed to get route", e);
             }
         }
     }

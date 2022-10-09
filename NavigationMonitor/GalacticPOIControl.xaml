@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="EddiNavigationMonitor.GalacticPOIControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
+             xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+             xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="noDescriptionDataTemplate"/>
+        <DataTemplate x:Key="poiDataTemplate"  DataType="eddiDataDefinitions:NavPOIBookmark">
+            <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded" Navigating="MarkdownWindow_OnNavigating"/>
+        </DataTemplate>
+        <ContextMenu x:Key="ContextMenu">
+            <MenuItem Command="Copy">
+                <MenuItem.Icon>
+                    <Image Source="Images/Copy.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
+            <Label x:Name ="searchLabel" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.poi_search_filter}" />
+            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged"/>
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="HideVisitedCheckBox" Margin="10" HorizontalAlignment="Center" Grid.Column="0" Content="{x:Static resx:NavigationMonitor.poi_hide_visited}" IsThreeState="False" Click="HideVisitedCheckBox_OnClick"/>
+            </Grid>
+        </DockPanel>
+        <DataGrid AutoGenerateColumns="False" x:Name="galacticPOIData" ItemsSource="{Binding POIView, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="Column" SelectionUnit="Cell">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="eddiDataDefinitions:NavPOIBookmark">
+                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding hasRowDetails}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="{x:Static resx:NavigationMonitor.header_visited}" MinWidth="50" IsReadOnly="True" Binding="{Binding Path=visited, Mode=OneWay}">
+                    <DataGridCheckBoxColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ToolTip" Value="{x:Static resx:NavigationMonitor.tooltip_visited}"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.HeaderStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" Width="160" Binding="{Binding Path=systemname}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Left" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_distance_ly}" IsReadOnly="True" Width="Auto" Binding="{Binding Path=distanceLy, TargetNullValue='-', StringFormat='{}{0:N}', ConverterCulture={x:Static sysglb:CultureInfo.CurrentUICulture}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" IsReadOnly="True" Width="*" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue='-'}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="copySystemNameToClipboard" MinWidth="30" HorizontalAlignment="Center" ToolTip="{x:Static resx:NavigationMonitor.copy_system_button_tooltip}">
+                                <StackPanel>
+                                    <Image Source="Images/Copy.png" Height="16"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="addBookmark" HorizontalAlignment="Stretch" Content="{x:Static resx:NavigationMonitor.add_button}" ToolTip="{x:Static resx:NavigationMonitor.add_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="eddiDataDefinitions:NavPOIBookmark">
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate"
+                                        Value="{StaticResource noDescriptionDataTemplate}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding descriptionMarkdownHasValue}" Value="True">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource poiDataTemplate}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

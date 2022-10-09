@@ -3,6 +3,7 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -62,7 +63,7 @@ namespace EddiCargoMonitor
         /// Create a new CargoMonitor, reading the configuration from the default location on the file system.
         /// This is required for the DLL to load
         /// </summary>
-        [PublicAPI]
+        [UsedImplicitly]
         public CargoMonitor() : this(null)
         {}
 
@@ -328,21 +329,14 @@ namespace EddiCargoMonitor
                     cargo.CalculateNeed();
                     update = true;
                 }
-                if (haulage != null)
+                if (haulage != null && ((haulage.typeEDName?.Contains("mining") ?? false)
+                    || (haulage.typeEDName?.Contains("piracy") ?? false)
+                    || (haulage.typeEDName?.Contains("rescue") ?? false)
+                    || (haulage.typeEDName?.Contains("salvage") ?? false)))
                 {
-                    switch (haulage.typeEDName)
-                    {
-                        case "mining":
-                        case "piracy":
-                        case "rescue":
-                        case "salvage":
-                            {
-                                haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.systemname;
-                                haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.bodyname;
-                                update = true;
-                            }
-                            break;
-                    }
+                    haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+                    haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.bodyname;
+                    update = true;
                 }
             }
             return update;
@@ -622,31 +616,34 @@ namespace EddiCargoMonitor
                         AddOrUpdateCargo(cargo);
 
                         // Generate a derived event when a wing-mate collects or delivers cargo for a wing mission
-                        int amount = Math.Max(@event.collected - haulage.collected, @event.delivered - haulage.delivered);
-                        if (amount > 0)
+                        if (haulage != null)
                         {
-                            string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
-                            EDDI.Instance.enqueueEvent(new CargoWingUpdateEvent(DateTime.UtcNow, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
-                            haulage.collected = @event.collected;
-                            haulage.delivered = @event.delivered;
-                            haulage.startmarketid = @event.startmarketid;
-                            haulage.endmarketid = @event.endmarketid;
-
-                            // Update 'Need' when a wing-mate delivers cargo for a wing mission
-                            if (updatetype == "Deliver") { cargo.CalculateNeed(); }
-                        }
-
-                        // Check for mission completion
-                        if (amountRemaining == 0)
-                        {
-                            if (haulage.shared)
+                            int amount = Math.Max(@event.collected - haulage.collected, @event.delivered - haulage.delivered);
+                            if (amount > 0)
                             {
-                                cargo.haulageData.Remove(haulage);
-                                RemoveCargo(cargo);
+                                string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
+                                EDDI.Instance.enqueueEvent(new CargoWingUpdateEvent(DateTime.UtcNow, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
+                                haulage.collected = @event.collected;
+                                haulage.delivered = @event.delivered;
+                                haulage.startmarketid = @event.startmarketid;
+                                haulage.endmarketid = @event.endmarketid;
+
+                                // Update 'Need' when a wing-mate delivers cargo for a wing mission
+                                if (updatetype == "Deliver") { cargo.CalculateNeed(); }
                             }
-                            else
+
+                            // Check for mission completion
+                            if (amountRemaining == 0)
                             {
-                                haulage.status = "Complete";
+                                if (haulage.shared)
+                                {
+                                    cargo.haulageData.Remove(haulage);
+                                    RemoveCargo(cargo);
+                                }
+                                else
+                                {
+                                    haulage.status = "Complete";
+                                }
                             }
                         }
                     }

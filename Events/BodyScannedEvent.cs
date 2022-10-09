@@ -167,7 +167,7 @@ namespace EddiEvents
         
         public TerraformState terraformState => body.terraformState;
 
-        public long? systemAddress => body.systemAddress;
+        public ulong? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
 

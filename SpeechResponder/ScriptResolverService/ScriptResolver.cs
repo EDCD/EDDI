@@ -12,7 +12,6 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechService;
-using EddiStatusMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -233,9 +232,9 @@ namespace EddiSpeechResponder.Service
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
-            if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
+            if (EDDI.Instance.FleetCarrier != null)
             {
-                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
+                dict["carrier"] = new ReflectionValue(EDDI.Instance.FleetCarrier);
             }
 
             if (theEvent != null)

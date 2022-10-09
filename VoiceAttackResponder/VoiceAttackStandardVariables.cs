@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
@@ -19,6 +20,7 @@ namespace EddiVoiceAttackResponder
         // These are reference values for nullable items we monitor to determine whether VoiceAttack values need to be updated
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
 
+        // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new Dictionary<string, Action>
         {
             { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref App.vaProxy) },
@@ -26,9 +28,6 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.vaProxy) },
             { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.vaProxy) },
             { nameof(EDDI.Instance.DestinationDistanceLy), () => App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(NavigationService.Instance.SearchDistanceLy), () => App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy) },
-            { nameof(NavigationService.Instance.SearchStarSystem), () => setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy) },
-            { nameof(NavigationService.Instance.SearchStation), () => setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy) },
             { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.vaProxy) },
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {
@@ -53,6 +52,7 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Last station", ref App.vaProxy) },
             { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.vaProxy) },
             { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, ref App.vaProxy) },
+            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", ref App.vaProxy) },
             { nameof(EDDI.Instance.Environment), () => App.vaProxy.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => App.vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
             { nameof(EDDI.Instance.inHorizons), () => App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
@@ -61,6 +61,7 @@ namespace EddiVoiceAttackResponder
 
         protected static void updateStandardValues(PropertyChangedEventArgs eventArgs)
         {
+            // Update select values when triggered by a `PropertyChanged` event
             foreach (var standardValue in StandardValues)
             {
                 if (eventArgs.PropertyName == standardValue.Key.Split('.').Last())
@@ -75,6 +76,14 @@ namespace EddiVoiceAttackResponder
                     }
                 }
             }
+
+            // Update values not notified by `PropertyChanged` events
+            App.vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance.active);
+            App.vaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
+            App.vaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
+            App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
+            setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy);
+            setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy);
         }
 
         protected static void initializeStandardValues()
@@ -550,6 +559,42 @@ namespace EddiVoiceAttackResponder
             }
 
             Logging.Debug("Set body information (" + prefix + ")");
+        }
+
+        private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, ref dynamic vaProxy)
+        {
+            var variables = new MetaVariables(fleetCarrier.GetType(), fleetCarrier);
+            var va_vars = variables.Results.AsVoiceAttackVariables(prefix);
+            foreach (var variable in va_vars)
+            {
+                try
+                {
+                    if (variable.variableType == typeof(string))
+                    {
+                        vaProxy.SetText(variable.key, variable.value as string);
+                    }
+                    else if (variable.variableType == typeof(int))
+                    {
+                        vaProxy.SetInt(variable.key, variable.value as int?);
+                    }
+                    else if (variable.variableType == typeof(bool))
+                    {
+                        vaProxy.SetBoolean(variable.key, variable.value as bool?);
+                    }
+                    else if (variable.variableType == typeof(decimal))
+                    {
+                        vaProxy.SetDecimal(variable.key, variable.value as decimal?);
+                    }
+                    else if (variable.variableType == typeof(DateTime))
+                    {
+                        vaProxy.SetDateTime(variable.key, variable.value as DateTime?);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn(ex.Message, ex);
+                }
+            }
         }
 
         protected static void setCAPIState(bool caPIactive, ref dynamic vaProxy)

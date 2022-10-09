@@ -1,5 +1,4 @@
-﻿using EddiCompanionAppService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,8 +26,9 @@ namespace UnitTests
                 new OutfittingInfoItem(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", "weapon", 540900)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
-            var actualModules = CompanionAppService.OutfittingFromProfile(json);
+            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            var station = Station.FromFrontierApi(DateTime.MinValue, null, DateTime.UtcNow, json);
+            var actualModules = station.outfitting;
 
             Assert.AreEqual(165, actualModules.Count);
             foreach (var expectedModule in incompleteExpectedModules)
@@ -59,8 +59,9 @@ namespace UnitTests
                 new ShipyardInfoItem(128672145, "Federation_Dropship_MkII", 19814205)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
-            var actualShips = CompanionAppService.ShipyardFromProfile(json);
+            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            var station = Station.FromFrontierApi(DateTime.MinValue, null, DateTime.UtcNow, json);
+            var actualShips = station.ships;
 
             Assert.AreEqual(expectedShips.Count, actualShips.Count);
             foreach (var expectedShip in expectedShips)
@@ -81,14 +82,14 @@ namespace UnitTests
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
 
-            var expectedStation = new ProfileStation()
+            var expectedStation = new FrontierApiProfileStation()
             {
                 name = "Libby Horizons",
                 marketId = 3228854528,
-                economyShares = new List<ProfileEconomyShare>() 
+                economyShares = new List<FrontierApiEconomyShare>() 
                 {
-                    new ProfileEconomyShare("Refinery", 0.88M),
-                    new ProfileEconomyShare("Industrial", 0.12M),
+                    new FrontierApiEconomyShare("Refinery", 0.88M),
+                    new FrontierApiEconomyShare("Industrial", 0.12M),
                 },
                 eddnCommodityMarketQuotes = new List<MarketInfoItem>()
                 {
@@ -128,8 +129,8 @@ namespace UnitTests
                     new KeyValuePair<long, string>(128667728, "ImperialSlaves"),
                     new KeyValuePair<long, string>(128049243, "Slaves")
                 },
-                commoditiesupdatedat = Dates.fromDateTimeToSeconds(marketTimestamp),
-                json = DeserializeJsonResource<JObject>(Resources.Libby_Horizons),
+                commoditiesupdatedat = marketTimestamp,
+                marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>(),
                 stationServices = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("dock", "ok"),
@@ -151,7 +152,7 @@ namespace UnitTests
                 }
             };
 
-            var actualStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+            var actualStation = Station.FromFrontierApi(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]), DateTime.MinValue, null);
 
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
@@ -186,12 +187,11 @@ namespace UnitTests
             };
 
             // Set up our profile station
-            var profile = new Profile();
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            profile.LastStation = CompanionAppService.ProfileStation(marketTimestamp, marketJson);
+            var lastStation = Station.FromFrontierApi(marketTimestamp, JObject.FromObject(marketJson["lastStarport"]), DateTime.MinValue, null);
 
-            var updatedStation = profile.LastStation.UpdateStation(DateTime.UtcNow, originalStation);
+            var updatedStation = lastStation.UpdateStation(DateTime.UtcNow, originalStation);
             Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 
             { 
                 new EconomyShare("Refinery", 0.88M), 

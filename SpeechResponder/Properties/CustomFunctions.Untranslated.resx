@@ -475,26 +475,31 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 It takes a single optional argument, a boolean indicating whether whether to refresh station data.</value>
   </data>
   <data name="RouteDetails" xml:space="preserve">
-    <value>This function will produce a destination/route for valid mission destinations.
+    <value>This function will produce a destination/route. It takes at least one mandatory argument, the `type`, and up to two optional arguments.
 
-RouteDetails takes one mandatory argument, the `routetype`, and up to two optional arguments.
+The `type` variable is a mandatory parameter defining the type of command you are sending to the Navigation Monitor. This variable may be used either to plot a new route or to send commands to control a previously plotted route.
 
-The following `routetype` values are valid:
+Route plotting `type` values:
 
-* `encoded` Nearest encoded materials trader.
-* `expiring` Destination of your next expiring mission.
-* `facilitator` Nearest 'Legal Facilities' contact.
-* `farthest` Mission destination farthest from your current location.
-* `guardian` Nearest guardian technology broker.
-* `human` Nearest human technology broker.
-* `manufactured` Nearest manufactured materials trader.
-* `most` Mission destination with the most missions. 
-* `nearest` Mission destination nearest to your current location.
-* `raw` Nearest raw materials trader.
-* `route` Next mission destination in 'Traveling Salesman' (RNNA) route of all active missions. Takes a system name as an optional secondary argument. If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
-* `scoop` Nearest scoopable star system.
-* `source` Destination to nearest mission 'cargo source'. Takes a system name as an optional secondary argument. If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system. 
-* `update` Update to the next mission destination, once all missions in current system are completed. Takes a system name as an optional secondary argument. If set, the resulting route shall be plotted relative to the specified star system rather than relative to the current star system.
+* `carrier` Plots a fleet carrier route between systems. Takes a destination system name as a mandatory 2nd argument, a starting system name as an optional 3rd argument, and the used capacity of the fleet carrier as an optional numeric 4th argument.
+* `encoded` Plots a course to the nearest encoded materials trader. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `expiring` Plots a course to the destination of your next expiring mission.
+* `facilitator` Plots a course to the nearest 'Legal Facilities' contact. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `farthest` Plots a course to the active mission destination farthest from your current location.
+* `guardian` Plots a course to the nearest  guardian technology broker. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `human` Plots a course to the nearest human technology broker. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `manufactured` Plots a course to the nearest manufactured materials trader. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `most` Plots a course to the mission destination with the most active missions.  Takes a system name as an optional second argument. If set, prefers the system closest to the named system when the mission count is equal.
+* `nearest` Plots a course to the active mission destination nearest to your current location.
+* `raw` Plots a course to the nearest raw materials trader. Takes an optional second numeric argument overriding the maximum distance to the station in light seconds.
+* `route` Plots the shortest path between active mission destinations in light years. Takes a system name as an optional secondary argument. If set, the resulting route shall begin at the specified star system rather than at the current star system.
+* `scoop` Plots a course to the nearest scoopable star system. Takes an optional second numeric argument to override the search radius in light years. Maximum value: 100.
+* `source` Destination to nearest mission 'cargo source'. Takes a system name as an optional secondary argument. If set, the resulting route shall identify cargo source locations near the specified star system rather than near the current star system.
+
+Control `type` values:
+* `cancel` Deactivates guidance along the current plotted route.
+* `set` Activates guidance along the current plotted route. Takes an optional second argument plot a `neutron` route to a specified star system and activates guidance. Takes an optional third argument to set the destination station in the event output.
+* `update` If guidance is enabled, updates to the next route destination once the current system contains no more active missions. Recalculates the route as required.
 
 Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
 

@@ -133,7 +133,7 @@
     <value>Add bookmark</value>
   </data>
   <data name="add_button_tooltip" xml:space="preserve">
-    <value>Add bookmark from query results</value>
+    <value>Bookmark this location</value>
   </data>
   <data name="find_text" xml:space="preserve">
     <value>Find:</value>
@@ -175,7 +175,7 @@
     <value>Remove</value>
   </data>
   <data name="remove_button_tooltip" xml:space="preserve">
-    <value>Allows manual removal of a bookmark.</value>
+    <value>Remove this bookmark</value>
   </data>
   <data name="remove_caption" xml:space="preserve">
     <value>Remove bookmark</value>
@@ -187,64 +187,10 @@
     <value>Search</value>
   </data>
   <data name="search_button_tooltip" xml:space="preserve">
-    <value>Execute search query</value>
+    <value>A successful search triggers a "Route details" event.</value>
   </data>
   <data name="search_distance" xml:space="preserve">
     <value>Max Search Distance From Main Star (Ls):</value>
-  </data>
-  <data name="search_query_crime_facilitator" xml:space="preserve">
-    <value>Legal Facilities</value>
-  </data>
-  <data name="search_query_missions_expiring" xml:space="preserve">
-    <value>Expiring Missions System</value>
-  </data>
-  <data name="search_query_missions_farthest" xml:space="preserve">
-    <value>Farthest Mission System</value>
-  </data>
-  <data name="search_query_missions_most" xml:space="preserve">
-    <value>Most Missions System</value>
-  </data>
-  <data name="search_query_missions_nearest" xml:space="preserve">
-    <value>Nearest Mission System</value>
-  </data>
-  <data name="search_query_missions_route" xml:space="preserve">
-    <value>Shortest Route System</value>
-  </data>
-  <data name="search_query_missions_source" xml:space="preserve">
-    <value>Cargo Source System</value>
-  </data>
-  <data name="search_query_missions_update" xml:space="preserve">
-    <value>Update Mission System</value>
-  </data>
-  <data name="search_query_services_encoded" xml:space="preserve">
-    <value>Encoded Materials Trader</value>
-  </data>
-  <data name="search_query_services_guardian" xml:space="preserve">
-    <value>Guardian Technology Broker</value>
-  </data>
-  <data name="search_query_services_human" xml:space="preserve">
-    <value>Human Technology Broker</value>
-  </data>
-  <data name="search_query_services_manufactured" xml:space="preserve">
-    <value>Manufactured Materials Trader</value>
-  </data>
-  <data name="search_query_services_raw" xml:space="preserve">
-    <value>Raw Materials Trader</value>
-  </data>
-  <data name="search_query_galaxy_scoop" xml:space="preserve">
-    <value>Scoopable Star</value>
-  </data>
-  <data name="search_type_crime" xml:space="preserve">
-    <value>Crime</value>
-  </data>
-  <data name="search_type_missions" xml:space="preserve">
-    <value>Missions</value>
-  </data>
-  <data name="search_type_services" xml:space="preserve">
-    <value>Services</value>
-  </data>
-  <data name="search_type_galaxy" xml:space="preserve">
-    <value>Galaxy</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Station:</value>
@@ -258,9 +204,6 @@
   <data name="update_button_tooltip" xml:space="preserve">
     <value>Update the bookmark's location data from your current latitude and longitude</value>
   </data>
-  <data name="route_details_desc" xml:space="preserve">
-    <value>A successful search triggers a "Route details" event.</value>
-  </data>
   <data name="bm_export_button" xml:space="preserve">
     <value>Export Bookmarks</value>
   </data>
@@ -269,6 +212,7 @@
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Heading:</value>
+    <comment> A UI element describing a compass heading for surface navigation</comment>
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Distance (km):</value>
@@ -280,7 +224,7 @@
     <value>The radius (in meters) which triggers `Near bookmark` events</value>
   </data>
   <data name="extra_details_tooltip" xml:space="preserve">
-    <value>Show or hide additional details about the selected planetary bookmark</value>
+    <value>Show or hide additional details about the selected item</value>
   </data>
   <data name="use_straight_path" xml:space="preserve">
     <value>Use straight path?</value>
@@ -298,5 +242,116 @@
   <data name="bm_all" xml:space="preserve">
     <value>All</value>
     <comment>Import or export all</comment>
+  </data>
+  <data name="tab_bookmarks" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="tab_plotted_route" xml:space="preserve">
+    <value>Current Route</value>
+  </data>
+  <data name="tab_plot_ship_route" xml:space="preserve">
+    <value>Plot Ship Route</value>
+  </data>
+  <data name="header_distance_remaining_ly" xml:space="preserve">
+    <value>Remaining (LY)</value>
+  </data>
+  <data name="header_distance_ly" xml:space="preserve">
+    <value>Distance (LY)</value>
+  </data>
+  <data name="header_stellar_class" xml:space="preserve">
+    <value>Star Class</value>
+  </data>
+  <data name="header_scoopable" xml:space="preserve">
+    <value>Scoopable?</value>
+  </data>
+  <data name="header_neutron_star" xml:space="preserve">
+    <value>Neutron Star?</value>
+  </data>
+  <data name="tooltip_scoopable" xml:space="preserve">
+    <value>Can you refuel at this location with a fuel scoop?</value>
+  </data>
+  <data name="tooltip_neutron_star" xml:space="preserve">
+    <value>Is this a neutron star which may be used to supercharge your FSD?</value>
+  </data>
+  <data name="header_missions" xml:space="preserve">
+    <value>Missions?</value>
+  </data>
+  <data name="tooltip_missions" xml:space="preserve">
+    <value>Is this a mission destination?</value>
+  </data>
+  <data name="header_visited" xml:space="preserve">
+    <value>Visited?</value>
+  </data>
+  <data name="tooltip_visited" xml:space="preserve">
+    <value>Have you already visited this locationt?</value>
+  </data>
+  <data name="header_refuel" xml:space="preserve">
+    <value>Refuel?</value>
+  </data>
+  <data name="tooltip_refuel_recommended" xml:space="preserve">
+    <value>Refueling at this location is recommended.</value>
+  </data>
+  <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
+    <value>The target system is a mandatory field for plotting a neutron route.</value>
+  </data>
+  <data name="enable_guidance_button" xml:space="preserve">
+    <value>Enable Guidance</value>
+  </data>
+  <data name="enable_guidance_button_tooltip" xml:space="preserve">
+    <value>Guide the ship along the plotted route</value>
+  </data>
+  <data name="disable_guidance_button" xml:space="preserve">
+    <value>Cancel Guidance</value>
+  </data>
+  <data name="disable_guidance_button_tooltip" xml:space="preserve">
+    <value>Stop guiding the ship along the plotted route.</value>
+  </data>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Clear Route</value>
+  </data>
+  <data name="clear_route_button_tooltip" xml:space="preserve">
+    <value>Clear the plotted route</value>
+  </data>
+  <data name="header_station" xml:space="preserve">
+    <value>Station</value>
+  </data>
+  <data name="tab_galactic_poi" xml:space="preserve">
+    <value>Galactic POIs</value>
+  </data>
+  <data name="poi_search_filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="poi_hide_visited" xml:space="preserve">
+    <value>Hide visited locations?</value>
+  </data>
+  <data name="copy_system_button_tooltip" xml:space="preserve">
+    <value>Copy this system name to your clipboard</value>
+  </data>
+  <data name="tab_plot_carrier_route" xml:space="preserve">
+    <value>Plot Carrier Route</value>
+  </data>
+  <data name="header_fuel_required" xml:space="preserve">
+    <value>Fuel (T)</value>
+  </data>
+  <data name="header_icy_ring" xml:space="preserve">
+    <value>Icy Ring</value>
+  </data>
+  <data name="header_pristine_mining" xml:space="preserve">
+    <value>Pristine Mining</value>
+  </data>
+  <data name="carrier_current_system_textbox_desc" xml:space="preserve">
+    <value>Current System:</value>
+  </data>
+  <data name="carrier_destination_system_textbox_desc" xml:space="preserve">
+    <value>Destination System:</value>
+  </data>
+  <data name="carrier_current_load_textbox_desc" xml:space="preserve">
+    <value>Allocated Space (T):</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_required" xml:space="preserve">
+    <value> --- Error: Connect to the Frontier API to obtain this value ---</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_recommended" xml:space="preserve">
+    <value>--- Error: Connect to the Frontier API or visit the Carrier Management screen to obtain this value ---</value>
   </data>
 </root>

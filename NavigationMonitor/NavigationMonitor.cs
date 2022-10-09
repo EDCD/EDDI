@@ -1,17 +1,21 @@
-﻿using Eddi;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
-using EddiStatusMonitor;
+using EddiStarMapService;
+using EddiStatusService;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,20 +24,38 @@ using Utilities;
 
 namespace EddiNavigationMonitor
 {
+    [UsedImplicitly]
     public class NavigationMonitor : EDDIMonitor
     {
-        // Observable collection for us to handle changes
-        public readonly ObservableCollection<NavBookmark> bookmarks;
-        public static readonly object bookmarksLock = new object();
+        public FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
+
+        #region Collections
+
+        // Observable collection for us to handle changes to Bookmarks
+        public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
         public static event EventHandler BookmarksUpdatedEvent;
 
+        public ObservableCollection<NavPOIBookmark> GalacticPOIs = new ObservableCollection<NavPOIBookmark>();
+
         // Navigation route data
-        private string navDestination;
-        private string navRouteList;
-        private decimal navRouteDistance;
+        public NavWaypointCollection NavRouteList = new NavWaypointCollection() { FillVisitedGaps = true };
+        public static event EventHandler NavRouteUpdatedEvent;
+
+        // Plotted carrier route data
+        public NavWaypointCollection CarrierPlottedRoute = new NavWaypointCollection() { FillVisitedGaps = true };
+        public static event EventHandler CarrierPlottedRouteUpdatedEvent;
+
+        // Plotted ship route data
+        public NavWaypointCollection PlottedRouteList = new NavWaypointCollection();
+        public static event EventHandler PlottedRouteUpdatedEvent;
+
+        #endregion
+
+        public static readonly object navConfigLock = new object();
+
         private DateTime updateDat;
 
-        private Status currentStatus { get; set; }
+        internal Status currentStatus { get; set; }
 
         public string MonitorName()
         {
@@ -57,29 +79,38 @@ namespace EddiNavigationMonitor
 
         public NavigationMonitor()
         {
-            bookmarks = new ObservableCollection<NavBookmark>();
-            BindingOperations.CollectionRegistering += Bookmarks_CollectionRegistering;
-            StatusMonitor.StatusUpdatedEvent += OnStatusUpdated;
-            initializeNavigationMonitor();
-        }
-
-        public void initializeNavigationMonitor()
-        {
-            readBookmarks();
+            BindingOperations.CollectionRegistering += NavigationMonitor_CollectionRegistering;
+            StatusService.StatusUpdatedEvent += OnStatusUpdated;
+            LoadMonitor();
             Logging.Info($"Initialized {MonitorName()}");
         }
 
-        private void Bookmarks_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        private void LoadMonitor()
+        {
+            ReadNavConfig();
+
+            // Build a Galactic POI list
+            GalacticPOIs = EDAstro.GetPOIs();
+            GetBookmarkExtras(GalacticPOIs);
+        }
+
+        private void NavigationMonitor_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
         {
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock);
+                BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(NavRouteList.Waypoints, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(PlottedRouteList.Waypoints, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock);
             }
             else
             {
                 // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRouteList.Waypoints, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRouteList.Waypoints, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock); });
             }
         }
 
@@ -96,7 +127,7 @@ namespace EddiNavigationMonitor
 
         public void Reload()
         {
-            readBookmarks();
+            LoadMonitor();
             Logging.Info($"Reloaded {MonitorName()}");
         }
 
@@ -105,101 +136,253 @@ namespace EddiNavigationMonitor
             return new ConfigurationWindow();
         }
 
-        public void EnableConfigBinding(MainWindow configWindow)
-        {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(bookmarks, bookmarksLock); });
-        }
-
-        public void DisableConfigBinding(MainWindow configWindow)
-        {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(bookmarks); });
-        }
-
         public void HandleProfile(JObject profile)
         {
         }
 
         public void PreHandle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+            if (@event.timestamp >= updateDat)
+            {
+                Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
-            // Handle the events that we care about
-            if (@event is BookmarkDetailsEvent bookmarkDetailsEvent)
-            {
-                handleBookmarkDetailsEvent(bookmarkDetailsEvent);
-            }
-            else if (@event is CarrierJumpedEvent carrierJumpedEvent)
-            {
-                handleCarrierJumpedEvent(carrierJumpedEvent);
-            }
-            else if (@event is DockedEvent dockedEvent)
-            {
-                handleDockedEvent(dockedEvent);
-            }
-            else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
-            {
-                handleEnteredNormalSpaceEvent(enteredNormalSpaceEvent);
-            }
-            else if (@event is JumpedEvent jumpedEvent)
-            {
-                handleJumpedEvent(jumpedEvent);
-            }
-            else if (@event is LocationEvent locationEvent)
-            {
-                handleLocationEvent(locationEvent);
-            }
-            else if (@event is NavRouteEvent navRouteEvent)
-            {
-                handleNavRouteEvent(navRouteEvent);
+                // Handle the events that we care about
+
+                if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)
+                {
+                    handleCarrierJumpRequestEvent(carrierJumpRequestEvent);
+                }
+                else if (@event is CarrierJumpCancelledEvent carrierJumpCancelledEvent)
+                {
+                    handleCarrierJumpCancelledEvent(carrierJumpCancelledEvent);
+                }
+                else if (@event is CarrierJumpedEvent carrierJumpedEvent)
+                {
+                    handleCarrierJumpedEvent(carrierJumpedEvent);
+                }
+                else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
+                {
+                    handleCarrierJumpEngagedEvent(carrierJumpEngagedEvent);
+                }
+                else if (@event is CarrierPurchasedEvent carrierPurchasedEvent)
+                {
+                    handleCarrierPurchasedEvent(carrierPurchasedEvent);
+                }
+                else if (@event is CarrierStatsEvent carrierStatsEvent)
+                {
+                    handleCarrierStatsEvent(carrierStatsEvent);
+                }
+                else if (@event is CommodityPurchasedEvent commodityPurchasedEvent)
+                {
+                    handleCommodityPurchasedEvent(commodityPurchasedEvent);
+                }
+                else if (@event is CommoditySoldEvent commoditySoldEvent)
+                {
+                    handleCommoditySoldEvent(commoditySoldEvent);
+                }
+                else if (@event is DockedEvent dockedEvent)
+                {
+                    handleDockedEvent(dockedEvent);
+                }
+                else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
+                {
+                    handleEnteredNormalSpaceEvent(enteredNormalSpaceEvent);
+                }
+                else if (@event is JumpedEvent jumpedEvent)
+                {
+                    handleJumpedEvent(jumpedEvent);
+                }
+                else if (@event is LocationEvent locationEvent)
+                {
+                    handleLocationEvent(locationEvent);
+                }
+                else if (@event is NavRouteEvent navRouteEvent)
+                {
+                    handleNavRouteEvent(navRouteEvent);
+                }
+                else if (@event is RouteDetailsEvent routeDetailsEvent)
+                {
+                    handleRouteDetailsEvent(routeDetailsEvent);
+                }
+                else if (@event is FSDTargetEvent fsdTargetEvent)
+                {
+                    handleFSDTargetEvent(fsdTargetEvent);
+                }
             }
         }
 
         public void PostHandle(Event @event)
         {
-            if (@event is TouchdownEvent touchdownEvent)
+            if (@event is CarrierJumpRequestEvent
+                || @event is CarrierJumpEngagedEvent
+                || @event is CarrierJumpedEvent
+                || @event is CarrierPurchasedEvent
+                || @event is CarrierStatsEvent)
             {
-                handleTouchdownEvent(touchdownEvent);
+                if (!@event.fromLoad)
+                {
+                    EDDI.Instance.RefreshFleetCarrierFromFrontierAPI();
+                }
+            }
+            else if (@event is NavRouteEvent navRouteEvent)
+            {
+                posthandleNavRouteEvent(navRouteEvent);
             }
             else if (@event is LiftoffEvent liftoffEvent)
             {
-                handleLiftoffEvent(liftoffEvent);
+                posthandleLiftoffEvent(liftoffEvent);
+            }
+            else if (@event is TouchdownEvent touchdownEvent)
+            {
+                posthandleTouchdownEvent(touchdownEvent);
             }
             else if (@event is UndockedEvent undockedEvent)
             {
-                handleUndockedEvent(undockedEvent);
+                posthandleUndockedEvent(undockedEvent);
             }
         }
 
-        private void handleBookmarkDetailsEvent(BookmarkDetailsEvent @event)
+        #region handledEvents
+
+        private void handleCarrierJumpRequestEvent(CarrierJumpRequestEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
+            updatedCarrier.nextStarSystem = @event.systemname;
+            EDDI.Instance.FleetCarrier = updatedCarrier;
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
+                WriteNavConfig();
+            }
+        }
+
+        private void handleCarrierJumpCancelledEvent(CarrierJumpCancelledEvent @event)
+        {
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
+            updatedCarrier.nextStarSystem = null;
+            EDDI.Instance.FleetCarrier = updatedCarrier;
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                updateDat = @event.timestamp;
+                WriteNavConfig();
             }
         }
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { name = @event.carriername };
+            updatedCarrier.currentStarSystem = @event.systemname;
+            updatedCarrier.Market.name = @event.carriername;
+            updatedCarrier.nextStarSystem = null;
+            EDDI.Instance.FleetCarrier = updatedCarrier;
+            CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                WriteNavConfig();
+            }
+        }
+
+        private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
+        {
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
+            updatedCarrier.currentStarSystem = @event.systemname;
+            EDDI.Instance.FleetCarrier = updatedCarrier;
+            CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                updateDat = @event.timestamp;
+                WriteNavConfig();
+            }
+        }
+
+        private void handleCarrierPurchasedEvent(CarrierPurchasedEvent @event)
+        {
+            EDDI.Instance.FleetCarrier = new FleetCarrier(@event.carrierId) { callsign = @event.callsign, currentStarSystem = @event.systemname };
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                updateDat = @event.timestamp;
+                WriteNavConfig();
+            }
+        }
+
+        private void handleCarrierStatsEvent(CarrierStatsEvent @event)
+        {
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { callsign = @event.callsign, name = @event.name };
+            updatedCarrier.dockingAccess = @event.dockingAccess;
+            updatedCarrier.notoriousAccess = @event.notoriousAccess;
+            updatedCarrier.fuel = @event.fuel;
+            updatedCarrier.usedCapacity = @event.usedCapacity;
+            updatedCarrier.freeCapacity = @event.freeCapacity;
+            updatedCarrier.bankBalance = @event.bankBalance;
+            updatedCarrier.bankReservedBalance = @event.bankReservedBalance;
+            EDDI.Instance.FleetCarrier = updatedCarrier;
+            if (!@event.fromLoad && @event.timestamp >= updateDat) 
+            {
+                updateDat = @event.timestamp;
+                WriteNavConfig(); 
+            }
+        }
+
+        private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
+        {
+            if (FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID)
+            {
+                if (@event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium")
+                {
+                    FleetCarrier.fuelInCargo -= @event.amount;
+                    if (!@event.fromLoad && @event.timestamp >= updateDat)
+                    {
+                        updateDat = @event.timestamp;
+                        WriteNavConfig();
+                    }
+                }
+            }
+        }
+
+        private void handleCommoditySoldEvent(CommoditySoldEvent @event)
+        {
+            if (FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID)
+            {
+                if (@event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium")
+                {
+                    FleetCarrier.fuelInCargo += @event.amount;
+                    if (!@event.fromLoad && @event.timestamp >= updateDat)
+                    {
+                        updateDat = @event.timestamp;
+                        WriteNavConfig();
+                    }
+                }
             }
         }
 
         private void handleDockedEvent(DockedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
-                updateDat = @event.timestamp;
-
-                // Check if we're at a planetary location and capture our location if true
-                if ((currentStatus?.near_surface ?? false) && new Station { Model = @event.stationModel }.IsPlanetary())
+                lock (navConfigLock)
                 {
                     var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                    navConfig.tdLat = currentStatus.latitude;
-                    navConfig.tdLong = currentStatus.longitude;
-                    navConfig.tdPOI = @event.station;
+                    // Check if we're at a planetary location and capture our location if true
+                    if ((currentStatus?.near_surface ?? false) &&
+                        new Station { Model = @event.stationModel }.IsPlanetary())
+                    {
+
+                        navConfig.tdLat = currentStatus.latitude;
+                        navConfig.tdLong = currentStatus.longitude;
+                        navConfig.tdPOI = @event.station;
+
+                        // If we are at our fleet carrier, make sure that the carrier location is up to date.
+                        if (@event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID)
+                        {
+                            FleetCarrier.currentStarSystem = @event.system;
+                            CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
+                            navConfig.carrierPlottedRoute = CarrierPlottedRoute;
+                        }
+                    }
+
                     navConfig.updatedat = updateDat;
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
                 }
@@ -208,156 +391,348 @@ namespace EddiNavigationMonitor
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
+                // If we are at our fleet carrier, make sure that the carrier location is up to date.
+                lock (navConfigLock)
+                {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                    if (@event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID)
+                    {
+                        FleetCarrier.currentStarSystem = @event.systemname;
+                        CarrierPlottedRoute.UpdateVisitedStatus(@event.systemAddress);
+                        navConfig.carrierPlottedRoute = CarrierPlottedRoute;
+                    }
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                WriteNavConfig();
             }
         }
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.system, updateDat);
+                WriteNavConfig();
             }
         }
 
         private void handleEnteredNormalSpaceEvent(EnteredNormalSpaceEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-                NavigationService.Instance.UpdateSearchDistance(@event.systemname, updateDat);
+                WriteNavConfig();
             }
         }
 
         private void handleNavRouteEvent(NavRouteEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
-                updateDat = @event.timestamp;
-
-                List<NavRouteInfoItem> route = @event.route;
-                List<string> routeList = new List<string>();
-
-                navDestination = null;
-                navRouteList = null;
-                navRouteDistance = 0;
-
-                if (route.Count > 1 && route[0].systemname == EDDI.Instance?.CurrentStarSystem?.systemname)
+                var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
+                if (routeList != null)
                 {
-                    routeList.Add(route[0].systemname);
-                    for (int i = 0; i < route.Count - 1; i++)
+                    if (routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                     {
-                        navRouteDistance += Functions.StellarDistanceLy(route[i].x, route[i].y, route[i].z, route[i + 1].x, route[i + 1].y, route[i + 1].z) ?? 0;
-                        routeList.Add(route[i + 1].systemname);
+                        routeList[0].visited = true;
+                        UpdateDestinationData(routeList.Last().systemName, NavRouteList.RouteDistance);
+                        NavRouteList.Waypoints.Clear();
+                        NavRouteList.AddRange(routeList);
+                        NavRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
                     }
-                    navDestination = route[route.Count - 1].systemname;
-                    navRouteList = string.Join("_", routeList);
-                    UpdateDestinationData(navDestination, navRouteDistance);
+
+                    // Raise on UI thread
+                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+
+                    // Update the navigation configuration 
+                    updateDat = @event.timestamp;
+                    WriteNavConfig();
+                }
+            }
+        }
+
+        private void posthandleNavRouteEvent(NavRouteEvent @event)
+        {
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
+                if (routeList != null)
+                {
+                    if (routeList.Count == 0)
+                    {
+                        UpdateDestinationData(null, 0);
+                        NavRouteList.Waypoints.Clear();
+                    }
+
+                    // Raise on UI thread
+                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+
+                    // Update the navigation configuration 
+                    updateDat = @event.timestamp;
+                    WriteNavConfig();
+                }
+            }
+        }
+
+        private void posthandleTouchdownEvent(TouchdownEvent @event)
+        {
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                lock (navConfigLock)
+                {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                    navConfig.tdLat = @event.latitude;
+                    navConfig.tdLong = @event.longitude;
+                    navConfig.tdPOI = @event.nearestdestination;
+                    navConfig.updatedat = updateDat;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
+            }
+        }
+
+        private void posthandleLiftoffEvent(LiftoffEvent @event)
+        {
+            updateNavigationData(@event.timestamp, @event.systemAddress);
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                lock (navConfigLock)
+                {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                    navConfig.tdLat = null;
+                    navConfig.tdLong = null;
+                    navConfig.tdPOI = null;
+                    navConfig.updatedat = updateDat;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
+            }
+        }
+
+        private void posthandleUndockedEvent(UndockedEvent @event)
+        {
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
+            {
+                lock (navConfigLock)
+                {
+                    var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                    navConfig.tdLat = null;
+                    navConfig.tdLong = null;
+                    navConfig.tdPOI = null;
+                    navConfig.updatedat = updateDat;
+                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                }
+            }
+        }
+
+        private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
+        {
+            if (routeDetailsEvent.routetype == QueryType.carrier.ToString())
+            {
+                if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == CarrierPlottedRoute.Waypoints.GetHashCode())
+                {
+                    // Displayed route is correct, nothing to do here
+                }
+                else if (routeDetailsEvent.Route != null)
+                {
+                    CarrierPlottedRoute.Waypoints.Clear();
+                    Thread.Sleep(5); // A small delay helps ensure that any straggling entries are removed from the UI DataGrid
+                    CarrierPlottedRoute.AddRange(routeDetailsEvent.Route.Waypoints);
+                    CarrierPlottedRoute.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                }
+                else
+                {
+                    CarrierPlottedRoute.Waypoints.Clear();
                 }
 
-                // Update the navigation configuration 
-                writeBookmarks();
+                // Raise on UI thread
+                RaiseOnUIThread(CarrierPlottedRouteUpdatedEvent, CarrierPlottedRoute);
+            }
+            else
+            {
+                if (!PlottedRouteList.GuidanceEnabled)
+                {
+                    if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRouteList.Waypoints.GetHashCode())
+                    {
+                        // Displayed route is correct, nothing to do here
+                    }
+                    else if (routeDetailsEvent.Route != null)
+                    {
+                        PlottedRouteList.Waypoints.Clear();
+                        Thread.Sleep(5); // A small delay helps ensure that any straggling entries are removed from the UI DataGrid
+                        PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
+                        PlottedRouteList.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                        PlottedRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions
+                            ?.ToList());
+                    }
+                    else
+                    {
+                        PlottedRouteList.Waypoints.Clear();
+                    }
+                }
+
+                if (routeDetailsEvent.routetype == QueryType.set.ToString())
+                {
+                    PlottedRouteList.GuidanceEnabled = true;
+                }
+                else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
+                {
+                    PlottedRouteList.GuidanceEnabled = false;
+                }
+
+                // Raise on UI thread
+                RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
+            }
+
+            // Update the navigation configuration 
+            if (!routeDetailsEvent.fromLoad && routeDetailsEvent.timestamp >= updateDat)
+            {
+                updateDat = routeDetailsEvent.timestamp;
+                WriteNavConfig();
             }
         }
-
-        private void handleTouchdownEvent(TouchdownEvent @event)
+        private void handleFSDTargetEvent(FSDTargetEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            // Update our plotted route star class data if this event provides new details about the targeted star class.
+            var wp = PlottedRouteList.Waypoints.FirstOrDefault(w => w.systemAddress == (ulong?)@event.systemAddress);
+            if (wp != null && wp.stellarclass != @event.starclass)
+            {
+                wp.stellarclass = @event.starclass;
+                wp.isScoopable = !string.IsNullOrEmpty(@event.starclass) && "KGBFOAM".Contains(@event.starclass);
+                wp.hasNeutronStar = !string.IsNullOrEmpty(@event.starclass) && "N".Contains(@event.starclass);
+            }
+            if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
                 updateDat = @event.timestamp;
-
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                navConfig.tdLat = @event.latitude;
-                navConfig.tdLong = @event.longitude;
-                navConfig.tdPOI = @event.nearestdestination;
-                navConfig.updatedat = updateDat;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                WriteNavConfig();
             }
         }
 
-        private void handleLiftoffEvent(LiftoffEvent @event)
-        {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                navConfig.tdLat = null;
-                navConfig.tdLong = null;
-                navConfig.tdPOI = null;
-                navConfig.updatedat = updateDat;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-            }
-        }
-
-        private void handleUndockedEvent(UndockedEvent @event)
-        {
-            if (@event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                navConfig.tdLat = null;
-                navConfig.tdLong = null;
-                navConfig.tdPOI = null;
-                navConfig.updatedat = updateDat;
-                ConfigService.Instance.navigationMonitorConfiguration = navConfig;
-            }
-        }
+        #endregion
 
         public IDictionary<string, object> GetVariables()
         {
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["bookmarks"] = new List<NavBookmark>(bookmarks),
-                ["navRouteList"] = navRouteList,
-                ["orbitalpriority"] = navConfig.prioritizeOrbitalStations
+                ["bookmarks"] = new List<NavBookmark>(Bookmarks),
+                ["navRouteList"] = NavRouteList,
+                ["orbitalpriority"] = navConfig.prioritizeOrbitalStations,
             };
             return variables;
         }
 
-        public void writeBookmarks()
+        public void WriteNavConfig()
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
-                // Write bookmarks configuration with current list
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                navConfig.bookmarks = bookmarks;
+
+                // Bookmarks
+                navConfig.bookmarks = Bookmarks;
+
+                // In-game routing
+                navConfig.navRouteList = NavRouteList;
+
+                // Plotted Routes
+                navConfig.plottedRouteList = PlottedRouteList;
+                navConfig.carrierPlottedRoute = CarrierPlottedRoute;
+
+                // Misc
                 navConfig.updatedat = updateDat;
+
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
             // Make sure the UI is up to date
-            RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
+            RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
+            RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
         }
 
-        private void readBookmarks()
+        private void ReadNavConfig()
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-                // Obtain current bookmarks list from configuration
-                updateDat = navConfig.updatedat;
+                // Restore our bookmarks
+                Bookmarks = navConfig.bookmarks;
+                GetBookmarkExtras(Bookmarks);
 
-                // Build a new bookmark list
-                bookmarks.Clear();
-                foreach (NavBookmark bookmark in navConfig.bookmarks)
-                {
-                    bookmarks.Add(bookmark);
-                }
+                // Restore our in-game routing
+                NavRouteList = navConfig.navRouteList;
+
+                // Restore our plotted routes
+                PlottedRouteList = navConfig.plottedRouteList;
+                CarrierPlottedRoute = navConfig.carrierPlottedRoute;
+
+                // Misc
+                updateDat = navConfig.updatedat;
             }
         }
 
         public void RemoveBookmarkAt(int index)
         {
-            lock (bookmarksLock)
+            lock (navConfigLock)
             {
-                bookmarks.RemoveAt(index);
+                Bookmarks.RemoveAt(index);
                 // Make sure the UI is up to date
-                RaiseOnUIThread(BookmarksUpdatedEvent, bookmarks);
+                RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
+            }
+        }
+
+        private void updateNavigationData(DateTime timestamp, ulong? systemAddress, decimal? x = null, decimal? y = null,
+    decimal? z = null)
+        {
+            if (systemAddress is null) { return; }
+
+            // Distances Data
+            if (x != null && y != null && z != null)
+            {
+                foreach (var navBookmark in Bookmarks.AsParallel())
+                {
+                    navBookmark.distanceLy =
+                        Functions.StellarDistanceLy(x, y, z, navBookmark.x, navBookmark.y, navBookmark.z);
+                    if (navBookmark.systemAddress == systemAddress)
+                    {
+                        navBookmark.visitLog.Add(timestamp);
+                    }
+                }
+                foreach (var poiBookmark in GalacticPOIs.AsParallel())
+                {
+                    poiBookmark.distanceLy =
+                        Functions.StellarDistanceLy(x, y, z, poiBookmark.x, poiBookmark.y, poiBookmark.z);
+                    if (poiBookmark.systemAddress == systemAddress)
+                    {
+                        poiBookmark.visitLog.Add(timestamp);
+                    }
+                }
+                Application.Current.Dispatcher?.Invoke(() =>
+                {
+                    var configWindow = ConfigurationTabItem();
+                    if (configWindow.TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
+                    {
+                        poiView.Refresh();
+                    }
+                });
+
+                NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
+                    NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y,
+                    NavigationService.Instance.SearchStarSystem?.z) ?? 0;
+            }
+
+            // Visited Data
+            NavRouteList.UpdateVisitedStatus((ulong)systemAddress);
+            PlottedRouteList.UpdateVisitedStatus((ulong)systemAddress);
+            if (PlottedRouteList.GuidanceEnabled && PlottedRouteList.Waypoints.All(w => w.visited))
+            {
+                // Deactivate guidance once we've reached our destination.
+                NavigationService.Instance.NavQuery(QueryType.cancel);
             }
         }
 
@@ -376,7 +751,7 @@ namespace EddiNavigationMonitor
                     currentStatus = status;
                 });
 
-                foreach (var bookmark in bookmarks)
+                foreach (var bookmark in Bookmarks)
                 {
                     CheckBookmarkPosition(bookmark, currentStatus);
                 }
@@ -468,16 +843,44 @@ namespace EddiNavigationMonitor
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
-            if (handler != null)
+            //// Not required for observable collections
+            //if (handler != null)
+            //{
+            //    SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+            //    if (uiSyncContext == null)
+            //    {
+            //        handler(sender, EventArgs.Empty);
+            //    }
+            //    else
+            //    {
+            //        uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
+            //    }
+            //}
+        }
+
+        private async void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
+        {
+            // Retrieve extra details to supplement our bookmarks
+
+            var getSystems = Task.Run( () =>
             {
-                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
-                if (uiSyncContext == null)
+                var bookmarkSystems = bookmarks.Select(n => new StarSystem()
                 {
-                    handler(sender, EventArgs.Empty);
-                }
-                else
+                    systemname = n.systemname, 
+                    systemAddress = n.systemAddress
+                }).ToList();
+                var dataProviderService = new DataProviderService(new StarMapService());
+                return dataProviderService.syncFromStarMapService(bookmarkSystems);
+            });
+            await Task.WhenAll(getSystems);
+            foreach (var system in getSystems.Result)
+            {
+                var poi = bookmarks.FirstOrDefault(s =>
+                    s.systemname == system.systemname);
+                if (poi != null)
                 {
-                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
+                    poi.systemAddress = system.systemAddress;
+                    poi.visitLog = system.visitLog;
                 }
             }
         }

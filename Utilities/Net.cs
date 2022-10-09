@@ -49,18 +49,50 @@ namespace Utilities
                 }
 
                 // Obtain and parse our response
-                var encoding = response.CharacterSet == ""
+                var encoding = string.IsNullOrEmpty(response.CharacterSet)
                         ? Encoding.UTF8
                         : Encoding.GetEncoding(response.CharacterSet);
 
                 Logging.Debug("Reading response from " + uri);
-                using (var stream = response.GetResponseStream())
+                return ReadResponseString(response, encoding);
+            }
+        }
+
+        private static string ReadResponseString(HttpWebResponse response, Encoding encoding)
+        {
+            string data = null;
+            int attempts = 0;
+            Exception ex = null;
+
+            while (data is null && attempts < 10)
+            {
+                try
                 {
-                    var reader = new StreamReader(stream, encoding);
-                    string data = reader.ReadToEnd();
-                    return data;
+                    using (var stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            var reader = new StreamReader(stream, encoding);
+                            data = reader.ReadToEnd();
+                            return data;
+                        }
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    attempts++;
+                    Thread.Sleep(50);
+                    ex = e;
                 }
             }
+
+            if (attempts >= 10 && ex != null)
+            {
+                Logging.Warn(ex.Message);
+            }
+
+            return data;
         }
 
         public static string DownloadFile(string uri, string name)

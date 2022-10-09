@@ -15,7 +15,9 @@ namespace EddiEvents
         /// <summary> Whether this event was triggered during the initial journal load at launch or later.</summary>
         public bool fromLoad { get; set; }
 
-        public Event(DateTime timestamp, string type)
+        // Private protected to ensure that all events are defined within this assembly.
+        // This is necessary to ensure that the events can be found via assembly reflection.
+        private protected Event(DateTime timestamp, string type)
         {
             this.timestamp = timestamp;
             this.type = type;

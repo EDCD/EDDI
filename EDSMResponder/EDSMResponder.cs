@@ -204,44 +204,57 @@ namespace EddiEdsmResponder
             }
 
             // Supplement with metadata from the tracked game state, as applicable
-            if (EDDI.Instance.CurrentStarSystem != null)
+            LockManager.GetLock(nameof(EDDI.Instance.CurrentStarSystem), () =>
             {
-                if (!eventObject.ContainsKey("_systemAddress"))
+                if (EDDI.Instance.CurrentStarSystem != null)
                 {
-                    eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
-                }
-                if (!eventObject.ContainsKey("_systemName"))
-                {
-                    eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.systemname);
-                }
-                if (!eventObject.ContainsKey("_systemCoordinates"))
-                {
-                    List<decimal?> _coordinates = new List<decimal?>
+                    if (!eventObject.ContainsKey("_systemAddress"))
                     {
-                    EDDI.Instance.CurrentStarSystem.x,
-                    EDDI.Instance.CurrentStarSystem.y,
-                    EDDI.Instance.CurrentStarSystem.z
-                    };
-                    eventObject.Add("_systemCoordinates", _coordinates);
-                }
+                        eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
+                    }
 
-            }
-            if (EDDI.Instance.CurrentStation != null)
-            {
-                if (!eventObject.ContainsKey("_marketId"))
-                {
-                    eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
-                }
-                if (!eventObject.ContainsKey("_stationName"))
-                {
-                    eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
-                }
-            }
-            if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("_shipId"))
-            {
-                eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
-            }
+                    if (!eventObject.ContainsKey("_systemName"))
+                    {
+                        eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.systemname);
+                    }
 
+                    if (!eventObject.ContainsKey("_systemCoordinates"))
+                    {
+                        List<decimal?> _coordinates = new List<decimal?>
+                        {
+                            EDDI.Instance.CurrentStarSystem.x,
+                            EDDI.Instance.CurrentStarSystem.y,
+                            EDDI.Instance.CurrentStarSystem.z
+                        };
+                        eventObject.Add("_systemCoordinates", _coordinates);
+                    }
+                }
+            });
+
+            LockManager.GetLock(nameof(EDDI.Instance.CurrentStation), () =>
+            {
+                if (EDDI.Instance.CurrentStation != null)
+                {
+                    if (!eventObject.ContainsKey("_marketId"))
+                    {
+                        eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
+                    }
+
+                    if (!eventObject.ContainsKey("_stationName"))
+                    {
+                        eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
+                    }
+                }
+            });
+
+            LockManager.GetLock(nameof(EDDI.Instance.CurrentShip), () => 
+            {
+                if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("_shipId"))
+                {
+                    eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
+                }
+            });
+            
             return eventObject;
         }
 

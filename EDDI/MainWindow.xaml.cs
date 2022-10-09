@@ -1,6 +1,6 @@
 ﻿using EddiCompanionAppService;
-using EddiCore;
 using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
@@ -236,7 +236,9 @@ namespace Eddi
             List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
-            chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
+            chooseLanguageDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideCulture) 
+                ? langs.Find(l => Equals(l.ci, CultureInfo.InvariantCulture))
+                : langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
                 LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
@@ -474,6 +476,8 @@ namespace Eddi
         // Handle changes to the editable home system combo box
         private void HomeSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             void changeHandler()
             {
@@ -491,6 +495,8 @@ namespace Eddi
 
         private void HomeSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+        
             void changeHandler(string newValue)
             {
                 // Update configuration to new home system
@@ -507,6 +513,8 @@ namespace Eddi
 
         private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
+            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             homeSystemDropDown.DidLoseFocus(oldValue: eddiConfiguration.HomeSystem);
         }
@@ -971,6 +979,7 @@ namespace Eddi
             switch (CompanionAppService.Instance.CurrentState)
             {
                 case CompanionAppService.State.LoggedOut:
+                case CompanionAppService.State.ConnectionLost:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
                     companionAppButton.Content = Properties.EddiResources.login;
                     companionAppButton.IsEnabled = !App.FromVA;

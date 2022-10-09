@@ -2,6 +2,7 @@ using Eddi;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
 using Newtonsoft.Json;
@@ -281,13 +282,13 @@ namespace EddiMissionMonitor
                             // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                             case "sightseeing":
                             {
-                                DestinationSystem system = mission.destinationsystems
-                                    .FirstOrDefault(s => s.name == EDDI.Instance?.CurrentStarSystem?.systemname);
+                                var system = mission.destinationsystems
+                                    .FirstOrDefault(s => s.systemName == EDDI.Instance?.CurrentStarSystem?.systemname);
                                 if (system != null)
                                 {
                                     system.visited = true;
                                     string waypointSystemName = mission.destinationsystems?
-                                        .FirstOrDefault(s => s.visited == false)?.name;
+                                        .FirstOrDefault(s => s.visited == false)?.systemName;
                                     if (!string.IsNullOrEmpty(waypointSystemName))
                                     {
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
@@ -335,13 +336,22 @@ namespace EddiMissionMonitor
                     {
                         case "Active":
                             {
-                                if (missionEntry.statusEDName == "Failed" || missionEntry.statusEDName == "Claim")
+                                if (missionEntry.statusEDName == "Failed")
                                 {
                                     if (mission.expiry > missionEntry.expiry)
                                     {
                                         // Fix status if erroneously reported as failed
                                         missionEntry.expiry = mission.expiry;
                                         missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                        update = true;
+                                    }
+                                }
+                                else if (missionEntry.statusEDName == "Claim")
+                                {
+                                    if (mission.expiry > missionEntry.expiry)
+                                    {
+                                        // Fix expiry if it has been extended by completion
+                                        missionEntry.expiry = mission.expiry;
                                         update = true;
                                     }
                                 }
@@ -472,7 +482,7 @@ namespace EddiMissionMonitor
         public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
             // Prune community goals not reported from the CommunityGoalsEvent.
-            foreach (var cgMissionID in missions.Where(m => m.communal).Select(m => m.missionid))
+            foreach (var cgMissionID in missions.ToList().Where(m => m.communal).Select(m => m.missionid))
             {
                 if (!@event.goals.Select(cg => (long)cg.cgid).Contains(cgMissionID))
                 {
@@ -760,13 +770,16 @@ namespace EddiMissionMonitor
                         .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
                         .Split('#');
 
-                    foreach (string system in systems)
+                    var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
+                    foreach (var system in starSystems)
                     {
-                        mission.destinationsystems.Add(new DestinationSystem(system));
+                        var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
+                        dest.missionids.Add(mission.missionid);
+                        mission.destinationsystems.Add(dest);
                     }
 
                     // Load the first destination system.
-                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).name;
+                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).systemName;
                 }
                 else
                 {

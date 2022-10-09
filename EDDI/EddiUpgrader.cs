@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
-using EddiConfigService;
 using Utilities;
 
 namespace Eddi

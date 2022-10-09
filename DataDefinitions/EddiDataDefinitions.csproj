@@ -61,6 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FleetCarrier.cs" />
+    <Compile Include="FrontierApiProfile.cs" />
+    <Compile Include="JumpDetail.cs" />
+    <Compile Include="NavPOIBookmark.cs" />
+    <Compile Include="NavWaypointCollection.cs" />
+    <Compile Include="NavWaypoint.cs" />
     <Compile Include="ModuleMount.cs" />
     <Compile Include="BgsWatch.cs" />
     <Compile Include="CargoInfo.cs" />
@@ -277,7 +283,6 @@
       <DependentUpon>StationModels.resx</DependentUpon>
     </Compile>
     <Compile Include="StationModel.cs" />
-    <Compile Include="DestinationSystem.cs" />
     <Compile Include="Haulage.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />
@@ -662,6 +667,7 @@
     <EmbeddedResource Include="Properties\Body.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Body.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CombatRatings.de.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.es.resx" />

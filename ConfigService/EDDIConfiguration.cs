@@ -119,6 +119,9 @@ namespace EddiConfigService
         [JsonProperty("MainWindowPosition")]
         public Rect MainWindowPosition { get; set; }
 
+        // Fleet Carrier
+        public FleetCarrier fleetCarrier { get; set; }
+
         // Default
         public EDDIConfiguration()
         {

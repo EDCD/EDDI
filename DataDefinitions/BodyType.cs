@@ -9,7 +9,7 @@
             missingEDNameHandler = (edname) => new BodyType(edname);
 
             None = new BodyType("None");
-            var Null = new BodyType("Null"); // The journal includes references to a "Null" string
+            var Barycenter = new BodyType("Null"); // The journal includes references to a "Null" string when we are near a barycenter
             var Moon = new BodyType("Moon");
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");

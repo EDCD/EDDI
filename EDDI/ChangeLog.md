@@ -6,19 +6,27 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
     * Improved parsing of Odyssey settlements from EDSM API data.
+    * Don't assume that bodies retrieved from EDSM have already been mapped.
+    * Overhauled route plotting functions.
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
+  * Inara Responder
+    * Fixed an issue with asset data not being reported correctly.
   * Material Monitor
     * Moved navigation functions to the Navigation Monitor
   * Mission Monitor
     * Moved navigation functions to the Navigation Monitor
   * Navigation Monitor
-    * Added new Navigation Monitor with support for both planetary and galactic bookmarking. Planetary bookmarks, when selected, will provide compass heading and distance.
+    * Added new Navigation Monitor with support for planetary and galactic bookmarking, ship and carrier route planning, and galactic POIs.
     * The `DestinationSystem` object has been revised to match your current in-game route's final destination.
     * The `DestinationStation` object has been removed.
     * Navigation commands (e.g. via `RouteDetails()` or the `route` VoiceAttack command) will no longer generate a route in EDDI independent of your in-game routing.
   * Speech Responder
+    * Events
+      * `Carrier jump engaged` event updated to add a new `docked` property
+      * `Location` event updated to add `faction` and `conflicts` properties (like the `Jumped` event)
+      * `Route details` event updated to add `tritiumused` property for fleet carrier tritium consumption
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.
@@ -31,14 +39,21 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Body report` revised to improve grammar (around "days").
       * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
-      * `Crime check station` updated remove obsolete references to `shipid`.
+      * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
+      * `Carrier purchased` added, triggered when you purchase a fleet carrier.
+      * `Carrier stats` added, triggered when you open the carrier management screen.
+      * `Community goal` updated to refine responses upon goal completion.
+      * `Crime check station` updated to remove obsolete references to `shipid`.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
       * `Docking denied` updated to add new `DockOffline` reason.
       * `Docking granted` revised to reference automated docking if such a module is installed.
       * `Engineer contributed` revised to correct grammar when contributing materials to an engineer unlock.
       * `Entered normal space` revised to correct grammar when dropping out near a ring.
       * `Entered supercruise` revised to reset a state variable after updating you on your crime status.
+      * `Fuel check` revised to move relevant data to the `Route details` script.
+      * `FSD Engaged` revised to move some speech to the `Jumped` event.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
+      * `Jumped` revised to remove jump count reporting (to slightly reduce verbosity) and add speech moved from the `FSD engaged` event.
       * `Location` updated to add local reputation, system state, and system engineer details.
       * `Material required report` updated to fix a typo.
       * `Module purchased` updated to fix broken weapon mount details.
@@ -58,7 +73,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Permit acquired` added, triggered when you acquire a permit from the mission board.
-      * `Route details` revised to remove obsolete `cancel`, `next`, and `set` arguments.
+      * `Route details` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, and `scoop` types.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
       * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source.
@@ -68,6 +83,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `System materials report` added, triggered by a discovery scan when the commander has an SRV and after we have data for all system bodies.
       * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization, add several newer faction states, and improve grammar around recent conflicts.
+      * `Undocked` event updated to invoke RouteDetails("update").
   * Status Monitor
     * Fixed a bug that caused fuel percent calculations to not calculate immediately after a vehicle change.
   * VoiceAttack Responder

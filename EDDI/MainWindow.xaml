@@ -27,6 +27,18 @@
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
             <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
         </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource DockPanelBackgroundBrush}">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">

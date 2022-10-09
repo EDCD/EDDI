@@ -68,6 +68,8 @@
     <Compile Include="BountyPaidEvent.cs" />
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="CargoEvent.cs" />
+    <Compile Include="CarrierStatsEvent.cs" />
+    <Compile Include="CarrierPurchasedEvent.cs" />
     <Compile Include="CommodityCollectedEvent.cs" />
     <Compile Include="CommodityEjectedEvent.cs" />
     <Compile Include="CommodityPurchasedEvent.cs" />

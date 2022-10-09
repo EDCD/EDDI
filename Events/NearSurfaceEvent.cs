@@ -33,11 +33,11 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public long systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public long? bodyId { get; private set; }
 
-        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, long systemAddress, string bodyName, long? bodyId) : base(timestamp, NAME)
+        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, ulong systemAddress, string bodyName, long? bodyId) : base(timestamp, NAME)
         {
             this.approaching_surface = approachingSurface;
             this.systemname = systemName;

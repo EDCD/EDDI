@@ -5,12 +5,12 @@ using EddiEvents;
 using EddiInaraService;
 using EddiSpeechService;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
-using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiInaraResponder

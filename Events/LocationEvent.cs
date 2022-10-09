@@ -90,6 +90,12 @@ namespace EddiEvents
         [PublicAPI("The super power allegiance of the station, if the commander is docked")]
         public string stationallegiance => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
+        [PublicAPI("A list of faction objects describing the factions in the system, if any")]
+        public List<Faction> factions { get; private set; }
+
+        [PublicAPI("A list of conflict objects describing any conflicts between factions in the system, if any")]
+        public List<Conflict> conflicts { get; private set; }
+
         // Powerplay properties (only when pledged)
 
         [PublicAPI("(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty")]
@@ -119,23 +125,25 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
-        public Economy Economy { get; private set; } = Economy.None;
+        public Economy Economy { get; private set; }
 
-        public Economy Economy2 { get; private set; } = Economy.None;
+        public Economy Economy2 { get; private set; }
+
+        public List<EconomyShare> stationEconomies { get; private set; }
 
         public Faction controllingsystemfaction { get; private set; }
 
         public Faction controllingstationfaction { get; private set; }
 
-        public List<Faction> factions { get; private set; }
+        public SecurityLevel securityLevel { get; private set; }
 
-        public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
+        public StationModel stationModel { get; private set; }
 
-        public StationModel stationModel { get; private set; } = StationModel.None;
+        public List<StationService> stationServices { get; private set; }
 
-        public BodyType bodyType { get; private set; } = BodyType.None;
+        public BodyType bodyType { get; private set; }
 
         public long? bodyId { get; private set; }
 
@@ -147,7 +155,12 @@ namespace EddiEvents
         public bool inSRV { get; private set; }
         public bool onFoot { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions, Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y, decimal z, 
+            decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, decimal? longitude, decimal? latitude, 
+            bool docked, string station, StationModel stationtype, long? marketId, List<StationService> stationServices,
+            Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
+            List<EconomyShare> stationEconomies, Economy economy, Economy economy2, SecurityLevel security, long? population, 
+            Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.x = x;
@@ -157,20 +170,23 @@ namespace EddiEvents
             this.distancefromstar = distancefromstar;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
-            this.bodyType = bodytype;
+            this.bodyType = bodytype ?? BodyType.None;
             this.docked = docked;
             this.station = station;
-            this.stationModel = stationtype;
+            this.stationModel = stationtype ?? StationModel.None;
+            this.stationServices = stationServices ?? new List<StationService>();
             this.marketId = marketId;
             this.controllingsystemfaction = systemFaction;
             this.controllingstationfaction = stationFaction;
-            this.Economy = (economy ?? Economy.None);
-            this.Economy2 = (economy2 ?? Economy.None);
-            this.securityLevel = security;
+            this.stationEconomies = stationEconomies ?? new List<EconomyShare>();
+            this.Economy = economy ?? Economy.None;
+            this.Economy2 = economy2 ?? Economy.None;
+            this.securityLevel = security ?? SecurityLevel.None;
             this.population = population;
             this.longitude = longitude;
             this.latitude = latitude;
-            this.factions = factions;
+            this.factions = factions ?? new List<Faction>();
+            this.conflicts = conflicts ?? new List<Conflict>();
             this.Power = powerplayPower;
             this.powerState = powerplayState;
             this.taxi = taxi;

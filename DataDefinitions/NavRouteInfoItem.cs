@@ -13,7 +13,7 @@ namespace EddiDataDefinitions
         public string name => systemname;
 
         [JsonProperty("SystemAddress")]
-        public long? systemAddress { get; set; }
+        public ulong systemAddress { get; set; }
 
         [JsonProperty("StarPos")]
         private List<decimal> starPos { get; set; }
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
         }
 
         // Main Constructor
-        public NavRouteInfoItem(string systemname, long? SystemAddress, List<decimal> StarPos, string stellarclass)
+        public NavRouteInfoItem(string systemname, ulong SystemAddress, List<decimal> StarPos, string stellarclass)
         {
             this.systemname = systemname;
             this.systemAddress = SystemAddress;

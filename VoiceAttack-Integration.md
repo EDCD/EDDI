@@ -470,31 +470,51 @@ To use this function in your own commands set the 'Type variable' parameter then
 
 ### route
 
-This function will produce a destination/route for valid mission destinations. It takes one mandatory and up to two optional variables as parameters.
+This function will produce a destination/route. It takes at least one mandatory variable and up to two optional variables as parameters.
 
-- 'Type variable' (text variable) is a mandatory parameter containing the type of update to execute.
+- 'Type variable' (text variable) is a mandatory parameter defining the type of command you are sending to the Navigation Monitor. This variable may be used either to plot a new route or to send commands to control a previously plotted route.
 
-  * `encoded` Nearest encoded materials trader.
-  * `expiring` Destination of your next expiring mission.
-  * `facilitator` Nearest 'Legal Facilities' contact.
-  * `farthest` Mission destination farthest from your current location.
-  * `guardian` Nearest guardian technology broker.
-  * `human` Nearest human technology broker.
-  * `manufactured` Nearest manufactured materials trader.
-  * `most` Mission destination with the most missions.
-  * `nearest` Mission destination nearest to your current location.
-  * `raw` Nearest raw materials trader.
-  * `route` Next mission destination in 'Traveling Salesman' (RNNA) route of all active missions.
-  * `scoop` Nearest scoopable star system.
-  * `source` Destination to nearest mission 'cargo source'.
-  * `update` Update to the next mission destination (use this once all missions in the current system are completed).
+  - Route Plotting Types
+    * `carrier` Plots a fleet carrier route between systems. Parameters:
+      * 'System variable' (mandatory text): Defines the destination system for the fleet carrier.
+      * 'System variable 2' (optional text): If set, defines the starting system for the fleet carrier.
+      * 'Numeric variable' (optional decimal): If set, defines the used capacity of the fleet carrier.
+    * `encoded` Plots a route to the nearest encoded materials trader. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `expiring` Plots a route to the system containing your earliest expiring active mission. No additional data required.
+    * `facilitator` Plots a route to the nearest 'Legal Facilities' contact. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `farthest` Plots a route to the active mission system farthest from your current location. No additional data required.
+    * `guardian` Plots a route to the nearest guardian technology broker. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `human` Plots a route to the nearest human technology broker. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `manufactured` Plots a route to the nearest manufactured materials trader. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `most` Plots a route to the system with the most active missions. Parameters:
+      * 'System variable' (optional text): If multiple systems have an equal number of active missions, selects the mission system which is nearest the specified system.
+    * `neutron` Plots a route to a named star system using neutron stars (pulsars) where available. Parameters:
+      * 'System variable' (mandatory text): Defines the destination system for your ship's route.
+    * `nearest` Plots a route to the nearest system with missions. No additional data required.
+    * `raw` Plots a route to the nearest raw materials trader. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the normal maximum distance from arrival to the station in light seconds.
+    * `route` Plots the shortest path between active mission destinations in light years. Parameters:
+      * 'System variable' (optional text): If set, the resulting route shall begin at the specified star system rather than at the current star system.
+    * `scoop` Plots a route to the nearest scoopable star system. Parameters:
+      * 'Numeric variable' (optional decimal): If set, overrides the search radius in light years. Maximum value: 100.
+    * `source` Plots a route to the nearest recently visited mission 'cargo source'. Parameters:
+      * 'System variable' (optional text): If set, the resulting route shall identify cargo source locations near the specified star system rather than near the current star system.
 
-- 'System variable' (text variable) is an optional parameter for the following update types. 
+  - Control Types
+    * `cancel` Deactivates guidance along the current plotted route.
+    * `set` Activates guidance along the current plotted route. Parameters:
+      * 'System variable' (optional text): If set, plots a `neutron` route to a specified system then activates guidance.
+      * 'Station variable' (optional text): If set, sets the station name in the event output.
+    * `update` If guidance is enabled, updates to the next route destination once the current system contains no more active missions. Recalculates the route as required.
 
-  * `route` If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
-  * `source` If set, the resulting star system shall be relative to the specified star system rather than relative to the current star system.
+To use this function in your own commands set the 'Type variable' parameter and when appropriate the `System variable`, `System variable 2`, 'Numeric variable', and 'Station variable' parameters then use the 'Execute an external plugin function' command with the plugin context set to 'route'. Upon success, a '((EDDI route details))' event is triggered, providing event data as described [in the appropriate wiki page](https://github.com/EDCD/EDDI/wiki/Route-details-event).
 
-To use this function in your own commands set the 'Type variable' parameter and when appropriate the `System variable` and 'Station variable' parameters then use the 'Execute an external plugin function' command with the plugin context set to 'route'. Upon success, a '((EDDI route details))' event is triggered, providing event data as described [in the appropriate wiki page](https://github.com/EDCD/EDDI/wiki/Route-details-event).
+![](images/VoiceAttack-PluginView-Route.jpg)
 
 Upon success of the query, a 'Route details' event is triggered with details from the destination and route.
 

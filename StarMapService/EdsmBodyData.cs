@@ -40,7 +40,7 @@ namespace EddiStarMapService
             if (response != null)
             {
                 string system = (string)response["name"];
-                long? systemAddress = (long?) response["id64"];
+                ulong? systemAddress = (ulong?) response["id64"];
                 JArray bodies = (JArray)response["bodies"];
 
                 if (bodies != null)
@@ -55,7 +55,7 @@ namespace EddiStarMapService
             return Bodies;
         }
 
-        private Body ParseStarMapBody(JObject body, string systemName, long? systemAddress)
+        private Body ParseStarMapBody(JObject body, string systemName, ulong? systemAddress)
         {
             try
             {
@@ -105,14 +105,13 @@ namespace EddiStarMapService
                 if ((string)body["type"] == "Star")
                 {
                     // Star-specific items 
-                    string stellarclass = ((string)body["subType"]).Split(' ')[0]; // Splits "B (Blue-White) Star" to "B" 
+                    string stellarclass = StarClass.FromName(((string)body["subType"]))?.edname; // Map back from the EDSM name to the edname 
                     int? stellarsubclass = null;
-                    string endOfStellarClass = stellarclass.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
-                    if (int.TryParse(endOfStellarClass, out int subclass))
+                    string endOfSpectralClass = ((string)body["spectralClass"])?.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
+                    if (int.TryParse(endOfSpectralClass, out int subclass))
                     {
-                        // If our stellarclass ends in a number, we need to separate the class from the subclass
+                        // If our spectralClass ends in a number, we need to separate the class from the subclass
                         stellarsubclass = subclass;
-                        stellarclass = stellarclass.Replace(endOfStellarClass, "");
                     }
 
                     long? ageMegaYears = (long?)body["age"]; // Age in megayears
@@ -224,7 +223,7 @@ namespace EddiStarMapService
                     ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
                     DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
-                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, systemAddress)
+                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, null, systemName, systemAddress)
                     {
                         EDSMID = EDSMID,
                         updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)

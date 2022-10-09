@@ -1,5 +1,6 @@
 ﻿using Cottle;
 using Cottle.Functions;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
@@ -8,7 +9,6 @@ using JetBrains.Annotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using EddiConfigService;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions

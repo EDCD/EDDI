@@ -3,7 +3,6 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiNavigationService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -551,7 +550,6 @@ namespace EddiShipMonitor
             {
                 ship.frameshiftdrive = compartment.module;
                 ship.optimalmass = @event.optimalmass;
-                ship.maxfuelperjump = JumpCalcs.MaxFuelPerJump(ship);
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "LifeSupport");
@@ -776,7 +774,13 @@ namespace EddiShipMonitor
 
         private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
         {
-            // We use status to track current fuel level so nothing to do here
+            // Determine if this refuel takes the ship to full tanks (if not already determined)
+            if (@event.full is null)
+            {
+                @event.full = GetShip(currentShipId)?.fueltanktotalcapacity == @event.total;
+            }
+
+            // We use status to track current fuel level so we won't update the ship fuel level here
         }
 
         private void handleShipRestockedEvent(ShipRestockedEvent @event)
@@ -1784,9 +1788,9 @@ namespace EddiShipMonitor
         {
             if (_refreshProfileDelayed == null || _refreshProfileDelayed.IsCompleted)
             {
-                _refreshProfileDelayed = new Task(async () =>
+                _refreshProfileDelayed = new Task(() =>
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
+                    Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
                     EDDI.Instance.refreshProfile();
                 });
                 _refreshProfileDelayed.Start();

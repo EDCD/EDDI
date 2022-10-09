@@ -180,6 +180,10 @@ namespace EddiDataProviderService
                                         {
                                             starSystem.EDSMID = flightLog.systemId;
                                         }
+                                        if (starSystem.systemAddress == null)
+                                        {
+                                            starSystem.systemAddress = flightLog.systemId64;
+                                        }
                                         else
                                         {
                                             if (starSystem.EDSMID != flightLog.systemId)

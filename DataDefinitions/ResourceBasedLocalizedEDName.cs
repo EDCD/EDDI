@@ -112,13 +112,19 @@ namespace EddiDataDefinitions
         public readonly string basename;
 
         [PublicAPI, JsonIgnore]
-        public string invariantName => resourceManager.GetString(basename, CultureInfo.InvariantCulture) ?? basename;
+        public string invariantName => resourceManager.GetString(basename, CultureInfo.InvariantCulture) ?? fallbackInvariantName ?? basename;
 
+        /// <summary>
+        /// Used only for synthetic definitions derived from other object types
+        /// </summary>
         [JsonIgnore]
-        public string fallbackLocalizedName { get; set; } = null;
+        public string fallbackInvariantName { get; set; } = null;
 
         [JsonIgnore]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
+        
+        [JsonIgnore]
+        public string fallbackLocalizedName { get; set; } = null;
 
         [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;

@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         public decimal? z { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        public long? systemAddress { get; set; }
+        public ulong? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [PublicAPI, JsonProperty] // Required to deserialize to the private setter
@@ -73,7 +73,7 @@ namespace EddiDataDefinitions
         private void internalAddOrUpdateBody(Body body, ImmutableList<Body>.Builder builder)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            int index = builder.FindIndex(b => b.bodyname == body.bodyname);
+            int index = builder.FindIndex(b => b.bodyname == body.bodyname || ((b.mainstar ?? false) && b.mainstar == body.mainstar));
             if (index >= 0)
             {
                 builder[index] = body;
@@ -286,7 +286,7 @@ namespace EddiDataDefinitions
         /// <summary> Signals filtered to only return results with a carrier callsign </summary>
         [PublicAPI, JsonIgnore]
         public List<string> carriersignalsources => signalSources
-            .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.localizedName) 
+            .Where(s => new Regex("[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$").IsMatch(s.invariantName) 
                 && (s.isStation ?? false))
             .Select(s => s.localizedName)
             .ToList();

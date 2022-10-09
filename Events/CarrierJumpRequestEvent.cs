@@ -26,13 +26,13 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public long? bodyId { get; private set; }
 
         public long? carrierId { get; private set; }
 
-        public CarrierJumpRequestEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        public CarrierJumpRequestEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

@@ -1,10 +1,11 @@
-﻿namespace EddiNavigationService
+﻿using System;
+using System.Linq;
+
+namespace EddiNavigationService
 {
     public enum QueryType
     {
-        // ReSharper disable once UnusedMember.Global
-        None, // null
-
+        route,
         encoded,
         expiring,
         facilitator,
@@ -14,10 +15,48 @@
         manufactured,
         most,
         nearest,
+        neutron,
+        carrier,
         raw,
-        route,
+        recalculating,
         scoop,
         source,
-        update
+        set,
+        update,
+        cancel
+    }
+
+    public static class QueryTypeExtensions
+    {
+        public static string LocalizedName(this QueryType queryType)
+        {
+            return Properties.NavigationService.ResourceManager
+                .GetString($"query_type_{queryType}".ToLowerInvariant());
+        }
+
+        public static QueryGroup? Group(this QueryType queryType)
+        {
+            foreach (var queryGroup in Enum.GetValues(typeof(QueryGroup)).Cast<QueryGroup>())
+            {
+                if (queryGroup.QueryTypes().Contains(queryType)) { return queryGroup; }
+            }
+            return null;
+        }
+    }
+
+    public class QueryTypeConverter : System.Windows.Data.IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            if (value is null || value is "") { return value; }
+            return ((QueryType)value).LocalizedName();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

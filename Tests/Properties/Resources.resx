@@ -217,4 +217,10 @@
   <data name="shipLocker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shipLocker.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="SpanshCarrierResult" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshCarrierResult.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpanshGalaxyResult" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshGalaxyResult.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

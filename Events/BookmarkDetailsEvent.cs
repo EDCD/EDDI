@@ -10,7 +10,7 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when a bookmark has been added or updated";
         public const string SAMPLE = null;
 
-        [PublicAPI("The bookmark request type (location, query, update, set)")]
+        [PublicAPI("The bookmark request type (location, update, add, remove)")]
         public string request { get; private set; }
 
         [PublicAPI("The bookmarked system name")] 

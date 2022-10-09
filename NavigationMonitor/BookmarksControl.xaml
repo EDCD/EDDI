@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="EddiNavigationMonitor.BookmarksControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
+             xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="bookmarkDataTemplate" DataType="eddiDataDefinitions:NavPOIBookmark">
+            <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded"/>
+        </DataTemplate>
+        <DataTemplate x:Key="landableDataTemplate" DataType="eddiDataDefinitions:NavBookmark">
+            <Grid Background="Azure">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Text="{x:Static resx:NavigationMonitor.header_heading}" FontSize="16" VerticalAlignment="Center" Margin="10, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding heading, StringFormat={}{0:0}°, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{x:Static resx:NavigationMonitor.header_distanceKm}" FontSize="16" VerticalAlignment="Center" Margin="10, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Text="{Binding distanceKm, StringFormat={}{0:0.000}, TargetNullValue='-'}" FontSize="16" VerticalAlignment="Center" Margin="5, 0" />
+                <Label Grid.Row="0" Grid.Column="5" Content="{x:Static resx:NavigationMonitor.use_straight_path}" Margin="10, 0" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0" IsChecked="{Binding useStraightPath}" Click="UseStraightestPathButton_OnClick" ToolTip="{x:Static resx:NavigationMonitor.use_straight_path_tooltip}"/>
+                <Label x:Name ="nearbyRadiusLabel" Grid.Row="1" Grid.Column="5" Content="{x:Static resx:NavigationMonitor.bm_nearby_radius}" Margin="10, 0" VerticalAlignment="Center"/>
+                <TextBox x:Name="nearbyRadiusInt" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" Margin="5, 0" Height="20" Width="60" 
+                         PreviewTextInput="EnsureValidInteger"
+                         KeyUp="nearbyRadius_KeyUp" 
+                         TextAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Text="{Binding arrivalRadiusMeters, StringFormat={}{0:0}, TargetNullValue='0'}"
+                         ToolTip="{x:Static resx:NavigationMonitor.bm_nearby_radius_tooltip}"/>
+                <TextBlock Grid.Row="0" Grid.Column="7" VerticalAlignment="Center" Text="{x:Static resx:NavigationMonitor.header_latitude}" Margin="10, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="8" VerticalAlignment="Center" Text="{Binding latitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="10, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="7" VerticalAlignment="Center" Text="{x:Static resx:NavigationMonitor.header_longitude}" Margin="10, 0" />
+                <TextBlock Grid.Row="1" Grid.Column="8" VerticalAlignment="Center" Text="{Binding longitude, StringFormat={}{0:0.0000}°, TargetNullValue='-'}" Margin="10, 0" />
+                <Button Grid.Row="0" Grid.Column="9" Grid.RowSpan="2" Click="updateBookmark" MinWidth="60" HorizontalAlignment="Right" Margin="2" Content="{x:Static resx:NavigationMonitor.update_button}" ToolTip="{x:Static resx:NavigationMonitor.update_button_tooltip}" />
+            </Grid>
+        </DataTemplate>
+        <ContextMenu x:Key="ContextMenu">
+            <MenuItem Command="Copy">
+                <MenuItem.Icon>
+                    <Image Source="Images/Copy.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+            <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
+            <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />
+        </UniformGrid>
+        <DataGrid AutoGenerateColumns="False" x:Name="bookmarksData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="bookmarkUpdated" HeadersVisibility="Column" SelectionUnit="Cell">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
+                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding hasRowDetails}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_system}" IsReadOnly="True" MinWidth="160" Binding="{Binding Path=systemname}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Left" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_body}" MinWidth="80" IsReadOnly="True" Binding="{Binding Path=bodyshortname, TargetNullValue='-'}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_poi}" MinWidth="160" Binding="{Binding Path=poi, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue='-'}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:NavigationMonitor.header_comment}" Width="*" Binding="{Binding Path=comment, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn MinWidth="31">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="copySystemNameToClipboard" MinWidth="30" HorizontalAlignment="Center" ToolTip="{x:Static resx:NavigationMonitor.copy_system_button_tooltip}">
+                                <StackPanel>
+                                    <Image Source="Images/Copy.png" Height="16"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="62">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="removeBookmark" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:NavigationMonitor.remove_button}" ToolTip="{x:Static resx:NavigationMonitor.remove_button_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate"
+                                        Value="{StaticResource bookmarkDataTemplate}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding landable}" Value="True">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource landableDataTemplate}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

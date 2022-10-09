@@ -84,7 +84,7 @@ namespace EddiEvents
         // These properties are not intended to be user facing
         public bool docked { get; private set; }
 
-        public long? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public long? carrierId { get; private set; }
 
@@ -112,11 +112,12 @@ namespace EddiEvents
 
         public List<EconomyShare> carrierEconomies { get; private set; }
 
-        public CarrierJumpedEvent(DateTime timestamp, string systemName, long systemAddress, decimal x, decimal y, decimal z,
-            string bodyName, long? bodyId, BodyType bodyType, Faction systemFaction, List<Faction> factions, List<Conflict> conflicts,
-            Economy systemEconomy, Economy systemEconomy2, SecurityLevel systemSecurity, long? systemPopulation, Power powerplayPower,
-            PowerplayState powerplayState, bool docked, string carrierName, StationModel carrierType, long? carrierId, Faction stationFaction,
-            List<StationService> stationServices, List<EconomyShare> stationEconomies) : base(timestamp, NAME)
+        public CarrierJumpedEvent(DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y, decimal z,
+            string bodyName, long? bodyId, BodyType bodyType, bool docked, 
+            string carrierName, StationModel carrierType, long? carrierId, List<StationService> stationServices,
+            Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
+            List<EconomyShare> stationEconomies, Economy systemEconomy, Economy systemEconomy2, SecurityLevel systemSecurity, long? systemPopulation, 
+            Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

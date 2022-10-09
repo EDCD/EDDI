@@ -7,19 +7,11 @@
         xmlns:local="clr-namespace:EddiNavigationMonitor"
         xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
         xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
-        xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
         mc:Ignorable="d" 
         d:DesignHeight="250" d:DesignWidth="500" SizeToContent="WidthAndHeight" MinHeight="250" MinWidth="500">
     <Window.Resources>
         <!-- Colors and simple brushes -->
-        <Color x:Key="DeepPurple" A="0xff" R="0x43" G="0x35" B="0x5d"/>
-        <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
         <SolidColorBrush x:Key="DataGridLineBrush" Color="LightGray"/>
-        <!-- Gradients -->
-        <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
-            <GradientStop Color="Black" Offset="0.0"/>
-            <GradientStop Color="{StaticResource DeepPurple}" Offset="1.0"/>
-        </LinearGradientBrush>
         <!-- Styles -->
         <Style TargetType="DataGrid">
             <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>

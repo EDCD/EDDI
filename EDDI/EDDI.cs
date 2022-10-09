@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
+using EddiStatusService;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
@@ -119,7 +120,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(HomeStarSystem));
+                    OnPropertyChanged();
                 }
                 if (homeStarSystem != null) { homeStarSystem.PropertyChanged -= childPropertyChangedHandler;}
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler;}
@@ -136,7 +137,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(HomeStation));
+                    OnPropertyChanged();
                 }
                 if (homeStation != null) { homeStation.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -153,7 +154,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(SquadronStarSystem));
+                    OnPropertyChanged();
                 }
                 if (squadronStarSystem != null) { squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -171,7 +172,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(DestinationStarSystem));
+                    OnPropertyChanged();
                 }
                 if (destinationStarSystem != null) { destinationStarSystem.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -186,6 +187,7 @@ namespace EddiCore
             get => destinationDistanceLy;
             set
             {
+                if (Equals(value, destinationDistanceLy)) { return; }
                 destinationDistanceLy = value;
                 OnPropertyChanged();
             }
@@ -215,6 +217,7 @@ namespace EddiCore
             get => environment;
             private set
             {
+                if (Equals(value, environment)) { return; }
                 environment = value;
                 OnPropertyChanged();
             }
@@ -230,7 +233,7 @@ namespace EddiCore
                 setSystemDistanceFromDestination(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(CurrentStarSystem));
+                    OnPropertyChanged();
                 }
                 if (currentStarSystem != null) { currentStarSystem.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -248,7 +251,7 @@ namespace EddiCore
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(LastStarSystem));
+                    OnPropertyChanged();
                 }
                 if (lastStarSystem != null) { lastStarSystem.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -266,7 +269,7 @@ namespace EddiCore
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(NextStarSystem));
+                    OnPropertyChanged();
                 }
                 if (nextStarSystem != null) { nextStarSystem.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -283,7 +286,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(CurrentStation));
+                    OnPropertyChanged();
                 }
                 if (currentStation != null) { currentStation.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -300,7 +303,7 @@ namespace EddiCore
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
-                    OnPropertyChanged(nameof(CurrentStellarBody));
+                    OnPropertyChanged();
                 }
                 if (currentStellarBody != null) { currentStellarBody.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
@@ -309,6 +312,28 @@ namespace EddiCore
             }
         }
         private Body currentStellarBody;
+
+        public FleetCarrier FleetCarrier
+        {
+            get => fleetCarrier;
+            set
+            {
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged();
+                }
+                if (fleetCarrier != null) { fleetCarrier.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
+
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                configuration.fleetCarrier = value;
+                ConfigService.Instance.eddiConfiguration = configuration;
+
+                fleetCarrier = value;
+                OnPropertyChanged();
+            }
+        }
+        private FleetCarrier fleetCarrier;
 
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
@@ -327,7 +352,23 @@ namespace EddiCore
         }
         private string vehicle = Constants.VEHICLE_SHIP;
 
-        public Ship CurrentShip { get; set; }
+        public Ship CurrentShip
+        {
+            get => _currentShip;
+            set
+            {
+                if (Equals(value, _currentShip)) return;
+                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+                {
+                    OnPropertyChanged();
+                }
+                if (_currentShip != null) { _currentShip.PropertyChanged -= childPropertyChangedHandler; }
+                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
+                _currentShip = value;
+                StatusService.Instance.CurrentShip = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
@@ -352,8 +393,15 @@ namespace EddiCore
                 // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
                 CompanionAppService.Instance.gameIsBeta = false;
 
-                // Retrieve commander preferences
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                // Retrieve commander data
+                var configuration = ConfigService.Instance.eddiConfiguration;
+                Cmdr.name = configuration.CommanderName;
+                Cmdr.phoneticName = configuration.PhoneticName;
+                Cmdr.gender = configuration.Gender;
+                FleetCarrier = configuration.fleetCarrier;
+
+                // We always start in normal space
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
                 List<Task> essentialAsyncTasks = new List<Task>();
                 if (running)
@@ -403,29 +451,28 @@ namespace EddiCore
                     Logging.Info("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
                 }
 
+                // Make sure that our essential tasks have completed before we start
+                Task.WaitAll(essentialAsyncTasks.ToArray());
+
                 // Tasks we can start asynchronously and don't need to wait for
-                Cmdr.name = configuration.CommanderName;
-                Cmdr.phoneticName = configuration.PhoneticName;
-                Cmdr.gender = configuration.Gender;
                 Task.Run(() => updateDestinationSystem(configuration.DestinationSystem));
                 Task.Run(() =>
                 {
                     // Set up the Frontier API service
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                    // Try to carry out initial population of the Frontier API profile
+                    try
                     {
-                        // Carry out initial population of profile
-                        try
-                        {
-                            refreshProfile();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Debug("Failed to obtain Frontier API profile: " + ex);
-                        }
+                        refreshProfile();
                     }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to obtain Frontier API profile: " + ex);
+                    }
+
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the Frontier API is enabled.");
+                        RefreshFleetCarrierFromFrontierAPI(true);
                     }
                     else
                     {
@@ -433,17 +480,22 @@ namespace EddiCore
                     }
                 });
 
-                // Make sure that our essential tasks have completed before we start
-                Task.WaitAll(essentialAsyncTasks.ToArray());
-
-                // We always start in normal space
-                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
+            }
+        }
+
+        private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
+        {
+            // Obtain fleet carrier data once the Frontier API connects
+            if (newstate is CompanionAppService.State.Authorized)
+            {
+                RefreshFleetCarrierFromFrontierAPI(true);
             }
         }
 
@@ -745,6 +797,8 @@ namespace EddiCore
 
         public void enqueueEvent(Event @event)
         {
+            if (@event is null) { return; }
+
             if (!eventQueue.IsAddingCompleted)
             {
                 eventQueue.Add(@event);
@@ -1019,7 +1073,7 @@ namespace EddiCore
                     {
                         name = settlementApproachedEvent.name,
                         marketId = settlementApproachedEvent.marketId,
-                        systemname = CurrentStarSystem.systemname,
+                        systemname = CurrentStarSystem?.systemname,
                         systemAddress = settlementApproachedEvent.systemAddress
                     };
                     CurrentStarSystem.stations.Add(station);
@@ -1139,6 +1193,7 @@ namespace EddiCore
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
             {
                 // We are in witch space and in the ship.
+                @event.docked = true;
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
                 Vehicle = Constants.VEHICLE_SHIP;
 
@@ -1159,13 +1214,13 @@ namespace EddiCore
                 updateCurrentSystem(@event.systemname);
 
                 // Update our station information
-                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId) ?? new Station();
+                CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId) ?? new Station();
                 CurrentStation.marketId = @event.carrierId;
                 CurrentStation.systemname = @event.systemname;
                 CurrentStation.systemAddress = @event.systemAddress;
 
                 // Add the carrier to the destination system
-                CurrentStarSystem.stations.Add(CurrentStation);
+                CurrentStarSystem?.stations.Add(CurrentStation);
 
                 // (When jumping near a body) Set the destination body as the current stellar body
                 if (@event.bodyname != null)
@@ -1201,6 +1256,7 @@ namespace EddiCore
                     }
                 }
             }
+
             return true;
         }
 
@@ -1254,72 +1310,79 @@ namespace EddiCore
                 updateCurrentSystem(@event.systemname);
 
                 // Update our system properties
-                CurrentStarSystem.systemAddress = @event.systemAddress;
-                CurrentStarSystem.x = @event.x;
-                CurrentStarSystem.y = @event.y;
-                CurrentStarSystem.z = @event.z;
-
-                // Add our carrier to the new current star system
-                CurrentStarSystem.stations.Add(CurrentStation);
-
-                // Update the mutable system data from the journal
-                if (@event.population != null)
+                if (CurrentStarSystem != null)
                 {
-                    CurrentStarSystem.population = @event.population;
-                    CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
-                    CurrentStarSystem.securityLevel = @event.securityLevel;
-                    CurrentStarSystem.Faction = @event.controllingsystemfaction;
-                }
+                    CurrentStarSystem.systemAddress = @event.systemAddress;
+                    CurrentStarSystem.x = @event.x;
+                    CurrentStarSystem.y = @event.y;
+                    CurrentStarSystem.z = @event.z;
 
-                // Update system faction data if available
-                if (@event.factions != null)
-                {
-                    CurrentStarSystem.factions = @event.factions;
+                    // Add our carrier to the new current star system
+                    CurrentStarSystem.stations.Add(CurrentStation);
 
-                    // Update station controlling faction data
-                    foreach (Station station in CurrentStarSystem.stations)
+                    // Update the mutable system data from the journal
+                    if (@event.population != null)
                     {
-                        Faction stationFaction = @event.factions.FirstOrDefault(f => f.name == station.Faction.name);
-                        if (stationFaction != null)
+                        CurrentStarSystem.population = @event.population;
+                        CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
+                        CurrentStarSystem.securityLevel = @event.securityLevel;
+                        CurrentStarSystem.Faction = @event.controllingsystemfaction;
+                    }
+
+                    // Update system faction data if available
+                    if (@event.factions != null)
+                    {
+                        CurrentStarSystem.factions = @event.factions;
+
+                        // Update station controlling faction data
+                        foreach (Station station in CurrentStarSystem.stations)
                         {
-                            station.Faction = stationFaction;
+                            Faction stationFaction =
+                                @event.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                            if (stationFaction != null)
+                            {
+                                station.Faction = stationFaction;
+                            }
+                        }
+
+                        // Check if current system is inhabited by or HQ for squadron faction
+                        Faction squadronFaction = @event.factions.FirstOrDefault(f =>
+                        {
+                            var squadronhomesystem = f.presences
+                                .FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem;
+                            return squadronhomesystem != null && ((bool)squadronhomesystem || f.squadronfaction);
+                        });
+                        if (squadronFaction != null)
+                        {
+                            updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
                         }
                     }
 
-                    // Check if current system is inhabited by or HQ for squadron faction
-                    Faction squadronFaction = @event.factions.FirstOrDefault(f =>
+                    // (When near a body) Update the body
+                    if (@event.bodyname != null && CurrentStellarBody?.bodyname != @event.bodyname)
                     {
-                        var squadronhomesystem = f.presences.
-                            FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem;
-                        return squadronhomesystem != null && ((bool)squadronhomesystem || f.squadronfaction);
-                    });
-                    if (squadronFaction != null)
-                    {
-                        updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
+                        updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
+                        if (CurrentStellarBody != null)
+                        {
+                            CurrentStellarBody.bodyId = @event.bodyId;
+                            CurrentStellarBody.bodyType = @event.bodyType;                            
+                        }
                     }
+
+                    // (When pledged) Powerplay information
+                    CurrentStarSystem.Power = @event.Power != null && @event.Power != Power.None
+                        ? @event.Power
+                        : CurrentStarSystem.Power;
+                    CurrentStarSystem.powerState = @event.powerState != null && @event.powerState != PowerplayState.None
+                        ? @event.powerState
+                        : CurrentStarSystem.powerState;
+
+                    // Update to most recent information
+                    CurrentStarSystem.visitLog.Add(@event.timestamp);
+                    CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(@event.timestamp);
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 }
-
-                // (When near a body) Update the body
-                if (@event.bodyname != null && CurrentStellarBody?.bodyname != @event.bodyname)
-                {
-                    updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
-                    CurrentStellarBody.bodyId = @event.bodyId;
-                    CurrentStellarBody.bodyType = @event.bodyType;
-                }
-
-                // (When pledged) Powerplay information
-                CurrentStarSystem.Power = @event.Power != null && @event.Power != Power.None
-                    ? @event.Power
-                    : CurrentStarSystem.Power;
-                CurrentStarSystem.powerState = @event.powerState != null && @event.powerState != PowerplayState.None
-                    ? @event.powerState
-                    : CurrentStarSystem.powerState;
-
-                // Update to most recent information
-                CurrentStarSystem.visitLog.Add(@event.timestamp);
-                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(@event.timestamp);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
+                
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
@@ -1345,6 +1408,7 @@ namespace EddiCore
                 Logging.Error("Whoops! CarrierJump event recorded when not docked.", @event);
                 throw new NotImplementedException();
             }
+
             return true;
         }
 
@@ -1457,7 +1521,7 @@ namespace EddiCore
             // in rapid succession when performing a system scan of a star system with only stars and no other bodies.
             if (CurrentStarSystem != null)
             {
-                if ((bool)CurrentStarSystem?.systemScanCompleted)
+                if (CurrentStarSystem.systemScanCompleted)
                 {
                     // We will suppress repetitions of the event within the same star system.
                     return false;
@@ -2059,7 +2123,7 @@ namespace EddiCore
             StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
 
             LastStarSystem = CurrentStarSystem;
-            if (NextStarSystem?.systemname == name)
+            if (NextStarSystem != null && NextStarSystem.systemname == name)
             {
                 CurrentStarSystem = NextStarSystem;
                 NextStarSystem = null;
@@ -2078,7 +2142,7 @@ namespace EddiCore
             setCommanderTitle();
         }
 
-        private void updateCurrentStellarBody(string bodyName, string systemName, long? systemAddress = null)
+        private void updateCurrentStellarBody(string bodyName, string systemName, ulong? systemAddress = null)
         {
             // Make sure our system information is up to date
             if (CurrentStarSystem == null || CurrentStarSystem.systemname != systemName)
@@ -2113,6 +2177,7 @@ namespace EddiCore
                         systemname = systemName,
                         systemAddress = systemAddress,
                     };
+                    CurrentStarSystem.AddOrUpdateBody(body);
                 }
                 CurrentStellarBody = body;
             }
@@ -2147,6 +2212,20 @@ namespace EddiCore
         {
             // Set and prepare data about the next star system
             NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.system);
+            if (NextStarSystem != null && !NextStarSystem.bodies.Any(b => b.mainstar ?? false))
+            {
+                // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
+                var mainStar = new Body
+                {
+                    bodyType = BodyType.FromEDName("Star"),
+                    systemname = NextStarSystem.systemname,
+                    systemAddress = nextStarSystem.systemAddress,
+                    distance = 0M,
+                    stellarclass = @event.starclass
+                };
+                NextStarSystem.AddOrUpdateBody(mainStar);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(NextStarSystem);
+            }
             return true;
         }
 
@@ -2238,7 +2317,7 @@ namespace EddiCore
             }
 
             // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-            if (CurrentStellarBody == null && !string.IsNullOrEmpty(theEvent.star))
+            if ((CurrentStellarBody == null || string.IsNullOrEmpty(currentStellarBody.bodyname)) && !string.IsNullOrEmpty(theEvent.star))
             {
                 CurrentStellarBody = new Body()
                 {
@@ -2716,14 +2795,20 @@ namespace EddiCore
             {
                 try
                 {
-                    Profile profile = CompanionAppService.Instance.Profile();
-                    if (profile != null)
+                    var result = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+                    var profileJson = result.Item1;
+                    var profileTimestamp = result.Item2;
+                    if (profileJson != null)
                     {
+                        var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson, profileTimestamp);
+
                         // Update our commander object
-                        Cmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
+                        var updatedCmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
 
                         // Stop if the commander returned from the profile does not match our expected commander name
                         if (!cmdrMatches) { return false; }
+
+                        Cmdr = updatedCmdr;
 
                         bool updatedCurrentStarSystem = false;
 
@@ -2733,9 +2818,10 @@ namespace EddiCore
                             updateCurrentSystem(profile.CurrentStarSystem.systemName);
                             setCommanderTitle();
 
-                            if (profile.docked && profile.CurrentStarSystem?.systemName == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
+                            if (profile.docked && profile.CurrentStarSystem?.systemName == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
                             {
-                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
+                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                                                 ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
                                 if (CurrentStation != null)
                                 {
                                     // Only set the current station if it is not present, otherwise we leave it to events
@@ -2812,6 +2898,32 @@ namespace EddiCore
                 }
             }
             return success;
+        }
+
+        /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
+        public void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
+        {
+            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
+            {
+                try
+                {
+                    var result = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
+                    var frontierApiCarrierJson = result.Item1;
+                    var timestamp = result.Item2;
+
+                    if (frontierApiCarrierJson != null)
+                    {
+                        // Update our Fleet Carrier object
+                        FleetCarrier = FleetCarrier is null
+                            ? new FleetCarrier(frontierApiCarrierJson, timestamp)
+                            : FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Exception obtaining fleet carrier Frontier API data", ex);
+                }
+            }
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
@@ -3007,6 +3119,7 @@ namespace EddiCore
 
         private bool profileUpdateNeeded = false;
         private string profileStationRequired = null;
+        private Ship _currentShip;
 
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
@@ -3034,15 +3147,20 @@ namespace EddiCore
                         }
 
                         // Make sure we know where we are
-                        if (CurrentStarSystem is null || CurrentStarSystem.systemname.Length < 0)
+                        if (CurrentStarSystem is null || string.IsNullOrEmpty(CurrentStarSystem.systemname))
                         {
                             break;
                         }
 
                         // We do need to fetch an updated profile; do so
-                        Profile profile = CompanionAppService.Instance?.Profile();
-                        if (profile != null)
+                        var profileResult = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+                        var profileJson = profileResult.Item1;
+                        var profileTimestamp = profileResult.Item2;
+
+                        if (profileResult != null)
                         {
+                            var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson, profileTimestamp);
+
                             // Sanity check
                             if (profile.Cmdr != null && profile.Cmdr.name != Cmdr.name)
                             {
@@ -3057,37 +3175,66 @@ namespace EddiCore
                                 return;
                             }
 
-                            // If we're docked, the lastStation information is located within the lastSystem identified by the profile
-                            if ((profile.docked || profile.onFoot) && Environment == Constants.ENVIRONMENT_DOCKED)
+                            // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
+                            if (profile.LastStationMarketID != null 
+                                && profile.LastStationMarketID == CurrentStation.marketId
+                                && (profile.docked || profile.onFoot) 
+                                && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
-                                Logging.Debug("Fetching station profile");
-                                Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemAddress, CurrentStarSystem.systemname);
+                                var stationResult = CompanionAppService.Instance.MarketEndpoint.GetMarket();
+                                var marketJson = stationResult.Item1;
+                                var marketTimestamp = stationResult.Item2;
 
-                                // Post an update event
-                                Event @event = new MarketInformationUpdatedEvent(profile.timestamp, stationProfile.CurrentStarSystem.systemName, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.eddnCommodityMarketQuotes, stationProfile.LastStation.prohibitedCommodities?.Select(p => p.Value).ToList(), stationProfile.LastStation.outfitting?.Select(m => m.edName).ToList(), stationProfile.LastStation.ships?.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, profile.contexts.allowCobraMkIV);
-                                enqueueEvent(@event);
+                                var shipyardResult = CompanionAppService.Instance.ShipyardEndpoint.GetShipyard();
+                                var shipyardJson = shipyardResult.Item1;
+                                var shipyardTimestamp = shipyardResult.Item2;
 
-                                // See if we need to update our current station
-                                Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + stationProfile.LastStation.name);
-
-                                if (profileStationRequired != null && profileStationRequired == stationProfile.LastStation.name)
+                                var profileStation = Station.FromFrontierApi(marketTimestamp, marketJson, shipyardTimestamp, shipyardJson);
+                                if (profileStation.name == profile.LastStationName &&
+                                    profileStation.marketId == profile.LastStationMarketID)
                                 {
-                                    // We have the required station information
-                                    Logging.Debug("Current station matches profile information; updating info");
-                                    Station station = CurrentStarSystem.stations.Find(s => s.name == stationProfile.LastStation.name);
-                                    station = stationProfile.LastStation.UpdateStation(stationProfile.timestamp, station);
+                                    // Post an update event
+                                    var @event = new MarketInformationUpdatedEvent(
+                                        profile.timestamp,
+                                        profile.CurrentStarSystem.systemName,
+                                        profileStation.name,
+                                        profileStation.marketId,
+                                        profileStation.eddnCommodityMarketQuotes,
+                                        profileStation.prohibitedCommodities?.Select(p => p.Value).ToList(),
+                                        profileStation.outfitting?.Select(m => m.edName).ToList(),
+                                        profileStation.ships?.Select(s => s.edModel).ToList(),
+                                        inHorizons,
+                                        inOdyssey,
+                                        profile.contexts.allowCobraMkIV);
+                                    enqueueEvent(@event);
 
-                                    // Update the current station information in our backend DB
-                                    Logging.Debug("Star system information updated from Frontier API server; updating local copy");
-                                    CurrentStation = station;
-                                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                                    // See if we need to update our current station
+                                    Logging.Debug("profileStationRequired is " + profileStationRequired +
+                                                  ", profile station is " + profileStation.name);
 
-                                    profileUpdateNeeded = false;
-                                    allowMarketUpdate = !(stationProfile.LastStation.eddnCommodityMarketQuotes?.Count > 0);
-                                    allowOutfittingUpdate = !(stationProfile.LastStation.outfitting?.Count > 0);
-                                    allowShipyardUpdate = !(stationProfile.LastStation.ships?.Count > 0);
+                                    if (profileStationRequired != null &&
+                                        profileStationRequired == profileStation.name)
+                                    {
+                                        // We have the required station information
+                                        Logging.Debug("Current station matches profile information; updating info");
+                                        Station station =
+                                            CurrentStarSystem.stations.Find(s => s.name == profileStation.name);
+                                        station = profileStation.UpdateStation(
+                                            profileStation.commoditiesupdatedat, station);
 
-                                    break;
+                                        // Update the current station information in our backend DB
+                                        Logging.Debug(
+                                            "Star system information updated from Frontier API server; updating local copy");
+                                        CurrentStation = station;
+                                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                                        profileUpdateNeeded = false;
+                                        allowMarketUpdate = !(profileStation.eddnCommodityMarketQuotes?.Count > 0);
+                                        allowOutfittingUpdate = !(profileStation.outfitting?.Count > 0);
+                                        allowShipyardUpdate = !(profileStation.ships?.Count > 0);
+
+                                        break;
+                                    }
                                 }
                             }
                         }

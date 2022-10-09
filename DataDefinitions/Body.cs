@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         public BodyType bodyType { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
-        [PublicAPI, JsonProperty("name"), JsonRequired]
+        [PublicAPI, JsonProperty("name")]
         public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
         public string systemname { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        public long? systemAddress { get; set; }
+        public ulong? systemAddress { get; set; }
 
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
         [PublicAPI]
@@ -246,7 +246,8 @@ namespace EddiDataDefinitions
         // Additional calculated star information
 
         [PublicAPI, JsonIgnore]
-        public bool scoopable => !string.IsNullOrEmpty(stellarclass) && "KGBFOAM".Contains(stellarclass);
+        public bool scoopable => !string.IsNullOrEmpty(stellarclass) 
+                                 && "KGBFOAM".Contains(stellarclass.Split('_')[0]);
 
         [PublicAPI, JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
@@ -269,7 +270,7 @@ namespace EddiDataDefinitions
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, ulong? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
@@ -420,7 +421,7 @@ namespace EddiDataDefinitions
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, string systemName = null, ulong? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
@@ -474,7 +475,7 @@ namespace EddiDataDefinitions
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
         [PublicAPI, JsonIgnore] // The duration of a solar day on the body, in Earth days
-        public decimal? solarday => tidallylocked ?? false ? null : (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
+        public decimal? solarday => orbitalperiod - rotationalperiod == 0 ? null : (orbitalperiod * rotationalperiod) / (orbitalperiod - rotationalperiod);
 
         [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
         public decimal? solarsurfacevelocity => (2 * (decimal)Math.PI * radius * 1000) / (solarday * 86400);
@@ -500,8 +501,8 @@ namespace EddiDataDefinitions
             int k_terraformable = 93328;
             double mappingMultiplier = 1;
 
-            var alreadyDiscovered = (alreadydiscovered ?? false);
-            var alreadyMapped = (alreadymapped ?? false);
+            var alreadyDiscovered = (alreadydiscovered ?? true); 
+            var alreadyMapped = (alreadymapped ?? true); // If we don't know then we'll assume true to underestimate rather than overestimate the value
 
             // Override constants for specific types of bodies
             if (planetClass.edname == "AmmoniaWorld")
@@ -623,6 +624,7 @@ namespace EddiDataDefinitions
 
         public static string GetShortName(string bodyname, string systemname)
         {
+            if (bodyname is null) { return null; }
             return (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
                 ? bodyname 
                 : bodyname?.Replace(systemname, "").Trim();
@@ -664,6 +666,15 @@ namespace EddiDataDefinitions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+        #endregion
+
+        #region Newtonsoft ShouldSerialize logic
+
+        // Allow `bodyname` to be omitted when distance is set
+        // (so that we can create a temporary main star with a stellar class when
+        // the `bodyname` is still unknown)
+        public bool ShouldSerializebodyname() => distance is null || !string.IsNullOrEmpty(bodyname);
+
         #endregion
     }
 }

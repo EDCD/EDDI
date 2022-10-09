@@ -168,14 +168,19 @@ namespace EddiStarMapService
                                 {
                                     // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
                                     await Task.Delay(2000, syncCancellationTS.Token).ConfigureAwait(false);
-                                    if (queuedEvents.Count > 0) { continue; }
+                                    if (queuedEvents.Count > 0)
+                                    {
+                                        continue;
+                                    }
+
                                     // No additional events registered, send any events we have in our holding queue
                                     if (holdingQueue.Count > 0)
                                     {
                                         var sendingQueue = holdingQueue.Copy();
-                                        holdingQueue = new List<IDictionary<string, object>>();
-                                        await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
-                                        await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                        await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token)
+                                            .ConfigureAwait(false);
+                                        await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token)
+                                            .ConfigureAwait(false);
                                     }
                                 }
                             }
@@ -188,6 +193,12 @@ namespace EddiStarMapService
                                 queuedEvents.Add(pendingEvent);
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            ex.Data.Add("Queued Events", holdingQueue);
+                            Logging.Error(ex.Message, ex);
+                        }
+                        holdingQueue.Clear();
                     }).ConfigureAwait(false);
                 }
                 catch (TaskCanceledException)
@@ -301,7 +312,7 @@ namespace EddiStarMapService
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response?.msg ?? clientResponse.ErrorMessage);
+                        Logging.Warn("EDSM responded with " + response?.msg);
                     }
                 }
                 catch (ThreadAbortException)
@@ -429,6 +440,7 @@ namespace EddiStarMapService
         public string system { get; set; } // System name
 
         public long systemId { get; set; } // EDSM ID
+        public ulong? systemId64 { get; set; } // System address
         public DateTime date { get; set; }
     }
 

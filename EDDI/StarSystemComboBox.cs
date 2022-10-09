@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Eddi
@@ -9,24 +10,45 @@ namespace Eddi
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : ComboBox
     {
+        public TextBox TextBox { get; private set; }
+
         private List<string> systemList = new List<string>();
         private int systemListSize = 10;
+        private readonly IEdsmService edsmService = new StarMapService();
 
-        private List<string> SystemsBeginningWith(string systemName)
+        public StarSystemComboBox()
         {
-            IEdsmService edsmService = new StarMapService();
-            return edsmService.GetStarMapSystemsPartial(systemName, false, false)?.Select(s => s.systemname).ToList()
-                ?? new List<string>();
+            this.GotFocus += OnGotFocus;
         }
 
-        internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
+        private void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (GetTemplateChild("PART_EditableTextBox") is TextBox textBox)
+            {
+                TextBox = textBox;
+            }
+        }
+
+        private List<string> SystemsBeginningWith(string partialSystemName)
+        {
+            return edsmService.GetTypeAheadStarSystems(partialSystemName) ?? new List<string>();
+        }
+
+        public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
             if (Text == oldValue) { return; }
 
             string systemName = Text;
             if (systemName.Length > 1)
             {
-                systemList = SystemsBeginningWith(systemName);
+                // Obtain a new systemList when the string is being shortened or when the current systemList no longer contains a valid entry
+                systemList = e.Changes.All(t => t.RemovedLength == 0) 
+                             && e.Changes.Any(t => t.AddedLength > 0) 
+                             && systemList.Any(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)) 
+                    ? systemList.Where(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)).ToList() 
+                    : SystemsBeginningWith(systemName);
+
+                var caretIndex = TextBox.CaretIndex;
                 if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                 {
                     ItemsSource = systemList.Take(1);
@@ -36,10 +58,10 @@ namespace Eddi
                 else
                 {
                     ItemsSource = systemList.Take(systemListSize);
+                    Text = systemName;
                     IsDropDownOpen = true;
-                    var cmbTextBox = (TextBox)Template.FindName("PART_EditableTextBox", this);
-                    cmbTextBox.CaretIndex = systemName.Length;
                 }
+                TextBox.CaretIndex = caretIndex;
             }
             else
             {
@@ -50,7 +72,7 @@ namespace Eddi
             changeHandler?.Invoke();
         }
 
-        internal void SelectionDidChange(Action<string> changeHandler)
+        public void SelectionDidChange(Action<string> changeHandler)
         {
             if (ItemsSource != null)
             {
@@ -59,7 +81,7 @@ namespace Eddi
             }
         }
 
-        internal void DidLoseFocus(string oldValue)
+        public void DidLoseFocus(string oldValue)
         {
             if (Text != oldValue)
             {

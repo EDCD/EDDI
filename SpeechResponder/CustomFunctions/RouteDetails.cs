@@ -1,7 +1,6 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiCore;
-using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -20,81 +19,108 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             string result = null;
             string value = values[0].AsString;
-            RouteDetailsEvent @event = null;
 
             if (!string.IsNullOrEmpty(value))
             {
                 if (Enum.TryParse(value, true, out QueryType queryType))
                 {
                     // Special case any queries which allow optional arguments
-                    dynamic[] args = null;
+                    string stringArg0 = null;
+                    string stringArg1 = null;
+                    decimal? numericArg = null;
+
+                    // Set arguments as required
                     switch (queryType)
                     {
+                        case QueryType.most:
+                        case QueryType.neutron:
                         case QueryType.route:
-                        {
-                            dynamic querySystem = null;
-                            if (values.Count == 2)
-                            {
-                                querySystem = values[1].AsString;
-                            }
-                            args = new[] {querySystem};
-                            break;
-                        }
-                        case QueryType.scoop:
-                        {
-                            dynamic searchDistance = null;
-                            if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
-                            {
-                                searchDistance = decimalDistance;
-                            }
-                            args = new[] { searchDistance };
-                            break;
-                        }
                         case QueryType.source:
-                        {
-                            dynamic querySystem = null;
-                            if (values.Count == 2)
-                            {
-                                querySystem = values[1].AsString;
-                            }
-                            args = new[] { querySystem };
-                            break;
-                        }
                         case QueryType.update:
                         {
-                            dynamic arg = null;
-                            if (values.Count == 2)
+                            if (values.Count >= 2)
                             {
-                                if (bool.TryParse(values[1].AsString, out var boolArg))
+                                stringArg0 = values[1].AsString;
+                            }
+
+                            break;
+                        }
+                        case QueryType.encoded:
+                        case QueryType.facilitator:
+                        case QueryType.guardian:
+                        case QueryType.human:
+                        case QueryType.manufactured:
+                        case QueryType.raw:
+                        case QueryType.scoop:
+                        {
+                            if (values.Count >= 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
+                            {
+                                numericArg = decimalDistance;
+                            }
+
+                            break;
+                        }
+                        case QueryType.set:
+                        {
+                            if (values.Count >= 2)
+                            {
+                                stringArg0 = values[1].AsString;
+                            }
+
+                            if (values.Count >= 3)
+                            {
+                                stringArg1 = values[2].AsString;
+                            }
+
+                            break;
+                        }
+                        case QueryType.carrier:
+                        {
+                            if (values.Count == 1)
+                            {
+                                return "Insufficient information to calculate carrier route details. At minimum, please specify a destination star system.";
+                            }
+                            if (values.Count >= 2)
+                            {
+                                stringArg0 = values[1].AsString; // Destination system
+                            }
+                            if (values.Count >= 3)
+                            {
+                                if (decimal.TryParse(values[2].AsString, out var load) && load > 0)
                                 {
-                                    arg = boolArg;
-                                }
-                                else if (decimal.TryParse(values[1].AsString, out var decimalArg))
-                                {
-                                    arg = decimalArg;
+                                    numericArg = load; // Used capacity
                                 }
                                 else
                                 {
-                                    arg = values[1].AsString;
+                                    stringArg1 = values[2].AsString; // Starting system
                                 }
                             }
-                            args = new[] { arg };
+                            if (values.Count >= 4)
+                            {
+                                if (!string.IsNullOrEmpty(stringArg1) 
+                                    && decimal.TryParse(values[3].AsString, out var load) && load > 0)
+                                {
+                                    numericArg = load; // Used capacity
+                                }
+                            }
                             break;
                         }
                     }
-                    @event = NavigationService.Instance.NavQuery(queryType, args);
+
+                    // Execute 
+                    var @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1 ?? EDDI.Instance.CurrentStarSystem.systemname, numericArg ?? EDDI.Instance.FleetCarrier.usedCapacity);
+                    if (@event != null)
+                    {
+                        EDDI.Instance?.enqueueEvent(@event);
+                        result = @event.system;
+                    }
                 }
                 else
                 {
                     Logging.Warn($"The search query '{value}' is unrecognized.");
                 }
             }
-            if (@event != null)
-            {
-                EDDI.Instance?.enqueueEvent(@event);
-                result = @event.system;
-            }
             return new ReflectionValue(result ?? new object());
-        }, 1, 3);
+        }, 1, 4);
     }
 }

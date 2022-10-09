@@ -3,7 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
-using EddiStatusMonitor;
+using EddiStatusService;
 using JetBrains.Annotations;
 using System.Linq;
 
@@ -21,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
             decimal? altitudeMeters;
             if (values.Count == 0)
             {
-                altitudeMeters = (EDDI.Instance.ObtainMonitor("Status monitor") as StatusMonitor)?.currentStatus?.altitude;
+                altitudeMeters = StatusService.Instance?.CurrentStatus?.altitude;
                 body = EDDI.Instance.CurrentStellarBody;
             }
             else if (values.Count == 1 && values[0].AsNumber >= 0)

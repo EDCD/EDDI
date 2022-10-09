@@ -9,8 +9,6 @@ namespace EddiConfigService
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\navigationmonitor.json")]
     public class NavigationMonitorConfiguration : Config
     {
-        public ObservableCollection<NavBookmark> bookmarks { get; set; } = new ObservableCollection<NavBookmark>();
-
         public DateTime updatedat { get; set; }
 
         // Search parameters
@@ -21,13 +19,11 @@ namespace EddiConfigService
         // Search data
         public string searchQuery { get; set; }
 
-        public dynamic[] searchQueryArgs { get; set; }
+        public string searchQuerySystemArg { get; set; }
 
-        public string searchSystem { get; set; }
+        public string searchQueryStationArg { get; set; }
 
-        public string searchStation { get; set; }
-
-        public decimal searchDistance { get; set; }
+        public string carrierDestinationArg { get; set; }
 
         // Ship touchdown data
         public decimal? tdLat { get; set; }
@@ -35,5 +31,16 @@ namespace EddiConfigService
         public decimal? tdLong { get; set; }
 
         public string tdPOI { get; set; }
+
+        // Saved bookmarks
+        public ObservableCollection<NavBookmark> bookmarks { get; set; } = new ObservableCollection<NavBookmark>();
+
+        // Current in-game route
+        public NavWaypointCollection navRouteList { get; set; } = new NavWaypointCollection();
+
+        // Plotted routes
+        public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
+
+        public NavWaypointCollection carrierPlottedRoute { get; set; } = new NavWaypointCollection();
     }
 }
