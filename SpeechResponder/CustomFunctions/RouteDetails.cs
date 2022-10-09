@@ -1,7 +1,6 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiCore;
-using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -20,7 +19,6 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             string result = null;
             string value = values[0].AsString;
-            RouteDetailsEvent @event = null;
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -40,16 +38,22 @@ namespace EddiSpeechResponder.CustomFunctions
                         case QueryType.source:
                         case QueryType.update:
                         {
-                            if (values.Count == 2)
+                            if (values.Count >= 2)
                             {
                                 stringArg0 = values[1].AsString;
                             }
 
                             break;
                         }
+                        case QueryType.encoded:
+                        case QueryType.facilitator:
+                        case QueryType.guardian:
+                        case QueryType.human:
+                        case QueryType.manufactured:
+                        case QueryType.raw:
                         case QueryType.scoop:
                         {
-                            if (values.Count == 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
+                            if (values.Count >= 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
                             {
                                 numericArg = decimalDistance;
                             }
@@ -63,7 +67,7 @@ namespace EddiSpeechResponder.CustomFunctions
                                 stringArg0 = values[1].AsString;
                             }
 
-                            if (values.Count == 3)
+                            if (values.Count >= 3)
                             {
                                 stringArg1 = values[2].AsString;
                             }
@@ -72,51 +76,51 @@ namespace EddiSpeechResponder.CustomFunctions
                         }
                         case QueryType.carrier:
                         {
-                            if (values.Count == 2)
+                            if (values.Count == 1)
                             {
-                                stringArg0 = EDDI.Instance.CurrentStarSystem.systemname;
-                                stringArg1 = values[1].AsString; // Destination system
-                                numericArg = EDDI.Instance.FleetCarrier.usedCapacity;
+                                return "Insufficient information to calculate carrier route details. At minimum, please specify a destination star system.";
                             }
-                            if (values.Count == 3)
+                            if (values.Count >= 2)
+                            {
+                                stringArg0 = values[1].AsString; // Destination system
+                            }
+                            if (values.Count >= 3)
                             {
                                 if (decimal.TryParse(values[2].AsString, out var load) && load > 0)
                                 {
-                                    stringArg0 = EDDI.Instance.CurrentStarSystem.systemname;
-                                    stringArg1 = values[1].AsString; // Destination system
                                     numericArg = load; // Used capacity
                                 }
                                 else
                                 {
-                                    stringArg0 = values[1].AsString; // Starting system
-                                    stringArg1 = values[2].AsString; // Destination system
-                                    numericArg = EDDI.Instance.FleetCarrier.usedCapacity;
+                                    stringArg1 = values[2].AsString; // Starting system
                                 }
                             }
-                            if (values.Count == 4)
+                            if (values.Count >= 4)
                             {
-                                stringArg0 = values[1].AsString; // Starting system
-                                stringArg1 = values[2].AsString; // Destination system
-                                numericArg = decimal.TryParse(values[3].AsString, out var load2) ? (decimal?)load2 : EDDI.Instance.FleetCarrier.usedCapacity;
+                                if (!string.IsNullOrEmpty(stringArg1) 
+                                    && decimal.TryParse(values[3].AsString, out var load) && load > 0)
+                                {
+                                    numericArg = load; // Used capacity
+                                }
                             }
                             break;
                         }
                     }
 
                     // Execute 
-                    @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1, numericArg);
+                    var @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1 ?? EDDI.Instance.CurrentStarSystem.systemname, numericArg ?? EDDI.Instance.FleetCarrier.usedCapacity);
+                    if (@event != null)
+                    {
+                        EDDI.Instance?.enqueueEvent(@event);
+                        result = @event.system;
+                    }
                 }
                 else
                 {
                     Logging.Warn($"The search query '{value}' is unrecognized.");
                 }
             }
-            if (@event != null)
-            {
-                EDDI.Instance?.enqueueEvent(@event);
-                result = @event.system;
-            }
             return new ReflectionValue(result ?? new object());
-        }, 1, 3);
+        }, 1, 4);
     }
 }

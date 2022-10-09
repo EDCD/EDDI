@@ -272,6 +272,7 @@
     <None Include="eddi.hu.json" />
     <None Include="eddi.it.json" />
     <None Include="eddi.ja.json" />
+    <None Include="eddi.zh-CN.json" />
     <None Include="eddi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

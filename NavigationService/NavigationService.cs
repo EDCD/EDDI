@@ -360,7 +360,7 @@ namespace EddiNavigationService
 
         private RouteDetailsEvent SetRoute(string system, string station = null)
         {
-            NavWaypointCollection navRouteList = new NavWaypointCollection();
+            NavWaypointCollection navRouteList;
             NavWaypoint firstUnvisitedWaypoint;
             // Use our saved route if a named system is not provided
             if (string.IsNullOrEmpty(system))
@@ -937,7 +937,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetCarrierRoute(string startingSystemName, string targetSystemName, long usedCarrierCapacity = 0, string[] refuel_destinations = null)
+        private RouteDetailsEvent GetCarrierRoute(string targetSystemName, string startingSystemName, long usedCarrierCapacity = 0, string[] refuel_destinations = null)
         {
             if (string.IsNullOrEmpty(startingSystemName))
             {

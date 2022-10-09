@@ -618,17 +618,13 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This function will produce a destination/route for valid mission destinations.
+        ///   Looks up a localized string similar to This function will produce a destination/route. It takes at least one mandatory argument, the `type`, and up to two optional arguments.
         ///
-        ///RouteDetails takes one mandatory argument, the `routetype`, and up to two optional arguments.
+        ///The `type` variable is a mandatory parameter defining the type of command you are sending to the Navigation Monitor. This variable may be used either to plot a new route or to send commands to control a previously plotted route.
         ///
-        ///The following `routetype` values are valid:
+        ///Route plotting `type` values:
         ///
-        ///* `cancel` Deactivates guidance along the current plotted route.
-        ///* `encoded` Nearest encoded materials trader.
-        ///* `expiring` Destination of your next expiring mission.
-        ///* `facilitator` Nearest &apos;Legal Facilities&apos; contact.
-        ///* `farthest` Mission destination farthest from your current loc [rest of string was truncated]&quot;;.
+        ///* `carrier` Plots a fleet carrier route between systems. Takes a destination system name as a mandatory 2nd  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RouteDetails {
             get {

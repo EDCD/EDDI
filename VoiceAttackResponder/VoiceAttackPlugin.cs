@@ -1059,26 +1059,32 @@ namespace EddiVoiceAttackResponder
             try
             {
                 string type = vaProxy.GetText("Type variable");
-                string system = vaProxy.GetText("System variable");
-                string station = vaProxy.GetText("Station variable");
+                string string0 = vaProxy.GetText("System variable");
+                string string1 = vaProxy.GetText("System variable 2") ?? vaProxy.GetText("Station variable");
+                decimal? numeric = vaProxy.GetDecimal("Numeric variable");
 
                 vaProxy.SetText("Type variable", null);
                 vaProxy.SetText("System variable", null);
+                vaProxy.SetText("System variable 2", null);
                 vaProxy.SetText("Station variable", null);
+                vaProxy.SetDecimal("Numeric variable", null);
 
-                RouteDetailsEvent @event = null;
                 if (Enum.TryParse(type, true, out QueryType result))
                 {
-                    @event = NavigationService.Instance.NavQuery(result, system, station);
+                    var @event = NavigationService.Instance.NavQuery(result, string0, string1, numeric);
+                    if (@event != null)
+                    {
+                        EDDI.Instance?.enqueueEvent(@event);
+                    }
                 }
-                if (@event != null)
+                else
                 {
-                    EDDI.Instance?.enqueueEvent(@event);
+                    Logging.Warn($"The search query '{type}' is unrecognized.");
                 }
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to get missions route", e);
+                setStatus(ref vaProxy, "Failed to get route", e);
             }
         }
     }

@@ -16,26 +16,29 @@ namespace EddiEvents
         [PublicAPI("Type of route query")]
         public string routetype { get; private set; }
 
-        [PublicAPI("The search system")]
+        [PublicAPI("The next star system waypoint in the route")]
         public string system { get; private set; }
 
-        [PublicAPI("The search station, if applicable")]
+        [PublicAPI("The station returned from the search, if applicable")]
         public string station { get; private set; }
 
-        [PublicAPI("List of system names, if applicable")]
+        [PublicAPI("A list of the system names which are visited during the route, if applicable")]
         public List<string> route => (Route ?? new NavWaypointCollection()).Waypoints.Select(r => r.systemName).ToList();
 
-        [PublicAPI("Count of missions, systems, or expiry seconds, depending on route type")]
+        [PublicAPI("A count of missions, systems, or mission expiry seconds, depending on the route type")]
         public long count { get; private set; }
 
-        [PublicAPI("The distance to the search system")]
+        [PublicAPI("The distance to the next star system waypoint")]
         public decimal distance => Route?.Waypoints.Count > 1 ? Route?.Waypoints[1].distance ?? 0 : 0;
 
-        [PublicAPI("The remaining distance of the missions route, if applicable")]
+        [PublicAPI("The total distance of the route, if applicable")]
         public decimal routedistance => Route?.RouteDistance ?? 0;
 
-        [PublicAPI("The mission ID(s) associated with the search system, if applicable")]
+        [PublicAPI("The mission ID(s) associated with the next waypoint star system, if applicable")]
         public List<long> missionids { get; private set; }
+
+        [PublicAPI("Required total tritium required to complete the route, if applicable")]
+        public int? tritiumused => routetype == "carrier" ? Route.RouteFuelTotal : null;
 
         // Not intended to be user facing
         public NavWaypointCollection Route { get; private set; }

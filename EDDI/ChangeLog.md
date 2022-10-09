@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Improved transitions between voices being handled by different speech synthesizers.
     * Improved parsing of Odyssey settlements from EDSM API data.
     * Don't assume that bodies retrieved from EDSM have already been mapped.
+    * Overhauled route plotting functions.
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
@@ -24,7 +25,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Events
       * `Carrier jump engaged` event updated to add a new `docked` property
-      * 'Location' event updated to add `faction` and `conflicts` properties (like the `Jumped` event)
+      * `Location` event updated to add `faction` and `conflicts` properties (like the `Jumped` event)
+      * `Route details` event updated to add `tritiumused` property for fleet carrier tritium consumption
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.
@@ -71,7 +73,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Permit acquired` added, triggered when you acquire a permit from the mission board.
-      * `Route details` revised to remove obsolete `next` argument and add `scoop`, `neutron`, and `recalculating`.
+      * `Route details` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, and `scoop` types.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
       * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source.
