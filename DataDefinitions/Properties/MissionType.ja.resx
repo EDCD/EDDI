@@ -188,14 +188,6 @@
   <data name="HackMegaship" xml:space="preserve">
     <value>メガシップのハッキング</value>
   </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>内戦の標的</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>戦争の標的</value>
-    <comment>Massacre mission type</comment>
-  </data>
   <data name="Skimmer" xml:space="preserve">
     <value>標的のスキマー</value>
     <comment>Massacre type</comment>
@@ -252,6 +244,7 @@
     <value>政治犯</value>
     <comment>Bulk passenger type</comment>
   </data>
+  
   
   
   
