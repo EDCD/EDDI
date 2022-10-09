@@ -215,6 +215,8 @@ namespace EddiDataDefinitions
 
                     return result;
                 }
+                // Appears to be a proper name
+                return new SignalSource(from) { fallbackInvariantName = from, fallbackLocalizedName = from};
             }
             return null;
         }

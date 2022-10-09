@@ -10,12 +10,13 @@
 
             None = new BodyType("None");
             var Barycenter = new BodyType("Null"); // The journal includes references to a "Null" string when we are near a barycenter
+            var Belt = new BodyType("Belt");
+            var HyperbolicOrbiter = new BodyType("HyperbolicOrbiter");
             var Moon = new BodyType("Moon");
             var Planet = new BodyType("Planet");
+            var PlanetaryRing = new BodyType("PlanetaryRing");
             var Star = new BodyType("Star");
             var Station = new BodyType("Station");
-            var Belt = new BodyType("Belt");
-            var PlanetaryRing = new BodyType("PlanetaryRing");
             var StellarRing = new BodyType("StellarRing");
         }
 

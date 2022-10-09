@@ -165,4 +165,8 @@
     <value>Stellar Ring</value>
     <comment>Body Type StellarRing</comment>
   </data>
+  <data name="HyperbolicOrbiter" xml:space="preserve">
+    <value>Hyperbolic Orbiter</value>
+    <comment>Body Type HyperbolicOrbiter</comment>
+  </data>
 </root>

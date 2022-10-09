@@ -70,6 +70,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hyperbolic Orbiter.
+        /// </summary>
+        public static string HyperbolicOrbiter {
+            get {
+                return ResourceManager.GetString("HyperbolicOrbiter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ice.
         /// </summary>
         public static string Ice {
