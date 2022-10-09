@@ -244,14 +244,6 @@
   <data name="HackMegaship" xml:space="preserve">
     <value>Hackear Meganave</value>
   </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Alvos da Guerra Civil</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>Alvos da Guerra</value>
-    <comment>Massacre mission type</comment>
-  </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Alvos Skimmer</value>
     <comment>Massacre type</comment>
@@ -317,4 +309,5 @@
   <data name="POI" xml:space="preserve">
     <value>Ponto de Interesse</value>
   </data>
+  
 </root>
