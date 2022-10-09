@@ -149,7 +149,10 @@
     <value>Stazione</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Baricentro</value>
+    <comment>BodyType "Null" (a Barycenter)</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anello planetario</value>
     <comment>Body Type PlanetaryRing</comment>
