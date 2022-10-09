@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
             var Agriculture = new Economy("Agri");
             var Colony = new Economy("Colony");
             var Damaged = new Economy("Damaged");
+            var Engineer = new Economy("Engineer");
             var Extraction = new Economy("Extraction");
             var Refinery = new Economy("Refinery");
             var Repair = new Economy("Repair");

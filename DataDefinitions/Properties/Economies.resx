@@ -161,4 +161,8 @@
     <value>Private Enterprise</value>
     <comment>Economy Type Carrier</comment>
   </data>
+  <data name="Engineer" xml:space="preserve">
+    <value>Engineering</value>
+    <comment>Economy type Engineer</comment>
+  </data>
 </root>
