@@ -412,6 +412,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Planetary Anomaly.
+        /// </summary>
+        public static string SAA_SignalType_PlanetAnomaly {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_PlanetAnomaly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Surface Signal.
         /// </summary>
         public static string SAA_SignalType_Thargoid {

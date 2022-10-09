@@ -718,6 +718,7 @@ namespace UnitTests
         [DataRow("$SAA_SignalType_Guardian;", "Guardian Surface Signal", 0, 0)]
         [DataRow("$SAA_SignalType_Human;", "Human Surface Signal", 0, 0)]
         [DataRow("$SAA_SignalType_Other;", "Other Surface Signal", 0, 0)]
+        [DataRow("$SAA_SignalType_PlanetAnomaly;", "Planetary Anomaly", 0, 0)]
         [DataRow("$SAA_SignalType_Thargoid;", "Thargoid Surface Signal", 0, 0)]
         // From `Touchdown` events
         [DataRow("$POI_CrashedShip:#index=1;", "Crashed Ship", 1, 0)]

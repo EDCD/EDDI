@@ -65,6 +65,7 @@ namespace EddiDataDefinitions
             var Guardian = new SignalSource("SAA_SignalType_Guardian");
             var Human = new SignalSource("SAA_SignalType_Human");
             var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
+            var PlanetAnomaly = new SignalSource("SAA_SignalType_PlanetAnomaly");
             var Other = new SignalSource("SAA_SignalType_Other");
 
             var AncientGuardianRuins = new SignalSource("Ancient");

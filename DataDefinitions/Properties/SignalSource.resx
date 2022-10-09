@@ -389,4 +389,8 @@
     <value>Signal Source</value>
     <comment>When the signal source may be one of several types</comment>
   </data>
+  <data name="SAA_SignalType_PlanetAnomaly" xml:space="preserve">
+    <value>Planetary Anomaly</value>
+    <comment>Planetary Anomaly Surface Signal</comment>
+  </data>
 </root>
