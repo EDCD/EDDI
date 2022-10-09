@@ -1920,6 +1920,21 @@
         "statusFlags": [],
         "categoryname": "Weapons",
         "locName": "Reactive Armour"
+      },
+      {
+        "id": 129015433,
+        "name": "AncientRelicTG",
+        "legality": "",
+        "buyPrice": 4798,
+        "sellPrice": 4797,
+        "meanPrice": 4750,
+        "demandBracket": 0,
+        "stockBracket": 0,
+        "stock": 0,
+        "demand": 0,
+        "statusFlags": [],
+        "categoryname": "Salvage",
+        "locName": "Unclassified Relic"
       }
     ]
   }

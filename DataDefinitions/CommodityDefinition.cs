@@ -438,6 +438,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128958679, 361, "ApaVietii", Narcotics, 10362, true),
                 new CommodityDefinition(128961249, 362, "Tritium", Chemicals, 41684, false),
                 new CommodityDefinition(128983059, 377, "OnionHeadC", Narcotics, 5387, false),
+                new CommodityDefinition(129015433, null, "AncientRelicTG", Salvage, 4798, false),
                 new CommodityDefinition(129002574, null, "ClassifiedExperimentalEquipment", Technology, 0, true),
 
                 // Items for which we do not have Elite IDs

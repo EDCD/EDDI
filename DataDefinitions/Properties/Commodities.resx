@@ -1777,4 +1777,8 @@
     <value>Classified Experimental Equipment</value>
     <comment>Commodity ClassifiedExperimentalEquipment</comment>
   </data>
+  <data name="AncientRelicTG" xml:space="preserve">
+    <value>Unclassified Relic</value>
+    <comment>Commodity AncientRelicTG</comment>
+  </data>
 </root>

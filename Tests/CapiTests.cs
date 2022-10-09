@@ -119,6 +119,7 @@ namespace UnitTests
                     new MarketInfoItem(128672302, "CeramicComposites", "Industrial Materials", 0, 712, 393, CommodityBracket.None, CommodityBracket.High, 0, 35686, false, new HashSet<string>() { "Consumer" } ),
                     new MarketInfoItem(128673857, "CoolingHoses", "Industrial Materials", 0, 1896, 1886, CommodityBracket.None, CommodityBracket.High, 0, 7839, false, new HashSet<string>() { "Consumer" } ),
                     new MarketInfoItem(128673855, "InsulatingMembrane", "Industrial Materials", 0, 11386, 10691, CommodityBracket.None, CommodityBracket.Medium, 0, 1461, false, new HashSet<string>() { "Consumer" } ),
+                    new MarketInfoItem(129015433, "AncientRelicTG", "Salvage", 4798, 4797, 4750, CommodityBracket.None, CommodityBracket.None, 0, 0, false, new HashSet<string>()),
                 },
                 prohibitedCommodities = new List<KeyValuePair<long, string>>()
                 {
@@ -157,7 +158,7 @@ namespace UnitTests
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
             var actualCommodities = actualStation.eddnCommodityMarketQuotes;
-            Assert.AreEqual(116, actualCommodities.Count);
+            Assert.AreEqual(117, actualCommodities.Count);
             foreach (var expectedCommodity in incompleteExpectedCommodities)
             {
                 foreach (var actualCommodity in actualCommodities)
