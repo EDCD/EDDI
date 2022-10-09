@@ -58,6 +58,14 @@ if "$(ConfigurationName)" == "Release" (
 )
 </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\EDDI.json" "$(SolutionDir)$(OutDir)"
+xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(SolutionDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)$(OutDir)\Wiki\images\"</PreBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
