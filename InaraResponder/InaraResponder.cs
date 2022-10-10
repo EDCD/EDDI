@@ -872,7 +872,7 @@ namespace EddiInaraResponder
                     { "stationName", storedModule?.station },
                     { "marketID", storedModule?.marketid }
                 };
-                if (storedModule?.module != null && (bool)storedModule.module?.modified)
+                if (storedModule?.module != null && (storedModule.module?.modified ?? false))
                 {
                     Dictionary<string, object> engineering = new Dictionary<string, object>()
                     {
