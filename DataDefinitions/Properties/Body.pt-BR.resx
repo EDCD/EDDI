@@ -165,5 +165,8 @@
     <value>Anel estelar</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
+  <data name="HyperbolicOrbiter" xml:space="preserve">
+    <value>Órbita Hiperbólica</value>
+    <comment>Body Type HyperbolicOrbiter</comment>
+  </data>
 </root>
