@@ -125,10 +125,7 @@
     <value>Schiffsdatenverbindung</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  <data name="UnknownUplink" xml:space="preserve">
-    <value>Unbekannte Datenverbindung</value>
-    <comment>Data scan type UnknownUplink</comment>
-  </data>
+  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Unbekannte Siedlung</value>
     <comment>Data scan type SettlementUnknown</comment>

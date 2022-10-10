@@ -1777,4 +1777,8 @@
     <value>Equipaggiamento sperimentale classificato</value>
     <comment>Commodity ClassifiedExperimentalEquipment</comment>
   </data>
+  <data name="AncientRelicTG" xml:space="preserve">
+    <value>Reliquia non classificata</value>
+    <comment>Commodity AncientRelicTG</comment>
+  </data>
 </root>

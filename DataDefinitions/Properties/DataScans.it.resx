@@ -126,7 +126,7 @@
     <comment>Data scan type ShipUplink</comment>
   </data>
   <data name="UnknownUplink" xml:space="preserve">
-    <value>Connessione Sconosciuta</value>
+    <value>Collegamento Thargoid</value>
     <comment>Data scan type UnknownUplink</comment>
   </data>
   <data name="SettlementUnknown" xml:space="preserve">

@@ -122,10 +122,7 @@
     <value>Hajó kapcsolat</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  <data name="UnknownUplink" xml:space="preserve">
-    <value>Ismeretlen kapcsolat</value>
-    <comment>Data scan type UnknownUplink</comment>
-  </data>
+  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Ismeretlen telep</value>
     <comment>Data scan type SettlementUnknown</comment>

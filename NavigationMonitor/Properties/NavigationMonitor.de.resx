@@ -132,9 +132,7 @@
   <data name="add_button" xml:space="preserve">
     <value>Lesezeichen hinzufügen</value>
   </data>
-  <data name="add_button_tooltip" xml:space="preserve">
-    <value>Lesezeichen aus Suchergebnissen hinzufügen</value>
-  </data>
+  
   <data name="find_text" xml:space="preserve">
     <value>Suchen:</value>
   </data>
@@ -174,9 +172,7 @@
   <data name="remove_button" xml:space="preserve">
     <value>Entfernen</value>
   </data>
-  <data name="remove_button_tooltip" xml:space="preserve">
-    <value>Erlaubt das manuelle Entfernen eines Lesezeichens.</value>
-  </data>
+  
   <data name="remove_caption" xml:space="preserve">
     <value>Lesezeichen löschen</value>
   </data>
@@ -186,65 +182,9 @@
   <data name="search" xml:space="preserve">
     <value>Suche</value>
   </data>
-  <data name="search_button_tooltip" xml:space="preserve">
-    <value>Suchabfrage ausführen</value>
-  </data>
+  
   <data name="search_distance" xml:space="preserve">
     <value>Max. Suchentfernung vom Hauptstern (Ls):</value>
-  </data>
-  <data name="search_query_crime_facilitator" xml:space="preserve">
-    <value>Legale Einrichtungen</value>
-  </data>
-  <data name="search_query_missions_expiring" xml:space="preserve">
-    <value>Auslaufende Missionen</value>
-  </data>
-  <data name="search_query_missions_farthest" xml:space="preserve">
-    <value>Entfernteste Missionen</value>
-  </data>
-  <data name="search_query_missions_most" xml:space="preserve">
-    <value>Häufigste Missionen</value>
-  </data>
-  <data name="search_query_missions_nearest" xml:space="preserve">
-    <value>Nächstgelegene Missionen</value>
-  </data>
-  <data name="search_query_missions_route" xml:space="preserve">
-    <value>Kürzeste Route</value>
-  </data>
-  <data name="search_query_missions_source" xml:space="preserve">
-    <value>Frachtabholort</value>
-  </data>
-  <data name="search_query_missions_update" xml:space="preserve">
-    <value>Update Missionen</value>
-  </data>
-  <data name="search_query_services_encoded" xml:space="preserve">
-    <value>Verschlüsselte Materialien-Händler</value>
-  </data>
-  <data name="search_query_services_guardian" xml:space="preserve">
-    <value>Guardian-Technologie-Broker</value>
-  </data>
-  <data name="search_query_services_human" xml:space="preserve">
-    <value>Humantechnologie-Broker</value>
-  </data>
-  <data name="search_query_services_manufactured" xml:space="preserve">
-    <value>Gefertigte Materialien-Händler</value>
-  </data>
-  <data name="search_query_services_raw" xml:space="preserve">
-    <value>Rohmaterialien-Händler</value>
-  </data>
-  <data name="search_query_galaxy_scoop" xml:space="preserve">
-    <value>Tankbarer Stern</value>
-  </data>
-  <data name="search_type_crime" xml:space="preserve">
-    <value>Verbrechen</value>
-  </data>
-  <data name="search_type_missions" xml:space="preserve">
-    <value>Missionen</value>
-  </data>
-  <data name="search_type_services" xml:space="preserve">
-    <value>Services</value>
-  </data>
-  <data name="search_type_galaxy" xml:space="preserve">
-    <value>Galaxie</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Station:</value>
@@ -258,9 +198,6 @@
   <data name="update_button_tooltip" xml:space="preserve">
     <value>Aktualisieren Sie die Standortdaten des Lesezeichens anhand Ihres aktuellen Breiten- und Längengrads</value>
   </data>
-  <data name="route_details_desc" xml:space="preserve">
-    <value>Eine erfolgreiche Suche löst das Ereignis "Route details" aus.</value>
-  </data>
   <data name="bm_export_button" xml:space="preserve">
     <value>Lesezeichen exportieren</value>
   </data>
@@ -269,8 +206,7 @@
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Richtung:</value>
-    <comment>header_heading
-A UI element describing a compass heading for surface navigation</comment>
+    <comment> A UI element describing a compass heading for surface navigation</comment>
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Entfernung (km):</value>
@@ -281,9 +217,7 @@ A UI element describing a compass heading for surface navigation</comment>
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Der Radius (in Metern), der das Ereignis "Nächstes Lesezeichen" auslöst</value>
   </data>
-  <data name="extra_details_tooltip" xml:space="preserve">
-    <value>Zusätzliche Details über das ausgewählte planetarische Lesezeichen ein- oder ausblenden</value>
-  </data>
+  
   <data name="use_straight_path" xml:space="preserve">
     <value>Direkten Weg verwenden?</value>
   </data>
@@ -301,4 +235,41 @@ A UI element describing a compass heading for surface navigation</comment>
     <value>Alles</value>
     <comment>Import or export all</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
