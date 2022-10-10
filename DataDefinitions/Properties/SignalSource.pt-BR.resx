@@ -389,6 +389,12 @@
     <value>Fonte de Sinal</value>
     <comment>When the signal source may be one of several types</comment>
   </data>
-  
-  
+  <data name="SAA_SignalType_PlanetAnomaly" xml:space="preserve">
+    <value>Anomalia Planetária</value>
+    <comment>Planetary Anomaly Surface Signal</comment>
+  </data>
+  <data name="Cargo" xml:space="preserve">
+    <value>Destroços Menores</value>
+    <comment>Minor Wreckage</comment>
+  </data>
 </root>
