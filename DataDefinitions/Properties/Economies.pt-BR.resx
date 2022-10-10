@@ -161,5 +161,8 @@
     <value>Empreendimento Privado</value>
     <comment>Economy Type Carrier</comment>
   </data>
-  
+  <data name="Engineer" xml:space="preserve">
+    <value>Engenharia</value>
+    <comment>Economy type Engineer</comment>
+  </data>
 </root>
