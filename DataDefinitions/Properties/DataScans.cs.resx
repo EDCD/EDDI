@@ -125,10 +125,7 @@
     <value>Vysílání z lodi</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  <data name="UnknownUplink" xml:space="preserve">
-    <value>Neznámé vysílání</value>
-    <comment>Data scan type UnknownUplink</comment>
-  </data>
+  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Neznámá kolonie</value>
     <comment>Data scan type SettlementUnknown</comment>
