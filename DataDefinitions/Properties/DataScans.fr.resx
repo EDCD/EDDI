@@ -125,10 +125,7 @@
     <value>Émission de vaisseau</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  <data name="UnknownUplink" xml:space="preserve">
-    <value>Émission inconnue</value>
-    <comment>Data scan type UnknownUplink</comment>
-  </data>
+  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Installation inconnu</value>
     <comment>Data scan type SettlementUnknown</comment>
