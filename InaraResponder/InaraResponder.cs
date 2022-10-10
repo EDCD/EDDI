@@ -655,6 +655,8 @@ namespace EddiInaraResponder
             {
                 currentShipData.Add("shipRole", (currentShip.Role ?? Role.MultiPurpose).invariantName);
                 currentShipData.Add("isHot", currentShip.hot);
+                currentShipData.Add("shipMaxJumpRange", currentShip.maxjumprange);
+                currentShipData.Add("shipCargoCapacity", currentShip.cargocapacity);
             }
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
 
