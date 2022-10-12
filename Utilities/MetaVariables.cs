@@ -226,15 +226,11 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                var data = new Dictionary<string, object>()
-                    {
-                        { "keysPath", string.Join("/", keysPath) },
-                        { "key", key },
-                        { "type", type },
-                        { "value", value },
-                        { "Exception", ex }
-                    };
-                Logging.Error("Failed to obtain variable metadata by reflection.", data);
+                ex.Data.Add("keysPath", string.Join("/", keysPath));
+                ex.Data.Add("key", key);
+                ex.Data.Add("type", type);
+                ex.Data.Add("value", value);
+                Logging.Error("Failed to obtain variable metadata by reflection.", ex);
             }
             return;
         }
@@ -436,12 +432,8 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                var data = new Dictionary<string, object>()
-                    {
-                        { "Value", this },
-                        { "Exception", ex }
-                    };
-                Logging.Error($"Failed to write VoiceAttack value for key '{key}'", data);
+                ex.Data.Add("Value", this);
+                Logging.Error($"Failed to write VoiceAttack value for key '{key}'", ex);
             }
         }
     }

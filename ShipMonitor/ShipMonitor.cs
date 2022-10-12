@@ -1521,13 +1521,9 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "slot", slot },
-                        { "module", module },
-                        { "exception", ex },
-                    };
-                    Logging.Error("Failed to add module to ship.", data);
+                    ex.Data.Add("slot", slot);
+                    ex.Data.Add("module", module);
+                    Logging.Error("Failed to add module to ship.", ex);
                     throw;
                 }
             }
@@ -1571,12 +1567,8 @@ namespace EddiShipMonitor
             }
             catch (ArgumentException ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "Exception", ex },
-                    { "Ship compartments", ship.compartments}
-                };
-                Logging.Error("Failed to sort ship compartments", data);
+                ex.Data.Add("Ship compartments", ship.compartments);
+                Logging.Error("Failed to sort ship compartments", ex);
             }
         }
 
@@ -1629,12 +1621,8 @@ namespace EddiShipMonitor
             }
             catch (ArgumentException ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "Exception", ex },
-                    { "Ship", ship }
-                };
-                Logging.Error("Failed to sort ship hardpoints", data);
+                ex.Data.Add("Ship", ship);
+                Logging.Error("Failed to sort ship hardpoints", ex);
             }
         }
 
@@ -1744,13 +1732,9 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "slot", slot },
-                        { "replacement", replacement },
-                        { "exception", ex },
-                    };
-                    Logging.Error("Failed to remove module from ship.", data);
+                    ex.Data.Add("slot", slot);
+                    ex.Data.Add("replacement", replacement);
+                    Logging.Error("Failed to remove module from ship.", ex);
                     throw;
                 }
             }

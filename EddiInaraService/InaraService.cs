@@ -262,8 +262,8 @@ namespace EddiInaraService
             }
             catch (Exception e)
             {
-                data.Add("Exception", e);
-                Logging.Error("Failed to handle Inara server response", data);
+                e.Data.Add("Data", data);
+                Logging.Error("Failed to handle Inara server response", e);
                 return false;
             }
         }

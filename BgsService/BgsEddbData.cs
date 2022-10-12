@@ -148,12 +148,8 @@ namespace EddiBgsService
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "input", response },
-                    { "exception", ex }
-                };
-                Logging.Error("Failed to parse BGS EDDB data.", data);
+                ex.Data.Add("response", response);
+                Logging.Error("Failed to parse BGS EDDB data.", ex);
                 return null;
             }
         }

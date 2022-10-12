@@ -342,12 +342,8 @@ namespace EddiDataProviderService
             }
             catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "value", bodiesVal },
-                    { "exception", e }
-                };
-                Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", data);
+                e.Data.Add("value", bodiesVal);
+                Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", e);
             }
         }
 
@@ -377,12 +373,8 @@ namespace EddiDataProviderService
             }
             catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "value", factionsVal },
-                    { "exception", e }
-                };
-                Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", data);
+                e.Data.Add("value", factionsVal);
+                Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", e);
             }
         }
 

@@ -208,12 +208,8 @@ namespace EddiGalnetMonitor
                                 }
                                 catch (Exception ex)
                                 {
-                                    Dictionary<string, object> data = new Dictionary<string, object>()
-                                    {
-                                        { "item", item },
-                                        { "exception", ex}
-                                    };
-                                    Logging.Error("Exception handling Galnet news item.", data);
+                                    ex.Data.Add("item", item);
+                                    Logging.Error("Exception handling Galnet news item.", ex);
                                 }
                             }
 
@@ -306,13 +302,9 @@ namespace EddiGalnetMonitor
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "title", title },
-                    { "content", content },
-                    { "exception", ex }
-                };
-                Logging.Error("Exception categorizing Galnet article.", data);
+                ex.Data.Add("title", title);
+                ex.Data.Add("content", content);
+                Logging.Error("Exception categorizing Galnet article.", ex);
             }
 
             return GetGalnetResource("categoryArticle");

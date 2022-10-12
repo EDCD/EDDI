@@ -315,12 +315,8 @@ namespace EddiInaraResponder
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>
-                {
-                    { "exception", ex },
-                    { "event", JsonConvert.SerializeObject(theEvent) }
-                };
-                Logging.Error("Failed to handle event " + theEvent.type, data);
+                ex.Data.Add("event", JsonConvert.SerializeObject(theEvent));
+                Logging.Error("Failed to handle event " + theEvent.type, ex);
             }
         }
 

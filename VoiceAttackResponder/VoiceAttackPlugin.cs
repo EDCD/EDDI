@@ -247,13 +247,8 @@ namespace EddiVoiceAttackResponder
                     }
                     catch (Exception ex)
                     {
-                        Dictionary<string, object> data = new Dictionary<string, object>
-                        {
-                            { "event", JsonConvert.SerializeObject(@event) },
-                            { "exception", ex.Message },
-                            { "stacktrace", ex.StackTrace }
-                        };
-                        Logging.Error("VoiceAttack failed to handle event.", data);
+                        ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                        Logging.Error("VoiceAttack failed to handle event.", ex);
                     }
                 }
             }

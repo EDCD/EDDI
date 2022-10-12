@@ -679,13 +679,9 @@ namespace EddiJournalMonitor
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        Dictionary<string, object> modVal = new Dictionary<string, object>()
-                                                            {
-                                                                { "Exception", e },
-                                                                { "Module", item },
-                                                                { "Engineering", engineeringData }
-                                                            };
-                                                        Logging.Error("Failed to parse engineering modification", modVal);
+                                                        e.Data.Add("Module", item);
+                                                        e.Data.Add("Engineering", engineeringData);
+                                                        Logging.Error("Failed to parse engineering modification", e);
                                                     }
                                                 }
                                             }
@@ -4627,13 +4623,8 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Dictionary<string, object> data = new Dictionary<string, object>
-                {
-                    { "event", line },
-                    { "exception", ex.Message },
-                    { "stacktrace", ex.StackTrace }
-                };
-                Logging.Error("Exception whilst parsing journal line", data);
+                ex.Data.Add("event", line);
+                Logging.Error("Exception whilst parsing journal line", ex);
             }
             return events;
         }

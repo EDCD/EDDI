@@ -125,13 +125,8 @@ namespace EddiStarMapService
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>
-                            {
-                                {"faction", JsonConvert.SerializeObject(faction)},
-                                {"exception", ex.Message},
-                                {"stacktrace", ex.StackTrace}
-                            };
-                Logging.Error("Error parsing EDSM faction result.", data);
+                ex.Data.Add("faction", JsonConvert.SerializeObject(faction));
+                Logging.Error("Error parsing EDSM faction result.", ex);
             }
             return null;
         }

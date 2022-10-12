@@ -234,13 +234,8 @@ namespace EddiStarMapService
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>
-                            {
-                                {"body", JsonConvert.SerializeObject(body)},
-                                {"exception", ex.Message},
-                                {"stacktrace", ex.StackTrace}
-                            };
-                Logging.Error("Error parsing EDSM body result.", data);
+                ex.Data.Add("body", JsonConvert.SerializeObject(body));
+                Logging.Error("Error parsing EDSM body result.", ex);
                 throw;
             }
 

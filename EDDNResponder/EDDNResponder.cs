@@ -499,8 +499,8 @@ namespace EDDNResponder
             }
             catch (Exception ex)
             {
-                data.Add(new KeyValuePair<string, object>("Exception", ex));
-                Logging.Error("Unable to send message to EDDN, schema " + schema, data);
+                ex.Data.Add("Data", data);
+                Logging.Error("Unable to send message to EDDN, schema " + schema, ex);
             }
         }
 
@@ -716,13 +716,9 @@ namespace EDDNResponder
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "eddnMessage", JsonConvert.SerializeObject(body?.message) },
-                        { "Response", response?.Content },
-                        { "Exception", ex }
-                    };
-                    Logging.Error("Failed to send data to EDDN", data);
+                    ex.Data.Add("eddnMessage", JsonConvert.SerializeObject(body?.message));
+                    ex.Data.Add("Response", response?.Content);
+                    Logging.Error("Failed to send data to EDDN", ex);
                 }
             })
             {

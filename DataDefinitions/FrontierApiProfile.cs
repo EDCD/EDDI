@@ -187,14 +187,10 @@ namespace EddiDataDefinitions
             }
             catch (Exception e)
             {
-                var data = new Dictionary<string, object>()
-                    {
-                        { "Exception", e },
-                        { "Profile economy shares", economyShares},
-                        { "Profile station services", stationServices},
-                        { "Station", station }
-                    };
-                Logging.Error("Failed to update station economy and services from profile.", data);
+                e.Data.Add("Profile economy shares", economyShares);
+                e.Data.Add("Profile station services", stationServices);
+                e.Data.Add("Station", station);
+                Logging.Error("Failed to update station economy and services from profile.", e);
             }
 
             if (commoditiesupdatedat != DateTime.MinValue &&
@@ -208,14 +204,10 @@ namespace EddiDataDefinitions
                 }
                 catch (Exception e)
                 {
-                    var data = new Dictionary<string, object>()
-                    {
-                        { "Exception", e },
-                        { "Profile commodity quotes", eddnCommodityMarketQuotes },
-                        { "Profile prohibited commodities", prohibitedCommodities},
-                        { "Station", station }
-                    };
-                    Logging.Error("Failed to update station market from profile.", data);
+                    e.Data.Add("Profile commodity quotes", eddnCommodityMarketQuotes);
+                    e.Data.Add("Profile prohibited commodities", prohibitedCommodities);
+                    e.Data.Add("Station", station);
+                    Logging.Error("Failed to update station market from profile.", e);
                 }
             }
             if (outfittingupdatedat != DateTime.MinValue && (station.outfittingupdatedat ?? 0) < Dates.fromDateTimeToSeconds(outfittingupdatedat))
@@ -227,13 +219,9 @@ namespace EddiDataDefinitions
                 }
                 catch (Exception e)
                 {
-                    var data = new Dictionary<string, object>()
-                    {
-                        { "Exception", e },
-                        { "Profile outiftting", outfitting },
-                        { "Station", station }
-                    };
-                    Logging.Error("Failed to update station outfitting from profile.", data);
+                    e.Data.Add("Profile outfitting", outfitting);
+                    e.Data.Add("Station", station);
+                    Logging.Error("Failed to update station outfitting from profile.", e);
                 }
 
             }
@@ -246,13 +234,9 @@ namespace EddiDataDefinitions
                 }
                 catch (Exception e)
                 {
-                    var data = new Dictionary<string, object>()
-                    {
-                        { "Exception", e },
-                        { "Profile ships", ships },
-                        { "Station", station }
-                    };
-                    Logging.Error("Failed to update station shipyard from profile.", data);
+                    e.Data.Add("Profile ships", ships);
+                    e.Data.Add("Station", station);
+                    Logging.Error("Failed to update station shipyard from profile.", e);
                 }
             }
             station.updatedat = Dates.fromDateTimeToSeconds(profileTimeStamp);

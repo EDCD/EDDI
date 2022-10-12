@@ -1045,14 +1045,8 @@ namespace EddiCore
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "event", JsonConvert.SerializeObject(@event) },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
-                    };
-
-                    Logging.Error("EDDI core failed to handle event " + @event.type, data);
+                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                    Logging.Error("EDDI core failed to handle event " + @event.type, ex);
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity.
@@ -1603,13 +1597,8 @@ namespace EddiCore
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "event", JsonConvert.SerializeObject(@event) },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
-                    };
-                    Logging.Error(monitor.MonitorName() + " failed to handle event " + @event.type, data);
+                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                    Logging.Error(monitor.MonitorName() + " failed to handle event " + @event.type, ex);
                 }
             }
         }
@@ -1629,27 +1618,16 @@ namespace EddiCore
                         }
                         catch (Exception ex)
                         {
-                            Dictionary<string, object> data = new Dictionary<string, object>
-                            {
-                                { "event", JsonConvert.SerializeObject(@event) },
-                                { "exception", ex.Message },
-                                { "stacktrace", ex.StackTrace }
-                            };
-
-                            Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, data);
+                            ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                            Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, ex);
                         }
                     });
                     responderTasks.Add(responderTask);
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "event", JsonConvert.SerializeObject(@event) },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
-                    };
-                    Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, data);
+                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                    Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, ex);
                 }
             }
             await Task.WhenAll(responderTasks.ToArray());
@@ -1682,13 +1660,8 @@ namespace EddiCore
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "event", JsonConvert.SerializeObject(@event) },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
-                    };
-                    Logging.Error(monitor.MonitorName() + " failed to post-handle event " + @event.type, data);
+                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
+                    Logging.Error(monitor.MonitorName() + " failed to post-handle event " + @event.type, ex);
                 }
                 await Task.WhenAll(monitorTasks.ToArray());
             }
@@ -2879,13 +2852,8 @@ namespace EddiCore
                             }
                             catch (Exception ex)
                             {
-                                Dictionary<string, object> data = new Dictionary<string, object>
-                                {
-                                    { "message", ex.Message },
-                                    { "stacktrace", ex.StackTrace },
-                                    { "profile", JsonConvert.SerializeObject(profile) }
-                                };
-                                Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", data);
+                                ex.Data.Add("profile", JsonConvert.SerializeObject(profile));
+                                Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", ex);
                                 success = false;
                             }
                         }
