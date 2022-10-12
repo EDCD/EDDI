@@ -114,6 +114,10 @@
     
     <comment>RouteDetails `neutron` query description</comment>
   </data>
+  <data name="query_type_scoop" xml:space="preserve">
+    <value>Rotta di stelle adatte al rifornimento</value>
+    <comment>RouteDetails `scoop` query description</comment>
+  </data>
   <data name="query_type_expiring" xml:space="preserve">
     <value>Rotta per le Missioni in scadenza</value>
     <comment>RouteDetails `expiring` query description</comment>
