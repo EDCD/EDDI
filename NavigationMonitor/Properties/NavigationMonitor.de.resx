@@ -124,7 +124,7 @@
     <value>Lesezeichen aus einer CSV-Datei importieren</value>
   </data>
   <data name="bm_location_button" xml:space="preserve">
-    <value>Lesezeichen Standort</value>
+    <value>Ort zu den Lesezeichen hinzufügen</value>
   </data>
   <data name="bm_location_button_tooltip" xml:space="preserve">
     <value>Lesezeichen für den aktuellen Standort hinzufügen</value>
@@ -132,7 +132,9 @@
   <data name="add_button" xml:space="preserve">
     <value>Lesezeichen hinzufügen</value>
   </data>
-  
+  <data name="add_button_tooltip" xml:space="preserve">
+    <value>Ort zu den Lesezeichen hinzufügen</value>
+  </data>
   <data name="find_text" xml:space="preserve">
     <value>Suchen:</value>
   </data>
@@ -250,14 +252,18 @@
   <data name="tab_plot_ship_route" xml:space="preserve">
     <value>Schiffsroute plotten</value>
   </data>
-  
+  <data name="header_distance_remaining_ly" xml:space="preserve">
+    <value>Verbleibende (Lj)</value>
+  </data>
   <data name="header_distance_ly" xml:space="preserve">
     <value>Entfernung (Lj)</value>
   </data>
   <data name="header_stellar_class" xml:space="preserve">
     <value>Sternklasse</value>
   </data>
-  
+  <data name="header_scoopable" xml:space="preserve">
+    <value>Tankbar?</value>
+  </data>
   <data name="header_neutron_star" xml:space="preserve">
     <value>Neutronenstern?</value>
   </data>
@@ -330,6 +336,10 @@
     <value>Zielsystem:</value>
   </data>
   
-  
-  
+  <data name="carrier_err_frontier_api_connection_required" xml:space="preserve">
+    <value> --- Fehler: Mit der Frontier API verbinden, um diesen Wert zu erhalten ---</value>
+  </data>
+  <data name="carrier_err_frontier_api_connection_recommended" xml:space="preserve">
+    <value>--- Fehler: Mit der Frontier-API verbinden oder den "Carrier Management" Bildschirm aufrufen, um diesen Wert zu erhalten ---</value>
+  </data>
 </root>
