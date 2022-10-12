@@ -134,7 +134,7 @@
     <comment>Major reserves</comment>
   </data>
   <data name="PristineResources" xml:space="preserve">
-    <value>Intonse</value>
+    <value>Incontaminato</value>
     <comment>Pristine reserves</comment>
   </data>
   <data name="DepletedResources" xml:space="preserve">
