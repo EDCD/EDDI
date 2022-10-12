@@ -182,7 +182,9 @@
   <data name="search" xml:space="preserve">
     <value>Suche</value>
   </data>
-  
+  <data name="search_button_tooltip" xml:space="preserve">
+    <value>Eine erfolgreiche Suche löst das Ereignis "Route details" aus.</value>
+  </data>
   <data name="search_distance" xml:space="preserve">
     <value>Max. Suchentfernung vom Hauptstern (Ls):</value>
   </data>
@@ -217,7 +219,9 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Der Radius (in Metern), der das Ereignis "Nächstes Lesezeichen" auslöst</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Zusätzliche Details zum ausgewählten Objekt ein- oder ausblenden</value>
+  </data>
   <data name="use_straight_path" xml:space="preserve">
     <value>Direkten Weg verwenden?</value>
   </data>
@@ -235,9 +239,15 @@
     <value>Alles</value>
     <comment>Import or export all</comment>
   </data>
-  
-  
-  
+  <data name="tab_bookmarks" xml:space="preserve">
+    <value>Lesezeichen</value>
+  </data>
+  <data name="tab_plotted_route" xml:space="preserve">
+    <value>Aktuelle Route</value>
+  </data>
+  <data name="tab_plot_ship_route" xml:space="preserve">
+    <value>Schiffsroute plotten</value>
+  </data>
   
   
   
