@@ -156,7 +156,9 @@
   <data name="header_originstation" xml:space="preserve">
     <value>Ursprungstation:</value>
   </data>
-  
+  <data name="header_faction" xml:space="preserve">
+    <value>Missionsanbieter:</value>
+  </data>
   <data name="header_cg_tier" xml:space="preserve">
     <value>Stufe:</value>
   </data>
