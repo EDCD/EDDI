@@ -261,7 +261,9 @@
   <data name="header_stellar_class" xml:space="preserve">
     <value>Classe stellare</value>
   </data>
-  
+  <data name="header_scoopable" xml:space="preserve">
+    <value>Adatta al rifornimento?</value>
+  </data>
   <data name="header_neutron_star" xml:space="preserve">
     <value>Stella di neutroni?</value>
   </data>
@@ -292,10 +294,18 @@
   <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
     <value>Il sistema di Arrivo è un campo obbligatorio per calcolare una Neutron-Strada.</value>
   </data>
-  
-  
-  
-  
+  <data name="enable_guidance_button" xml:space="preserve">
+    <value>Abilita Autopilota</value>
+  </data>
+  <data name="enable_guidance_button_tooltip" xml:space="preserve">
+    <value>Autopilota la nave lungo la rotta stabilita</value>
+  </data>
+  <data name="disable_guidance_button" xml:space="preserve">
+    <value>Disattiva Autopilota</value>
+  </data>
+  <data name="disable_guidance_button_tooltip" xml:space="preserve">
+    <value>Cessa di autopilotare la nave lungo la rotta stabilita.</value>
+  </data>
   <data name="clear_route_button" xml:space="preserve">
     <value>Cancella la Rotta</value>
   </data>
@@ -326,7 +336,9 @@
   <data name="header_icy_ring" xml:space="preserve">
     <value>Anello di ghiaccio</value>
   </data>
-  
+  <data name="header_pristine_mining" xml:space="preserve">
+    <value>Estrazione da giacimenti incontaminati</value>
+  </data>
   <data name="carrier_current_system_textbox_desc" xml:space="preserve">
     <value>Sistema corrente:</value>
   </data>

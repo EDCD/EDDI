@@ -125,7 +125,10 @@
     <value>Uplink da Nave</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  
+  <data name="UnknownUplink" xml:space="preserve">
+    <value>Link Thargoid</value>
+    <comment>Data scan type UnknownUplink</comment>
+  </data>
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Assentamento Desconhecido</value>
     <comment>Data scan type SettlementUnknown</comment>

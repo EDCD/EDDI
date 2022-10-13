@@ -97,4 +97,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="query_group_galaxy" xml:space="preserve">
+    <value>Galaxie</value>
+    
+  </data>
+  <data name="query_group_missions" xml:space="preserve">
+    <value>Missionen</value>
+    
+  </data>
+  <data name="query_type_neutron" xml:space="preserve">
+    <value>Neutronensternroute</value>
+    
+    <comment>RouteDetails `neutron` query description</comment>
+  </data>
+  <data name="query_type_scoop" xml:space="preserve">
+    <value>Route tankbarer Sterne</value>
+    <comment>RouteDetails `scoop` query description</comment>
+  </data>
+  <data name="query_type_expiring" xml:space="preserve">
+    <value>Route ablaufender Missionen</value>
+    <comment>RouteDetails `expiring` query description</comment>
+  </data>
+  <data name="query_type_farthest" xml:space="preserve">
+    <value>Entfernteste Missionsroute</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_most" xml:space="preserve">
+    <value>Route der häufigsten Missionen</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_nearest" xml:space="preserve">
+    <value>Route der nähesten Missionen</value>
+    <comment>RouteDetails `nearest` query description</comment>
+  </data>
+  <data name="query_type_route" xml:space="preserve">
+    <value>Kürzeste Missionsroute</value>
+    <comment>RouteDetails `route` query description</comment>
+  </data>
+  <data name="query_type_source" xml:space="preserve">
+    <value>Route der Frachtabholorte</value>
+    <comment>RouteDetails `source` query description</comment>
+  </data>
+  <data name="query_type_encoded" xml:space="preserve">
+    <value>Materialienhändler - verschlüsselt</value>
+    <comment>RouteDetails `encoded` query description</comment>
+  </data>
+  <data name="query_type_facilitator" xml:space="preserve">
+    <value>Route legaler Einrichtungen</value>
+    <comment>RouteDetails `facilitator` query description</comment>
+  </data>
+  <data name="query_type_guardian" xml:space="preserve">
+    <value>Technologie-Broker - Guardian</value>
+    <comment>RouteDetails `guardian` query description</comment>
+  </data>
+  <data name="query_type_human" xml:space="preserve">
+    <value>Technologie-Broker - Menschlich</value>
+    <comment>RouteDetails `human` query description</comment>
+  </data>
+  <data name="query_type_manufactured" xml:space="preserve">
+    <value>Materialienhändler - gefertigt</value>
+    <comment>RouteDetails `manufactured` query description</comment>
+  </data>
+  <data name="query_type_raw" xml:space="preserve">
+    <value>Materialienhändler - roh</value>
+    <comment>RouteDetails `raw` query description</comment>
+  </data>
+  <data name="query_type_carrier" xml:space="preserve">
+    <value>Carrierroute</value>
+  </data>
 </root>

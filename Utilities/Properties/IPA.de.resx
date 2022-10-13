@@ -121,7 +121,7 @@
     <value>Name (gesprochen)</value>
   </data>
   <data name="hear_it_button" xml:space="preserve">
-    <value>Hören</value>
+    <value>Anhören</value>
   </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Internationales Phonetisches Alphabet</value>
