@@ -105,6 +105,10 @@
     <value>Missionen</value>
     
   </data>
+  <data name="query_group_services" xml:space="preserve">
+    <value>Services</value>
+    
+  </data>
   <data name="query_type_neutron" xml:space="preserve">
     <value>Neutronensternroute</value>
     
