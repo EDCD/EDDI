@@ -718,7 +718,7 @@ namespace EddiNavigationMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Have you already visited this locationt?.
+        ///   Looks up a localized string similar to Have you already visited this location?.
         /// </summary>
         public static string tooltip_visited {
             get {
