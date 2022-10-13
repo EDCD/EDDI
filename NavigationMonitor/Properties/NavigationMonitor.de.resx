@@ -284,7 +284,7 @@
     <comment>Whether you have visited a listed system in a plotted route</comment>
   </data>
   <data name="tooltip_visited" xml:space="preserve">
-    <value>Hast du diesen Ort bereits besucht?</value>
+    <value>Hast Du diesen Ort bereits besucht?</value>
   </data>
   <data name="header_refuel" xml:space="preserve">
     <value>Auftanken?</value>
