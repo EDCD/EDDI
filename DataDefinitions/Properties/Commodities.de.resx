@@ -1777,5 +1777,8 @@
     <value>Klassifizierte experimentelle Ausrüstung</value>
     <comment>Commodity ClassifiedExperimentalEquipment</comment>
   </data>
-  
+  <data name="AncientRelicTG" xml:space="preserve">
+    <value>Nicht zugeordnetes Relikt</value>
+    <comment>Commodity AncientRelicTG</comment>
+  </data>
 </root>
