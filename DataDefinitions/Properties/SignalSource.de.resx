@@ -389,7 +389,10 @@
     <value>Signalquelle</value>
     <comment>When the signal source may be one of several types</comment>
   </data>
-  
+  <data name="SAA_SignalType_PlanetAnomaly" xml:space="preserve">
+    <value>Unnormales Oberflächensignal</value>
+    <comment>Planetary Anomaly Surface Signal</comment>
+  </data>
   <data name="Cargo" xml:space="preserve">
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
