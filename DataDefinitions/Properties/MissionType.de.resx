@@ -309,5 +309,7 @@
   <data name="POI" xml:space="preserve">
     <value>Interessanter Ort</value>
   </data>
-  
+  <data name="Conflict" xml:space="preserve">
+    <value>Problemziel</value>
+  </data>
 </root>
