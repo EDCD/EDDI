@@ -283,7 +283,9 @@
     <value>Besucht?</value>
     <comment>Whether you have visited a listed system in a plotted route</comment>
   </data>
-  
+  <data name="tooltip_visited" xml:space="preserve">
+    <value>Hast du diesen Ort bereits besucht?</value>
+  </data>
   <data name="header_refuel" xml:space="preserve">
     <value>Auftanken?</value>
   </data>
@@ -293,11 +295,15 @@
   <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
     <value>Das Zielsystem ist ein Pflichtfeld für die Erstellung einer Neutronensternroute.</value>
   </data>
-  
+  <data name="enable_guidance_button" xml:space="preserve">
+    <value>Leitsystem einschalten</value>
+  </data>
   <data name="enable_guidance_button_tooltip" xml:space="preserve">
     <value>Führt das Schiff entlang der geplotteten Route</value>
   </data>
-  
+  <data name="disable_guidance_button" xml:space="preserve">
+    <value>Leitsystem ausschalten</value>
+  </data>
   <data name="disable_guidance_button_tooltip" xml:space="preserve">
     <value>Führung entlang der geplotteten Route stoppen.</value>
   </data>
@@ -310,11 +316,15 @@
   <data name="header_station" xml:space="preserve">
     <value>Station</value>
   </data>
-  
+  <data name="tab_galactic_poi" xml:space="preserve">
+    <value>Galaktische POIs</value>
+  </data>
   <data name="poi_search_filter" xml:space="preserve">
     <value>Filter:</value>
   </data>
-  
+  <data name="poi_hide_visited" xml:space="preserve">
+    <value>Besuchte POIs ausblenden?</value>
+  </data>
   <data name="copy_system_button_tooltip" xml:space="preserve">
     <value>Systemname in die Zwischenablage kopieren</value>
   </data>
@@ -327,14 +337,18 @@
   <data name="header_icy_ring" xml:space="preserve">
     <value>Eisiger Ring</value>
   </data>
-  
+  <data name="header_pristine_mining" xml:space="preserve">
+    <value>Unberührter Abbau</value>
+  </data>
   <data name="carrier_current_system_textbox_desc" xml:space="preserve">
     <value>Aktuelles System:</value>
   </data>
   <data name="carrier_destination_system_textbox_desc" xml:space="preserve">
     <value>Zielsystem:</value>
   </data>
-  
+  <data name="carrier_current_load_textbox_desc" xml:space="preserve">
+    <value>Aktuell belegter Platz (t):</value>
+  </data>
   <data name="carrier_err_frontier_api_connection_required" xml:space="preserve">
     <value> --- Fehler: Mit der Frontier API verbinden, um diesen Wert zu erhalten ---</value>
   </data>
