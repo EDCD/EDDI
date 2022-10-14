@@ -110,7 +110,7 @@
     <comment>Government type Communism</comment>
   </data>
   <data name="Confederacy" xml:space="preserve">
-    <value>Staatenbund</value>
+    <value>Konföderation</value>
     <comment>Government type Confederacy</comment>
   </data>
   <data name="Cooperative" xml:space="preserve">
