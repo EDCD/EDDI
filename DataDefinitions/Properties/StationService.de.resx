@@ -214,7 +214,7 @@
     <comment>Station Service: Powerplay</comment>
   </data>
   <data name="SearchAndRescue" xml:space="preserve">
-    <value>Suche und Rettung</value>
+    <value>Such- und Rettungsteam</value>
     <comment>Station Service: SearchAndRescue</comment>
   </data>
   <data name="TechBroker" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Station Service ApexInterstellar</comment>
   </data>
   <data name="FrontlineSolutions" xml:space="preserve">
-    <value>Frontline Lösungen</value>
+    <value>Frontline Solutions</value>
     <comment>Station Service FrontlineSolutions</comment>
   </data>
 </root>
