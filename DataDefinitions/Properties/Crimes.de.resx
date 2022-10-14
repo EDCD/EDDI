@@ -162,7 +162,7 @@
     <comment>Crime dockingMinorBlockingAirlock</comment>
   </data>
   <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>Stationsschlitz blockiert</value>
+    <value>Blockieren der Luftschleuse</value>
     <comment>Crime dockingMajorBlockingAirlock</comment>
   </data>
   <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
