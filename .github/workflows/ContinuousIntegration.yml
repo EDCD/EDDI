@@ -40,15 +40,15 @@ jobs:
 
     steps:
     - name: Check out the repository on the workflow runner
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v3.1.0
 
     # Setup our PATH
     - name: Add msbuild.exe to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1.3
     - name: Add VSTest.console.exe to PATH
       uses: darenm/Setup-VSTest@v1.1.1
     - name: Add nuget to PATH
-      uses: nuget/setup-nuget@v1.0.5
+      uses: nuget/setup-nuget@v1.1.1
       with:
         nuget-version: 'latest'
 
@@ -82,7 +82,7 @@ jobs:
     - name: Compress build artifacts
       run: Compress-Archive -Path ./bin/Release/* -DestinationPath build-artifact.zip
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: build-artifact
         path: build-artifact.zip
