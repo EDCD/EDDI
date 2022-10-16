@@ -271,23 +271,23 @@
     <value>Nessuna Modifica</value>
   </data>
   <data name="WakeScannerFastScan" xml:space="preserve">
-    <value>Scanner di Tracce di Salto rapido</value>
+    <value>Scanner di Scia rapido</value>
   </data>
   <data name="WakeScannerLightWeight" xml:space="preserve">
-    <value>Scanner di Tracce di Salto alleggerito</value>
+    <value>Scanner di Scia alleggerito</value>
   </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
-    <value>Scanner con raggio di intercettazione aumentato
+    <value>Scanner ad ampio raggio
 </value>
   </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
-    <value>Scanner di Tracce di Salto rinforzato</value>
+    <value>Scanner di Scia rinforzato</value>
   </data>
   <data name="WakeScannerShielded" xml:space="preserve">
-    <value>Scanner di Tracce di Salto schermato</value>
+    <value>Scanner di Scia schermato</value>
   </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
-    <value>Scanner con angolo di intercettazione ampliato</value>
+    <value>Scanner a lungo raggio</value>
   </data>
   <data name="AFMShielded" xml:space="preserve">
     <value>Unità di Manutenzione Protetta</value>
