@@ -246,7 +246,7 @@
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Telemetria Anomala FSD</value>
+    <value>Telemetria di Modulazione Anomala</value>
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
@@ -602,7 +602,7 @@
     <comment>Material boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
-    <value>Cella di Ricarica dei Guardiani</value>
+    <value>Cella dei Guardiani</value>
     <comment>Material guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
@@ -618,7 +618,7 @@
     <comment>Material guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Condotte di Potenza dei Guardiani</value>
+    <value>Conduttore dei Guardiani</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
   <data name="guardian_moduleblueprint" xml:space="preserve">
