@@ -142,19 +142,19 @@
     <value>Elaborazione Motore Raffinata</value>
   </data>
   <data name="FSDFastBoot" xml:space="preserve">
-    <value>Sequenza di Avvio FSD Accelerata</value>
+    <value>Avvio di Modulazione accelerata</value>
   </data>
   <data name="FSDinterdictorExpanded" xml:space="preserve">
-    <value>Arco di Influenza di Interdizione FSD Ampliato</value>
+    <value>Interdittore di Modulazione ad ampio raggio</value>
   </data>
   <data name="FSDinterdictorLongRange" xml:space="preserve">
-    <value>Raggio di Influenza di Interdizione FSD Estremizzato</value>
+    <value>Interdittore di Modulazione a lungo raggio</value>
   </data>
   <data name="FSDLongRange" xml:space="preserve">
-    <value>Raggio di Interdizione FSD Incrementato</value>
+    <value>Motore a Modulazione a lungo raggio</value>
   </data>
   <data name="FSDShielded" xml:space="preserve">
-    <value>Interdittore FSD Protetto</value>
+    <value>Motore a Modulazione blindato</value>
   </data>
   <data name="HullReinforcementAdvanced" xml:space="preserve">
     <value>Rinforzo Scafo Alleggerito</value>
@@ -271,20 +271,20 @@
     <value>Nessuna Modifica</value>
   </data>
   <data name="WakeScannerFastScan" xml:space="preserve">
-    <value>Scanner di Traccie di Salto Rapido</value>
+    <value>Scanner di Tracce di Salto rapido</value>
   </data>
   <data name="WakeScannerLightWeight" xml:space="preserve">
-    <value>Scanner di Traccie di Salto Alleggerito</value>
+    <value>Scanner di Tracce di Salto alleggerito</value>
   </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
     <value>Scanner con raggio di intercettazione aumentato
 </value>
   </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
-    <value>Scanner di Traccie di Salto Rinforzato</value>
+    <value>Scanner di Tracce di Salto rinforzato</value>
   </data>
   <data name="WakeScannerShielded" xml:space="preserve">
-    <value>Scanner di Traccie di Salto Protetto</value>
+    <value>Scanner di Tracce di Salto schermato</value>
   </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
     <value>Scanner con angolo di intercettazione ampliato</value>
