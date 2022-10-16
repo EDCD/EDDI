@@ -350,7 +350,7 @@
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Traccie di Salto lasciate da Vascelli Thargoid.</value>
+    <value>Ottenuto dalla scansione di Tracce di Salto lasciate da Vascelli Thargoid.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
