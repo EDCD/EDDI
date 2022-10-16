@@ -11,7 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="noDescriptionDataTemplate"/>
-        <DataTemplate x:Key="poiDataTemplate"  DataType="eddiDataDefinitions:NavPOIBookmark">
+        <DataTemplate x:Key="poiDataTemplate"  DataType="eddiDataDefinitions:NavBookmark">
             <WebBrowser x:Name="MarkdownWindow" Tag="{Binding Path=descriptionMarkdown}" Loaded="MarkdownWindow_OnLoaded" Unloaded="MarkdownWindow_OnUnloaded" Navigating="MarkdownWindow_OnNavigating"/>
         </DataTemplate>
         <ContextMenu x:Key="ContextMenu">
@@ -37,7 +37,7 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="eddiDataDefinitions:NavPOIBookmark">
+                        <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
                             <ToggleButton Content="⯈" Click="RowDetailsButtonClick" IsEnabled="{Binding hasRowDetails}" ToolTip="{x:Static resx:NavigationMonitor.extra_details_tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -110,7 +110,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
-                <DataTemplate DataType="eddiDataDefinitions:NavPOIBookmark">
+                <DataTemplate DataType="eddiDataDefinitions:NavBookmark">
                     <ContentControl Content="{Binding}">
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">

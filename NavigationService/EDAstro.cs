@@ -12,9 +12,9 @@ namespace EddiNavigationService
     public static class EDAstro
     {
         private const string GalacticPOI_URI = "https://edastro.com/poi/json/combined";
-        public static ObservableCollection<NavPOIBookmark> GetPOIs()
+        public static ObservableCollection<NavBookmark> GetPOIs()
         {
-            var galacticPOIs = new ObservableCollection<NavPOIBookmark>();
+            var galacticPOIs = new ObservableCollection<NavBookmark>();
 
             var jsonString = Net.DownloadString(GalacticPOI_URI);
             if (!string.IsNullOrEmpty(jsonString))
@@ -58,7 +58,7 @@ namespace EddiNavigationService
                         var y = coordinates[1]?.ToObject<decimal>();
                         var z = coordinates[2]?.ToObject<decimal>();
 
-                        var poiBookmark = new NavPOIBookmark(systemName, systemAddress, x, y, z, "", poiName, false, null,
+                        var poiBookmark = new NavBookmark(systemName, systemAddress, x, y, z, "", poiName, false, null,
                             null, false);
                         poiBookmark.descriptionMarkdown = obj["descriptionMardown"].ToString();
 

@@ -136,7 +136,7 @@ namespace EddiNavigationMonitor
 
         private bool poiData_Filter(object sender)
         {
-            if (!(sender is NavPOIBookmark poiBookmark)) { return true; }
+            if (!(sender is NavBookmark poiBookmark)) { return true; }
             var filterTxt = searchFilterText.Text;
 
             // If filter applies, filter items.

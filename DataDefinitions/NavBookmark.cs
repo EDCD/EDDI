@@ -155,7 +155,6 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private bool _useStraightPath;
 
-        [JsonIgnore]
         public SortedSet<DateTime> visitLog
         {
             get => _visitLog;
@@ -172,8 +171,21 @@ namespace EddiDataDefinitions
 
         [JsonIgnore] public bool visited => visitLog.Any();
 
+        #region POI Bookmark Properties
+
+        // Galactic POI URL
+        public string url { get; set; }
+
+        // Galactic POI Description (markdown format)
+        public string descriptionMarkdown { get; set; }
+
+        // Galactic POI Description state
+        [JsonIgnore] public bool descriptionMarkdownHasValue => !string.IsNullOrEmpty(descriptionMarkdown);
+
+        #endregion
+
         // Drop down visibility
-        [JsonIgnore, UsedImplicitly] public bool hasRowDetails => landable;
+        [JsonIgnore, UsedImplicitly] public bool hasRowDetails => descriptionMarkdownHasValue || landable;
 
         // Default Constructor
         public NavBookmark() { }

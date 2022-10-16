@@ -35,7 +35,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
         public static event EventHandler BookmarksUpdatedEvent;
 
-        public ObservableCollection<NavPOIBookmark> GalacticPOIs = new ObservableCollection<NavPOIBookmark>();
+        public ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
 
         // Navigation route data
         public NavWaypointCollection NavRoute = new NavWaypointCollection() { FillVisitedGaps = true };
