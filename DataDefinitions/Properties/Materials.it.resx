@@ -366,7 +366,7 @@
     <comment>Material classifiedscandata</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Eccezioni ai Dati di Traccia da Salto</value>
+    <value>Dati su eccezioni di Scia</value>
     <comment>Material dataminedwake</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
