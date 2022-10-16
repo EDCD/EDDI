@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -68,7 +68,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The current location (star system) of the carrier (requires Frontier API access or a carrier jump to initially set)")]
+        [PublicAPI("The current location (star system) of the carrier")]
         public string currentStarSystem
         {
             get => _currentStarSystem;
@@ -80,7 +80,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The next schedule location (star system) of the carrier")]
+        [PublicAPI("The next scheduled location (star system) of the carrier, if any")]
         public string nextStarSystem
         {
             get => _nextStarSystem;
@@ -92,7 +92,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The current tritium fuel level of the carrier (requires Frontier API access)")]
+        [PublicAPI("The last reported tritium fuel level of the carrier")]
         public int fuel // Tritium Fuel Reserves
         {
             get => _fuel;
@@ -104,7 +104,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The stored tritium held in the carrier's cargo (requires Frontier API access)")]
+        [PublicAPI("The last reported amount of stored tritium held in the carrier's cargo (requires Frontier API access)")]
         public int fuelInCargo // Tritium Fuel carried as cargo
         {
             get => _fuelInCargo;
@@ -128,8 +128,9 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The carrier's current docking access (requires Frontier API access or a 'Carrier Stats' event) (one of one of 'all', 'squadronfriends', 'friends', or 'none')")]
-        public string dockingAccess // one of "all", "squadronfriends", "friends", or "none"
+        [PublicAPI("The carrier's last reported docking access (one of one of 'all', 'squadronfriends', 'friends', or 'none')")]
+        public string dockingAccess // one of "all", "squadronfriends", "friends", or "none".
+                                    // Value is reported by the `Carrier stats` event
         {
             get => _dockingAccess;
             set
@@ -140,8 +141,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("True if the carrier currently provides docking access to notorious commanders (requires Frontier API access or a 'Carrier Stats' event)")]
-        public bool notoriousAccess
+        [PublicAPI("True if the last reported state permits docking access by notorious commanders")]
+        public bool notoriousAccess // Value is reported by the `Carrier stats` event
         {
             get => _notoriousAccess;
             set
@@ -154,8 +155,8 @@ namespace EddiDataDefinitions
 
         // Capacity
 
-        [PublicAPI("The current total used capacity of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
-        public int usedCapacity
+        [PublicAPI("The last reported total used capacity of the carrier")]
+        public int usedCapacity // Value is reported by the `Carrier stats` event
         {
             get => _usedCapacity;
             set
@@ -166,8 +167,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The current free capacity of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
-        public int freeCapacity
+        [PublicAPI("The last reported free capacity of the carrier")]
+        public int freeCapacity // Value is reported by the `Carrier stats` event
         {
             get => _freeCapacity;
             set
@@ -180,8 +181,8 @@ namespace EddiDataDefinitions
 
         // Finances
 
-        [PublicAPI("The current baknk balance of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
-        public ulong bankBalance
+        [PublicAPI("The last reported bank balance of the carrier")]
+        public ulong bankBalance // Value is reported by the `Carrier stats` event
         {
             get => _bankBalance;
             set
@@ -192,8 +193,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The current reserved bank balance of the carrier (requires Frontier API access or a 'Carrier Stats' event)")]
-        public ulong bankReservedBalance
+        [PublicAPI("The last reported reserved bank balance of the carrier")]
+        public ulong bankReservedBalance // Value is reported by the `Carrier stats` event
         {
             get => _bankReservedBalance;
             set

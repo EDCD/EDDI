@@ -327,6 +327,24 @@ Note: "Tiny" hardpoints are utility slots.
   * {TXT:Stored ship *\<index\>* system}: the system in which the *\<index\>*th stored ship resides
   * {DEC:Stored ship *\<index\>* distance}: the number of light years between the current system and that where the *\<index\>*th ship resides, to two decimal places
 
+## Fleet Carrier Variables
+
+Data is primarily updated from the `Carrier stats` event and Frontier API data is integrated (if the Frontier API is enabled) after select carrier events.
+
+  * {TXT:Carrier name}: The name of the carrier
+  * {TXT:Carrier callsign}: The callsign (alphanumeric designation) of the carrier
+  * {TXT:Carrier current star system}: The current location (star system) of the carrier
+  * {TXT:Carrier next star system}: The next scheduled location (star system) of the carrier, if any
+  * {INT:Carrier fuel}: The last reported tritium fuel level of the carrier
+  * {INT:Carrier fuel in cargo}: The last reported amount of stored tritium held in the carrier's cargo (requires Frontier API access)
+  * {TXT:Carrier state}: The carrier's current operating state (requires Frontier API access) (one of 'normalOperation', 'debtState' (if services are offline due to lack of funds), or 'pendingDecomission')
+  * {TXT:Carrier docking access}: The carrier's last reported docking access (one of one of 'all', 'squadronfriends', 'friends', or 'none')
+  * {BOOL:Carrier notorious access}: True if the last reported state permits docking access by notorious commanders
+  * {INT:Carrier used capacity}: The last reported total used capacity of the carrier
+  * {INT:Carrier free capacity}: The last reported free capacity of the carrier
+  * {DEC:Carrier bank balance}: The last reported bank balance of the carrier
+  * {DEC:Carrier bank reserved balance}: The last reported reserved bank balance of the carrier
+
 ## Miscellaneous Variables
 
   * {TXT:Environment}: the environment the ship is in ("Docked", "Landed", "Normal space", "Supercruise" or "Witch space") 

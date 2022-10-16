@@ -278,6 +278,26 @@ Details of ship target data, within the *shiptargets* object.
 
 ---
 
+## Fleet Carrier
+
+Details of the commander's fleet carrier (if purchased) are available within the *carrier* object. Data is primarily updated from the `Carrier stats` event and Frontier API data is integrated (if the Frontier API is enabled) after select carrier events.
+
+  - *name* - The name of the carrier
+  - *callsign* - The callsign (alphanumeric designation) of the carrier
+  - *currentStarSystem* - The current location (star system) of the carrier
+  - *nextStarSystem* - The next scheduled location (star system) of the carrier, if any
+  - *fuel* - The last reported tritium fuel level of the carrier
+  - *fuelInCargo* - The last reported amount of stored tritium held in the carrier's cargo (requires Frontier API access)
+  - *state* - The carrier's current operating state (requires Frontier API access) (one of 'normalOperation', 'debtState' (if services are offline due to lack of funds), or 'pendingDecomission')
+  - *dockingAccess* - The carrier's last reported docking access (one of one of 'all', 'squadronfriends', 'friends', or 'none')
+  - *notoriousAccess* - True if the last reported state permits docking access by notorious commanders
+  - *usedCapacity* - The last reported total used capacity of the carrier
+  - *freeCapacity* - The last reported free capacity of the carrier
+  - *bankBalance* - The last reported bank balance of the carrier
+  - *bankReservedBalance* - The last reported reserved bank balance of the carrier
+
+___
+
 ## Inara
 
 Details of any available commander records from https://inara.cz, within the *inaracmdr* object.
