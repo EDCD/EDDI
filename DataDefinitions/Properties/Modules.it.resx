@@ -246,15 +246,15 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Interdittore Motore a Modulazione di Sistema</value>
+    <value>Interdittore di Modulazione</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
-    <value>Motore a Modulazione di Sistema</value>
+    <value>Motore a Modulazione</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
-    <value>Analizzatore di Tracce di Motore a Modulazione di Sistema</value>
+    <value>Scanner di Scie di Modulazione</value>
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
@@ -434,7 +434,7 @@
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
-    <value>Perturbatore FSD con propulsione a Razzo</value>
+    <value>Perturbatore di Modulazione a razzo</value>
     <comment>Module RocketPropelledFSDDisruptor</comment>
   </data>
   <data name="Sensors" xml:space="preserve">
@@ -518,7 +518,7 @@
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
-    <value>Evoluzione FSD dei Guardiani</value>
+    <value>Modulatore dei Guardiani</value>
     <comment>Module GuardianFsdBooster</comment>
   </data>
   <data name="GuardianPowerDistributor" xml:space="preserve">
