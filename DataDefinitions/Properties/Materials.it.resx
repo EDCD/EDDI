@@ -222,7 +222,7 @@
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Echi Atipici in Traccie di Salto Disturbate</value>
+    <value>Echi di Scia atipici e irregolari</value>
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Material symmetrickeys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Strane Soluzioni di Traccie di Salto</value>
+    <value>Strane soluzioni di Scia</value>
     <comment>Material wakesolutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -350,7 +350,7 @@
     <comment>Material tg_residuedata</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Dati Traccia di Salto Thargoid</value>
+    <value>Dati di Scia Thargoid</value>
     <comment>Material unknownwakedata</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
