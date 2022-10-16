@@ -242,7 +242,7 @@
     <comment>Material encryptedfiles</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Gamma (Storia)</value>
+    <value>Dati di tipo Gamma (Storia) da obelisco</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
@@ -270,7 +270,7 @@
     <comment>Material scanarchives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Beta (Cultura)</value>
+    <value>Dati di tipo Beta (Cultura) da obelisco</value>
     <comment>Material ancientculturaldata</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Alfa (Biologia)</value>
+    <value>Dati di tipo Alfa (Biologia) da obelisco</value>
     <comment>Material ancientbiologicaldata</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
@@ -338,11 +338,11 @@
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Delta (Linguistica)</value>
+    <value>Dati di tipo Delta (Linguistica) da obelisco</value>
     <comment>Material ancientlanguagedata</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Epsilon (Tecnologia)</value>
+    <value>Dati di tipo Epsilon (Tecnologia) da obelisco</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
