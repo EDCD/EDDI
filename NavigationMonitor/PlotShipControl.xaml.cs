@@ -32,7 +32,7 @@ namespace EddiNavigationMonitor
         public PlotShipControl()
         {
             InitializeComponent();
-            plottedRouteData.ItemsSource = navigationMonitor().PlottedRouteList.Waypoints;
+            plottedRouteData.ItemsSource = navigationMonitor().PlottedRoute.Waypoints;
 
             ConfigureSearchGroupOptions();
 
@@ -50,11 +50,11 @@ namespace EddiNavigationMonitor
             searchQueryDropDown.SelectedItem = queryType;
             configureSearchArgumentOptions(queryType);
             configureRoutePlotterColumns(queryType);
-            UpdateGuidanceLock(navigationMonitor().PlottedRouteList.GuidanceEnabled);
-            ClearRouteButton.IsEnabled = navigationMonitor().PlottedRouteList.Waypoints.Count > 0;
+            UpdateGuidanceLock(navigationMonitor().PlottedRoute.GuidanceEnabled);
+            ClearRouteButton.IsEnabled = navigationMonitor().PlottedRoute.Waypoints.Count > 0;
 
             NavigationService.Instance.PropertyChanged += OnNavServiceChange;
-            navigationMonitor().PlottedRouteList.PropertyChanged += OnPlottedRouteChanged;
+            navigationMonitor().PlottedRoute.PropertyChanged += OnPlottedRouteChanged;
         }
 
         private void UpdateGuidanceLock(bool guidanceEnabled)
@@ -457,11 +457,11 @@ namespace EddiNavigationMonitor
         {
             if (plottedRouteData.Items.Count > 0)
             {
-                if (navigationMonitor().PlottedRouteList.GuidanceEnabled)
+                if (navigationMonitor().PlottedRoute.GuidanceEnabled)
                 {
                     NavigationService.Instance.NavQuery(QueryType.cancel);
                 }
-                navigationMonitor().PlottedRouteList.Waypoints.Clear();
+                navigationMonitor().PlottedRoute.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();
             }
         }

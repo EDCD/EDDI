@@ -14,9 +14,6 @@ namespace EddiEvents
         [PublicAPI("A boolean value. True if you are entering the nearby radius of the bookmark and and false if you are leaving")]
         public bool near { get; private set; }
 
-        [PublicAPI("The bookmark request type (location, query, update, set)")]
-        public string request { get; private set; }
-
         [PublicAPI("The bookmarked system name")]
         public string systemname => bookmark?.systemname;
 

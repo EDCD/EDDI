@@ -38,7 +38,7 @@ namespace EddiNavigationMonitor
         public ObservableCollection<NavPOIBookmark> GalacticPOIs = new ObservableCollection<NavPOIBookmark>();
 
         // Navigation route data
-        public NavWaypointCollection NavRouteList = new NavWaypointCollection() { FillVisitedGaps = true };
+        public NavWaypointCollection NavRoute = new NavWaypointCollection() { FillVisitedGaps = true };
         public static event EventHandler NavRouteUpdatedEvent;
 
         // Plotted carrier route data
@@ -46,7 +46,7 @@ namespace EddiNavigationMonitor
         public static event EventHandler CarrierPlottedRouteUpdatedEvent;
 
         // Plotted ship route data
-        public NavWaypointCollection PlottedRouteList = new NavWaypointCollection();
+        public NavWaypointCollection PlottedRoute = new NavWaypointCollection();
         public static event EventHandler PlottedRouteUpdatedEvent;
 
         #endregion
@@ -100,16 +100,16 @@ namespace EddiNavigationMonitor
             {
                 // Synchronize this collection between threads
                 BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock);
-                BindingOperations.EnableCollectionSynchronization(NavRouteList.Waypoints, navConfigLock);
-                BindingOperations.EnableCollectionSynchronization(PlottedRouteList.Waypoints, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(NavRoute.Waypoints, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(PlottedRoute.Waypoints, navConfigLock);
                 BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock);
             }
             else
             {
                 // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock); });
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRouteList.Waypoints, navConfigLock); });
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRouteList.Waypoints, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRoute.Waypoints, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRoute.Waypoints, navConfigLock); });
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock); });
             }
         }
@@ -441,14 +441,14 @@ namespace EddiNavigationMonitor
                     if (routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                     {
                         routeList[0].visited = true;
-                        UpdateDestinationData(routeList.Last().systemName, NavRouteList.RouteDistance);
-                        NavRouteList.Waypoints.Clear();
-                        NavRouteList.AddRange(routeList);
-                        NavRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
+                        UpdateDestinationData(routeList.Last().systemName, NavRoute.RouteDistance);
+                        NavRoute.Waypoints.Clear();
+                        NavRoute.AddRange(routeList);
+                        NavRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
                     }
 
                     // Raise on UI thread
-                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
 
                     // Update the navigation configuration 
                     updateDat = @event.timestamp;
@@ -467,11 +467,11 @@ namespace EddiNavigationMonitor
                     if (routeList.Count == 0)
                     {
                         UpdateDestinationData(null, 0);
-                        NavRouteList.Waypoints.Clear();
+                        NavRoute.Waypoints.Clear();
                     }
 
                     // Raise on UI thread
-                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
+                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
 
                     // Update the navigation configuration 
                     updateDat = @event.timestamp;
@@ -555,38 +555,38 @@ namespace EddiNavigationMonitor
             }
             else
             {
-                if (!PlottedRouteList.GuidanceEnabled)
+                if (!PlottedRoute.GuidanceEnabled)
                 {
-                    if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRouteList.Waypoints.GetHashCode())
+                    if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRoute.Waypoints.GetHashCode())
                     {
                         // Displayed route is correct, nothing to do here
                     }
                     else if (routeDetailsEvent.Route != null)
                     {
-                        PlottedRouteList.Waypoints.Clear();
+                        PlottedRoute.Waypoints.Clear();
                         Thread.Sleep(5); // A small delay helps ensure that any straggling entries are removed from the UI DataGrid
-                        PlottedRouteList.AddRange(routeDetailsEvent.Route.Waypoints);
-                        PlottedRouteList.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
-                        PlottedRouteList.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions
+                        PlottedRoute.AddRange(routeDetailsEvent.Route.Waypoints);
+                        PlottedRoute.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                        PlottedRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions
                             ?.ToList());
                     }
                     else
                     {
-                        PlottedRouteList.Waypoints.Clear();
+                        PlottedRoute.Waypoints.Clear();
                     }
                 }
 
                 if (routeDetailsEvent.routetype == QueryType.set.ToString())
                 {
-                    PlottedRouteList.GuidanceEnabled = true;
+                    PlottedRoute.GuidanceEnabled = true;
                 }
                 else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
                 {
-                    PlottedRouteList.GuidanceEnabled = false;
+                    PlottedRoute.GuidanceEnabled = false;
                 }
 
                 // Raise on UI thread
-                RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
+                RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRoute);
             }
 
             // Update the navigation configuration 
@@ -599,7 +599,7 @@ namespace EddiNavigationMonitor
         private void handleFSDTargetEvent(FSDTargetEvent @event)
         {
             // Update our plotted route star class data if this event provides new details about the targeted star class.
-            var wp = PlottedRouteList.Waypoints.FirstOrDefault(w => w.systemAddress == (ulong?)@event.systemAddress);
+            var wp = PlottedRoute.Waypoints.FirstOrDefault(w => w.systemAddress == (ulong?)@event.systemAddress);
             if (wp != null && wp.stellarclass != @event.starclass)
             {
                 wp.stellarclass = @event.starclass;
@@ -620,9 +620,18 @@ namespace EddiNavigationMonitor
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["bookmarks"] = new List<NavBookmark>(Bookmarks),
-                ["navRouteList"] = NavRouteList,
+                // Bookmark info
+                ["bookmarks"] = Bookmarks,
+                ["galacticPOIs"] = GalacticPOIs,
+
+                // Route plotting info
+                ["navRoute"] = NavRoute,
+                ["carrierPlottedRoute"] = CarrierPlottedRoute,
+                ["shipPlottedRoute"] = PlottedRoute,
+
+                // NavConfig info
                 ["orbitalpriority"] = navConfig.prioritizeOrbitalStations,
+                ["maxStationDistance"] = navConfig.maxSearchDistanceFromStarLs
             };
             return variables;
         }
@@ -637,10 +646,10 @@ namespace EddiNavigationMonitor
                 navConfig.bookmarks = Bookmarks;
 
                 // In-game routing
-                navConfig.navRouteList = NavRouteList;
+                navConfig.navRouteList = NavRoute;
 
                 // Plotted Routes
-                navConfig.plottedRouteList = PlottedRouteList;
+                navConfig.plottedRouteList = PlottedRoute;
                 navConfig.carrierPlottedRoute = CarrierPlottedRoute;
 
                 // Misc
@@ -650,8 +659,8 @@ namespace EddiNavigationMonitor
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
-            RaiseOnUIThread(NavRouteUpdatedEvent, NavRouteList);
-            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRouteList);
+            RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
+            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRoute);
         }
 
         private void ReadNavConfig()
@@ -665,10 +674,10 @@ namespace EddiNavigationMonitor
                 GetBookmarkExtras(Bookmarks);
 
                 // Restore our in-game routing
-                NavRouteList = navConfig.navRouteList;
+                NavRoute = navConfig.navRouteList;
 
                 // Restore our plotted routes
-                PlottedRouteList = navConfig.plottedRouteList;
+                PlottedRoute = navConfig.plottedRouteList;
                 CarrierPlottedRoute = navConfig.carrierPlottedRoute;
 
                 // Misc
@@ -727,9 +736,9 @@ namespace EddiNavigationMonitor
             }
 
             // Visited Data
-            NavRouteList.UpdateVisitedStatus((ulong)systemAddress);
-            PlottedRouteList.UpdateVisitedStatus((ulong)systemAddress);
-            if (PlottedRouteList.GuidanceEnabled && PlottedRouteList.Waypoints.All(w => w.visited))
+            NavRoute.UpdateVisitedStatus((ulong)systemAddress);
+            PlottedRoute.UpdateVisitedStatus((ulong)systemAddress);
+            if (PlottedRoute.GuidanceEnabled && PlottedRoute.Waypoints.All(w => w.visited))
             {
                 // Deactivate guidance once we've reached our destination.
                 NavigationService.Instance.NavQuery(QueryType.cancel);

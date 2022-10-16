@@ -18,7 +18,7 @@ namespace EddiNavigationMonitor
         public CurrentRouteControl()
         {
             InitializeComponent();
-            navRouteData.ItemsSource = navigationMonitor().NavRouteList.Waypoints;
+            navRouteData.ItemsSource = navigationMonitor().NavRoute.Waypoints;
         }
 
         private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
