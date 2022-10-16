@@ -178,7 +178,7 @@
     <comment>MissionTarget signal</comment>
   </data>
   <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Coordinate di dispersione del convoglio identificate</value>
+    <value>Tracce di convoglio identificate</value>
     <comment>Convoy signal</comment>
   </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
