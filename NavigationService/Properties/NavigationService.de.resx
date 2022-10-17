@@ -143,7 +143,7 @@
     <comment>RouteDetails `source` query description</comment>
   </data>
   <data name="query_type_encoded" xml:space="preserve">
-    <value>Materialienhändler - verschlüsselt</value>
+    <value>Händler - verschlüsselt</value>
     <comment>RouteDetails `encoded` query description</comment>
   </data>
   <data name="query_type_facilitator" xml:space="preserve">
@@ -151,19 +151,19 @@
     <comment>RouteDetails `facilitator` query description</comment>
   </data>
   <data name="query_type_guardian" xml:space="preserve">
-    <value>Technologie-Broker - Guardian</value>
+    <value>Guardian Broker</value>
     <comment>RouteDetails `guardian` query description</comment>
   </data>
   <data name="query_type_human" xml:space="preserve">
-    <value>Technologie-Broker - Menschlich</value>
+    <value>Broker - menschliche Techn.</value>
     <comment>RouteDetails `human` query description</comment>
   </data>
   <data name="query_type_manufactured" xml:space="preserve">
-    <value>Materialienhändler - gefertigt</value>
+    <value>Händler - gefertigt</value>
     <comment>RouteDetails `manufactured` query description</comment>
   </data>
   <data name="query_type_raw" xml:space="preserve">
-    <value>Materialienhändler - roh</value>
+    <value>Händler - roh</value>
     <comment>RouteDetails `raw` query description</comment>
   </data>
   <data name="query_type_carrier" xml:space="preserve">
