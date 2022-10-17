@@ -102,7 +102,9 @@ namespace Utilities
             {
                 try
                 {
-                    var telemetry = new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
+                    var telemetry = preppedData is null 
+                        ? new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
+                        : new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
                     RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
                 }
                 catch (RollbarException rex)
