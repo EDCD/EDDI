@@ -36,6 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Body atmosphere report` revised to correct some issues around reporting for class 1 gas giants.
+      * `Body materials report` revised to special case hard-to-find Selenium.
       * `Body report` revised to improve grammar (around "days").
       * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
