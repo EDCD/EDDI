@@ -44,6 +44,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
+      * `Commodity purchased` updated to increase variety and lightly reduce verbosity.
       * `Community goal` updated to refine responses upon goal completion.
       * `Crime check station` updated to remove obsolete references to `shipid`.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.

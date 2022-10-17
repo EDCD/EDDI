@@ -447,7 +447,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {Humanise(event.price)} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {Humanise(event.price)} credits per tonne.  Total cost is {Humanise(event.amount * event.price)} credits.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {Humanise(event.price)} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity}\r\n    {OneOf(\r\n        'at {Humanise(event.price)} credits per tonne.  Total cost is',\r\n        'for'\r\n    )}\r\n    {Humanise(event.amount * event.price)} credits.\r\n}",
       "default": true,
       "name": "Commodity purchased",
       "description": "Triggered when you buy a commodity from the markets"
