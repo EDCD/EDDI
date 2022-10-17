@@ -412,23 +412,24 @@ namespace UnitTests
         [TestMethod]
         public void TestShipMonitorDeserializationMatchesSerialization()
         {
-            var privateObject = new PrivateObject(new ShipMonitor());
+            var shipMonitor = new ShipMonitor();
+            var privateObject = new PrivateObject(shipMonitor);
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
             privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
             string data = DeserializeJsonResource<string>(Resources.loadout);
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
-            object[] loadoutArgs = new object[] { loadoutEvent };
+            object[] loadoutArgs = { loadoutEvent };
             privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
 
-            Ship originalShip = EDDI.Instance.CurrentShip;
+            Ship originalShip = shipMonitor.GetCurrentShip();
 
             if (originalShip != null)
             {
                 string originalShipString = JsonConvert.SerializeObject(originalShip);
                 Ship deserializedShip = JsonConvert.DeserializeObject<Ship>(originalShipString);
-                if (originalShip != null && deserializedShip != null)
+                if (deserializedShip != null)
                 {
                     Assert.IsTrue(JsonParsing.compareJsonEquality(originalShip, deserializedShip, true, out string mutatedProperty, Array.Empty<string>()));
                     if (!string.IsNullOrEmpty(mutatedProperty))
