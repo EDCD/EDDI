@@ -318,9 +318,15 @@
   
   
   
+  <data name="Town" xml:space="preserve">
+    <value>Taun</value>
+    <comment>Optional pronunciation for Town</comment>
+  </data>
   
   
-  
-  
+  <data name="Gliese" xml:space="preserve">
+    <value>Gliese</value>
+    <comment>Optional phonetic pronunciation for the Gliese star catalog</comment>
+  </data>
   
 </root>
