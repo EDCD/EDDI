@@ -40,6 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Body report` revised to improve grammar (around "days").
       * `Body report summary` revised to improve grammar (around "days").
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
+      * `Carrier jump engaged` updated use new `docked` property and carrier name.
       * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
