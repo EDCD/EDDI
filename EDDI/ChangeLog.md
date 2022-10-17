@@ -47,6 +47,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Commodity purchased` updated to increase variety and lightly reduce verbosity.
       * `Community goal` updated to refine responses upon goal completion.
       * `Crime check station` updated to remove obsolete references to `shipid`.
+      * `Crime check system` updated to better distinguish fines and bounties.
       * `Discovery scan` updated to incorporate new `System materials report` invoked script.
       * `Docking denied` updated to add new `DockOffline` reason.
       * `Docking granted` revised to reference automated docking if such a module is installed.
