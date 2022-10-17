@@ -53,6 +53,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Docking granted` revised to reference automated docking if such a module is installed.
       * `Engineer contributed` revised to correct grammar when contributing materials to an engineer unlock.
       * `Entered normal space` revised to correct grammar when dropping out near a ring.
+      * `Entered signal source` revised to correct obsolete signal source names.
       * `Entered supercruise` revised to reset a state variable after updating you on your crime status.
       * `Fuel check` revised to move relevant data to the `Route details` script.
       * `FSD Engaged` revised to move some speech to the `Jumped` event.
