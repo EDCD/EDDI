@@ -167,6 +167,15 @@
       "name": "Book transport",
       "description": "Triggered when booking a taxi or deployment for on foot combat"
     },
+    "Bookmark details": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Bookmark details",
+      "description": "Triggered when a bookmark has been added or updated"
+    },
     "Bounty awarded": {
       "enabled": true,
       "priority": 5,
