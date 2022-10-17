@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using Rollbar;
 using Rollbar.DTOs;
-using Rollbar.Telemetry;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -101,25 +100,32 @@ namespace Utilities
         {
             if (Enum.TryParse(errorLevel.ToString(), out TelemetryLevel telemetryLevel))
             {
-                var telemetry = new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
-                TelemetryCollector.Instance.Capture(telemetry);
+                try
+                {
+                    var telemetry = new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
+                    RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
+                }
+                catch (RollbarException rex)
+                {
+                    Warn(rex.Message, rex);
+                }
             }
         }
 
         private static void ReportTelemetryEvent(string timestamp, ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
         {
-            string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
-            if (!string.IsNullOrEmpty(personID))
+            try
             {
-                try
+                RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                string personID = RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
+                if (!string.IsNullOrEmpty(personID))
                 {
-                    RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
                     log(timestamp, errorLevel, $"Reporting error to Rollbar telemetry service, anonymous ID {personID}: {message}");
                 }
-                catch
-                {
-                    // Nothing to do here. Just continue gracefully.
-                }
+            }
+            catch (RollbarException rex)
+            {
+                Warn(rex.Message, rex);
             }
         }
 
@@ -281,10 +287,11 @@ namespace Utilities
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
         const string rollbarWriteToken = "911f975f95f34b15ae3aba088cb76983";
+
         public static bool TelemetryEnabled {
-            get => RollbarLocator.RollbarInstance.Config.Enabled;
+            get => RollbarLocator.RollbarInstance.Config.RollbarDeveloperOptions.Transmit;
             // ReSharper disable once ValueParameterNotUsed
-            set => RollbarLocator.RollbarInstance.Config.Enabled =
+            set => RollbarLocator.RollbarInstance.Config.RollbarDeveloperOptions.Transmit =
 #if DEBUG
                 false;
 #else
@@ -294,27 +301,25 @@ namespace Utilities
 
         public static void configureRollbar(string uniqueId, bool fromVA = false)
         {
-            var config = new RollbarConfig(rollbarWriteToken)
-            {
-                Environment = Constants.EDDI_VERSION.ToString(),
-                ScrubFields = new string[] // Scrub these fields from the reported data
-                {
-                    "Commander", "apiKey", "commanderName"
-                },
-                // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
-                Person = new Person(uniqueId + (fromVA ? " VA" : "")),
-                // Set server info
-                Server = new Server
-                {
-                    CodeVersion = ThisAssembly.Git.Sha,
-                    Root = "/"
-                },
-                MaxReportsPerMinute = 1,
-                IpAddressCollectionPolicy = IpAddressCollectionPolicy.DoNotCollect,
-                PayloadPostTimeout = TimeSpan.FromSeconds(10)
-            };
-            RollbarLocator.RollbarInstance.Configure(config);
-            TelemetryCollector.Instance.Config.Reconfigure(new TelemetryConfig(true, 50));
+            var config = new RollbarInfrastructureConfig(rollbarWriteToken, Constants.EDDI_VERSION.ToString());
+            config.RollbarTelemetryOptions.Reconfigure(new RollbarTelemetryOptions(true, 250));
+            config.RollbarInfrastructureOptions.Reconfigure(new RollbarInfrastructureOptions(1, TimeSpan.FromSeconds(10)));
+            config.RollbarLoggerConfig.Reconfigure(new RollbarLoggerConfig(rollbarWriteToken, Constants.EDDI_VERSION.ToString()));
+            config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(
+                new RollbarDataSecurityOptions(PersonDataCollectionPolicies.None,
+                    IpAddressCollectionPolicy.DoNotCollect,
+                    new[] { "Commander", "apiKey", "commanderName" }));
+            config.RollbarLoggerConfig.RollbarPayloadAdditionOptions.Reconfigure(
+                new RollbarPayloadAdditionOptions(
+                        new Person(uniqueId + (fromVA ? " VA" : "")),
+                        new Server() { Root = "/" }
+                    )
+                    { CodeVersion = ThisAssembly.Git.Sha }
+            );
+            RollbarInfrastructure.Instance.Init(config);
+            RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
+
+            RollbarInfrastructure.Instance.Start();
         }
     }
 }
