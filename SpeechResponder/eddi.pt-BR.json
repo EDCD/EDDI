@@ -325,6 +325,24 @@
 			"description": "Triggered when your fleet carrier locks landing pads prior to a jump",
 			"default": true
 		},
+		"Carrier purchased": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Carrier purchased",
+			"description": "Triggered when you purchase a fleet carrier"
+		},
+		"Carrier stats": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Carrier stats",
+			"description": "Triggered when you open the carrier management screen"
+		},
 		"Cleared save": {
 			"enabled": true,
 			"priority": 3,

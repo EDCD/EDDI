@@ -317,6 +317,24 @@
       "script": "航母起落架板已锁定.正在进行跃迁的最后准备工作.",
       "default": true
     },
+    "Carrier purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier purchased",
+      "description": "Triggered when you purchase a fleet carrier"
+    },
+    "Carrier stats": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier stats",
+      "description": "Triggered when you open the carrier management screen"
+    },
     "Cleared save": {
       "name": "Cleared save",
       "description": "Triggered when you clear your save",
