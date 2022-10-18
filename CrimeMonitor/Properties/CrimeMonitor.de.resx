@@ -130,7 +130,7 @@
     <value>Informationen zu Ihrem Strafregister.</value>
   </data>
   <data name="crime_monitor_name" xml:space="preserve">
-    <value>Überwachung Verbrechen</value>
+    <value>Überwachung der Verbrechen</value>
   </data>
   <data name="find_button" xml:space="preserve">
     <value>Legale Einrichtungen finden</value>
@@ -142,7 +142,7 @@
     <value>Kopfgeld</value>
   </data>
   <data name="header_claims" xml:space="preserve">
-    <value>Forderung</value>
+    <value>Ansprüche</value>
   </data>
   <data name="header_faction" xml:space="preserve">
     <value>Fraktion</value>
