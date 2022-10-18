@@ -136,7 +136,7 @@
     <value>Informationen zum Fortschritt Ihren Missionen.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
-    <value># Überwachung Aufträge</value>
+    <value>Überwachung der Missionen</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Unten finden Sie eine Liste Ihrer Missionen.</value>
