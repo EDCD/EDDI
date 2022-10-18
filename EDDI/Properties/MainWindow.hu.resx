@@ -126,7 +126,9 @@
   <data name="paragraph_0" xml:space="preserve">
     <value>külön beállítható szolgáltatásai vannak. Három különböző tétel van.</value>
   </data>
-  
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Az első csoport megszerzi és kezeli az alap információkat amelyeket EDDI használ. Ezek a 'Parancsnok adatok, 'Frontier API' és 'Text-to Speech' fülek. Ezeken végig kéne menned és beállítani hogy EDDI-nek teljes hozzáférése legyen az Elite: Dangerous informácioidhoz.</value>
+  </data>
   <data name="paragraph_2" xml:space="preserve">
     <value>A második csoport megszerzi az események információit. Ezek a fülek a amelyek Monitorral végződnek. Ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
   </data>
@@ -240,7 +242,9 @@ Személyes információk vagy azonosításra alkalmas adatok nem szerepelnek az 
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Honos rendszer:</value>
   </data>
-  
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Megadhatja a rendszer és állomás nevét amit leginkább az otthonának tekint. Ha megteszi, akkor ezen rendszer és állomás adatai elérhetőek lesznek az EDDI reagálóinak.</value>
+  </data>
   <data name="tab_commander_squadron_name" xml:space="preserve">
     <value>Osztag név:</value>
   </data>
