@@ -218,7 +218,7 @@
     <comment>Material polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Dati da Scansione di Pacchetti di Dati Anomali</value>
+    <value>Blocco anomalo di scansioni</value>
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
