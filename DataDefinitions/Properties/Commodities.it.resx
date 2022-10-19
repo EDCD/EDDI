@@ -850,7 +850,7 @@
     <comment>Commodity MilitaryGradeFabrics</comment>
   </data>
   <data name="MilitaryIntelligence" xml:space="preserve">
-    <value>Dati segreti militari</value>
+    <value>Segreti militari</value>
     <comment>Commodity MilitaryIntelligence</comment>
   </data>
   <data name="MineralExtractors" xml:space="preserve">
@@ -1286,7 +1286,7 @@
     <comment>Commodity UnknownTechnologySamples</comment>
   </data>
   <data name="UnstableDataCore" xml:space="preserve">
-    <value>Nucleo di Dati Instabile</value>
+    <value>Nucleo dati instabile</value>
     <comment>Commodity UnstableDataCore</comment>
   </data>
   <data name="Uraninite" xml:space="preserve">
