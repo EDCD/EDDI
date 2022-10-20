@@ -171,7 +171,7 @@ namespace EddiSpeechResponder
 
             if (@event is BodyScannedEvent bodyScannedEvent)
             {
-                if (bodyScannedEvent.scantype.Contains("NavBeacon"))
+                if (bodyScannedEvent.scantype?.Contains("NavBeacon") ?? false)
                 {
                     // Suppress scan details from nav beacons
                     return;
@@ -179,7 +179,7 @@ namespace EddiSpeechResponder
             }
             else if (@event is StarScannedEvent starScannedEvent)
             {
-                if (starScannedEvent.scantype.Contains("NavBeacon"))
+                if (starScannedEvent.scantype?.Contains("NavBeacon") ?? false)
                 {
                     // Suppress scan details from nav beacons
                     return;

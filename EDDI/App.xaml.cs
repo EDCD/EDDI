@@ -20,6 +20,7 @@ namespace Eddi
         // True if we have been started by VoiceAttack and the vaProxy object has been set
         public static bool FromVA => vaProxy != null;
         public static dynamic vaProxy;
+        public static Action vaStartup;
 
         [STAThread]
         public static void Main()
@@ -47,6 +48,7 @@ namespace Eddi
             {
                 // Start with the MainWindow hidden
                 app.MainWindow = new MainWindow();
+                vaStartup?.Invoke();
                 app.Run();
             }
             else
@@ -158,7 +160,7 @@ namespace Eddi
             try
             {
                 // we are using the InvariantCulture name "" to mean user's culture
-                CultureInfo overrideCulture = string.IsNullOrEmpty(configuration.OverrideCulture) ? null : new CultureInfo(configuration.OverrideCulture);
+                var overrideCulture = string.IsNullOrEmpty(configuration.OverrideCulture) ? null : new CultureInfo(configuration.OverrideCulture);
                 ApplyCulture(overrideCulture);
             }
             catch
@@ -172,11 +174,14 @@ namespace Eddi
         {
             CultureInfo.DefaultThreadCurrentCulture = ci;
             CultureInfo.DefaultThreadCurrentUICulture = ci;
-            if (ci != null)
-            {
-                Thread.CurrentThread.CurrentCulture = ci;
-                Thread.CurrentThread.CurrentUICulture = ci;
-            }
+            OverrideThreadCulture(ci);
+        }
+
+        public static void OverrideThreadCulture(CultureInfo ci)
+        {
+            if (ci == null) { return; }
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
         }
     }
 }

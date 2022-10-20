@@ -64,141 +64,130 @@ namespace EddiVoiceAttackResponder
             App.vaProxy = vaProxy;
             if (App.AlreadyRunning()) { return; }
 
+            App.vaStartup = () =>
+            {
+                try
+                {
+                    Logging.Info("Initialising EDDI VoiceAttack plugin");
+
+                    // Set up our event responder.
+                    VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
+                    {
+                        if (theEvent is null) { return; }
+                        if (eventQueues.ContainsKey(theEvent.type))
+                        {
+                            // Add our event to an existing blocking collection for that event type.
+                            eventQueues[theEvent.type].Add(theEvent);
+                        }
+                        else
+                        {
+                            // Add our event to a new blocking collection for that event type and start a consumer task for that collection
+                            eventQueues[theEvent.type] = new BlockingCollection<Event> { theEvent };
+                            var consumerTask = Task.Run(() =>
+                            {
+                                // ReSharper disable once AccessToModifiedClosure - OK to use vaProxy in this context.
+                                dequeueEvents(eventQueues[theEvent.type], ref vaProxy);
+                            });
+                            consumerTasks.Add(consumerTask);
+                        }
+                    };
+
+                    // Add notifiers for changes in variables we want to react to 
+                    // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
+                    EDDI.Instance.PropertyChanged += (s, e) => updateStandardValues(e);
+                    EDDI.Instance.State.CollectionChanged += (s, e) =>
+                    {
+                        setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+                    };
+                    SpeechService.Instance.PropertyChanged += (s, e) =>
+                    {
+                        setSpeechState(e);
+                    };
+                    CompanionAppService.Instance.StateChanged += (oldState, newState) =>
+                    {
+                        setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
+                    };
+                    StatusService.StatusUpdatedEvent += OnStatusUpdated;
+
+                    CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                    cargoMonitor.InventoryUpdatedEvent += (s, e) =>
+                    {
+                        lock (vaProxyLock)
+                        {
+                            setCargo(cargoMonitor, ref vaProxy);
+                        }
+                    };
+
+                    ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                    if (shipMonitor != null)
+                    {
+                        shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                        {
+                            lock (vaProxyLock)
+                            {
+                                setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
+                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.Copy().ToList(), ref vaProxy));
+                            }
+                        };
+                    }
+
+                    StatusService.StatusUpdatedEvent += (s, e) =>
+                    {
+                        if (s is Status status)
+                        {
+                            lock (vaProxyLock)
+                            {
+                                setStatusValues(status, "Status", ref vaProxy);
+                            }
+                        }
+                    };
+
+                    // Set initial values for standard variables
+                    initializeStandardValues();
+
+                    // Display instance information if available
+                    if (EddiUpgrader.UpgradeRequired)
+                    {
+                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
+                        string msg = Properties.VoiceAttack.run_eddi_standalone;
+                        SpeechService.Instance.Say(null, msg, 0);
+                    }
+                    else if (EddiUpgrader.UpgradeAvailable)
+                    {
+                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
+                        string msg = Properties.VoiceAttack.run_eddi_standalone;
+                        SpeechService.Instance.Say(null, msg, 0);
+                    }
+
+                    if (EddiUpgrader.Motd != null)
+                    {
+                        vaProxy.WriteToLog("Message from EDDI: " + EddiUpgrader.Motd, "black");
+                        string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EddiUpgrader.Motd);
+                        SpeechService.Instance.Say(null, msg, 0);
+                    }
+
+                    vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                    setStatus(ref vaProxy, "Operational");
+
+                    // Fire an event once the VA plugin is initialized
+                    EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
+
+                    // Set a variable indicating the version of VoiceAttack in use
+                    vaVersion = vaProxy.VAVersion;
+                    EDDI.Instance.vaVersion = vaVersion?.ToString();
+
+                    Logging.Info("EDDI VoiceAttack plugin initialization complete");
+                }
+                catch (Exception e)
+                {
+                    Logging.Error("Failed to initialize VoiceAttack plugin", e);
+                    vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
+                }
+            };
+
             Thread appThread = new Thread(App.Main);
             appThread.SetApartmentState(ApartmentState.STA);
             appThread.Start();
-
-            try
-            {
-                int timeout = 0;
-                while (Application.Current == null)
-                {
-                    if (timeout < 200)
-                    {
-                        Thread.Sleep(50);
-                        timeout++;
-                    }
-                    else
-                    {
-                        throw new TimeoutException("EDDI VoiceAttack plugin initialisation has timed out");
-                    }
-                }
-
-                Logging.Info("Initialising EDDI VoiceAttack plugin");
-
-                // Set up our event responder.
-                VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
-                {
-                    if (theEvent is null) { return; }
-                    if (eventQueues.ContainsKey(theEvent.type))
-                    {
-                        // Add our event to an existing blocking collection for that event type.
-                        eventQueues[theEvent.type].Add(theEvent);
-                    }
-                    else
-                    {
-                        // Add our event to a new blocking collection for that event type and start a consumer task for that collection
-                        eventQueues[theEvent.type] = new BlockingCollection<Event> { theEvent };
-                        var consumerTask = Task.Run(() =>
-                        {
-                            // ReSharper disable once AccessToModifiedClosure - OK to use vaProxy in this context.
-                            dequeueEvents(eventQueues[theEvent.type], ref vaProxy);
-                        });
-                        consumerTasks.Add(consumerTask);
-                    }
-                };
-
-                // Add notifiers for changes in variables we want to react to 
-                // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
-                EDDI.Instance.PropertyChanged += (s, e) => updateStandardValues(e);
-                EDDI.Instance.State.CollectionChanged += (s, e) =>
-                {
-                    setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                };
-                SpeechService.Instance.PropertyChanged += (s, e) =>
-                {
-                    setSpeechState(e);
-                };
-                CompanionAppService.Instance.StateChanged += (oldState, newState) =>
-                {
-                    setCAPIState(newState == CompanionAppService.State.Authorized, ref vaProxy);
-                };
-                StatusService.StatusUpdatedEvent += OnStatusUpdated;
-
-                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
-                cargoMonitor.InventoryUpdatedEvent += (s, e) =>
-                {
-                    lock (vaProxyLock)
-                    {
-                        setCargo(cargoMonitor, ref vaProxy);
-                    }
-                };
-
-                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-                if (shipMonitor != null)
-                {
-                    shipMonitor.ShipyardUpdatedEvent += (s, e) =>
-                    {
-                        lock (vaProxyLock)
-                        {
-                            setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
-                            Task.Run(() => setShipyardValues(shipMonitor.shipyard?.Copy().ToList(), ref vaProxy));
-                        }
-                    };
-                }
-
-                StatusService.StatusUpdatedEvent += (s, e) =>
-                {
-                    if (s is Status status)
-                    {
-                        lock (vaProxyLock)
-                        {
-                            setStatusValues(status, "Status", ref vaProxy);
-                        }
-                    }
-                };
-
-                // Set initial values for standard variables
-                initializeStandardValues();
-
-                // Display instance information if available
-                if (EddiUpgrader.UpgradeRequired)
-                {
-                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
-                    string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(null, msg, 0);
-                }
-                else if (EddiUpgrader.UpgradeAvailable)
-                {
-                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
-                    string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(null, msg, 0);
-                }
-
-                if (EddiUpgrader.Motd != null)
-                {
-                    vaProxy.WriteToLog("Message from EDDI: " + EddiUpgrader.Motd, "black");
-                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EddiUpgrader.Motd);
-                    SpeechService.Instance.Say(null, msg, 0);
-                }
-
-                vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                setStatus(ref vaProxy, "Operational");
-
-                // Fire an event once the VA plugin is initialized
-                EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
-
-                // Set a variable indicating the version of VoiceAttack in use
-                vaVersion = vaProxy.VAVersion;
-                EDDI.Instance.vaVersion = vaVersion.ToString();
-
-                Logging.Info("EDDI VoiceAttack plugin initialization complete");
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Failed to initialize VoiceAttack plugin", e);
-                vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
-            }
         }
 
         private static void OnStatusUpdated(object sender, EventArgs e)
@@ -234,7 +223,7 @@ namespace EddiVoiceAttackResponder
                             while (active)
                             {
                                 Thread.Sleep(50);
-                                if (vaVersion.CompareTo(new System.Version(1, 7, 4)) > 0) // If running VoiceAttack version 1.7.4 or later
+                                if (vaVersion?.CompareTo(new System.Version(1, 7, 4)) > 0) // If running VoiceAttack version 1.7.4 or later
                                 {
                                     active = vaProxy.Command.Active("((EDDI " + @event.type.ToLowerInvariant() + "))");
                                 }
@@ -314,7 +303,7 @@ namespace EddiVoiceAttackResponder
             {
                 // Fire local command if present  
                 Logging.Debug("Searching for command " + commandName);
-                if (vaVersion.CompareTo(new System.Version(1,7,4)) > 0) // If running VoiceAttack version 1.7.4 or later
+                if (vaVersion?.CompareTo(new System.Version(1,7,4)) > 0) // If running VoiceAttack version 1.7.4 or later
                 {
                     if (vaProxy.Command.Exists(commandName))
                     {
@@ -377,12 +366,15 @@ namespace EddiVoiceAttackResponder
         }
 
         public static void VA_StopCommand()
-        {
-        }
+        { }
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
             Logging.Debug("Invoked with context " + (string)vaProxy.Context);
+
+            // This thread is invoked from VoiceAttack and may by invoked with the system default culture
+            // so make sure that we're using our assigned culture.
+//            App.OverrideThreadCulture(App.overrideCulture);
 
             try
             {
@@ -528,7 +520,7 @@ namespace EddiVoiceAttackResponder
             string config = (string)vaProxy.Context;
 
             if (Application.Current?.Dispatcher != null
-                && (bool)Application.Current?.Dispatcher?.Invoke(() => Application.Current.MainWindow == null)
+                && (Application.Current?.Dispatcher?.Invoke(() => Application.Current.MainWindow == null) ?? false)
                 && config != "configuration")
             {
                 vaProxy.WriteToLog("The EDDI configuration window is not open.", "orange");
