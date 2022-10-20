@@ -230,7 +230,7 @@
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Dati da Emissioni Codificate Eccezionali</value>
+    <value>Dati di emissioni codificate eccezionali</value>
     <comment>Material scrambledemissiondata</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
