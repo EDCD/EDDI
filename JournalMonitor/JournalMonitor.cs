@@ -182,10 +182,10 @@ namespace EddiJournalMonitor
                                     var nearestdestination = JsonParsing.getString(data, "NearestDestination");
                                     var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                                    nearestDestination.fallbackLocalizedName = string.IsNullOrEmpty(localizedName) || localizedName.StartsWith("$") 
-                                        ? nearestdestination 
-                                        : localizedName;
-
+                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                    {
+                                        nearestDestination.fallbackLocalizedName = localizedName;
+                                    }
                                     events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -210,10 +210,10 @@ namespace EddiJournalMonitor
                                     var nearestdestination = JsonParsing.getString(data, "NearestDestination");
                                     var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
                                     var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                                    nearestDestination.fallbackLocalizedName = string.IsNullOrEmpty(localizedName) || localizedName.StartsWith("$")
-                                        ? nearestdestination
-                                        : localizedName;
-
+                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                    {
+                                        nearestDestination.fallbackLocalizedName = localizedName;
+                                    }
                                     events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -876,8 +876,11 @@ namespace EddiJournalMonitor
 
                                     // The settlement name may be a proper name or a generic signal type.
                                     SignalSource settlementName = SignalSource.FromEDName(settlementname) ?? new SignalSource();
-                                    settlementName.fallbackLocalizedName = JsonParsing.getString(data, "Name_Localised") ?? settlementname;
-
+                                    var localizedName = JsonParsing.getString(data, "Name_Localised");
+                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                    {
+                                        settlementName.fallbackLocalizedName = localizedName;
+                                    }
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
@@ -3862,7 +3865,11 @@ namespace EddiJournalMonitor
                                             SignalSource source;
                                             string signalSource = JsonParsing.getString(signal, "Type");
                                             source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                                            source.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised") ?? signalSource;
+                                            var localizedName = JsonParsing.getString(data, "Type_Localised");
+                                            if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                            {
+                                                source.fallbackLocalizedName = localizedName;
+                                            }
                                             int amount = JsonParsing.getInt(signal, "Count");
                                             surfaceSignals.Add(new SignalAmount(source, amount));
                                         }
@@ -4840,7 +4847,11 @@ namespace EddiJournalMonitor
             {
                 string signalSource = JsonParsing.getString(data, "USSType");
                 source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised") ?? signalSource;
+                var localizedName = JsonParsing.getString(data, "USSType_Localised");
+                if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                {
+                    source.fallbackLocalizedName = localizedName;
+                }
             }
             else
             {
@@ -4853,7 +4864,11 @@ namespace EddiJournalMonitor
                 else
                 {
                     source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                    source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
+                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
+                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                    {
+                        source.fallbackLocalizedName = localizedName;
+                    }
                 }
                 source.isStation = isStation;
             }
