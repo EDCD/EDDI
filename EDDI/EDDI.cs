@@ -1540,6 +1540,19 @@ namespace EddiCore
             if (CurrentStarSystem != null)
             {
                 CurrentStarSystem.totalbodies = @event.totalbodies;
+
+                if (@event.progress == 100 && CurrentStarSystem.scannedbodies < @event.totalbodies) // Fully scanned system, make sure that all bodies are marked as scanned
+                {
+                    // Update any bodies that aren't yet recorded as scanned (these were likely scanned while EDDI was not running)
+                    var bodiesToUpdate = new List<Body>();
+                    foreach (var body in CurrentStarSystem.bodies.Where(b => b.scanned is null))
+                    {
+                        body.scanned = @event.timestamp;
+                        bodiesToUpdate.Add(body);
+                    }
+                    if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
+                }
+
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return true;
