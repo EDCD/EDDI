@@ -714,6 +714,7 @@ namespace UnitTests
         [DataRow("$Warzone_PointRace_Med:#index=3;", "Medium Intensity Conflict Zone", 3, 0)]
         [DataRow("$Warzone_PointRace_High:#index=2;", "High Intensity Conflict Zone", 2, 0)]
         [DataRow("$Warzone_TG:#index=1;", "AX Conflict Zone", 1, 0)]
+        [DataRow("INV Audacious Dream $Warzone_TG_Med;", "INV Audacious Dream Medium Intensity AX Conflict Zone", 0, 0)]
         // From `SaaSignalsFound` events and `FSSBodySignals` events
         [DataRow("$SAA_SignalType_Biological;", "Biological Surface Signal", 0, 0)]
         [DataRow("$SAA_SignalType_Geological;", "Geological Surface Signal", 0, 0)]
