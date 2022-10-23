@@ -442,6 +442,15 @@
       "name": "Community goal",
       "description": "Se activa cuando se comprueba el estado de los objetivos de la comunidad"
     },
+    "Community goals": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Community goals",
+      "description": "Triggered when checking the status of community goals"
+    },
     "Controlling fighter": {
       "enabled": true,
       "priority": 3,
@@ -1621,6 +1630,24 @@
       "name": "Nav beacon scan",
       "description": "Se activa cuando se escanea una baliza de navegación, antes de que los datos de escaneo de todos los cuerpos celestes del sistema se escriban en el diario"
     },
+    "Nav route": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Set to 0 to disable or set to 1 to enable optional parameters }\r\n{set reportDestination to 0}\r\n{set reportDistance to 0}\r\n{set reportJumps to 0}\r\n\r\n{_ Set optional details text from optional parameter values }\r\n{set details to []}\r\n{if reportJumps:\r\n   {set jumpDesc to: {event.jumps} {if event.jumps > 1: jumps |else: jump } }\r\n   {set details to cat(details, [jumpDesc])}\r\n}\r\n{if reportDistance:\r\n   {set distanceDesc to: {round(event.distance, 1)} light years}\r\n   {set details to cat(details, [distanceDesc])}\r\n}\r\n\r\n{_ Begin speaking }\r\nCourse {OneOf(\"laid in\", \"set\")}\r\n{if reportDestination:\r\n    for {P(event.route[event.jumps].systemname)}{if len(details) > 0:,}\r\n|else:\r\n    ,\r\n}\r\n{if len(details) > 0:\r\n    {List(details)} {OneOf(\"to go\", \"{if event.jumps > 1: remain |else: remains }\")}\r\n}.",
+      "default": true,
+      "name": "Nav route",
+      "description": "Triggered when the navigation route is updated"
+    },
+    "Near bookmark": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.near:\r\n    Arrived at \r\n|else:\r\n    Left\r\n}\r\n{if event.poi:\r\n    {P(event.poi, 'station')}.\r\n|else:\r\n    bookmark.\r\n}",
+      "default": true,
+      "name": "Near bookmark",
+      "description": "Triggered when entering or departing the nearby radius of a bookmark"
+    },
     "Near surface": {
       "enabled": true,
       "priority": 3,
@@ -1628,6 +1655,15 @@
       "script": null,
       "name": "Near surface",
       "description": "Se activa cuando se entra o se sale de la órbita de la superficie de un planeta"
+    },
+    "Next destination": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Current destination is\", \"En route to\")}\r\n{if event.isBody:\r\n\t{set reportBody to BodyDetails(event.name)}\r\n    {reportBody.bodytype} {P(reportBody.shortname, 'body')}\r\n|elif event.isStation:\r\n    {if event.localizedName: \r\n        {event.localizedName} \r\n    |else: \r\n        {P(event.name, 'station')}\r\n    }\r\n|else:\r\n    {if event.localizedName: \r\n        the {event.localizedName} \r\n    |else: \r\n        the {event.name}\r\n    }\r\n}.",
+      "default": true,
+      "name": "Next destination",
+      "description": "Triggered when selecting an in-system destination"
     },
     "Next jump": {
       "enabled": true,
@@ -1668,6 +1704,15 @@
       "script": "{ Passengers }\r\n{_ Triggered at session start from Passengers event }",
       "name": "Passengers",
       "description": "Triggered at session start from Passengers event"
+    },
+    "Permit acquired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.faction} has granted you a new permit.",
+      "default": true,
+      "name": "Permit acquired",
+      "description": "Triggered when you acquire a permit from the mission board"
     },
     "Power commodity delivered": {
       "enabled": true,
@@ -2167,6 +2212,24 @@
       "script": "No hay nada interesante aquí",
       "name": "Station report",
       "description": "Función para informar sobre los detalles de la actual estación espacial"
+    },
+    "Suit purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Suit purchased",
+      "description": "Triggered when you buy a space suit"
+    },
+    "Surface signals detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set surfacesignals to []}\r\n{for signal in event.surfacesignals: \r\n    {set surfacesignals_desc to: \r\n        {signal.amount} {signal.source}{if signal.amount > 1:s}\r\n    }\r\n    {set surfacesignals to cat(surfacesignals, [surfacesignals_desc])}\r\n}\r\n\r\n{set body to BodyDetails(event.bodyname)}\r\n{if body:\r\n    {List(surfacesignals)} {OneOf('detected', 'found', '')} on {body.bodytype} {P(body.shortname)}.\r\n|else:\r\n    {List(surfacesignals)} detected.\r\n}",
+      "default": true,
+      "name": "Surface signals detected",
+      "description": "Triggered when surface signal sources are detected"
     },
     "Swapout check": {
       "enabled": true,

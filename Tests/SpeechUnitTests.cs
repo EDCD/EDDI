@@ -1,10 +1,13 @@
-﻿using EddiSpeechService;
+﻿using EddiSpeechResponder;
+using EddiSpeechService;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System;
 
 namespace UnitTests
 {
@@ -363,6 +366,38 @@ namespace UnitTests
             var line = @"<break time=""100ms""/><phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> & Co's shop";
             var result = SpeechFormatter.DisableIPA(line);
             Assert.AreEqual(@"<break time=""100ms""/>Shinrarta Dezhra & Co's shop", result);
+        }
+
+        [TestMethod]
+        public void TestPersonalityLocalizedScriptsAreComplete()
+        {
+            // Make sure that all default scripts in our invariant personality also exist in localized default personalities
+            var baseDirInfo = new DirectoryInfo(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) ?? string.Empty);
+            var dirInfo = baseDirInfo.Parent?.Parent?.EnumerateDirectories().FirstOrDefault(d => d.Name == "SpeechResponder");
+            var @default = Personality.FromFile(dirInfo?.FullName + "\\eddi.json", true);
+
+            Assert.IsNotNull(@default);
+            var missingScripts = new Dictionary<string, List<string>>();
+            foreach (var fileInfo in dirInfo?.GetFiles()?.Where(f => f.Name.StartsWith("eddi") && f.Name != "eddi.json") ?? new List<FileInfo>())
+            {
+                var localizedDefaultPersonality = Personality.FromFile(fileInfo.FullName);
+
+                foreach (var script in @default.Scripts)
+                {
+                    if (!@localizedDefaultPersonality.Scripts.ContainsKey(script.Key))
+                    {
+                        // Missing script found
+                        if (!missingScripts.ContainsKey(fileInfo.Name))
+                        {
+                            // Make sure we've initialized a list to record it
+                            missingScripts[fileInfo.Name] = new List<string>();
+                        }
+                        // Record the missing script
+                        missingScripts[fileInfo.Name].Add(script.Key);
+                    }
+                }
+            }
+            Assert.AreEqual(0, missingScripts.Count);
         }
     }
 }
