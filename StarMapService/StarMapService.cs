@@ -35,7 +35,7 @@ namespace EddiStarMapService
         private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
 
         // The minimum interval between EDSM responder event syncs
-        private const int syncIntervalMilliSeconds = 60000; // 1 minute
+        private const int syncIntervalMilliSeconds = 5000; // 5 seconds
 
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
