@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
@@ -43,14 +44,8 @@ namespace EddiSpeechService.SpeechSynthesizers
                     {
                         Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice.VoiceInfo)}");
 
-                        if (voice.VoiceInfo.Culture is null)
-                        {
-                            Logging.Warn($"Could not identify a culture code for voice {voice.VoiceInfo.Name}, skipping.");
-                            continue;
-                        }
-
                         var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                            voice.VoiceInfo.Culture, nameof(System));
+                            voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System));
 
                         // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
                         // (for example, if OneCore voices have been added to System.Speech with a registry edit)
