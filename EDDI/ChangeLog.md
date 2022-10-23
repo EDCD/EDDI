@@ -61,6 +61,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Jumped` revised to remove jump count reporting (to slightly reduce verbosity) and add speech moved from the `FSD engaged` event.
       * `Location` updated to add local reputation, system state, and system engineer details and to remove redundant mission information.
       * `Material required report` updated to fix a typo.
+      * `Market Information updated` updated to fix a typo.
       * `Module purchased` updated to fix broken weapon mount details.
       * `Module retrieved` updated to fix broken weapon mount details.
       * `Module sold` updated to fix broken weapon mount details.
