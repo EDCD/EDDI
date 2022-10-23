@@ -910,8 +910,8 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice should match one of the voices listed by EDDI&apos;s `Text-to-Speech` tab.&quot;). For Example:
         ///
-        ///    {Voice(&quot;Now I can speak&quot;, &quot;Microsoft Zira Desktop&quot;)}
-        ///    {Voice(&quot;And I can listen&quot;, &quot;Microsoft David Desktop&quot;)}.
+        ///    {Voice(&quot;Now I can speak&quot;, &quot;Microsoft Zira&quot;)}
+        ///    {Voice(&quot;And I can listen&quot;, &quot;Microsoft David&quot;)}.
         /// </summary>
         public static string Voice {
             get {
