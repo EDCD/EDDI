@@ -397,7 +397,16 @@
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
   </data>
-  
-  
-  
+  <data name="Warzone_TG_Med" xml:space="preserve">
+    <value>AX Konfliktzone mittlerer Intensität</value>
+    <comment>Medium Intensity Thargoid Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_Low" xml:space="preserve">
+    <value>AX Konfliktzone geringer Intensität</value>
+    <comment>Low Intensity Thargoind Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_High" xml:space="preserve">
+    <value>AX Konfliktzone hoher Intensität</value>
+    <comment>High Intensity Thargoid Conflict Zone</comment>
+  </data>
 </root>
