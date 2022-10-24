@@ -183,17 +183,23 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            // Update the output script
-            script = editorScript;
-
-            // Make sure default values are set as required
-            Script defaultScript = null;
-            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+            if (script.Name != editorScript.Name || script.Description != editorScript.Description || script.Value != editorScript.Value)
             {
-                script = Personality.UpgradeScript(script, defaultScript);
-            }
+                // Update the output script
+                script = editorScript;
 
-            DialogResult = true;
+                // Make sure default values are set as required
+                if (Personality.Default().Scripts?.TryGetValue(script.Name, out var defaultScript) ?? false)
+                {
+                    script = Personality.UpgradeScript(script, defaultScript);
+                }
+
+                DialogResult = true;
+            }
+            else
+            {
+                DialogResult = false;
+            }
             this.Close();
         }
 
