@@ -2,7 +2,6 @@ using Eddi;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
 using Newtonsoft.Json;
@@ -710,105 +709,7 @@ namespace EddiMissionMonitor
             bool valid = !string.IsNullOrEmpty(@event.name) && !@event.name.Contains("StartZone");
             if (!exists && valid)
             {
-                MissionStatus status = MissionStatus.FromEDName("Active");
-                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry, status)
-                {
-                    // Common parameters
-                    localisedname = @event.localisedname,
-                    amount = @event.amount ?? 0,
-                    influence = @event.influence,
-                    reputation = @event.reputation,
-                    reward = @event.reward ?? 0,
-                    communal = @event.communal,
-
-                    // Get the minor faction stuff
-                    faction = @event.faction,
-                    factionstate = FactionState.FromEDName("None").localizedName,
-
-                    // Set mission origin to to the current system & station
-                    originsystem = @event.communal ? @event.destinationsystem : EDDI.Instance?.CurrentStarSystem?.systemname,
-                    originstation = @event.communal ? null : EDDI.Instance?.CurrentStation?.name,
-
-                    // Missions with commodities
-                    commodity = @event.commodity,
-
-                    // Missions with targets
-                    targetTypeEDName = @event.targettype?.Split('_').ElementAtOrDefault(2),
-                    target = @event.target,
-                    targetfaction = @event.targetfaction,
-
-                    // Missions with passengers
-                    passengertypeEDName = @event.passengertype,
-                    passengervips = @event.passengervips,
-                    passengerwanted = @event.passengerwanted
-                };
-
-                // Get the faction state (Boom, Bust, Civil War, etc), if available
-                for (int i = 2; i < mission.name.Split('_').Count(); i++)
-                {
-                    string element = mission.name.Split('_')
-                        .ElementAtOrDefault(i)?
-                        .ToLowerInvariant();
-
-                    // Might be a faction state
-                    FactionState factionState = FactionState
-                        .AllOfThem
-                        .Find(s => s.edname.ToLowerInvariant() == element);
-                    if (factionState != null)
-                    {
-                        mission.factionstate = factionState.localizedName;
-                        break;
-                    }
-                }
-
-                // Missions with multiple destinations
-                if (@event.destinationsystem != null && @event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
-                {
-                    // If 'chained' mission, get the destination systems
-                    string[] systems = @event.destinationsystem
-                        .Replace("$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#")
-                        .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
-                        .Split('#');
-
-                    var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
-                    foreach (var system in starSystems)
-                    {
-                        var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
-                        dest.missionids.Add(mission.missionid);
-                        mission.destinationsystems.Add(dest);
-                    }
-
-                    // Load the first destination system.
-                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).systemName;
-                }
-                else
-                {
-                    // Populate destination system and station, depending on mission type
-                    foreach (var type in mission.edTags)
-                    {
-                        bool exitLoop;
-                        switch (type.ToLowerInvariant())
-                        {
-                            case "altruism":
-                            case "altruismcredits":
-                            {
-                                mission.destinationsystem = mission.originsystem;
-                                mission.destinationstation = mission.originstation;
-                                exitLoop = true;
-                                break;
-                            }
-                            default:
-                            {
-                                mission.destinationsystem = @event.destinationsystem;
-                                mission.destinationstation = @event.destinationstation;
-                                exitLoop = true;
-                                break;
-                            }
-                        }
-                        if (exitLoop) { break; }
-                    }
-                }
-                AddMission(mission);
+                AddMission(@event.Mission);
                 update = true;
             }
             return update;

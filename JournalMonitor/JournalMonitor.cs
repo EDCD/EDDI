@@ -3020,7 +3020,15 @@ namespace EddiJournalMonitor
                                     string name = JsonParsing.getString(data, "Name");
                                     string system = JsonParsing.getString(data, "System");
 
-                                    events.Add(new MissionAcceptedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line, fromLoad = fromLogLoad });
+                                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.FromEDName("Active"))
+                                    {
+                                        localisedname = name,
+                                        destinationsystem = system,
+                                        originsystem = system,
+                                        communal = true
+                                    };
+
+                                    events.Add(new MissionAcceptedEvent(timestamp, mission) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3205,7 +3213,87 @@ namespace EddiJournalMonitor
                                         var influence = JsonParsing.getString(data, "Influence");
                                         var reputation = JsonParsing.getString(data, "Reputation");
 
-                                        events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation ?? destinationsettlement, microResource, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line, fromLoad = fromLogLoad });
+                                        var mission = new Mission(missionid, name, expiry, MissionStatus.FromEDName("Active"))
+                                        {
+                                            // Common parameters
+                                            localisedname = localisedname,
+                                            amount = amount ?? 0,
+                                            influence = influence,
+                                            reputation = reputation,
+                                            reward = reward ?? 0,
+                                            communal = false,
+
+                                            // Get the minor faction stuff
+                                            faction = faction,
+
+                                            // Set mission origin to to the current system & station
+                                            originsystem = EDDI.Instance.CurrentStarSystem?.systemname,
+                                            originstation = EDDI.Instance?.CurrentStation?.name,
+
+                                            // Missions with engineering rewards
+                                            CommodityDefinition = commodity,
+                                            MicroResourceDefinition = microResource,
+
+                                            // Missions with targets
+                                            targetTypeEDName = targettype?.Split('_').ElementAtOrDefault(2),
+                                            target = target,
+                                            targetfaction = targetfaction,
+
+                                            // Missions with passengers
+                                            passengertypeEDName = passengertype,
+                                            passengervips = passengervips,
+                                            passengerwanted = passengerswanted
+                                        };
+
+                                        // Missions with multiple destinations
+                                        if (destinationsystem != null && destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
+                                        {
+                                            // If 'chained' mission, get the destination systems
+                                            string[] systems = destinationsystem
+                                                .Replace("$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#")
+                                                .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
+                                                .Split('#');
+
+                                            var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
+                                            foreach (var system in starSystems)
+                                            {
+                                                var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
+                                                dest.missionids.Add(mission.missionid);
+                                                mission.destinationsystems.Add(dest);
+                                            }
+
+                                            // Load the first destination system.
+                                            mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).systemName;
+                                        }
+                                        else
+                                        {
+                                            // Populate destination system and station, depending on mission type
+                                            foreach (var type in mission.edTags)
+                                            {
+                                                bool exitLoop;
+                                                switch (type.ToLowerInvariant())
+                                                {
+                                                    case "altruism":
+                                                    case "altruismcredits":
+                                                        {
+                                                            mission.destinationsystem = mission.originsystem;
+                                                            mission.destinationstation = mission.originstation;
+                                                            exitLoop = true;
+                                                            break;
+                                                        }
+                                                    default:
+                                                        {
+                                                            mission.destinationsystem = destinationsystem;
+                                                            mission.destinationstation = destinationstation;
+                                                            exitLoop = true;
+                                                            break;
+                                                        }
+                                                }
+                                                if (exitLoop) { break; }
+                                            }
+                                        }
+
+                                        events.Add(new MissionAcceptedEvent(timestamp, mission) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;

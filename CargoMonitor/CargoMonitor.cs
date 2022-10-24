@@ -731,7 +731,7 @@ namespace EddiCargoMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.timestamp > updateDat && @event.commodityDefinition != null)
+            if (@event.timestamp > updateDat && @event.Mission.CommodityDefinition != null)
             {
                 updateDat = @event.timestamp;
                 if (_handleMissionAcceptedEvent(@event))
@@ -793,7 +793,7 @@ namespace EddiCargoMonitor
                                 haulage.sourcesystem = @event.destinationsystem;
                             }
 
-                            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname) ?? new Cargo(@event.commodityDefinition?.edname);
+                            cargo = GetCargoWithEDName(@event.Mission.CommodityDefinition?.edname) ?? new Cargo(@event.Mission.CommodityDefinition?.edname);
                             cargo.haulageData.Add(haulage);
                             cargo.CalculateNeed();
                             AddOrUpdateCargo(cargo);

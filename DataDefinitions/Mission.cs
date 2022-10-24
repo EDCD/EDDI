@@ -71,6 +71,7 @@ namespace EddiDataDefinitions
             set
             {
                 _name = value;
+                SetFactionState();
                 SetTypes();
             }
         }
@@ -169,7 +170,6 @@ namespace EddiDataDefinitions
         [JsonProperty("factionstate")]
         public string factionstate
         {
-
             get => FactionState?.localizedName ?? FactionState.None.localizedName;
             set
             {
@@ -214,8 +214,31 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI]
         public long? reward { get; set; }
 
-        [Utilities.PublicAPI]
-        public string commodity { get; set; }
+        [Utilities.PublicAPI, JsonProperty("commodity")]
+        public string commodity
+        {
+            get => CommodityDefinition?.localizedName;
+            set
+            {
+                var comDef = CommodityDefinition.FromName(value);
+                this.CommodityDefinition = comDef;
+            }
+        }
+        [JsonIgnore]
+        public CommodityDefinition CommodityDefinition { get; set; }
+
+        [Utilities.PublicAPI, JsonProperty("microresource")]
+        public string microresource
+        {
+            get => MicroResourceDefinition?.localizedName;
+            set
+            {
+                var resDef = MicroResource.FromName(value);
+                this.MicroResourceDefinition = resDef;
+            }
+        }
+        [JsonIgnore]
+        public MicroResource MicroResourceDefinition { get; set; }
 
         [Utilities.PublicAPI]
         public int? amount { get; set; }
@@ -338,6 +361,29 @@ namespace EddiDataDefinitions
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
+        }
+
+        private void SetFactionState()
+        {
+            if (string.IsNullOrEmpty(name)) { return; }
+
+            // Get the faction state (Boom, Bust, Civil War, etc), if available
+            for (int i = 2; i < name.Split('_').Count(); i++)
+            {
+                string element = name.Split('_')
+                    .ElementAtOrDefault(i)?
+                    .ToLowerInvariant();
+
+                // Might be a faction state
+                FactionState factionState = FactionState
+                    .AllOfThem
+                    .Find(s => s.edname.ToLowerInvariant() == element);
+                if (factionState != null)
+                {
+                    factionstate = factionState.localizedName;
+                    break;
+                }
+            }
         }
 
         private void SetTypes()
