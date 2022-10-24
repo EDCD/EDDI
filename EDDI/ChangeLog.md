@@ -84,9 +84,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Permit acquired` added, triggered when you acquire a permit from the mission board.
       * `Route details` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, and `scoop` types.
+      * `Ship interdicted` updated to add a default script.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
-      * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source.
+      * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source and to report Compromised Nav Beacons by default.
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` updated to indicate the body containing the signals, when available.
