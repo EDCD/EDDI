@@ -72,10 +72,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Module transfer` updated to fix broken weapon mount details and refine time estimates.
       * `Modules stored` updated to fix broken weapon mount details.
       * `Mission abandoned` updated to fix broken community goal abandonment and to observe mission abandonment fines.
-      * `Mission accepted` updated to remove mission counting and reduce verbosity.
+      * `Mission accepted` updated to remove mission counting and reduce verbosity
       * `Mission check station` updated to improve grammar.
       * `Mission check system` updated to improve grammar.
       * `Mission check galaxy` updated to remain silent if you have no active or claimable missions.
+      * `Mission completed` updated to reduce verbosity by only sometimes referencing faction state info.
       * `Mission faction state` updated to correct incorrect faction names and reduce verbosity.
       * `Mission failed` updated to prevent speech if no mission is found matching the mission id.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
