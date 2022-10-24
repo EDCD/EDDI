@@ -271,6 +271,15 @@
 			"description": "Triggered when a wing-mate collects or delivers cargo for a wing mission",
 			"default": true
 		},
+		"Carrier bank transfer": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Carrier bank transfer",
+			"description": "Triggered when you transfer money to or from your fleet carrier"
+		},
 		"Carrier cooldown": {
 			"enabled": true,
 			"priority": 3,

@@ -1008,6 +1008,10 @@ namespace EddiCore
                     {
                         passEvent = eventPowerVoucherReceived(powerVoucherReceivedEvent);
                     }
+                    else if (@event is CarrierBankTransferEvent carrierBankTransferEvent)
+                    {
+                        passEvent = eventCarrierBankTransfer(carrierBankTransferEvent);
+                    }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
                         passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
@@ -1053,6 +1057,16 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventCarrierBankTransfer(CarrierBankTransferEvent carrierBankTransferEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierBankTransferEvent.carrierID)
+            {
+                FleetCarrier.bankBalance = carrierBankTransferEvent.carrierBalance;
+            }
+            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
+            return true;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)

@@ -4645,6 +4645,16 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierBankTransfer":
+                                {
+                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var deposit = JsonParsing.getOptionalULong(data, "Deposit");
+                                    var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
+                                    var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
+                                    var carrierBalance = JsonParsing.getULong(data, "CarrierBalance");
+                                    events.Add(new CarrierBankTransferEvent(timestamp, carrierID, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierCancelDecommission":
                             case "CarrierCrewServices":
                             case "CarrierDecommission":
