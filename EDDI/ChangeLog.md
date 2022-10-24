@@ -24,9 +24,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Navigation commands (e.g. via `RouteDetails()` or the `route` VoiceAttack command) will no longer generate a route in EDDI independent of your in-game routing.
   * Speech Responder
     * Events
-      * `Carrier jump engaged` event updated to add a new `docked` property
-      * `Location` event updated to add `faction` and `conflicts` properties (like the `Jumped` event)
-      * `Route details` event updated to add `tritiumused` property for fleet carrier tritium consumption
+      * `Carrier jump engaged` event updated to add a new `docked` property.
+      * `Location` event updated to add `faction` and `conflicts` properties (like the `Jumped` event).
+      * `Route details` event updated to add `tritiumused` property for fleet carrier tritium consumption.
+      * `Mission accepted` event updated to add `tags` and `invariantTags` properties.
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.
@@ -70,6 +71,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Module swapped` updated to fix broken weapon mount details.
       * `Module transfer` updated to fix broken weapon mount details and refine time estimates.
       * `Modules stored` updated to fix broken weapon mount details.
+      * `Mission abandoned` updated to fix broken community goal abandonment and to observe mission abandonment fines.
       * `Mission accepted` updated to remove mission counting and reduce verbosity.
       * `Mission check station` updated to improve grammar.
       * `Mission check system` updated to improve grammar.
