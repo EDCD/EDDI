@@ -2278,7 +2278,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set surfacesignals to []}\r\n{for signal in event.surfacesignals: \r\n    {set surfacesignals_desc to: \r\n        {signal.amount} {signal.source}{if signal.amount > 1:s}\r\n    }\r\n    {set surfacesignals to cat(surfacesignals, [surfacesignals_desc])}\r\n}\r\n\r\n{set body to BodyDetails(event.bodyname)}\r\n{if body:\r\n    {List(surfacesignals)} {OneOf('detected', 'found', '')} on {body.bodytype} {P(body.shortname)}.\r\n|else:\r\n    {List(surfacesignals)} detected.\r\n}",
+      "script": "{if vehicle = \"Ship\" || vehicle = \"Multicrew\":\r\n    {set surfacesignals to []}\r\n    {for signal in event.surfacesignals: \r\n        {set surfacesignals_desc to: \r\n            {signal.amount} {signal.source}{if signal.amount > 1:s}\r\n        }\r\n        {set surfacesignals to cat(surfacesignals, [surfacesignals_desc])}\r\n    }\r\n\r\n    {set body to BodyDetails(event.bodyname)}\r\n    {if body:\r\n        {List(surfacesignals)} {OneOf('detected', 'found', '')} on {body.bodytype} {P(body.shortname)}.\r\n    |else:\r\n        {List(surfacesignals)} detected.\r\n    }\r\n}",
       "default": true,
       "name": "Surface signals detected",
       "description": "Triggered when surface signal sources are detected"
