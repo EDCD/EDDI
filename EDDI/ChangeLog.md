@@ -38,8 +38,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Body atmosphere report` revised to correct some issues around reporting for class 1 gas giants.
       * `Body materials report` revised to special case hard-to-find Selenium.
-      * `Body report` revised to improve grammar (around "days").
-      * `Body report summary` revised to improve grammar (around "days").
+      * `Body report` revised to improve grammar (around "days") and skip the `Body materials report` by default.
+      * `Body report summary` revised to improve grammar (around "days") and skip the `Body materials report` by default.
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Carrier jump engaged` updated use new `docked` property and carrier name.
       * `Carrier jumped` updated to replace references to `destinationsystem` with references to `searchsystem`.
@@ -91,7 +91,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` updated to indicate the body containing the signals, when available.
-      * `System materials report` added, triggered by a discovery scan when the commander has an SRV and after we have data for all system bodies.
+      * `System materials report` added.
       * `System report` updated to include alliance superpower, improve several government descriptors, and add local reputation details.
       * `System state report` updated to facilitate localization, add several newer faction states, and improve grammar around recent conflicts.
       * `Undocked` event updated to invoke RouteDetails("update").
