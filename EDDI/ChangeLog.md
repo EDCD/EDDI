@@ -75,6 +75,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission accepted` updated to remove mission counting and reduce verbosity.
       * `Mission check station` updated to improve grammar.
       * `Mission check system` updated to improve grammar.
+      * `Mission check galaxy` updated to remain silent if you have no active or claimable missions.
       * `Mission faction state` updated to correct incorrect faction names and reduce verbosity.
       * `Mission failed` updated to prevent speech if no mission is found matching the mission id.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
