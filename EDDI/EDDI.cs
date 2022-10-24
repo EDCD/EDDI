@@ -1012,6 +1012,14 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierBankTransfer(carrierBankTransferEvent);
                     }
+                    else if (@event is CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
+                    {
+                        passEvent = eventCarrierDecommissionCancelled(carrierDecommissionCancelledEvent);
+                    }
+                    else if (@event is CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
+                    {
+                        passEvent = eventCarrierDecommissionScheduled(carrierDecommissionScheduledEvent);
+                    }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
                         passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
@@ -1057,6 +1065,24 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventCarrierDecommissionScheduled(CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionScheduledEvent.carrierID)
+            {
+                FleetCarrier.state = "pendingDecommission";
+            }
+            return true;
+        }
+
+        private bool eventCarrierDecommissionCancelled(CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionCancelledEvent.carrierID)
+            {
+                FleetCarrier.state = "normalOperation";
+            }
+            return true;
         }
 
         private bool eventCarrierBankTransfer(CarrierBankTransferEvent carrierBankTransferEvent)

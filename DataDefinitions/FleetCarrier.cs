@@ -116,8 +116,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI("The carrier's current operating state (requires Frontier API access) (one of 'normalOperation', 'debtState' (if services are offline due to lack of funds), or 'pendingDecomission')")]
-        public string state // one of "normalOperation", "debtState" (if services are offline due to lack of funds), or "pendingDecomission" 
+        [PublicAPI("The carrier's current operating state (requires Frontier API access) (one of 'normalOperation', 'debtState' (if services are offline due to lack of funds), or 'pendingDecommission')")]
+        public string state // one of "normalOperation", "debtState" (if services are offline due to lack of funds), or "pendingDecommission" 
         {
             get => _state;
             set

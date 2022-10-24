@@ -281,6 +281,24 @@
       "name": "Carrier cooldown",
       "description": "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown"
     },
+    "Carrier decommission cancelled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "The decommissioning of\r\n{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    your fleet carrier\r\n}\r\nhas been cancelled.",
+      "default": true,
+      "name": "Carrier decommission cancelled",
+      "description": "Triggered when you cancel the decommissioning of your fleet carrier"
+    },
+    "Carrier decommission scheduled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    your fleet carrier\r\n}\r\nhas been scheduled for decommissioning in \r\n{if event.days:\r\n   {event.days} days\r\n}\r\n{if event.hours:\r\n   and {event.hours} hours\r\n}.\r\n\r\nYou shall be refunded {Humanise(event.refund)} credits.",
+      "default": true,
+      "name": "Carrier decommission scheduled",
+      "description": "Triggered when you request the decommissioning of your fleet carrier"
+    },
     "Carrier jump cancelled": {
       "enabled": true,
       "priority": 3,

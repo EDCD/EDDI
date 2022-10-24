@@ -23,9 +23,9 @@ namespace EddiEvents
         public ulong carrierBalance { get; private set; }
         
         // Not intended to be user facing
-        public long? carrierID { get; private set; }
+        public long carrierID { get; private set; }
 
-        public CarrierBankTransferEvent(DateTime timestamp, long? carrierId, ulong? deposit, ulong? withdrawal, ulong cmdrBalance, ulong carrierBalance) : base(timestamp, NAME)
+        public CarrierBankTransferEvent(DateTime timestamp, long carrierId, ulong? deposit, ulong? withdrawal, ulong cmdrBalance, ulong carrierBalance) : base(timestamp, NAME)
         {
             carrierID = carrierId;
             this.deposit = deposit;

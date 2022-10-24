@@ -26,6 +26,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Events
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
       * `Carrier bank transfer` added.
+      * `Carrier decommission cancelled` added.
+      * `Carrier decommission scheduled` added.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
       * `Carrier jump engaged` updated to add a new `docked` property.

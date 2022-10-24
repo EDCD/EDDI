@@ -4646,7 +4646,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "CarrierBankTransfer":
                                 {
-                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var deposit = JsonParsing.getOptionalULong(data, "Deposit");
                                     var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
                                     var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
@@ -4656,8 +4656,22 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierCancelDecommission":
-                            case "CarrierCrewServices":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    events.Add(new CarrierDecommissionCancelledEvent(timestamp, carrierID) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierDecommission":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var refund = JsonParsing.getULong(data, "ScrapRefund");
+                                    var decommissionTimespan = Dates.fromTimestamp(JsonParsing.getOptionalLong(data, "ScrapTime")) - timestamp;
+                                    events.Add(new CarrierDecommissionScheduledEvent(timestamp, carrierID, refund, decommissionTimespan) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CarrierCrewServices":
                             case "CarrierDepositFuel":
                             case "CarrierDockingPermission":
                             case "CarrierFinance":
