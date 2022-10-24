@@ -4688,7 +4688,7 @@ namespace EddiJournalMonitor
                             case "DeleteSuitLoadout":
                             case "DiscoveryScan":
                             case "DropItems":
-                            case "EngineerLegacyConvert":
+                            case "EngineerLegacyConvert": // No reason to add this.
                             case "FSSBodySignals":
                             case "LoadoutEquipModule":
                             case "LoadoutRemoveModule":
@@ -4703,7 +4703,7 @@ namespace EddiJournalMonitor
                             case "SellOrganicData":
                             case "SellSuit":
                             case "SellWeapon":
-                            case "SharedBookmarkToSquadron":
+                            case "SharedBookmarkToSquadron": // No interesting data here so no reason to add this.
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
                             case "TransferMicroResources":
@@ -4716,7 +4716,7 @@ namespace EddiJournalMonitor
                             case "CargoTransfer": // Not needed for updating the cargo monitor, the `Cargo` event keeps us up to date.
                             case "TradeMicroResources": // This is always followed by `ShipLockerMaterials`, which we can use to keep our inventory up to date
                             case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.
-                            case "WonATrophyForSquadron":
+                            case "WonATrophyForSquadron": // No interesting data here so no reason to add this.
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
