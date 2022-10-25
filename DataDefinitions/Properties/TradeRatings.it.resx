@@ -118,7 +118,7 @@
     <comment>Trade rating Merchant</comment>
   </data>
   <data name="Broker" xml:space="preserve">
-    <value>Mediatore finanziario</value>
+    <value>Mediatore</value>
     <comment>Trade rating Broker</comment>
   </data>
   <data name="Entrepreneur" xml:space="preserve">
