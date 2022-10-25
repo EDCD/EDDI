@@ -120,7 +120,10 @@
   
   
   
-  
+  <data name="aisling" xml:space="preserve">
+    <value>Aeschling</value>
+    <comment>Optional phonetic pronunciation for aisling</comment>
+  </data>
   
   
   <data name="Alrai" xml:space="preserve">
@@ -128,11 +131,17 @@
     <comment>Optional phonetic pronunciation for Alrai</comment>
   </data>
   
+  <data name="antal" xml:space="preserve">
+    <value>Antal</value>
+    <comment>Optional phonetic pronunciation for antal</comment>
+  </data>
   
   
   
-  
-  
+  <data name="archon" xml:space="preserve">
+    <value>Akon</value>
+    <comment>Optional phonetic pronunciation for archon</comment>
+  </data>
   
   <data name="arissa" xml:space="preserve">
     <value>Arissa</value>
