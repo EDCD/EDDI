@@ -185,19 +185,40 @@
   
   
   
+  <data name="deciat" xml:space="preserve">
+    <value>Dessi-att</value>
+    <comment>Optional phonetic pronunciation for deciat</comment>
+  </data>
+  
+  <data name="denton" xml:space="preserve">
+    <value>Denten</value>
+    <comment>Optional phonetic pronunciation for denton</comment>
+  </data>
   
   
   
   
+  <data name="duval" xml:space="preserve">
+    <value>Dü-val</value>
+    <comment>Optional phonetic pronunciation for duval</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="edmund" xml:space="preserve">
+    <value>Ettment</value>
+    <comment>Optional phonetic pronunciation for edmund</comment>
+  </data>
+  <data name="electra" xml:space="preserve">
+    <value>Ilektra</value>
+    <comment>Optional phonetic pronunciation for electra</comment>
+  </data>
+  <data name="eranin" xml:space="preserve">
+    <value>Aerenihn</value>
+    <comment>Optional phonetic pronunciation for eranin</comment>
+  </data>
+  <data name="eravate" xml:space="preserve">
+    <value>Erevate</value>
+    <comment>Optional phonetic pronunciation for eravate</comment>
+  </data>
   
   
   
