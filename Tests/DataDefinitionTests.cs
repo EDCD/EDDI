@@ -388,7 +388,7 @@ namespace UnitTests
             Assert.IsTrue(cmdr1Matches);
             Assert.AreEqual("Marty McFly", test1.name);
             Assert.AreEqual("Serf", test1.title);
-            Assert.AreEqual(246486105, test1.credits);
+            Assert.AreEqual((ulong)246486105, test1.credits);
             Assert.AreEqual(24684, test1.debt);
             Assert.AreEqual(2, test1.crimerating);
             Assert.AreEqual(3, test1.combatrating.rank);
@@ -416,7 +416,7 @@ namespace UnitTests
             Assert.IsFalse(cmdr3Matches);
             Assert.AreEqual("Marty McFly", test3.name);
             Assert.AreEqual("Serf", test3.title);
-            Assert.AreEqual(0, test3.credits);
+            Assert.AreEqual((ulong)0, test3.credits);
             Assert.AreEqual(0, test3.debt);
             Assert.AreEqual(0, test3.crimerating);
             Assert.AreEqual(3, test3.combatrating.rank);
