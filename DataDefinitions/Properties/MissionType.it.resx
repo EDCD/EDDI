@@ -244,14 +244,6 @@
   <data name="HackMegaship" xml:space="preserve">
     <value>Viola Mega Vascello</value>
   </data>
-  <data name="ConflictCivilWar" xml:space="preserve">
-    <value>Obiettivi della Guerra Civile</value>
-    <comment>Massacre mission type</comment>
-  </data>
-  <data name="ConflictWar" xml:space="preserve">
-    <value>Obiettivi di Guerra</value>
-    <comment>Massacre mission type</comment>
-  </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Obiettivi Skimmer</value>
     <comment>Massacre type</comment>
@@ -316,5 +308,8 @@
   </data>
   <data name="POI" xml:space="preserve">
     <value>Punto di interesse</value>
+  </data>
+  <data name="Conflict" xml:space="preserve">
+    <value>Bersagli</value>
   </data>
 </root>
