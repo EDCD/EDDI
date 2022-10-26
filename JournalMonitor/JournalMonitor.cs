@@ -4727,6 +4727,7 @@ namespace EddiJournalMonitor
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
                         Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}", ex);
+                        Console.WriteLine($"{ex.Message}/r/nRaw event:/r/n{line}/r/n Exception:/r/n{JsonConvert.SerializeObject(ex)}");
                     }
 
                     if (!handled)
