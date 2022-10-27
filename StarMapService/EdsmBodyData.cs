@@ -107,7 +107,7 @@ namespace EddiStarMapService
                     // Star-specific items 
                     string stellarclass = StarClass.FromName(((string)body["subType"]))?.edname; // Map back from the EDSM name to the edname 
                     int? stellarsubclass = null;
-                    string endOfSpectralClass = ((string)body["spectralClass"])?.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
+                    string endOfSpectralClass = ((string)body["spectralClass"]).LastOrDefault().ToString();
                     if (int.TryParse(endOfSpectralClass, out int subclass))
                     {
                         // If our spectralClass ends in a number, we need to separate the class from the subclass
