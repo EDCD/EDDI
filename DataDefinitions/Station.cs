@@ -345,7 +345,7 @@ namespace EddiDataDefinitions
 
         public static FrontierApiProfileStation FromFrontierApi(DateTime marketTimestamp, JObject marketJson, DateTime shipyardTimestamp, JObject shipyardJson)
         {
-            if (marketJson != null && shipyardJson != null && marketJson["id"] != shipyardJson["id"])
+            if (marketJson != null && shipyardJson != null && marketJson["id"]?.ToObject<ulong>() != shipyardJson["id"]?.ToObject<ulong>())
             {
                 throw new ArgumentException("Frontier API market and shipyard endpoint data are not synchronized.");
             }
