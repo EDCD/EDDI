@@ -13,25 +13,41 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new Economy(edname);
 
             None = new Economy("None");
-            var Agriculture = new Economy("Agri");
-            var Colony = new Economy("Colony");
-            var Damaged = new Economy("Damaged");
-            var Engineer = new Economy("Engineer");
-            var Extraction = new Economy("Extraction");
-            var Refinery = new Economy("Refinery");
-            var Repair = new Economy("Repair");
-            var Rescue = new Economy("Rescue");
-            var Industrial = new Economy("Industrial");
-            var Terraforming = new Economy("Terraforming");
-            var HighTech = new Economy("HighTech");
-            var Service = new Economy("Service");
-            var Tourism = new Economy("Tourism");
-            var Military = new Economy("Military");
-            var Prison = new Economy("Prison");
-            var Carrier = new Economy("Carrier");
+            Agriculture = new Economy("Agri");
+            Colony = new Economy("Colony");
+            Damaged = new Economy("Damaged");
+            Engineer = new Economy("Engineer");
+            Extraction = new Economy("Extraction");
+            Refinery = new Economy("Refinery");
+            Repair = new Economy("Repair");
+            Rescue = new Economy("Rescue");
+            Industrial = new Economy("Industrial");
+            Terraforming = new Economy("Terraforming");
+            HighTech = new Economy("HighTech");
+            Service = new Economy("Service");
+            Tourism = new Economy("Tourism");
+            Military = new Economy("Military");
+            Prison = new Economy("Prison");
+            Carrier = new Economy("Carrier");
         }
 
         public static readonly Economy None;
+        public static readonly Economy Agriculture;
+        public static readonly Economy Colony;
+        public static readonly Economy Damaged;
+        public static readonly Economy Engineer;
+        public static readonly Economy Extraction;
+        public static readonly Economy Refinery;
+        public static readonly Economy Repair;
+        public static readonly Economy Rescue;
+        public static readonly Economy Industrial;
+        public static readonly Economy Terraforming;
+        public static readonly Economy HighTech;
+        public static readonly Economy Service;
+        public static readonly Economy Tourism;
+        public static readonly Economy Military;
+        public static readonly Economy Prison;
+        public static readonly Economy Carrier;
 
         // dummy used to ensure that the static constructor has run
         public Economy() : this("")
