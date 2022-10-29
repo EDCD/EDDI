@@ -24,10 +24,11 @@ namespace EddiNavigationService
                 {
                     QueryType.encoded, new ServiceFilter
                     {
-                        econ = new List<string> { "High Tech", "Military" },
-                        population = 1000000,
-                        security = new List<string> { "Medium", "High" },
-                        service = StationService.FromName("Material Trader"),
+                        economies = new List<Economy> { Economy.HighTech, Economy.Military },
+                        minPopulation = 1000000,
+                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        services = new List<StationService> { StationService.MaterialTrader },
+                        stationModels = null,
                         cubeLy = 40
                     }
                 },
@@ -35,10 +36,11 @@ namespace EddiNavigationService
                 {
                     QueryType.facilitator, new ServiceFilter
                     {
-                        econ = new List<string>(),
-                        population = 0,
-                        security = new List<string> { "Low" },
-                        service = StationService.FromName("Interstellar Factors Contact"),
+                        economies = null,
+                        minPopulation = 0,
+                        security = new List<SecurityLevel> { SecurityLevel.Low },
+                        services = new List<StationService> { StationService.Facilitator },
+                        stationModels = null,
                         cubeLy = 25
                     }
                 },
@@ -46,10 +48,11 @@ namespace EddiNavigationService
                 {
                     QueryType.manufactured, new ServiceFilter
                     {
-                        econ = new List<string> { "Industrial" },
-                        population = 1000000,
-                        security = new List<string>() { "Medium", "High" },
-                        service = StationService.FromName("Material Trader"),
+                        economies = new List<Economy> { Economy.Industrial },
+                        minPopulation = 1000000,
+                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        services = new List<StationService> { StationService.MaterialTrader },
+                        stationModels = null,
                         cubeLy = 40
                     }
                 },
@@ -57,10 +60,11 @@ namespace EddiNavigationService
                 {
                     QueryType.raw, new ServiceFilter
                     {
-                        econ = new List<string> { "Extraction", "Refinery" },
-                        population = 1000000,
-                        security = new List<string> { "Medium", "High" },
-                        service = StationService.FromName("Material Trader"),
+                        economies = new List<Economy> { Economy.Extraction, Economy.Refinery },
+                        minPopulation = 1000000,
+                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        services = new List<StationService> { StationService.MaterialTrader },
+                        stationModels = null,
                         cubeLy = 40
                     }
                 },
@@ -68,10 +72,11 @@ namespace EddiNavigationService
                 {
                     QueryType.guardian, new ServiceFilter
                     {
-                        econ = new List<string> { "High Tech" },
-                        population = 10000000,
-                        security = new List<string> { "High" },
-                        service = StationService.FromName("Technology Broker"),
+                        economies = new List<Economy> { Economy.HighTech },
+                        minPopulation = 10000000,
+                        security = new List<SecurityLevel> { SecurityLevel.High },
+                        services = new List<StationService> { StationService.TechBroker },
+                        stationModels = null,
                         cubeLy = 80
                     }
                 },
@@ -79,11 +84,24 @@ namespace EddiNavigationService
                 {
                     QueryType.human, new ServiceFilter
                     {
-                        econ = new List<string> { "Industrial" },
-                        population = 10000000,
-                        security = new List<string> { "High" },
-                        service = StationService.FromName("Technology Broker"),
+                        economies = new List<Economy> { Economy.Industrial },
+                        minPopulation = 10000000,
+                        security = new List<SecurityLevel> { SecurityLevel.High },
+                        services = new List<StationService> { StationService.TechBroker },
+                        stationModels = null,
                         cubeLy = 80
+                    }
+                },
+                // Scorpion SRV vender
+                {
+                    QueryType.scorpion, new ServiceFilter
+                    {
+                        economies = new List<Economy> { Economy.Military },
+                        minPopulation = 0,
+                        security = null,
+                        services = new List<StationService> { StationService.Outfitting },
+                        stationModels = new List<StationModel> { StationModel.CraterPort },
+                        cubeLy = 40
                     }
                 }
             };
@@ -216,6 +234,7 @@ namespace EddiNavigationService
                     case QueryType.human:
                     case QueryType.manufactured:
                     case QueryType.raw:
+                    case QueryType.scorpion:
                     {
                         result = GetServiceSystem(queryType, numericArg is null ? (int?)null : Convert.ToInt32(Math.Round((decimal)numericArg)), prioritizeOrbitalStationArg);
                         break;
@@ -986,25 +1005,22 @@ namespace EddiNavigationService
                 var shipSize = EDDI.Instance.CurrentShip?.Size ?? LandingPadSize.Large;
                 if (ServiceFilters.TryGetValue(serviceQuery, out var filter))
                 {
-                    var ServiceStarSystem =
-                        GetServiceSystem(serviceQuery, maxStationDistance, prioritizeOrbitalStations);
+                    // Scorpions are only found at Surface Ports
+                    if (serviceQuery is QueryType.scorpion) { prioritizeOrbitalStations = false; }
+
+                    var ServiceStarSystem = GetServiceSystem(serviceQuery, maxStationDistance, prioritizeOrbitalStations);
+
+                    if (ServiceStarSystem is null && prioritizeOrbitalStations)
+                    {
+                        ServiceStarSystem = GetServiceSystem(serviceQuery, maxStationDistance, false);
+                    }
+
                     if (ServiceStarSystem != null)
                     {
                         var searchSystem = ServiceStarSystem;
 
-                        // Filter stations which meet the game version and landing pad size requirements
-                        var ServiceStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons
-                            ? ServiceStarSystem.stations
-                            : ServiceStarSystem.orbitalstations
-                                .Where(s => s.stationservices.Count > 0).ToList();
-                        ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
-                        if (serviceQuery == QueryType.facilitator)
-                        {
-                            ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
-                        }
-
-                        ServiceStations = ServiceStations.Where(s => s.stationServices.Contains(filter.service))
-                            .ToList();
+                        // Find stations which meet the search preference and filter requirements
+                        var ServiceStations = FilterSystemStations(serviceQuery, prioritizeOrbitalStations, ServiceStarSystem, maxStationDistance, filter, shipSize);
 
                         // Build list to find the station nearest to the main star
                         var nearestList = new SortedList<decimal, string>();
@@ -1059,58 +1075,38 @@ namespace EddiNavigationService
                 if (ServiceFilters.TryGetValue(serviceQuery, out ServiceFilter filter))
                 {
                     int cubeLy = filter.cubeLy;
-
-                    //
                     var checkedSystems = new List<string>();
                     var maxTries = 5;
 
                     while (maxTries > 0)
                     {
-                        var cubeSystems =
-                            edsmService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
+                        var cubeSystems = edsmService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
                         if (cubeSystems?.Any() ?? false)
                         {
                             // Filter systems using search parameters
-                            cubeSystems = cubeSystems.Where(s => s.population >= filter.population).ToList();
+                            cubeSystems = cubeSystems.Where(s => s.population >= filter.minPopulation).ToList();
+                            cubeSystems =  cubeSystems
+                                .Where(s => filter.security?.Any(filterSecurity => s.securityLevel == filterSecurity) ?? true).ToList();
                             cubeSystems = cubeSystems
-                                .Where(s => filter.security.Contains(s.securityLevel.invariantName)).ToList();
-                            if (serviceQuery != QueryType.facilitator)
-                            {
-                                cubeSystems = cubeSystems
-                                    .Where(s => filter.econ.Contains(s.Economies
-                                        .FirstOrDefault(e => e.invariantName != "None")?.invariantName))
-                                    .ToList();
-                            }
+                                .Where(s => filter.economies?.All(filterEconomy => (s.Economies?.Any(stationEconomy => filterEconomy == stationEconomy) ?? false)) ?? true)
+                                .ToList();
 
-                            // Retrieve systems in current radius which have not been previously checked
+                            // Retrieve systems in current shell which have not been previously checked
                             var systemNames =
                                 cubeSystems.Select(s => s.systemname).Except(checkedSystems).ToList();
                             if (systemNames.Count > 0)
                             {
-                                var StarSystems =
-                                    StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(),
-                                        true, false);
+                                var StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, true);
                                 checkedSystems.AddRange(systemNames);
 
                                 var nearestList = new SortedList<decimal, string>();
                                 foreach (var starsystem in StarSystems)
                                 {
-                                    // Filter stations within the system which meet the station type prioritization,
-                                    // max distance from the main star, game version, and landing pad size requirements
-                                    var stations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons
-                                        ? starsystem.stations
-                                        : starsystem.orbitalstations
-                                            .Where(s => s.stationservices.Count > 0).ToList();
-                                    stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
-                                    if (serviceQuery == QueryType.facilitator)
-                                    {
-                                        stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList();
-                                    }
-
-                                    int stationCount = stations.Count(s => s.stationServices.Contains(filter.service));
+                                    // Find stations which meet the search preference and filter requirements
+                                    var stations = FilterSystemStations(serviceQuery, prioritizeOrbitalStations, starsystem, maxStationDistance, filter, shipSize);
 
                                     // Build list to find the 'service' system nearest to the current system, meeting station requirements
-                                    if (stationCount > 0)
+                                    if (stations.Count > 0)
                                     {
                                         decimal distance = CalculateDistance(currentSystem, starsystem);
                                         if (!nearestList.ContainsKey(distance))
@@ -1129,14 +1125,42 @@ namespace EddiNavigationService
                             }
                         }
 
-                        // Increase search radius in 10 Ly increments (up to 50 Ly)
-                        // until the required 'service' is found
+                        // Increase search radius in 10 Ly increments (up from the starting shell size) until the required 'service' is found
                         cubeLy += 10;
                         maxTries--;
                     }
                 }
             }
             return null;
+        }
+
+        private List<Station> FilterSystemStations(QueryType serviceQuery, bool prioritizeOrbitalStations, StarSystem ServiceStarSystem,
+            int maxStationDistance, ServiceFilter filter, LandingPadSize shipSize)
+        {
+            // Prioritize orbital stations as appropriate
+            var ServiceStations = prioritizeOrbitalStations ? ServiceStarSystem.orbitalstations : ServiceStarSystem.stations;
+
+            // Apply our service filters
+            ServiceStations = ServiceStations.Where(s => filter.services?.All(svc => s.stationServices.Contains(svc)) ?? true).ToList();
+
+            // Apply our station model filter
+            ServiceStations = ServiceStations.Where(s => filter.stationModels?.Contains(s.Model) ?? true).ToList();
+
+            // Apply our economy filters
+            ServiceStations = ServiceStations
+                .Where(s => filter.economies?.All(e => s.economyShares.Select(es => es.economy).Contains(e)) ?? true)
+                .ToList();
+
+            // Apply our distance filter
+            ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
+            
+            // Apply our landing pad filter
+            if (serviceQuery == QueryType.facilitator)
+            {
+                ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
+            }
+
+            return ServiceStations;
         }
 
         /// <summary> Route to the nearest star system that can be used to source active mission cargo </summary>

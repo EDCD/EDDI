@@ -44,7 +44,8 @@ namespace EddiNavigationService
                         QueryType.guardian,
                         QueryType.human,
                         QueryType.manufactured,
-                        QueryType.raw
+                        QueryType.raw,
+                        QueryType.scorpion
                     };
                 }
                 default:

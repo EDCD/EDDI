@@ -52,6 +52,7 @@ namespace EddiSpeechResponder.CustomFunctions
                         case QueryType.manufactured:
                         case QueryType.raw:
                         case QueryType.scoop:
+                        case QueryType.scorpion:
                         {
                             if (values.Count >= 2 && decimal.TryParse(values[1].AsString, out var decimalDistance))
                             {

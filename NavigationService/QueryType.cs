@@ -20,6 +20,7 @@ namespace EddiNavigationService
         raw,
         recalculating,
         scoop,
+        scorpion,
         source,
         set,
         update,

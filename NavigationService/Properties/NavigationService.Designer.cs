@@ -214,6 +214,15 @@ namespace EddiNavigationService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scorpion SRV Vendor.
+        /// </summary>
+        public static string query_type_scorpion {
+            get {
+                return ResourceManager.GetString("query_type_scorpion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cargo Source Route.
         /// </summary>
         public static string query_type_source {

@@ -44,6 +44,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.
       * Fixed a bug that prevented `Pause()` from affecting `Play()`.
       * The `SetState()` function now allows variables to be set to `void`.
+      * `RouteDetails()` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, `scorpion`, and `scoop` types.
     * Scripts
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
@@ -87,7 +88,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Mission completed` updated to reduce verbosity by only sometimes referencing faction state info.
       * `Mission faction state` updated to correct incorrect faction names and reduce verbosity.
       * `Mission failed` updated to prevent speech if no mission is found matching the mission id.
-      * `Route details` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, and `scoop` types.
+      * `Route details` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, `scorpion`, and `scoop` types.
       * `Ship interdicted` updated to add a default script.
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.

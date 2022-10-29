@@ -5,13 +5,15 @@ namespace EddiNavigationService
 {
     public class ServiceFilter
     {
-        public List<string> econ { get; set; }
+        public List<Economy> economies { get; set; }
 
-        public long population { get; set; }
+        public long minPopulation { get; set; }
 
-        public List<string> security { get; set; }
+        public List<SecurityLevel> security { get; set; }
 
-        public StationService service { get; set; }
+        public List<StationService> services { get; set; }
+
+        public List<StationModel> stationModels { get; set; }
 
         public int cubeLy { get; set; }
     }
