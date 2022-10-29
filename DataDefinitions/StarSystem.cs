@@ -161,14 +161,14 @@ namespace EddiDataDefinitions
         public long? population { get; set; } = 0;
 
         [PublicAPI, JsonIgnore]
-        public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
+        public string primaryeconomy => (Economies?[0] ?? Economy.None).localizedName;
 
         public List<Economy> Economies
         {
             get => _economies;
             set { _economies = value; OnPropertyChanged();}
         }
-        private List<Economy> _economies = new List<Economy>() { Economy.None, Economy.None };
+        private List<Economy> _economies = new List<Economy>();
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;

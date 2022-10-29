@@ -201,34 +201,31 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
+        [JsonIgnore]
         public List<EconomyShare> economyShares
         {
-            // Per FDev comments, the BGS does have multiple minor variations of each economy type,
-            // e.g. a system can have two distinct economies rendered as follows "StationEconomies":  
-            // [ { "Name": "$economy_Refinery;", "Proportion": 0.84 }, { "Name": "$economy_Refinery;", "Proportion": 0.16 }
-            // We consolidate them here.
-            get { return _economyShares ?? new List<EconomyShare>(2); }
+            get => _economyShares ?? new List<EconomyShare>(2);
             set
             {
-                List<EconomyShare> updatedEconomyShares = new List<EconomyShare>();
-                foreach (EconomyShare newEconomyShare in value)
+                if (value != null && (value.Count != value.Select(v => v.economy).Distinct().Count()))
                 {
-                    EconomyShare alreadyAddedEconomyShare = updatedEconomyShares.FirstOrDefault(e => e.economy == newEconomyShare.economy);
-                    if (alreadyAddedEconomyShare != null)
-                    {
-                        updatedEconomyShares.Remove(alreadyAddedEconomyShare);
-                        updatedEconomyShares.Add(new EconomyShare(newEconomyShare.economy, alreadyAddedEconomyShare.proportion + newEconomyShare.proportion));
-                    }
-                    else if (newEconomyShare != null)
-                    {
-                        updatedEconomyShares.Add(newEconomyShare);
-                    }
+                    // Per FDev comments, the BGS does have multiple minor variations of each economy type,
+                    // e.g. a system can have two distinct economies rendered as follows "StationEconomies":  
+                    // [ { "Name": "$economy_Refinery;", "Proportion": 0.84 }, { "Name": "$economy_Refinery;", "Proportion": 0.16 }
+                    // We consolidate them here.
+                    _economyShares = value.Select(v => new KeyValuePair<Economy, decimal>(v.economy, v.proportion))
+                        .GroupBy(x => x.Key) // Group second economies of the same economy type
+                        .ToDictionary(x => x.Key, x => x.Sum(y => y.Value)) // Sum proportions of economies of the same economy type
+                        .Select(d => new EconomyShare(d.Key, d.Value)).ToList(); // Convert back to a list of EconomyShares
                 }
-                _economyShares = updatedEconomyShares;
+                else
+                {
+                    _economyShares = value;
+                }
                 OnPropertyChanged();
             }
         }
-        [JsonIgnore]
+        [JsonProperty(nameof(economyShares))]
         private List<EconomyShare> _economyShares;
 
         /// <summary>What are the localized economies at the stations</summary>
