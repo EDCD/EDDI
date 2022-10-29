@@ -85,7 +85,7 @@ namespace EddiDataDefinitions
     }
 
     [JsonObject(MemberSerialization.OptIn), JsonConverter(typeof(JsonConverterFromEDName))]
-    public abstract class ResourceBasedLocalizedEDName<T> where T : ResourceBasedLocalizedEDName<T>, new()
+    public abstract class ResourceBasedLocalizedEDName<T> : IEqualityComparer<T> where T : ResourceBasedLocalizedEDName<T>, new()
     {
         static ResourceBasedLocalizedEDName()
         {
@@ -159,7 +159,7 @@ namespace EddiDataDefinitions
         public static T FromName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null || from == string.Empty)
+            if (string.IsNullOrEmpty(from))
             {
                 return null;
             }
@@ -179,7 +179,7 @@ namespace EddiDataDefinitions
         public static T FromEDName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null || from == string.Empty)
+            if (string.IsNullOrEmpty(from))
             {
                 return null;
             }
@@ -202,6 +202,16 @@ namespace EddiDataDefinitions
                 }
             }
             return result;
+        }
+
+        public bool Equals(T x, T y)
+        {
+            return x?.edname == y?.edname;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj.edname.GetHashCode();
         }
     }
 }
