@@ -68,6 +68,7 @@
     <Compile Include="BountyPaidEvent.cs" />
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="CargoEvent.cs" />
+    <Compile Include="CarrierServiceChangedEvent.cs" />
     <Compile Include="CarrierDecommissionCancelledEvent.cs" />
     <Compile Include="CarrierDecommissionScheduledEvent.cs" />
     <Compile Include="CarrierBankTransferEvent.cs" />

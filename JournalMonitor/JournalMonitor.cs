@@ -4672,6 +4672,15 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierCrewServices":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var operation = JsonParsing.getString(data, "Operation");
+                                    var crewRole = StationService.FromEDName(JsonParsing.getString(data, "CrewRole"));
+                                    var crewName = JsonParsing.getString(data, "CrewName");
+                                    events.Add(new CarrierServiceChangedEvent(timestamp, carrierID, operation, crewRole, crewName) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierDepositFuel":
                             case "CarrierDockingPermission":
                             case "CarrierFinance":
@@ -4682,12 +4691,12 @@ namespace EddiJournalMonitor
                             case "BuyWeapon":
                             case "CodexDiscovery":
                             case "CodexEntry":
-                            case "CollectItems":
+                            case "CollectItems": // Maybe add this if we add support for tracking on-foot backpack contents.
                             case "CreateSuitLoadout":
-                            case "CrimeVictim":
+                            case "CrimeVictim": // No reason to add this. If added, filter out events where the current player is listed as the offender.
                             case "DeleteSuitLoadout":
-                            case "DiscoveryScan":
-                            case "DropItems":
+                            case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
+                            case "DropItems": // Maybe add this if we add support for tracking on-foot backpack contents.
                             case "EngineerLegacyConvert": // No reason to add this.
                             case "FSSBodySignals":
                             case "LoadoutEquipModule":

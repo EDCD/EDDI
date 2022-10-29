@@ -1357,6 +1357,7 @@
     <EmbeddedResource Include="Properties\StationService.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationService.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Vouchers.ru.resx" />
     <EmbeddedResource Include="Properties\Vouchers.zh-CN.resx" />

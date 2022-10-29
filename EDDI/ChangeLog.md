@@ -29,6 +29,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier decommission cancelled` added.
       * `Carrier decommission scheduled` added.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
+      * `Carrier service changed` added, triggered when you change the services available at your fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
       * `Carrier jump engaged` updated to add a new `docked` property.
       * `Location` updated to add `faction` and `conflicts` properties (like the `Jumped` event).
