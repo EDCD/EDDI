@@ -670,15 +670,15 @@ namespace EddiNavigationMonitor
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
                 // Restore our bookmarks
-                Bookmarks = navConfig.bookmarks;
+                Bookmarks = navConfig.bookmarks ?? new ObservableCollection<NavBookmark>();
                 GetBookmarkExtras(Bookmarks);
 
                 // Restore our in-game routing
-                NavRoute = navConfig.navRouteList;
+                NavRoute = navConfig.navRouteList ?? new NavWaypointCollection(true);
 
                 // Restore our plotted routes
-                PlottedRoute = navConfig.plottedRouteList;
-                CarrierPlottedRoute = navConfig.carrierPlottedRoute;
+                PlottedRoute = navConfig.plottedRouteList ?? new NavWaypointCollection();
+                CarrierPlottedRoute = navConfig.carrierPlottedRoute ?? new NavWaypointCollection(true);
 
                 // Misc
                 updateDat = navConfig.updatedat;
@@ -867,25 +867,18 @@ namespace EddiNavigationMonitor
             //}
         }
 
-        private async void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
+        private void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
         {
             // Retrieve extra details to supplement our bookmarks
-
-            var getSystems = Task.Run( () =>
+            var bookmarkSystems = bookmarks.Select(n => new StarSystem()
             {
-                var bookmarkSystems = bookmarks.Select(n => new StarSystem()
-                {
-                    systemname = n.systemname, 
-                    systemAddress = n.systemAddress
-                }).ToList();
-                var dataProviderService = new DataProviderService(new StarMapService());
-                return dataProviderService.syncFromStarMapService(bookmarkSystems);
-            });
-            await Task.WhenAll(getSystems);
-            foreach (var system in getSystems.Result)
+                systemname = n.systemname,
+                systemAddress = n.systemAddress
+            }).ToList();
+            var dataProviderService = new DataProviderService(new StarMapService());
+            foreach (var system in dataProviderService.syncFromStarMapService(bookmarkSystems))
             {
-                var poi = bookmarks.FirstOrDefault(s =>
-                    s.systemname == system.systemname);
+                var poi = bookmarks.FirstOrDefault(s => s.systemname == system.systemname);
                 if (poi != null)
                 {
                     poi.systemAddress = system.systemAddress;

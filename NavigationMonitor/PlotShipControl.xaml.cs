@@ -110,7 +110,7 @@ namespace EddiNavigationMonitor
         {
             // Don't update the UI while guidance is locked.
             var config = ConfigService.Instance.navigationMonitorConfiguration;
-            if (config.plottedRouteList.GuidanceEnabled)
+            if (config.plottedRouteList != null && config.plottedRouteList.GuidanceEnabled)
             {
                 return;
             }
