@@ -1020,6 +1020,14 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierDecommissionScheduled(carrierDecommissionScheduledEvent);
                     }
+                    else if (@event is CarrierDockingPermissionEvent carrierDockingPermissionEvent)
+                    {
+                        passEvent = eventCarrierDockingPermission(carrierDockingPermissionEvent);
+                    }
+                    else if (@event is CarrierFuelDepositEvent carrierDepositFuelEvent)
+                    {
+                        passEvent = eventCarrierDepositFuel(carrierDepositFuelEvent);
+                    }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
                         passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
@@ -1067,13 +1075,35 @@ namespace EddiCore
             }
         }
 
+        private bool eventCarrierDockingPermission(CarrierDockingPermissionEvent carrierDockingPermissionEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDockingPermissionEvent.carrierID)
+            {
+                FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
+                FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
+                return true;
+            }
+            return false;
+        }
+
+        private bool eventCarrierDepositFuel(CarrierFuelDepositEvent carrierFuelDepositEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierFuelDepositEvent.carrierID)
+            {
+                FleetCarrier.fuel = carrierFuelDepositEvent.total;
+                return true;
+            }
+            return false;
+        }
+
         private bool eventCarrierDecommissionScheduled(CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
         {
             if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionScheduledEvent.carrierID)
             {
                 FleetCarrier.state = "pendingDecommission";
+                return true;
             }
-            return true;
+            return false;
         }
 
         private bool eventCarrierDecommissionCancelled(CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
@@ -1081,18 +1111,20 @@ namespace EddiCore
             if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionCancelledEvent.carrierID)
             {
                 FleetCarrier.state = "normalOperation";
+                return true;
             }
-            return true;
+            return false;
         }
 
         private bool eventCarrierBankTransfer(CarrierBankTransferEvent carrierBankTransferEvent)
         {
+            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
             if (FleetCarrier != null && FleetCarrier.carrierID == carrierBankTransferEvent.carrierID)
             {
                 FleetCarrier.bankBalance = carrierBankTransferEvent.carrierBalance;
+                return true;
             }
-            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
-            return true;
+            return false;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)

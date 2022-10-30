@@ -4682,7 +4682,23 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierDepositFuel":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var amount = JsonParsing.getInt(data, "Amount");
+                                    var total = JsonParsing.getInt(data, "Total");
+                                    events.Add(new CarrierFuelDepositEvent(timestamp, carrierID, amount, total) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierDockingPermission":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
+                                    var allowNotorious = JsonParsing.getBool(data, "AllowNotorious");
+                                    events.Add(new CarrierDockingPermissionEvent(timestamp, carrierID, dockingAccess, allowNotorious) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierFinance":
                             case "CarrierModulePack":
                             case "CarrierNameChange":

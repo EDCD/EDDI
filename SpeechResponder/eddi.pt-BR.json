@@ -307,6 +307,24 @@
 			"name": "Carrier decommission scheduled",
 			"description": "Triggered when you request the decommissioning of your fleet carrier"
 		},
+		"Carrier docking permission": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{Occasionally(2, \"Orders transmitted.\")}\r\nAccess to \r\n{if carrier && len(carrier.name) > 0: \r\n    {carrier.name} \r\n|else: \r\n    your fleet carrier\r\n}\r\n{OneOf(\"is now\", \"has been\")}\r\n{if event.dockingAccess = \"none\":\r\n    restricted. \r\n    {Occasionally(2, \"No other commanders are permitted to dock.\")}\r\n|elif event.dockingAccess = \"squadronfriends\":\r\n    open to \r\n    {if !event.allowNotorious: law abiding }\r\n    squadron members and friendly commanders only.\r\n|elif event.dockingAccess = \"friends\":\r\n    open to \r\n    {if !event.allowNotorious: law abiding }\r\n    friendly commanders only.\r\n|elif event.dockingAccess = \"all\":\r\n    open to all \r\n    {if !event.allowNotorious: law abiding }    \r\n    commanders.\r\n}",
+			"default": true,
+			"name": "Carrier docking permission",
+			"description": "Triggered when changing the docking permission criteria at your fleet carrier"
+		},
+		"Carrier fuel deposit": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{Humanise(event.amount)} tonnes of tritium deposited with\r\n{if carrier && len(carrier.name) > 0:\r\n    {carrier.name}.\r\n|else:\r\n    your fleet carrier.\r\n}",
+			"default": true,
+			"name": "Carrier fuel deposit",
+			"description": "Triggered when depositing fuel at your fleet carrier"
+		},
 		"Carrier jump cancelled": {
 			"enabled": true,
 			"priority": 3,
