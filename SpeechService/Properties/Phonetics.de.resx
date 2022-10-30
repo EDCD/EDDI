@@ -247,8 +247,14 @@
   
   
   
-  
-  
+  <data name="hudson" xml:space="preserve">
+    <value>Hadsen</value>
+    <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
+  <data name="Hyades" xml:space="preserve">
+    <value>Hajadies</value>
+    <comment>Optional phonetic pronunciation for Hyades</comment>
+  </data>
   
   
   
@@ -327,9 +333,18 @@
   
   
   
-  
-  
-  
+  <data name="shinrarta" xml:space="preserve">
+    <value>Schinratah</value>
+    <comment>Optional phonetic pronunciation for shinrarta</comment>
+  </data>
+  <data name="shinrartadezhra_dezhra" xml:space="preserve">
+    <value>Dessre</value>
+    <comment>Optional phonetic pronunciation for shinrartadezhra_dezhra</comment>
+  </data>
+  <data name="shinrartadezhra_shinrarta" xml:space="preserve">
+    <value>Schinratah</value>
+    <comment>Optional phonetic pronunciation for shinrartadezhra_shinrarta</comment>
+  </data>
   <data name="Shui" xml:space="preserve">
     <value>ˈʃuːi</value>
     <comment>Optional phonetic pronunciation for Shui</comment>
