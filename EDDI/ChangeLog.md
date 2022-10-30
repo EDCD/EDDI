@@ -31,7 +31,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier docking permission` added, triggered when changing the docking permission criteria at your fleet carrier.
       * `Carrier finance` added, triggered when changing tax rates or reserve funds at your fleet carrier.
       * `Carrier fuel deposit` added, triggered when depositing fuel at your fleet carrier.
-      * `Carrier name changed` added, triggered when your fleet carrier’s name is changed.
+      * `Carrier name changed` added, triggered when your fleet carrier's name is changed.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
       * `Carrier service changed` added, triggered when you change the services available at your fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
