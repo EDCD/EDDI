@@ -125,7 +125,10 @@
     <comment>Optional phonetic pronunciation for aisling</comment>
   </data>
   
-  
+  <data name="aldebaran" xml:space="preserve">
+    <value>Aldebberen</value>
+    <comment>Optional phonetic pronunciation for aldebaran</comment>
+  </data>
   <data name="Alrai" xml:space="preserve">
     <value>ˈalraɪ</value>
     <comment>Optional phonetic pronunciation for Alrai</comment>
@@ -148,8 +151,14 @@
     <comment>Optional phonetic pronunciation for arissa</comment>
   </data>
   
-  
-  
+  <data name="asterope" xml:space="preserve">
+    <value>Es-terropi</value>
+    <comment>Optional phonetic pronunciation for asterope</comment>
+  </data>
+  <data name="atlas" xml:space="preserve">
+    <value>Etles</value>
+    <comment>Optional phonetic pronunciation for atlas</comment>
+  </data>
   
   
   <data name="Bei" xml:space="preserve">
@@ -182,7 +191,10 @@
   
   
   
-  
+  <data name="Crucis" xml:space="preserve">
+    <value>Crusis</value>
+    <comment>Optional phonetic pronunciation for Crucis</comment>
+  </data>
   
   
   <data name="deciat" xml:space="preserve">
@@ -195,7 +207,10 @@
     <comment>Optional phonetic pronunciation for denton</comment>
   </data>
   
-  
+  <data name="diso" xml:space="preserve">
+    <value>Dieso</value>
+    <comment>Optional phonetic pronunciation for diso</comment>
+  </data>
   
   
   <data name="duval" xml:space="preserve">
@@ -290,12 +305,18 @@
     <comment>Optional phonetic pronunciation for PruEuq_Pru</comment>
   </data>
   
-  
+  <data name="reorte" xml:space="preserve">
+    <value>Riot</value>
+    <comment>Optional phonetic pronunciation for reorte</comment>
+  </data>
   <data name="Rho" xml:space="preserve">
     <value>rəʊ</value>
     <comment>Optional phonetic pronunciation for Rho</comment>
   </data>
-  
+  <data name="RhoOphiuchi_Ophiuchi" xml:space="preserve">
+    <value>Offjukai</value>
+    <comment>Optional phonetic pronunciation for RhoOphiuchi_Ophiuchi</comment>
+  </data>
   <data name="RhoOphiuchi_Rho" xml:space="preserve">
     <value>rəʊ</value>
     <comment>Optional phonetic pronunciation for RhoOphiuchi_Rho</comment>
@@ -316,13 +337,31 @@
   
   
   
+  <data name="surya" xml:space="preserve">
+    <value>Su-rie-är</value>
+    <comment>Optional phonetic pronunciation for surya</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="Tascheter" xml:space="preserve">
+    <value>Taschitter</value>
+    <comment>Optional phonetic pronunciation for Tascheter</comment>
+  </data>
+  <data name="Tau" xml:space="preserve">
+    <value>Tau</value>
+    <comment>Optional phonetic pronunciation for Tau</comment>
+  </data>
+  <data name="TauCeti_Ceti" xml:space="preserve">
+    <value>Zitai</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Ceti</comment>
+  </data>
+  <data name="TauCeti_Tau" xml:space="preserve">
+    <value>Tau</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Tau</comment>
+  </data>
+  <data name="taygeta" xml:space="preserve">
+    <value>tejedschitta</value>
+    <comment>Optional phonetic pronunciation for taygeta</comment>
+  </data>
   
   
   <data name="torval" xml:space="preserve">
@@ -340,13 +379,22 @@
     <comment>Optional phonetic pronunciation for Tucanae</comment>
   </data>
   
-  
+  <data name="winters" xml:space="preserve">
+    <value>Wintes</value>
+    <comment>Optional phonetic pronunciation for winters</comment>
+  </data>
   <data name="Wredguia" xml:space="preserve">
     <value>Redd-gaia</value>
     <comment>Optional phonetic pronunciation for Wredguia</comment>
   </data>
-  
-  
+  <data name="xihe" xml:space="preserve">
+    <value>Schihe</value>
+    <comment>Optional phonetic pronunciation for xihe</comment>
+  </data>
+  <data name="xinca" xml:space="preserve">
+    <value>Schenke</value>
+    <comment>Optional phonetic pronunciation for xinca</comment>
+  </data>
   <data name="yakabugai" xml:space="preserve">
     <value>Yakebugai</value>
     <comment>Optional phonetic pronunciation for yakabugai</comment>
@@ -363,7 +411,10 @@
     <value>sackary</value>
     <comment>Optional phonetic pronunciation for zachary</comment>
   </data>
-  
+  <data name="zaonce" xml:space="preserve">
+    <value>Sejonns</value>
+    <comment>Optional phonetic pronunciation for zaonce</comment>
+  </data>
   
   
   
