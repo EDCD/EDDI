@@ -1040,6 +1040,10 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierFinance(carrierFinanceEvent);
                     }
+                    else if (@event is CarrierStatsEvent carrierStatsEvent)
+                    {
+                        passEvent = eventCarrierStats(carrierStatsEvent);
+                    }
                     else if (@event is CarrierNameChangeEvent carrierNameChangeEvent)
                     {
                         passEvent = eventCarrierNameChange(carrierNameChangeEvent);
@@ -1083,6 +1087,27 @@ namespace EddiCore
             }
         }
 
+        private bool eventCarrierStats(CarrierStatsEvent carrierStatsEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierStatsEvent.carrierID)
+            {
+                FleetCarrier.name = carrierStatsEvent.name;
+                FleetCarrier.callsign = carrierStatsEvent.callsign;
+                FleetCarrier.dockingAccess = carrierStatsEvent.dockingAccess;
+                FleetCarrier.notoriousAccess = carrierStatsEvent.notoriousAccess;
+                FleetCarrier.fuel = carrierStatsEvent.fuel;
+                FleetCarrier.usedCapacity = carrierStatsEvent.usedCapacity;
+                FleetCarrier.freeCapacity = carrierStatsEvent.freeCapacity;
+                FleetCarrier.bankBalance = carrierStatsEvent.bankBalance;
+                FleetCarrier.bankReservedBalance = carrierStatsEvent.bankReservedBalance;
+                FleetCarrier.bankPurchaseAllocationsBalance = carrierStatsEvent.bankBalance -
+                                                              carrierStatsEvent.bankReservedBalance -
+                                                              carrierStatsEvent.bankAvailableBalance;
+                return true;
+            }
+            return false;
+        }
+
         private bool eventCarrierNameChange(CarrierNameChangeEvent carrierNameChangeEvent)
         {
             if (FleetCarrier != null && FleetCarrier.carrierID == carrierNameChangeEvent.carrierID)
@@ -1099,7 +1124,9 @@ namespace EddiCore
             {
                 FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
                 FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
-                FleetCarrier.bankAvailableBalance = carrierFinanceEvent.bankAvailableBalance;
+                FleetCarrier.bankPurchaseAllocationsBalance = carrierFinanceEvent.bankBalance 
+                                                              - carrierFinanceEvent.bankReservedBalance 
+                                                              - carrierFinanceEvent.bankAvailableBalance;
                 return true;
             }
             return false;
@@ -1151,7 +1178,7 @@ namespace EddiCore
             Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
             if (FleetCarrier != null && FleetCarrier.carrierID == carrierBankTransferEvent.carrierID)
             {
-                FleetCarrier.bankBalance = carrierBankTransferEvent.carrierBalance;
+                FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
                 return true;
             }
             return false;

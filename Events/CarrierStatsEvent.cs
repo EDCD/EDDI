@@ -44,12 +44,12 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? carrierId { get; private set; }
+        public long? carrierID { get; private set; }
 
         public CarrierStatsEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel, int usedSpace, int freeSpace, ulong bankBalance, ulong bankBalanceReserved, ulong bankAvailableBalance) : base(timestamp, NAME)
         {
             // Carrier
-            this.carrierId = carrierId;
+            this.carrierID = carrierId;
             this.callsign = carrierCallsign;
             this.name = carrierName;
             this.dockingAccess = dockingAccess;

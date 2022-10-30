@@ -309,7 +309,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierStatsEvent(CarrierStatsEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { callsign = @event.callsign, name = @event.name };
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierID) { callsign = @event.callsign, name = @event.name };
             updatedCarrier.dockingAccess = @event.dockingAccess;
             updatedCarrier.notoriousAccess = @event.notoriousAccess;
             updatedCarrier.fuel = @event.fuel;

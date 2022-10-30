@@ -20,7 +20,7 @@ namespace EddiEvents
         public ulong cmdrBalance { get; private set; }
 
         [PublicAPI("The fleet carrier's updated credit balance")]
-        public ulong carrierBalance { get; private set; }
+        public ulong bankBalance { get; private set; }
         
         // Not intended to be user facing
         public long carrierID { get; private set; }
@@ -31,7 +31,7 @@ namespace EddiEvents
             this.deposit = deposit;
             this.withdrawal = withdrawal;
             this.cmdrBalance = cmdrBalance;
-            this.carrierBalance = carrierBalance;
+            this.bankBalance = carrierBalance;
         }
     }
 }

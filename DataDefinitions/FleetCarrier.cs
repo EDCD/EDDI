@@ -24,7 +24,7 @@ namespace EddiDataDefinitions
         private int _freeCapacity;
         private ulong _bankBalance;
         private ulong _bankReservedBalance;
-        private ulong _bankAvailableBalance;
+        private ulong _bankPurchaseAllocationsBalance;
         private JArray _cargo = new JArray();
         private JArray _carrierLockerAssets = new JArray();
         private JArray _carrierLockerGoods = new JArray();
@@ -195,16 +195,7 @@ namespace EddiDataDefinitions
         }
 
         [PublicAPI("The last reported available bank balance of the carrier")]
-        public ulong bankAvailableBalance // Value is reported by the `Carrier stats` event
-        {
-            get => _bankAvailableBalance;
-            set
-            {
-                if (value == _bankAvailableBalance) return;
-                _bankAvailableBalance = value;
-                OnPropertyChanged();
-            }
-        }
+        public ulong bankAvailableBalance => bankBalance - bankReservedBalance - bankPurchaseAllocationsBalance;
 
         [PublicAPI("The last reported reserved bank balance of the carrier")]
         public ulong bankReservedBalance // Value is reported by the `Carrier stats` event
@@ -214,6 +205,17 @@ namespace EddiDataDefinitions
             {
                 if (value == _bankReservedBalance) return;
                 _bankReservedBalance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ulong bankPurchaseAllocationsBalance
+        {
+            get => _bankPurchaseAllocationsBalance;
+            set
+            {
+                if (value == _bankPurchaseAllocationsBalance) return;
+                _bankPurchaseAllocationsBalance = value;
                 OnPropertyChanged();
             }
         }
@@ -386,23 +388,21 @@ namespace EddiDataDefinitions
             // Finances
             bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
             bankReservedBalance = newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
-            bankAvailableBalance = bankBalance 
-                - bankReservedBalance
-                - newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                - newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                - newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
+            bankPurchaseAllocationsBalance = newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
 
             // Inventories
-            Cargo = JArray.FromObject(newJson["cargo"]) ?? new JArray();
-            CarrierLockerAssets = JArray.FromObject(newJson["carrierLocker"]?["assets"]) ?? new JArray();
-            CarrierLockerGoods = JArray.FromObject(newJson["carrierLocker"]?["goods"]) ?? new JArray();
-            CarrierLockerData = JArray.FromObject(newJson["carrierLocker"]?["data"]) ?? new JArray();
+            Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());
+            CarrierLockerAssets = JArray.FromObject(newJson["carrierLocker"]?["assets"] ?? new JArray());
+            CarrierLockerGoods = JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
+            CarrierLockerData = JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
 
             // Market Buy/Sell Orders
-            commodityPurchaseOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"]) ?? new JArray();
-            commoditySalesOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["sales"]) ?? new JArray();
-            microresourcePurchaseOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["purchases"]) ?? new JArray();
-            microresourceSalesOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["sales"]) ?? new JArray();
+            commodityPurchaseOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
+            commoditySalesOrders = JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
+            microresourcePurchaseOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["purchases"] ?? new JArray());
+            microresourceSalesOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["sales"] ?? new JArray());
 
             // Station properties
             Market = Station.FromFrontierApi(newTimeStamp, newJson["market"]?.ToObject<JObject>(), newTimeStamp, null);
@@ -412,7 +412,7 @@ namespace EddiDataDefinitions
             {
                 if (cargo["commodity"]?.ToString() is "Tritium")
                 {
-                    fuelInCargo += cargo["qty"].ToObject<int>();
+                    fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
                 }
             }
         }
@@ -461,6 +461,7 @@ namespace EddiDataDefinitions
                 fleetCarrier.state = newFleetCarrier.state;
                 fleetCarrier.bankBalance = newFleetCarrier.bankBalance;
                 fleetCarrier.bankReservedBalance = newFleetCarrier.bankReservedBalance;
+                fleetCarrier.bankPurchaseAllocationsBalance = newFleetCarrier.bankPurchaseAllocationsBalance;
                 fleetCarrier.usedCapacity = newFleetCarrier.usedCapacity;
                 fleetCarrier.freeCapacity = newFleetCarrier.freeCapacity;
             };
