@@ -9,7 +9,8 @@ namespace EddiSpeechService
         {
             { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
             { "Federation Unite!", "Federation Unite"}, // Stop pausing at the end of Unite!
-            { "Minutemen", "Minute men" } // Prevent pronunciation like "Minnuh-tea-men"
+            { "Minutemen", "Minute men" }, // Prevent pronunciation like "Minnuh-tea-men"
+            { "The Fatherhood", "The Father hood" } // Prevent garbling of "Fatherhood"
         };
 
         /// <summary>Fix up faction names</summary>
