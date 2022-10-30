@@ -4702,49 +4702,73 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "CarrierFinance":
-                            case "CarrierModulePack":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var taxRate = JsonParsing.getInt(data, "TaxRate");
+                                    var reservePercent = JsonParsing.getInt(data, "ReservePercent");
+                                    var carrierBalance = JsonParsing.getULong(data, "CarrierBalance");
+                                    var carrierReserveBalance = JsonParsing.getULong(data, "ReserveBalance");
+                                    var carrierAvailableBalance = JsonParsing.getULong(data, "CarrierAvailableBalance");
+                                    events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "CarrierNameChange":
-                            case "CarrierShipPack":
-                            case "CarrierTradeOrder":
-                            case "BuyWeapon":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var callsign = JsonParsing.getString(data, "Callsign");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    events.Add(new CarrierNameChangeEvent(timestamp, carrierID, callsign, name) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+
+                            // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":
                             case "CodexEntry":
-                            case "CollectItems": // Maybe add this if we add support for tracking on-foot backpack contents.
-                            case "CreateSuitLoadout":
-                            case "CrimeVictim": // No reason to add this. If added, filter out events where the current player is listed as the offender.
-                            case "DeleteSuitLoadout":
-                            case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
-                            case "DropItems": // Maybe add this if we add support for tracking on-foot backpack contents.
-                            case "EngineerLegacyConvert": // No reason to add this.
                             case "FSSBodySignals":
-                            case "LoadoutEquipModule":
-                            case "LoadoutRemoveModule":
                             case "ModuleBuyAndStore":
-                            case "RenameSuitLoadout":
-                            case "ReservoirReplenished":
                             case "RestockVehicle":
-                            case "Scanned":
                             case "ScanBaryCentre":
                             case "ScanOrganic":
                             case "SellMicroResources":
                             case "SellOrganicData":
-                            case "SellSuit":
-                            case "SellWeapon":
-                            case "SharedBookmarkToSquadron": // No interesting data here so no reason to add this.
+
+                            // Low priority (for now)
+                            case "BuyWeapon":
+                            case "CarrierTradeOrder": // Implement when we are ready to handle fleet carrier cargo.
+                            case "CargoTransfer": // Could use for cargo transfers between ship and fleet carrier; the `Cargo` event already keeps ship and SRV cargo up to date.
+                            case "CarrierModulePack": 
+                            case "CarrierShipPack": 
+                            case "CreateSuitLoadout": 
+                            case "DeleteSuitLoadout": 
+                            case "LoadoutEquipModule":
+                            case "LoadoutRemoveModule":
+                            case "RenameSuitLoadout":
+                            case "ReservoirReplenished":
+                            case "SellSuit":  
+                            case "SellWeapon": 
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
-                            case "TransferMicroResources":
                             case "UpgradeSuit":
                             case "UpgradeWeapon":
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":
                             case "WingLeave":
-                            case "CargoTransfer": // Not needed for updating the cargo monitor, the `Cargo` event keeps us up to date.
-                            case "TradeMicroResources": // This is always followed by `ShipLockerMaterials`, which we can use to keep our inventory up to date
+
+                            // No plans to support
+                            case "CollectItems": // The `BackpackChange` event keeps us up to date.
+                            case "CrimeVictim": // No need to track crimes committed by other cmdrs. If added, filter out events where the current player is listed as the offender.
+                            case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
+                            case "DropItems": // The `BackpackChange` event keeps us up to date.
+                            case "EngineerLegacyConvert": // Unnecessary.
+                            case "Scanned": // Written at the end of a successful scan, too late to react to this.
+                            case "SharedBookmarkToSquadron": // Unnecessary.
+                            case "TradeMicroResources": // This is always followed by `ShipLocker`, which we can use to keep our inventory up to date
+                            case "TransferMicroResources": // Removed, no longer written
                             case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.
                             case "WonATrophyForSquadron": // No interesting data here so no reason to add this.
-                                // we silently ignore these, but forward them to the responders
                                 break;
                             default:
                                 throw new NotImplementedException($"EDDI has no handler for event type '{edType}'.");

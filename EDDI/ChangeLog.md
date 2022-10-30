@@ -25,11 +25,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Events
       * `Bookmark details` added, triggered when a navigation bookmark is added in the Navigation Monitor.
-      * `Carrier bank transfer` added.
-      * `Carrier decommission cancelled` added.
-      * `Carrier decommission scheduled` added.
-      * `Carrier docking permission` added.
-      * `Carrier fuel deposit` added.
+      * `Carrier bank transfer` added, triggered when you transfer money to or from your fleet carrier.
+      * `Carrier decommission cancelled` added, triggered when you cancel the decommissioning of your fleet carrier.
+      * `Carrier decommission scheduled` added, triggered when you request the decommissioning of your fleet carrier.
+      * `Carrier docking permission` added, triggered when changing the docking permission criteria at your fleet carrier.
+      * `Carrier finance` added, triggered when changing tax rates or reserve funds at your fleet carrier.
+      * `Carrier fuel deposit` added, triggered when depositing fuel at your fleet carrier.
+      * `Carrier name changed` added, triggered when your fleet carrier’s name is changed.
       * `Carrier purchased` added, triggered when you purchase a fleet carrier.
       * `Carrier service changed` added, triggered when you change the services available at your fleet carrier.
       * `Carrier stats` added, triggered when you open the carrier management screen.
@@ -47,7 +49,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Fixed a bug that prevented `Pause()` from affecting `Play()`.
       * The `SetState()` function now allows variables to be set to `void`.
       * `RouteDetails()` revised to remove obsolete `next` type and to add `carrier`, `neutron`, `recalculating`, `scorpion`, and `scoop` types.
-    * Scripts
+    * Changes to existing scripts
       * `Asteroid prospected` updated to conform to an in-game name change from `Void Opals` to `Void Opal`
       * `Bodies to map` updated to prevent re-recommending bodies we've already mapped.
       * `Body atmosphere report` revised to correct some issues around reporting for class 1 gas giants.

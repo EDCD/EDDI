@@ -308,6 +308,15 @@
       "name": "Carrier docking permission",
       "description": "Triggered when changing the docking permission criteria at your fleet carrier"
     },
+    "Carrier finance": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier finance",
+      "description": "Triggered when changing tax rates or reserve funds at your fleet carrier"
+    },
     "Carrier fuel deposit": {
       "enabled": true,
       "priority": 3,
@@ -352,6 +361,15 @@
       "responder": true,
       "script": "{_ Carrier jumped }\r\n{_ Triggered when you are docked at a fleet carrier as it completes a jump }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'carrier jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', event.systemname)}\r\n{SetState('eddi_context_system_system', event.systemname)}\r\n{SetState('eddi_context_wanted_list', \"\")}\r\n\r\n您的航母 {Spacialise(event.carriername)} 已经到达 {P(event.systemname, \"starsystem\")} 星系\r\n{if event.bodyname && len(event.bodyname) > 0:\r\n    , near the {event.bodytype}: {P(event.bodyname, \"body\")}\r\n}.\r\n{Pause(1000)}\r\n\r\n{_ Update mission data if we have arrived at our mission destination. _}\r\n{if destinationsystem && destinationsystem.name != \"\":\r\n    {RouteDetails(\"update\")}\r\n}\r\n\r\n{_ Report faction states only if it's been more than an hour (3600 seconds) since our last visit. _}\r\n{if SecondsSince(state.eddi_context_system_lastvisit) / 3600 > 1:\r\n    {set state_report to F(\"System state report\")}\r\n}\r\n\r\n{set system_engineer to F(\"Engineer report\")}\r\n{set system_missions to F(\"Mission check system\")}\r\n{set system_crimes to F(\"Crime check system\")}\r\n\r\n{if state_report || system_engineer || system_missions || (system_crimes && find(system_crimes, \"Warning\") < 0):\r\n    {Pause(500)}\r\n    注意:\r\n}\r\n\r\n{if state_report:\r\n    {Pause(500)}\r\n    {state_report}\r\n}\r\n{if system_engineer:\r\n    {Pause(500)}\r\n    {system_engineer}\r\n}\r\n{if system_missions:\r\n    {Pause(500)}\r\n    {system_missions}\r\n}\r\n{if system_crimes:\r\n    {Pause(500)}\r\n    {system_crimes}\r\n}\r\n",
       "default": true
+    },
+    "Carrier name changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "New designation accepted.\r\n{OneOf(\"Fleet carrier {Pause(100)} {event.name} {Pause(100)}\", \"{event.name}\")}\r\n{OneOf(\"stands ready for\", \"is ready for\", \"awaits\")}\r\n{OneOf(\"your order\", \"your command\")}.",
+      "default": true,
+      "name": "Carrier name changed",
+      "description": "Triggered when your fleet carrier’s name is changed"
     },
     "Carrier pads locked": {
       "name": "Carrier pads locked",

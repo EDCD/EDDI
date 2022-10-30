@@ -316,6 +316,15 @@
 			"name": "Carrier docking permission",
 			"description": "Triggered when changing the docking permission criteria at your fleet carrier"
 		},
+		"Carrier finance": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Carrier finance",
+			"description": "Triggered when changing tax rates or reserve funds at your fleet carrier"
+		},
 		"Carrier fuel deposit": {
 			"enabled": true,
 			"priority": 3,
@@ -360,6 +369,15 @@
 			"name": "Carrier jumped",
 			"description": "Triggered when you are docked at a fleet carrier as it completes a jump",
 			"default": true
+		},
+		"Carrier name changed": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "New designation accepted.\r\n{OneOf(\"Fleet carrier {Pause(100)} {event.name} {Pause(100)}\", \"{event.name}\")}\r\n{OneOf(\"stands ready for\", \"is ready for\", \"awaits\")}\r\n{OneOf(\"your order\", \"your command\")}.",
+			"default": true,
+			"name": "Carrier name changed",
+			"description": "Triggered when your fleet carrier’s name is changed"
 		},
 		"Carrier pads locked": {
 			"enabled": true,

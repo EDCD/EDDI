@@ -1036,6 +1036,14 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped(carrierJumpedEvent);
                     }
+                    else if (@event is CarrierFinanceEvent carrierFinanceEvent)
+                    {
+                        passEvent = eventCarrierFinance(carrierFinanceEvent);
+                    }
+                    else if (@event is CarrierNameChangeEvent carrierNameChangeEvent)
+                    {
+                        passEvent = eventCarrierNameChange(carrierNameChangeEvent);
+                    }
                     else if (@event is DisembarkEvent disembarkEvent)
                     {
                         passEvent = eventDisembark(disembarkEvent);
@@ -1073,6 +1081,28 @@ namespace EddiCore
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventCarrierNameChange(CarrierNameChangeEvent carrierNameChangeEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierNameChangeEvent.carrierID)
+            {
+                FleetCarrier.name = carrierNameChangeEvent.name;
+                return true;
+            }
+            return false;
+        }
+
+        private bool eventCarrierFinance(CarrierFinanceEvent carrierFinanceEvent)
+        {
+            if (FleetCarrier != null && FleetCarrier.carrierID == carrierFinanceEvent.carrierID)
+            {
+                FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
+                FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
+                FleetCarrier.bankAvailableBalance = carrierFinanceEvent.bankAvailableBalance;
+                return true;
+            }
+            return false;
         }
 
         private bool eventCarrierDockingPermission(CarrierDockingPermissionEvent carrierDockingPermissionEvent)
