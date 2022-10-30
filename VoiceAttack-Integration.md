@@ -342,8 +342,9 @@ Data is primarily updated from the `Carrier stats` event and Frontier API data i
   * {BOOL:Carrier notorious access}: True if the last reported state permits docking access by notorious commanders
   * {INT:Carrier used capacity}: The last reported total used capacity of the carrier
   * {INT:Carrier free capacity}: The last reported free capacity of the carrier
-  * {DEC:Carrier bank balance}: The last reported bank balance of the carrier
+  * {DEC:Carrier bank balance}: The last reported total bank balance of the carrier
   * {DEC:Carrier bank reserved balance}: The last reported reserved bank balance of the carrier
+  * {DEC:Carrier bank available balance}: The last reported available bank balance of the carrier
 
 ## Miscellaneous Variables
 

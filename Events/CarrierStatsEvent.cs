@@ -39,11 +39,14 @@ namespace EddiEvents
         [PublicAPI("The current reserved bank balance of the carrier")]
         public ulong bankReservedBalance { get; private set; }
 
+        [PublicAPI("The current available bank balance of the carrier")]
+        public ulong bankAvailableBalance { get; private set; }
+
         // These properties are not intended to be user facing
 
         public long? carrierId { get; private set; }
 
-        public CarrierStatsEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel, int usedSpace, int freeSpace, ulong bankBalance, ulong bankBalanceReserved) : base(timestamp, NAME)
+        public CarrierStatsEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel, int usedSpace, int freeSpace, ulong bankBalance, ulong bankBalanceReserved, ulong bankAvailableBalance) : base(timestamp, NAME)
         {
             // Carrier
             this.carrierId = carrierId;
@@ -56,6 +59,7 @@ namespace EddiEvents
             this.freeCapacity = freeSpace;
             this.bankBalance = bankBalance;
             this.bankReservedBalance = bankBalanceReserved;
+            this.bankAvailableBalance = bankAvailableBalance;
         }
     }
 }

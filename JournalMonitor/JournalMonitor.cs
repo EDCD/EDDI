@@ -4634,13 +4634,15 @@ namespace EddiJournalMonitor
 
                                     ulong bankBalance = 0;
                                     ulong bankReservedBalance = 0;
+                                    ulong bankAvailableBalance = 0;
                                     if (data.TryGetValue("Finance", out object finances) && finances is Dictionary<string, object> finance)
                                     {
                                         bankBalance = JsonParsing.getULong(finance, "CarrierBalance");
                                         bankReservedBalance = JsonParsing.getULong(finance, "ReserveBalance");
+                                        bankAvailableBalance = JsonParsing.getULong(finance, "AvailableBalance");
                                     }
 
-                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance ) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

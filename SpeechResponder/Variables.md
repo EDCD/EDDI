@@ -293,8 +293,9 @@ Details of the commander's fleet carrier (if purchased) are available within the
   - *notoriousAccess* - True if the last reported state permits docking access by notorious commanders
   - *usedCapacity* - The last reported total used capacity of the carrier
   - *freeCapacity* - The last reported free capacity of the carrier
-  - *bankBalance* - The last reported bank balance of the carrier
+  - *bankBalance* - The last reported total bank balance of the carrier
   - *bankReservedBalance* - The last reported reserved bank balance of the carrier
+  - *bankAvailableBalance* - The last reported available bank balance of the carrier
 
 ___
 

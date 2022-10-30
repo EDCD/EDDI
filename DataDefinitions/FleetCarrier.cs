@@ -24,6 +24,7 @@ namespace EddiDataDefinitions
         private int _freeCapacity;
         private ulong _bankBalance;
         private ulong _bankReservedBalance;
+        private ulong _bankAvailableBalance;
         private JArray _cargo = new JArray();
         private JArray _carrierLockerAssets = new JArray();
         private JArray _carrierLockerGoods = new JArray();
@@ -189,6 +190,18 @@ namespace EddiDataDefinitions
             {
                 if (value == _bankBalance) return;
                 _bankBalance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [PublicAPI("The last reported available bank balance of the carrier")]
+        public ulong bankAvailableBalance // Value is reported by the `Carrier stats` event
+        {
+            get => _bankAvailableBalance;
+            set
+            {
+                if (value == _bankAvailableBalance) return;
+                _bankAvailableBalance = value;
                 OnPropertyChanged();
             }
         }
@@ -373,6 +386,11 @@ namespace EddiDataDefinitions
             // Finances
             bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
             bankReservedBalance = newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
+            bankAvailableBalance = bankBalance 
+                - bankReservedBalance
+                - newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                - newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                - newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
 
             // Inventories
             Cargo = JArray.FromObject(newJson["cargo"]) ?? new JArray();
