@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiCompanionAppService.Exceptions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using Utilities;
@@ -31,22 +32,29 @@ namespace EddiCompanionAppService.Endpoints
                 return new Tuple<JObject, DateTime>(cachedFleetCarrierJson, cachedFleetCarrierTimeStamp);
             }
 
-            Logging.Debug($"Getting {FLEETCARRIER_URL} data");
-            var result = GetEndpoint(FLEETCARRIER_URL);
-
-            if (!result.Item1?.DeepEquals(cachedFleetCarrierJson) ?? false)
+            try
             {
-                cachedFleetCarrierJson = result.Item1;
-                cachedFleetCarrierTimeStamp = result.Item2;
-                Logging.Debug($"{FLEETCARRIER_URL} returned " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
-                FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedFleetCarrierJson, cachedFleetCarrierTimeStamp));
-            }
-            else
-            {
-                Logging.Debug($"{FLEETCARRIER_URL} returned, no change from prior cached data.");
-            }
+                Logging.Debug($"Getting {FLEETCARRIER_URL} data");
+                var result = GetEndpoint(FLEETCARRIER_URL);
 
-            return result;
+                if (!result.Item1?.DeepEquals(cachedFleetCarrierJson) ?? false)
+                {
+                    cachedFleetCarrierJson = result.Item1;
+                    cachedFleetCarrierTimeStamp = result.Item2;
+                    Logging.Debug($"{FLEETCARRIER_URL} returned " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
+                    FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedFleetCarrierJson, cachedFleetCarrierTimeStamp));
+                }
+                else
+                {
+                    Logging.Debug($"{FLEETCARRIER_URL} returned, no change from prior cached data.");
+                }
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
+            }
+            return new Tuple<JObject, DateTime>(cachedFleetCarrierJson, cachedFleetCarrierTimeStamp);
         }
     }
 }

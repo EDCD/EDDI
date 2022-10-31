@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using EddiCompanionAppService.Exceptions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using Utilities;
-using static EddiCompanionAppService.CompanionAppService;
 
-namespace EddiCompanionAppService.Endpoints
+namespace EddiCompanionAppService
 {
     public abstract class Endpoint
     {
@@ -15,34 +15,34 @@ namespace EddiCompanionAppService.Endpoints
 
             try
             {
-                var result = Instance.obtainData(Instance.ServerURL() + endpointURL);
+                var result = CompanionAppService.Instance.obtainData(CompanionAppService.Instance.ServerURL() + endpointURL);
                 var data = result.Item1;
                 timestamp = result.Item2;
 
                 if (data == null || !data.StartsWith("{"))
                 {
                     // Happens if there is a problem with the API.  Logging in again might clear this...
-                    Instance.relogin();
-                    if (Instance.CurrentState != State.Authorized)
+                    CompanionAppService.Instance.relogin();
+                    if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.Authorized)
                     {
                         // No luck; give up
-                        Instance.CurrentState = State.ConnectionLost;
-                        Instance.Logout();
+                        CompanionAppService.Instance.CurrentState = CompanionAppService.State.ConnectionLost;
+                        CompanionAppService.Instance.Logout();
                     }
                     else
                     {
                         // Looks like login worked; try again
-                        result = Instance.obtainData(Instance.ServerURL() + endpointURL);
+                        result = CompanionAppService.Instance.obtainData(CompanionAppService.Instance.ServerURL() + endpointURL);
                         data = result.Item1;
                         timestamp = result.Item2;
 
                         if (data == null || !data.StartsWith("{"))
                         {
                             // No luck with a relogin; give up
-                            Instance.CurrentState = State.ConnectionLost;
-                            Instance.Logout();
+                            CompanionAppService.Instance.CurrentState = CompanionAppService.State.ConnectionLost;
+                            CompanionAppService.Instance.Logout();
                             throw new EliteDangerousCompanionAppException(
-                                "Failed to obtain data from Frontier server (" + Instance.CurrentState + ")");
+                                "Failed to obtain data from Frontier server (" + CompanionAppService.Instance.CurrentState + ")");
                         }
                     }
                 }

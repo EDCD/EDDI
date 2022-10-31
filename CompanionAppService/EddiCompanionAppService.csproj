@@ -46,14 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientId.cs" />
-    <Compile Include="CompanionIllegalStateException.cs" />
+    <Compile Include="Exceptions\CompanionIllegalStateException.cs" />
     <Compile Include="CustomURLResponder.cs" />
     <Compile Include="CompanionAppService.cs" />
     <Compile Include="CompanionAppCredentials.cs" />
-    <Compile Include="CompanionAppErrorException.cs" />
-    <Compile Include="CompanionAppAuthenticationException.cs" />
-    <Compile Include="CompanionAppException.cs" />
-    <Compile Include="Endpoints\Endpoint.cs" />
+    <Compile Include="Exceptions\CompanionAppErrorException.cs" />
+    <Compile Include="Exceptions\CompanionAppAuthenticationException.cs" />
+    <Compile Include="Exceptions\CompanionAppException.cs" />
+    <Compile Include="Endpoint.cs" />
     <Compile Include="Endpoints\FleetCarrierEndpoint.cs" />
     <Compile Include="Endpoints\ShipyardEndpoint.cs" />
     <Compile Include="Endpoints\MarketEndpoint.cs" />

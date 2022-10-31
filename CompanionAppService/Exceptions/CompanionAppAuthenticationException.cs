@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace EddiCompanionAppService
+namespace EddiCompanionAppService.Exceptions
 {
     /// <summary>Exceptions thrown due to authentication errors</summary>
     [Serializable]

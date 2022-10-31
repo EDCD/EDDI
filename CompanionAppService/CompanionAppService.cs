@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using EddiCompanionAppService.Exceptions;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -130,6 +131,7 @@ namespace EddiCompanionAppService
             }
             catch (Exception)
             {
+                if (Credentials.refreshToken != null) { CurrentState = State.ConnectionLost; }
                 CurrentState = State.LoggedOut;
             }
         }
@@ -402,30 +404,23 @@ namespace EddiCompanionAppService
                             Logging.Debug("Failed to contact API server");
                             throw new EliteDangerousCompanionAppException("Failed to contact API server");
                         }
-                        if (response.StatusCode == HttpStatusCode.NoContent)
+                        if (response.StatusCode == HttpStatusCode.OK)
                         {
-                            return new Tuple<string, DateTime>(null, DateTime.MinValue);
+                            var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
+                            return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                         }
-                        if (response.StatusCode == HttpStatusCode.Found)
-                        {
-                            return new Tuple<string, DateTime>(null, DateTime.MinValue);
-                        }
-
-                        var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
-                        return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                     }
                 }
                 catch (WebException wex)
                 {
                     Logging.Warn(wex.Message, wex);
-                    return new Tuple<string, DateTime>(null, DateTime.MinValue);
                 }
             }
             else
             {
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                return new Tuple<string, DateTime>(null, DateTime.MinValue);
             }
+            return new Tuple<string, DateTime>(null, DateTime.MinValue);
         }
 
         /**
@@ -502,8 +497,8 @@ namespace EddiCompanionAppService
             }
             catch (WebException wex)
             {
-                Logging.Warn("Failed to obtain response, error code " + wex.Status);
-                return null;
+                Logging.Warn(wex.Message);
+                response = (HttpWebResponse)wex.Response;
             }
             Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
             return response;

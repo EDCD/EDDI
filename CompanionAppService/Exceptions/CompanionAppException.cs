@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace EddiCompanionAppService
+namespace EddiCompanionAppService.Exceptions
 {
     /// <summary>Base class for exceptions thrown by the Elite:Dangerous companion app API</summary>
     [Serializable]

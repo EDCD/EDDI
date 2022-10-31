@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using EddiCompanionAppService.Exceptions;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints
@@ -31,22 +32,29 @@ namespace EddiCompanionAppService.Endpoints
                 return new Tuple<JObject, DateTime>(cachedProfileJson, cachedProfileTimeStamp);
             }
 
-            Logging.Debug($"Getting {PROFILE_URL} data");
-            var result = GetEndpoint(PROFILE_URL);
-
-            if (!result.Item1?.DeepEquals(cachedProfileJson) ?? false)
+            try
             {
-                cachedProfileJson = result.Item1;
-                cachedProfileTimeStamp = result.Item2;
-                Logging.Debug($"{PROFILE_URL} returned " + JsonConvert.SerializeObject(cachedProfileJson));
-                ProfileUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedProfileJson, cachedProfileTimeStamp));
-            }
-            else
-            {
-                Logging.Debug($"{PROFILE_URL} returned, no change from prior cached data.");
-            }
+                Logging.Debug($"Getting {PROFILE_URL} data");
+                var result = GetEndpoint(PROFILE_URL);
 
-            return result;
+                if (!result.Item1?.DeepEquals(cachedProfileJson) ?? false)
+                {
+                    cachedProfileJson = result.Item1;
+                    cachedProfileTimeStamp = result.Item2;
+                    Logging.Debug($"{PROFILE_URL} returned " + JsonConvert.SerializeObject(cachedProfileJson));
+                    ProfileUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedProfileJson, cachedProfileTimeStamp));
+                }
+                else
+                {
+                    Logging.Debug($"{PROFILE_URL} returned, no change from prior cached data.");
+                }
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
+            }
+            return new Tuple<JObject, DateTime>(cachedProfileJson, cachedProfileTimeStamp);
         }
     }
 }
