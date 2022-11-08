@@ -335,6 +335,7 @@ namespace EddiSpeechResponder
 
                 // Shares updates with monitors / responders but are not intended to be user facing
                 "Cargo",
+                "Fleet carrier materials",
                 "Market",
                 "Outfitting",
                 "Shipyard",

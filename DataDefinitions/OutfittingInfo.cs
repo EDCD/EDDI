@@ -18,19 +18,6 @@ namespace EddiDataDefinitions
         {
             Items = new List<OutfittingInfoItem>();
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static OutfittingInfo FromFile(string filename = null)
-        {
-            OutfittingInfo info = new OutfittingInfo();
-
-            string data = Files.FromSavedGames("Outfitting.json");
-            if (data != null)
-            {
-                info = JsonConvert.DeserializeObject<OutfittingInfo>(data);
-            }
-            return info;
-        }
     }
 }
 

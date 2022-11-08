@@ -1110,13 +1110,17 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = ShipyardInfo.FromFile();
-                                    if (info.PriceList != null && info.MarketID == marketId
-                                        && info.StarSystem == system
-                                        && info.StationName == station
-                                        && info.Horizons == EDDI.Instance.inHorizons)
+                                    var raw = Files.FromSavedGames("Shipyard.json");
+                                    if (raw != null)
                                     {
-                                        events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                        var info = JsonConvert.DeserializeObject<ShipyardInfo>(raw);
+                                        if (info.PriceList != null && info.MarketID == marketId
+                                                                   && info.StarSystem == system
+                                                                   && info.StationName == station
+                                                                   && info.Horizons == EDDI.Instance.inHorizons)
+                                        {
+                                            events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                        }
                                     }
                                 }
                                 handled = true;
@@ -1633,13 +1637,17 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = OutfittingInfo.FromFile();
-                                    if (info.Items != null && info.MarketID == marketId
-                                        && info.StarSystem == system
-                                        && info.StationName == station
-                                        && info.Horizons == EDDI.Instance.inHorizons)
+                                    var raw = Files.FromSavedGames("Outfitting.json");
+                                    if (raw != null)
                                     {
-                                        events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                        var info = JsonConvert.DeserializeObject<OutfittingInfo>(raw);
+                                        if (info.Items != null && info.MarketID == marketId
+                                                               && info.StarSystem == system
+                                                               && info.StationName == station
+                                                               && info.Horizons == EDDI.Instance.inHorizons)
+                                        {
+                                            events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                        }
                                     }
                                 }
                                 handled = true;
@@ -2371,12 +2379,16 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var info = MarketInfo.FromFile();
-                                    if (info != null && info.MarketID == marketId
-                                        && info.StarSystem == system
-                                        && info.StationName == station)
+                                    var raw = Files.FromSavedGames("Market.json");
+                                    if (raw != null)
                                     {
-                                        events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = line, fromLoad = fromLogLoad });
+                                        var info = JsonConvert.DeserializeObject<MarketInfo>(raw);
+                                        if (info != null && info.MarketID == marketId
+                                                         && info.StarSystem == system
+                                                         && info.StationName == station)
+                                        {
+                                            events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                        }
                                     }
                                 }
                                 handled = true;
@@ -4719,6 +4731,26 @@ namespace EddiJournalMonitor
                                     var callsign = JsonParsing.getString(data, "Callsign");
                                     var name = JsonParsing.getString(data, "Name");
                                     events.Add(new CarrierNameChangeEvent(timestamp, carrierID, callsign, name) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "FCMaterials":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "MarketID");
+                                    var carrierName = JsonParsing.getString(data, "CarrierName");
+                                    var callsign = JsonParsing.getString(data, "CarrierID");
+
+                                    var raw = Files.FromSavedGames("FCMaterials.json");
+                                    if (raw != null)
+                                    {
+                                        var info = JsonConvert.DeserializeObject<FCMaterialsInfo>(raw);
+                                        if (info != null && info.CarrierID == carrierID
+                                                         && info.CarrierName == carrierName
+                                                         && info.callsign == callsign)
+                                        {
+                                            events.Add(new FleetCarrierMaterialsEvent(timestamp, carrierID, carrierName, callsign, info) { raw = raw, fromLoad = fromLogLoad });
+                                        }
+                                    }
                                 }
                                 handled = true;
                                 break;

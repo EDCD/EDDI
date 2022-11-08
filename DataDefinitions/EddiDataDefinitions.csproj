@@ -64,6 +64,8 @@
     <Compile Include="FleetCarrier.cs" />
     <Compile Include="FrontierApiProfile.cs" />
     <Compile Include="JumpDetail.cs" />
+    <Compile Include="FCMaterialsInfo.cs" />
+    <Compile Include="FCMaterialInfoItem.cs" />
     <Compile Include="NavWaypointCollection.cs" />
     <Compile Include="NavWaypoint.cs" />
     <Compile Include="ModuleMount.cs" />
