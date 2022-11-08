@@ -46,7 +46,10 @@ namespace EddiSpeechService
         private readonly WindowsMediaSynthesizer windowsMediaSynth;
 
         public List<VoiceDetails> allVoices { get; }
-        public List<string> allvoices => allVoices.Select(v => v.name).ToList();
+        public List<string> allvoices => allVoices
+            .Where(v => !v.hideVoice)
+            .Select(v => v.name)
+            .ToList();
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut _activeSpeech;
@@ -338,7 +341,7 @@ namespace EddiSpeechService
                     voice = Configuration.StandardVoice;
                 }
 
-                if (allvoices.All(v => v != voice))
+                if (allVoices.All(v => v.name != voice))
                 {
                     voice = windowsMediaSynth?.voice ?? systemSpeechSynth?.voice;
 
@@ -571,6 +574,8 @@ namespace EddiSpeechService
         public string culturename => Culture.NativeName;
 
         public CultureInfo Culture { get; }
+
+        public bool hideVoice { get; set; }
 
         internal VoiceDetails(string displayName, string gender, CultureInfo Culture, string synthType)
         {

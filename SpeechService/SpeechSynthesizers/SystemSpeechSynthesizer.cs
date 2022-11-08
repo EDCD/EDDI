@@ -54,11 +54,11 @@ namespace EddiSpeechService.SpeechSynthesizers
                             continue;
                         }
 
-                        // Skip voices "Desktop" variant voices from System.Speech.Synthesis
-                        // where we already have a (newer) OneCore version
+                        // Suppress voices "Desktop" variant voices from System.Speech.Synthesis
+                        // where we already have a (newer) OneCore version (without disabling manual invocation of those voices)
                         if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
                         {
-                            continue;
+                            voiceDetails.hideVoice = true;
                         }
 
                         // Skip Amazon Polly neural voices - these tend to throw an internal error (cause unknown) with the system speech synthesizer and are not currently reliable.
