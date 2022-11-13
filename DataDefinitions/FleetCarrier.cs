@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Utilities;
@@ -11,7 +10,7 @@ namespace EddiDataDefinitions
     public class FleetCarrier : INotifyPropertyChanged
     {
         private long? _carrierId;
-        private FrontierApiProfileStation _market = new FrontierApiProfileStation();
+        private FrontierApiStation _market = new FrontierApiStation();
         private string _name;
         private string _callsign;
         private string _currentStarSystem;
@@ -315,7 +314,7 @@ namespace EddiDataDefinitions
 
         // Station properties
 
-        public FrontierApiProfileStation Market
+        public FrontierApiStation Market
         {
             get => _market;
             set
@@ -406,7 +405,7 @@ namespace EddiDataDefinitions
             microresourceSalesOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["sales"] ?? new JArray());
 
             // Station properties
-            Market = Station.FromFrontierApi(newJson["market"]?.ToObject<JObject>(), null);
+            Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
 
             // Misc - Tritium stored in cargo
             foreach (var cargo in Cargo)

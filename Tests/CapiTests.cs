@@ -27,7 +27,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
-            var station = Station.FromFrontierApi(null, json);
+            var station = FrontierApiStation.FromJson(null, json);
             var actualModules = station.outfitting;
 
             Assert.AreEqual(165, actualModules.Count);
@@ -60,7 +60,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
-            var station = Station.FromFrontierApi(null, json);
+            var station = FrontierApiStation.FromJson(null, json);
             var actualShips = station.ships;
 
             Assert.AreEqual(expectedShips.Count, actualShips.Count);
@@ -82,7 +82,7 @@ namespace UnitTests
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
 
-            var expectedStation = new FrontierApiProfileStation()
+            var expectedStation = new FrontierApiStation()
             {
                 name = "Libby Horizons",
                 marketId = 3228854528,
@@ -153,7 +153,7 @@ namespace UnitTests
                 }
             };
 
-            var actualStation = Station.FromFrontierApi(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
+            var actualStation = FrontierApiStation.FromJson(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
 
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
@@ -190,7 +190,7 @@ namespace UnitTests
             // Set up our profile station
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            var lastStation = Station.FromFrontierApi(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
+            var lastStation = FrontierApiStation.FromJson(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
 
             var updatedStation = lastStation.UpdateStation(DateTime.UtcNow, originalStation);
             Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 

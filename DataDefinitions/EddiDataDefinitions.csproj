@@ -62,7 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FleetCarrier.cs" />
+    <Compile Include="FrontierApiEconomyShare.cs" />
     <Compile Include="FrontierApiProfile.cs" />
+    <Compile Include="FrontierApiContexts.cs" />
+    <Compile Include="FrontierApiStation.cs" />
     <Compile Include="JumpDetail.cs" />
     <Compile Include="FCMaterialsInfo.cs" />
     <Compile Include="FCMaterialInfoItem.cs" />
