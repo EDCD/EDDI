@@ -1,6 +1,6 @@
 ﻿using EddiDataDefinitions;
 
-namespace EDDNResponder
+namespace EddiEddnResponder
 {
     class EDDNEconomy
     {

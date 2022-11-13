@@ -27,6 +27,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            json?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualModules = station.outfitting;
 
@@ -60,6 +61,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            json?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualShips = station.ships;
 
@@ -80,7 +82,8 @@ namespace UnitTests
         public void TestProfileStation()
         {
             var marketTimestamp = DateTime.UtcNow;
-            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>();
+            marketJson?.Add("timestamp", marketTimestamp); // We add a timestamp to the json returned from the Frontier API, do the same here.
 
             var expectedStation = new FrontierApiStation()
             {
@@ -152,8 +155,9 @@ namespace UnitTests
                     new KeyValuePair<string, string>("engineer", "ok")
                 }
             };
+            expectedStation.marketJson?.Add("timestamp", marketTimestamp); // We add a timestamp to the json returned from the Frontier API, do the same here.
 
-            var actualStation = FrontierApiStation.FromJson(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
+            var actualStation = FrontierApiStation.FromJson(marketJson, null);
 
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
@@ -189,8 +193,9 @@ namespace UnitTests
 
             // Set up our profile station
             var marketTimestamp = DateTime.UtcNow;
-            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons);
-            var lastStation = FrontierApiStation.FromJson(JObject.FromObject(marketJson["lastStarport"] ?? string.Empty), null);
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>();
+            marketJson?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
+            var lastStation = FrontierApiStation.FromJson(marketJson, null);
 
             var updatedStation = lastStation.UpdateStation(DateTime.UtcNow, originalStation);
             Assert.IsTrue(updatedStation.economyShares.DeepEquals(new List<EconomyShare>() 

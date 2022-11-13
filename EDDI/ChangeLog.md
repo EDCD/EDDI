@@ -11,6 +11,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
+  * EDDN Responder
+    * Updated schema support to include all current schemas from https://github.com/EDCD/EDDN/tree/master/schemas.
   * Inara Responder
     * Fixed an issue with asset data not being reported correctly.
   * Material Monitor

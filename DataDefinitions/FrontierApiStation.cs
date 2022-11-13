@@ -142,8 +142,9 @@ namespace EddiDataDefinitions
                 List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
                 if (json?["ships"] != null)
                 {
-                    edShipyardShips = json?["ships"]["shipyard_list"].Children().Values()
-                        .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList();
+                    edShipyardShips = json["ships"]?["shipyard_list"]?.Children().Values()
+                        .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString()))
+                        .ToList() ?? new List<ShipyardInfoItem>();
 
                     if (json["ships"]["unavailable_list"] != null)
                     {
@@ -169,7 +170,7 @@ namespace EddiDataDefinitions
                     lastStation.economyShares = EconomiesFromProfile(marketJson);
                     lastStation.eddnCommodityMarketQuotes = CommodityQuotesFromProfile(marketJson);
                     lastStation.prohibitedCommodities = ProhibitedCommoditiesFromProfile(marketJson);
-                    lastStation.commoditiesupdatedat = marketJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
+                    lastStation.commoditiesupdatedat = marketJson["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     lastStation.marketJson = marketJson;
 
                     List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
@@ -187,8 +188,8 @@ namespace EddiDataDefinitions
                     lastStation.outfitting = OutfittingFromProfile(shipyardJson);
                     lastStation.ships = ShipyardFromProfile(shipyardJson);
                     lastStation.shipyardJson = shipyardJson;
-                    lastStation.outfittingupdatedat = shipyardJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
-                    lastStation.shipyardupdatedat = shipyardJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
+                    lastStation.outfittingupdatedat = shipyardJson["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
+                    lastStation.shipyardupdatedat = shipyardJson["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                 }
             }
             catch (JsonException ex)

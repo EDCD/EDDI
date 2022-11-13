@@ -1,5 +1,5 @@
 ﻿using EddiDataDefinitions;
-using EDDNResponder;
+using EddiEddnResponder.Sender;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;

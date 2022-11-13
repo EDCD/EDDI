@@ -406,6 +406,9 @@ namespace EddiDataDefinitions
 
             // Station properties
             Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
+            Market.commoditiesupdatedat = newTimeStamp;
+            Market.outfittingupdatedat = newTimeStamp;
+            Market.shipyardupdatedat = newTimeStamp;
 
             // Misc - Tritium stored in cargo
             foreach (var cargo in Cargo)

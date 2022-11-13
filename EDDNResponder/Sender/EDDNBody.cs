@@ -2,12 +2,12 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace EDDNResponder
+namespace EddiEddnResponder.Sender
 {
     /// <summary>
     /// The body for an EDDN request
     /// </summary>
-    class EDDNBody
+    public class EDDNBody
     {
         [UsedImplicitly] public EDDNHeader header;
         [JsonProperty("$schemaRef")]
