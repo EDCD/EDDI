@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientId.cs" />
+    <Compile Include="Endpoints\CombinedStationEndpoints.cs" />
     <Compile Include="Exceptions\CompanionIllegalStateException.cs" />
     <Compile Include="CustomURLResponder.cs" />
     <Compile Include="CompanionAppService.cs" />

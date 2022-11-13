@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiCore
@@ -1511,12 +1512,10 @@ namespace EddiCore
                 {
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
                     Thread updateThread = new Thread(() =>
                     {
                         Thread.Sleep(5000);
-                        conditionallyRefreshProfile();
+                        conditionallyRefreshStationProfile();
                     })
                     {
                         IsBackground = true
@@ -1920,9 +1919,7 @@ namespace EddiCore
                     {
                         // Refresh station data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        profileUpdateNeeded = true;
-                        profileStationRequired = CurrentStation.name;
-                        Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                        Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
                         {
                             IsBackground = true
                         };
@@ -2042,9 +2039,7 @@ namespace EddiCore
                 {
                     // Refresh station data
                     if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                    Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
                     {
                         IsBackground = true
                     };
@@ -2914,7 +2909,7 @@ namespace EddiCore
                     var profileJson = result;
                     if (profileJson != null)
                     {
-                        var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson);
+                        var profile = FrontierApiProfile.FromJson(profileJson);
 
                         // Update our commander object
                         var updatedCmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
@@ -2929,10 +2924,10 @@ namespace EddiCore
                         // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
-                            updateCurrentSystem(profile.CurrentStarSystem.systemName);
+                            updateCurrentSystem(profile.currentStarSystem);
                             setCommanderTitle();
 
-                            if (profile.docked && profile.CurrentStarSystem?.systemName == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
+                            if (profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
                                                  ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
@@ -2949,9 +2944,7 @@ namespace EddiCore
                         if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
                         {
                             // Refresh station data
-                            profileUpdateNeeded = true;
-                            profileStationRequired = CurrentStation.name;
-                            Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                            Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
                             {
                                 IsBackground = true
                             };
@@ -3226,147 +3219,72 @@ namespace EddiCore
             return responders;
         }
 
-        private bool profileUpdateNeeded = false;
-        private string profileStationRequired = null;
         private Ship _currentShip;
 
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        private void conditionallyRefreshProfile()
+        private void conditionallyRefreshStationProfile()
         {
-            int maxTries = 6;
 
-            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 try
                 {
-                    Logging.Debug("Starting conditional profile fetch");
-
-                    // See if we need to fetch the profile
-                    if (profileUpdateNeeded)
+                    // Make sure we know where we are
+                    if (CurrentStarSystem is null || string.IsNullOrEmpty(CurrentStarSystem.systemname))
                     {
-                        // See if we still need this particular update
-                        if (profileStationRequired != null && (CurrentStation?.name != profileStationRequired))
-                        {
-                            Logging.Debug("No longer at requested station; giving up on update");
-                            profileUpdateNeeded = false;
-                            profileStationRequired = null;
-                            break;
-                        }
+                        return;
+                    }
 
-                        // Make sure we know where we are
-                        if (CurrentStarSystem is null || string.IsNullOrEmpty(CurrentStarSystem.systemname))
-                        {
-                            break;
-                        }
+                    // We do need to fetch an updated station profile; do so
+                    Logging.Debug("Starting conditional station profile fetch");
+                    var result =
+                        CompanionAppService.Instance.CombinedStationEndpoints.GetCombinedStation(
+                            Cmdr?.name, CurrentStarSystem?.systemname, CurrentStation?.name);
+                    if (result != null)
+                    {
+                        var profile = FrontierApiProfile.FromJson(result["profileJson"]?.ToObject<JObject>());
+                        var profileStation = FrontierApiStation.FromJson(result["marketJson"]?.ToObject<JObject>(), result["shipyardJson"]?.ToObject<JObject>());
 
-                        // We do need to fetch an updated profile; do so
-                        var profileResult = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
-                        var profileJson = profileResult;
+                        // Post an update event
+                        var @event = new MarketInformationUpdatedEvent(
+                            profile.timestamp,
+                            profile.currentStarSystem,
+                            profileStation.name,
+                            profileStation.marketId,
+                            profileStation.eddnCommodityMarketQuotes,
+                            profileStation.prohibitedCommodities?.Select(p => p.Value).ToList(),
+                            profileStation.outfitting?.Select(m => m.edName).ToList(),
+                            profileStation.ships?.Select(s => s.edModel).ToList(),
+                            inHorizons,
+                            inOdyssey,
+                            profile.contexts.allowCobraMkIV);
+                        enqueueEvent(@event);
 
-                        if (profileResult != null)
-                        {
-                            var profile = FrontierApiProfile.FromFrontierApiProfile(profileJson);
+                        // We have the required station information
+                        Logging.Debug("Current station matches profile information; updating info");
+                        Station station =
+                            CurrentStarSystem?.stations.Find(s => s.name == profileStation.name);
+                        station = profileStation.UpdateStation(
+                            profileStation.commoditiesupdatedat, station);
 
-                            // Sanity check
-                            if (profile.Cmdr != null && profile.Cmdr.name != Cmdr.name)
-                            {
-                                Logging.Warn("Frontier API incorrectly configured: Returning information for Commander " +
-                                    $"'{profile.Cmdr.name}' rather than for '{Cmdr.name}'. Disregarding incorrect information.");
-                                return;
-                            }
-                            else if (profile.CurrentStarSystem != null && profile.CurrentStarSystem.systemName != CurrentStarSystem.systemname)
-                            {
-                                Logging.Warn("Frontier API incorrectly configured: Returning information for Star System " +
-                                    $"'{profile.CurrentStarSystem.systemName}' rather than for '{CurrentStarSystem.systemname}'. Disregarding incorrect information.");
-                                return;
-                            }
+                        // Update the current station information in our backend DB
+                        Logging.Debug(
+                            "Star system information updated from Frontier API server; updating local copy");
+                        CurrentStation = station;
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                            // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
-                            if (profile.LastStationMarketID != null 
-                                && profile.LastStationMarketID == CurrentStation.marketId
-                                && (profile.docked || profile.onFoot) 
-                                && Environment == Constants.ENVIRONMENT_DOCKED)
-                            {
-                                var stationResult = CompanionAppService.Instance.MarketEndpoint.GetMarket();
-                                var marketJson = stationResult;
-
-                                var shipyardResult = CompanionAppService.Instance.ShipyardEndpoint.GetShipyard();
-                                var shipyardJson = shipyardResult;
-
-                                var profileStation = Station.FromFrontierApi(marketJson, shipyardJson);
-                                if (profileStation.name == profile.LastStationName &&
-                                    profileStation.marketId == profile.LastStationMarketID)
-                                {
-                                    // Post an update event
-                                    var @event = new MarketInformationUpdatedEvent(
-                                        profile.timestamp,
-                                        profile.CurrentStarSystem.systemName,
-                                        profileStation.name,
-                                        profileStation.marketId,
-                                        profileStation.eddnCommodityMarketQuotes,
-                                        profileStation.prohibitedCommodities?.Select(p => p.Value).ToList(),
-                                        profileStation.outfitting?.Select(m => m.edName).ToList(),
-                                        profileStation.ships?.Select(s => s.edModel).ToList(),
-                                        inHorizons,
-                                        inOdyssey,
-                                        profile.contexts.allowCobraMkIV);
-                                    enqueueEvent(@event);
-
-                                    // See if we need to update our current station
-                                    Logging.Debug("profileStationRequired is " + profileStationRequired +
-                                                  ", profile station is " + profileStation.name);
-
-                                    if (profileStationRequired != null &&
-                                        profileStationRequired == profileStation.name)
-                                    {
-                                        // We have the required station information
-                                        Logging.Debug("Current station matches profile information; updating info");
-                                        Station station =
-                                            CurrentStarSystem.stations.Find(s => s.name == profileStation.name);
-                                        station = profileStation.UpdateStation(
-                                            profileStation.commoditiesupdatedat, station);
-
-                                        // Update the current station information in our backend DB
-                                        Logging.Debug(
-                                            "Star system information updated from Frontier API server; updating local copy");
-                                        CurrentStation = station;
-                                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-                                        profileUpdateNeeded = false;
-                                        allowMarketUpdate = !(profileStation.eddnCommodityMarketQuotes?.Count > 0);
-                                        allowOutfittingUpdate = !(profileStation.outfitting?.Count > 0);
-                                        allowShipyardUpdate = !(profileStation.ships?.Count > 0);
-
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        // No luck; sleep and try again
-                        Thread.Sleep(15000);
+                        allowMarketUpdate = !(profileStation.eddnCommodityMarketQuotes?.Count > 0);
+                        allowOutfittingUpdate = !(profileStation.outfitting?.Count > 0);
+                        allowShipyardUpdate = !(profileStation.ships?.Count > 0);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Exception obtaining profile", ex);
-                }
-                finally
-                {
-                    maxTries--;
+                    Logging.Error("Exception obtaining station profile", ex);
                 }
             }
-
-            if (maxTries == 0)
-            {
-                Logging.Info("Maximum attempts reached; giving up on request");
-            }
-
-            // Clear the update info
-            profileUpdateNeeded = false;
-            profileStationRequired = null;
         }
 
         internal static class NativeMethods

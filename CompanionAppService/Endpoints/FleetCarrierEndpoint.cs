@@ -16,7 +16,7 @@ namespace EddiCompanionAppService.Endpoints
         private DateTime cachedFleetCarrierExpires => cachedFleetCarrierTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
-        public event EventHandler FleetCarrierUpdatedEvent;
+        public event EndpointEventHandler FleetCarrierUpdatedEvent;
 
         /// <summary>
         /// Contains information about the player's fleet carrier (if any)
@@ -42,7 +42,7 @@ namespace EddiCompanionAppService.Endpoints
                     cachedFleetCarrierJson = result;
                     cachedFleetCarrierTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     Logging.Debug($"{FLEETCARRIER_URL} returned " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
-                    FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedFleetCarrierJson));
+                    FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(null, null, null, cachedFleetCarrierJson));
                 }
                 else
                 {

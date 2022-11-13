@@ -2,13 +2,14 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiCompanionAppService
 {
     public abstract class Endpoint
     {
+        public delegate void EndpointEventHandler(object sender, CompanionApiEndpointEventArgs e);
+
         protected JObject GetEndpoint(string endpointURL)
         {
             JObject newJson = null;
@@ -69,13 +70,22 @@ namespace EddiCompanionAppService
         }
     }
 
-    public class CompanionApiEventArgs : EventArgs
+    public class CompanionApiEndpointEventArgs : EventArgs
     {
-        [UsedImplicitly] private JObject json;
+        public readonly JObject profileJson;
 
-        public CompanionApiEventArgs(JObject json)
+        public readonly JObject marketJson;
+
+        public readonly JObject shipyardJson;
+
+        public readonly JObject fleetCarrierJson;
+
+        public CompanionApiEndpointEventArgs(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson)
         {
-            this.json = json;
+            this.profileJson = profileJson;
+            this.marketJson = marketJson;
+            this.shipyardJson = shipyardJson;
+            this.fleetCarrierJson = fleetCarrierJson;
         }
     }
 }

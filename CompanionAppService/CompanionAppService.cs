@@ -101,8 +101,7 @@ namespace EddiCompanionAppService
 
         public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new Endpoints.FleetCarrierEndpoint();
         public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new Endpoints.ProfileEndpoint();
-        public readonly Endpoints.MarketEndpoint MarketEndpoint = new Endpoints.MarketEndpoint();
-        public readonly Endpoints.ShipyardEndpoint ShipyardEndpoint = new Endpoints.ShipyardEndpoint();
+        public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new Endpoints.CombinedStationEndpoints();
 
         #endregion
 

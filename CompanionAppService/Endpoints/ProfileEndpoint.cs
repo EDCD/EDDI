@@ -16,7 +16,7 @@ namespace EddiCompanionAppService.Endpoints
         private DateTime cachedProfileExpires => cachedProfileTimeStamp.AddSeconds(30);
 
         // Set up an event handler for data changes
-        public event EventHandler ProfileUpdatedEvent;
+        public event EndpointEventHandler ProfileUpdatedEvent;
 
         /// <summary>
         /// Contains information about the player's profile and commander
@@ -42,7 +42,7 @@ namespace EddiCompanionAppService.Endpoints
                     cachedProfileJson = result;
                     cachedProfileTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     Logging.Debug($"{PROFILE_URL} returned " + JsonConvert.SerializeObject(cachedProfileJson));
-                    ProfileUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedProfileJson));
+                    ProfileUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(cachedProfileJson, null, null, null));
                 }
                 else
                 {

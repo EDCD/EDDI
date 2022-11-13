@@ -1,7 +1,6 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints
@@ -10,44 +9,15 @@ namespace EddiCompanionAppService.Endpoints
     {
         private const string MARKET_URL = "/market";
 
-        // We cache the market to avoid spamming the service
-        private JObject cachedMarketJson;
-        private DateTime cachedMarketTimeStamp;
-        private DateTime cachedMarketExpires => cachedMarketTimeStamp.AddSeconds(30);
-
-        // Set up an event handler for data changes
-        public event EventHandler MarketUpdatedEvent;
-
-        /// <summary>
-        /// Contains information about the market at the last station visited
-        /// </summary>
-        /// <param name="forceRefresh"></param>
-        /// <returns></returns>
-        public JObject GetMarket(bool forceRefresh = false)
+        public JObject GetMarket()
         {
-            if ((!forceRefresh) && cachedMarketExpires > DateTime.UtcNow)
-            {
-                // return the cached version
-                Logging.Debug($"{MARKET_URL} endpoint queried too often. Returning cached data " + JsonConvert.SerializeObject(cachedMarketJson));
-                return cachedMarketJson;
-            }
-
+            JObject result = null;
             try
             {
                 Logging.Debug($"Getting {MARKET_URL} data");
-                var result = GetEndpoint(MARKET_URL);
+                result = GetEndpoint(MARKET_URL);
+                Logging.Debug($"{MARKET_URL} returned " + JsonConvert.SerializeObject(result));
 
-                if (!result?.DeepEquals(cachedMarketJson) ?? false)
-                {
-                    cachedMarketJson = result;
-                    cachedMarketTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
-                    Logging.Debug($"{MARKET_URL} returned " + JsonConvert.SerializeObject(cachedMarketJson));
-                    MarketUpdatedEvent?.Invoke(cachedMarketJson, new CompanionApiEventArgs(cachedMarketJson));
-                }
-                else
-                {
-                    Logging.Debug($"{MARKET_URL} returned, no change from prior cached data.");
-                }
             }
             catch (EliteDangerousCompanionAppException ex)
             {
@@ -55,7 +25,7 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Info(ex.Message);
             }
 
-            return cachedMarketJson;
+            return result;
         }
     }
 }
