@@ -23,13 +23,13 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public Tuple<JObject, DateTime> GetProfile(bool forceRefresh = false)
+        public JObject GetProfile(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{PROFILE_URL} endpoint queried too often. Returning cached data " + JsonConvert.SerializeObject(cachedProfileJson));
-                return new Tuple<JObject, DateTime>(cachedProfileJson, cachedProfileTimeStamp);
+                return cachedProfileJson;
             }
 
             try
@@ -37,12 +37,12 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Debug($"Getting {PROFILE_URL} data");
                 var result = GetEndpoint(PROFILE_URL);
 
-                if (!result.Item1?.DeepEquals(cachedProfileJson) ?? false)
+                if (!result?.DeepEquals(cachedProfileJson) ?? false)
                 {
-                    cachedProfileJson = result.Item1;
-                    cachedProfileTimeStamp = result.Item2;
+                    cachedProfileJson = result;
+                    cachedProfileTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     Logging.Debug($"{PROFILE_URL} returned " + JsonConvert.SerializeObject(cachedProfileJson));
-                    ProfileUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedProfileJson, cachedProfileTimeStamp));
+                    ProfileUpdatedEvent?.Invoke(this, new CompanionApiEventArgs(cachedProfileJson));
                 }
                 else
                 {
@@ -51,10 +51,10 @@ namespace EddiCompanionAppService.Endpoints
             }
             catch (EliteDangerousCompanionAppException ex)
             {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
+                // not Logging.Error as telemetry is getting spammed when the server is down
                 Logging.Info(ex.Message);
             }
-            return new Tuple<JObject, DateTime>(cachedProfileJson, cachedProfileTimeStamp);
+            return cachedProfileJson;
         }
     }
 }

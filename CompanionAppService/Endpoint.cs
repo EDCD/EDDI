@@ -2,22 +2,21 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiCompanionAppService
 {
     public abstract class Endpoint
     {
-        protected Tuple<JObject, DateTime> GetEndpoint(string endpointURL)
+        protected JObject GetEndpoint(string endpointURL)
         {
             JObject newJson = null;
-            DateTime timestamp = DateTime.MinValue;
-
             try
             {
                 var result = CompanionAppService.Instance.obtainData(CompanionAppService.Instance.ServerURL() + endpointURL);
                 var data = result.Item1;
-                timestamp = result.Item2;
+                var timestamp = result.Item2;
 
                 if (data == null || !data.StartsWith("{"))
                 {
@@ -34,11 +33,9 @@ namespace EddiCompanionAppService
                         // Looks like login worked; try again
                         result = CompanionAppService.Instance.obtainData(CompanionAppService.Instance.ServerURL() + endpointURL);
                         data = result.Item1;
-                        timestamp = result.Item2;
-
                         if (data == null || !data.StartsWith("{"))
                         {
-                            // No luck with a relogin; give up
+                            // No luck with a re-login; give up
                             CompanionAppService.Instance.CurrentState = CompanionAppService.State.ConnectionLost;
                             CompanionAppService.Instance.Logout();
                             throw new EliteDangerousCompanionAppException(
@@ -46,37 +43,39 @@ namespace EddiCompanionAppService
                         }
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        Logging.Debug($"{endpointURL} endpoint returned " + data);
+                        newJson = JObject.Parse(data);
+                        newJson.Add("timestamp", timestamp);
+                    }
+                    catch (JsonException ex)
+                    {
+                        Logging.Error($"Failed to parse Frontier server {endpointURL} data", ex);
+                        newJson = null;
+                    }
+                }
 
-                try
-                {
-                    Logging.Debug($"{endpointURL} endpoint returned " + data);
-                    newJson = JObject.Parse(data);
-                }
-                catch (JsonException ex)
-                {
-                    Logging.Error($"Failed to parse Frontier server {endpointURL} data", ex);
-                    newJson = null;
-                }
             }
             catch (EliteDangerousCompanionAppException ex)
             {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
+                // not Logging.Error as telemetry is getting spammed when the server is down
                 Logging.Info(ex.Message);
             }
 
-            return new Tuple<JObject, DateTime>(newJson, timestamp);
+            return newJson;
         }
     }
 
     public class CompanionApiEventArgs : EventArgs
     {
-        public JObject json;
-        public DateTime timestamp;
+        [UsedImplicitly] private JObject json;
 
-        public CompanionApiEventArgs(JObject json, DateTime timestamp)
+        public CompanionApiEventArgs(JObject json)
         {
             this.json = json;
-            this.timestamp = timestamp;
         }
     }
 }

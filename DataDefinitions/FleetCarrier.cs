@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Utilities;
@@ -405,7 +406,7 @@ namespace EddiDataDefinitions
             microresourceSalesOrders = JArray.FromObject(newJson["orders"]?["onfootmicroresources"]?["sales"] ?? new JArray());
 
             // Station properties
-            Market = Station.FromFrontierApi(newTimeStamp, newJson["market"]?.ToObject<JObject>(), newTimeStamp, null);
+            Market = Station.FromFrontierApi(newJson["market"]?.ToObject<JObject>(), null);
 
             // Misc - Tritium stored in cargo
             foreach (var cargo in Cargo)

@@ -23,13 +23,13 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public Tuple<JObject, DateTime> GetShipyard(bool forceRefresh = false)
+        public JObject GetShipyard(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedShipyardExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{SHIPYARD_URL} endpoint queried too often. Returning cached data " + JsonConvert.SerializeObject(cachedShipyardJson));
-                return new Tuple<JObject, DateTime>(cachedShipyardJson, cachedShipyardTimeStamp);
+                return cachedShipyardJson;
             }
 
             try
@@ -37,12 +37,12 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Debug($"Getting {SHIPYARD_URL} data");
                 var result = GetEndpoint(SHIPYARD_URL);
 
-                if (!result.Item1?.DeepEquals(cachedShipyardJson) ?? false)
+                if (!result?.DeepEquals(cachedShipyardJson) ?? false)
                 {
-                    cachedShipyardJson = result.Item1;
-                    cachedShipyardTimeStamp = result.Item2;
+                    cachedShipyardJson = result;
+                    cachedShipyardTimeStamp = result["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
                     Logging.Debug($"{SHIPYARD_URL} returned " + JsonConvert.SerializeObject(cachedShipyardJson));
-                    ShipyardUpdatedEvent?.Invoke(cachedShipyardJson, EventArgs.Empty);
+                    ShipyardUpdatedEvent?.Invoke(cachedShipyardJson, new CompanionApiEventArgs(cachedShipyardJson));
                 }
                 else
                 {
@@ -51,11 +51,11 @@ namespace EddiCompanionAppService.Endpoints
             }
             catch (EliteDangerousCompanionAppException ex)
             {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
+                // not Logging.Error as telemetry is getting spammed when the server is down
                 Logging.Info(ex.Message);
             }
 
-            return new Tuple<JObject, DateTime>(cachedShipyardJson, cachedShipyardTimeStamp);
+            return cachedShipyardJson;
         }
     }
 }

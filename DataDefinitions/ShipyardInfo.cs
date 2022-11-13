@@ -19,19 +19,6 @@ namespace EddiDataDefinitions
         {
             PriceList = new List<ShipyardInfoItem>();
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static ShipyardInfo FromFile(string filename = null)
-        {
-            ShipyardInfo info = new ShipyardInfo();
-
-            string data = Files.FromSavedGames("Shipyard.json");
-            if (data != null)
-            {
-                info = JsonConvert.DeserializeObject<ShipyardInfo>(data);
-            }
-            return info;
-        }
     }
 }
 

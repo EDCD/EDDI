@@ -41,14 +41,17 @@ namespace EddiDataDefinitions
         public FrontierApiProfileContexts contexts { get; set; }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
-        public static FrontierApiProfile FromFrontierApiProfile(JObject json, DateTime timestamp)
+        public static FrontierApiProfile FromFrontierApiProfile(JObject json)
         {
             FrontierApiProfile Profile = new FrontierApiProfile
             {
                 json = json,
-                timestamp = timestamp
             };
 
+            if (json?["timestamp"] != null)
+            {
+                Profile.timestamp = json["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
+            }
             if (json?["commander"] != null)
             {
                 FrontierApiCommander Commander = new FrontierApiCommander

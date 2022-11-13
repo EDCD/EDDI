@@ -23,13 +23,13 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public Tuple<JObject, DateTime> GetMarket(bool forceRefresh = false)
+        public JObject GetMarket(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedMarketExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{MARKET_URL} endpoint queried too often. Returning cached data " + JsonConvert.SerializeObject(cachedMarketJson));
-                return new Tuple<JObject, DateTime>(cachedMarketJson, cachedMarketTimeStamp);
+                return cachedMarketJson;
             }
 
             try
@@ -37,12 +37,12 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Debug($"Getting {MARKET_URL} data");
                 var result = GetEndpoint(MARKET_URL);
 
-                if (!result.Item1?.DeepEquals(cachedMarketJson) ?? false)
+                if (!result?.DeepEquals(cachedMarketJson) ?? false)
                 {
-                    cachedMarketJson = result.Item1;
-                    cachedMarketTimeStamp = result.Item2;
+                    cachedMarketJson = result;
+                    cachedMarketTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     Logging.Debug($"{MARKET_URL} returned " + JsonConvert.SerializeObject(cachedMarketJson));
-                    MarketUpdatedEvent?.Invoke(cachedMarketJson, EventArgs.Empty);
+                    MarketUpdatedEvent?.Invoke(cachedMarketJson, new CompanionApiEventArgs(cachedMarketJson));
                 }
                 else
                 {
@@ -51,11 +51,11 @@ namespace EddiCompanionAppService.Endpoints
             }
             catch (EliteDangerousCompanionAppException ex)
             {
-                // not Logging.Error as Rollbar is getting spammed when the server is down
+                // not Logging.Error as telemetry is getting spammed when the server is down
                 Logging.Info(ex.Message);
             }
 
-            return new Tuple<JObject, DateTime>(cachedMarketJson, cachedMarketTimeStamp);
+            return cachedMarketJson;
         }
     }
 }

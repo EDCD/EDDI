@@ -340,7 +340,7 @@ namespace EddiDataDefinitions
             Model == StationModel.SurfaceStation && 
             hasdocking != true; }
 
-        public static FrontierApiProfileStation FromFrontierApi(DateTime marketTimestamp, JObject marketJson, DateTime shipyardTimestamp, JObject shipyardJson)
+        public static FrontierApiProfileStation FromFrontierApi(JObject marketJson, JObject shipyardJson)
         {
             if (marketJson != null && shipyardJson != null && marketJson["id"]?.ToObject<ulong>() != shipyardJson["id"]?.ToObject<ulong>())
             {
@@ -461,7 +461,7 @@ namespace EddiDataDefinitions
                     lastStation.economyShares = EconomiesFromProfile(marketJson);
                     lastStation.eddnCommodityMarketQuotes = CommodityQuotesFromProfile(marketJson);
                     lastStation.prohibitedCommodities = ProhibitedCommoditiesFromProfile(marketJson);
-                    lastStation.commoditiesupdatedat = marketTimestamp;
+                    lastStation.commoditiesupdatedat = marketJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
                     lastStation.marketJson = marketJson;
 
                     List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
@@ -479,8 +479,8 @@ namespace EddiDataDefinitions
                     lastStation.outfitting = OutfittingFromProfile(shipyardJson);
                     lastStation.ships = ShipyardFromProfile(shipyardJson);
                     lastStation.shipyardJson = shipyardJson;
-                    lastStation.outfittingupdatedat = shipyardTimestamp;
-                    lastStation.shipyardupdatedat = shipyardTimestamp;
+                    lastStation.outfittingupdatedat = shipyardJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
+                    lastStation.shipyardupdatedat = shipyardJson["timestamp"].ToObject<DateTime?>() ?? DateTime.MinValue;
                 }
             }
             catch (JsonException ex)
