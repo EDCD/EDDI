@@ -106,7 +106,6 @@ namespace EddiStarMapService
                 Logging.Warn("The maximum allowable cube size is 100 LY. Results are automatically truncated.");
             }
             
-            
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("size", cubeLy);
