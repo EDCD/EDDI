@@ -3,74 +3,331 @@
     "distance": 5.95,
     "bodyCount": 16,
     "name": "Barnard's Star",
-    "requirePermit": false
+    "id": 13212,
+    "id64": 18263140541865,
+    "coords": {
+      "x": -3.03125,
+      "y": 1.375,
+      "z": 4.9375
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Cooperative",
+      "faction": "Hutton Orbital Truckers Co-Operative",
+      "factionState": "Expansion",
+      "population": 1256069,
+      "security": "Low",
+      "economy": "Refinery",
+      "secondEconomy": "Colony",
+      "reserve": "Depleted"
+    },
+    "primaryStar": {
+      "type": "M (Red dwarf) Star",
+      "name": "Barnard's Star",
+      "isScoopable": true
+    }
   },
   {
     "distance": 9.69,
     "bodyCount": 9,
     "name": "Ross 154",
-    "requirePermit": false
+    "id": 9419,
+    "id64": 7268024264105,
+    "coords": {
+      "x": -1.9375,
+      "y": -1.84375,
+      "z": 9.3125
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Democracy",
+      "faction": "The Dark Wheel",
+      "factionState": "Investment",
+      "population": 2006272,
+      "security": "Low",
+      "economy": "Refinery",
+      "secondEconomy": "Colony",
+      "reserve": null
+    },
+    "primaryStar": {
+      "type": "M (Red dwarf) Star",
+      "name": "Ross 154",
+      "isScoopable": true
+    }
   },
   {
     "distance": 8.58,
     "bodyCount": 2,
     "name": "UV Ceti",
-    "requirePermit": false
+    "id": 25850,
+    "id64": 18263140476329,
+    "coords": {
+      "x": -0.1875,
+      "y": -8.3125,
+      "z": -2.125
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {},
+    "primaryStar": {
+      "type": "M (Red dwarf) Star",
+      "name": "UV Ceti B",
+      "isScoopable": true
+    }
   },
   {
     "distance": 0,
     "bodyCount": 40,
     "name": "Sol",
+    "id": 27,
+    "id64": 10477373803,
+    "coords": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "coordsLocked": true,
     "requirePermit": true,
-    "permitName": "Sol"
+    "permitName": "Sol",
+    "information": {
+      "allegiance": "Federation",
+      "government": "Democracy",
+      "faction": "Mother Gaia",
+      "factionState": "Civil liberty",
+      "population": 22780919531,
+      "security": "High",
+      "economy": "Refinery",
+      "secondEconomy": "Service",
+      "reserve": "Common"
+    },
+    "primaryStar": {
+      "type": "G (White-Yellow) Star",
+      "name": "Sol",
+      "isScoopable": true
+    }
   },
   {
     "distance": 8.29,
     "bodyCount": 3,
     "name": "Lalande 21185",
-    "requirePermit": false
+    "id": 25056,
+    "id64": 9467047519657,
+    "coords": {
+      "x": 0.3125,
+      "y": 7.5625,
+      "z": -3.375
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {},
+    "primaryStar": {
+      "type": "M (Red dwarf) Star",
+      "name": "Lalande 21185 A",
+      "isScoopable": true
+    }
   },
   {
     "distance": 9.86,
     "bodyCount": 2,
     "name": "Yin Sector CL-Y d127",
-    "requirePermit": false
+    "id": 27554,
+    "id64": 4374164146539,
+    "coords": {
+      "x": 1.0625,
+      "y": 3.875,
+      "z": -9
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {},
+    "primaryStar": {
+      "type": "K (Yellow-Orange) Star",
+      "name": "Yin Sector CL-Y d127 A",
+      "isScoopable": true
+    }
   },
   {
     "distance": 9.88,
     "bodyCount": 12,
     "name": "Duamta",
-    "requirePermit": false
+    "id": 8420,
+    "id64": 4339804408171,
+    "coords": {
+      "x": 2.1875,
+      "y": 6.625,
+      "z": -7
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Federation",
+      "government": "Corporate",
+      "faction": "Duamta Gold Creative Corp.",
+      "factionState": "None",
+      "population": 13327723347,
+      "security": "High",
+      "economy": "Agriculture",
+      "secondEconomy": "Refinery",
+      "reserve": "Low"
+    },
+    "primaryStar": {
+      "type": "F (White) Star",
+      "name": "Duamta",
+      "isScoopable": true
+    }
   },
   {
     "distance": 4.38,
     "bodyCount": 9,
     "name": "Alpha Centauri",
-    "requirePermit": false
+    "id": 6903,
+    "id64": 1178708478315,
+    "coords": {
+      "x": 3.03125,
+      "y": -0.09375,
+      "z": 3.15625
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Cooperative",
+      "faction": "Hutton Orbital Truckers Co-Operative",
+      "factionState": "Expansion",
+      "population": 106811,
+      "security": "Medium",
+      "economy": "Extraction",
+      "secondEconomy": "High Tech",
+      "reserve": null
+    },
+    "primaryStar": {
+      "type": "G (White-Yellow) Star",
+      "name": "Alpha Centauri",
+      "isScoopable": true
+    }
   },
   {
     "distance": 7.78,
     "bodyCount": 3,
     "name": "Wolf 359",
-    "requirePermit": false
+    "id": 7,
+    "id64": 24860210308521,
+    "coords": {
+      "x": 3.875,
+      "y": 6.46875,
+      "z": -1.90625
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Cooperative",
+      "faction": "Hutton Orbital Truckers Co-Operative",
+      "factionState": "Expansion",
+      "population": 135903,
+      "security": "Low",
+      "economy": "Industrial",
+      "secondEconomy": "Extraction",
+      "reserve": null
+    },
+    "primaryStar": {
+      "type": "M (Red dwarf) Star",
+      "name": "Wolf 359",
+      "isScoopable": true
+    }
   },
   {
     "distance": 8.59,
     "bodyCount": 4,
     "name": "Sirius",
+    "id": 19974,
+    "id64": 121569805492,
+    "coords": {
+      "x": 6.25,
+      "y": -1.28125,
+      "z": -5.75
+    },
+    "coordsLocked": true,
     "requirePermit": true,
-    "permitName": "Sirius"
+    "permitName": "Sirius",
+    "information": {
+      "allegiance": "Independent",
+      "government": "Corporate",
+      "faction": "Sirius Corporation",
+      "factionState": "Boom",
+      "population": 2501068,
+      "security": "Medium",
+      "economy": "Industrial",
+      "secondEconomy": "Extraction",
+      "reserve": null
+    },
+    "primaryStar": {
+      "type": "A (Blue-White) Star",
+      "name": "Sirius",
+      "isScoopable": true
+    }
   },
   {
     "distance": 6.57,
     "bodyCount": 15,
     "name": "Luhman 16",
-    "requirePermit": false
+    "id": 12209,
+    "id64": 22960358574928,
+    "coords": {
+      "x": 6.3125,
+      "y": 0.59375,
+      "z": 1.71875
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Corporate",
+      "faction": "Sirius Corporation",
+      "factionState": "Boom",
+      "population": 193793,
+      "security": "Medium",
+      "economy": "Military",
+      "secondEconomy": "Refinery",
+      "reserve": null
+    },
+    "primaryStar": {
+      "type": "L (Brown dwarf) Star",
+      "name": "Luhman 16",
+      "isScoopable": false
+    }
   },
   {
     "distance": 7.17,
     "bodyCount": 16,
     "name": "WISE 0855-0714",
-    "requirePermit": false
+    "id": 4570,
+    "id64": 58144730663760,
+    "coords": {
+      "x": 6.53125,
+      "y": -2.15625,
+      "z": 2.03125
+    },
+    "coordsLocked": true,
+    "requirePermit": false,
+    "information": {
+      "allegiance": "Independent",
+      "government": "Cooperative",
+      "faction": "Hutton Orbital Truckers Co-Operative",
+      "factionState": "Expansion",
+      "population": 34825,
+      "security": "Low",
+      "economy": "Refinery",
+      "reserve": "Low"
+    },
+    "primaryStar": {
+      "type": "Y (Brown dwarf) Star",
+      "name": "WISE 0855-0714",
+      "isScoopable": false
+    }
   }
 ]

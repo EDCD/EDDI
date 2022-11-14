@@ -1,60 +1,66 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using EddiNavigationService;
+using EddiStarMapService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using EddiCore;
+using EddiDataDefinitions;
+using Tests.Properties;
 using UnitTests;
-
+using System.Text;
 
 namespace IntegrationTests
 {
     [TestClass]
     public class NavigationServiceTests : TestBase
     {
+        private FakeEdsmRestClient fakeEdsmRestClient;
+        private StarMapService fakeEdsmService;
+        private NavigationService navigationService;
+
         [TestInitialize]
-        public void StartTestMissionMonitor()
+        public void Start()
         {
+            fakeEdsmRestClient = new FakeEdsmRestClient();
+            fakeEdsmService = new StarMapService(fakeEdsmRestClient);
+            navigationService = new NavigationService(fakeEdsmService);
             MakeSafe();
+
+            // Use a standard cube search around Sol for our service queries 
+            string resource = "api-v1/cube-systems";
+            string json = Encoding.UTF8.GetString(Resources.cubeSystemsAroundSol);
+            List<JObject> data = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource, json, data);
+
+            // Use a standard cube search around Sol for our service queries 
+            string resource2 = "api-v1/sphere-systems";
+            string json2 = Encoding.UTF8.GetString(Resources.sphereAroundSol);
+            List<JObject> data2 = new List<JObject>();
+            fakeEdsmRestClient.Expect(resource2, json2, data2);
         }
 
-        [TestMethod]
-        public void TestGetService()
+        [DataTestMethod]
+        [DataRow(QueryType.encoded, null, null, 10000.0, true, "EZ Aquarii", "Magnus Gateway")]
+        [DataRow(QueryType.manufactured, null, null, 10000.0, true, "Sirius", "Patterson Enterprise")]
+        [DataRow(QueryType.raw, null, null, 10000.0, true, "61 Cygni", "Broglie Terminal")]
+        [DataRow(QueryType.guardian, null, null, 10000.0, true, "EZ Aquarii", "Magnus Gateway")]
+        [DataRow(QueryType.human, null, null, 10000.0, true, "WISE 1506+7027", "Dobrovolskiy Enterprise")]
+        [DataRow(QueryType.scorpion, null, null, 10000.0, true, "Gendalla", "Aksyonov Installation")]
+        [DataRow(QueryType.scoop, null, null, 10.0, true, "Sol", null)]
+        [DataRow(QueryType.facilitator, null, null, 10000.0, true, "Barnard's Star", "Miller Depot")]
+        public void TestNavQuery(QueryType query, string stringArg0, string stringArg1, double numericArg, bool prioritizeOrbitalStations, string expectedStarSystem, string expectedStationName)
         {
-            // ToDo: Refactor the called `GetServiceRoute` method and rewrite with canned data.
-            // The current method produces varied results according to the landing pad size
-            // of the commander's current ship and the current conditions of the star systems
-            // (security level can change when a system's faction ownership changes, and with
-            // that change a facilitator may appear or disappear)
+            // Setup
+            var privateObject = new PrivateObject(EDDI.Instance);
+            var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
+            privateObject.SetFieldOrProperty(nameof(EDDI.Instance.CurrentStarSystem), sol);
+            privateObject.SetFieldOrProperty(nameof(EDDI.Instance.CurrentShip), null); // Test using the default ship size (large landing pad)
 
-            /*
-            PrivateObject eddiInstance = new PrivateObject(EDDI.Instance);
-            PrivateObject navInstance = new PrivateObject(NavigationService.Instance);
-            eddiInstance.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "Sol", systemAddress = 10477373803, x = 0, y = 0, z = 0 });
-            eddiInstance.SetFieldOrProperty("CurrentShip", new Ship() { Size = LandingPadSize.Medium });
-
-            // Interstellar Factors Contact
-            NavigationService.Instance.GetServiceRoute("facilitator", 10000);
-            string system = (string)navInstance.GetFieldOrProperty("searchSystem");
-            string station = (string)navInstance.GetFieldOrProperty("searchStation");
-            decimal distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
-            Assert.AreEqual("WISE 0855-0714", system);
-            Assert.AreEqual("Yamazaki Landing", station);
-            Assert.AreEqual(7.17M, distance);
-
-            // Manufactured Materials Trader
-            NavigationService.Instance.GetServiceRoute("manufactured", 10000);
-            var system = (string)navInstance.GetFieldOrProperty("searchSystem");
-            var station = (string)navInstance.GetFieldOrProperty("searchStation");
-            var distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
-            Assert.AreEqual("Sirius", system);
-            Assert.AreEqual("Patterson Enterprise", station);
-            Assert.AreEqual(8.59M, distance);
-
-            // Guardian Technology Broker
-            NavigationService.Instance.GetServiceRoute("guardian", 10000);
-            system = (string)navInstance.GetFieldOrProperty("searchSystem");
-            station = (string)navInstance.GetFieldOrProperty("searchStation");
-            distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
-            Assert.AreEqual("Bhritzameno", system);
-            Assert.AreEqual("Feynman Terminal", station);
-            Assert.AreEqual(19.09M, distance);
-            */
+            var result = navigationService.NavQuery(query, stringArg0, stringArg1, Convert.ToDecimal(numericArg), prioritizeOrbitalStations);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedStarSystem, result.system);
+            Assert.AreEqual(expectedStationName, result.station);
         }
     }
 }

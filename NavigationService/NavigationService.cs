@@ -24,9 +24,10 @@ namespace EddiNavigationService
                 {
                     QueryType.encoded, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.HighTech, Economy.Military },
-                        minPopulation = 1000000,
-                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        systemEconomies = null,
+                        stationEconomies = new List<Economy> { Economy.HighTech, Economy.Military },
+                        minPopulation = 0,
+                        security = null,
                         services = new List<StationService> { StationService.MaterialTrader },
                         stationModels = null,
                         cubeLy = 40
@@ -36,9 +37,10 @@ namespace EddiNavigationService
                 {
                     QueryType.facilitator, new ServiceFilter
                     {
-                        economies = null,
+                        systemEconomies = null,
+                        stationEconomies = null,
                         minPopulation = 0,
-                        security = new List<SecurityLevel> { SecurityLevel.Low },
+                        security = null,
                         services = new List<StationService> { StationService.Facilitator },
                         stationModels = null,
                         cubeLy = 25
@@ -48,9 +50,10 @@ namespace EddiNavigationService
                 {
                     QueryType.manufactured, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.Industrial },
-                        minPopulation = 1000000,
-                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        systemEconomies = null,
+                        stationEconomies = new List<Economy> { Economy.Industrial },
+                        minPopulation = 0,
+                        security = null,
                         services = new List<StationService> { StationService.MaterialTrader },
                         stationModels = null,
                         cubeLy = 40
@@ -60,9 +63,10 @@ namespace EddiNavigationService
                 {
                     QueryType.raw, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.Extraction, Economy.Refinery },
-                        minPopulation = 1000000,
-                        security = new List<SecurityLevel> { SecurityLevel.Medium, SecurityLevel.High },
+                        systemEconomies = null,
+                        stationEconomies = new List<Economy> { Economy.Extraction, Economy.Refinery },
+                        minPopulation = 0,
+                        security = null,
                         services = new List<StationService> { StationService.MaterialTrader },
                         stationModels = null,
                         cubeLy = 40
@@ -72,9 +76,10 @@ namespace EddiNavigationService
                 {
                     QueryType.guardian, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.HighTech },
-                        minPopulation = 10000000,
-                        security = new List<SecurityLevel> { SecurityLevel.High },
+                        systemEconomies = null,
+                        stationEconomies = new List<Economy> { Economy.HighTech },
+                        minPopulation = 0,
+                        security = null,
                         services = new List<StationService> { StationService.TechBroker },
                         stationModels = null,
                         cubeLy = 80
@@ -84,9 +89,10 @@ namespace EddiNavigationService
                 {
                     QueryType.human, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.Industrial },
-                        minPopulation = 10000000,
-                        security = new List<SecurityLevel> { SecurityLevel.High },
+                        systemEconomies = null,
+                        stationEconomies = new List<Economy> { Economy.Industrial },
+                        minPopulation = 0,
+                        security = null,
                         services = new List<StationService> { StationService.TechBroker },
                         stationModels = null,
                         cubeLy = 80
@@ -96,7 +102,8 @@ namespace EddiNavigationService
                 {
                     QueryType.scorpion, new ServiceFilter
                     {
-                        economies = new List<Economy> { Economy.Military },
+                        systemEconomies = new List<Economy> { Economy.Military },
+                        stationEconomies = null,
                         minPopulation = 0,
                         security = null,
                         services = new List<StationService> { StationService.Outfitting },
@@ -854,6 +861,8 @@ namespace EddiNavigationService
                 searchRadius = EDDI.Instance.CurrentShip?.JumpDetails("total")?.distance ?? 100;
             }
 
+            // We'll search in progressive spherical shells out to a maximum radius of 100 ly
+            // (the maximum from EDSM for a spherical system search)
             string searchSystem = null;
             int searchCount = 0;
             int searchIncrement = (int)Math.Ceiling(Math.Min((decimal)searchRadius, 100) / 4);
@@ -1088,7 +1097,7 @@ namespace EddiNavigationService
                             cubeSystems =  cubeSystems
                                 .Where(s => filter.security?.Any(filterSecurity => s.securityLevel == filterSecurity) ?? true).ToList();
                             cubeSystems = cubeSystems
-                                .Where(s => filter.economies?.All(filterEconomy => (s.Economies?.Any(stationEconomy => filterEconomy == stationEconomy) ?? false)) ?? true)
+                                .Where(s => filter.systemEconomies?.Any(filterEconomy => s.Economies.Any(stationEconomy => filterEconomy == stationEconomy)) ?? true)
                                 .ToList();
 
                             // Retrieve systems in current shell which have not been previously checked
@@ -1137,6 +1146,58 @@ namespace EddiNavigationService
         private List<Station> FilterSystemStations(QueryType serviceQuery, bool prioritizeOrbitalStations, StarSystem ServiceStarSystem,
             int maxStationDistance, ServiceFilter filter, LandingPadSize shipSize)
         {
+            bool EconomyFilter(Station station)
+            {
+                bool? testStationEconomy(Economy economy)
+                {
+                    switch (serviceQuery)
+                    {
+                        case QueryType.encoded:
+                        case QueryType.raw:
+                        case QueryType.manufactured:
+                            {
+                                // If the station could theoretically qualify for multiple types of material traders,
+                                // the precedence is Encoded, Raw, Manufactured
+                                if (ServiceFilters[QueryType.encoded].stationEconomies?.Contains(economy) ?? false)
+                                {
+                                    return serviceQuery == QueryType.encoded;
+                                }
+                                if (ServiceFilters[QueryType.raw].stationEconomies?.Contains(economy) ?? false)
+                                {
+                                    return serviceQuery == QueryType.raw;
+                                }
+                                if (ServiceFilters[QueryType.manufactured].stationEconomies?.Contains(economy) ?? false)
+                                {
+                                    return serviceQuery == QueryType.manufactured;
+                                }
+                                break;
+                            }
+                        case QueryType.guardian:
+                        case QueryType.human:
+                            {
+                                // If the station could theoretically qualify for multiple types of tech brokers,
+                                // the precedence is Guardian, Human
+                                if (ServiceFilters[QueryType.guardian].stationEconomies?.Contains(economy) ?? false)
+                                {
+                                    return serviceQuery == QueryType.guardian;
+                                }
+                                if (ServiceFilters[QueryType.human].stationEconomies?.Contains(economy) ?? false)
+                                {
+                                    return serviceQuery == QueryType.human;
+                                }
+                                break;
+                            }
+                    }
+                    return filter.stationEconomies?.Contains(economy);
+                }
+
+                // Evaluate each economy in turn - the primary economy takes precedence over the secondary economy.
+                // If the results are inconclusive (for example, if there are no filter economies) then pass the station along.
+                return testStationEconomy(station.economyShares?[0]?.economy) ?? 
+                       testStationEconomy(station.economyShares?[1]?.economy) ?? 
+                       true;
+            }
+
             // Prioritize orbital stations as appropriate
             var ServiceStations = prioritizeOrbitalStations ? ServiceStarSystem.orbitalstations : ServiceStarSystem.stations;
 
@@ -1147,9 +1208,7 @@ namespace EddiNavigationService
             ServiceStations = ServiceStations.Where(s => filter.stationModels?.Contains(s.Model) ?? true).ToList();
 
             // Apply our economy filters
-            ServiceStations = ServiceStations
-                .Where(s => filter.economies?.All(e => s.economyShares.Select(es => es.economy).Contains(e)) ?? true)
-                .ToList();
+            ServiceStations = ServiceStations.Where(s => EconomyFilter(s)).ToList();
 
             // Apply our distance filter
             ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();

@@ -5,7 +5,9 @@ namespace EddiNavigationService
 {
     public class ServiceFilter
     {
-        public List<Economy> economies { get; set; }
+        public List<Economy> systemEconomies { get; set; }
+
+        public List<Economy> stationEconomies { get; set; }
 
         public long minPopulation { get; set; }
 
