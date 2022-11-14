@@ -52,10 +52,15 @@ namespace EddiStarMapService
             return new List<StarSystem>();
         }
 
-        /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
-        public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
+        /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 100 light years. </summary>
+        public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 100, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return new List<Dictionary<string, object>>(); }
+            if (maxRadiusLy > 100)
+            {
+                maxRadiusLy = 100;
+                Logging.Warn("The maximum allowable sphere radius is 100 LY. Results are automatically truncated.");
+            }
 
             var request = new RestRequest("api-v1/sphere-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
@@ -95,7 +100,13 @@ namespace EddiStarMapService
         public List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return new List<StarSystem>(); }
-
+            if (cubeLy > 200)
+            {
+                cubeLy = 200;
+                Logging.Warn("The maximum allowable cube size is 100 LY. Results are automatically truncated.");
+            }
+            
+            
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("size", cubeLy);
