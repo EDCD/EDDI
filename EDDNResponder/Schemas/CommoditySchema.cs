@@ -26,35 +26,39 @@ namespace EddiEddnResponder.Schemas
             if (lastSentMarketID == marketID) { return data; }
 
             // Only send the message if we have commodities
-            if (!data.TryGetValue("Items", out var commoditiesList) || 
-                !(commoditiesList is JArray commodities) || 
-                !commodities.Any())
+            if (data.TryGetValue("Items", out var commoditiesList) &&
+                commoditiesList is List<object> commodities && 
+                commodities.Any())
             {
+                lastSentMarketID = marketID;
+
+                void UpdateKeyName(string oldKey, string newKey)
+                {
+                    data[newKey] = data[oldKey];
+                    data.Remove(oldKey);
+                }
+
+                UpdateKeyName("StarSystem", "systemName");
+                UpdateKeyName("StationName", "stationName");
+                UpdateKeyName("MarketID", "marketId");
+                data.Remove("Items");
+                data.Add("commodities", commodities
+                    .Select(c => JObject.FromObject(c))
+                    .Where(c => ApplyJournalMarketFilter(c))
+                    .Select(c => FormatCommodity(c, true))
+                    .ToList());
+
+                // Remove localized names
+                data = eddnState.PersonalData.Strip(data);
+
+                // Apply data augments
+                data = eddnState.GameVersion.AugmentVersion(data);
+
+                handled = true;
                 return data;
             }
 
-            lastSentMarketID = marketID;
-
-            void UpdateKeyName(string oldKey, string newKey)
-            {
-                data[newKey] = data[oldKey];
-                data.Remove(oldKey);
-            }
-
-            UpdateKeyName("StarSystem", "systemName");
-            UpdateKeyName("StationName", "stationName");
-            UpdateKeyName("MarketID", "marketId");
-            data.Remove("Items");
-            data.Add("commodities", commodities
-                .Where(c => ApplyJournalMarketFilter(c))
-                .Select(c => FormatCommodity(c.ToObject<JObject>(), true))
-                .ToList());
-
-            // Apply data augments
-            data = eddnState.GameVersion.AugmentVersion(data);
-
-            handled = true;
-            return data;
+            return null;
         }
 
         private bool ApplyJournalMarketFilter(JToken c)
@@ -86,25 +90,19 @@ namespace EddiEddnResponder.Schemas
             if (marketJson?["commodities"] is null || eddnState?.GameVersion is null) { return null; }
 
             var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = marketJson["StationName"].ToString();
-            var marketID = marketJson["MarketID"].ToObject<long>();
+            var stationName = marketJson["name"].ToString();
+            var marketID = marketJson["id"].ToObject<long>();
             var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
 
             // Sanity check - we must have a valid timestamp
             if (timestamp == null) { return null; }
 
-            // Sanity check - the location information must match our tracking data
-            if (systemName != eddnState.Location.systemName ||
-                stationName != eddnState.Location.stationName ||
-                marketID != eddnState.Location.marketId) { return null; }
-
             // Build our commodities lists
-            var commodities = marketJson["commodities"].Children().Values()
+            var commodities = marketJson["commodities"]?.ToObject<JArray>()?
                 .Where(c => ApplyFrontierApiMarketFilter(c))
                 .Select(c => FormatCommodity(c.ToObject<JObject>(), false))
-                .ToList();
-            var prohibitedCommodities = marketJson["prohibited"]?.Children().Values()
-                .Select(pc => pc.Value<string>());
+                .ToList() ?? new List<JObject>();
+            var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
             var economies = marketJson["economies"];
 
             // Continue if our commodities list is not empty
@@ -113,13 +111,16 @@ namespace EddiEddnResponder.Schemas
                 lastSentMarketID = marketID;
 
                 var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", timestamp);
+                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
                 data.Add("systemName", systemName);
                 data.Add("stationName", stationName);
                 data.Add("marketId", marketID);
                 data.Add("commodities", commodities);
                 data.Add("economies", economies);
                 data.Add("prohibited", prohibitedCommodities);
+
+                // Remove localized names
+                data = eddnState.PersonalData.Strip(data);
 
                 // Apply data augments
                 data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
@@ -139,18 +140,27 @@ namespace EddiEddnResponder.Schemas
 
         private bool ApplyFrontierApiMarketFilter(JToken c)
         {
-            // Don't serialize non-marketable commodities such as drones / limpets
-            // Skip commodities with "categoryName": "NonMarketable"(i.e.Limpets - not purchasable in station market) or a non - empty"legality": string(not normally traded at this station market).
+            try
+            {
+                // Don't serialize non-marketable commodities such as drones / limpets
+                // Skip commodities with "categoryName": "NonMarketable"(i.e.Limpets - not purchasable in station market) or a non - empty"legality": string(not normally traded at this station market).
 
-            if (!string.IsNullOrEmpty(c?["legality"]?.ToString()))
+                if (!string.IsNullOrEmpty(c?["legality"]?.ToString()))
+                {
+                    return false;
+                }
+                if (c?["categoryname"]?.ToString().ToLowerInvariant() == "nonmarketable")
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception e)
             {
+                e.Data.Add("commodity", c);
+                Logging.Error("Failed to filter Frontier API commodity", e);
                 return false;
             }
-            if (c?["categoryName"]?.ToString().ToLowerInvariant() == "nonmarketable")
-            {
-                return false;
-            }
-            return true;
         }
 
         private JObject FormatCommodity(JObject c, bool fromJournal)
@@ -205,12 +215,11 @@ namespace EddiEddnResponder.Schemas
                 c.Remove("Rare");
                 c.Remove("Producer");
             }
-
             else
             {
-                c.Remove("legality");
-                c.Remove("categoryName");
                 c.Remove("locName");
+                c.Remove("legality");
+                c.Remove("categoryname");
             }
 
             c.Remove("id");

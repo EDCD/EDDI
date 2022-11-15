@@ -29,7 +29,8 @@ namespace EddiEddnResponder.Toolkit
             foreach (var personalKey in personalKeys) { data.Remove(personalKey); }
 
             // Need to remove any keys ending with _Localised
-            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+            data = data.Where(x => !x.Key.EndsWith("_Localised") && !x.Key.Equals("locName"))
+                .ToDictionary(x => x.Key, x => x.Value);
 
             // Need to remove personal data from any Dictionary or List type child objects
             IDictionary<string, object> fixedData = new Dictionary<string, object>();

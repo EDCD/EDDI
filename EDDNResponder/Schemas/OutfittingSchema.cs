@@ -27,7 +27,7 @@ namespace EddiEddnResponder.Schemas
             if (lastSentMarketID != marketID && data.TryGetValue("Items", out var modulesList))
             {
                 // Only send the message if we have modules
-                if (modulesList is JArray modules && modules.Any())
+                if (modulesList is List<object> modules && modules.Any())
                 {
                     lastSentMarketID = marketID;
 
@@ -42,7 +42,7 @@ namespace EddiEddnResponder.Schemas
                     UpdateKeyName("MarketID", "marketId");
                     data.Remove("Items");
                     data.Add("modules", modules
-                        .Select(m => m["Name"]?.ToString())
+                        .Select(m => JObject.FromObject(m)["Name"]?.ToString())
                         .Where(m => ApplyModuleNameFilter(m))
                         .Where(m => !Module.IsPowerPlay(m))
                         .ToList());
@@ -71,17 +71,12 @@ namespace EddiEddnResponder.Schemas
             if (shipyardJson?["modules"] is null || eddnState?.GameVersion is null) { return null; }
 
             var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = shipyardJson["StationName"].ToString();
-            var marketID = shipyardJson["MarketID"].ToObject<long>();
+            var stationName = shipyardJson["name"].ToString();
+            var marketID = shipyardJson["id"].ToObject<long>();
             var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
 
             // Sanity check - we must have a valid timestamp
             if (timestamp == null) { return null; }
-
-            // Sanity check - the location information must match our tracking data
-            if (systemName != eddnState.Location.systemName ||
-                stationName != eddnState.Location.stationName ||
-                marketID != eddnState.Location.marketId) { return null; }
 
             // Build our modules list
             var modules = shipyardJson["modules"].Children().Values()
@@ -96,7 +91,7 @@ namespace EddiEddnResponder.Schemas
                 lastSentMarketID = marketID;
 
                 var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", timestamp);
+                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
                 data.Add("systemName", systemName);
                 data.Add("stationName", stationName);
                 data.Add("marketId", marketID);

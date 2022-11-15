@@ -48,8 +48,8 @@ namespace EddiEddnResponder.Schemas
         public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled)
         {
             handled = false;
-            var carrierID = fleetCarrierJson?["name"]?["callsign"]?.ToString();
-            var marketID = fleetCarrierJson?["market"]?["id"]?.ToObject<long?>();
+            var carrierID = marketJson?["name"]?.ToString();
+            var marketID = marketJson?["id"]?.ToObject<long?>();
 
             var carrierRegex = new Regex(@"^\w{3}-\w{3}$");
             if (string.IsNullOrEmpty(carrierID) ||
@@ -61,9 +61,10 @@ namespace EddiEddnResponder.Schemas
             {
                 lastSentMarketID = marketID;
 
-                var items = fleetCarrierJson["orders"]?["onfootmicroresources"]?.Children().Values()
-                    .Select(o => FormatOnFootMaterial(o.ToObject<JObject>())).ToList() ?? new List<JObject>();
-                if (items.Any())
+                var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
+                var saleItems = items?["sales"]?.ToObject<JObject>() ?? new JObject();
+                var purchaseItems = items?["purchases"]?.ToObject<JObject>() ?? new JObject();
+                if (saleItems.Children().Any() || purchaseItems.Children().Any())
                 {
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("event", "FCMaterials");
@@ -75,7 +76,7 @@ namespace EddiEddnResponder.Schemas
                     data = eddnState.PersonalData.Strip(data);
 
                     // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-fleetcarrier");
+                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
 
                     handled = true;
                     return data;
@@ -83,12 +84,6 @@ namespace EddiEddnResponder.Schemas
             }
 
             return null;
-        }
-
-        private JObject FormatOnFootMaterial(JObject o)
-        {
-            o.Remove("locName");
-            return o;
         }
 
         public void SendCapi(IDictionary<string, object> data)

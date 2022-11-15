@@ -26,7 +26,7 @@ namespace EddiEddnResponder.Schemas
             if (lastSentMarketID != marketID && data.TryGetValue("PriceList", out var shipsList))
             {
                 // Only send the message if we have ships
-                if (shipsList is JArray ships && ships.Any())
+                if (shipsList is List<object> ships && ships.Any())
                 {
                     lastSentMarketID = marketID;
 
@@ -41,7 +41,7 @@ namespace EddiEddnResponder.Schemas
                     UpdateKeyName("MarketID", "marketId");
                     UpdateKeyName("AllowCobraMkIV", "allowCobraMkIV");
                     data.Remove("PriceList");
-                    data.Add("ships", ships.Select(o => o["ShipType"]).ToList());
+                    data.Add("ships", ships.Select(o => JObject.FromObject(o)["ShipType"]).ToList());
 
                     // Apply data augments
                     data = eddnState.GameVersion.AugmentVersion(data);
@@ -65,18 +65,13 @@ namespace EddiEddnResponder.Schemas
             if (shipyardJson?["ships"] is null || eddnState?.GameVersion is null) { return null; }
 
             var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = shipyardJson["StationName"].ToString();
-            var marketID = shipyardJson["MarketID"].ToObject<long>();
+            var stationName = shipyardJson["name"].ToString();
+            var marketID = shipyardJson["id"].ToObject<long>();
             var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
             var allowCobraMkIV = profileJson?["commander"]?["capabilities"]?["AllowCobraMkIV"]?.ToObject<bool?>() ?? false;
 
             // Sanity check - we must have a valid timestamp
             if (timestamp == null) { return null; }
-            
-            // Sanity check - the location information must match our tracking data
-            if (systemName != eddnState.Location.systemName ||
-                stationName != eddnState.Location.stationName || 
-                marketID != eddnState.Location.marketId) { return null; }
 
             // Build our ships list
             var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
@@ -93,7 +88,7 @@ namespace EddiEddnResponder.Schemas
                 lastSentMarketID = marketID;
 
                 var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", timestamp);
+                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
                 data.Add("systemName", systemName);
                 data.Add("stationName", stationName);
                 data.Add("marketId", marketID);
