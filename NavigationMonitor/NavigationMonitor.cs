@@ -217,7 +217,8 @@ namespace EddiNavigationMonitor
                 || @event is CarrierJumpEngagedEvent
                 || @event is CarrierJumpedEvent
                 || @event is CarrierPurchasedEvent
-                || @event is CarrierStatsEvent)
+                || @event is CarrierStatsEvent
+                || @event is CommanderContinuedEvent)
             {
                 if (!@event.fromLoad)
                 {

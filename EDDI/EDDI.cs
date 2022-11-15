@@ -3016,9 +3016,8 @@ namespace EddiCore
                         var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
 
                         // Update our Fleet Carrier object
-                        FleetCarrier = FleetCarrier is null
-                            ? new FleetCarrier(frontierApiCarrierJson, timestamp)
-                            : FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
+                        FleetCarrier = FleetCarrier ?? new FleetCarrier(frontierApiCarrierJson, timestamp);
+                        FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
                     }
                 }
                 catch (Exception ex)
