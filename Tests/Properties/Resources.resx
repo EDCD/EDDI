@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Abasheli_Barracks" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Abasheli Barracks.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="bgsFaction" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bgsFaction.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -208,9 +205,6 @@
   <data name="market" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>market.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Libby_Horizons" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Libby Horizons.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="sqlStarSystem6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlStarSystem6.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -222,5 +216,11 @@
   </data>
   <data name="SpanshGalaxyResult" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SpanshGalaxyResult.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="capi_market_Libby_Horizons" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>capi-market-Libby Horizons.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="capi_shipyard_Abasheli_Barracks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>capi-shipyard-Abasheli Barracks.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

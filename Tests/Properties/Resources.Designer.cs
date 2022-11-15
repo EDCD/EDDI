@@ -63,16 +63,6 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Abasheli_Barracks {
-            get {
-                object obj = ResourceManager.GetObject("Abasheli_Barracks", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         public static byte[] bgsEddbSystem {
             get {
                 object obj = ResourceManager.GetObject("bgsEddbSystem", resourceCulture);
@@ -106,6 +96,26 @@ namespace Tests.Properties {
         public static byte[] bgsFactionResponse {
             get {
                 object obj = ResourceManager.GetObject("bgsFactionResponse", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] capi_market_Libby_Horizons {
+            get {
+                object obj = ResourceManager.GetObject("capi_market_Libby_Horizons", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] capi_shipyard_Abasheli_Barracks {
+            get {
+                object obj = ResourceManager.GetObject("capi_shipyard_Abasheli_Barracks", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -206,16 +216,6 @@ namespace Tests.Properties {
         public static byte[] inaraCmdrs {
             get {
                 object obj = ResourceManager.GetObject("inaraCmdrs", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] Libby_Horizons {
-            get {
-                object obj = ResourceManager.GetObject("Libby_Horizons", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -26,7 +26,7 @@ namespace UnitTests
                 new OutfittingInfoItem(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", "weapon", 540900)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            JObject json = DeserializeJsonResource<JObject>(Resources.capi_shipyard_Abasheli_Barracks)?.ToObject<JObject>();
             json?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualModules = station.outfitting;
@@ -60,7 +60,7 @@ namespace UnitTests
                 new ShipyardInfoItem(128672145, "Federation_Dropship_MkII", 19814205)
             };
 
-            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks)?["lastStarport"]?.ToObject<JObject>();
+            JObject json = DeserializeJsonResource<JObject>(Resources.capi_shipyard_Abasheli_Barracks)?.ToObject<JObject>();
             json?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualShips = station.ships;
@@ -82,7 +82,7 @@ namespace UnitTests
         public void TestProfileStation()
         {
             var marketTimestamp = DateTime.UtcNow;
-            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>();
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>();
             marketJson?.Add("timestamp", marketTimestamp); // We add a timestamp to the json returned from the Frontier API, do the same here.
 
             var expectedStation = new FrontierApiStation()
@@ -134,7 +134,7 @@ namespace UnitTests
                     new KeyValuePair<long, string>(128049243, "Slaves")
                 },
                 commoditiesupdatedat = marketTimestamp,
-                marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>(),
+                marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>(),
                 stationServices = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("dock", "ok"),
@@ -193,7 +193,7 @@ namespace UnitTests
 
             // Set up our profile station
             var marketTimestamp = DateTime.UtcNow;
-            JObject marketJson = DeserializeJsonResource<JObject>(Resources.Libby_Horizons)?["lastStarport"]?.ToObject<JObject>();
+            JObject marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>();
             marketJson?.Add("timestamp", DateTime.UtcNow); // We add a timestamp to the json returned from the Frontier API, do the same here.
             var lastStation = FrontierApiStation.FromJson(marketJson, null);
 

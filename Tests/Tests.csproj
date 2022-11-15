@@ -69,16 +69,16 @@
     <Compile Include="MetaVariablesTests.cs" />
     <Compile Include="HumanizeTests.cs" />
     <Compile Include="CustomFunctions.cs" />
-    <Compile Include="SpanshServiceTests.cs" />
-    <Compile Include="UtilityTests.cs" />
-    <Compile Include="InaraTests.cs" />
-    <Compile Include="CrimeMonitorTests.cs" />
-    <Compile Include="NavigationServiceTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SpanshServiceTests.cs" />
+    <Compile Include="UtilityTests.cs" />
+    <Compile Include="InaraTests.cs" />
+    <Compile Include="CrimeMonitorTests.cs" />
+    <Compile Include="NavigationServiceTests.cs" />
     <Compile Include="TelemetryTests.cs" />
     <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -228,7 +228,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Abasheli Barracks.json" />
+    <EmbeddedResource Include="Properties\capi-shipyard-Abasheli Barracks.json" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -254,7 +254,7 @@
     <EmbeddedResource Include="Properties\bgsEddbSystemResponse.json" />
     <EmbeddedResource Include="Properties\bgsEddbSystem.json" />
     <EmbeddedResource Include="Properties\market.json" />
-    <None Include="Properties\Libby Horizons.json" />
+    <None Include="Properties\capi-market-Libby Horizons.json" />
     <None Include="Properties\shipLocker.json" />
     <None Include="Properties\Sol.json" />
     <None Include="Properties\SolBodies.json" />
