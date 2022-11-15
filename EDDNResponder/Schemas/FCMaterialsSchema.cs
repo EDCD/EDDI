@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
@@ -75,11 +74,8 @@ namespace EddiEddnResponder.Schemas
                     // Strip localized names
                     data = eddnState.PersonalData.Strip(data);
 
-                    // Apply data augments (only if the game is running)
-                    if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
-                    {
-                        data = eddnState.GameVersion.AugmentVersion(data);
-                    }
+                    // Apply data augments
+                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-fleetcarrier");
 
                     handled = true;
                     return data;

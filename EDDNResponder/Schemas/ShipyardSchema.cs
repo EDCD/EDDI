@@ -2,9 +2,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Utilities;
 
@@ -102,11 +100,8 @@ namespace EddiEddnResponder.Schemas
                 data.Add("ships", ships);
                 data.Add("allowCobraMkIV", allowCobraMkIV);
 
-                // Apply game version augment (only if the game is running)
-                if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
-                {
-                    data = eddnState.GameVersion.AugmentVersion(data);
-                }
+                // Apply data augments
+                data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
 
                 handled = true;
                 return data;

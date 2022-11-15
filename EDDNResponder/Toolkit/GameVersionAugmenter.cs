@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Utilities;
 
 namespace EddiEddnResponder.Toolkit
@@ -51,19 +53,34 @@ namespace EddiEddnResponder.Toolkit
             }
         }
 
-        internal IDictionary<string, object> AugmentVersion(IDictionary<string, object> data)
+        internal IDictionary<string, object> AugmentVersion(IDictionary<string, object> data, string gameBuildOverrideCAPI = null)
         {
-            // Only include flags that are present in the source files.
-            // If the source value is null, do not add anything.
-
-            if (!data.ContainsKey("horizons") && inHorizons != null)
+            // Apply game version augment (only if the game is running)
+            if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
             {
-                data.Add("horizons", inHorizons);
+                // Only include flags that are present in the source files.
+                // If the source value is null, do not add anything.
+                if (!data.ContainsKey("horizons") && inHorizons != null)
+                {
+                    data.Add("horizons", inHorizons);
+                }
+                if (!data.ContainsKey("odyssey") && inOdyssey != null)
+                {
+                    data.Add("odyssey", inOdyssey);
+                }
             }
-            if (!data.ContainsKey("odyssey") && inOdyssey != null)
-            {
-                data.Add("odyssey", inOdyssey);
-            }
+            
+            //if (!data.ContainsKey("gameversion") && !string.IsNullOrEmpty(gameVersion))
+            //{
+            //    data.Add("gameversion", gameVersion);
+            //}
+            //if (!data.ContainsKey("gamebuild") && 
+            //    (!string.IsNullOrEmpty(gameBuild) || !string.IsNullOrEmpty(gameBuild)))
+            //{
+            //    data.Add("gamebuild", !string.IsNullOrEmpty(gameBuildOverrideCAPI) 
+            //        ? gameBuildOverrideCAPI 
+            //        : gameBuild);
+            //}
             return data;
         }
     }

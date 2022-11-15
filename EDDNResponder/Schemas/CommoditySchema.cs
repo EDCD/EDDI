@@ -2,9 +2,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Utilities;
 
@@ -123,11 +121,8 @@ namespace EddiEddnResponder.Schemas
                 data.Add("economies", economies);
                 data.Add("prohibited", prohibitedCommodities);
 
-                // Apply game version augment (only if the game is running)
-                if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
-                {
-                    data = eddnState.GameVersion.AugmentVersion(data);
-                }
+                // Apply data augments
+                data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
 
                 handled = true;
                 return data;
