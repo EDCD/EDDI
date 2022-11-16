@@ -2929,11 +2929,11 @@ namespace EddiCore
 
                             if (profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
                             {
-                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                                // Only set the current station if it is not present, otherwise we leave it to events
+                                CurrentStation = CurrentStation ?? CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
                                                  ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
                                 if (CurrentStation != null)
                                 {
-                                    // Only set the current station if it is not present, otherwise we leave it to events
                                     Logging.Debug("Set current station to " + CurrentStation.name);
                                     CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                                     updatedCurrentStarSystem = true;
