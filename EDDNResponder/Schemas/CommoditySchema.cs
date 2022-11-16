@@ -33,21 +33,16 @@ namespace EddiEddnResponder.Schemas
                 {
                     lastSentMarketID = marketID;
 
-                    void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
-                    {
-                        dataToUpdate[newKey] = dataToUpdate[oldKey];
-                        dataToUpdate.Remove(oldKey);
-                    }
-
-                    UpdateKeyName(ref data, "StarSystem", "systemName");
-                    UpdateKeyName(ref data, "StationName", "stationName");
-                    UpdateKeyName(ref data, "MarketID", "marketId");
-                    data.Remove("Items");
-                    data.Add("commodities", commodities
+                    var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
+                    handledData["timestamp"] = data["timestamp"];
+                    handledData["systemName"] = data["StarSystem"];
+                    handledData["systemName"] = data["StationName"];
+                    handledData["marketId"] = data["MarketID"];
+                    handledData["commodities"] = commodities
                         .Select(c => JObject.FromObject(c))
                         .Where(c => ApplyJournalMarketFilter(c))
                         .Select(c => FormatCommodity(c, true))
-                        .ToList());
+                        .ToList();
 
                     // Remove localized names
                     data = eddnState.PersonalData.Strip(data);
@@ -178,66 +173,54 @@ namespace EddiEddnResponder.Schemas
 
         private JObject FormatCommodity(JObject c, bool fromJournal)
         {
+            var handledC = new JObject();
             if (fromJournal)
             {
-                void UpdateKeyName(string oldKey, string newKey)
-                {
-                    c[newKey] = c[oldKey];
-                    c.Remove(oldKey);
-                }
-
-                // Reformat name to match the Frontier API
-                c["Name"] = c["Name"]?.ToString()
+                // Reformat commodity name to match the Frontier API
+                handledC["name"] = c["Name"]?.ToString()
                     .Replace("$", "")
-                    .Replace("_name","")
+                    .Replace("_name", "")
                     .Replace(";", "");
-
-                UpdateKeyName("Name", "name");
-                UpdateKeyName("MeanPrice", "meanPrice");
-
-                UpdateKeyName("BuyPrice", "buyPrice");
-                UpdateKeyName("Demand", "demand");
-                UpdateKeyName("DemandBracket", "demandBracket");
-
-                UpdateKeyName("SellPrice", "sellPrice");
-                UpdateKeyName("Stock", "stock");
-                UpdateKeyName("StockBracket", "stockBracket");
+                handledC["meanPrice"] = c["MeanPrice"];
+                handledC["buyPrice"] = c["BuyPrice"];
+                handledC["demand"] = c["Demand"];
+                handledC["demandBracket"] = c["DemandBracket"];
+                handledC["sellPrice"] = c["SellPrice"];
+                handledC["stock"] = c["Stock"];
+                handledC["stockBracket"] = c["StockBracket"];
 
                 var statusFlags = new HashSet<string>();
-                if (c["Producer"].ToObject<bool>())
+                if (c["Producer"] != null)
                 {
                     statusFlags.Add("Producer");
                 }
-                if (c["Consumer"].ToObject<bool>())
+                if (c["Consumer"] != null)
                 {
                     statusFlags.Add("Consumer");
                 }
-                if (c["Rare"].ToObject<bool>())
+                if (c["Rare"] != null)
                 {
                     statusFlags.Add("Rare");
                 }
                 if (statusFlags.Any())
                 {
-                    c.Add("statusFlags", JToken.FromObject(statusFlags));
+                    handledC["statusFlags"] = JToken.FromObject(statusFlags);
                 }
-
-                c.Remove("Name_Localised");
-                c.Remove("Category");
-                c.Remove("Category_Localised");
-                c.Remove("Consumer");
-                c.Remove("Rare");
-                c.Remove("Producer");
             }
             else
             {
-                c.Remove("locName");
-                c.Remove("legality");
-                c.Remove("categoryname");
+                handledC["name"] = c["name"];
+                handledC["meanPrice"] = c["meanPrice"];
+                handledC["buyPrice"] = c["buyPrice"];
+                handledC["demand"] = c["demand"];
+                handledC["demandBracket"] = c["demandBracket"];
+                handledC["sellPrice"] = c["sellPrice"];
+                handledC["stock"] = c["stock"];
+                handledC["stockBracket"] = c["stockBracket"];              
+                handledC["statusFlags"] = c["statusFlags"];
             }
 
-            c.Remove("id");
-
-            return c;
+            return handledC;
         }
     }
 }

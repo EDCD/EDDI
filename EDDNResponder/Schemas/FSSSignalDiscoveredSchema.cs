@@ -64,17 +64,21 @@ namespace EddiEddnResponder.Schemas
                             }
 
                             // Remove redundant, personal, or time sensitive data
-                            var ussSignalType =
-                                data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
+                            var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
                             if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
                             {
-                                data.Remove("event");
-                                data.Remove("SystemAddress");
-                                data.Remove("TimeRemaining");
-                                data = eddnState.PersonalData.Strip(data);
+                                var handledSignal = new Dictionary<string, object>();
+                                if (data["timestamp"] != null) { handledSignal["timestamp"] = data["timestamp"];}
+                                if (data["SignalName"] != null) { handledSignal["SignalName"] = data["SignalName"]; }
+                                if (data["IsStation"] != null) { handledSignal["IsStation"] = data["IsStation"]; }
+                                if (data["USSType"] != null) { handledSignal["USSType"] = data["USSType"]; }
+                                if (data["SpawningState"] != null) { handledSignal["SpawningState"] = data["SpawningState"]; }
+                                if (data["SpawningFaction"] != null) { handledSignal["SpawningFaction"] = data["SpawningFaction"]; }
+                                if (data["ThreatLevel"] != null) { handledSignal["ThreatLevel"] = data["ThreatLevel"]; }
+
 
                                 // Update our signal data
-                                signals.Add(data);
+                                signals.Add(handledSignal);
                                 latestSignalState = eddnState;
                             }
                         }
@@ -97,11 +101,12 @@ namespace EddiEddnResponder.Schemas
         private IDictionary<string, object> PrepareSignalsData(EDDNState eddnState)
         {
             // Create our top level data structure
+            var retrievedSignals = signals?.Copy();
             var data = new Dictionary<string, object>()
             {
-                { "timestamp", Dates.FromDateTimeToString(signals?.Copy()?[0]?["timestamp"] as DateTime? ?? DateTime.MinValue) },
+                { "timestamp", retrievedSignals?[0]?["timestamp"] },
                 { "event", "FSSSignalDiscovered" },
-                { "signals", signals?.Copy() }
+                { "signals", retrievedSignals }
             } as IDictionary<string, object>;
             signals?.Clear();
 

@@ -31,21 +31,18 @@ namespace EddiEddnResponder.Schemas
                     {
                         lastSentMarketID = marketID;
 
-                        void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
-                        {
-                            dataToUpdate[newKey] = dataToUpdate[oldKey];
-                            dataToUpdate.Remove(oldKey);
-                        }
-
-                        UpdateKeyName(ref data, "StarSystem", "systemName");
-                        UpdateKeyName(ref data, "StationName", "stationName");
-                        UpdateKeyName(ref data, "MarketID", "marketId");
-                        UpdateKeyName(ref data, "AllowCobraMkIV", "allowCobraMkIV");
-                        data.Remove("PriceList");
-                        data.Add("ships", ships.Select(o => JObject.FromObject(o)["ShipType"]).ToList());
+                        var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
+                        handledData["timestamp"] = data["timestamp"];
+                        handledData["systemName"] = data["StarSystem"];
+                        handledData["systemName"] = data["StationName"];
+                        handledData["marketId"] = data["MarketID"];
+                        handledData["allowCobraMkIV"] = data["AllowCobraMkIV"];
+                        handledData["ships"] = ships.Select(o => JObject.FromObject(o)["ShipType"]).ToList();
 
                         // Apply data augments
-                        data = eddnState.GameVersion.AugmentVersion(data);
+                        handledData = eddnState.GameVersion.AugmentVersion(handledData);
+
+                        data = handledData;
 
                         return true;
                     }

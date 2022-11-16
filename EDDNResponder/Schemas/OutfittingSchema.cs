@@ -32,21 +32,16 @@ namespace EddiEddnResponder.Schemas
                     {
                         lastSentMarketID = marketID;
 
-                        void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
-                        {
-                            dataToUpdate[newKey] = dataToUpdate[oldKey];
-                            dataToUpdate.Remove(oldKey);
-                        }
-
-                        UpdateKeyName(ref data, "StarSystem", "systemName");
-                        UpdateKeyName(ref data, "StationName", "stationName");
-                        UpdateKeyName(ref data, "MarketID", "marketId");
-                        data.Remove("Items");
-                        data.Add("modules", modules
+                        var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
+                        handledData["timestamp"] = data["timestamp"];
+                        handledData["systemName"] = data["StarSystem"];
+                        handledData["systemName"] = data["StationName"];
+                        handledData["marketId"] = data["MarketID"];
+                        handledData["modules"] = modules
                             .Select(m => JObject.FromObject(m)["Name"]?.ToString())
                             .Where(m => ApplyModuleNameFilter(m))
                             .Where(m => !Module.IsPowerPlay(m))
-                            .ToList());
+                            .ToList();
 
                         // Apply data augments
                         data = eddnState.GameVersion.AugmentVersion(data);
@@ -96,6 +91,7 @@ namespace EddiEddnResponder.Schemas
                 if (modules.Any())
                 {
                     lastSentMarketID = marketID;
+
 
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
