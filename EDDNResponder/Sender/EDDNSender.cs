@@ -161,7 +161,7 @@ namespace EddiEddnResponder.Sender
                 {
                     ex.Data.Add("eddnMessage", JsonConvert.SerializeObject(body?.message));
                     ex.Data.Add("Response", response?.Content);
-                    Logging.Error("Failed to send data to EDDN", ex);
+                    Logging.Error("EDDN could not accept data", ex);
                 }
             })
             {

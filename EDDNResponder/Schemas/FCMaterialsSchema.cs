@@ -1,4 +1,5 @@
-﻿using EddiEddnResponder.Sender;
+﻿using System;
+using EddiEddnResponder.Sender;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -18,20 +19,31 @@ namespace EddiEddnResponder.Schemas
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            if (edType is null || !edTypes.Contains(edType)) { return false; }
-            if (data is null || eddnState?.GameVersion is null) { return false; }
-            var marketID = JsonParsing.getLong(data, "MarketID");
-            if (lastSentMarketID == marketID) return false;
-            
-            lastSentMarketID = marketID;
+            try
+            {
+                if (!edTypes.Contains(edType)) { return false; }
+                if (eddnState?.GameVersion is null) { return false; }
+                var marketID = JsonParsing.getLong(data, "MarketID");
+                if (lastSentMarketID == marketID) return false;
+                
+                lastSentMarketID = marketID;
 
-            // Strip localized names
-            data = eddnState.PersonalData.Strip(data);
+                // Strip localized names
+                data = eddnState.PersonalData.Strip(data);
 
-            // Apply data augments
-            data = eddnState.GameVersion.AugmentVersion(data);
+                // Apply data augments
+                data = eddnState.GameVersion.AugmentVersion(data);
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("edType", edType);
+                e.Data.Add("Data", data);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle journal data.");
+                return false;
+            }
         }
 
         public void Send(IDictionary<string, object> data)

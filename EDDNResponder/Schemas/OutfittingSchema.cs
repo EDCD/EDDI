@@ -19,40 +19,49 @@ namespace EddiEddnResponder.Schemas
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            if (edType is null || !edTypes.Contains(edType)) { return false; }
-            if (data is null || eddnState?.GameVersion is null) { return false; }
-
-            var marketID = JsonParsing.getLong(data, "MarketID");
-            if (lastSentMarketID != marketID && data.TryGetValue("Items", out var modulesList))
+            try
             {
-                // Only send the message if we have modules
-                if (modulesList is List<object> modules && modules.Any())
+                if (!edTypes.Contains(edType)) { return false; }
+                if (eddnState?.GameVersion is null) { return false; }
+
+                var marketID = JsonParsing.getLong(data, "MarketID");
+                if (lastSentMarketID != marketID && data.TryGetValue("Items", out var modulesList))
                 {
-                    lastSentMarketID = marketID;
-
-                    void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
+                    // Only send the message if we have modules
+                    if (modulesList is List<object> modules && modules.Any())
                     {
-                        dataToUpdate[newKey] = dataToUpdate[oldKey];
-                        dataToUpdate.Remove(oldKey);
+                        lastSentMarketID = marketID;
+
+                        void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
+                        {
+                            dataToUpdate[newKey] = dataToUpdate[oldKey];
+                            dataToUpdate.Remove(oldKey);
+                        }
+
+                        UpdateKeyName(ref data, "StarSystem", "systemName");
+                        UpdateKeyName(ref data, "StationName", "stationName");
+                        UpdateKeyName(ref data, "MarketID", "marketId");
+                        data.Remove("Items");
+                        data.Add("modules", modules
+                            .Select(m => JObject.FromObject(m)["Name"]?.ToString())
+                            .Where(m => ApplyModuleNameFilter(m))
+                            .Where(m => !Module.IsPowerPlay(m))
+                            .ToList());
+
+                        // Apply data augments
+                        data = eddnState.GameVersion.AugmentVersion(data);
+
+                        return true;
                     }
-
-                    UpdateKeyName(ref data, "StarSystem", "systemName");
-                    UpdateKeyName(ref data, "StationName", "stationName");
-                    UpdateKeyName(ref data, "MarketID", "marketId");
-                    data.Remove("Items");
-                    data.Add("modules", modules
-                        .Select(m => JObject.FromObject(m)["Name"]?.ToString())
-                        .Where(m => ApplyModuleNameFilter(m))
-                        .Where(m => !Module.IsPowerPlay(m))
-                        .ToList());
-
-                    // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data);
-
-                    return true;
                 }
             }
-
+            catch (Exception e)
+            {
+                e.Data.Add("edType", edType);
+                e.Data.Add("Data", data);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle journal data.");
+            }
             return false;
         }
 

@@ -20,63 +20,73 @@ namespace EddiEddnResponder.Schemas
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            if (edType is null || data is null || eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
-
-            if (edTypes.Contains(lastEdType) && !edTypes.Contains(edType))
+            try
             {
-                // This marks the end of a batch of signals.
-                if (signals.Any())
+                if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
                 {
-                    data = PrepareSignalsData(latestSignalState);
-                    return true;
-                }
-            }
-
-            if (edTypes.Contains(edType))
-            {
-                // This is a signal that we need to add to our signal batch
-
-                // Make sure the location data is valid
-                if (!eddnState.Location.CheckLocationData(edType, data))
-                {
-                    return false;
-                }
-
-                if (latestSignalState is null)
-                {
-                    latestSignalState = eddnState;
-                }
-                else
-                {
-                    // Make sure that our signal location data is consistent across our batch by testing it here
-                    var loc = eddnState.Location;
-                    var lastLoc = latestSignalState.Location;
-                    if (loc.systemName != lastLoc.systemName ||
-                        loc.systemAddress != lastLoc.systemAddress ||
-                        loc.systemX != lastLoc.systemX || loc.systemY != lastLoc.systemY ||
-                        loc.systemZ != lastLoc.systemZ)
+                    if (edTypes.Contains(lastEdType) && !edTypes.Contains(edType))
                     {
-                        var ex = new ArgumentException("Tracked signal locations are not aligned.");
-                        ex.Data.Add("Last tracked Location", lastLoc);
-                        ex.Data.Add("Current tracked location", loc);
-                        throw ex;
+                        // This marks the end of a batch of signals.
+                        if (signals.Any())
+                        {
+                            data = PrepareSignalsData(latestSignalState);
+                            lastEdType = edType;
+                            return true;
+                        }
+                    }
+
+                    if (edTypes.Contains(edType))
+                    {
+                        // This is a signal that we need to add to our signal batch
+
+                        // Make sure the location data is valid
+                        if (eddnState.Location.CheckLocationData(edType, data))
+                        {
+                            if (latestSignalState is null)
+                            {
+                                latestSignalState = eddnState;
+                            }
+                            else
+                            {
+                                // Make sure that our signal location data is consistent across our batch by testing it here
+                                var loc = eddnState.Location;
+                                var lastLoc = latestSignalState.Location;
+                                if (loc.systemName != lastLoc.systemName ||
+                                    loc.systemAddress != lastLoc.systemAddress ||
+                                    loc.systemX != lastLoc.systemX || loc.systemY != lastLoc.systemY ||
+                                    loc.systemZ != lastLoc.systemZ)
+                                {
+                                    var ex = new ArgumentException("Tracked signal locations are not aligned.");
+                                    ex.Data.Add("Last tracked Location", lastLoc);
+                                    ex.Data.Add("Current tracked location", loc);
+                                    throw ex;
+                                }
+                            }
+
+                            // Remove redundant, personal, or time sensitive data
+                            var ussSignalType =
+                                data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
+                            if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
+                            {
+                                data.Remove("event");
+                                data.Remove("SystemAddress");
+                                data.Remove("TimeRemaining");
+                                data = eddnState.PersonalData.Strip(data);
+
+                                // Update our signal data
+                                signals.Add(data);
+                                latestSignalState = eddnState;
+                            }
+                        }
                     }
                 }
-
-                // Remove redundant, personal, or time sensitive data
-                var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
-                if (!string.IsNullOrEmpty(ussSignalType) && ussSignalType == "$USS_Type_MissionTarget;")
-                {
-                    return false;
-                }
-                data.Remove("event");
-                data.Remove("SystemAddress");
-                data.Remove("TimeRemaining");
-                data = eddnState.PersonalData.Strip(data);
-
-                // Update our signal data
-                signals.Add(data);
-                latestSignalState = eddnState;
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("edType", edType);
+                e.Data.Add("Data", data);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle journal data.");
             }
 
             // We always save the edType so that we can identify the end of a signal batch.

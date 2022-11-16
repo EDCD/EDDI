@@ -113,6 +113,8 @@ namespace EddiEddnResponder
             var data = Deserializtion.DeserializeData(theEvent.raw);
             var edType = JsonParsing.getString(data, "event");
 
+            if (string.IsNullOrEmpty(edType) || data == null) { return; }
+
             // Attempt to obtain available game version data from the active event 
             eddnState.GameVersion.GetVersionInfo(edType, data);
 
@@ -129,19 +131,10 @@ namespace EddiEddnResponder
             // Handle events
             foreach (var schema in schemas)
             {
-                try
+                if (schema.Handle(edType, ref data, eddnState))
                 {
-                    if (schema.Handle(edType, ref data, eddnState))
-                    {
-                        schema.Send(data);
-                        break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ex.Data.Add("Schema", schema?.GetType().Name);
-                    data.ToList().ForEach(kv => ex.Data.Add(kv.Key, kv.Value));
-                    Logging.Error($"{schema?.GetType().Name ?? "Schema"} data handler failed.", ex);
+                    schema.Send(data);
+                    break;
                 }
             }
         }
