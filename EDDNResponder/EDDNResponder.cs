@@ -131,10 +131,9 @@ namespace EddiEddnResponder
             {
                 try
                 {
-                    var handledData = schema.Handle(edType, data, eddnState, out bool handled);
-                    if (handled)
+                    if (schema.Handle(edType, ref data, eddnState))
                     {
-                        schema.Send(handledData);
+                        schema.Send(data);
                         break;
                     }
                 }

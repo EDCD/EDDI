@@ -16,11 +16,10 @@ namespace EddiEddnResponder.Schemas
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;
 
-        public IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            handled = false;
-            if (edType is null || !edTypes.Contains(edType)) { return null; }
-            if (data is null || eddnState?.GameVersion is null) { return null; }
+            if (edType is null || !edTypes.Contains(edType)) { return false; }
+            if (data is null || eddnState?.GameVersion is null) { return false; }
 
             var marketID = JsonParsing.getLong(data, "MarketID");
             if (lastSentMarketID != marketID && data.TryGetValue("PriceList", out var shipsList))
@@ -30,28 +29,27 @@ namespace EddiEddnResponder.Schemas
                 {
                     lastSentMarketID = marketID;
 
-                    void UpdateKeyName(string oldKey, string newKey)
+                    void UpdateKeyName(ref IDictionary<string, object> dataToUpdate, string oldKey, string newKey)
                     {
-                        data[newKey] = data[oldKey];
-                        data.Remove(oldKey);
+                        dataToUpdate[newKey] = dataToUpdate[oldKey];
+                        dataToUpdate.Remove(oldKey);
                     }
 
-                    UpdateKeyName("StarSystem", "systemName");
-                    UpdateKeyName("StationName", "stationName");
-                    UpdateKeyName("MarketID", "marketId");
-                    UpdateKeyName("AllowCobraMkIV", "allowCobraMkIV");
+                    UpdateKeyName(ref data, "StarSystem", "systemName");
+                    UpdateKeyName(ref data, "StationName", "stationName");
+                    UpdateKeyName(ref data, "MarketID", "marketId");
+                    UpdateKeyName(ref data, "AllowCobraMkIV", "allowCobraMkIV");
                     data.Remove("PriceList");
                     data.Add("ships", ships.Select(o => JObject.FromObject(o)["ShipType"]).ToList());
 
                     // Apply data augments
                     data = eddnState.GameVersion.AugmentVersion(data);
 
-                    handled = true;
-                    return data;
+                    return true;
                 }
             }
 
-            return null;
+            return false;
         }
 
         public void Send(IDictionary<string, object> data)

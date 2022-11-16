@@ -16,28 +16,22 @@ namespace EddiEddnResponder.Schemas
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;
 
-        public IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            handled = false;
-            if (edType is null || !edTypes.Contains(edType)) { return null; }
-            if (data is null || eddnState?.GameVersion is null) { return null; }
-
+            if (edType is null || !edTypes.Contains(edType)) { return false; }
+            if (data is null || eddnState?.GameVersion is null) { return false; }
             var marketID = JsonParsing.getLong(data, "MarketID");
-            if (lastSentMarketID != marketID)
-            {
-                lastSentMarketID = marketID;
+            if (lastSentMarketID == marketID) return false;
+            
+            lastSentMarketID = marketID;
 
-                // Strip localized names
-                data = eddnState.PersonalData.Strip(data);
+            // Strip localized names
+            data = eddnState.PersonalData.Strip(data);
 
-                // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data);
+            // Apply data augments
+            data = eddnState.GameVersion.AugmentVersion(data);
 
-                handled = true;
-                return data;
-            }
-
-            return null;
+            return true;
         }
 
         public void Send(IDictionary<string, object> data)

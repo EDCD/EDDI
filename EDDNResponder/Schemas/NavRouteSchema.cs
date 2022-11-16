@@ -9,16 +9,14 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => new List<string> { "NavRoute" };
 
-        public IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            handled = false;
-            if (edType is null || !edTypes.Contains(edType)) { return null; }
-            if (data == null || eddnState?.GameVersion == null) { return null; }
+            if (edType is null || !edTypes.Contains(edType)) { return false; }
+            if (data == null || eddnState?.GameVersion == null) { return false; }
 
             data = eddnState.GameVersion.AugmentVersion(data);
 
-            handled = true;
-            return data;
+            return true;
         }
 
         public void Send(IDictionary<string, object> data)

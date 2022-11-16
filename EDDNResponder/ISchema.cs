@@ -10,7 +10,7 @@ namespace EddiEddnResponder
         List<string> edTypes { get; }
 
         [UsedImplicitly]
-        IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled);
+        bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState);
 
         void Send(IDictionary<string, object> data);
     }

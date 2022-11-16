@@ -18,18 +18,17 @@ namespace EddiEddnResponder.Schemas
         private readonly List<IDictionary<string, object>> signals =
             new List<IDictionary<string, object>>();
 
-        public IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            handled = false;
-            if (edType is null || data is null || eddnState?.Location is null || eddnState.GameVersion is null) { return null; }
+            if (edType is null || data is null || eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
 
             if (edTypes.Contains(lastEdType) && !edTypes.Contains(edType))
             {
                 // This marks the end of a batch of signals.
                 if (signals.Any())
                 {
-                    handled = true;
-                    return PrepareSignalsData(latestSignalState);
+                    data = PrepareSignalsData(latestSignalState);
+                    return true;
                 }
             }
 
@@ -40,7 +39,7 @@ namespace EddiEddnResponder.Schemas
                 // Make sure the location data is valid
                 if (!eddnState.Location.CheckLocationData(edType, data))
                 {
-                    return null;
+                    return false;
                 }
 
                 if (latestSignalState is null)
@@ -68,7 +67,7 @@ namespace EddiEddnResponder.Schemas
                 var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
                 if (!string.IsNullOrEmpty(ussSignalType) && ussSignalType == "$USS_Type_MissionTarget;")
                 {
-                    return null;
+                    return false;
                 }
                 data.Remove("event");
                 data.Remove("SystemAddress");
@@ -82,7 +81,7 @@ namespace EddiEddnResponder.Schemas
 
             // We always save the edType so that we can identify the end of a signal batch.
             lastEdType = edType;
-            return null;
+            return false;
         }
 
         private IDictionary<string, object> PrepareSignalsData(EDDNState eddnState)

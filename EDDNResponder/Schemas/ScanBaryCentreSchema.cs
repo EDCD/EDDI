@@ -9,12 +9,11 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => new List<string> { "ScanBaryCentre" };
 
-        public IDictionary<string, object> Handle(string edType, IDictionary<string, object> data, EDDNState eddnState, out bool handled)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            handled = false;
-            if (edType is null || !edTypes.Contains(edType)) { return null; }
-            if (eddnState?.Location is null || eddnState.GameVersion is null) { return null; }
-            if (!eddnState.Location.CheckLocationData(edType, data)) { return null; }
+            if (edType is null || !edTypes.Contains(edType)) { return false; }
+            if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
+            if (!eddnState.Location.CheckLocationData(edType, data)) { return false; }
 
             // No personal data to remove
 
@@ -22,8 +21,7 @@ namespace EddiEddnResponder.Schemas
             data = eddnState.Location.AugmentStarPos(data);
             data = eddnState.GameVersion.AugmentVersion(data);
 
-            handled = true;
-            return data;
+            return true;
         }
 
         public void Send(IDictionary<string, object> data)
