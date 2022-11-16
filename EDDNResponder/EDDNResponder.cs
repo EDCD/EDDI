@@ -66,22 +66,12 @@ namespace EddiEddnResponder
         {
             foreach (var schema in capiSchemas)
             {
-                try
+                var handledData = schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState);
+                if (handledData != null)
                 {
-                    var handledData = schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState, out bool handled);
-                    if (handled)
-                    {
-                        schema.SendCapi(handledData);
-                        break;
-                    }
+                    // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
+                    schema.SendCapi(handledData);
                 }
-                catch (Exception ex)
-                {
-                    ex.Data.Add("Schema", schema?.GetType().Name);
-                    ex.Data.Add("FrontierApiData", e);
-                    Logging.Error($"{schema?.GetType().Name ?? "Schema"} data handler failed.", ex);
-                }
-
             }
         }
 

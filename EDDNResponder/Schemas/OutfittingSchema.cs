@@ -70,47 +70,54 @@ namespace EddiEddnResponder.Schemas
             EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data);
         }
 
-        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled)
+        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
         {
-            handled = false;
-
-            // Modules are included in shipyardJson
-            if (shipyardJson?["modules"] is null || eddnState?.GameVersion is null) { return null; }
-
-            var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = shipyardJson["name"].ToString();
-            var marketID = shipyardJson["id"].ToObject<long>();
-            var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
-
-            // Sanity check - we must have a valid timestamp
-            if (timestamp == null) { return null; }
-
-            // Build our modules list
-            var modules = shipyardJson["modules"].Children().Values()
-                .Where(m => ApplyModuleSkuFilter(m))
-                .Select(m => m["name"]?.ToString())
-                .Where(m => ApplyModuleNameFilter(m))
-                .ToList();
-
-            // Continue if our modules list is not empty
-            if (modules.Any())
+            try
             {
-                lastSentMarketID = marketID;
+                // Modules are included in shipyardJson
+                if (shipyardJson?["modules"] is null || eddnState?.GameVersion is null) { return null; }
 
-                var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
-                data.Add("systemName", systemName);
-                data.Add("stationName", stationName);
-                data.Add("marketId", marketID);
-                data.Add("modules", modules);
+                var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
+                var stationName = shipyardJson["name"].ToString();
+                var marketID = shipyardJson["id"].ToObject<long>();
+                var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
 
-                // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
+                // Sanity check - we must have a valid timestamp
+                if (timestamp == null) { return null; }
 
-                handled = true;
-                return data;
+                // Build our modules list
+                var modules = shipyardJson["modules"].Children().Values()
+                    .Where(m => ApplyModuleSkuFilter(m))
+                    .Select(m => m["name"]?.ToString())
+                    .Where(m => ApplyModuleNameFilter(m))
+                    .ToList();
+
+                // Continue if our modules list is not empty
+                if (modules.Any())
+                {
+                    lastSentMarketID = marketID;
+
+                    var data = new Dictionary<string, object>() as IDictionary<string, object>;
+                    data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
+                    data.Add("systemName", systemName);
+                    data.Add("stationName", stationName);
+                    data.Add("marketId", marketID);
+                    data.Add("modules", modules);
+
+                    // Apply data augments
+                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
+
+                    return data;
+                }
             }
-
+            catch (Exception e)
+            {
+                e.Data.Add(@"\profile", profileJson);
+                e.Data.Add(@"\shipyard", shipyardJson);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
+            }
+            
             return null;
         }
 

@@ -66,47 +66,55 @@ namespace EddiEddnResponder.Schemas
             EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
         }
 
-        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled)
+        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
         {
-            handled = false;
-            if (shipyardJson?["ships"] is null || eddnState?.GameVersion is null) { return null; }
-
-            var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = shipyardJson["name"].ToString();
-            var marketID = shipyardJson["id"].ToObject<long>();
-            var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
-            var allowCobraMkIV = profileJson?["commander"]?["capabilities"]?["AllowCobraMkIV"]?.ToObject<bool?>() ?? false;
-
-            // Sanity check - we must have a valid timestamp
-            if (timestamp == null) { return null; }
-
-            // Build our ships list
-            var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
-                .Select(s => s["ShipType"]?.ToString()).ToList() ?? new List<string>();
-            if (shipyardJson["ships"]["unavailable_list"] != null)
+            try
             {
-                ships.AddRange(shipyardJson["ships"]?["unavailable_list"]?
-                    .Select(s => s?["ShipType"]?.ToString()).ToList() ?? new List<string>());
+                if (shipyardJson?["ships"] is null || eddnState?.GameVersion is null) { return null; }
+
+                var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
+                var stationName = shipyardJson["name"].ToString();
+                var marketID = shipyardJson["id"].ToObject<long>();
+                var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
+                var allowCobraMkIV = profileJson?["commander"]?["capabilities"]?["AllowCobraMkIV"]?.ToObject<bool?>() ?? false;
+
+                // Sanity check - we must have a valid timestamp
+                if (timestamp == null) { return null; }
+
+                // Build our ships list
+                var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
+                    .Select(s => s["ShipType"]?.ToString()).ToList() ?? new List<string>();
+                if (shipyardJson["ships"]["unavailable_list"] != null)
+                {
+                    ships.AddRange(shipyardJson["ships"]?["unavailable_list"]?
+                        .Select(s => s?["ShipType"]?.ToString()).ToList() ?? new List<string>());
+                }
+
+                // Continue if our ships list is not empty
+                if (ships.Any())
+                {
+                    lastSentMarketID = marketID;
+
+                    var data = new Dictionary<string, object>() as IDictionary<string, object>;
+                    data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
+                    data.Add("systemName", systemName);
+                    data.Add("stationName", stationName);
+                    data.Add("marketId", marketID);
+                    data.Add("ships", ships);
+                    data.Add("allowCobraMkIV", allowCobraMkIV);
+
+                    // Apply data augments
+                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
+
+                    return data;
+                }
             }
-
-            // Continue if our ships list is not empty
-            if (ships.Any())
+            catch (Exception e)
             {
-                lastSentMarketID = marketID;
-
-                var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
-                data.Add("systemName", systemName);
-                data.Add("stationName", stationName);
-                data.Add("marketId", marketID);
-                data.Add("ships", ships);
-                data.Add("allowCobraMkIV", allowCobraMkIV);
-
-                // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
-
-                handled = true;
-                return data;
+                e.Data.Add(@"\profile", profileJson);
+                e.Data.Add(@"\shipyard", shipyardJson);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
             }
 
             return null;

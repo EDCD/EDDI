@@ -51,42 +51,49 @@ namespace EddiEddnResponder.Schemas
             EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_journal/1", data);
         }
 
-        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled)
+        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
         {
-            handled = false;
-            var carrierID = marketJson?["name"]?.ToString();
-            var marketID = marketJson?["id"]?.ToObject<long?>();
-
-            var carrierRegex = new Regex(@"^\w{3}-\w{3}$");
-            if (string.IsNullOrEmpty(carrierID) ||
-                !carrierRegex.IsMatch(carrierID) ||
-                eddnState?.GameVersion is null)
-            { return null; }
-
-            if (marketID != null && lastSentMarketID != marketID)
+            try
             {
-                lastSentMarketID = marketID;
+                var carrierID = marketJson?["name"]?.ToString();
+                var marketID = marketJson?["id"]?.ToObject<long?>();
 
-                var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
-                var saleItems = items?["sales"]?.ToObject<JObject>() ?? new JObject();
-                var purchaseItems = items?["purchases"]?.ToObject<JObject>() ?? new JObject();
-                if (saleItems.Children().Any() || purchaseItems.Children().Any())
+                var carrierRegex = new Regex(@"^\w{3}-\w{3}$");
+                if (string.IsNullOrEmpty(carrierID) ||
+                    !carrierRegex.IsMatch(carrierID) ||
+                    eddnState?.GameVersion is null)
+                { return null; }
+
+                if (marketID != null && lastSentMarketID != marketID)
                 {
-                    var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                    data.Add("event", "FCMaterials");
-                    data.Add("MarketID", marketID);
-                    data.Add("CarrierID", carrierID);
-                    data.Add("Items", items);
+                    lastSentMarketID = marketID;
 
-                    // Strip localized names
-                    data = eddnState.PersonalData.Strip(data);
+                    var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
+                    var saleItems = items?["sales"]?.ToObject<JObject>() ?? new JObject();
+                    var purchaseItems = items?["purchases"]?.ToObject<JObject>() ?? new JObject();
+                    if (saleItems.Children().Any() || purchaseItems.Children().Any())
+                    {
+                        var data = new Dictionary<string, object>() as IDictionary<string, object>;
+                        data.Add("event", "FCMaterials");
+                        data.Add("MarketID", marketID);
+                        data.Add("CarrierID", carrierID);
+                        data.Add("Items", items);
 
-                    // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+                        // Strip localized names
+                        data = eddnState.PersonalData.Strip(data);
 
-                    handled = true;
-                    return data;
+                        // Apply data augments
+                        data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+
+                        return data;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                e.Data.Add(@"\market", marketJson);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
             }
 
             return null;

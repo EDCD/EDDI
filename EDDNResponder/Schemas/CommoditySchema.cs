@@ -91,54 +91,60 @@ namespace EddiEddnResponder.Schemas
             EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
         }
 
-        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled)
+        public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
         {
-            handled = false;
-            if (marketJson?["commodities"] is null || eddnState?.GameVersion is null) { return null; }
-
-            var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-            var stationName = marketJson["name"].ToString();
-            var marketID = marketJson["id"].ToObject<long>();
-            var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
-
-            // Sanity check - we must have a valid timestamp
-            if (timestamp == null) { return null; }
-
-            // Build our commodities lists
-            var commodities = marketJson["commodities"]?.ToObject<JArray>()?
-                .Where(c => ApplyFrontierApiMarketFilter(c))
-                .Select(c => FormatCommodity(c.ToObject<JObject>(), false))
-                .ToList() ?? new List<JObject>();
-            var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
-            var economies = marketJson["economies"];
-
-            // Continue if our commodities list is not empty
-            if (commodities.Any())
+            try
             {
-                lastSentMarketID = marketID;
+                if (marketJson?["commodities"] is null || eddnState?.GameVersion is null) { return null; }
 
-                var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
-                data.Add("systemName", systemName);
-                data.Add("stationName", stationName);
-                data.Add("marketId", marketID);
-                data.Add("commodities", commodities);
-                data.Add("economies", economies);
-                data.Add("prohibited", prohibitedCommodities);
+                var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
+                var stationName = marketJson["name"].ToString();
+                var marketID = marketJson["id"].ToObject<long>();
+                var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
 
-                // Remove localized names
-                data = eddnState.PersonalData.Strip(data);
+                // Sanity check - we must have a valid timestamp
+                if (timestamp == null) { return null; }
 
-                // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+                // Build our commodities lists
+                var commodities = marketJson["commodities"]?.ToObject<JArray>()?
+                    .Where(c => ApplyFrontierApiMarketFilter(c))
+                    .Select(c => FormatCommodity(c.ToObject<JObject>(), false))
+                    .ToList() ?? new List<JObject>();
+                var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
+                var economies = marketJson["economies"];
 
-                handled = true;
-                return data;
+                // Continue if our commodities list is not empty
+                if (commodities.Any())
+                {
+                    lastSentMarketID = marketID;
+
+                    var data = new Dictionary<string, object>() as IDictionary<string, object>;
+                    data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
+                    data.Add("systemName", systemName);
+                    data.Add("stationName", stationName);
+                    data.Add("marketId", marketID);
+                    data.Add("commodities", commodities);
+                    data.Add("economies", economies);
+                    data.Add("prohibited", prohibitedCommodities);
+
+                    // Remove localized names
+                    data = eddnState.PersonalData.Strip(data);
+
+                    // Apply data augments
+                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+
+                    return data;
+                }
             }
-
+            catch (Exception e)
+            {
+                e.Data.Add(@"\profile", profileJson);
+                e.Data.Add(@"\market", marketJson);
+                e.Data.Add("EDDN State", eddnState);
+                Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
+            }
             return null;
         }
-
 
         public void SendCapi(IDictionary<string, object> data)
         {

@@ -17,7 +17,7 @@ namespace EddiEddnResponder
 
     public interface ICapiSchema
     {
-        IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState, out bool handled);
+        IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState);
 
         void SendCapi(IDictionary<string, object> data);
     }
