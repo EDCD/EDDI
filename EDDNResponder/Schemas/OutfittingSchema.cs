@@ -44,8 +44,9 @@ namespace EddiEddnResponder.Schemas
                             .ToList();
 
                         // Apply data augments
-                        data = eddnState.GameVersion.AugmentVersion(data);
+                        handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
+                        data = handledData;
                         return true;
                     }
                 }

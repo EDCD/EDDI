@@ -76,7 +76,6 @@ namespace EddiEddnResponder.Schemas
                                 if (data["SpawningFaction"] != null) { handledSignal["SpawningFaction"] = data["SpawningFaction"]; }
                                 if (data["ThreatLevel"] != null) { handledSignal["ThreatLevel"] = data["ThreatLevel"]; }
 
-
                                 // Update our signal data
                                 signals.Add(handledSignal);
                                 latestSignalState = eddnState;

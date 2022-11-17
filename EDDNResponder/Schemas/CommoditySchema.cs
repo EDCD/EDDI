@@ -38,18 +38,18 @@ namespace EddiEddnResponder.Schemas
                     handledData["systemName"] = data["StarSystem"];
                     handledData["systemName"] = data["StationName"];
                     handledData["marketId"] = data["MarketID"];
-                    handledData["commodities"] = commodities
-                        .Select(c => JObject.FromObject(c))
+                    handledData["commodities"] = JArray.FromObject(data["Items"])
                         .Where(c => ApplyJournalMarketFilter(c))
                         .Select(c => FormatCommodity(c, true))
                         .ToList();
 
                     // Remove localized names
-                    data = eddnState.PersonalData.Strip(data);
+                    handledData = eddnState.PersonalData.Strip(handledData);
 
                     // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data);
+                    handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
+                    data = handledData;
                     return true;
                 }
             }
@@ -95,16 +95,15 @@ namespace EddiEddnResponder.Schemas
                 var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
                 var stationName = marketJson["name"].ToString();
                 var marketID = marketJson["id"].ToObject<long>();
-                var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
+                var timestamp = marketJson["timestamp"];
 
                 // Sanity check - we must have a valid timestamp
                 if (timestamp == null) { return null; }
 
                 // Build our commodities lists
-                var commodities = marketJson["commodities"]?.ToObject<JArray>()?
+                var commodities = JArray.FromObject(marketJson["commodities"]?.ToObject<JArray>()?
                     .Where(c => ApplyFrontierApiMarketFilter(c))
-                    .Select(c => FormatCommodity(c.ToObject<JObject>(), false))
-                    .ToList() ?? new List<JObject>();
+                    .Select(c => FormatCommodity(c.ToObject<JObject>(), false)));
                 var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
                 var economies = marketJson["economies"];
 
@@ -114,7 +113,7 @@ namespace EddiEddnResponder.Schemas
                     lastSentMarketID = marketID;
 
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                    data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
+                    data.Add("timestamp", timestamp);
                     data.Add("systemName", systemName);
                     data.Add("stationName", stationName);
                     data.Add("marketId", marketID);
@@ -171,7 +170,7 @@ namespace EddiEddnResponder.Schemas
             }
         }
 
-        private JObject FormatCommodity(JObject c, bool fromJournal)
+        private JObject FormatCommodity(JToken c, bool fromJournal)
         {
             var handledC = new JObject();
             if (fromJournal)
@@ -190,22 +189,19 @@ namespace EddiEddnResponder.Schemas
                 handledC["stockBracket"] = c["StockBracket"];
 
                 var statusFlags = new HashSet<string>();
-                if (c["Producer"] != null)
+                if (c["Producer"].ToObject<bool?>() == true)
                 {
                     statusFlags.Add("Producer");
                 }
-                if (c["Consumer"] != null)
+                if (c["Consumer"].ToObject<bool?>() == true)
                 {
                     statusFlags.Add("Consumer");
                 }
-                if (c["Rare"] != null)
+                if (c["Rare"].ToObject<bool?>() == true)
                 {
                     statusFlags.Add("Rare");
                 }
-                if (statusFlags.Any())
-                {
-                    handledC["statusFlags"] = JToken.FromObject(statusFlags);
-                }
+                handledC["statusFlags"] = JToken.FromObject(statusFlags);
             }
             else
             {

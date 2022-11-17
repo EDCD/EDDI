@@ -1,12 +1,16 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEddnResponder;
+using EddiEddnResponder.Schemas;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tests.Properties;
 using Utilities;
 
 namespace UnitTests
@@ -14,10 +18,14 @@ namespace UnitTests
     [TestClass]
     public class EddnTests : TestBase
     {
+        EDDNResponder eddnResponder;
+
         [TestInitialize]
         public void start()
         {
             MakeSafe();
+            eddnResponder = new EDDNResponder();
+            eddnResponder.Start();
         }
 
         class MockStarService : StarSystemRepository
@@ -701,6 +709,139 @@ namespace UnitTests
             Assert.IsNull(responder.eddnState.Location.systemX);
             Assert.IsNull(responder.eddnState.Location.systemY);
             Assert.IsNull(responder.eddnState.Location.systemZ);
+        }
+
+        [TestMethod]
+        public void commoditySchemaJournalTest()
+        {
+            // Set up our schema
+            var commoditySchema = eddnResponder
+                .schemas.FirstOrDefault(s => s.GetType() == typeof(CommoditySchema));
+
+            // Set up our initial conditions
+            var marketData = Deserializtion.
+                DeserializeData(DeserializeJsonResource<string>(Resources.market));
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString(marketData["timestamp"] as DateTime?));
+            Assert.AreEqual(3702012928, marketData["MarketID"] as long?);
+            Assert.AreEqual("all", marketData["CarrierDockingAccess"] as string);
+            Assert.AreEqual(6, (marketData["Items"] as IEnumerable<object>).Count());
+            if (marketData["Items"] is List<object> items)
+            {
+                if (items[0] is IDictionary<string, object> item)
+                {
+                    Assert.AreEqual(15, item.Keys.Count);
+                    Assert.AreEqual("Painite", item["Name_Localised"] as string);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            Assert.IsTrue(commoditySchema.Handle("Market", ref marketData, eddnState));
+
+            // Validate the final data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString(marketData["timestamp"] as DateTime?));
+            Assert.AreEqual(3702012928, marketData["marketId"] as long?);
+            Assert.IsFalse(marketData.ContainsKey("CarrierDockingAccess"));
+            Assert.AreEqual(6, (marketData["commodities"] as IEnumerable<object>).Count());
+            if (marketData["commodities"] is List<JObject> handledItems)
+            {
+                if (handledItems[0] is JObject item)
+                {
+                    Assert.IsFalse(item.ContainsKey("id"));
+                    Assert.IsFalse(item.ContainsKey("Name_Localised"));
+                    Assert.IsFalse(item.ContainsKey("Category"));
+                    Assert.IsFalse(item.ContainsKey("Category_Localised"));
+                    Assert.IsFalse(item.ContainsKey("Consumer"));
+                    Assert.IsFalse(item.ContainsKey("Producer"));
+                    Assert.IsFalse(item.ContainsKey("Rare"));
+
+                    Assert.AreEqual(9, item.Count);
+                    Assert.AreEqual("painite", item["name"].ToString());
+                    Assert.AreEqual(0, item["buyPrice"].ToObject<int?>());
+                    Assert.AreEqual(500096, item["sellPrice"].ToObject<int?>());
+                    Assert.AreEqual(0, item["meanPrice"].ToObject<int?>());
+                    Assert.AreEqual(0, item["stockBracket"].ToObject<int?>());
+                    Assert.AreEqual(2, item["demandBracket"].ToObject<int?>());
+                    Assert.AreEqual(0, item["stock"].ToObject<int?>());
+                    Assert.AreEqual(200, item["demand"] .ToObject<int?>());
+                    Assert.AreEqual(1, item["statusFlags"].ToObject<JArray>().Count);
+                }
+            }
+            else 
+            { 
+                Assert.Fail(); 
+            }
+        }
+
+        [TestMethod]
+        public void commoditySchemaCapiTest()
+        {
+            // Set up our schema
+            var commoditySchema = eddnResponder
+                .capiSchemas.FirstOrDefault(s => s.GetType() == typeof(CommoditySchema));
+
+            // Set up our initial conditions
+            var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Oresqu"",""faction"":""independent""}}");
+            var marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons);
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString(marketJson["timestamp"].ToObject<DateTime?>()));
+            Assert.AreEqual(3228854528, marketJson["id"].ToObject<long?>());
+            Assert.AreEqual("starport", marketJson["outpostType"].ToString());
+            Assert.AreEqual(117, (marketJson["commodities"] as IEnumerable<object>).Count());
+            if (marketJson["commodities"].ToObject<JArray>() is JArray items)
+            {
+                if (items[0] is JToken item)
+                {
+                    Assert.AreEqual(13, item.Count());
+                    Assert.AreEqual("Agronomic Treatment", item["locName"].ToString());
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            var handledData = commoditySchema.Handle(profileJson, marketJson, new JObject(), new JObject(), eddnState);
+            Assert.IsNotNull(handledData);
+
+            // Validate the final data
+            Assert.AreEqual(3228854528, handledData["marketId"] as long?);
+            Assert.IsFalse(handledData.ContainsKey("outpostType"));
+            Assert.AreEqual(116, (handledData["commodities"] as JArray).Count());
+            if (handledData["commodities"] is JArray handledItems)
+            {
+                if (handledItems[0] is JObject item)
+                {
+                    Assert.IsFalse(item.ContainsKey("id"));
+                    Assert.IsFalse(item.ContainsKey("locName"));
+                    Assert.IsFalse(item.ContainsKey("categoryname"));
+                    Assert.IsFalse(item.ContainsKey("legality"));
+
+                    Assert.AreEqual(9, item.Count);
+                    Assert.AreEqual("AgronomicTreatment", item["name"].ToString());
+                    Assert.AreEqual(0, item["buyPrice"].ToObject<int?>());
+                    Assert.AreEqual(3336, item["sellPrice"].ToObject<int?>());
+                    Assert.AreEqual(3155, item["meanPrice"].ToObject<int?>());
+                    Assert.AreEqual(0, item["stockBracket"].ToObject<int?>());
+                    Assert.AreEqual(2, item["demandBracket"].ToObject<int?>());
+                    Assert.AreEqual(0, item["stock"].ToObject<int?>());
+                    Assert.AreEqual(43, item["demand"].ToObject<int?>());
+                    Assert.AreEqual(0, item["statusFlags"].ToObject<JArray>().Count);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
     }
 }
