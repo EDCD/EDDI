@@ -50,6 +50,15 @@ namespace EddiDataProviderService
 
         private StarSystem GetSystemExtras(StarSystem starSystem, bool showInformation, bool showBodies, bool showStations, bool showFactions)
         {
+            if (!showInformation & showStations)
+            {
+                throw new Exception("System Station details cannot be retrieved while showInformation is false");
+            }
+            if (!showInformation & showFactions)
+            {
+                throw new Exception("System Faction details cannot be retrieved while showInformation is false");
+            }
+
             if (starSystem != null)
             {
                 if (showBodies)
