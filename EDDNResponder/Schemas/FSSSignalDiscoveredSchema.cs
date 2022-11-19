@@ -31,6 +31,8 @@ namespace EddiEddnResponder.Schemas
                         {
                             data = PrepareSignalsData(latestSignalState);
                             lastEdType = edType;
+                            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", data, eddnState);
+                            latestSignalState = null;
                             return true;
                         }
                     }
@@ -116,12 +118,6 @@ namespace EddiEddnResponder.Schemas
             data = eddnState.GameVersion.AugmentVersion(data);
 
             return data;
-        }
-
-        public void Send(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", data);
-            latestSignalState = null;
         }
     }
 }

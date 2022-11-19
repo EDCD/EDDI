@@ -11,14 +11,10 @@ namespace EddiEddnResponder
 
         [UsedImplicitly]
         bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState);
-
-        void Send(IDictionary<string, object> data);
     }
 
     public interface ICapiSchema
     {
         IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState);
-
-        void SendCapi(IDictionary<string, object> data);
     }
 }

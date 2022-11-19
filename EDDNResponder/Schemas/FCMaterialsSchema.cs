@@ -1,7 +1,7 @@
-﻿using System;
-using EddiEddnResponder.Sender;
+﻿using EddiEddnResponder.Sender;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -46,11 +46,6 @@ namespace EddiEddnResponder.Schemas
             }
         }
 
-        public void Send(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_journal/1", data);
-        }
-
         public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
         {
             try
@@ -83,8 +78,9 @@ namespace EddiEddnResponder.Schemas
                         data = eddnState.PersonalData.Strip(data);
 
                         // Apply data augments
-                        data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+                        data = eddnState.GameVersion.AugmentVersion(data);
 
+                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data, eddnState, "CAPI-market");
                         return data;
                     }
                 }
@@ -97,11 +93,6 @@ namespace EddiEddnResponder.Schemas
             }
 
             return null;
-        }
-
-        public void SendCapi(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data);
         }
     }
 }

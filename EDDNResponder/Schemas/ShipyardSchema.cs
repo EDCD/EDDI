@@ -42,8 +42,7 @@ namespace EddiEddnResponder.Schemas
                         // Apply data augments
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
-                        data = handledData;
-
+                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", handledData, eddnState);
                         return true;
                     }
                 }
@@ -56,11 +55,6 @@ namespace EddiEddnResponder.Schemas
                 Logging.Error($"{GetType().Name} failed to handle journal data.");
             }
             return false;
-        }
-
-        public void Send(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
         }
 
         public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
@@ -101,8 +95,9 @@ namespace EddiEddnResponder.Schemas
                     data.Add("allowCobraMkIV", allowCobraMkIV);
 
                     // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-shipyard");
+                    data = eddnState.GameVersion.AugmentVersion(data);
 
+                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data, eddnState, "CAPI-shipyard");
                     return data;
                 }
             }
@@ -115,11 +110,6 @@ namespace EddiEddnResponder.Schemas
             }
 
             return null;
-        }
-
-        public void SendCapi(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
         }
     }
 }

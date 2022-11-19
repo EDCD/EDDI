@@ -1,6 +1,6 @@
-﻿using System;
-using EddiEddnResponder.Sender;
+﻿using EddiEddnResponder.Sender;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -27,6 +27,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentStarPos(data);
                 data = eddnState.GameVersion.AugmentVersion(data);
 
+                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fssbodysignals/1", data, eddnState);
                 return true;
             }
             catch (Exception e)
@@ -37,11 +38,6 @@ namespace EddiEddnResponder.Schemas
                 Logging.Error($"{GetType().Name} failed to handle journal data.");
                 return false;
             }
-        }
-
-        public void Send(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fssbodysignals/1", data);
         }
     }
 }

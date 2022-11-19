@@ -66,12 +66,8 @@ namespace EddiEddnResponder
         {
             foreach (var schema in capiSchemas)
             {
-                var handledData = schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState);
-                if (handledData != null)
-                {
-                    // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
-                    schema.SendCapi(handledData);
-                }
+                // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
+                schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState);
             }
         }
 
@@ -121,11 +117,7 @@ namespace EddiEddnResponder
             // Handle events
             foreach (var schema in schemas)
             {
-                if (schema.Handle(edType, ref data, eddnState))
-                {
-                    schema.Send(data);
-                    break;
-                }
+                schema.Handle(edType, ref data, eddnState);
             }
         }
 

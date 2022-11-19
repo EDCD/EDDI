@@ -49,7 +49,7 @@ namespace EddiEddnResponder.Schemas
                     // Apply data augments
                     handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
-                    data = handledData;
+                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
                     return true;
                 }
             }
@@ -79,11 +79,6 @@ namespace EddiEddnResponder.Schemas
                 return false;
             }
             return true;
-        }
-
-        public void Send(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
         }
 
         public IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState)
@@ -125,8 +120,9 @@ namespace EddiEddnResponder.Schemas
                     data = eddnState.PersonalData.Strip(data);
 
                     // Apply data augments
-                    data = eddnState.GameVersion.AugmentVersion(data, "CAPI-market");
+                    data = eddnState.GameVersion.AugmentVersion(data);
 
+                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data, eddnState, "CAPI-market");
                     return data;
                 }
             }
@@ -138,11 +134,6 @@ namespace EddiEddnResponder.Schemas
                 Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
             }
             return null;
-        }
-
-        public void SendCapi(IDictionary<string, object> data)
-        {
-            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
         }
 
         private bool ApplyFrontierApiMarketFilter(JToken c)

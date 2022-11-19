@@ -53,7 +53,7 @@ namespace EddiEddnResponder.Toolkit
             }
         }
 
-        internal IDictionary<string, object> AugmentVersion(IDictionary<string, object> data, string gameBuildOverrideCAPI = null)
+        internal IDictionary<string, object> AugmentVersion(IDictionary<string, object> data)
         {
             // Apply game version augment (only if the game is running)
             if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
@@ -69,18 +69,6 @@ namespace EddiEddnResponder.Toolkit
                     data.Add("odyssey", inOdyssey);
                 }
             }
-            
-            //if (!data.ContainsKey("gameversion") && !string.IsNullOrEmpty(gameVersion))
-            //{
-            //    data.Add("gameversion", gameVersion);
-            //}
-            //if (!data.ContainsKey("gamebuild") && 
-            //    (!string.IsNullOrEmpty(gameBuild) || !string.IsNullOrEmpty(gameBuild)))
-            //{
-            //    data.Add("gamebuild", !string.IsNullOrEmpty(gameBuildOverrideCAPI) 
-            //        ? gameBuildOverrideCAPI 
-            //        : gameBuild);
-            //}
             return data;
         }
     }

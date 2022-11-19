@@ -1,5 +1,6 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
+using EddiEddnResponder.Toolkit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
@@ -19,13 +20,13 @@ namespace EddiEddnResponder.Sender
         // Schemas identified as invalid by the server
         private static readonly List<string> invalidSchemas = new List<string>();
 
-        public static void SendToEDDN(string schema, IDictionary<string, object> data)
+        public static void SendToEDDN(string schema, IDictionary<string, object> data, EDDNState eddnState, string gameVersionOverride = null)
         {
             try
             {
                 var body = new EDDNBody
                 {
-                    header = generateHeader(),
+                    header = generateHeader(eddnState.GameVersion, gameVersionOverride),
                     schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
@@ -58,16 +59,24 @@ namespace EddiEddnResponder.Sender
             //    hash.Append(theByte.ToString("x2"));
             //}
             //return hash.ToString();
-            return EDDI.Instance.Cmdr == null || EDDI.Instance.Cmdr.name == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
+            return string.IsNullOrEmpty(EDDI.Instance.Cmdr?.name) 
+                ? "Unknown commander" 
+                : EDDI.Instance.Cmdr.name;
         }
 
-        private static EDDNHeader generateHeader()
+        private static EDDNHeader generateHeader(GameVersionAugmenter gameVersion, string gameVersionOverride = null)
         {
             var header = new EDDNHeader
             {
+                uploaderID = generateUploaderId(),
                 softwareName = Constants.EDDI_NAME,
                 softwareVersion = Constants.EDDI_VERSION.ToString(),
-                uploaderID = generateUploaderId()
+                gameversion = string.IsNullOrEmpty(gameVersionOverride) 
+                    ? gameVersion.gameVersion 
+                    : gameVersionOverride,
+                gamebuild = string.IsNullOrEmpty(gameVersionOverride) 
+                    ? gameVersion.gameBuild 
+                    : gameVersionOverride
             };
             return header;
         }
