@@ -451,7 +451,7 @@ namespace UnitTests
 
             // Act
             string[] systemNames = new string[] { "Sol", "Achenar", "Alioth" };
-            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystems(systemNames, true, false);
+            List<StarSystem> starSystems = fakeEdsmService.GetStarMapSystems(systemNames, showCoordinates: true);
 
             // Assert
             Assert.AreEqual(3, starSystems?.Count);
@@ -511,7 +511,7 @@ namespace UnitTests
             fakeEdsmRestClient.Expect(resource, json, data);
 
             // Act
-            StarSystem system = fakeEdsmService.GetStarMapSystem("No such system", false, false);
+            StarSystem system = fakeEdsmService.GetStarMapSystem("No such system", showCoordinates: false);
 
             // Assert
             // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;

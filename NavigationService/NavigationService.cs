@@ -527,7 +527,7 @@ namespace EddiNavigationService
             var systems = new List<string>();      // List of eligible mission destination systems
             var missionids = new List<long>();       // List of mission IDs for the next system
 
-            var homeStarSystem = dataProviderService.GetSystemData(homeSystem, true, false, false, false, false);
+            var homeStarSystem = dataProviderService.GetSystemData(homeSystem, showCoordinates: false, showBodies: false, showStations: false, showFactions: false);
             NavWaypoint homeSystemWaypoint = null;
             if (homeStarSystem != null)
             {
@@ -575,7 +575,7 @@ namespace EddiNavigationService
                 }
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
-                var navWaypoints = dataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false).Select(s => new NavWaypoint(s)).ToList();
+                var navWaypoints = dataProviderService.GetSystemsData(systems.ToArray(), false, false, false, false).Select(s => new NavWaypoint(s)).ToList();
                 if (CalculateRNNA(navWaypoints, missions, out sortedRoute, homeSystemWaypoint))
                 {
                     // Prepend our current system to the route if it is not already present

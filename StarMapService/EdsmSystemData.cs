@@ -11,14 +11,14 @@ namespace EddiStarMapService
     public partial class StarMapService
     {
         /// <summary> Exactly one system name is required. </summary>
-        public StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
+        public StarSystem GetStarMapSystem(string system, bool showCoordinates = true)
         {
             if (system == null) { return null; }
-            return GetStarMapSystems(new[] { system }, showCoordinates, showSystemInformation)?.FirstOrDefault();
+            return GetStarMapSystems(new[] { system }, showCoordinates)?.FirstOrDefault();
         }
 
         /// <summary> At least one system name is required. </summary>
-        public List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true, bool showSystemInformation = true)
+        public List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true)
         {
             if (systems == null) { return new List<StarSystem>(); }
 
@@ -29,8 +29,8 @@ namespace EddiStarMapService
             }
             request.AddParameter("showId", 1);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
-            request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
-            request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
+            request.AddParameter("showInformation", 1); 
+            request.AddParameter("showPermit", 1);
             var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
@@ -53,7 +53,7 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 100 light years. </summary>
-        public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 100, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
+        public List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 100, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showPermit = true)
         {
             if (starSystem == null) { return new List<Dictionary<string, object>>(); }
             if (maxRadiusLy > 100)
@@ -69,7 +69,7 @@ namespace EddiStarMapService
             request.AddParameter("showId", showEdsmId ? 1 : 0);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
-            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showInformation", 1);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
             var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
@@ -97,7 +97,7 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a cube, with a maximum cube size of 200 light years. </summary>
-        public List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
+        public List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showPermit = true)
         {
             if (starSystem == null) { return new List<StarSystem>(); }
             if (cubeLy > 200)
@@ -112,7 +112,7 @@ namespace EddiStarMapService
             request.AddParameter("showId", showEdsmId ? 1 : 0);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
-            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showInformation", 1);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
             var clientResponse = restClient.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)

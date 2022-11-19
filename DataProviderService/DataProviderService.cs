@@ -21,20 +21,20 @@ namespace EddiDataProviderService
         }
 
         // Uses the EDSM data service and legacy EDDP data
-        public StarSystem GetSystemData(string system, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
+        public StarSystem GetSystemData(string system, bool showCoordinates = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
         {
             if (system == null || string.IsNullOrEmpty(system)) { return null; }
 
-            StarSystem starSystem = edsmService.GetStarMapSystem(system, showCoordinates, showSystemInformation);
-            starSystem = GetSystemExtras(starSystem, showSystemInformation, showBodies, showStations, showFactions);
+            StarSystem starSystem = edsmService.GetStarMapSystem(system, showCoordinates);
+            starSystem = GetSystemExtras(starSystem, showBodies, showStations, showFactions);
             return starSystem ?? new StarSystem() { systemname = system };
         }
 
-        public List<StarSystem> GetSystemsData(string[] systemNames, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
+        public List<StarSystem> GetSystemsData(string[] systemNames, bool showCoordinates = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
         {
             if (systemNames == null || systemNames.Length == 0) { return new List<StarSystem>(); }
 
-            List<StarSystem> starSystems = edsmService.GetStarMapSystems(systemNames, showCoordinates, showSystemInformation);
+            List<StarSystem> starSystems = edsmService.GetStarMapSystems(systemNames, showCoordinates);
             if (starSystems == null) { return new List<StarSystem>(); }
 
             List<StarSystem> fullStarSystems = new List<StarSystem>();
@@ -42,22 +42,14 @@ namespace EddiDataProviderService
             {
                 if (!string.IsNullOrEmpty(systemName))
                 {
-                    fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s?.systemname == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
+                    fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s?.systemname == systemName), showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
                 }
             }
             return fullStarSystems;
         }
 
-        private StarSystem GetSystemExtras(StarSystem starSystem, bool showInformation, bool showBodies, bool showStations, bool showFactions)
+        private StarSystem GetSystemExtras(StarSystem starSystem, bool showBodies, bool showStations, bool showFactions)
         {
-            if (!showInformation & showStations)
-            {
-                throw new Exception("System Station details cannot be retrieved while showInformation is false");
-            }
-            if (!showInformation & showFactions)
-            {
-                throw new Exception("System Faction details cannot be retrieved while showInformation is false");
-            }
 
             if (starSystem != null)
             {
