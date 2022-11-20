@@ -26,15 +26,20 @@ namespace EddiEddnResponder.Schemas
                 {
                     if (edTypes.Contains(lastEdType) && !edTypes.Contains(edType))
                     {
-                        // This marks the end of a batch of signals.
-                        if (signals.Any())
+                        LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
-                            data = PrepareSignalsData(latestSignalState);
-                            lastEdType = edType;
-                            EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", data, eddnState);
-                            latestSignalState = null;
-                            return true;
-                        }
+                            if (signals.Any())
+                            {
+                                // This marks the end of a batch of signals.
+                                var handledData = PrepareSignalsData(latestSignalState);
+                                handledData = eddnState.GameVersion.AugmentVersion(handledData);
+                                lastEdType = edType;
+                                latestSignalState = null;
+                                signals?.Clear();
+                                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, eddnState);
+                            }
+                        });
+                        return true;
                     }
 
                     if (edTypes.Contains(edType))
@@ -70,13 +75,13 @@ namespace EddiEddnResponder.Schemas
                             if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
                             {
                                 var handledSignal = new Dictionary<string, object>();
-                                if (data["timestamp"] != null) { handledSignal["timestamp"] = data["timestamp"];}
-                                if (data["SignalName"] != null) { handledSignal["SignalName"] = data["SignalName"]; }
-                                if (data["IsStation"] != null) { handledSignal["IsStation"] = data["IsStation"]; }
-                                if (data["USSType"] != null) { handledSignal["USSType"] = data["USSType"]; }
-                                if (data["SpawningState"] != null) { handledSignal["SpawningState"] = data["SpawningState"]; }
-                                if (data["SpawningFaction"] != null) { handledSignal["SpawningFaction"] = data["SpawningFaction"]; }
-                                if (data["ThreatLevel"] != null) { handledSignal["ThreatLevel"] = data["ThreatLevel"]; }
+                                if (data.ContainsKey("timestamp")) { handledSignal["timestamp"] = data["timestamp"];}
+                                if (data.ContainsKey("SignalName")) { handledSignal["SignalName"] = data["SignalName"]; }
+                                if (data.ContainsKey("IsStation")) { handledSignal["IsStation"] = data["IsStation"]; }
+                                if (data.ContainsKey("USSType")) { handledSignal["USSType"] = data["USSType"]; }
+                                if (data.ContainsKey("SpawningState")) { handledSignal["SpawningState"] = data["SpawningState"]; }
+                                if (data.ContainsKey("SpawningFaction")) { handledSignal["SpawningFaction"] = data["SpawningFaction"]; }
+                                if (data.ContainsKey("ThreatLevel")) { handledSignal["ThreatLevel"] = data["ThreatLevel"]; }
 
                                 // Update our signal data
                                 signals.Add(handledSignal);
@@ -109,7 +114,6 @@ namespace EddiEddnResponder.Schemas
                 { "event", "FSSSignalDiscovered" },
                 { "signals", retrievedSignals }
             } as IDictionary<string, object>;
-            signals?.Clear();
 
             // Apply data augments
             data = eddnState.Location.AugmentStarSystemName(data);
