@@ -64,11 +64,17 @@ namespace EddiEddnResponder.Schemas
                     lastSentMarketID = marketID;
 
                     var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
-                    var saleItems = items?["sales"]?.ToObject<JObject>() ?? new JObject();
-                    var purchaseItems = items?["purchases"]?.ToObject<JObject>() ?? new JObject();
+                    var saleItems = items["sales"]?.ToObject<JToken>();
+                    var purchaseItems = items["purchases"]?.ToObject<JToken>();
+                    var timestamp = marketJson["timestamp"]?.ToObject<DateTime>();
+
+                    // Sanity check - we must have a valid timestamp
+                    if (timestamp == null) { return null; }
+
                     if (saleItems.Children().Any() || purchaseItems.Children().Any())
                     {
                         var data = new Dictionary<string, object>() as IDictionary<string, object>;
+                        data.Add("timestamp", timestamp);
                         data.Add("event", "FCMaterials");
                         data.Add("MarketID", marketID);
                         data.Add("CarrierID", carrierID);

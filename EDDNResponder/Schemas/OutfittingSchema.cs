@@ -90,7 +90,7 @@ namespace EddiEddnResponder.Schemas
 
 
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
-                    data.Add("timestamp", Dates.FromDateTimeToString(timestamp));
+                    data.Add("timestamp", timestamp);
                     data.Add("systemName", systemName);
                     data.Add("stationName", stationName);
                     data.Add("marketId", marketID);

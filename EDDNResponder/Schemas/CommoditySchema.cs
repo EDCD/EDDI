@@ -50,6 +50,7 @@ namespace EddiEddnResponder.Schemas
                     handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
                     EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
+                    data = handledData;
                     return true;
                 }
             }
@@ -90,7 +91,7 @@ namespace EddiEddnResponder.Schemas
                 var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
                 var stationName = marketJson["name"].ToString();
                 var marketID = marketJson["id"].ToObject<long>();
-                var timestamp = marketJson["timestamp"];
+                var timestamp = marketJson["timestamp"].ToObject<DateTime>();
 
                 // Sanity check - we must have a valid timestamp
                 if (timestamp == null) { return null; }
