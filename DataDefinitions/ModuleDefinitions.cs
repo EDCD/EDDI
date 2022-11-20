@@ -1273,17 +1273,26 @@ namespace EddiDataDefinitions
 
         public static Module FromOutfittingInfo(OutfittingInfoItem item)
         {
-            Module module = new Module(FromEliteID(item.EliteID, item) 
-                                       ?? FromEDName(item.edName, item) 
-                                       ?? new Module());
-            if (module.invariantName == null)
+            try
             {
-                // Create a basic module & supplement from the info available
-                module = new Module(item.EliteID, item.edName, -1, item.edName, -1, "", item.buyPrice);
-            }
-            module.price = item.buyPrice;
+                Module module = new Module(FromEliteID(item.EliteID, item) 
+                                           ?? FromEDName(item.edName, item) 
+                                           ?? new Module());
+                if (module.invariantName == null)
+                {
+                    // Create a basic module & supplement from the info available
+                    module = new Module(item.EliteID, item.edName, -1, item.edName, -1, "", item.buyPrice);
+                }
+                module.price = item.buyPrice;
 
-            return module;
+                return module;
+            }
+            catch (System.Exception ex)
+            {
+                ex.Data.Add("Item", item);
+                Logging.Error("Failed to parse outfitting.json item", ex);
+            }
+            return null;
         }
     }
 }

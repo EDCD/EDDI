@@ -823,21 +823,29 @@ namespace EddiDataDefinitions
 
         public static Ship FromShipyardInfo(ShipyardInfoItem item)
         {
-            Ship ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel, false);
-            if (ship == null)
+            try
             {
-                // Unknown ship; report the full object so that we can update the definitions 
-                Logging.Info("Ship definition error: " + item.edModel);
-
-                // Create a basic ship definition & supplement from the info available 
-                ship = new Ship
+                var ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel, false);
+                if (ship == null)
                 {
-                    EDName = item.edModel
-                };
-            }
-            ship.value = item.shipPrice;
+                    // Unknown ship; report the full object so that we can update the definitions 
+                    Logging.Info("Ship definition error: " + item.edModel);
 
-            return ship;
+                    // Create a basic ship definition & supplement from the info available 
+                    ship = new Ship
+                    {
+                        EDName = item.edModel
+                    };
+                }
+                ship.value = item.shipPrice;
+                return ship;
+            }
+            catch (Exception ex)
+            {
+                ex.Data.Add("Ship", item);
+                Logging.Error("Failed to parse shipyard.json ship", ex);
+                return null;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

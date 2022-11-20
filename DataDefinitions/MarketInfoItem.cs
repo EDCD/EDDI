@@ -154,28 +154,37 @@ namespace EddiDataDefinitions
 
         public CommodityMarketQuote ToCommodityMarketQuote()
         {
-            var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
-            if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
+            try
             {
-                // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
-                Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
+                var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
+                if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
+                {
+                    // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
+                    Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
+                }
+                if (definition is null)
+                {
+                    definition = new CommodityDefinition(EliteID, -1, edName, CommodityCategory.FromEDName(category), meanPrice);
+                }
+                var quote = new CommodityMarketQuote(definition)
+                {
+                    avgprice = meanPrice,
+                    buyprice = buyPrice,
+                    stock = stock,
+                    stockbracket = stockBracket,
+                    sellprice = sellPrice,
+                    demand = demand,
+                    demandbracket = demandBracket,
+                    StatusFlags = statusFlags
+                };
+                return quote;
             }
-            if (definition is null)
+            catch (Exception ex)
             {
-                definition = new CommodityDefinition(EliteID, -1, edName, CommodityCategory.FromEDName(category), meanPrice);
+                ex.Data.Add("Item", this);
+                Logging.Error("Failed to parse Market.json item", ex);
             }
-            var quote = new CommodityMarketQuote(definition)
-            {
-                avgprice = meanPrice,
-                buyprice = buyPrice,
-                stock = stock,
-                stockbracket = stockBracket,
-                sellprice = sellPrice,
-                demand = demand,
-                demandbracket = demandBracket,
-                StatusFlags = statusFlags
-            };
-            return quote;
+            return null;
         }
     }
 
