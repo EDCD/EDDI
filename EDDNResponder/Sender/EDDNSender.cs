@@ -102,7 +102,7 @@ namespace EddiEddnResponder.Sender
                         // Invalid status codes are defined at https://github.com/EDCD/EDDN/blob/master/docs/Developers.md#server-responses
                         case HttpStatusCode.BadRequest: // Code 400
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException(response.Content);
                             }
                         case HttpStatusCode.RequestTimeout: // Code 408
                         case HttpStatusCode.GatewayTimeout: // Code 504
@@ -130,7 +130,8 @@ namespace EddiEddnResponder.Sender
                                 Logging.Debug("Response content is " + response.Content);
                                 if (response.StatusCode != HttpStatusCode.Accepted)
                                 {
-                                    throw new WebException("Failed to resend to EDDN service with compressed data.");
+                                    var iex = new Exception(response.Content);
+                                    throw new WebException("Failed to resend to EDDN service with compressed data.", iex);
                                 }
                                 break;
                             }
