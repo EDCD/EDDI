@@ -117,7 +117,10 @@ namespace EddiEddnResponder
             // Handle events
             foreach (var schema in schemas)
             {
-                schema.Handle(edType, ref data, eddnState);
+                if (schema.Handle(edType, ref data, eddnState))
+                {
+                    break;
+                }
             }
         }
 
