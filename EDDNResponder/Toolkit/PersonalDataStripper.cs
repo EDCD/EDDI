@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiEddnResponder.Toolkit
@@ -41,9 +42,14 @@ namespace EddiEddnResponder.Toolkit
                     fixedData.Add(item.Key, Strip(dict));
                     continue;
                 }
+                if (item.Value is JObject jObject)
+                {
+                    fixedData.Add(item.Key, Strip(jObject.ToObject<Dictionary<string, object>>()));
+                    continue;
+                }
                 if (item.Value is List<object> list)
                 {
-                    List<object> newList = new List<object>();
+                    var newList = new List<object>();
                     for (int i = 0; i < list.Count; i++)
                     {
                         if (list[i] is Dictionary<string, object> listDict)
@@ -54,6 +60,21 @@ namespace EddiEddnResponder.Toolkit
                         newList.Add(list[i]);
                     }
                     fixedData.Add(item.Key, newList);
+                    continue;
+                }
+                if (item.Value is JArray jArray)
+                {
+                    var newArray = new List<object>();
+                    for (int i = 0; i < jArray.Count; i++)
+                    {
+                        if (jArray[i] is JObject listJObject)
+                        {
+                            newArray.Add(Strip(listJObject.ToObject<Dictionary<string, object>>()));
+                            continue;
+                        }
+                        newArray.Add(jArray[i]);
+                    }
+                    fixedData.Add(item.Key, newArray);
                     continue;
                 }
                 fixedData.Add(item);
