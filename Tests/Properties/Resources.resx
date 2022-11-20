@@ -223,4 +223,10 @@
   <data name="capi_shipyard_Abasheli_Barracks" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>capi-shipyard-Abasheli Barracks.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="FCMaterials" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>FCMaterials.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="capi_market_fleet_carrier" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>capi-market-fleet_carrier.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

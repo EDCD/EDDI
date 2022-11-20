@@ -1,0 +1,154 @@
+{
+    "timestamp": "2022-11-08T03:15:30Z",
+    "id": 3709999999,
+    "name": "X9X-9XX",
+    "outpostType": "fleetcarrier",
+    "imported": [],
+    "exported": [],
+    "services": {
+        "commodities": "ok",
+        "carrierfuel": "ok",
+        "socialspace": "ok",
+        "refuel": "unavailable",
+        "repair": "unmanned",
+        "rearm": "unmanned",
+        "shipyard": "private",
+        "outfitting": "private",
+        "blackmarket": "unavailable",
+        "voucherredemption": "unavailable",
+        "exploration": "unmanned",
+        "bartender": "ok",
+        "vistagenomics": "unmanned",
+        "pioneersupplies": "unavailable",
+        "carriermanagement": "ok",
+        "stationmenu": "ok",
+        "dock": "ok",
+        "crewlounge": "ok",
+        "engineer": "ok",
+        "contacts": "ok",
+        "livery": "private"
+    },
+    "economies": {
+        "136": {
+            "name": "Carrier",
+            "proportion": 1
+        }
+    },
+    "prohibited": {
+        "128667728": "ImperialSlaves",
+        "128049243": "Slaves"
+    },
+    "orders": {
+        "commodities": {
+            "sales": [{
+                    "name": "bertrandite",
+                    "stock": "0",
+                    "price": "941",
+                    "blackmarket": false
+                }, {
+                    "name": "gallite",
+                    "stock": "1781",
+                    "price": "11915",
+                    "blackmarket": false
+                }, {
+                    "name": "cobalt",
+                    "stock": "1570",
+                    "price": "3762",
+                    "blackmarket": false
+                }, {
+                    "name": "bauxite",
+                    "stock": "0",
+                    "price": "1140",
+                    "blackmarket": false
+                }, {
+                    "name": "geologicalequipment",
+                    "stock": "0",
+                    "price": "205",
+                    "blackmarket": false
+                }, {
+                    "name": "powerconverter",
+                    "stock": "0",
+                    "price": "3590",
+                    "blackmarket": false
+                }
+            ],
+            "purchases": [{
+                    "name": "agronomictreatment",
+                    "total": 2930,
+                    "outstanding": 2930,
+                    "price": 3105,
+                    "blackmarket": false
+                }
+            ]
+        },
+        "onfootmicroresources": {
+            "sales": {
+                "128064021": {
+                    "id": 128064021,
+                    "name": "graphene",
+                    "locName": "Graphene",
+                    "price": 1300,
+                    "stock": 112
+                }
+            },
+            "purchases": []
+        }
+    },
+    "commodities": [{
+            "id": 128924334,
+            "name": "AgronomicTreatment",
+            "legality": "",
+            "buyPrice": 0,
+            "sellPrice": 3105,
+            "meanPrice": 0,
+            "demandBracket": 2,
+            "stockBracket": "",
+            "stock": 0,
+            "demand": 2930,
+            "statusFlags": [],
+            "categoryname": "Chemicals",
+            "locName": "Agronomic Treatment"
+        }, {
+            "id": 128049162,
+            "name": "Cobalt",
+            "legality": "",
+            "buyPrice": 3762,
+            "sellPrice": 0,
+            "meanPrice": 0,
+            "demandBracket": "",
+            "stockBracket": 2,
+            "stock": 1570,
+            "demand": 0,
+            "statusFlags": [],
+            "categoryname": "Metals",
+            "locName": "Cobalt"
+        }, {
+            "id": 128049158,
+            "name": "Gallite",
+            "legality": "",
+            "buyPrice": 11915,
+            "sellPrice": 0,
+            "meanPrice": 0,
+            "demandBracket": "",
+            "stockBracket": 2,
+            "stock": 1781,
+            "demand": 0,
+            "statusFlags": [],
+            "categoryname": "Minerals",
+            "locName": "Gallite"
+        }, {
+            "id": 128066403,
+            "categoryname": "NonMarketable",
+            "name": "Drones",
+            "stock": 9999999,
+            "buyPrice": 101,
+            "sellPrice": 101,
+            "demand": 9999999,
+            "legality": "",
+            "meanPrice": 101,
+            "demandBracket": 2,
+            "stockBracket": 2,
+            "locName": "Limpet"
+        }
+    ]
+}

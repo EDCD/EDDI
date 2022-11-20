@@ -129,7 +129,7 @@ namespace UnitTests
 
         private EDDNResponder makeTestEDDNResponder()
         {
-            EDDNResponder responder = new EDDNResponder(new MockStarService());
+            EDDNResponder responder = new EDDNResponder(new MockStarService(), true);
             return responder;
         }
 
@@ -769,13 +769,13 @@ namespace UnitTests
                     Assert.AreEqual(0, item["stockBracket"].ToObject<int?>());
                     Assert.AreEqual(2, item["demandBracket"].ToObject<int?>());
                     Assert.AreEqual(0, item["stock"].ToObject<int?>());
-                    Assert.AreEqual(200, item["demand"] .ToObject<int?>());
+                    Assert.AreEqual(200, item["demand"].ToObject<int?>());
                     Assert.AreEqual(1, item["statusFlags"].ToObject<JArray>().Count);
                 }
             }
-            else 
-            { 
-                Assert.Fail(); 
+            else
+            {
+                Assert.Fail();
             }
         }
 
@@ -801,7 +801,7 @@ namespace UnitTests
                 if (items[0] is JToken item)
                 {
                     Assert.AreEqual(13, item.Count());
-                    Assert.AreEqual("Agronomic Treatment", item["locName"].ToString());
+                    Assert.AreEqual("Agronomic Treatment", (string)item["locName"]);
                 }
             }
             else
@@ -814,12 +814,13 @@ namespace UnitTests
             Assert.IsNotNull(handledData);
 
             // Validate the final data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString((DateTime)handledData["timestamp"]));
             Assert.AreEqual(3228854528, handledData["marketId"] as long?);
             Assert.IsFalse(handledData.ContainsKey("outpostType"));
-            Assert.AreEqual(116, (handledData["commodities"] as JArray).Count());
-            if (handledData["commodities"] is JArray handledItems)
+            Assert.AreEqual(116, (handledData["commodities"] as List<object>).Count);
+            if (handledData["commodities"] is List<object> handledItems)
             {
-                if (handledItems[0] is JObject item)
+                if (handledItems[0] is Dictionary<string, object> item)
                 {
                     Assert.IsFalse(item.ContainsKey("id"));
                     Assert.IsFalse(item.ContainsKey("locName"));
@@ -828,14 +829,139 @@ namespace UnitTests
 
                     Assert.AreEqual(9, item.Count);
                     Assert.AreEqual("AgronomicTreatment", item["name"].ToString());
-                    Assert.AreEqual(0, item["buyPrice"].ToObject<int?>());
-                    Assert.AreEqual(3336, item["sellPrice"].ToObject<int?>());
-                    Assert.AreEqual(3155, item["meanPrice"].ToObject<int?>());
-                    Assert.AreEqual(0, item["stockBracket"].ToObject<int?>());
-                    Assert.AreEqual(2, item["demandBracket"].ToObject<int?>());
-                    Assert.AreEqual(0, item["stock"].ToObject<int?>());
-                    Assert.AreEqual(43, item["demand"].ToObject<int?>());
-                    Assert.AreEqual(0, item["statusFlags"].ToObject<JArray>().Count);
+                    Assert.AreEqual(0, Convert.ToInt32(item["buyPrice"]));
+                    Assert.AreEqual(3336, Convert.ToInt32(item["sellPrice"]));
+                    Assert.AreEqual(3155, Convert.ToInt32(item["meanPrice"]));
+                    Assert.AreEqual(0, Convert.ToInt32(item["stockBracket"]));
+                    Assert.AreEqual(2, Convert.ToInt32(item["demandBracket"]));
+                    Assert.AreEqual(0, Convert.ToInt32(item["stock"]));
+                    Assert.AreEqual(43, Convert.ToInt32(item["demand"]));
+                    Assert.AreEqual(0, (item["statusFlags"] as List<object> ?? new List<object>()).Count);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void fcmaterialsSchemaJournalTest()
+        {
+            // Set up our schema
+            var fcmaterialsSchema = eddnResponder
+                .schemas.FirstOrDefault(s => s.GetType() == typeof(FCMaterialsSchema));
+
+            // Set up our initial conditions
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+            var fcmaterialsData = Deserializtion.
+                DeserializeData(DeserializeJsonResource<string>(Resources.FCMaterials));
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcmaterialsData["timestamp"] as DateTime?));
+            Assert.AreEqual(3709999999, fcmaterialsData["MarketID"] as long?);
+            Assert.AreEqual("Station 42", fcmaterialsData["CarrierName"] as string);
+            Assert.AreEqual("X9X-9XX", fcmaterialsData["CarrierID"] as string);
+            Assert.AreEqual(2, (fcmaterialsData["Items"] as IEnumerable<object>).Count());
+            if (fcmaterialsData["Items"] is List<object> items)
+            {
+                if (items[0] is IDictionary<string, object> item)
+                {
+                    Assert.AreEqual(6, item.Keys.Count);
+                    Assert.AreEqual("Chemical Superbase", item["Name_Localised"] as string);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            Assert.IsTrue(fcmaterialsSchema.Handle("FCMaterials", ref fcmaterialsData, eddnState));
+
+            // Validate the final data
+            Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcmaterialsData["timestamp"] as DateTime?));
+            Assert.AreEqual(3709999999, fcmaterialsData["MarketID"] as long?);
+            Assert.AreEqual("Station 42", fcmaterialsData["CarrierName"] as string);
+            Assert.AreEqual("X9X-9XX", fcmaterialsData["CarrierID"] as string);
+            Assert.AreEqual(2, (fcmaterialsData["Items"] as IEnumerable<object>).Count());
+            if (fcmaterialsData["Items"] is IEnumerable<object> handledItems)
+            {
+                if (handledItems.FirstOrDefault() is IDictionary<string, object> item)
+                {
+                    Assert.IsFalse(item.ContainsKey("Name_Localised"));
+
+                    Assert.AreEqual(5, item.Count);
+                    Assert.AreEqual(128961528, Convert.ToInt64(item["id"]));
+                    Assert.AreEqual("$chemicalsuperbase_name;", item["Name"].ToString());
+                    Assert.AreEqual(500, Convert.ToInt32(item["Price"]));
+                    Assert.AreEqual(50, Convert.ToInt32(item["Stock"]));
+                    Assert.AreEqual(0, Convert.ToInt32(item["Demand"]));
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void fcmaterialsSchemaCapiTest()
+        {
+            // Set up our schema
+            var fcmaterialsSchema = eddnResponder
+                .capiSchemas.FirstOrDefault(s => s.GetType() == typeof(FCMaterialsSchema));
+
+            // Set up our initial conditions
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+            var fcMarketJson = DeserializeJsonResource<JObject>(Resources.capi_market_fleet_carrier);
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcMarketJson["timestamp"].ToObject<DateTime>()));
+            Assert.AreEqual(3709999999, fcMarketJson["id"].ToObject<long>());
+            Assert.AreEqual("X9X-9XX", fcMarketJson["name"].ToString());
+            Assert.AreEqual("fleetcarrier", fcMarketJson["outpostType"].ToString());
+            var onFootMicroResources = fcMarketJson["orders"]["onfootmicroresources"];
+            Assert.AreEqual(1, onFootMicroResources["sales"].Children().Count());
+            Assert.AreEqual(0, onFootMicroResources["purchases"].Children().Count());
+            if (onFootMicroResources["sales"].Children().Values().FirstOrDefault() is JObject item)
+            {
+                Assert.AreEqual(5, item.Count);
+                Assert.AreEqual("Graphene", item["locName"].ToString());
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            var handledData = fcmaterialsSchema.Handle(null, fcMarketJson, null, null, eddnState);
+            Assert.IsNotNull(handledData);
+
+            // Validate the final data
+            Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString((DateTime)handledData["timestamp"]));
+            Assert.AreEqual(3709999999, handledData["MarketID"] as long?);
+            Assert.AreEqual("X9X-9XX", handledData["CarrierID"] as string);
+            if (handledData.TryGetValue("Items", out object handledItemsObj) &&
+                handledItemsObj is Dictionary<string, object> handledItems)
+            {
+                var sales = handledItems["sales"] as Dictionary<string, object> ?? new Dictionary<string, object>();
+                var purchases = handledItems["purchases"] as Dictionary<string, object> ?? new Dictionary<string, object>();
+                Assert.AreEqual(1, sales.Count());
+                Assert.AreEqual(0, purchases.Count());
+                if (sales["128064021"] is Dictionary<string, object> handledItem)
+                {
+                    Assert.IsFalse(handledItem.ContainsKey("locName"));
+
+                    Assert.AreEqual(4, handledItem.Count);
+                    Assert.AreEqual(128064021, Convert.ToInt64(handledItem["id"]));
+                    Assert.AreEqual("graphene", handledItem["name"].ToString());
+                    Assert.AreEqual(1300, Convert.ToInt32(handledItem["price"]));
+                    Assert.AreEqual(112, Convert.ToInt32(handledItem["stock"]));
+                }
+                else
+                {
+                    Assert.Fail();
                 }
             }
             else

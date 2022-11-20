@@ -1,0 +1,23 @@
+{
+    "timestamp": "2022-11-08T03:15:30Z",
+    "event": "FCMaterials",
+    "MarketID": 3709999999,
+    "CarrierName": "Station 42",
+    "CarrierID": "X9X-9XX",
+    "Items": [{
+            "id": 128961528,
+            "Name": "$chemicalsuperbase_name;",
+            "Name_Localised": "Chemical Superbase",
+            "Price": 500,
+            "Stock": 50,
+            "Demand": 0
+        }, {
+            "id": 128961531,
+            "Name": "$electricalfuse_name;",
+            "Name_Localised": "Electrical Fuse",
+            "Price": 300,
+            "Stock": 22,
+            "Demand": 0
+        }
+    ]
+}

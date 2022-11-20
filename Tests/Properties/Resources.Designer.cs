@@ -103,6 +103,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] capi_market_fleet_carrier {
+            get {
+                object obj = ResourceManager.GetObject("capi_market_fleet_carrier", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] capi_market_Libby_Horizons {
             get {
                 object obj = ResourceManager.GetObject("capi_market_Libby_Horizons", resourceCulture);
@@ -196,6 +206,16 @@ namespace Tests.Properties {
         public static byte[] edsmTraffic {
             get {
                 object obj = ResourceManager.GetObject("edsmTraffic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] FCMaterials {
+            get {
+                object obj = ResourceManager.GetObject("FCMaterials", resourceCulture);
                 return ((byte[])(obj));
             }
         }

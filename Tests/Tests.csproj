@@ -248,8 +248,10 @@
     <EmbeddedResource Include="Properties\sqlStarSystem4.json" />
     <EmbeddedResource Include="Properties\vehicle.json" />
     <None Include="Properties\bgsFactionResponse.json" />
+    <None Include="Properties\capi-market-fleet_carrier.json" />
     <None Include="Properties\CapitalSystems.json" />
     <None Include="Properties\cubeSystemsAroundSol.json" />
+    <None Include="Properties\FCMaterials.json" />
     <None Include="Properties\inaraCmdrs.json" />
     <EmbeddedResource Include="Properties\bgsEddbSystemResponse.json" />
     <EmbeddedResource Include="Properties\bgsEddbSystem.json" />
