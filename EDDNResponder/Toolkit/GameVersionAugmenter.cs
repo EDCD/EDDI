@@ -56,7 +56,10 @@ namespace EddiEddnResponder.Toolkit
         internal IDictionary<string, object> AugmentVersion(IDictionary<string, object> data)
         {
             // Apply game version augment (only if the game is running)
-            if (Process.GetProcessesByName("Elite - Dangerous (Client)").Any())
+            if (Process
+                .GetProcesses()
+                .Where(p => p.ProcessName.StartsWith("EliteDangerous32") || p.ProcessName.StartsWith("EliteDangerous64"))
+                .Any())
             {
                 // Only include flags that are present in the source files.
                 // If the source value is null, do not add anything.
