@@ -17,6 +17,8 @@ namespace EddiEddnResponder.Sender
 {
     public class EDDNSender
     {
+        public static bool unitTesting = false;
+
         // Schemas identified as invalid by the server
         private static readonly List<string> invalidSchemas = new List<string>();
 
@@ -89,6 +91,8 @@ namespace EddiEddnResponder.Sender
             request.AddParameter("application/json", msgBody, ParameterType.RequestBody);
 
             Logging.Debug("Sending " + msgBody);
+
+            if (unitTesting) { return; }
 
             Thread thread = new Thread(() =>
             {

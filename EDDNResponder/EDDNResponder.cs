@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEddnResponder.Properties;
+using EddiEddnResponder.Sender;
 using EddiEvents;
 using EddiStatusService;
 using JetBrains.Annotations;
@@ -45,8 +46,10 @@ namespace EddiEddnResponder
         public EDDNResponder() : this(StarSystemSqLiteRepository.Instance)
         { }
 
-        public EDDNResponder(StarSystemRepository starSystemRepository)
+        public EDDNResponder(StarSystemRepository starSystemRepository, bool unitTesting = false)
         {
+            EDDNSender.unitTesting = unitTesting;
+
             // Configure our state tracking toolkit
             eddnState = new EDDNState(starSystemRepository);
 
