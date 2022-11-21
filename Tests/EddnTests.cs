@@ -828,7 +828,7 @@ namespace UnitTests
                     Assert.IsFalse(item.ContainsKey("categoryname"));
                     Assert.IsFalse(item.ContainsKey("legality"));
 
-                    Assert.AreEqual(9, item.Count);
+                    Assert.AreEqual(8, item.Count);
                     Assert.AreEqual("AgronomicTreatment", item["name"].ToString());
                     Assert.AreEqual(0, Convert.ToInt32(item["buyPrice"]));
                     Assert.AreEqual(3336, Convert.ToInt32(item["sellPrice"]));
@@ -837,7 +837,7 @@ namespace UnitTests
                     Assert.AreEqual(2, Convert.ToInt32(item["demandBracket"]));
                     Assert.AreEqual(0, Convert.ToInt32(item["stock"]));
                     Assert.AreEqual(43, Convert.ToInt32(item["demand"]));
-                    Assert.AreEqual(0, (item["statusFlags"] as List<object> ?? new List<object>()).Count);
+                    Assert.IsFalse(item.ContainsKey("statusFlags"));
                 }
             }
             else
