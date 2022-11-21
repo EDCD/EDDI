@@ -161,7 +161,7 @@ namespace EddiDataDefinitions
         public long? population { get; set; } = 0;
 
         [PublicAPI, JsonIgnore]
-        public string primaryeconomy => (Economies?[0] ?? Economy.None).localizedName;
+        public string primaryeconomy => (Economies.FirstOrDefault() ?? Economy.None).localizedName;
 
         public List<Economy> Economies
         {
