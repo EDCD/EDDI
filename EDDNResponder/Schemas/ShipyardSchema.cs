@@ -43,6 +43,7 @@ namespace EddiEddnResponder.Schemas
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
                         EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", handledData, eddnState);
+                        data = handledData;
                         return true;
                     }
                 }

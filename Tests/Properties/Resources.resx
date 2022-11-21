@@ -229,4 +229,10 @@
   <data name="capi_market_fleet_carrier" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>capi-market-fleet_carrier.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Outfitting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Outfitting.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Shipyard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Shipyard.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

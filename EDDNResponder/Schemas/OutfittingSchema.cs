@@ -35,10 +35,10 @@ namespace EddiEddnResponder.Schemas
                         var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                         handledData["timestamp"] = data["timestamp"];
                         handledData["systemName"] = data["StarSystem"];
-                        handledData["systemName"] = data["StationName"];
+                        handledData["stationName"] = data["StationName"];
                         handledData["marketId"] = data["MarketID"];
                         handledData["modules"] = modules
-                            .Select(m => JObject.FromObject(m)["Name"]?.ToString())
+                            .Select(m => (m as Dictionary<string, object>)["Name"]?.ToString())
                             .Where(m => ApplyModuleNameFilter(m))
                             .Where(m => !Module.IsPowerPlay(m))
                             .ToList();
@@ -47,6 +47,7 @@ namespace EddiEddnResponder.Schemas
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
                         EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", handledData, eddnState);
+                        data = handledData;
                         return true;
                     }
                 }

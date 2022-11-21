@@ -969,6 +969,110 @@ namespace UnitTests
                 Assert.Fail();
             }
         }
+
+        [TestMethod]
+        public void outfittingSchemaJournalTest()
+        {
+            // Set up our schema
+            var outfittingSchema = eddnResponder
+                .schemas.FirstOrDefault(s => s.GetType() == typeof(OutfittingSchema));
+
+            // Set up our initial conditions
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+            var outfittingData = Deserializtion.
+                DeserializeData(DeserializeJsonResource<string>(Resources.Outfitting));
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2022-11-21T00:05:07Z", Dates.FromDateTimeToString(outfittingData["timestamp"] as DateTime?));
+            Assert.AreEqual(3227934976, outfittingData["MarketID"] as long?);
+            Assert.AreEqual("Walker Ring", outfittingData["StationName"] as string);
+            Assert.AreEqual("Gertrud", outfittingData["StarSystem"] as string);
+            Assert.AreEqual(767, (outfittingData["Items"] as IEnumerable<object>).Count());
+            if (outfittingData["Items"] is List<object> items)
+            {
+                if (items[0] is IDictionary<string, object> item)
+                {
+                    Assert.AreEqual(3, item.Keys.Count);
+                    Assert.AreEqual("hpt_cannon_gimbal_huge", item["Name"] as string);
+                    Assert.AreEqual(128049444, item["id"] as long?);
+                    Assert.AreEqual(4476576, item["BuyPrice"] as long?);
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            Assert.IsTrue(outfittingSchema.Handle("Outfitting", ref outfittingData, eddnState));
+
+            // Validate the final data
+            Assert.AreEqual("2022-11-21T00:05:07Z", Dates.FromDateTimeToString(outfittingData["timestamp"] as DateTime?));
+            Assert.AreEqual(3227934976, outfittingData["marketId"] as long?);
+            Assert.AreEqual("Walker Ring", outfittingData["stationName"] as string);
+            Assert.AreEqual("Gertrud", outfittingData["systemName"] as string);
+            Assert.AreEqual(767, (outfittingData["modules"] as IEnumerable<object>).Count());
+            if (outfittingData["modules"] is List<string> modules)
+            {
+                Assert.AreEqual("hpt_cannon_gimbal_huge", modules[0].ToString());
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void outfittingSchemaCapiTest()
+        {
+            // Set up our schema
+            var outfittingSchema = eddnResponder
+                .capiSchemas.FirstOrDefault(s => s.GetType() == typeof(OutfittingSchema));
+
+            // Set up our initial conditions
+            var eddnState = new EDDNState(StarSystemSqLiteRepository.Instance);
+            var shipyardJson = DeserializeJsonResource<JObject>(Resources.capi_shipyard_Abasheli_Barracks);
+
+            // Check a few items on our initial data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString(shipyardJson["timestamp"].ToObject<DateTime?>()));
+            Assert.AreEqual(3544236032, shipyardJson["id"].ToObject<long?>());
+            Assert.AreEqual("Abasheli Barracks", shipyardJson["name"].ToString());
+            Assert.IsFalse(shipyardJson.ContainsKey("StarSystem"));
+            Assert.AreEqual(165, (shipyardJson["modules"] as IEnumerable<object>).Count());
+            if (shipyardJson["modules"].Children().Values().FirstOrDefault() is JObject item)
+            {
+                Assert.AreEqual(5, item.Count);
+                Assert.AreEqual("Hpt_ATDumbfireMissile_Fixed_Large", item["name"].ToString());
+                Assert.AreEqual("weapon", item["category"].ToString());
+                Assert.AreEqual(128788700, item["id"].ToObject<long?>());
+                Assert.AreEqual(1352250, item["cost"].ToObject<long?>());
+                Assert.AreEqual("ELITE_HORIZONS_V_PLANETARY_LANDINGS", item["sku"].ToString());
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+            // Apply our "Handle" method to transform the data
+            var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Kurigosages"",""faction"":""independent""}}");
+            var outfittingData = outfittingSchema.Handle(profileJson, null, shipyardJson, null, eddnState);
+            Assert.IsNotNull(outfittingData);
+
+            // Validate the final data
+            Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString(outfittingData["timestamp"] as DateTime?));
+            Assert.AreEqual(3544236032, outfittingData["marketId"] as long?);
+            Assert.AreEqual("Abasheli Barracks", outfittingData["stationName"] as string);
+            Assert.AreEqual("Kurigosages", outfittingData["systemName"] as string);
+            Assert.AreEqual(164, (outfittingData["modules"] as IEnumerable<object>).Count());
+            if (outfittingData["modules"] is List<string> modules)
+            {
+                Assert.AreEqual("Hpt_ATDumbfireMissile_Fixed_Large", modules[0].ToString());
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
 
