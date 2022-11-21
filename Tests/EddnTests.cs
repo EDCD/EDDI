@@ -817,6 +817,7 @@ namespace UnitTests
             Assert.AreEqual("2020-08-07T17:17:10Z", Dates.FromDateTimeToString((DateTime)handledData["timestamp"]));
             Assert.AreEqual(3228854528, handledData["marketId"] as long?);
             Assert.IsFalse(handledData.ContainsKey("outpostType"));
+            Assert.IsTrue(handledData["economies"] is IEnumerable<object>);
             Assert.AreEqual(116, (handledData["commodities"] as List<object>).Count);
             if (handledData["commodities"] is List<object> handledItems)
             {

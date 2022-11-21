@@ -101,7 +101,8 @@ namespace EddiEddnResponder.Schemas
                     .Where(c => ApplyFrontierApiMarketFilter(c))
                     .Select(c => FormatCommodity(c.ToObject<JObject>(), false)));
                 var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
-                var economies = marketJson["economies"];
+                var economies = marketJson["economies"].Children().Values()
+                    .Select(e => JObject.FromObject(e)).ToList();
 
                 // Continue if our commodities list is not empty
                 if (commodities.Any())
