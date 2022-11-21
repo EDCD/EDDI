@@ -16,10 +16,12 @@ namespace EddiEddnResponder.Toolkit
             "HomeSystem",
             "FuelLevel",
             "FuelUsed",
+            "IsNewEntry",
             "JumpDist",
             "Latitude",
             "Longitude",
             "MyReputation",
+            "NewTraitsDiscovered",
             "SquadronFaction",
             "Wanted"
         };

@@ -20,6 +20,7 @@ namespace EddiEddnResponder.Schemas
                 if (!eddnState.Location.CheckLocationData(edType, data)) { return false; }
 
                 // No personal data to remove
+                data = eddnState.PersonalData.Strip(data);
 
                 // Apply data augments
                 data = eddnState.Location.AugmentStarPos(data);
