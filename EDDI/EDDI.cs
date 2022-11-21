@@ -2154,7 +2154,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new market data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, theEvent.info.Items, null, null, null, inHorizons, inOdyssey) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "market" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -2198,7 +2198,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new outfitting data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, theEvent.info.Items.Select(i => i.edName).ToList(), null, inHorizons, inOdyssey) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -2241,7 +2241,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new shipyard data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, theEvent.info.PriceList.Select(s => s.edModel).ToList(), inHorizons, inOdyssey, theEvent.info.AllowCobraMkIV) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.info.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -3285,19 +3285,26 @@ namespace EddiCore
                         var profile = FrontierApiProfile.FromJson(result["profileJson"]?.ToObject<JObject>());
                         var profileStation = FrontierApiStation.FromJson(result["marketJson"]?.ToObject<JObject>(), result["shipyardJson"]?.ToObject<JObject>());
 
-                        // Post an update event
+                        // Post an update event\
+                        var updates = new HashSet<string>();
+                        if (profileStation.eddnCommodityMarketQuotes != null)
+                        {
+                            updates.Add("market");
+                        }
+                        if (profileStation.outfitting != null)
+                        {
+                            updates.Add("outfitting");
+                        }
+                        if (profileStation.ships != null)
+                        {
+                            updates.Add("shipyard");
+                        }
                         var @event = new MarketInformationUpdatedEvent(
                             profile.timestamp,
                             profile.currentStarSystem,
                             profileStation.name,
                             profileStation.marketId,
-                            profileStation.eddnCommodityMarketQuotes,
-                            profileStation.prohibitedCommodities?.Select(p => p.Value).ToList(),
-                            profileStation.outfitting?.Select(m => m.edName).ToList(),
-                            profileStation.ships?.Select(s => s.edModel).ToList(),
-                            inHorizons,
-                            inOdyssey,
-                            profile.contexts.allowCobraMkIV);
+                            updates);
                         enqueueEvent(@event);
 
                         // We have the required station information
