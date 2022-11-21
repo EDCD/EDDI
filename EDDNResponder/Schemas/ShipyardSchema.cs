@@ -34,10 +34,12 @@ namespace EddiEddnResponder.Schemas
                         var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                         handledData["timestamp"] = data["timestamp"];
                         handledData["systemName"] = data["StarSystem"];
-                        handledData["systemName"] = data["StationName"];
+                        handledData["stationName"] = data["StationName"];
                         handledData["marketId"] = data["MarketID"];
                         handledData["allowCobraMkIV"] = data["AllowCobraMkIV"];
-                        handledData["ships"] = ships.Select(o => JObject.FromObject(o)["ShipType"]).ToList();
+                        handledData["ships"] = ships
+                            .Select(s => (s as Dictionary<string, object>)["ShipType"]?.ToString())
+                            .ToList();
 
                         // Apply data augments
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
@@ -75,11 +77,11 @@ namespace EddiEddnResponder.Schemas
 
                 // Build our ships list
                 var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
-                    .Select(s => s["ShipType"]?.ToString()).ToList() ?? new List<string>();
+                    .Select(s => s["name"]?.ToString()).ToList() ?? new List<string>();
                 if (shipyardJson["ships"]["unavailable_list"] != null)
                 {
                     ships.AddRange(shipyardJson["ships"]?["unavailable_list"]?
-                        .Select(s => s?["ShipType"]?.ToString()).ToList() ?? new List<string>());
+                        .Select(s => s?["name"]?.ToString()).ToList() ?? new List<string>());
                 }
 
                 // Continue if our ships list is not empty
