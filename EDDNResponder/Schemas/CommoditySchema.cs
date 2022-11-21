@@ -194,7 +194,10 @@ namespace EddiEddnResponder.Schemas
                 {
                     statusFlags.Add("Rare");
                 }
-                handledC["statusFlags"] = JToken.FromObject(statusFlags);
+                if (statusFlags.Any())
+                {
+                    handledC["statusFlags"] = JToken.FromObject(statusFlags);
+                }
             }
             else
             {
@@ -205,10 +208,12 @@ namespace EddiEddnResponder.Schemas
                 handledC["demandBracket"] = c["demandBracket"];
                 handledC["sellPrice"] = c["sellPrice"];
                 handledC["stock"] = c["stock"];
-                handledC["stockBracket"] = c["stockBracket"];              
-                handledC["statusFlags"] = c["statusFlags"];
+                handledC["stockBracket"] = c["stockBracket"];
+                if (c["statusFlags"] is IEnumerable<object> statusFlags && statusFlags.Any())
+                {
+                    handledC["statusFlags"] = c["statusFlags"];
+                }
             }
-
             return handledC;
         }
     }
