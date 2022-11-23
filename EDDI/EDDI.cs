@@ -40,10 +40,6 @@ namespace EddiCore
         private static bool started;
         internal static bool running = true;
 
-        private static bool allowMarketUpdate = false;
-        private static bool allowOutfittingUpdate = false;
-        private static bool allowShipyardUpdate = false;
-
         public bool inTelepresence { get; private set; } = false;
 
         public bool inHorizons 
@@ -1984,11 +1980,6 @@ namespace EddiCore
             bool passEvent = !string.IsNullOrEmpty(theEvent.station);
             updateCurrentSystem(theEvent.system);
 
-            // Upon docking, allow manual station updates once
-            allowMarketUpdate = true;
-            allowOutfittingUpdate = true;
-            allowShipyardUpdate = true;
-
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
             {
@@ -2131,7 +2122,7 @@ namespace EddiCore
         private bool eventMarket(MarketEvent theEvent)
         {
             // Don't proceed if we've already viewed the market while docked or when loading pre-existing logs
-            if (!allowMarketUpdate || theEvent.fromLoad) { return false; }
+            if (theEvent.fromLoad) { return false; }
 
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
@@ -2145,7 +2136,6 @@ namespace EddiCore
                 // Update the current station commodities
                 if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    allowMarketUpdate = false;
                     CurrentStation.commodities = theEvent.info.Items.Select(q => q.ToCommodityMarketQuote()).ToList();
                     CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
 
@@ -2174,7 +2164,7 @@ namespace EddiCore
         private bool eventOutfitting(OutfittingEvent theEvent)
         {
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
-            if (!allowOutfittingUpdate || theEvent.fromLoad) { return false; }
+            if (theEvent.fromLoad) { return false; }
 
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
@@ -2189,7 +2179,6 @@ namespace EddiCore
                 // Update the current station outfitting
                 if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    allowOutfittingUpdate = false;
                     CurrentStation.outfitting = modules;
                     CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(theEvent.info.timestamp);
 
@@ -2218,7 +2207,7 @@ namespace EddiCore
         private bool eventShipyard(ShipyardEvent theEvent)
         {
             // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
-            if (!allowShipyardUpdate || theEvent.fromLoad) { return false; }
+            if (theEvent.fromLoad) { return false; }
 
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
@@ -2233,7 +2222,6 @@ namespace EddiCore
                 if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                 {
                     // Update the current station shipyard
-                    allowShipyardUpdate = false;
                     CurrentStation.shipyard = ships;
                     CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(theEvent.info.timestamp);
 
@@ -3319,10 +3307,6 @@ namespace EddiCore
                             "Star system information updated from Frontier API server; updating local copy");
                         CurrentStation = station;
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-                        allowMarketUpdate = !(profileStation.eddnCommodityMarketQuotes?.Count > 0);
-                        allowOutfittingUpdate = !(profileStation.outfitting?.Count > 0);
-                        allowShipyardUpdate = !(profileStation.ships?.Count > 0);
                     }
                 }
                 catch (Exception ex)

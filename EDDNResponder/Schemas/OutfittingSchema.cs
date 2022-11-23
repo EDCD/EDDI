@@ -25,13 +25,17 @@ namespace EddiEddnResponder.Schemas
                 if (eddnState?.GameVersion is null) { return false; }
 
                 var marketID = JsonParsing.getLong(data, "MarketID");
-                if (lastSentMarketID != marketID && data.TryGetValue("Items", out var modulesList))
+                if (lastSentMarketID == marketID)
+                {
+                    lastSentMarketID = null;
+                    return false;
+                }
+
+                if (data.TryGetValue("Items", out var modulesList))
                 {
                     // Only send the message if we have modules
                     if (modulesList is List<object> modules && modules.Any())
                     {
-                        lastSentMarketID = marketID;
-
                         var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                         handledData["timestamp"] = data["timestamp"];
                         handledData["systemName"] = data["StarSystem"];
@@ -87,9 +91,6 @@ namespace EddiEddnResponder.Schemas
                 // Continue if our modules list is not empty
                 if (modules.Any())
                 {
-                    lastSentMarketID = marketID;
-
-
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("timestamp", timestamp);
                     data.Add("systemName", systemName);
@@ -101,6 +102,7 @@ namespace EddiEddnResponder.Schemas
                     data = eddnState.GameVersion.AugmentVersion(data);
 
                     EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data, eddnState, "CAPI-shipyard");
+                    lastSentMarketID = marketID;
                     return data;
                 }
             }

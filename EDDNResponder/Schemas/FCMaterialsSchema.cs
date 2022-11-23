@@ -24,9 +24,11 @@ namespace EddiEddnResponder.Schemas
                 if (!edTypes.Contains(edType)) { return false; }
                 if (eddnState?.GameVersion is null) { return false; }
                 var marketID = JsonParsing.getLong(data, "MarketID");
-                if (lastSentMarketID == marketID) return false;
-                
-                lastSentMarketID = marketID;
+                if (lastSentMarketID == marketID)
+                {
+                    lastSentMarketID = null;
+                    return false;
+                }
 
                 // Strip localized names
                 data = eddnState.PersonalData.Strip(data);
@@ -61,8 +63,6 @@ namespace EddiEddnResponder.Schemas
 
                 if (marketID != null && lastSentMarketID != marketID)
                 {
-                    lastSentMarketID = marketID;
-
                     var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
                     var saleItems = items["sales"]?.ToObject<JToken>();
                     var purchaseItems = items["purchases"]?.ToObject<JToken>();
@@ -87,6 +87,7 @@ namespace EddiEddnResponder.Schemas
                         data = eddnState.GameVersion.AugmentVersion(data);
 
                         EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data, eddnState, "CAPI-market");
+                        lastSentMarketID = marketID;
                         return data;
                     }
                 }

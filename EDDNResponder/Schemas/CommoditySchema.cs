@@ -24,15 +24,17 @@ namespace EddiEddnResponder.Schemas
                 if (eddnState?.GameVersion is null) { return false; }
 
                 var marketID = JsonParsing.getLong(data, "MarketID");
-                if (lastSentMarketID == marketID) { return false; }
+                if (lastSentMarketID == marketID) 
+                {
+                    lastSentMarketID = null;
+                    return false; 
+                }
 
                 // Only send the message if we have commodities
                 if (data.TryGetValue("Items", out var commoditiesList) &&
                     commoditiesList is List<object> commodities && 
                     commodities.Any())
                 {
-                    lastSentMarketID = marketID;
-
                     var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                     handledData["timestamp"] = data["timestamp"];
                     handledData["systemName"] = data["StarSystem"];
@@ -49,8 +51,8 @@ namespace EddiEddnResponder.Schemas
                     // Apply data augments
                     handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
-                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
                     data = handledData;
+                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
                     return true;
                 }
             }
@@ -107,8 +109,6 @@ namespace EddiEddnResponder.Schemas
                 // Continue if our commodities list is not empty
                 if (commodities.Any())
                 {
-                    lastSentMarketID = marketID;
-
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("timestamp", timestamp);
                     data.Add("systemName", systemName);
@@ -125,6 +125,7 @@ namespace EddiEddnResponder.Schemas
                     data = eddnState.GameVersion.AugmentVersion(data);
 
                     EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data, eddnState, "CAPI-market");
+                    lastSentMarketID = marketID;
                     return data;
                 }
             }
