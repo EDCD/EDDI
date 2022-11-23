@@ -74,7 +74,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Fuel check` revised to move relevant data to the `Route details` script.
       * `FSD Engaged` revised to move some speech to the `Jumped` event.
       * `Glide` updated to remove gravity warnings (e.g. "Danger", "Caution", etc.) when approaching a body in a taxi or dropship.
-      * `Jumped` revised to remove jump count reporting (to slightly reduce verbosity) and add speech moved from the `FSD engaged` event.
+      * `Jumped` revised to remove jump count reporting (to slightly reduce verbosity), report the distance to your carrier when you have a carrier but no home system, and add speech moved from the `FSD engaged` event.
       * `Location` updated to add local reputation, system state, and system engineer details and to remove redundant mission information.
       * `Material required report` updated to fix a typo.
       * `Market Information updated` updated to fix a typo.
