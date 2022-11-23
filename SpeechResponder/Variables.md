@@ -821,8 +821,9 @@ Any values might be missing, depending on EDDI's configuration.
   - *low_oxygen* - true if you are on foot and oxygen is running low.
   - *low_health* - true if you are on foot and health is running low.
   - *on_foot_temperature* - the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
-  - *destinationName* - the currently selected destination (including in-system destinations)
-  - *destinationLocalizedName* - the localized name of the currently selected destination, if available
+  - *destinationName* - the currently selected destination (including in-system destinations).
+  - *destinationLocalizedName* - the localized name of the currently selected destination, if available.
+  - *credit_balance* - the current credit balance of the commander, if available.
 
 ---
 ## Traffic

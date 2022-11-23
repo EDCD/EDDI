@@ -61,6 +61,12 @@ namespace EddiStatusMonitor
                 var thisStatus = StatusService.Instance.CurrentStatus;
                 var lastStatus = StatusService.Instance.LastStatus;
 
+                // Update the commander's credit balance
+                if (thisStatus.credit_balance != null && EDDI.Instance.Cmdr != null)
+                {
+                    EDDI.Instance.Cmdr.credits = Convert.ToUInt64(thisStatus.credit_balance);
+                }
+
                 // Update glide status
                 if (thisStatus.hyperspace || thisStatus.supercruise || thisStatus.docked || thisStatus.landed)
                 {

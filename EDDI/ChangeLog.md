@@ -109,6 +109,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Undocked` updated to invoke RouteDetails("update").
   * Status Monitor
     * Fixed a bug that caused fuel percent calculations to not calculate immediately after a vehicle change.
+    * Added new `status` property `credit_balance`
   * VoiceAttack Responder
     * The `setstate` plugin function now allows variables to be set to `Not set`.
 

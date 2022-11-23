@@ -258,6 +258,9 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public bool gliding { get; set; }
 
+        [PublicAPI]
+        public ulong? credit_balance { get; set; }
+
         // Not intended to be user facing
 
         public decimal? fuelInTanks;
