@@ -313,7 +313,6 @@ namespace EddiStatusService
                     // Calculated data
                     SetFuelExtras(status);
                     SetSlope(status);
-                    SetGliding(status, LastStatus); // Must be set after setting the slope
 
                     return status;
                 }
@@ -324,24 +323,6 @@ namespace EddiStatusService
                 Logging.Error("", ex);
             }
             return null;
-        }
-
-        public void UpdateStatus(Status thisStatus)
-        {
-            if (thisStatus == null)
-            {
-                return;
-            }
-
-            if (CurrentStatus != thisStatus)
-            {
-                // Save our last status for reference and update our current status
-                LastStatus = CurrentStatus;
-                CurrentStatus = thisStatus;
-
-                // Pass the change in status to all subscribed processes
-                OnStatus(StatusUpdatedEvent, CurrentStatus);
-            }
         }
 
         public void handleStatus(Status thisStatus)
@@ -432,32 +413,6 @@ namespace EddiStatusService
             return; // At present, fighters do not appear to consume fuel.
         }
 
-        /// <summary> Depends on slope calculations, which must be performed before this method is run </summary>
-        private void SetGliding(Status status, Status lastStatus)
-        {
-            // We are exiting supercruise
-            if (!status.gliding && lastEnteredNormalSpaceEvent != null)
-            {
-                // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                if (status.fsd_status == "ready"
-                    && status.slope >= -60 && status.slope <= -5
-                    && status.altitude < 100000
-                    && status.altitude < lastStatus.altitude)
-                {
-                    // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
-                    status.gliding = true;
-                }
-            }
-            if ((status.gliding && status.fsd_status == "cooldown")
-                || status.hyperspace
-                || status.supercruise
-                || status.docked
-                || status.landed)
-            {
-                status.gliding = false;
-            }
-        }
-
         ///<summary> Our calculated slope may be inaccurate if we are in normal space and thrusting
         /// in a direction other than the direction we are oriented (e.g. if pointing down towards a
         /// planet and applying reverse thrust to raise our altitude) </summary> 
@@ -470,19 +425,19 @@ namespace EddiStatusService
                 {
                     double square(double x) => x * x;
 
-                    double radiusKm = (double)status.planetradius / 1000;
-                    double deltaAltKm = (double)(status.altitude - LastStatus.altitude) / 1000;
+                    var radiusKm = (double)status.planetradius / 1000;
+                    var deltaAltKm = (double)(status.altitude - LastStatus.altitude) / 1000;
 
                     // Convert latitude & longitude to radians
-                    double currentLat = (double)status.latitude * Math.PI / 180;
-                    double lastLat = (double)LastStatus.latitude * Math.PI / 180;
-                    double deltaLat = currentLat - lastLat;
-                    double deltaLong = (double)(status.longitude - LastStatus.longitude) * Math.PI / 180;
+                    var currentLat = (double)status.latitude * Math.PI / 180;
+                    var lastLat = (double)LastStatus.latitude * Math.PI / 180;
+                    var deltaLat = currentLat - lastLat;
+                    var deltaLong = (double)(status.longitude - LastStatus.longitude) * Math.PI / 180;
 
                     // Calculate distance traveled using Law of Haversines
-                    double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
-                    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                    double distanceKm = c * radiusKm;
+                    var a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
+                    var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                    var distanceKm = c * radiusKm;
 
                     // Calculate the slope angle
                     var slopeRadians = Math.Atan2(deltaAltKm, distanceKm);

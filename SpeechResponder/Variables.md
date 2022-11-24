@@ -817,6 +817,8 @@ Any values might be missing, depending on EDDI's configuration.
   - *srv_highbeam* - true if the lights in your SRV are set to the high beam mode.
   - *on_foot_in_station* - true if you've disembarked at a station.
   - *on_foot_on_planet* - true if you've disembarked on a planet surface.
+  - *on_foot_in_hangar* - true if you've disembarked in a vehicle hangar.
+  - *on_foot_social_space* - true if you've disembarked to a social space.
   - *aim_down_sight* - true if you are on foot and aiming through a scope.
   - *low_oxygen* - true if you are on foot and oxygen is running low.
   - *low_health* - true if you are on foot and health is running low.
@@ -824,6 +826,9 @@ Any values might be missing, depending on EDDI's configuration.
   - *destinationName* - the currently selected destination (including in-system destinations).
   - *destinationLocalizedName* - the localized name of the currently selected destination, if available.
   - *credit_balance* - the current credit balance of the commander, if available.
+  - *breathable_atmosphere* - true if you are on foot in an area with a breathable atmosphere.
+  - *telepresence_multicrew* - true if you are participating in telepresence multicrew.
+  - *physical_multicrew* - true if you are participating in physical multicrew.
 
 ---
 ## Traffic

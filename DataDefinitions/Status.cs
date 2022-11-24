@@ -54,7 +54,7 @@ namespace EddiDataDefinitions
             OnFoot = 0x00000001,                    // OnFoot
             InTaxi = 0x00000002,                    // InTaxi (or dropship/shuttle)
             InMultiCrew = 0x00000004,               // InMulticrew (ie in someone else’s ship)
-            OnFootInStation = 0x00000008,           // OnFootInStation
+            OnFootInStation = 0x00000008,           // OnFootInStation ('station' means planetary star port, not true for orbital stations)
             OnFootOnPlanet = 0x00000010,            // OnFootOnPlanet
             AimDownSight = 0x00000020,              // AimDownSight
             LowOxygen = 0x00000040,                 // LowOxygen
@@ -63,6 +63,13 @@ namespace EddiDataDefinitions
             Hot = 0x00000200,                       // Hot
             VeryCold = 0x00000400,                  // Very Cold,
             VeryHot = 0x00000800,                   // Very Hot
+            GlideMode = 0x00001000,                 // GlideMode
+            OnFootInHangar = 0x00002000,            // On Foot In Hangar
+            OnFootInSocialSpace = 0x00004000,       // On Foot In Social Space
+            OnFootExterior = 0x00008000,            // On Foot Exterior (Not sure when this would actually be set. Space walks maybe?)
+            BreathableAtmosphere = 0x00010000,      // Breathable Atmosphere
+            TelepresenceMulticrew = 0x00020000,     // Telepresence Multicrew
+            PhysicalMulticrew = 0x00040000          // Physical Multicrew
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
@@ -165,6 +172,15 @@ namespace EddiDataDefinitions
         public bool on_foot_on_planet => (flags2 & Flags2.OnFootOnPlanet) != 0;
 
         [PublicAPI]
+        public bool on_foot_in_hangar => (flags2 & Flags2.OnFootInHangar) != 0;
+
+        [PublicAPI]
+        public bool on_foot_social_space => (flags2 & Flags2.OnFootInSocialSpace) != 0;
+
+        [PublicAPI]
+        public bool on_foot_exterior => (flags2 & Flags2.OnFootExterior) != 0;
+
+        [PublicAPI]
         public bool aim_down_sight => (flags2 & Flags2.AimDownSight) != 0;
 
         [PublicAPI]
@@ -180,6 +196,18 @@ namespace EddiDataDefinitions
             (flags2 & Flags2.Hot) != 0 ? "hot" :
             (flags2 & Flags2.VeryHot) != 0 ? "very hot" :
             "temperate";
+
+        [PublicAPI]
+        public bool gliding => (flags2 & Flags2.GlideMode) != 0;
+
+        [PublicAPI]
+        public bool breathable_atmosphere => (flags2 & Flags2.BreathableAtmosphere) != 0;
+
+        [PublicAPI]
+        public bool telepresence_multicrew => (flags2 & Flags2.TelepresenceMulticrew) != 0;
+
+        [PublicAPI]
+        public bool physical_multicrew => (flags2 & Flags2.PhysicalMulticrew) != 0;
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise or hyperspace.
@@ -254,9 +282,6 @@ namespace EddiDataDefinitions
 
         [PublicAPI]
         public int? fuel_seconds { get; set; }
-
-        [PublicAPI]
-        public bool gliding { get; set; }
 
         [PublicAPI]
         public ulong? credit_balance { get; set; }

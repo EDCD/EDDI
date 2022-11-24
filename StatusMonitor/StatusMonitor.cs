@@ -15,11 +15,11 @@ namespace EddiStatusMonitor
     {
         // Miscellaneous tracking
         private bool jumping;
-        private bool gliding;
         private string lastDestinationPOI;
 
         public StatusMonitor()
         {
+            StatusService.StatusUpdatedEvent += HandleStatus;
             Logging.Info($"Initialized {MonitorName()}");
         }
 
@@ -51,7 +51,6 @@ namespace EddiStatusMonitor
         public void Start()
         {
             StatusService.Instance.Start();
-            StatusService.StatusUpdatedEvent += HandleStatus;
         }
 
         private void HandleStatus(object sender, EventArgs e)
@@ -65,12 +64,6 @@ namespace EddiStatusMonitor
                 if (thisStatus.credit_balance != null && EDDI.Instance.Cmdr != null)
                 {
                     EDDI.Instance.Cmdr.credits = Convert.ToUInt64(thisStatus.credit_balance);
-                }
-
-                // Update glide status
-                if (thisStatus.hyperspace || thisStatus.supercruise || thisStatus.docked || thisStatus.landed)
-                {
-                    gliding = false;
                 }
 
                 // Update vehicle information
@@ -242,28 +235,14 @@ namespace EddiStatusMonitor
                         lastDestinationPOI = thisStatus.destination_name;
                     }
                 }
-                if (gliding && thisStatus.fsd_status == "cooldown")
+                if (!thisStatus.gliding && lastStatus.gliding)
                 {
-                    gliding = false;
-                    EDDI.Instance.enqueueEvent(new GlideEvent(thisStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody?.systemname, EDDI.Instance.CurrentStellarBody?.systemAddress, EDDI.Instance.CurrentStellarBody?.bodyname, EDDI.Instance.CurrentStellarBody?.bodyType));
+                    EDDI.Instance.enqueueEvent(new GlideEvent(thisStatus.timestamp, thisStatus.gliding, EDDI.Instance.CurrentStellarBody?.systemname, EDDI.Instance.CurrentStellarBody?.systemAddress, EDDI.Instance.CurrentStellarBody?.bodyname, EDDI.Instance.CurrentStellarBody?.bodyType));
                 }
-                else if (!thisStatus.supercruise && lastStatus.supercruise)
+                else if (thisStatus.gliding && !lastStatus.gliding && StatusService.Instance.lastEnteredNormalSpaceEvent != null)
                 {
-                    // We are exiting supercruise
-                    if (!gliding && StatusService.Instance.lastEnteredNormalSpaceEvent != null)
-                    {
-                        // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                        if (thisStatus.fsd_status == "ready"
-                            && thisStatus.slope >= -60 && thisStatus.slope <= -5
-                            && thisStatus.altitude < 100000
-                            && thisStatus.altitude < lastStatus.altitude)
-                        {
-                            // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
-                            gliding = true;
-                            var theEvent = StatusService.Instance.lastEnteredNormalSpaceEvent;
-                            EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { fromLoad = theEvent.fromLoad });
-                        }
-                    }
+                    var theEvent = StatusService.Instance.lastEnteredNormalSpaceEvent;
+                    EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, thisStatus.gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { fromLoad = theEvent.fromLoad });
                 }
                 // Reset our fuel log if we change vehicles or refuel
                 if (thisStatus.vehicle != lastStatus.vehicle || thisStatus.fuel > lastStatus.fuel)
