@@ -12,7 +12,6 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => new List<string> { "FSSSignalDiscovered" };
 
-        private string lastEdType;
         private EDDNState latestSignalState;
 
         private readonly List<IDictionary<string, object>> signals =
@@ -24,18 +23,20 @@ namespace EddiEddnResponder.Schemas
             {
                 if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
                 {
-                    if (edTypes.Contains(lastEdType) && !edTypes.Contains(edType))
+                    // This marks the end of a batch of signals.
+                    if (!edTypes.Contains(edType))
                     {
                         LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
-                            if (signals.Any())
+                            var retrievedSignals = signals?
+                                .Where(s => JsonParsing.getULong(s, "SystemAddress") == eddnState.Location.systemAddress)
+                                .ToList();
+                            if (retrievedSignals?.Any() ?? false)
                             {
-                                // This marks the end of a batch of signals.
-                                var handledData = PrepareSignalsData(latestSignalState);
+                                var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
                                 handledData = eddnState.GameVersion.AugmentVersion(handledData);
-                                lastEdType = edType;
                                 latestSignalState = null;
-                                signals?.Clear();
+                                signals.RemoveAll(s => retrievedSignals.Contains(s));
                                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, eddnState);
                             }
                         });
@@ -44,49 +45,13 @@ namespace EddiEddnResponder.Schemas
 
                     if (edTypes.Contains(edType))
                     {
-                        // This is a signal that we need to add to our signal batch
-
-                        // Make sure the location data is valid
-                        if (eddnState.Location.CheckLocationData(edType, data))
+                        // Remove redundant, personal, or time sensitive data
+                        var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
+                        if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
                         {
-                            if (latestSignalState is null)
-                            {
-                                latestSignalState = eddnState;
-                            }
-                            else
-                            {
-                                // Make sure that our signal location data is consistent across our batch by testing it here
-                                var loc = eddnState.Location;
-                                var lastLoc = latestSignalState.Location;
-                                if (loc.systemName != lastLoc.systemName ||
-                                    loc.systemAddress != lastLoc.systemAddress ||
-                                    loc.systemX != lastLoc.systemX || loc.systemY != lastLoc.systemY ||
-                                    loc.systemZ != lastLoc.systemZ)
-                                {
-                                    var ex = new ArgumentException("Tracked signal locations are not aligned.");
-                                    ex.Data.Add("Last tracked Location", lastLoc);
-                                    ex.Data.Add("Current tracked location", loc);
-                                    throw ex;
-                                }
-                            }
-
-                            // Remove redundant, personal, or time sensitive data
-                            var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
-                            if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
-                            {
-                                var handledSignal = new Dictionary<string, object>();
-                                if (data.ContainsKey("timestamp")) { handledSignal["timestamp"] = data["timestamp"];}
-                                if (data.ContainsKey("SignalName")) { handledSignal["SignalName"] = data["SignalName"]; }
-                                if (data.ContainsKey("IsStation")) { handledSignal["IsStation"] = data["IsStation"]; }
-                                if (data.ContainsKey("USSType")) { handledSignal["USSType"] = data["USSType"]; }
-                                if (data.ContainsKey("SpawningState")) { handledSignal["SpawningState"] = data["SpawningState"]; }
-                                if (data.ContainsKey("SpawningFaction")) { handledSignal["SpawningFaction"] = data["SpawningFaction"]; }
-                                if (data.ContainsKey("ThreatLevel")) { handledSignal["ThreatLevel"] = data["ThreatLevel"]; }
-
-                                // Update our signal data
-                                signals.Add(handledSignal);
-                                latestSignalState = eddnState;
-                            }
+                            // This is a signal that we need to add to our signal batch
+                            signals.Add(data);
+                            latestSignalState = eddnState;
                         }
                     }
                 }
@@ -98,21 +63,52 @@ namespace EddiEddnResponder.Schemas
                 e.Data.Add("EDDN State", eddnState);
                 Logging.Error($"{GetType().Name} failed to handle journal data.");
             }
-
-            // We always save the edType so that we can identify the end of a signal batch.
-            lastEdType = edType;
             return false;
         }
 
-        private IDictionary<string, object> PrepareSignalsData(EDDNState eddnState)
+        private IDictionary<string, object> PrepareSignalsData(List<IDictionary<string, object>> retrievedSignals, EDDNState eddnState)
         {
-            // Create our top level data structure
-            var retrievedSignals = signals?.Copy();
-            var data = new Dictionary<string, object>()
+            List<IDictionary<string, object>> handledSignals = new List<IDictionary<string, object>>();
+            foreach (var retrievedSignal in retrievedSignals)
             {
-                { "timestamp", retrievedSignals?[0]?["timestamp"] },
+                var handledSignal = new Dictionary<string, object>();
+                if (retrievedSignal.ContainsKey("timestamp"))
+                {
+                    handledSignal["timestamp"] = retrievedSignal["timestamp"];
+                }
+                if (retrievedSignal.ContainsKey("SignalName"))
+                {
+                    handledSignal["SignalName"] = retrievedSignal["SignalName"];
+                }
+                if (retrievedSignal.ContainsKey("IsStation"))
+                {
+                    handledSignal["IsStation"] = retrievedSignal["IsStation"];
+                }
+                if (retrievedSignal.ContainsKey("USSType"))
+                {
+                    handledSignal["USSType"] = retrievedSignal["USSType"];
+                }
+                if (retrievedSignal.ContainsKey("SpawningState"))
+                {
+                    handledSignal["SpawningState"] = retrievedSignal["SpawningState"];
+                }
+                if (retrievedSignal.ContainsKey("SpawningFaction"))
+                {
+                    handledSignal["SpawningFaction"] = retrievedSignal["SpawningFaction"];
+                }
+                if (retrievedSignal.ContainsKey("ThreatLevel"))
+                {
+                    handledSignal["ThreatLevel"] = retrievedSignal["ThreatLevel"];
+                }
+                handledSignals.Add(handledSignal);
+            }
+
+            // Create our top level data structure
+            var data = new Dictionary<string, object>
+            {
+                { "timestamp", handledSignals?[0]?["timestamp"] },
                 { "event", "FSSSignalDiscovered" },
-                { "signals", retrievedSignals }
+                { "signals", handledSignals }
             } as IDictionary<string, object>;
 
             // Apply data augments

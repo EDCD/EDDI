@@ -68,7 +68,6 @@ namespace EddiEddnResponder.Toolkit
                 ClearLocation();
             }
 
-            // Ignore any events that we've blacklisted for contaminating our location data
             GetStarSystemLocation(edType, data);
             GetStationLocation(edType, data);
             GetBodyLocation(edType, data);
@@ -78,6 +77,7 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
+                // Ignore any events that we've blacklisted for contaminating our location data
                 if (!starSystemIgnoredEvents.Contains(edType))
                 {
                     systemName = JsonParsing.getString(data, "StarSystem") ?? systemName;
