@@ -4761,7 +4761,6 @@ namespace EddiJournalMonitor
                             case "FSSBodySignals":
                             case "ModuleBuyAndStore":
                             case "RestockVehicle":
-                            case "ScanBaryCentre":
                             case "ScanOrganic":
                             case "SellMicroResources":
                             case "SellOrganicData":
@@ -4795,6 +4794,7 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
                             case "DropItems": // The `BackpackChange` event keeps us up to date.
                             case "EngineerLegacyConvert": // Unnecessary.
+                            case "ScanBaryCentre": // We do not do anything with scanned barycentres at this time (though the raw event is still passed to the EDDN responder)
                             case "Scanned": // Written at the end of a successful scan, too late to react to this.
                             case "SharedBookmarkToSquadron": // Unnecessary.
                             case "TradeMicroResources": // This is always followed by `ShipLocker`, which we can use to keep our inventory up to date
