@@ -156,16 +156,13 @@
   <data name="header_originstation" xml:space="preserve">
     <value>出発ステーション:</value>
   </data>
-  <data name="header_faction" xml:space="preserve">
-    <value>ファクション:</value>
-  </data>
+  
   <data name="header_cg_tier" xml:space="preserve">
     <value>階級:</value>
   </data>
   <data name="header_cg_percentileband" xml:space="preserve">
     <value>パーセンタイルバンド:</value>
-    <comment>header_cg_percentileband
-A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
+    <comment>A UI element describing the current pilot's ranking in an active community goal (e.g. top 75%, top 50%, etc.</comment>
   </data>
   <data name="header_cg_reward" xml:space="preserve">
     <value>報酬(クレジット):</value>
