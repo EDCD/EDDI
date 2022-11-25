@@ -106,11 +106,11 @@
     <comment>Economy type Colony</comment>
   </data>
   <data name="Extraction" xml:space="preserve">
-    <value>Abbau</value>
+    <value>Förderung</value>
     <comment>Economy type Extraction</comment>
   </data>
   <data name="HighTech" xml:space="preserve">
-    <value>Hochtechnologie</value>
+    <value>Hightech</value>
     <comment>Economy type HighTech</comment>
   </data>
   <data name="Industrial" xml:space="preserve">
@@ -130,7 +130,7 @@
     <comment>Economy type Refinery</comment>
   </data>
   <data name="Service" xml:space="preserve">
-    <value>Kundendienst</value>
+    <value>Dienstleistung</value>
     <comment>Economy type Service</comment>
   </data>
   <data name="Terraforming" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>Economy type Damaged</comment>
   </data>
   <data name="Carrier" xml:space="preserve">
-    <value>Privatunternehmen</value>
+    <value>Privateigentum</value>
     <comment>Economy Type Carrier</comment>
   </data>
   <data name="Engineer" xml:space="preserve">
