@@ -275,7 +275,7 @@ namespace EddiStatusService
                     status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
                     status.bodyname = JsonParsing.getString(data, "BodyName"); // Might be a station name if we're in an orbital station
                     status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
-                    status.credit_balance = JsonParsing.getULong(data, "Balance");
+                    status.credit_balance = JsonParsing.getOptionalULong(data, "Balance");
 
                     // When on foot
                     status.oxygen = JsonParsing.getOptionalDecimal(data, "Oxygen") * 100; // Convert Oxygen to a 0-100 percent scale
