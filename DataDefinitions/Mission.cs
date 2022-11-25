@@ -93,6 +93,8 @@ namespace EddiDataDefinitions
                 GetDestinationStation();
                 GetTargetFaction();
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(destinationstation));
+                OnPropertyChanged(nameof(targetfaction));
             }
         }
 
