@@ -132,9 +132,7 @@
   <data name="add_button" xml:space="preserve">
     <value>Добавить закладку</value>
   </data>
-  <data name="add_button_tooltip" xml:space="preserve">
-    <value>Добавить закладку из результата запроса</value>
-  </data>
+  
   <data name="find_text" xml:space="preserve">
     <value>Найти:</value>
   </data>
@@ -174,9 +172,7 @@
   <data name="remove_button" xml:space="preserve">
     <value>Удалить</value>
   </data>
-  <data name="remove_button_tooltip" xml:space="preserve">
-    <value>Позволяет вручную удалить закладку.</value>
-  </data>
+  
   <data name="remove_caption" xml:space="preserve">
     <value>Удалить закладку</value>
   </data>
@@ -186,65 +182,9 @@
   <data name="search" xml:space="preserve">
     <value>Поиск</value>
   </data>
-  <data name="search_button_tooltip" xml:space="preserve">
-    <value>Выполнить запрос</value>
-  </data>
+  
   <data name="search_distance" xml:space="preserve">
     <value>Максимальное расстояние поиска от главной звезды (с. с.):</value>
-  </data>
-  <data name="search_query_crime_facilitator" xml:space="preserve">
-    <value>Контакты властей</value>
-  </data>
-  <data name="search_query_missions_expiring" xml:space="preserve">
-    <value>Система истекающих миссий</value>
-  </data>
-  <data name="search_query_missions_farthest" xml:space="preserve">
-    <value>Дальняя система миссий</value>
-  </data>
-  <data name="search_query_missions_most" xml:space="preserve">
-    <value>Система большинства миссий</value>
-  </data>
-  <data name="search_query_missions_nearest" xml:space="preserve">
-    <value>Ближайшая система миссий</value>
-  </data>
-  <data name="search_query_missions_route" xml:space="preserve">
-    <value>Система кратчайших маршрутов</value>
-  </data>
-  <data name="search_query_missions_source" xml:space="preserve">
-    <value>Система источника груза</value>
-  </data>
-  <data name="search_query_missions_update" xml:space="preserve">
-    <value>Обновление системы миссии</value>
-  </data>
-  <data name="search_query_services_encoded" xml:space="preserve">
-    <value>Торговец кодированными материалами</value>
-  </data>
-  <data name="search_query_services_guardian" xml:space="preserve">
-    <value>Броке по технологиям стражей</value>
-  </data>
-  <data name="search_query_services_human" xml:space="preserve">
-    <value>Брокер по человеческим технологиям</value>
-  </data>
-  <data name="search_query_services_manufactured" xml:space="preserve">
-    <value>Торговец промышленными материалами</value>
-  </data>
-  <data name="search_query_services_raw" xml:space="preserve">
-    <value>Торговец сырьем</value>
-  </data>
-  <data name="search_query_galaxy_scoop" xml:space="preserve">
-    <value>Заправляющая звезда</value>
-  </data>
-  <data name="search_type_crime" xml:space="preserve">
-    <value>Преступление</value>
-  </data>
-  <data name="search_type_missions" xml:space="preserve">
-    <value>Миссии</value>
-  </data>
-  <data name="search_type_services" xml:space="preserve">
-    <value>Сервисы</value>
-  </data>
-  <data name="search_type_galaxy" xml:space="preserve">
-    <value>Галактика</value>
   </data>
   <data name="station_textbox_desc" xml:space="preserve">
     <value>Станция:</value>
@@ -258,9 +198,6 @@
   <data name="update_button_tooltip" xml:space="preserve">
     <value>Обновить закладку на основе вашей текущей широты и долготы</value>
   </data>
-  <data name="route_details_desc" xml:space="preserve">
-    <value>Успешный поиск вызывает событие "Детали маршрута".</value>
-  </data>
   <data name="bm_export_button" xml:space="preserve">
     <value>Экспортировать закладки</value>
   </data>
@@ -269,8 +206,7 @@
   </data>
   <data name="header_heading" xml:space="preserve">
     <value>Направление:</value>
-    <comment>header_heading
-A UI element describing a compass heading for surface navigation</comment>
+    <comment> A UI element describing a compass heading for surface navigation</comment>
   </data>
   <data name="header_distanceKm" xml:space="preserve">
     <value>Расстояние (км):</value>
@@ -281,9 +217,7 @@ A UI element describing a compass heading for surface navigation</comment>
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Радиус (в метрах), который вызывает события "Ближайшая закладка"</value>
   </data>
-  <data name="extra_details_tooltip" xml:space="preserve">
-    <value>Показать/Спрятать дополнительную информацию о выбранной закладки планеты</value>
-  </data>
+  
   <data name="use_straight_path" xml:space="preserve">
     <value>Использовать прямой путь?</value>
   </data>
@@ -301,4 +235,41 @@ A UI element describing a compass heading for surface navigation</comment>
     <value>Все</value>
     <comment>Import or export all</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

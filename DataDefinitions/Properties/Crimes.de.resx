@@ -158,15 +158,15 @@
     <comment>Crime dumpingNearStation</comment>
   </data>
   <data name="dockingMinorBlockingAirlock" xml:space="preserve">
-    <value>Stationsschlitz kurzzeitig blockiert</value>
+    <value>Blockieren der Luftschleuse</value>
     <comment>Crime dockingMinorBlockingAirlock</comment>
   </data>
   <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>Stationsschlitz blockiert</value>
+    <value>Blockieren der Luftschleuse</value>
     <comment>Crime dockingMajorBlockingAirlock</comment>
   </data>
   <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
-    <value>Landeplatz kurzzeitig blockiert</value>
+    <value>Landeplatz blockiert</value>
     <comment>Crime dockingMinorBlockingLandingPad</comment>
   </data>
   <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
@@ -174,11 +174,11 @@
     <comment>Crime dockingMajorBlockingLandingPad</comment>
   </data>
   <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>Übertretung</value>
+    <value>Unbefugtes Andocken</value>
     <comment>Crime dockingMinorTresspass</comment>
   </data>
   <data name="dockingMajorTresspass" xml:space="preserve">
-    <value>Hauptübertretung</value>
+    <value>Unbefugtes Andocken</value>
     <comment>Crime dockingMajorTresspass</comment>
   </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>Crime onFoot_carryingStolenGoods</comment>
   </data>
   <data name="onFoot_arcCutterUse" xml:space="preserve">
-    <value>Plasma-Schneider</value>
+    <value>Benutzung des Plasma-Schneider</value>
     <comment>Crime onFoot_arcCutterUse</comment>
   </data>
   <data name="onFoot_carryingIllegalData" xml:space="preserve">

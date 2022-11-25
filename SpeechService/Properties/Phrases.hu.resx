@@ -114,8 +114,24 @@
     <value>nulla</value>
     <comment/>
   </data>
+  <data name="shortDecimalThousand" xml:space="preserve">
+    <value>{0} ezer</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 thousand</comment>
+  </data>
   
   
+  <data name="shortDecimalTrillion" xml:space="preserve">
+    <value>{0} trillió</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 trillion</comment>
+  </data>
+  <data name="shortDecimalQuadrillion" xml:space="preserve">
+    <value>{0} kvadrillió</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quadrillion</comment>
+  </data>
+  <data name="shortDecimalQuintillion" xml:space="preserve">
+    <value>{0} quintillió</value>
+    <comment>Where {0} is a short decimal value, e.g. 1.4 quintillion</comment>
+  </data>
   
   
   
@@ -177,13 +193,15 @@
   
   
   
+  <data name="nearlyMillionAndAHalf" xml:space="preserve">
+    <value>közel {0} és fél millió</value>
+    <comment>Where {0} is a whole number in the millions order</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="nearlyBillionAndAHalf" xml:space="preserve">
+    <value>közel {0} és fél milliárd</value>
+    <comment>Where {0} is a whole number in the billions order</comment>
+  </data>
   
   
   

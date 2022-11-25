@@ -130,15 +130,15 @@
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zona di combattimento ad alta intensità</value>
+    <value>Combattimento intenso</value>
     <comment>Conflict Zone (High Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zona di combattimento a media intensità</value>
+    <value>Combattimento moderato</value>
     <comment>Conflict Zone (Medium Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zona di combattimento a bassa intensità</value>
+    <value>Combattimento leggero</value>
     <comment>Conflict Zone (Low Intensity)</comment>
   </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
@@ -170,7 +170,7 @@
     <comment>NonHuman signal</comment>
   </data>
   <data name="USS_Type_WeaponsFire" xml:space="preserve">
-    <value>Colpi di Arma da Fuoco</value>
+    <value>Spari</value>
     <comment>WeaponsFire signal</comment>
   </data>
   <data name="USS_Type_MissionTarget" xml:space="preserve">
@@ -190,19 +190,19 @@
     <comment>TradingBeacon signal</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
-    <value>Sito di estrazione mineraria ad alta pericolosità</value>
+    <value>Sito minerario pericoloso</value>
     <comment>ResourceExtraction Site (High Intensity)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
-    <value>Sito di estrazione mineraria a bassa pericolosità</value>
+    <value>Sito minerario poco pericoloso</value>
     <comment>Resource Extraction site (Low)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
-    <value>Sito di estrazione mineraria</value>
+    <value>Sito minerario</value>
     <comment>Resource Extraction Site</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
-    <value>Sito di estrazione mineraria ad altissima pericolosità</value>
+    <value>Sito minerario molto pericoloso</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
   <data name="NumberStation" xml:space="preserve">
@@ -396,5 +396,17 @@
   <data name="Cargo" xml:space="preserve">
     <value>Relitto minore</value>
     <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Warzone_TG_Med" xml:space="preserve">
+    <value>Combattimento alieno moderato</value>
+    <comment>Medium Intensity Thargoid Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_Low" xml:space="preserve">
+    <value>Combattimento alieno leggero</value>
+    <comment>Low Intensity Thargoind Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_High" xml:space="preserve">
+    <value>Combattimento alieno intenso</value>
+    <comment>High Intensity Thargoid Conflict Zone</comment>
   </data>
 </root>

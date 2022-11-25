@@ -218,11 +218,11 @@
     <comment>Material polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Dati da Scansione di Pacchetti di Dati Anomali</value>
+    <value>Blocco anomalo di scansioni</value>
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Echi Atipici in Traccie di Salto Disturbate</value>
+    <value>Echi di Scia atipici e irregolari</value>
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -230,7 +230,7 @@
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Dati da Emissioni Codificate Eccezionali</value>
+    <value>Dati di emissioni codificate eccezionali</value>
     <comment>Material scrambledemissiondata</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
@@ -242,11 +242,11 @@
     <comment>Material encryptedfiles</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Gamma (Storia)</value>
+    <value>Dati di tipo Gamma (Storia) da obelisco</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Telemetria Anomala FSD</value>
+    <value>Telemetria di Modulazione Anomala</value>
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
@@ -270,7 +270,7 @@
     <comment>Material scanarchives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Beta (Cultura)</value>
+    <value>Dati di tipo Beta (Cultura) da obelisco</value>
     <comment>Material ancientculturaldata</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Material symmetrickeys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Strane Soluzioni di Traccie di Salto</value>
+    <value>Strane soluzioni di Scia</value>
     <comment>Material wakesolutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Alfa (Biologia)</value>
+    <value>Dati di tipo Alfa (Biologia) da obelisco</value>
     <comment>Material ancientbiologicaldata</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
@@ -338,11 +338,11 @@
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Delta (Linguistica)</value>
+    <value>Dati di tipo Delta (Linguistica) da obelisco</value>
     <comment>Material ancientlanguagedata</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Dati da Obelisco del Sentiero Epsilon (Tecnologia)</value>
+    <value>Dati di tipo Epsilon (Tecnologia) da obelisco</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
@@ -350,7 +350,7 @@
     <comment>Material tg_residuedata</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Dati Traccia di Salto Thargoid</value>
+    <value>Dati di Scia Thargoid</value>
     <comment>Material unknownwakedata</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
@@ -366,7 +366,7 @@
     <comment>Material classifiedscandata</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Eccezioni ai Dati di Traccia da Salto</value>
+    <value>Dati su eccezioni di Scia</value>
     <comment>Material dataminedwake</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
@@ -602,7 +602,7 @@
     <comment>Material boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
-    <value>Cella di Ricarica dei Guardiani</value>
+    <value>Cella dei Guardiani</value>
     <comment>Material guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
@@ -618,7 +618,7 @@
     <comment>Material guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Condotte di Potenza dei Guardiani</value>
+    <value>Conduttore dei Guardiani</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
   <data name="guardian_moduleblueprint" xml:space="preserve">

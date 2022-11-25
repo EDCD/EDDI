@@ -186,7 +186,7 @@
     <comment>Crime collidedAtSpeedInNoFireZone</comment>
   </data>
   <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
-    <value>Collisione con conseguente danneggiamento di proprietà</value>
+    <value>Collisione con danneggiamento</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
   <data name="recklessWeaponsDischarge" xml:space="preserve">

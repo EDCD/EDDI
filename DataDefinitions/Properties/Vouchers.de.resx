@@ -134,7 +134,7 @@
     <comment>settlement voucher</comment>
   </data>
   <data name="trade" xml:space="preserve">
-    <value>Handel</value>
+    <value>Handelsgutschein</value>
     <comment>trade voucher</comment>
   </data>
 </root>

@@ -130,7 +130,7 @@
     <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "# Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit " 'Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
     <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit " Info an..." bzw. " Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
@@ -279,7 +279,7 @@
     <value>Name (gesprochen)</value>
   </data>
   <data name="tab_commander_test_phonetic_name" xml:space="preserve">
-    <value>Hören</value>
+    <value>Anhören</value>
   </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Internationales Phonetisches Alphabet</value>
