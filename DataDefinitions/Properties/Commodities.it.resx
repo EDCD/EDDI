@@ -442,7 +442,7 @@
     <comment>Commodity DamnaCarapaces</comment>
   </data>
   <data name="DataCore" xml:space="preserve">
-    <value>Nucleo Dati</value>
+    <value>Nucleo dati</value>
     <comment>Commodity DataCore</comment>
   </data>
   <data name="DeltaPhoenicisPalms" xml:space="preserve">
@@ -490,7 +490,7 @@
     <comment>Commodity EmergencyPowerCells</comment>
   </data>
   <data name="EncriptedDataStorage" xml:space="preserve">
-    <value>Archivio Dati Criptato</value>
+    <value>Archivio dati criptato</value>
     <comment>Commodity EncriptedDataStorage</comment>
   </data>
   <data name="EncryptedCorrespondence" xml:space="preserve">
@@ -754,7 +754,7 @@
     <comment>Commodity Lanthanum</comment>
   </data>
   <data name="LargeExplorationDataCash" xml:space="preserve">
-    <value>Contenitore Grande di dati ricavati dalla sorveglianza</value>
+    <value>Grande deposito di dati d'indagini</value>
     <comment>Commodity LargeExplorationDataCash</comment>
   </data>
   <data name="LavianBrandy" xml:space="preserve">
@@ -850,7 +850,7 @@
     <comment>Commodity MilitaryGradeFabrics</comment>
   </data>
   <data name="MilitaryIntelligence" xml:space="preserve">
-    <value>Dati segreti militari</value>
+    <value>Segreti militari</value>
     <comment>Commodity MilitaryIntelligence</comment>
   </data>
   <data name="MineralExtractors" xml:space="preserve">
@@ -1126,7 +1126,7 @@
     <comment>Commodity Slaves</comment>
   </data>
   <data name="SmallExplorationDataCash" xml:space="preserve">
-    <value>Contenitore piccolo di Dati di Sorveglianza</value>
+    <value>Piccolo deposito di dati d'indagini</value>
     <comment>Commodity SmallExplorationDataCash</comment>
   </data>
   <data name="SoontillRelics" xml:space="preserve">
@@ -1174,7 +1174,7 @@
     <comment>Commodity Taaffeite</comment>
   </data>
   <data name="TacticalData" xml:space="preserve">
-    <value>Dati Tattici</value>
+    <value>Dati tattici</value>
     <comment>Commodity TacticalData</comment>
   </data>
   <data name="TanmarkTranquilTea" xml:space="preserve">
@@ -1286,7 +1286,7 @@
     <comment>Commodity UnknownTechnologySamples</comment>
   </data>
   <data name="UnstableDataCore" xml:space="preserve">
-    <value>Nucleo di Dati Instabile</value>
+    <value>Nucleo dati instabile</value>
     <comment>Commodity UnstableDataCore</comment>
   </data>
   <data name="Uraninite" xml:space="preserve">
@@ -1330,7 +1330,7 @@
     <comment>Commodity USSCargoTechnicalBlueprints</comment>
   </data>
   <data name="USSCargoTradeData" xml:space="preserve">
-    <value>Dati Commerciali</value>
+    <value>Dati commerciali</value>
     <comment>Commodity USSCargoTradeData</comment>
   </data>
   <data name="UszaianTreeGrub" xml:space="preserve">
