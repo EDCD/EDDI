@@ -105,6 +105,10 @@
     <value>Missionen</value>
     
   </data>
+  <data name="query_group_services" xml:space="preserve">
+    <value>Services</value>
+    
+  </data>
   <data name="query_type_neutron" xml:space="preserve">
     <value>Neutronensternroute</value>
     
@@ -139,7 +143,7 @@
     <comment>RouteDetails `source` query description</comment>
   </data>
   <data name="query_type_encoded" xml:space="preserve">
-    <value>Materialienhändler - verschlüsselt</value>
+    <value>Händler - kodiertes Material</value>
     <comment>RouteDetails `encoded` query description</comment>
   </data>
   <data name="query_type_facilitator" xml:space="preserve">
@@ -147,22 +151,26 @@
     <comment>RouteDetails `facilitator` query description</comment>
   </data>
   <data name="query_type_guardian" xml:space="preserve">
-    <value>Technologie-Broker - Guardian</value>
+    <value>Broker - Guardian-Technik</value>
     <comment>RouteDetails `guardian` query description</comment>
   </data>
   <data name="query_type_human" xml:space="preserve">
-    <value>Technologie-Broker - Menschlich</value>
+    <value>Broker - menschl. Technik</value>
     <comment>RouteDetails `human` query description</comment>
   </data>
   <data name="query_type_manufactured" xml:space="preserve">
-    <value>Materialienhändler - gefertigt</value>
+    <value>Händler - gefertigtes Material</value>
     <comment>RouteDetails `manufactured` query description</comment>
   </data>
   <data name="query_type_raw" xml:space="preserve">
-    <value>Materialienhändler - roh</value>
+    <value>Händler - Rohmaterial</value>
     <comment>RouteDetails `raw` query description</comment>
   </data>
   <data name="query_type_carrier" xml:space="preserve">
     <value>Carrierroute</value>
+  </data>
+  <data name="query_type_scorpion" xml:space="preserve">
+    <value>SRV Scorpion Anbieter</value>
+    <comment>RouteDetails `scorpion` query description</comment>
   </data>
 </root>
