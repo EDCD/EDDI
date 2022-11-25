@@ -126,18 +126,24 @@
   <data name="blank_faction" xml:space="preserve">
     <value>Frakció neve</value>
   </data>
-  
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Nyomon követheti a bűnügyi nyilvántartásban szereplő információkat.</value>
+  </data>
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Bűntett figyelő</value>
   </data>
-  
+  <data name="find_button" xml:space="preserve">
+    <value>Jogi létesítmények keresése</value>
+  </data>
   <data name="find_button_desc" xml:space="preserve">
     <value>A legközelebbi Interstellar Factor rendszerre és állomásra indít keresést.</value>
   </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Vérdíjak</value>
   </data>
-  
+  <data name="header_claims" xml:space="preserve">
+    <value>Tulajdon</value>
+  </data>
   <data name="header_faction" xml:space="preserve">
     <value>Frakció</value>
   </data>
