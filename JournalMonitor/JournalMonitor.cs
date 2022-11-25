@@ -1676,23 +1676,28 @@ namespace EddiJournalMonitor
                                     string loadout = JsonParsing.getString(data, "Loadout");
                                     bool playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
                                     int? id = JsonParsing.getOptionalInt(data, "ID");
-
-                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, id) { raw = line, fromLoad = fromLogLoad });
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "DockSRV":
                                 {
-                                    int srvId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new SRVDockedEvent(timestamp, srvId) { raw = line, fromLoad = fromLogLoad });
+                                    int? srvId = JsonParsing.getOptionalInt(data, "ID");
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "SRVDestroyed":
                                 {
                                     string vehicle = "srv";
-                                    int srvId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, srvId) { raw = line, fromLoad = fromLogLoad });
+                                    int? srvId = JsonParsing.getOptionalInt(data, "ID");
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;
@@ -1716,7 +1721,7 @@ namespace EddiJournalMonitor
                                 {
                                     string vehicle = "fighter";
                                     int fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, fighterId) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, null, fighterId) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;

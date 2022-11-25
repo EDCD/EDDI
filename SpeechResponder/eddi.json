@@ -2242,7 +2242,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} docked.",
+      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{if len(event.srvType) > 0:\r\n    {event.srvType} docked.\r\n|else: \r\n    {OneOf(\"Buggy\", \"SRV\")} docked.\r\n}",
       "default": true,
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
@@ -2251,7 +2251,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
+      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{if len(event.srvType) > 0:\r\n    {event.srvType} {OneOf(\"launched\", \"away\")}.\r\n|else: \r\n    {OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.\r\n}",
       "default": true,
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"

@@ -40,11 +40,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jump engaged` updated to add a new `docked` property.
       * `Location` updated to add `faction` and `conflicts` properties (like the `Jumped` event).
       * `Route details` updated to add `tritiumused` property for fleet carrier tritium consumption.
+      * `SRV docked` updated to add properties `srvType` and `srvTypeInvariant`.
+      * `SRV launched` updated to add properties `srvType` and `srvTypeInvariant`.
       * `Mission accepted` updated to add `tags` and `invariantTags` properties.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.
       * `Next destination` added, triggered when selecting an in-system destination.
       * `Permit acquired` added, triggered when you acquire a permit from the mission board.
+      * `Vehicle destroyed` updated to add properties `srvType` and `srvTypeInvariant` when vehicle is an SRV
     * Functions
       * Fixed a bug that could cause the `ShipDetails()` function to fail to resolve some ship model names.
       * Fixed a bug that could cause the `TrafficDetails()` function to fail.
@@ -99,6 +102,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship repaired` updated to fix broken weapon mount details.
       * `Ship transfer initiated` updated to refine time estimates.
       * `Signal detected` revised to correct the "Convoy Dispersal Pattern" source and to report Compromised Nav Beacons by default.
+      * `SRV docked` updated to make use of the new `srvType` property.
+      * `SRV launched` updated to make use of the new `srvType` property.
       * `Star report` revised to correct a grammar bug when reporting star class.
       * `Star scanned` revised to report primary stars unknown to Universal Cartographics.
       * `Surface signals detected` updated to indicate the body containing the signals, when available.
