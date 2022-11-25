@@ -222,7 +222,7 @@
     <comment>Station Service: TechBroker</comment>
   </data>
   <data name="MaterialTrader" xml:space="preserve">
-    <value>Commerciante di Materiali</value>
+    <value>Mercante di Materiali</value>
     <comment>Station Service: Material Trader</comment>
   </data>
   <data name="StationMenu" xml:space="preserve">
@@ -238,11 +238,11 @@
     <comment>Station Service: CarrierFuel</comment>
   </data>
   <data name="CarrierManagement" xml:space="preserve">
-    <value>Amministrazione delle Porta-Navi</value>
+    <value>Amministrazione della Porta-Navi</value>
     <comment>Station Service: CarrierManagement</comment>
   </data>
   <data name="CarrierVendor" xml:space="preserve">
-    <value>Commerciante Trasporto Navi</value>
+    <value>Commerciante di Porta Navi</value>
     <comment>Station Service: CarrierVendor</comment>
   </data>
   <data name="Livery" xml:space="preserve">
@@ -280,5 +280,9 @@
   <data name="FrontlineSolutions" xml:space="preserve">
     <value>Frontline Solutions</value>
     <comment>Station Service FrontlineSolutions</comment>
+  </data>
+  <data name="Captain" xml:space="preserve">
+    <value>Capitano</value>
+    <comment>Station Service "Captain" - the service representing the captain of a fleet carrier</comment>
   </data>
 </root>
