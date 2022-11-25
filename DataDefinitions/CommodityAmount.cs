@@ -1,10 +1,11 @@
-﻿using Utilities;
+﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class CommodityAmount
     {
-        [PublicAPI]
+        [PublicAPI, JsonIgnore]
         public string commodity => commodityDefinition.localizedName;
 
         [PublicAPI]
@@ -14,6 +15,7 @@ namespace EddiDataDefinitions
 
         public CommodityDefinition commodityDefinition { get; }
 
+        [JsonIgnore]
         public string edname => commodityDefinition.edname;
 
         public CommodityAmount(CommodityDefinition commodity, int amount)

@@ -125,6 +125,31 @@ namespace EddiDataDefinitions
                             newBodyBuilder[index].mappedEfficiently = oldBody.mappedEfficiently;
                         }
                     }
+                    if (oldBody.rings?.Any() ?? false)
+                    {
+                        if (newBodyBuilder[index].rings is null)
+                        {
+                            newBodyBuilder[index].rings = new List<Ring>();
+                        }
+                        foreach (var oldRing in oldBody.rings)
+                        {
+                            var newRing = newBodyBuilder[index].rings.FirstOrDefault(r => r.name == oldRing.name);
+                            if (oldRing.mapped != null)
+                            {
+                                if (newRing != null)
+                                {
+                                    newRing.mapped = oldRing.mapped;
+                                    newRing.hotspots = oldRing.hotspots;
+                                }
+                                else
+                                {
+                                    // Our data source didn't contain any data about a ring we've scanned.
+                                    // We add it here because we scanned the ring ourselves and are confident that the data is accurate
+                                    newBodyBuilder[index].rings.Add(oldRing);
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {

@@ -3997,6 +3997,18 @@ namespace EddiJournalMonitor
                                             hotspots.Add(new CommodityAmount(type, amount));
                                         }
                                         hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
+
+                                        var ring = EDDI.Instance?.CurrentStarSystem?.bodies?
+                                            .Where(b => b.rings.Any())
+                                            .SelectMany(b => b?.rings)?
+                                            .FirstOrDefault(r => r.name == bodyName);
+                                        if (ring != null)
+                                        {
+                                            ring.mapped = timestamp;
+                                            ring.hotspots = hotspots;
+                                            StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                                        }
+
                                         events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else

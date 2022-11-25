@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -28,6 +29,14 @@ namespace EddiDataDefinitions
         /// <summary>The outer radius of the ring, in kilometres</summary>
         [PublicAPI]
         public decimal outerradius { get; set; }
+
+        /// <summary>When we mapped this object, if we have (DateTime)</summary>
+        [PublicAPI]
+        public DateTime? mapped { get; set; }
+
+        /// <summary>The hotpots we found when we scanned this object, if any</summary>
+        [PublicAPI]
+        public List<CommodityAmount> hotspots { get; set; } = new List<CommodityAmount>();
 
         // Not intended to be user facing
 

@@ -643,6 +643,8 @@ Details of a body's rings.
   - *innerradius* - the inner radius of the ring, in km
   - *outerradius* - the outer radius of the ring, in km
   - *composition* - the composition of the ring
+  - *mapped* - a DateTime value that is set when the ring is mapped and unset otherwise.
+  - *hotspots* - a list of ring hotspots (as objects with properties 'commodity' and 'amount'), available for mapped rings only
 
 #### SolidComposition
 

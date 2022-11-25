@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Improved parsing of Odyssey settlements from EDSM API data.
     * Don't assume that bodies retrieved from EDSM have already been mapped.
     * Overhauled route plotting functions.
+    * `Ring` objects now contain `mapped` and `hotspots` properties to allow tracking mapped rings and hotspots within a system.
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
