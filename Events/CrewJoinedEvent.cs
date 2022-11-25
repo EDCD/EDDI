@@ -13,9 +13,13 @@ namespace EddiEvents
         [PublicAPI("The name of the captain of the crew you have joined")]
         public string captain { get; private set; }
 
-        public CrewJoinedEvent(DateTime timestamp, string captain) : base(timestamp, NAME)
+        [PublicAPI("True if you joined via telepresence")]
+        public bool? telepresence { get; private set; }
+
+        public CrewJoinedEvent(DateTime timestamp, string captain, bool? telepresence) : base(timestamp, NAME)
         {
             this.captain = captain;
+            this.telepresence = telepresence;
         }
     }
 }

@@ -85,6 +85,7 @@
     <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="CommunityGoalsEvent.cs" />
+    <Compile Include="CrewSessionEndedEvent.cs" />
     <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="FinePaidEvent.cs" />
     <Compile Include="FlightAssistEvent.cs" />

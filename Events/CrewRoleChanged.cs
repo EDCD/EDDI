@@ -13,9 +13,13 @@ namespace EddiEvents
         [PublicAPI("The crew role you have been assigned (gunner, fighter, idle)")]
         public string role { get; private set; }
 
-        public CrewRoleChangedEvent(DateTime timestamp, string role) : base(timestamp, NAME)
+        [PublicAPI("True if you joined via telepresence")]
+        public bool? telepresence { get; private set; }
+
+        public CrewRoleChangedEvent(DateTime timestamp, string role, bool? telepresence) : base(timestamp, NAME)
         {
             this.role = role;
+            this.telepresence = telepresence;
         }
     }
 }

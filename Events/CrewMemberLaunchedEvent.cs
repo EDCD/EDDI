@@ -13,11 +13,15 @@ namespace EddiEvents
         [PublicAPI("The name of the crew member who launched")]
         public string crew { get; private set; }
 
+        [PublicAPI("True if the crew member joined via telepresence")]
+        public bool? telepresence { get; private set; }
+
         public int id { get; private set; }
 
-        public CrewMemberLaunchedEvent(DateTime timestamp, string crew, int id) : base(timestamp, NAME)
+        public CrewMemberLaunchedEvent(DateTime timestamp, string crew, int id, bool? telepresence) : base(timestamp, NAME)
         {
             this.crew = crew;
+            this.telepresence = telepresence;
             this.id = id;
         }
     }

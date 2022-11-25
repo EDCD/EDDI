@@ -704,6 +704,15 @@
       "script": "{if event.role = 'Gunner':\r\n  您现在是炮长.\r\n|elif event.role = 'Fighter':\r\n  您现在是舰载机操作员.\r\n|elif event.role = 'Idle':\r\n  您现在不担任职务.\r\n}",
       "default": true
     },
+    "Crew session ended": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Crew session ended",
+      "description": "Triggered when you disband your crew and end the multicrew session"
+    },
     "Crime check station": {
       "name": "Crime check station",
       "description": "Check claims, fines & bounties related to the current station",

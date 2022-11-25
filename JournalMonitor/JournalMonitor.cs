@@ -2664,8 +2664,8 @@ namespace EddiJournalMonitor
                                 {
                                     string captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    events.Add(new CrewJoinedEvent(timestamp, captain) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewJoinedEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2673,15 +2673,16 @@ namespace EddiJournalMonitor
                                 {
                                     string captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    events.Add(new CrewLeftEvent(timestamp, captain) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewLeftEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "ChangeCrewRole":
                                 {
                                     string role = getRole(data, "Role");
-                                    events.Add(new CrewRoleChangedEvent(timestamp, role) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2689,8 +2690,8 @@ namespace EddiJournalMonitor
                                 {
                                     string member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    events.Add(new CrewMemberJoinedEvent(timestamp, member) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberJoinedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2698,8 +2699,8 @@ namespace EddiJournalMonitor
                                 {
                                     string member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    events.Add(new CrewMemberLeftEvent(timestamp, member) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberLeftEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2707,7 +2708,8 @@ namespace EddiJournalMonitor
                                 {
                                     string name = JsonParsing.getString(data, "Crew");
                                     int fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId, telepresence) { raw = line, fromLoad = fromLogLoad });
 
                                 }
                                 handled = true;
@@ -2716,7 +2718,8 @@ namespace EddiJournalMonitor
                                 {
                                     string name = JsonParsing.getString(data, "Crew");
                                     string role = getRole(data, "Role");
-                                    events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2724,8 +2727,16 @@ namespace EddiJournalMonitor
                                 {
                                     string member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    events.Add(new CrewMemberRemovedEvent(timestamp, member) { raw = line, fromLoad = fromLogLoad });
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberRemovedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "EndCrewSession":
+                                {
+                                    var onCrime = JsonParsing.getOptionalBool(data, "OnCrime");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewSessionEndedEvent(timestamp, onCrime, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

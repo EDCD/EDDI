@@ -704,6 +704,15 @@
       "name": "Crew role changed",
       "description": "Triggered when your role in the crew changes"
     },
+    "Crew session ended": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Crew session ended",
+      "description": "Triggered when you disband your crew and end the multicrew session"
+    },
     "Crime check station": {
       "enabled": true,
       "priority": 3,

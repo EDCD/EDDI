@@ -643,6 +643,15 @@
       "name": "Crew role changed",
       "description": "Se activa cuando cambia tu rol en una tripulación"
     },
+    "Crew session ended": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Crew session ended",
+      "description": "Triggered when you disband your crew and end the multicrew session"
+    },
     "Crime check station": {
       "enabled": true,
       "priority": 3,
