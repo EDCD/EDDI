@@ -828,7 +828,7 @@
     <comment>An optical component designed to converge or diverge light.</comment>
   </data>
   <data name="WeaponComponent" xml:space="preserve">
-    <value>Componenti per armamenti</value>
+    <value>Componente per arma</value>
     <comment>A component from a personal firearm.</comment>
   </data>
   <data name="SyntheticGenome" xml:space="preserve">
