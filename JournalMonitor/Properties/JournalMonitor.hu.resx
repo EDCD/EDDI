@@ -100,5 +100,7 @@
   <data name="desc" xml:space="preserve">
     <value>Az Elite: Dangerous journal.log általános eseményeinek figyelése. Ezt ne kapcsold ki. Csak abban az esetben kapcsold ki, ha tudod, hogy mit csinálsz, mivel az EDDI több funkciójának leállásához vezethet</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Journal log figyelés</value>
+  </data>
 </root>
