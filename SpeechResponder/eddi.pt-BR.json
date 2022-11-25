@@ -1916,7 +1916,7 @@
 			"default": true
 		},
 		"Next destination": {
-			"enabled": true,
+			"enabled": false,
 			"priority": 3,
 			"responder": true,
 			"script": "{OneOf(\"Current destination is\", \"En route to\")}\r\n{if event.isBody:\r\n\t{set reportBody to BodyDetails(event.name)}\r\n    {reportBody.bodytype} {P(reportBody.shortname, 'body')}\r\n|elif event.isStation:\r\n    {if event.localizedName: \r\n        {event.localizedName} \r\n    |else: \r\n        {P(event.name, 'station')}\r\n    }\r\n|else:\r\n    {if event.localizedName: \r\n        the {event.localizedName} \r\n    |else: \r\n        a {event.name}\r\n    }\r\n}.",

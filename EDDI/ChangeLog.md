@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Don't assume that bodies retrieved from EDSM have already been mapped.
     * Overhauled route plotting functions.
     * `Ring` objects now contain `mapped` and `hotspots` properties to allow tracking mapped rings and hotspots within a system.
+    * Add a top-level `carrier` object updated from the Frontier API and various journal events (note that carrier cargo / material inventories are not yet supported).
   * Crime Monitor
     * Fixed a bug that could identify a fleet carrier as a faction station.
     * Moved navigation functions to the Navigation Monitor
