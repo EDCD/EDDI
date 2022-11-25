@@ -122,7 +122,7 @@
     <comment>Superpower type Pirate</comment>
   </data>
   <data name="Guardian" xml:space="preserve">
-    <value>Wächter</value>
+    <value>Guardian</value>
     <comment>Superpower type Guardian</comment>
   </data>
   <data name="Thargoid" xml:space="preserve">
