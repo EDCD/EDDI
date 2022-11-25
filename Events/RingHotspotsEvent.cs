@@ -20,11 +20,11 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public long? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         public long bodyId { get; private set; }
 
-        public RingHotspotsEvent(DateTime timestamp, long? systemAddress, string bodyName, long bodyId, List<CommodityAmount> hotspots) : base(timestamp, NAME)
+        public RingHotspotsEvent(DateTime timestamp, ulong? systemAddress, string bodyName, long bodyId, List<CommodityAmount> hotspots) : base(timestamp, NAME)
         {
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;

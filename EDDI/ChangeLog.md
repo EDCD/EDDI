@@ -42,6 +42,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Route details` updated to add `tritiumused` property for fleet carrier tritium consumption.
       * `SRV docked` updated to add properties `srvType` and `srvTypeInvariant`.
       * `SRV launched` updated to add properties `srvType` and `srvTypeInvariant`.
+      * `Surface signals detected` event updated to add a new property `detectionType` with values "FSS" or "SAA".
       * `Mission accepted` updated to add `tags` and `invariantTags` properties.
       * `Nav route` added, triggered when a route is plotted in the Galaxy Map.
       * `Near bookmark` added, triggered when entering or departing the (customizable) nearby radius of a bookmark.

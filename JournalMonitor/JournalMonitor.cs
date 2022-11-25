@@ -3950,9 +3950,36 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "FSSBodySignals":
+                                {
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
+                                    long bodyId = JsonParsing.getLong(data, "BodyID");
+                                    data.TryGetValue("Signals", out object signalsVal);
+
+                                    // These are surface signal sources from a body that we've scanned
+                                    List<SignalAmount> surfaceSignals = new List<SignalAmount>();
+                                    foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                    {
+                                        SignalSource source;
+                                        string signalSource = JsonParsing.getString(signal, "Type");
+                                        source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                        var localizedName = JsonParsing.getString(data, "Type_Localised");
+                                        if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                        {
+                                            source.fallbackLocalizedName = localizedName;
+                                        }
+                                        int amount = JsonParsing.getInt(signal, "Count");
+                                        surfaceSignals.Add(new SignalAmount(source, amount));
+                                    }
+                                    surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
+                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "SAASignalsFound":
                                 {
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
                                     data.TryGetValue("Signals", out object signalsVal);
@@ -3990,7 +4017,7 @@ namespace EddiJournalMonitor
                                             surfaceSignals.Add(new SignalAmount(source, amount));
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                        events.Add(new SurfaceSignalsEvent(timestamp, systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new SurfaceSignalsEvent(timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -4774,7 +4801,6 @@ namespace EddiJournalMonitor
                             // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":
                             case "CodexEntry":
-                            case "FSSBodySignals":
                             case "ModuleBuyAndStore":
                             case "RestockVehicle":
                             case "ScanOrganic":
