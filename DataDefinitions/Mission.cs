@@ -93,8 +93,6 @@ namespace EddiDataDefinitions
                 GetDestinationStation();
                 GetTargetFaction();
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(destinationstation));
-                OnPropertyChanged(nameof(targetfaction));
             }
         }
 
@@ -509,6 +507,7 @@ namespace EddiDataDefinitions
             if (!string.IsNullOrEmpty(settlementName))
             {
                 destinationstation = settlementName;
+                OnPropertyChanged(nameof(destinationstation));
             }
         }
 
@@ -552,6 +551,7 @@ namespace EddiDataDefinitions
             if (!string.IsNullOrEmpty(factionName))
             {
                 targetfaction = factionName;
+                OnPropertyChanged(nameof(targetfaction));
             }
         }
 
