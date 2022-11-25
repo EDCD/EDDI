@@ -169,4 +169,8 @@
   <data name="query_type_carrier" xml:space="preserve">
     <value>Rota do Porta Frotas</value>
   </data>
+  <data name="query_type_scorpion" xml:space="preserve">
+    <value>Vendedor de VRS Scorpion</value>
+    <comment>RouteDetails `scorpion` query description</comment>
+  </data>
 </root>
