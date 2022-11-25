@@ -78,7 +78,7 @@ namespace EddiEddnResponder.Sender
                     : gameVersionOverride,
                 gamebuild = string.IsNullOrEmpty(gameVersionOverride) 
                     ? gameVersion.gameBuild 
-                    : gameVersionOverride
+                    : string.Empty
             };
             return header;
         }
