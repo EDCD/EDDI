@@ -281,6 +281,7 @@
   </data>
   <data name="header_visited" xml:space="preserve">
     <value>Già visitato?</value>
+    <comment>Whether you have visited a listed system in a plotted route</comment>
   </data>
   <data name="tooltip_visited" xml:space="preserve">
     <value>Hai già visitato questo luogo?</value>
