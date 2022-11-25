@@ -136,10 +136,10 @@
     <value>Cannoni a Frammentazione</value>
   </data>
   <data name="FrameShiftDriveInterdictors" xml:space="preserve">
-    <value>Interdittore a Modulazione di Sistema</value>
+    <value>Interdittore di Modulazione</value>
   </data>
   <data name="FrameShiftDrives" xml:space="preserve">
-    <value>Motori a Modulazione di Sistema</value>
+    <value>Motori a Modulazione</value>
   </data>
   <data name="FuelScoops" xml:space="preserve">
     <value>Concentratori di Carburante</value>
