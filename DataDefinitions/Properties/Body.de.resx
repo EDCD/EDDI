@@ -149,7 +149,10 @@
     <value>Station</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Massenzentrum</value>
+    <comment>BodyType "Null" (a Barycenter)</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Planetenring</value>
     <comment>Body Type PlanetaryRing</comment>
@@ -162,5 +165,8 @@
     <value>Sternenring</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
+  <data name="HyperbolicOrbiter" xml:space="preserve">
+    <value>Hyperbolisches Objekt</value>
+    <comment>Body Type HyperbolicOrbiter</comment>
+  </data>
 </root>
