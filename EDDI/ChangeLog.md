@@ -2,6 +2,13 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.2-b2
+  * Speech Responder
+    * Changes to existing scripts
+      * `Carrier docking permission` corrected occasional grammar issue
+  * Status Monitor
+    * Corrected documentation of new status destination name variables (e.g. "destination_name" rather than "destinationName").
+
 ## 4.0.2-b1
   * Core
     * Improved transitions between voices being handled by different speech synthesizers.
