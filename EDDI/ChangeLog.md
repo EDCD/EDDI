@@ -6,7 +6,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Changes to existing scripts
       * `Carrier docking permission` corrected occasional grammar issue.
-      * `Carrier service changed` corrected occasional grammar issue`
+      * `Carrier service changed` corrected occasional grammar issue.
+      * `Fuel check` added checks to prevent `Object reference not an instance of an object` errors
+
   * Status Monitor
     * Corrected documentation of new status destination name variables (e.g. "destination_name" rather than "destinationName").
 
