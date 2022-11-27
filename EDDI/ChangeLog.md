@@ -5,7 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.2-b2
   * Speech Responder
     * Changes to existing scripts
-      * `Carrier docking permission` corrected occasional grammar issue
+      * `Carrier docking permission` corrected occasional grammar issue.
+      * `Carrier service changed` corrected occasional grammar issue`
   * Status Monitor
     * Corrected documentation of new status destination name variables (e.g. "destination_name" rather than "destinationName").
 
