@@ -1086,99 +1086,100 @@ namespace EddiCore
 
         private bool eventCarrierStats(CarrierStatsEvent carrierStatsEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierStatsEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierStatsEvent.carrierID)
             {
-                FleetCarrier.name = carrierStatsEvent.name;
-                FleetCarrier.callsign = carrierStatsEvent.callsign;
-                FleetCarrier.dockingAccess = carrierStatsEvent.dockingAccess;
-                FleetCarrier.notoriousAccess = carrierStatsEvent.notoriousAccess;
-                FleetCarrier.fuel = carrierStatsEvent.fuel;
-                FleetCarrier.usedCapacity = carrierStatsEvent.usedCapacity;
-                FleetCarrier.freeCapacity = carrierStatsEvent.freeCapacity;
-                FleetCarrier.bankBalance = carrierStatsEvent.bankBalance;
-                FleetCarrier.bankReservedBalance = carrierStatsEvent.bankReservedBalance;
-                FleetCarrier.bankPurchaseAllocationsBalance = carrierStatsEvent.bankBalance -
-                                                              carrierStatsEvent.bankReservedBalance -
-                                                              carrierStatsEvent.bankAvailableBalance;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierStatsEvent.carrierID);
             }
-            return false;
+
+            FleetCarrier.name = carrierStatsEvent.name;
+            FleetCarrier.callsign = carrierStatsEvent.callsign;
+            FleetCarrier.dockingAccess = carrierStatsEvent.dockingAccess;
+            FleetCarrier.notoriousAccess = carrierStatsEvent.notoriousAccess;
+            FleetCarrier.fuel = carrierStatsEvent.fuel;
+            FleetCarrier.usedCapacity = carrierStatsEvent.usedCapacity;
+            FleetCarrier.freeCapacity = carrierStatsEvent.freeCapacity;
+            FleetCarrier.bankBalance = carrierStatsEvent.bankBalance;
+            FleetCarrier.bankReservedBalance = carrierStatsEvent.bankReservedBalance;
+            FleetCarrier.bankPurchaseAllocationsBalance = carrierStatsEvent.bankBalance -
+                                                          carrierStatsEvent.bankReservedBalance -
+                                                          carrierStatsEvent.bankAvailableBalance;
+            return true;
         }
 
         private bool eventCarrierNameChange(CarrierNameChangeEvent carrierNameChangeEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierNameChangeEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierNameChangeEvent.carrierID)
             {
-                FleetCarrier.name = carrierNameChangeEvent.name;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierNameChangeEvent.carrierID);
             }
-            return false;
+            FleetCarrier.name = carrierNameChangeEvent.name;
+            return true;
         }
 
         private bool eventCarrierFinance(CarrierFinanceEvent carrierFinanceEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierFinanceEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierFinanceEvent.carrierID)
             {
-                FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
-                FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
-                FleetCarrier.bankPurchaseAllocationsBalance = carrierFinanceEvent.bankBalance 
-                                                              - carrierFinanceEvent.bankReservedBalance 
-                                                              - carrierFinanceEvent.bankAvailableBalance;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierFinanceEvent.carrierID);
             }
-            return false;
+            FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
+            FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
+            FleetCarrier.bankPurchaseAllocationsBalance = carrierFinanceEvent.bankBalance
+                                                          - carrierFinanceEvent.bankReservedBalance
+                                                          - carrierFinanceEvent.bankAvailableBalance;
+            return true;
         }
 
         private bool eventCarrierDockingPermission(CarrierDockingPermissionEvent carrierDockingPermissionEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDockingPermissionEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDockingPermissionEvent.carrierID)
             {
-                FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
-                FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierDockingPermissionEvent.carrierID);
             }
-            return false;
+            FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
+            FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
+            return true;
         }
 
         private bool eventCarrierDepositFuel(CarrierFuelDepositEvent carrierFuelDepositEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierFuelDepositEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierFuelDepositEvent.carrierID)
             {
-                FleetCarrier.fuel = carrierFuelDepositEvent.total;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierFuelDepositEvent.carrierID);
             }
-            return false;
+            FleetCarrier.fuel = carrierFuelDepositEvent.total;
+            return true;
         }
 
         private bool eventCarrierDecommissionScheduled(CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionScheduledEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionScheduledEvent.carrierID)
             {
-                FleetCarrier.state = "pendingDecommission";
-                return true;
+                fleetCarrier = new FleetCarrier(carrierDecommissionScheduledEvent.carrierID);
             }
-            return false;
+            FleetCarrier.state = "pendingDecommission";
+            return true;
         }
 
         private bool eventCarrierDecommissionCancelled(CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
         {
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierDecommissionCancelledEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionCancelledEvent.carrierID)
             {
-                FleetCarrier.state = "normalOperation";
-                return true;
+                fleetCarrier = new FleetCarrier(carrierDecommissionCancelledEvent.carrierID);
             }
-            return false;
+            FleetCarrier.state = "normalOperation";
+            return true;
         }
 
         private bool eventCarrierBankTransfer(CarrierBankTransferEvent carrierBankTransferEvent)
         {
-            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
-            if (FleetCarrier != null && FleetCarrier.carrierID == carrierBankTransferEvent.carrierID)
+            if (FleetCarrier is null || FleetCarrier.carrierID != carrierBankTransferEvent.carrierID)
             {
-                FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
-                return true;
+                fleetCarrier = new FleetCarrier(carrierBankTransferEvent.carrierID);
             }
-            return false;
+            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
+            FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
+            return true;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)

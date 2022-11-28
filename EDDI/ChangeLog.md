@@ -3,12 +3,13 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.0.2-b2
+  * Core
+    * Fixed bugs that would cause carrier events not to trigger if the commander hadn't already obtained fleet carriier data from the Frontier API
   * Speech Responder
     * Changes to existing scripts
       * `Carrier docking permission` corrected occasional grammar issue.
       * `Carrier service changed` corrected occasional grammar issue.
       * `Fuel check` added checks to prevent `Object reference not an instance of an object` errors
-
   * Status Monitor
     * Corrected documentation of new status destination name variables (e.g. "destination_name" rather than "destinationName").
 
