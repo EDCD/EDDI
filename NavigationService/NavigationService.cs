@@ -1284,11 +1284,11 @@ namespace EddiNavigationService
         private RouteDetailsEvent RefreshLastNavigationQuery()
         {
             var config = ConfigService.Instance.navigationMonitorConfiguration;
-            if (!config.plottedRouteList.GuidanceEnabled) { return null; }
+            if (!config?.plottedRouteList?.GuidanceEnabled ?? false) { return null; }
 
             if (LastQuery.Group() == QueryGroup.missions)
             {
-                var missionsList = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
+                var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList();
                 if (missionsList
                     .Where(m => m.statusDef == MissionStatus.FromEDName("Active"))
                     .Any(m => m.destinationsystem == EDDI.Instance.CurrentStarSystem?.systemname))
@@ -1298,14 +1298,14 @@ namespace EddiNavigationService
                 }
             }
 
-            var currentPlottedRoute = ConfigService.Instance.navigationMonitorConfiguration.plottedRouteList;
-            if (currentPlottedRoute.Waypoints.All(w => w.visited))
+            var currentPlottedRoute = ConfigService.Instance.navigationMonitorConfiguration?.plottedRouteList;
+            if (currentPlottedRoute?.Waypoints.All(w => w.visited) ?? false)
             {
                 // The current route has already been completed
                 return null;
             }
 
-            var currentWaypoint = currentPlottedRoute.Waypoints.FirstOrDefault(w => w.systemAddress == (EDDI.Instance.DestinationStarSystem ?? EDDI.Instance.CurrentStarSystem)?.systemAddress);
+            var currentWaypoint = currentPlottedRoute?.Waypoints.FirstOrDefault(w => w.systemAddress == (EDDI.Instance.DestinationStarSystem ?? EDDI.Instance.CurrentStarSystem)?.systemAddress);
             var nextWaypoint = currentWaypoint is null ? null : currentPlottedRoute.Waypoints.FirstOrDefault(w => !w.visited && w.index > currentWaypoint.index);
             if (nextWaypoint != null)
             {
@@ -1314,10 +1314,10 @@ namespace EddiNavigationService
             }
 
             // Recalculate the route
-            Enum.TryParse(config.searchQuery, out QueryType lastQuery);
-            var @event = NavQuery(lastQuery, config.searchQuerySystemArg, config.searchQuerySystemArg, config.maxSearchDistanceFromStarLs, config.prioritizeOrbitalStations);
+            Enum.TryParse(config?.searchQuery, out QueryType lastQuery);
+            var @event = NavQuery(lastQuery, config?.searchQuerySystemArg, config?.searchQuerySystemArg, config?.maxSearchDistanceFromStarLs, config?.prioritizeOrbitalStations);
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, QueryType.recalculating.ToString(), @event.system, @event.station, @event.Route, @event.count, @event.missionids));
-            return new RouteDetailsEvent(DateTime.UtcNow, config.searchQuery, @event.system, @event.station, @event.Route, @event.count, @event.missionids);
+            return new RouteDetailsEvent(DateTime.UtcNow, config?.searchQuery, @event.system, @event.station, @event.Route, @event.count, @event.missionids);
         }
 
         private decimal CalculateDistance(StarSystem curr, StarSystem dest)
