@@ -390,43 +390,51 @@ namespace EddiCompanionAppService
                 // Our access token has expired. Use our refresh token to obtain a new access token.
                 RefreshToken();
             }
-
-            if (CurrentState == State.Authorized)
+            if (CurrentState != State.Authorized)
             {
-                try
+                // Happens if there is a problem with the API.  Logging in again might clear this...
+                CurrentState = State.ConnectionLost;
+                relogin();
+                if (CurrentState != State.Authorized)
                 {
-                    var request = GetRequest(url);
-                    using (var response = GetResponse(request))
+                    // No luck; give up
+                    Logout();
+                    return null;
+                }
+
+                // Looks like login worked; try again
+                return obtainData(url);
+            }
+
+            try
+            {
+                var request = GetRequest(url);
+                using (var response = GetResponse(request))
+                {
+                    if (response == null)
                     {
-                        if (response == null)
-                        {
-                            Logging.Debug("Failed to contact API server");
-                            throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                        }
-                        if (response.StatusCode == HttpStatusCode.OK)
-                        {
-                            var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
-                            return new Tuple<string, DateTime>(getResponseData(response), timestamp);
-                        }
+                        Logging.Debug("Failed to contact API server");
+                        throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                    }
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
+                        return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                     }
                 }
-                catch (WebException wex)
-                {
-                    Logging.Warn(wex.Message, wex);
-                }
             }
-            else
+            catch (WebException wex)
             {
-                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                Logging.Warn(wex.Message, wex);
             }
-            return new Tuple<string, DateTime>(null, DateTime.MinValue);
+            return null;
         }
 
         /**
          * Try to relogin if there is some issue that requires it.
          * Throws an exception if it failed to log in.
          */
-        protected internal void relogin()
+        private void relogin()
         {
             // Need to log in again.
             if (clientID == null) { return; }

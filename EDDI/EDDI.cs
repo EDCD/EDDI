@@ -490,7 +490,8 @@ namespace EddiCore
         private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
         {
             // Obtain fleet carrier data once the Frontier API connects
-            if (newstate is CompanionAppService.State.Authorized)
+            if (oldstate != CompanionAppService.State.Authorized && 
+                newstate is CompanionAppService.State.Authorized)
             {
                 RefreshFleetCarrierFromFrontierAPI(true);
             }
@@ -2933,8 +2934,7 @@ namespace EddiCore
             {
                 try
                 {
-                    var result = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
-                    var profileJson = result;
+                    var profileJson = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
                     if (profileJson != null)
                     {
                         var profile = FrontierApiProfile.FromJson(profileJson);

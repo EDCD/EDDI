@@ -347,9 +347,9 @@ namespace EddiDataDefinitions
 
         // Methods
 
-        public FleetCarrier UpdateFrom(JObject newJson, DateTime newTimeStamp)
+        public void UpdateFrom(JObject newJson, DateTime newTimeStamp)
         {
-            var newFleetCarrier = new FleetCarrier(newJson, newTimeStamp);
+            if (newJson is null) { return; }
 
             try
             {
@@ -368,142 +368,97 @@ namespace EddiDataDefinitions
                     return ascii;
                 }
 
-                newFleetCarrier.carrierID = newJson["market"]?["id"]?.ToObject<long?>();
-                newFleetCarrier.callsign = newJson["name"]?["callsign"]?.ToString();
-                newFleetCarrier.name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
-                newFleetCarrier.currentStarSystem = newJson["currentStarSystem"]?.ToString();
-                newFleetCarrier.fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
-                newFleetCarrier.state = newJson["state"]?.ToString();
-                newFleetCarrier.dockingAccess = newJson["dockingAccess"]?.ToString();
-                notoriousAccess = newJson["notoriousAccess"]?.ToObject<bool>() ?? false;
-
-                // Capacity
-                var shipPacks = newJson["capacity"]?["shipPacks"]?.ToObject<int>() ?? 0;
-                var modulePacks = newJson["capacity"]?["modulePacks"]?.ToObject<int>() ?? 0;
-                var cargoForSale = newJson["capacity"]?["cargoForSale"]?.ToObject<int>() ?? 0;
-                var cargoNotForSale = newJson["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
-                var reservedSpace = newJson["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
-                var crew = newJson["capacity"]?["crew"]?.ToObject<int>() ?? 0;
-                newFleetCarrier.usedCapacity =
-                    shipPacks +
-                    modulePacks +
-                    cargoForSale +
-                    cargoNotForSale +
-                    reservedSpace +
-                    crew;
-                newFleetCarrier.freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
-
-                // Itinerary
-                newFleetCarrier.nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
-
-                // Finances
-                newFleetCarrier.bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
-                newFleetCarrier.bankReservedBalance =
-                    newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
-                newFleetCarrier.bankPurchaseAllocationsBalance =
-                    newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                    + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                    + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
-
-                // Inventories
-                newFleetCarrier.Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());
-                newFleetCarrier.CarrierLockerAssets =
-                    JArray.FromObject(newJson["carrierLocker"]?["assets"] ?? new JArray());
-                newFleetCarrier.CarrierLockerGoods =
-                    JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
-                newFleetCarrier.CarrierLockerData =
-                    JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
-
-                // Market Buy/Sell Orders
-                newFleetCarrier.commodityPurchaseOrders =
-                    JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
-                newFleetCarrier.commoditySalesOrders =
-                    JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
-                newFleetCarrier.microresourcePurchaseOrders = JArray.FromObject(
-                    newJson["orders"]?["onfootmicroresources"]?["purchases"]?.Values() ?? new JEnumerable<JToken>());
-                newFleetCarrier.microresourceSalesOrders = JArray.FromObject(
-                    newJson["orders"]?["onfootmicroresources"]?["sales"]?.Values() ?? new JEnumerable<JToken>());
-
-                // Station properties
-                newFleetCarrier.Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
-                newFleetCarrier.Market.commoditiesupdatedat = newTimeStamp;
-                newFleetCarrier.Market.outfittingupdatedat = newTimeStamp;
-                newFleetCarrier.Market.shipyardupdatedat = newTimeStamp;
-
-                // Misc - Tritium stored in cargo
-                foreach (var cargo in Cargo)
+                // Verify that the profile information matches the current fleet carrier callsign
+                var newCallsign = newJson["name"]?["callsign"]?.ToString();
+                if (callsign != null && newCallsign != callsign)
                 {
-                    if (cargo["commodity"]?.ToString() is "Tritium")
-                    {
-                        newFleetCarrier.fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
-                    }
+                    Logging.Warn("Frontier API incorrectly configured: Returning information for Fleet Carrier " +
+                                 newCallsign + " rather than for " + callsign + ". Disregarding incorrect information.");
+                    return;
                 }
+                callsign = newCallsign;
+                json = newJson;
+                carrierID = newJson["market"]?["id"]?.ToObject<long?>();
 
+                // Information which might be newer, check timestamp prior to updating
+                if (newTimeStamp > timestamp)
+                {
+                    name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
+                    currentStarSystem = newJson["currentStarSystem"]?.ToString();
+                    fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
+                    state = newJson["state"]?.ToString();
+                    dockingAccess = newJson["dockingAccess"]?.ToString();
+                    notoriousAccess = newJson["notoriousAccess"]?.ToObject<bool>() ?? false;
+
+                    // Capacity
+                    var shipPacks = newJson["capacity"]?["shipPacks"]?.ToObject<int>() ?? 0;
+                    var modulePacks = newJson["capacity"]?["modulePacks"]?.ToObject<int>() ?? 0;
+                    var cargoForSale = newJson["capacity"]?["cargoForSale"]?.ToObject<int>() ?? 0;
+                    var cargoNotForSale = newJson["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
+                    var reservedSpace = newJson["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
+                    var crew = newJson["capacity"]?["crew"]?.ToObject<int>() ?? 0;
+                    usedCapacity =
+                        shipPacks +
+                        modulePacks +
+                        cargoForSale +
+                        cargoNotForSale +
+                        reservedSpace +
+                        crew;
+                    freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
+
+                    // Itinerary
+                    nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
+
+                    // Finances
+                    bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
+                    bankReservedBalance =
+                        newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
+                    bankPurchaseAllocationsBalance =
+                        newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                        + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                        + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
+
+                    // Inventories
+                    Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());
+                    CarrierLockerAssets =
+                        JArray.FromObject(newJson["carrierLocker"]?["assets"] ?? new JArray());
+                    CarrierLockerGoods =
+                        JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
+                    CarrierLockerData =
+                        JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
+
+                    // Market Buy/Sell Orders
+                    commodityPurchaseOrders =
+                        JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
+                    commoditySalesOrders =
+                        JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
+                    microresourcePurchaseOrders = JArray.FromObject(
+                        newJson["orders"]?["onfootmicroresources"]?["purchases"]?.Values() ?? new JEnumerable<JToken>());
+                    microresourceSalesOrders = JArray.FromObject(
+                        newJson["orders"]?["onfootmicroresources"]?["sales"]?.Values() ?? new JEnumerable<JToken>());
+
+                    // Station properties
+                    Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
+                    Market.commoditiesupdatedat = newTimeStamp;
+                    Market.outfittingupdatedat = newTimeStamp;
+                    Market.shipyardupdatedat = newTimeStamp;
+
+                    // Misc - Tritium stored in cargo
+                    foreach (var cargo in Cargo)
+                    {
+                        if (cargo["commodity"]?.ToString() is "Tritium")
+                        {
+                            fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
+                        }
+                    }
+                    timestamp = newTimeStamp;
+                }
             }
             catch (Exception e)
             {
                 e.Data.Add("fleetCarrierJson", newJson);
                 Logging.Error("Fleet carrier parsing error", e);
-                return null;
             }
-
-            return UpdateFrom(newFleetCarrier);
-        }
-
-        public FleetCarrier UpdateFrom(FleetCarrier newFleetCarrier)
-        {
-            if (newFleetCarrier is null) { return this; } // Null data
-            if (json.DeepEquals(newFleetCarrier.json)) { return this; } // No changes
-            if (!CarrierMatches(newFleetCarrier)) { return this; } // Not the same carrier
-
-            var fleetCarrier = new FleetCarrier(newFleetCarrier.Market.marketId)
-            {
-                carrierID = newFleetCarrier.Market.marketId,
-                callsign = newFleetCarrier.callsign,
-
-                // Information exclusively available from the Frontier API
-                Cargo = newFleetCarrier.Cargo,
-                CarrierLockerAssets = newFleetCarrier.CarrierLockerAssets,
-                CarrierLockerGoods = newFleetCarrier.CarrierLockerGoods,
-                CarrierLockerData = newFleetCarrier.CarrierLockerData,
-                commodityPurchaseOrders = newFleetCarrier.commodityPurchaseOrders,
-                commoditySalesOrders = newFleetCarrier.commoditySalesOrders,
-                microresourcePurchaseOrders = newFleetCarrier.microresourcePurchaseOrders,
-                microresourceSalesOrders = newFleetCarrier.microresourceSalesOrders,
-                Market = newFleetCarrier.Market
-            };
-
-            // Information which might be newer, check timestamp prior to updating
-            if (newFleetCarrier.timestamp > timestamp)
-            {
-                fleetCarrier.name = newFleetCarrier.name;
-                fleetCarrier.currentStarSystem = newFleetCarrier.currentStarSystem;
-                fleetCarrier.nextStarSystem = newFleetCarrier.nextStarSystem;
-                fleetCarrier.dockingAccess = newFleetCarrier.dockingAccess;
-                fleetCarrier.notoriousAccess = newFleetCarrier.notoriousAccess;
-                fleetCarrier.fuel = newFleetCarrier.fuel;
-                fleetCarrier.fuelInCargo = newFleetCarrier.fuelInCargo;
-                fleetCarrier.state = newFleetCarrier.state;
-                fleetCarrier.bankBalance = newFleetCarrier.bankBalance;
-                fleetCarrier.bankReservedBalance = newFleetCarrier.bankReservedBalance;
-                fleetCarrier.bankPurchaseAllocationsBalance = newFleetCarrier.bankPurchaseAllocationsBalance;
-                fleetCarrier.usedCapacity = newFleetCarrier.usedCapacity;
-                fleetCarrier.freeCapacity = newFleetCarrier.freeCapacity;
-            };
-
-            return fleetCarrier;
-        }
-
-        public bool CarrierMatches(FleetCarrier newFleetCarrier)
-        {
-            // Verify that the profile information matches the current fleet carrier callsign
-            if (callsign != null && newFleetCarrier.callsign != callsign)
-            {
-                Logging.Warn("Frontier API incorrectly configured: Returning information for Fleet Carrier " +
-                             newFleetCarrier.callsign + " rather than for " + callsign + ". Disregarding incorrect information.");
-                return false;
-            }
-            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
