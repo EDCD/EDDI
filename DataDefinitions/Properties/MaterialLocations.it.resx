@@ -346,7 +346,7 @@
     <comment>Material location Pattern Epsilon Obelisk Data</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
@@ -458,7 +458,7 @@
     <comment>Material location Shield Emitters</comment>
   </data>
   <data name="unknowncarapace" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Carapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
@@ -502,7 +502,7 @@
     <comment>Material location Shielding Sensors</comment>
   </data>
   <data name="unknownenergycell" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
   <data name="chemicalmanipulators" xml:space="preserve">
@@ -546,7 +546,7 @@
     <comment>Material location Thermic Alloys</comment>
   </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Technological Components</comment>
   </data>
   <data name="biotechconductors" xml:space="preserve">
@@ -590,11 +590,11 @@
     <comment>Material location Proto Radiolic Alloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
+    <value>Ottenuto dai misteriosi siti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Organic Circuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">
