@@ -310,7 +310,7 @@
     <comment>Material tg_compositiondata</comment>
   </data>
   <data name="unknownshipsignature" xml:space="preserve">
-    <value>Segno Caratteristico di Nave Thargoid</value>
+    <value>Tracciato di nave Thargoid</value>
     <comment>Material unknownshipsignature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
@@ -546,7 +546,7 @@
     <comment>Material thermicalloys</comment>
   </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
-    <value>Componente di Tecnologia Thargoid</value>
+    <value>Componenti tecnologici Thargoid</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
   <data name="biotechconductors" xml:space="preserve">
