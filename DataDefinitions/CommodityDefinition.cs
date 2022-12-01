@@ -438,8 +438,11 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128958679, 361, "ApaVietii", Narcotics, 10362, true),
                 new CommodityDefinition(128961249, 362, "Tritium", Chemicals, 41684, false),
                 new CommodityDefinition(128983059, 377, "OnionHeadC", Narcotics, 5387, false),
-                new CommodityDefinition(129015433, null, "AncientRelicTG", Salvage, 4798, false),
                 new CommodityDefinition(129002574, null, "ClassifiedExperimentalEquipment", Technology, 0, true),
+                new CommodityDefinition(129015433, null, "AncientRelicTG", Salvage, 4798, false),
+                new CommodityDefinition(129019258, null, "ThargoidTissueSampleType5", Salvage, 98368, false),
+                new CommodityDefinition(129019259, null, "ThargoidGeneratorTissueSample", Salvage, 67680, false),
+                new CommodityDefinition(129022087, null, "UnocuppiedEscapePod", Salvage, 3900, false),
 
                 // Items for which we do not have Elite IDs
             };

@@ -3202,6 +3202,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caustic Tissue Sample.
+        /// </summary>
+        public static string ThargoidGeneratorTissueSample {
+            get {
+                return ResourceManager.GetString("ThargoidGeneratorTissueSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Scout Tissue Sample .
         /// </summary>
         public static string ThargoidScoutTissueSample {
@@ -3243,6 +3252,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ThargoidTissueSampleType4 {
             get {
                 return ResourceManager.GetString("ThargoidTissueSampleType4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Orthrus Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType5 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType5", resourceCulture);
             }
         }
         
@@ -3468,6 +3486,15 @@ namespace EddiDataDefinitions.Properties {
         public static string UnmarkedWeapons {
             get {
                 return ResourceManager.GetString("UnmarkedWeapons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unoccupied Escape Pod.
+        /// </summary>
+        public static string UnocuppiedEscapePod {
+            get {
+                return ResourceManager.GetString("UnocuppiedEscapePod", resourceCulture);
             }
         }
         
