@@ -563,6 +563,7 @@ namespace EddiVoiceAttackResponder
 
         private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, ref dynamic vaProxy)
         {
+            if (fleetCarrier is null) { return; }
             var variables = new MetaVariables(fleetCarrier.GetType(), fleetCarrier);
             var va_vars = variables.Results.AsVoiceAttackVariables(prefix);
             foreach (var variable in va_vars)
