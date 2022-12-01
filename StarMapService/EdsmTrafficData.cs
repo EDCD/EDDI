@@ -34,6 +34,7 @@ namespace EddiStarMapService
             var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
+                Logging.Debug("EDSM responded with " + clientResponse.Content);
                 var token = JToken.Parse(clientResponse.Content);
                 if (token is JObject response)
                 {
