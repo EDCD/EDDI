@@ -1781,7 +1781,16 @@
     <value>Relíquia Não Classificada</value>
     <comment>Commodity AncientRelicTG</comment>
   </data>
-  
-  
-  
+  <data name="ThargoidTissueSampleType5" xml:space="preserve">
+    <value>Amostra de Tecido Thargoid Orthrus</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+  </data>
+  <data name="ThargoidGeneratorTissueSample" xml:space="preserve">
+    <value>Amostra de Tecido Cáustico</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+  </data>
+  <data name="UnocuppiedEscapePod" xml:space="preserve">
+    <value>Cápsula de Escape Desocupada</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
+  </data>
 </root>
