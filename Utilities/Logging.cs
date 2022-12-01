@@ -219,7 +219,9 @@ namespace Utilities
                         "MyReputation",
                         "SquadronFaction",
                         "HappiestSystem",
-                        "HomeSystem"
+                        "HomeSystem",
+                        "access_token",
+                        "refresh_token"
                     };
 
                     foreach (string property in filterProperties)
@@ -310,7 +312,7 @@ namespace Utilities
             config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(
                 new RollbarDataSecurityOptions(PersonDataCollectionPolicies.None,
                     IpAddressCollectionPolicy.DoNotCollect,
-                    new[] { "Commander", "apiKey", "commanderName" }));
+                    new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token" }));
             config.RollbarLoggerConfig.RollbarPayloadAdditionOptions.Reconfigure(
                 new RollbarPayloadAdditionOptions(
                         new Person(uniqueId + (fromVA ? " VA" : "")),
