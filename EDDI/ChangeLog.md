@@ -9,7 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Changes to existing scripts
       * `Carrier docking permission` corrected occasional grammar issue.
       * `Carrier service changed` corrected occasional grammar issue.
-      * `Fuel check` added checks to prevent `Object reference not an instance of an object` errors
+      * `Fuel check` added checks to prevent `Object reference not an instance of an object` errors.
+      * `Ship interdicted` updated to add a default script (for real this time).
   * Status Monitor
     * Corrected documentation of new status destination name variables (e.g. "destination_name" rather than "destinationName").
 
