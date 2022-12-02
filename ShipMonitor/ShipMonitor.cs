@@ -473,6 +473,8 @@ namespace EddiShipMonitor
 
         private Ship ParseShipLoadoutEvent(ShipLoadoutEvent @event)
         {
+            lock (shipyardLock)
+            {
             // Obtain the ship to which this loadout refers
             Logging.Debug("Current Ship Id is: " + currentShipId + ", Loadout Ship Id is " + @event.shipid);
             Ship ship = GetShip(@event.shipid);
@@ -602,6 +604,7 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Contains("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
             return ship;
+        }
         }
 
         private void handleStoredShipsEvent(StoredShipsEvent @event)
