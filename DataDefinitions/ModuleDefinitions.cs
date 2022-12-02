@@ -1189,7 +1189,7 @@ namespace EddiDataDefinitions
             };
         }
 
-        private static Dictionary<long, Module> ModulesByEliteID;
+        private static readonly Dictionary<long, Module> ModulesByEliteID;
 
         public static HashSet<string> PowerPlayModules = new HashSet<string>()
         {
@@ -1262,14 +1262,6 @@ namespace EddiDataDefinitions
                 }
             }
             return module;
-        }
-
-        public static Module FromEddbID(long eddbId, object rawData = null)
-        {
-            lock (resourceLock)
-            {
-                return AllOfThem.Find(x => x.EDDBID == eddbId) ?? null;
-            }
         }
 
         public static Module FromOutfittingInfo(OutfittingInfoItem item)
