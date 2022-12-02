@@ -3175,6 +3175,7 @@ namespace EddiJournalMonitor
                                     DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
                                     var name = JsonParsing.getString(data, "Name");
                                     var localisedname = JsonParsing.getString(data, "LocalisedName");
+                                    localisedname = Regex.Replace(localisedname, @"<.*?>", ""); // Mission localized names may have embedded HTML tags. If so then remove them.
                                     var faction = getFactionName(data, "Faction");
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
                                     var wing = JsonParsing.getBool(data, "Wing");
