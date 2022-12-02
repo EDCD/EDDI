@@ -15,7 +15,7 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship for which the module was retrieved")]
-        public int? shipid { get; private set; }
+        public int shipid { get; private set; }
 
         [PublicAPI("The outfitting slot")]
         public string slot { get; private set; }
@@ -38,7 +38,7 @@ namespace EddiEvents
 
         public Ship shipDefinition { get; private set; }
 
-        public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule, long marketId) : base(timestamp, NAME)
+        public ModuleRetrievedEvent(DateTime timestamp, string ship, int shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule, long marketId) : base(timestamp, NAME)
         {
             this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipid;
