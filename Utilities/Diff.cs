@@ -30,7 +30,6 @@ namespace Utilities
             // internal int u, v;  // 2002.09.20: no need for 2 points 
         }
 
-
         #region self-Test
 
 #if (SELFTEST)
@@ -127,7 +126,6 @@ namespace Utilities
     }
 #endif
         #endregion
-
 
         public static List<DiffItem> DiffTexts(string a, string b)
         {
@@ -248,7 +246,6 @@ namespace Utilities
             return (DiffText(TextA, TextB, false, false, false));
         }
 
-
         /// <summary>
         /// Find the difference in 2 text documents, comparing by textlines.
         /// The algorithm itself is comparing 2 arrays of numbers so when comparing 2 text documents
@@ -285,7 +282,6 @@ namespace Utilities
             Optimize(DataB);
             return CreateDiffs(DataA, DataB);
         }
-
 
         /// <summary>
         /// If a sequence of modified lines starts with a line that contains the same content
@@ -324,7 +320,6 @@ namespace Utilities
             }
         }
 
-
         /// <summary>
         /// Find the difference in 2 arrays of integers.
         /// </summary>
@@ -348,7 +343,6 @@ namespace Utilities
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
             return CreateDiffs(DataA, DataB);
         }
-
 
         /// <summary>
         /// This function converts all textlines of the text into unique numbers for every unique textline
@@ -405,7 +399,6 @@ namespace Utilities
             }
             return (Codes);
         }
-
 
         /// <summary>
         /// This is the algorithm to find the Shortest Middle Snake (SMS).
@@ -533,7 +526,6 @@ namespace Utilities
             throw new ApplicationException("the algorithm should never come here.");
         }
 
-
         /// <summary>
         /// This is the divide-and-conquer implementation of the longes common-subsequence (LCS) 
         /// algorithm.
@@ -591,7 +583,6 @@ namespace Utilities
                 LCS(DataA, smsrd.x, UpperA, DataB, smsrd.y, UpperB, DownVector, UpVector);  // 2002.09.20: no need for 2 points 
             }
         }
-
 
         /// <summary>Scan the tables of which lines are inserted and deleted,
         /// producing an edit script in forward order.  

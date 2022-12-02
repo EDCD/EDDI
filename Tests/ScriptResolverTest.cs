@@ -155,7 +155,6 @@ namespace UnitTests
             Assert.IsTrue(results.Count == 0);
         }
 
-
         [TestMethod]
         public void TestResolverCallsign()
         {

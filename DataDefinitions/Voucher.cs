@@ -19,7 +19,6 @@ namespace EddiDataDefinitions
             var Trade = new Voucher("trade");
         }
 
-
         // dummy used to ensure that the static constructor has run
         public Voucher() : this("")
         { }

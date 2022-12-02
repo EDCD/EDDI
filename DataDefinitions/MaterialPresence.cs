@@ -29,9 +29,6 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("We merged this with MaterialPercentage (which is now gone) but old scripts used different keys for the material's name so put them both here")]
         public string material => name;
         
-
-
-
         public MaterialPresence(Material definition, decimal percentage)
         {
             this.definition = definition;

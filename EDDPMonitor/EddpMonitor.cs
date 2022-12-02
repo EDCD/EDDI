@@ -209,7 +209,6 @@ namespace EddiEddpMonitor
             }
         }
 
-
         /// <summary>
         /// Find a matching watch for a given set of parameters
         /// </summary>

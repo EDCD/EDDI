@@ -474,7 +474,6 @@ namespace UnitTests
             Assert.AreNotEqual(fighterLoadoutEvent.shipid, currentShip.LocalId);
         }
 
-
         [TestMethod]
         public void TestJournalModulePurchasedHandlingMinimalShip()
         {

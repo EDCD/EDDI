@@ -99,7 +99,6 @@ namespace EddiDataDefinitions
         public static readonly StationService VoucherRedemption;
         public static readonly StationService Workshop;
 
-
         // dummy used to ensure that the static constructor has run
         public StationService() : this("")
         { }

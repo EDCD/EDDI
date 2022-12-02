@@ -125,7 +125,6 @@ namespace SpeechTests
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.ICAO("GAB-1655"));
         }
 
-
         [TestMethod, TestCategory("Speech")]
         public void TestSsml()
         {
@@ -351,7 +350,6 @@ namespace SpeechTests
                 speechresponder.Handle(@event);
             }
         }
-
 
         [TestMethod, TestCategory("Speech")]
         public void TestSpeechPhonemes()

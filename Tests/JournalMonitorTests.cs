@@ -692,7 +692,6 @@ namespace UnitTests
             Assert.AreEqual("Expansion", jumpedEvent.factions.FirstOrDefault(f => f.name == "EXO")?.presences.FirstOrDefault(p => p.systemName == "Diaguandri")?.FactionState?.invariantName);
         }
 
-
         [TestMethod]
         public void TestJournalJumpedEvent2()
         {

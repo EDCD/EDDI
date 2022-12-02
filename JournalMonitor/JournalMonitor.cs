@@ -1601,7 +1601,6 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Cost", out val);
                                     long? cost = JsonParsing.getOptionalLong(data, "Cost");
 
-
                                     Module replacementModule = Module.FromEDName(JsonParsing.getString(data, "ReplacementItem"));
                                     if (replacementModule != null)
                                     {
