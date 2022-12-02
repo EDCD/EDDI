@@ -117,7 +117,7 @@ namespace EddiJournalMonitor
                                     ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
+                                    string stationState = JsonParsing.getString(data, "StationState");
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
                                     Faction controllingfaction = getFaction(data, "Station", systemName);
                                     decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");

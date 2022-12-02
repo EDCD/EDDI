@@ -22,11 +22,11 @@ namespace EddiEvents
         [PublicAPI("The market ID of station at which the commander has docked")]
         public long? marketId { get; private set; }
 
-        [PublicAPI("The special state of the station, if applicable (\"Damaged\" for damaged stations for example)")]
+        [PublicAPI("The special state of the station, if applicable (e.g. \"Damaged\", \"UnderAttack\", \"UnderRepairs\")")]
         public string state { get; private set; }
 
         [PublicAPI("The model of the station at which the commander has docked (Orbis, Coriolis, etc)")]
-        public string model => stationModel.localizedName;
+        public string model => stationModel?.localizedName;
 
         [PublicAPI("The economy of the station at which the commander has docked")]
         public string economy => economyShares.Count > 0 ? (economyShares[0]?.economy ?? Economy.None).localizedName : Economy.None.localizedName;
