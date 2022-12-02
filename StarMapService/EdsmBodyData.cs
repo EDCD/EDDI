@@ -64,7 +64,7 @@ namespace EddiStarMapService
                 long? bodyId = (long?)body["bodyId"];
                 long? EDSMID = (long?)body["id"];
                 string bodyname = (string)body["name"];
-                BodyType bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None;
+                var bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None;
                 decimal? distanceLs = (decimal?)body["distanceToArrival"]; // Light Seconds
                 decimal? temperatureKelvin = (long?)body["surfaceTemperature"]; // Kelvin
 
@@ -90,7 +90,7 @@ namespace EddiStarMapService
                     var ringsData = body["rings"] ?? body["belts"];
                     if (ringsData != null)
                     {
-                        foreach (JObject ring in ringsData)
+                        foreach (var ring in ringsData)
                         {
                             rings.Add(new Ring(
                                 (string)ring["name"],

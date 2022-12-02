@@ -674,6 +674,12 @@ namespace EddiDataProviderService
                         {
                             foreach (StarSystem system in systems)
                             {
+                                var serializedSystem = string.Empty;
+                                LockManager.GetLock(system.systemname, () =>
+                                {
+                                    serializedSystem = JsonConvert.SerializeObject(system);
+                                });
+                                if (string.IsNullOrEmpty(serializedSystem)) { continue; }
                                 if (system.systemAddress != null)
                                 {
                                     cmd.CommandText = UPDATE_SQL + WHERE_SYSTEMADDRESS;
@@ -686,7 +692,7 @@ namespace EddiDataProviderService
                                 cmd.Parameters.AddWithValue("@name", system.systemname);
                                 cmd.Parameters.AddWithValue("@totalvisits", system.visits);
                                 cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystem", serializedSystem);
                                 cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                                 cmd.Parameters.AddWithValue("@comment", system.comment);
                                 cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
