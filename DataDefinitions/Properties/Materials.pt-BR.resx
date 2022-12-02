@@ -665,5 +665,8 @@
     <value>Dados de Sistemas de Nave Thargoid</value>
     <comment>Material tg_shipsystemsdata</comment>
   </data>
-  
+  <data name="tg_interdictiondata" xml:space="preserve">
+    <value>Telemetria de Interdição Thargoid</value>
+    <comment>Material tg_interdictiondata</comment>
+  </data>
 </root>
