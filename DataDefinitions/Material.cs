@@ -200,6 +200,9 @@ namespace EddiDataDefinitions
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
+            // Unknown rarity
+            var Tg_InterdictionData = new Material("tg_interdictiondata", Encoded, Rarity.Unknown);
+
             surfaceElements = ImmutableHashSet.ToImmutableHashSet(AllOfThem
                 .Where(m => m.Category == Element)
                 .Where(m => m.greatpctbody != null).ToList());
