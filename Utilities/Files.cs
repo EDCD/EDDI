@@ -165,6 +165,10 @@ namespace Utilities
                 Logging.Debug($"IO write exception for {fileName}, {attempts} attempts left", ex);
                 return true; // We have failed to write the file and will need to make another attempt
             }
+            catch (IOException ex) when (ex.HResult == unchecked((int)0x80070027) || ex.HResult == unchecked((int)0x80070070)) // Not enough disk space
+            {
+                Logging.Warn($"IO write exception for {fileName}, {ex.Message}", ex);
+            }
             catch (IOException ex) // Other IO issue 
             {
                 Logging.Error($"IO write exception for {fileName}, {ex.Message}", ex);
@@ -276,10 +280,7 @@ namespace Utilities
             }
             finally
             {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+                stream?.Close();
             }
 
             //file is not locked
