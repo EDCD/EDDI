@@ -103,15 +103,15 @@ namespace EddiSpeechResponder
             {
                 sampleEvents = new List<Event>();
             }
-            else if (sample is string)
+            else if (sample is string s)
             {
                 // It's a string so a journal entry.  Parse it
-                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
+                sampleEvents = JournalMonitor.ParseJournalEntry(s);
             }
-            else if (sample is Event)
+            else if (sample is Event e)
             {
                 // It's a direct event
-                sampleEvents = new List<Event>() { (Event)sample };
+                sampleEvents = new List<Event>{e};
             }
             else
             {

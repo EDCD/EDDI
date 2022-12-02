@@ -183,17 +183,16 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script.Name != editorScript.Name 
-                || script.Description != editorScript.Description 
-                || script.Value != editorScript.Value)
+            if (script?.Name != editorScript.Name 
+                || script?.Description != editorScript.Description 
+                || script?.Value != editorScript.Value)
             {
                 // Update the output script
                 script = editorScript;
 
                 // Make sure default values are set as required
                 // ReSharper disable once InlineOutVariableDeclaration - Continuous Integration seems to require this variable be declared separately rather than in-line
-                Script defaultScript = null;
-                if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+                if (Personality.Default().Scripts?.TryGetValue(script.Name, out Script defaultScript) ?? false)
                 {
                     script = Personality.UpgradeScript(script, defaultScript);
                 }
