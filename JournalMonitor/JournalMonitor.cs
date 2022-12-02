@@ -2488,11 +2488,15 @@ namespace EddiJournalMonitor
                                     decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
                                     string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                    string ship = EDDI.Instance.CurrentShip?.EDName;
-                                    Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
-                                    compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
-                                    List<CommodityAmount> commodities = new List<CommodityAmount>();
-                                    List<MaterialAmount> materials = new List<MaterialAmount>();
+                                    var ship = EDDI.Instance.CurrentShip?.EDName;
+                                    Compartment compartment = null;
+                                    if (!string.IsNullOrEmpty(ship))
+                                    {
+                                        compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot"));
+                                        compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
+                                    }
+                                    var commodities = new List<CommodityAmount>();
+                                    var materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
                                     {
                                         // 2.2 style
@@ -5240,7 +5244,7 @@ namespace EddiJournalMonitor
             return new Engineer(engineer, engineerId, stage, rankProgress, rank);
         }
 
-        private static Compartment parseShipCompartment(string ship, string slot)
+        private static Compartment parseShipCompartment(string shipEDName, string slot)
         {
             Compartment compartment = new Compartment() { name = slot };
 
@@ -5255,12 +5259,12 @@ namespace EddiJournalMonitor
             }
             else if (slot.Contains("Military"))
             {
-                var slotSize = ShipDefinitions.FromEDModel(ship, false)?.militarysize;
+                var slotSize = ShipDefinitions.FromEDModel(shipEDName, false)?.militarysize;
                 if (slotSize is null)
                 {
                     // We didn't expect to have a military slot on this ship.
-                    var data = new Dictionary<string, object>() { { "ShipEDName", ship }, { "Slot", slot }, { "Exception", new ArgumentException() } };
-                    Logging.Error($"Unexpected military slot found in ship edName {ship}.", data);
+                    var data = new Dictionary<string, object>() { { "ShipEDName", shipEDName }, { "Slot", slot }, { "Exception", new ArgumentException() } };
+                    Logging.Error($"Unexpected military slot found in ship edName {shipEDName}.", data);
                     return compartment;
                 }
                 compartment.size = (int)slotSize;
