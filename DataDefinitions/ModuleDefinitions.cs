@@ -1092,6 +1092,7 @@ namespace EddiDataDefinitions
                 new Module(999999901, "VoicePack_Verity", -1, "Verity", 1, "I", 0),
                 new Module(999999902, "VoicePack_Victor", -1, "Victor", 1, "I", 0),
                 new Module(999999904, "VoicePack_Celeste", -1, "Celeste", 1, "I", 0),
+                new Module(999999905, "Int_CorrosionProofCargoRack_Size5_Class1", -1, "CorrosionResistantCargoRack", 5, "E", 0),
 
                 // The FDL has its own cargo bay door.  The FDL is like that (now the Mamba uses it too!)
                 new Module(999999907, "ModularCargoBayDoorFDL", -1, "CargoHatch", 1, "H", 0, 128049351),
