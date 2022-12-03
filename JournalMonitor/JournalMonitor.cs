@@ -2605,14 +2605,19 @@ namespace EddiJournalMonitor
                                     bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
                                     bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
 
-                                    GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
-                                    string group = JsonParsing.getString(data, "Group");
                                     long credits = (long)JsonParsing.getOptionalLong(data, "Credits");
                                     long loan = (long)JsonParsing.getOptionalLong(data, "Loan");
+
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    string version = JsonParsing.getString(data, "gameversion");
+                                    string build = JsonParsing.getString(data, "build")?.Replace(" ", "");
+
+                                    GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
+                                    string group = JsonParsing.getString(data, "Group"); // The name of the group, only if the mode is "Group" 
+
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity, version, build) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

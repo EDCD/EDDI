@@ -21,14 +21,14 @@ namespace EddiEvents
         public bool odyssey { get; private set; }
 
         [PublicAPI("The commander's ship")]
-        public string ship => shipEDModel == "TestBuggy" ? Utilities.Constants.VEHICLE_SRV
-            : shipEDModel.ToLowerInvariant().Contains("fighter") ? Utilities.Constants.VEHICLE_FIGHTER
-            : shipEDModel.ToLowerInvariant().Contains("suit") ? Utilities.Constants.VEHICLE_LEGS
-            : shipEDModel.ToLowerInvariant().Contains("taxi") ? Utilities.Constants.VEHICLE_TAXI
+        public string ship => shipEDModel == "TestBuggy" ? Constants.VEHICLE_SRV
+            : shipEDModel.ToLowerInvariant().Contains("fighter") ? Constants.VEHICLE_FIGHTER
+            : shipEDModel.ToLowerInvariant().Contains("suit") ? Constants.VEHICLE_LEGS
+            : shipEDModel.ToLowerInvariant().Contains("taxi") ? Constants.VEHICLE_TAXI
             : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;
 
         [PublicAPI("The ID of the commander's ship")]
-        public long? shipid { get; private set; } // shipid serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
+        public long? shipid { get; private set; } // this serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
 
         [PublicAPI("The game mode (Open, Group or Solo)")]
         public string mode { get; private set; }
@@ -64,7 +64,11 @@ namespace EddiEvents
 
         public string shipEDModel { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public string gameversion { get; private set; }
+
+        public string gamebuild { get; private set; }
+
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity, string version, string build) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.frontierID = frontierID;
@@ -76,12 +80,14 @@ namespace EddiEvents
             this.shipident = shipIdent;
             this.startlanded = startedLanded;
             this.startdead = startDead;
-            this.mode = (mode == null ? null : mode.localizedName);
+            this.mode = (mode?.localizedName);
             this.group = group;
             this.credits = credits;
             this.loan = loan;
             this.fuel = fuel;
             this.fuelcapacity = fuelcapacity;
+            this.gameversion = version;
+            this.gamebuild = build;
         }
     }
 }
