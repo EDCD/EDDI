@@ -1198,7 +1198,7 @@ namespace EddiCore
                         systemname = CurrentStarSystem?.systemname,
                         systemAddress = settlementApproachedEvent.systemAddress
                     };
-                    CurrentStarSystem.stations.Add(station);
+                    CurrentStarSystem?.stations.Add(station);
                 }
             }
             return true;
@@ -1863,8 +1863,8 @@ namespace EddiCore
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (f.presences.
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem ?? false) || f.squadronfaction);
                 if (squadronFaction != null)
                 {
                     updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
@@ -2402,14 +2402,6 @@ namespace EddiCore
             }
 
             passEvent = true;
-            CurrentStarSystem.systemAddress = theEvent.systemAddress;
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
-            CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star)
-                ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
-            CurrentStarSystem.conflicts = theEvent.conflicts;
 
             if (theEvent.taxi is true)
             {
@@ -2424,60 +2416,75 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
             }
 
-            // Update system faction data if available
-            if (theEvent.factions != null)
+            if (CurrentStarSystem != null)
             {
-                CurrentStarSystem.factions = theEvent.factions;
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
+                CurrentStarSystem.Faction = theEvent.controllingfaction;
+                CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star)
+                                     ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
+                CurrentStarSystem.conflicts = theEvent.conflicts;
 
-                // Update station controlling faction data
-                foreach (Station station in CurrentStarSystem.stations)
+                // Update system faction data if available
+                if (theEvent.factions != null)
                 {
-                    Faction stationFaction = theEvent.factions.Find(f => f.name == station.Faction.name);
-                    if (stationFaction != null)
+                    CurrentStarSystem.factions = theEvent.factions;
+
+                    // Update station controlling faction data
+                    foreach (Station station in CurrentStarSystem.stations)
                     {
-                        station.Faction = stationFaction;
+                        Faction stationFaction = theEvent.factions.Find(f => f.name == station.Faction.name);
+                        if (stationFaction != null)
+                        {
+                            station.Faction = stationFaction;
+                        }
+                    }
+
+                    // Check if current system is inhabited by or HQ for squadron faction
+                    Faction squadronFaction = theEvent.factions.Find(f =>
+                        (f.presences.Find(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem ?? false) ||
+                        f.squadronfaction);
+                    if (squadronFaction != null)
+                    {
+                        updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
                     }
                 }
 
-                // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.Find(f => (bool)f.presences.
-                    Find(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
-                if (squadronFaction != null)
+                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.securityLevel = theEvent.securityLevel;
+                if (theEvent.population != null)
                 {
-                    updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
+                    CurrentStarSystem.population = theEvent.population;
                 }
-            }
 
-            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
-            CurrentStarSystem.securityLevel = theEvent.securityLevel;
-            if (theEvent.population != null)
-            {
-                CurrentStarSystem.population = theEvent.population;
-            }
-
-            // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-            if ((CurrentStellarBody == null || string.IsNullOrEmpty(currentStellarBody.bodyname)) && !string.IsNullOrEmpty(theEvent.star))
-            {
-                CurrentStellarBody = new Body()
+                // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
+                if ((CurrentStellarBody == null || string.IsNullOrEmpty(currentStellarBody.bodyname)) &&
+                    !string.IsNullOrEmpty(theEvent.star))
                 {
-                    bodyname = theEvent.star,
-                    bodyType = BodyType.FromEDName("Star"),
-                    stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out Event ev) 
-                        ? (FSDEngagedEvent)ev 
-                        : null)
-                        ?.stellarclass,
-                };
-                CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
+                    CurrentStellarBody = new Body()
+                    {
+                        bodyname = theEvent.star,
+                        bodyType = BodyType.FromEDName("Star"),
+                        stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out Event ev)
+                                ? (FSDEngagedEvent)ev
+                                : null)
+                            ?.stellarclass,
+                    };
+                    CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
+                }
+
+                // (When pledged) Powerplay information
+                CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
+                CurrentStarSystem.powerState =
+                    theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
+
+                // Update to most recent information
+                CurrentStarSystem.visitLog.Add(theEvent.timestamp);
+                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
-
-            // (When pledged) Powerplay information
-            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
-            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
-
-            // Update to most recent information
-            CurrentStarSystem.visitLog.Add(theEvent.timestamp);
-            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
@@ -2874,7 +2881,7 @@ namespace EddiCore
             updateCurrentSystem(theEvent.star?.systemname);
             if (CurrentStarSystem == null) { return false; }
 
-            Body star = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
+            Body star = CurrentStarSystem.bodies?.Find(s => s.bodyname == theEvent.bodyname);
             if (star?.scanned is null)
             {
                 CurrentStarSystem.AddOrUpdateBody(theEvent.star);
@@ -2893,7 +2900,7 @@ namespace EddiCore
             // Add this body if it hasn't been previously added to our database, but don't
             // replace prior data which isn't re-obtainable from this event. 
             // (e.g. alreadydiscovered, scanned, alreadymapped, mapped, mappedEfficiently, etc.)
-            Body body = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
+            Body body = CurrentStarSystem.bodies?.Find(s => s.bodyname == theEvent.bodyname);
             if (body?.scanned is null)
             {
                 CurrentStarSystem.AddOrUpdateBody(theEvent.body);
@@ -3466,7 +3473,7 @@ namespace EddiCore
                 }
 
                 // Update system, allegiance, & power when in squadron home system
-                if ((bool)faction.presences.FirstOrDefault(p => p.systemName == systemName)?.squadronhomesystem)
+                if ((faction.presences.FirstOrDefault(p => p.systemName == systemName)?.squadronhomesystem ?? false))
                 {
                     // Update the squadron system data, if changed
                     string system = CurrentStarSystem.systemname;

@@ -270,7 +270,7 @@ namespace Eddi
 
             public override int Compare(TabItem x, TabItem y)
             {
-                return stringComparer.Compare(x.Header, y.Header);
+                return stringComparer.Compare(x?.Header, y?.Header);
             }
         }
 
@@ -313,7 +313,9 @@ namespace Eddi
 
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
             List<LanguageDef> satelliteCultures = new List<LanguageDef>();
-            DirectoryInfo rootInfo = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName);
+            var fileInfo = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
+            if (fileInfo is null) { throw new DirectoryNotFoundException(); }
+            DirectoryInfo rootInfo = new DirectoryInfo(fileInfo);
             DirectoryInfo[] subDirs = rootInfo.GetDirectories();
             foreach (DirectoryInfo dir in subDirs)
             {
@@ -326,13 +328,16 @@ namespace Eddi
                 {
                     continue;
                 }
+
                 try
                 {
                     CultureInfo cInfo = new CultureInfo(name);
                     satelliteCultures.Add(new LanguageDef(cInfo));
                 }
                 catch
-                { }
+                {
+                    // Ignore any exceptions here
+                }
             }
             satelliteCultures.Sort();
             cultures.AddRange(satelliteCultures);
@@ -873,7 +878,7 @@ namespace Eddi
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked ?? false;
             Logging.Verbose = eddiConfiguration.Debug;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
         }
@@ -881,7 +886,7 @@ namespace Eddi
         private void verboseLoggingDisabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked ?? false;
             Logging.Verbose = eddiConfiguration.Debug;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
         }
@@ -889,7 +894,7 @@ namespace Eddi
         private void betaProgrammeEnabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked ?? false;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             if (runBetaCheck)
             {
@@ -906,7 +911,7 @@ namespace Eddi
         private void betaProgrammeDisabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked ?? false;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             if (runBetaCheck)
             {
@@ -1116,9 +1121,9 @@ namespace Eddi
                 Volume = (int)ttsVolumeSlider.Value,
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
-                DistortOnDamage = ttsDistortCheckbox.IsChecked.Value,
-                DisableIpa = DisableIpaCheckbox.IsChecked.Value,
-                EnableIcao = enableIcaoCheckbox.IsChecked.Value
+                DistortOnDamage = ttsDistortCheckbox.IsChecked ?? false,
+                DisableIpa = DisableIpaCheckbox.IsChecked ?? false,
+                EnableIcao = enableIcaoCheckbox.IsChecked ?? false
             };
             SpeechService.Instance.Configuration = speechConfiguration;
             speechConfiguration.ToFile();
@@ -1174,10 +1179,10 @@ namespace Eddi
             }
             Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "null"));
             Logging.Info("Default UI culture: " + (CultureInfo.DefaultThreadCurrentUICulture?.IetfLanguageTag ?? "automatic"));
-            Logging.Info("Current UI culture: " + (CultureInfo.CurrentUICulture?.IetfLanguageTag ?? "null"));
+            Logging.Info("Current UI culture: " + (CultureInfo.CurrentUICulture?.IetfLanguageTag));
 
             // Prepare a truncated log file for export if verbose logging is enabled
-            if (eddiVerboseLogging.IsChecked.Value)
+            if (eddiVerboseLogging.IsChecked ?? false)
             {
                 Logging.Debug("Preparing log for export.");
                 var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
