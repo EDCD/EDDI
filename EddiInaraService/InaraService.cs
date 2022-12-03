@@ -30,6 +30,10 @@ namespace EddiInaraService
         private bool eddiIsBeta;
         public static EventHandler invalidAPIkey;
 
+        // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static System.Version currentGameVersion { get; set; }
+
         public void Start(bool _eddiIsBeta = false)
         {
             if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
@@ -305,6 +309,8 @@ namespace EddiInaraService
 
         public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)
         {
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return; }
+
             if (inaraAPIEvent.eventName.StartsWith("get"))
             {
                 Logging.Error("Cannot enqueue 'get' Inara API events as these require an immediate response. Send these directly.");
@@ -324,6 +330,10 @@ namespace EddiInaraService
                 inaraAPIEvent.eventCustomID = null;
                 EnqueueAPIEvent(inaraAPIEvent);
             }
+        }
+        public static void SetGameVersion(System.Version version)
+        {
+            currentGameVersion = version;
         }
     }
 

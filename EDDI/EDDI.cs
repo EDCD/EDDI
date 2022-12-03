@@ -5,6 +5,7 @@ using EddiConfigService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiInaraService;
 using EddiSpeechService;
 using EddiStatusService;
 using JetBrains.Annotations;
@@ -101,6 +102,7 @@ namespace EddiCore
 
             BgsService.SetGameVersion(GameVersion);
             CompanionAppService.SetGameVersion(GameVersion);
+            InaraService.SetGameVersion(GameVersion);
         }
 
         public string gameBuild { get; private set; }
