@@ -142,7 +142,7 @@ namespace Utilities
             }
 
             // One NULL
-            if (string.IsNullOrEmpty(a))
+            if (string.IsNullOrEmpty(a) && bLines != null)
             {
                 for (int i = 0; i < bLines.Length; i++)
                 {

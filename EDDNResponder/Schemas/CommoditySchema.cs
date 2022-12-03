@@ -93,7 +93,7 @@ namespace EddiEddnResponder.Schemas
                 var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
                 var stationName = marketJson["name"].ToString();
                 var marketID = marketJson["id"].ToObject<long>();
-                var timestamp = marketJson["timestamp"].ToObject<DateTime>();
+                var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
 
                 // Sanity check - we must have a valid timestamp
                 if (timestamp == null) { return null; }
@@ -101,7 +101,7 @@ namespace EddiEddnResponder.Schemas
                 // Build our commodities lists
                 var commodities = JArray.FromObject(marketJson["commodities"]?.ToObject<JArray>()?
                     .Where(c => ApplyFrontierApiMarketFilter(c))
-                    .Select(c => FormatCommodity(c.ToObject<JObject>(), false)));
+                    .Select(c => FormatCommodity(c.ToObject<JObject>(), false)) ?? new List<JObject>());
                 var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
                 var economies = marketJson["economies"].Children().Values()
                     .Select(e => JObject.FromObject(e)).ToList();

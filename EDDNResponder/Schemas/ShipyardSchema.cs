@@ -42,7 +42,7 @@ namespace EddiEddnResponder.Schemas
                         handledData["marketId"] = data["MarketID"];
                         handledData["allowCobraMkIV"] = data["AllowCobraMkIV"];
                         handledData["ships"] = ships
-                            .Select(s => (s as Dictionary<string, object>)["ShipType"]?.ToString())
+                            .Select(s => (s as Dictionary<string, object> ?? new Dictionary<string, object>())["ShipType"]?.ToString())
                             .ToList();
 
                         // Apply data augments

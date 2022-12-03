@@ -443,9 +443,9 @@ namespace EddiCrimeMonitor
                 if (record != null)
                 {
                     // Get all bounty claims, excluding the discrepancy report
-                    List<FactionReport> reports = record.factionReports
+                    var reports = record.factionReports
                         .Where(r => r.bounty && r.crimeDef == Crime.None).ToList();
-                    if (reports?.Any() ?? false)
+                    if (reports.Any())
                     {
                         long total = reports.Sum(r => r.amount);
 

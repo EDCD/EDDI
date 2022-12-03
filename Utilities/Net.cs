@@ -20,7 +20,7 @@ namespace Utilities
             //
             // TODO: yank this when VoiceAttack updates to .NET 4.7 or later.
             ServicePointManager.SecurityProtocol = 0; // 0 is SecurityProtocolType.SystemDefault
-            foreach (SecurityProtocolType protocol in SecurityProtocolType.GetValues(typeof(SecurityProtocolType)))
+            foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType)))
             {
                 switch (protocol)
                 {
@@ -114,7 +114,7 @@ namespace Utilities
         // Set up a request with the correct parameters for talking to the companion app
         private static HttpWebRequest GetRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
             return request;
@@ -205,8 +205,8 @@ namespace Utilities
                         Registry.CurrentUser.OpenSubKey(
                         urlAssociation, false);
                     }
-                    var path = CleanifyBrowserPath(browserKey.GetValue(null) as string);
-                    browserKey.Close();
+                    var path = CleanifyBrowserPath(browserKey?.GetValue(null) as string);
+                    browserKey?.Close();
                     Logging.Debug("Browser path (1) is " + path);
                     return path;
                 }
@@ -219,8 +219,8 @@ namespace Utilities
                     // now look up the path of the executable
                     string concreteBrowserKey = browserPathKey.Replace("$BROWSER$", progId);
                     var kp = Registry.ClassesRoot.OpenSubKey(concreteBrowserKey, false);
-                    browserPath = CleanifyBrowserPath(kp.GetValue(null) as string);
-                    kp.Close();
+                    browserPath = CleanifyBrowserPath(kp?.GetValue(null) as string);
+                    kp?.Close();
                     Logging.Debug("Browser path (2) is " + browserPath);
                     return browserPath;
                 }

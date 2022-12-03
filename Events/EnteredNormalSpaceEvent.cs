@@ -41,7 +41,7 @@ namespace EddiEvents
 
         public ulong systemAddress { get; private set; }
 
-        public BodyType bodyType { get; private set; } = BodyType.None;
+        public BodyType bodyType { get; private set; }
 
         public long? bodyId { get; private set; }
 

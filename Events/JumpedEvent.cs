@@ -89,15 +89,13 @@ namespace EddiEvents
 
         public ulong systemAddress { get; private set; }
 
-        public Economy Economy { get; private set; } = Economy.None;
+        public Economy Economy { get; private set; }
 
-        public Economy Economy2 { get; private set; } = Economy.None;
+        public Economy Economy2 { get; private set; }
 
         public Faction controllingfaction { get; private set; }
 
-        public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
-
-        public FactionState factionState { get; private set; } = FactionState.None;
+        public SecurityLevel securityLevel { get; private set; }
 
         public Power Power { get; private set; }
 

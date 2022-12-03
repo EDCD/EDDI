@@ -43,12 +43,12 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             else if (values.Count == 6 && numVal)
             {
-                var x1 = (decimal)values[0].AsNumber;
-                var y1 = (decimal)values[1].AsNumber;
-                var z1 = (decimal)values[2].AsNumber;
-                var x2 = (decimal)values[3].AsNumber;
-                var y2 = (decimal)values[4].AsNumber;
-                var z2 = (decimal)values[5].AsNumber;
+                var x1 = values[0].AsNumber;
+                var y1 = values[1].AsNumber;
+                var z1 = values[2].AsNumber;
+                var x2 = values[3].AsNumber;
+                var y2 = values[4].AsNumber;
+                var z2 = values[5].AsNumber;
                 var result = Functions.StellarDistanceLy(x1, y1, z1, x2, y2, z2);
                 return new ReflectionValue(result);
             }

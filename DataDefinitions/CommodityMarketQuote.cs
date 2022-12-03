@@ -24,7 +24,7 @@ namespace EddiDataDefinitions
                     {
                         _name = (string)additionalJsonData?["EDName"];
                     }
-                    if (_name == null && additionalJsonData.ContainsKey("name"))
+                    if (_name == null && (additionalJsonData?.ContainsKey("name") ?? false))
                     {
                         _name = (string)additionalJsonData?["name"];
                     }

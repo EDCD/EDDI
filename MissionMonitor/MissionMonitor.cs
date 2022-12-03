@@ -291,7 +291,7 @@ namespace EddiMissionMonitor
                                     if (!string.IsNullOrEmpty(waypointSystemName))
                                     {
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
-                                        EDDI.Instance.enqueueEvent(new MissionRedirectedEvent(DateTime.UtcNow,
+                                        EDDI.Instance?.enqueueEvent(new MissionRedirectedEvent(DateTime.UtcNow,
                                             mission.missionid, mission.name, null, null, waypointSystemName,
                                             EDDI.Instance?.CurrentStarSystem?.systemname));
                                     }

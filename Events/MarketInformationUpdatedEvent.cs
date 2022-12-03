@@ -12,7 +12,7 @@ namespace EddiEvents
         public const string SAMPLE = null;
 
         [PublicAPI("A list of the updates triggering the event (which may include 'market', 'outfitting', and 'shipyard'")]
-        public HashSet<string> updates { get; private set; } = new HashSet<string>();
+        public HashSet<string> updates { get; private set; }
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.
         /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>

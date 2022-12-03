@@ -35,7 +35,7 @@ namespace EddiEvents
 
         public ulong? systemAddress { get; private set; }
 
-        public BodyType bodyType { get; private set; } = BodyType.None;
+        public BodyType bodyType { get; private set; }
 
         public GlideEvent(DateTime timestamp, bool gliding, string systemName, ulong? systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)
         {

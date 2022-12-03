@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
 
@@ -37,7 +38,7 @@ namespace EddiShipMonitor
                             if (shipObj["starsystem"] != null)
                             {
                                 ship.starsystem = (string)shipObj["starsystem"]["name"];
-                                ship.station = (string)shipObj["station"]["name"];
+                                ship.station = (string)shipObj["station"]?["name"];
 
                                 // Get the ship's coordinates for distance calculations
                                 StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(ship.starsystem);
@@ -76,7 +77,8 @@ namespace EddiShipMonitor
             // We want to return a basic ship if the parsing fails so wrap this
             try
             {
-                Ship.LocalId = json.GetValue("id").Value<int>();
+                if (json["id"] is null) { throw new MissingFieldException("Ship 'id' property is missing"); }
+                Ship.LocalId = json["id"].Value<int>();
                 Ship.name = (string)json.GetValue("shipName");
                 Ship.ident = (string)json.GetValue("shipID");
 
@@ -106,20 +108,20 @@ namespace EddiShipMonitor
                         Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
                     Ship.fueltanktotalcapacity = Ship.fueltankcapacity;
-                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?["name"] ?? null);
+                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?["name"]);
 
                     // Get the ship's FSD optimal mass for jump calculations
                     string fsd = Ship.frameshiftdrive.@class + Ship.frameshiftdrive.grade;
                     if (Constants.baseOptimalMass.TryGetValue(fsd, out decimal optimalMass))
                     {
-                        decimal modifier = (decimal?)json["modules"]["FrameShiftDrive"]["WorkInProgress_modifications"]?
+                        decimal modifier = (decimal?)json["modules"]["FrameShiftDrive"]?["WorkInProgress_modifications"]?
                             ["OutfittingFieldType_FSDOptimalMass"]?["value"] ?? 1;
                         Ship.optimalmass = optimalMass * modifier;
                     }
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-                    foreach (JProperty module in json["modules"])
+                    foreach (var module in json["modules"].Cast<JProperty>())
                     {
                         if (module.Name.Contains("Hardpoint"))
                         {
@@ -144,16 +146,18 @@ namespace EddiShipMonitor
                         if (module.Name.Contains("Slot"))
                         {
                             Compartment compartment = CompartmentFromJson(module);
-                            string moduleName = compartment.module?.invariantName ?? "";
-                            if (moduleName == "Fuel Tank")
+                            if (compartment.module != null)
                             {
-                                Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
+                                string moduleName = compartment.module.invariantName ?? "";
+                                if (moduleName == "Fuel Tank")
+                                {
+                                    Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
+                                }
+                                if (moduleName.Contains("Cargo Rack"))
+                                {
+                                    Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
+                                }
                             }
-                            if (moduleName.Contains("Cargo Rack"))
-                            {
-                                Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
-                            }
-
                             Ship.compartments.Add(compartment);
                         }
                     }

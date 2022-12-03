@@ -7,8 +7,10 @@ namespace EddiEddpMonitor
     {
         protected override object PrepareCellForEdit(System.Windows.FrameworkElement editingElement, System.Windows.RoutedEventArgs editingEventArgs)
         {
-            TextBox edit = editingElement as TextBox;
-            edit.PreviewTextInput += OnPreviewTextInput;
+            if (editingElement is TextBox edit)
+            {
+                edit.PreviewTextInput += OnPreviewTextInput;
+            }
 
             return base.PrepareCellForEdit(editingElement, editingEventArgs);
         }

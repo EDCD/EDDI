@@ -119,7 +119,7 @@ namespace EddiDataDefinitions
         public List<EngineeringModifier> modifiers { get; set; } = new List<EngineeringModifier>();
 
         [JsonIgnore]
-        public string localizedModification => engineermodification?.localizedName ?? null;
+        public string localizedModification => engineermodification?.localizedName;
 
         public Module() : base("", "")
         { }

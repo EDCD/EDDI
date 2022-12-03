@@ -126,7 +126,7 @@ namespace EddiDataDefinitions
 
         public string name { get; private set; }
 
-        public Chromaticity chromaticity { get; private set; } = new Chromaticity();
+        public Chromaticity chromaticity { get; private set; }
 
         public decimal? percentage { get; private set; }
 

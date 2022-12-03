@@ -42,7 +42,7 @@ namespace EddiEddnResponder.Schemas
                         handledData["stationName"] = data["StationName"];
                         handledData["marketId"] = data["MarketID"];
                         handledData["modules"] = modules
-                            .Select(m => (m as Dictionary<string, object>)["Name"]?.ToString())
+                            .Select(m => (m as Dictionary<string, object> ?? new Dictionary<string, object>())["Name"]?.ToString())
                             .Where(m => ApplyModuleNameFilter(m))
                             .Where(m => !Module.IsPowerPlay(m))
                             .ToList();

@@ -20,7 +20,7 @@ namespace EddiSpeechResponder.Service
         }
 
         private static readonly string WorkingDirectory;
-        private string _tempFileName;
+        private string _tempFileName => Path.Combine(WorkingDirectory, "editedScript.temp");
         private readonly EditScriptWindow _scriptWindow;
         private bool _scriptSaveCallGuard;
         private readonly object _lockRoot;
@@ -49,8 +49,6 @@ namespace EddiSpeechResponder.Service
         /// </summary>
         public void BeginScriptRecovery()
         {
-            _tempFileName = Path.Combine(WorkingDirectory, "editedScript.temp");
-
             if (File.Exists(_tempFileName))
             {
                 File.Delete(_tempFileName);

@@ -20,7 +20,7 @@ namespace EddiDataDefinitions
             else if (reader.TokenType == JsonToken.String)
             {
                 // This is a simple string, from EDDB.
-                return Volcanism.FromName(reader.Value.ToString());
+                return Volcanism.FromName(reader.Value?.ToString());
             }
             else
             {

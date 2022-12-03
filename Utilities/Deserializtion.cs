@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Utilities
 {
-    public class Deserializtion
+    public static class Deserializtion
     {
         public static IDictionary<string, object> DeserializeData(string data)
         {
@@ -62,17 +62,21 @@ namespace Utilities
 
         private static IList<object> DeserializeData(JArray data)
         {
-            var list = data.ToObject<List<object>>();
+            var list = data.ToObject<List<object>>() ?? new List<object>();
 
             for (int i = 0; i < list.Count; i++)
             {
                 var value = list[i];
 
-                if (value is JObject)
-                    list[i] = DeserializeData(value as JObject);
+                if (value is JObject jo)
+                {
+                    list[i] = DeserializeData(jo);
+                }
 
-                if (value is JArray)
-                    list[i] = DeserializeData(value as JArray);
+                if (value is JArray ja)
+                {
+                    list[i] = DeserializeData(ja);
+                }
             }
             return list;
         }

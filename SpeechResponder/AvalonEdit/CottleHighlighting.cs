@@ -18,9 +18,12 @@ namespace EddiSpeechResponder.AvalonEdit
         {
             using (Stream s = typeof(CottleHighlighting).Assembly.GetManifestResourceStream("EddiSpeechResponder.AvalonEdit.Cottle.xshd"))
             {
-                using (XmlReader reader = new XmlTextReader(s))
+                if (s != null)
                 {
-                    Definition = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    using (XmlReader reader = new XmlTextReader(s))
+                    {
+                        Definition = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    }                    
                 }
             }
 

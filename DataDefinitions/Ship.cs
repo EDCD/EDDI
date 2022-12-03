@@ -750,7 +750,7 @@ namespace EddiDataDefinitions
                 {
                     case "next":
                         {
-                            decimal jumpRange = JumpRange(currentFuel ?? 0, cargoTonnage);
+                            decimal jumpRange = JumpRange((decimal)currentFuel, cargoTonnage);
                             return new JumpDetail(jumpRange, 1);
                         }
                     case "max":
@@ -764,9 +764,9 @@ namespace EddiDataDefinitions
                             int jumps = 0;
                             while (currentFuel > 0)
                             {
-                                total += JumpRange(currentFuel ?? 0, cargoTonnage);
+                                total += JumpRange((decimal)currentFuel, cargoTonnage);
                                 jumps++;
-                                currentFuel -= Math.Min(currentFuel ?? 0, maxfuelperjump);
+                                currentFuel -= Math.Min((decimal)currentFuel, maxfuelperjump);
                             }
                             return new JumpDetail(total, jumps);
                         }

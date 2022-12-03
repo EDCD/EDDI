@@ -12,9 +12,10 @@ namespace Utilities
     {
         protected override object PrepareCellForEdit(FrameworkElement editingElement, RoutedEventArgs editingEventArgs)
         {
-            TextBox edit = editingElement as TextBox;
-            edit.PreviewTextInput += OnPreviewTextInput;
-
+            if (editingElement is TextBox edit)
+            {
+                edit.PreviewTextInput += OnPreviewTextInput;
+            }
             return base.PrepareCellForEdit(editingElement, editingEventArgs);
         }
 
