@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -65,6 +66,40 @@ namespace EddiCore
         private bool _inOdyssey = true;
 
         public bool gameIsBeta { get; private set; } = false;
+
+        public string gameVersion
+        {
+            get => _gameVersion;
+            private set
+            {
+                _gameVersion = value;
+                SetGameVersion(value);
+                GameVersionEventHandler?.Invoke(value, new PropertyChangedEventArgs(nameof(gameVersion)));
+            }
+        }
+        private string _gameVersion;
+        public PropertyChangedEventHandler GameVersionEventHandler;
+
+        public System.Version GameVersion { get; private set; }
+
+        private void SetGameVersion(string v)
+        {
+            // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
+            // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
+            // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
+            if (!string.IsNullOrEmpty(gameVersion))
+            {
+                var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
+                var version = versionRegex.Match(v).Value;
+                if (System.Version.TryParse(version, out System.Version versionResult))
+                {
+                    GameVersion = versionResult;
+                }
+            }
+            GameVersion = null;
+        }
+
+        public string gameBuild { get; private set; }
 
         static EDDI()
         {
@@ -2374,9 +2409,9 @@ namespace EddiCore
             // and certain version / build combinations. Test the most common situations first.
             gameIsBeta =
                 (
+                    @event.filename.Contains("Alpha") ||
                     @event.filename.Contains("Beta") ||
                     @event.version.Contains("Beta") ||
-                    @event.filename.Contains("Alpha") ||
                     @event.version.Contains("Alpha") ||
                     (
                         @event.version.Contains("2.2") &&
@@ -2387,7 +2422,11 @@ namespace EddiCore
                     )
                 );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
-            Logging.Info(gameIsBeta ? "On beta" : "On live");
+            Logging.Info(gameIsBeta ? "Game version is beta" : "Game version is live");
+
+            gameVersion = @event.version;
+            gameBuild = @event.build;
+
             return true;
         }
 
@@ -2632,6 +2671,8 @@ namespace EddiCore
             // Identify active game version
             inHorizons = theEvent.horizons;
             inOdyssey = theEvent.odyssey;
+            gameVersion = theEvent.gameversion;
+            gameBuild = theEvent.gamebuild;
 
             return true;
         }
