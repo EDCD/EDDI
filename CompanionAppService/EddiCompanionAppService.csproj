@@ -60,7 +60,6 @@
     <Compile Include="Endpoints\MarketEndpoint.cs" />
     <Compile Include="Endpoints\ProfileEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommanderConfiguration.cs" />
     <Compile Include="Properties\CapiResources.es.Designer.cs">
       <DependentUpon>CapiResources.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
