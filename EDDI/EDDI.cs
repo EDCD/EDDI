@@ -8,6 +8,7 @@ using EddiSpeechService;
 using EddiStatusService;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -22,7 +23,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Newtonsoft.Json.Linq;
 using Utilities;
 
 namespace EddiCore

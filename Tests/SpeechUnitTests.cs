@@ -3,11 +3,11 @@ using EddiSpeechService;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
 
 namespace UnitTests
 {

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using EddiCompanionAppService.Exceptions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using EddiCompanionAppService.Exceptions;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using EddiCore;
+using EddiDataDefinitions;
 using EddiNavigationService;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using EddiCore;
-using EddiDataDefinitions;
+using System.Text;
 using Tests.Properties;
 using UnitTests;
-using System.Text;
 
 namespace IntegrationTests
 {
