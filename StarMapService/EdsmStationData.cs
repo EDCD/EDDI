@@ -102,7 +102,7 @@ namespace EddiStarMapService
                 {
                     stationServices.Add(StationService.FromEDName("Outfitting"));
                 };
-                var services = station["otherServices"].ToObject<List<string>>();
+                var services = station["otherServices"]?.ToObject<List<string>>() ?? new List<string>();
                 foreach (string service in services)
                 {
                     stationServices.Add(StationService.FromName(service));

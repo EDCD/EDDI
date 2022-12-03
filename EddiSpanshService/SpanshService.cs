@@ -94,7 +94,7 @@ namespace EddiSpanshService
                 Logging.Debug(routeResponse["error"].ToString());
                 return null;
             }
-            return routeResponse["job"].ToString();
+            return routeResponse["job"]?.ToString();
         }
     }
 }

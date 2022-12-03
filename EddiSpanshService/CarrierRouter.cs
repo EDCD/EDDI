@@ -62,17 +62,21 @@ namespace EddiSpanshService
 
             var results = new List<NavWaypoint>();
 
-            foreach (var jump in routeResult["jumps"].ToObject<JArray>())
+            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? new JArray())
             {
-                var waypoint = new NavWaypoint(jump["name"].ToObject<string>(), jump["x"].ToObject<decimal>(), jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
+                if (jump["x"] != null && jump["y"] != null && jump["z"] != null)
                 {
-                    systemAddress = jump["id64"].ToObject<ulong?>(),
-                    fuelUsed = jump["fuel_used"].ToObject<int>(),
-                    hasIcyRing = jump["has_icy_ring"].ToObject<bool>(),
-                    hasPristineMining = jump["is_system_pristine"].ToObject<bool>(),
-                    isDesiredDestination = jump["is_desired_destination"].ToObject<bool>(),
-                };
-                results.Add(waypoint);
+                    var waypoint = new NavWaypoint(jump["name"]?.ToObject<string>(), jump["x"].ToObject<decimal>(),
+                        jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
+                    {
+                        systemAddress = jump["id64"]?.ToObject<ulong?>(),
+                        fuelUsed = jump["fuel_used"]?.ToObject<int>(),
+                        hasIcyRing = jump["has_icy_ring"]?.ToObject<bool>(),
+                        hasPristineMining = jump["is_system_pristine"]?.ToObject<bool>(),
+                        isDesiredDestination = jump["is_desired_destination"]?.ToObject<bool>(),
+                    };
+                    results.Add(waypoint);
+                }
             }
 
             return new NavWaypointCollection(results) { FillVisitedGaps = true };

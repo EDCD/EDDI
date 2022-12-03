@@ -73,7 +73,7 @@ namespace EddiStarMapService
                     FactionState = FactionState.FromName((string)faction["state"]) ?? FactionState.None,
                 });
 
-                IDictionary<string, object> factionDetail = faction.ToObject<IDictionary<string, object>>();
+                IDictionary<string, object> factionDetail = faction.ToObject<IDictionary<string, object>>() ?? new Dictionary<string, object>();
 
                 // Active states
                 factionDetail.TryGetValue("activeStates", out object activeStatesVal);

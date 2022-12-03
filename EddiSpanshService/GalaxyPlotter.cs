@@ -102,16 +102,20 @@ namespace EddiSpanshService
 
             var results = new List<NavWaypoint>();
 
-            foreach (var jump in routeResult["jumps"].ToObject<JArray>())
+            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? new JArray())
             {
-                var waypoint = new NavWaypoint(jump["name"].ToObject<string>(), jump["x"].ToObject<decimal>(), jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
+                if (jump["x"] != null && jump["y"] != null && jump["z"] != null)
                 {
-                    systemAddress = jump["id64"].ToObject<ulong?>(),
-                    hasNeutronStar = jump["has_neutron"].ToObject<bool>(),
-                    isScoopable = jump["is_scoopable"].ToObject<bool?>() ?? false,
-                    refuelRecommended = jump["must_refuel"].ToObject<bool?>() ?? false
-                };
-                results.Add(waypoint);
+                    var waypoint = new NavWaypoint(jump["name"]?.ToObject<string>(), jump["x"].ToObject<decimal>(),
+                        jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
+                    {
+                        systemAddress = jump["id64"]?.ToObject<ulong?>(),
+                        hasNeutronStar = jump["has_neutron"]?.ToObject<bool>() ?? false,
+                        isScoopable = jump["is_scoopable"]?.ToObject<bool?>() ?? false,
+                        refuelRecommended = jump["must_refuel"]?.ToObject<bool?>() ?? false
+                    };
+                    results.Add(waypoint);
+                }
             }
 
             return new NavWaypointCollection(results) {FillVisitedGaps = true};

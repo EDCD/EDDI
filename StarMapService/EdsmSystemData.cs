@@ -143,7 +143,7 @@ namespace EddiStarMapService
 
             if (response["coords"] is JObject)
             {
-                var coords = response["coords"].ToObject<Dictionary<string, decimal?>>();
+                var coords = response["coords"]?.ToObject<Dictionary<string, decimal?>>() ?? new Dictionary<string, decimal?>();
                 starSystem.x = coords["x"];
                 starSystem.y = coords["y"];
                 starSystem.z = coords["z"];
