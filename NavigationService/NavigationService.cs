@@ -1284,11 +1284,11 @@ namespace EddiNavigationService
         private RouteDetailsEvent RefreshLastNavigationQuery()
         {
             var config = ConfigService.Instance.navigationMonitorConfiguration;
-            if (!config?.plottedRouteList?.GuidanceEnabled ?? false) { return null; }
+            if (!(config?.plottedRouteList?.GuidanceEnabled ?? false)) { return null; }
 
             if (LastQuery.Group() == QueryGroup.missions)
             {
-                var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList();
+                var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList() ?? new List<Mission>();
                 if (missionsList
                     .Where(m => m.statusDef == MissionStatus.FromEDName("Active"))
                     .Any(m => m.destinationsystem == EDDI.Instance.CurrentStarSystem?.systemname))

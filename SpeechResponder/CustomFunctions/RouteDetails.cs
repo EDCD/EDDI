@@ -5,6 +5,7 @@ using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Linq;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -18,7 +19,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string result = null;
-            string value = values[0].AsString;
+            string value = values?.FirstOrDefault()?.AsString;
 
             if (!string.IsNullOrEmpty(value))
             {
