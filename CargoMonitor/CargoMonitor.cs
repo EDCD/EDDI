@@ -145,80 +145,80 @@ namespace EddiCargoMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is CargoEvent)
+            if (@event is CargoEvent cargoEvent)
             {
-                handleCargoEvent((CargoEvent)@event);
+                handleCargoEvent(cargoEvent);
             }
-            else if (@event is CommodityCollectedEvent)
+            else if (@event is CommodityCollectedEvent commodityCollectedEvent)
             {
-                handleCommodityCollectedEvent((CommodityCollectedEvent)@event);
+                handleCommodityCollectedEvent(commodityCollectedEvent);
             }
-            else if (@event is CommodityEjectedEvent)
+            else if (@event is CommodityEjectedEvent commodityEjectedEvent)
             {
-                handleCommodityEjectedEvent((CommodityEjectedEvent)@event);
+                handleCommodityEjectedEvent(commodityEjectedEvent);
             }
-            else if (@event is CommodityPurchasedEvent)
+            else if (@event is CommodityPurchasedEvent commodityPurchasedEvent)
             {
-                handleCommodityPurchasedEvent((CommodityPurchasedEvent)@event);
+                handleCommodityPurchasedEvent(commodityPurchasedEvent);
             }
-            else if (@event is CommodityRefinedEvent)
+            else if (@event is CommodityRefinedEvent commodityRefinedEvent)
             {
-                handleCommodityRefinedEvent((CommodityRefinedEvent)@event);
+                handleCommodityRefinedEvent(commodityRefinedEvent);
             }
-            else if (@event is CommoditySoldEvent)
+            else if (@event is CommoditySoldEvent commoditySoldEvent)
             {
-                handleCommoditySoldEvent((CommoditySoldEvent)@event);
+                handleCommoditySoldEvent(commoditySoldEvent);
             }
-            else if (@event is CargoDepotEvent)
+            else if (@event is CargoDepotEvent cargoDepotEvent)
             {
                 // If cargo is collected or delivered in a wing mission
-                handleCargoDepotEvent((CargoDepotEvent)@event);
+                handleCargoDepotEvent(cargoDepotEvent);
             }
-            else if (@event is LimpetPurchasedEvent)
+            else if (@event is LimpetPurchasedEvent limpetPurchasedEvent)
             {
-                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
+                handleLimpetPurchasedEvent(limpetPurchasedEvent);
             }
-            else if (@event is MissionsEvent)
+            else if (@event is MissionsEvent missionsEvent)
             {
                 // Remove cargo haulage stragglers for completed missions
-                handleMissionsEvent((MissionsEvent)@event);
+                handleMissionsEvent(missionsEvent);
             }
-            else if (@event is MissionAbandonedEvent)
+            else if (@event is MissionAbandonedEvent missionAbandonedEvent)
             {
                 // If we abandon a mission with cargo it becomes stolen
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+                handleMissionAbandonedEvent(missionAbandonedEvent);
             }
-            else if (@event is MissionAcceptedEvent)
+            else if (@event is MissionAcceptedEvent missionAcceptedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
-                handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
+                handleMissionAcceptedEvent(missionAcceptedEvent);
             }
-            else if (@event is MissionCompletedEvent)
+            else if (@event is MissionCompletedEvent missionCompletedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+                handleMissionCompletedEvent(missionCompletedEvent);
             }
-            else if (@event is MissionExpiredEvent)
+            else if (@event is MissionExpiredEvent missionExpiredEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
-                handleMissionExpiredEvent((MissionExpiredEvent)@event);
+                handleMissionExpiredEvent(missionExpiredEvent);
             }
-            else if (@event is MissionFailedEvent)
+            else if (@event is MissionFailedEvent missionFailedEvent)
             {
                 // If we fail a mission with cargo it becomes stolen
-                handleMissionFailedEvent((MissionFailedEvent)@event);
+                handleMissionFailedEvent(missionFailedEvent);
             }
-            else if (@event is DiedEvent)
+            else if (@event is DiedEvent diedEvent)
             {
-                handleDiedEvent((DiedEvent)@event);
+                handleDiedEvent(diedEvent);
             }
-            else if (@event is EngineerContributedEvent)
+            else if (@event is EngineerContributedEvent engineerContributedEvent)
             {
-                handleEngineerContributedEvent((EngineerContributedEvent)@event);
+                handleEngineerContributedEvent(engineerContributedEvent);
             }
-            else if (@event is SynthesisedEvent)
+            else if (@event is SynthesisedEvent synthesisedEvent)
             {
-                handleSynthesisedEvent((SynthesisedEvent)@event);
+                handleSynthesisedEvent(synthesisedEvent);
             }
         }
 

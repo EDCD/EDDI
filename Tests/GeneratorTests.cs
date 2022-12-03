@@ -198,10 +198,12 @@ namespace GeneratorTests
                 .ToList();
 
             // Prepare Help.md
-            List<string> help = new List<string>();
-            help.Add("");
-            help.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader);
-            help.Add("");
+            List<string> help = new List<string>
+            {
+                "",
+                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader,
+                ""
+            };
 
             foreach (var function in functionsList)
             {
@@ -212,10 +214,12 @@ namespace GeneratorTests
             }
 
             // Prepare Functions.md
-            List<string> functions = new List<string>();
-            functions.Add("");
-            functions.Add(EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader);
-            functions.Add("");
+            List<string> functions = new List<string>
+            {
+                "",
+                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader,
+                ""
+            };
 
             functionsList = functionsList.OrderBy(f => f.name).ToList();
             foreach (var function in functionsList)

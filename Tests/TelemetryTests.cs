@@ -55,10 +55,12 @@ namespace UnitTests
             Event @event = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
             Exception exception = new InvalidCastException();
 
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data.Add("message", str);
-            data.Add("event", @event);
-            data.Add("exception", exception);
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "message", str },
+                { "event", @event },
+                { "exception", exception }
+            };
 
             Dictionary<string, object> result = PrepRollbarData(data);
 

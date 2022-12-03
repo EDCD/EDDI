@@ -4395,31 +4395,30 @@ namespace EddiJournalMonitor
 
                                         // Jumps seem to be scheduled for 10 seconds after the minute, between 15:10 and 16:10 after the request
                                         int varSeconds = (60 + 10) - timestamp.Second;
-                                        var tasks = new List<Task>();
-
-                                        tasks.Add(Task.Run(async () =>
+                                        var tasks = new List<Task>
+                                        {
+                                            Task.Run(async () =>
                                         {
                                             int timeMs = (Constants.carrierPreJumpSeconds + varSeconds - Constants.carrierLandingPadLockdownSeconds) * 1000;
                                             await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
                                             EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.AddMilliseconds(timeMs), carrierId) { fromLoad = fromLogLoad });
-                                        }, carrierJumpCancellationTS.Token));
-
-                                        tasks.Add(Task.Run(async () =>
+                                            }, carrierJumpCancellationTS.Token),
+                                            Task.Run(async () =>
                                         {
                                             int timeMs = (Constants.carrierPreJumpSeconds + varSeconds) * 1000;
                                             await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
                                             string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
                                             var originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
                                             EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
-                                        }, carrierJumpCancellationTS.Token));
-
-                                        tasks.Add(Task.Run(async () =>
+                                            }, carrierJumpCancellationTS.Token),
+                                            Task.Run(async () =>
                                         {
                                             // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
                                             int timeMs = (Constants.carrierPreJumpSeconds + varSeconds + Constants.carrierPostJumpSeconds) * 1000; // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                             await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
                                             EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, null, null, null, carrierId) { fromLoad = fromLogLoad });
-                                        }, carrierJumpCancellationTS.Token));
+                                            }, carrierJumpCancellationTS.Token)
+                                        };
 
                                         Task.Run(async () =>
                                         {

@@ -11,7 +11,7 @@ namespace EddiConfigService
         /// <summary> Obtain configuration from a json (for unit testing). </summary>
         public static T FromJson<T>(string json) where T : new()
         {
-            T configuration = default(T);
+            T configuration = default;
             if (json != null)
             {
                 try

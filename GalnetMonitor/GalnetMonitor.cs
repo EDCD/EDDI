@@ -332,9 +332,10 @@ namespace EddiGalnetMonitor
 
         public Dictionary<string, string> GetGalnetLocales()
         {
-            Dictionary<string, string> locales = new Dictionary<string, string>();
-
-            locales.Add("English", "en"); // Add our "neutral" language "en".
+            Dictionary<string, string> locales = new Dictionary<string, string>
+            {
+                { "English", "en" } // Add our "neutral" language "en".
+            };
 
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
             Dictionary<string, string> satelliteLocales = new Dictionary<string, string>();

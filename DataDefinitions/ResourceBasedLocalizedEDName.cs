@@ -64,10 +64,7 @@ namespace EddiDataDefinitions
                         propInfo.SetValue(result, prop.ToObject(propInfo.PropertyType));
                     }
                     var fieldInfo = result?.GetType().GetField(prop.Path);
-                    if (fieldInfo != null)
-                    {
-                        fieldInfo.SetValue(result, prop.ToObject(fieldInfo.FieldType));
-                    }
+                    fieldInfo?.SetValue(result, prop.ToObject(fieldInfo.FieldType));
                 }
                 return result;
             }

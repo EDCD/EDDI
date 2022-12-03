@@ -132,8 +132,7 @@ namespace Utilities
             }
             catch (WebException wex)
             {
-                HttpWebResponse errorResponse = wex.Response as HttpWebResponse;
-                if (errorResponse == null)
+                if (!(wex.Response is HttpWebResponse errorResponse))
                 {
                     // No error response
                     Logging.Warn("Failed to obtain response, error code " + wex.Status);

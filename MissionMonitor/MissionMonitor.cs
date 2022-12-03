@@ -185,17 +185,17 @@ namespace EddiMissionMonitor
         public void PostHandle(Event @event)
         {
             // Use the post-handler to remove missions from the missions list only after we have reacted to them.
-            if (@event is MissionAbandonedEvent)
+            if (@event is MissionAbandonedEvent missionAbandonedEvent)
             {
-                postHandleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+                postHandleMissionAbandonedEvent(missionAbandonedEvent);
             }
-            else if (@event is MissionCompletedEvent)
+            else if (@event is MissionCompletedEvent missionCompletedEvent)
             {
-                postHandleMissionCompletedEvent((MissionCompletedEvent)@event);
+                postHandleMissionCompletedEvent(missionCompletedEvent);
             }
-            else if (@event is MissionFailedEvent)
+            else if (@event is MissionFailedEvent missionFailedEvent)
             {
-                postHandleMissionFailedEvent((MissionFailedEvent)@event);
+                postHandleMissionFailedEvent(missionFailedEvent);
             }
         }
 
@@ -204,52 +204,52 @@ namespace EddiMissionMonitor
             Logging.Debug("Received pre-event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is DataScannedEvent)
+            if (@event is DataScannedEvent dataScannedEvent)
             {
-                handleDataScannedEvent((DataScannedEvent)@event);
+                handleDataScannedEvent(dataScannedEvent);
             }
-            else if (@event is PassengersEvent)
+            else if (@event is PassengersEvent passengersEvent)
             {
-                handlePassengersEvent((PassengersEvent)@event);
+                handlePassengersEvent(passengersEvent);
             }
-            else if (@event is MissionsEvent)
+            else if (@event is MissionsEvent missionsEvent)
             {
-                handleMissionsEvent((MissionsEvent)@event);
+                handleMissionsEvent(missionsEvent);
             }
-            else if (@event is CommunityGoalsEvent)
+            else if (@event is CommunityGoalsEvent communityGoalsEvent)
             {
-                handleCommunityGoalsEvent((CommunityGoalsEvent)@event);
+                handleCommunityGoalsEvent(communityGoalsEvent);
             }
-            else if (@event is CargoDepotEvent)
+            else if (@event is CargoDepotEvent cargoDepotEvent)
             {
-                handleCargoDepotEvent((CargoDepotEvent)@event);
+                handleCargoDepotEvent(cargoDepotEvent);
             }
-            else if (@event is MissionAcceptedEvent)
+            else if (@event is MissionAcceptedEvent missionAcceptedEvent)
             {
-                handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
+                handleMissionAcceptedEvent(missionAcceptedEvent);
             }
-            else if (@event is MissionRedirectedEvent)
+            else if (@event is MissionRedirectedEvent missionRedirectedEvent)
             {
-                handleMissionRedirectedEvent((MissionRedirectedEvent)@event);
+                handleMissionRedirectedEvent(missionRedirectedEvent);
             }
-            else if (@event is MissionExpiredEvent)
+            else if (@event is MissionExpiredEvent missionExpiredEvent)
             {
-                handleMissionExpiredEvent((MissionExpiredEvent)@event);
+                handleMissionExpiredEvent(missionExpiredEvent);
             }
 
             // Change the mission status here, remove the missions after the events resolve using the post-handler
-            if (@event is MissionAbandonedEvent)
+            if (@event is MissionAbandonedEvent missionAbandonedEvent)
             {
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+                handleMissionAbandonedEvent(missionAbandonedEvent);
             }
-            else if (@event is MissionCompletedEvent)
+            else if (@event is MissionCompletedEvent missionCompletedEvent)
             {
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+                handleMissionCompletedEvent(missionCompletedEvent);
             }
 
-            else if (@event is MissionFailedEvent)
+            else if (@event is MissionFailedEvent missionFailedEvent)
             {
-                handleMissionFailedEvent((MissionFailedEvent)@event);
+                handleMissionFailedEvent(missionFailedEvent);
             }
         }
 

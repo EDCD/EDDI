@@ -481,7 +481,7 @@ namespace EddiSpeechResponder
         {
             foreach (object value in values)
             {
-                if ((value is bool) && (bool)value == false)
+                if ((value is bool b) && b == false)
                 {
                     return false;
                 }
