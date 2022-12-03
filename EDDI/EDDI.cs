@@ -100,6 +100,7 @@ namespace EddiCore
             GameVersion = null;
 
             BgsService.SetGameVersion(GameVersion);
+            CompanionAppService.SetGameVersion(GameVersion);
         }
 
         public string gameBuild { get; private set; }

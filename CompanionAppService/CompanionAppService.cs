@@ -20,6 +20,7 @@ namespace EddiCompanionAppService
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
+        private static readonly string LEGACY_SERVER = "https://legacy-companion.orerve.net";
         private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
         private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
         private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
@@ -28,6 +29,10 @@ namespace EddiCompanionAppService
         private static readonly string TOKEN_URL = "/token";
         private static readonly string AUDIENCE = "audience=steam,frontier,epic";
         private static readonly string SCOPE = "scope=capi";
+
+        // This API uses different endpoints for the "live" galaxy (currently game version 4.0 or later) or "legacy" galaxy.
+        private static readonly System.Version minLiveGameVersion = new System.Version(4, 0);
+        private static System.Version currentGameVersion { get; set; }
 
         private readonly CustomURLResponder URLResponder;
         private string verifier;
@@ -153,7 +158,16 @@ namespace EddiCompanionAppService
 
         protected internal string ServerURL()
         {
-            return gameIsBeta ? BETA_SERVER : LIVE_SERVER;
+            return gameIsBeta 
+                ? BETA_SERVER 
+                : currentGameVersion != null && currentGameVersion < minLiveGameVersion 
+                    ? LEGACY_SERVER 
+                    : LIVE_SERVER;
+        }
+
+        public static void SetGameVersion(System.Version version)
+        {
+            currentGameVersion = version;
         }
 
         ///<summary>Log in. Throws an exception if it fails</summary>
