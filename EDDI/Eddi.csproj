@@ -198,6 +198,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
+      <Project>{962F6D23-D9D8-44BF-8A65-516889190944}</Project>
+      <Name>EddiBgsService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>

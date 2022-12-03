@@ -16,6 +16,10 @@ namespace EddiBgsService
 
     public partial class BgsService : IBgsService
     {
+        // This API only returns data for the "live" galaxy, game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static System.Version currentGameVersion { get; set; }
+
         public readonly IBgsRestClient bgsRestClient;
         public readonly IBgsRestClient eddbRestClient;
 
@@ -45,6 +49,7 @@ namespace EddiBgsService
         public List<object> GetData(IBgsRestClient restClient, string endpoint, List<KeyValuePair<string, object>> queries)
         {
             if (queries == null) { return null; }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
 
             var docs = new List<object>();
             var currentPage = 1;
@@ -75,6 +80,11 @@ namespace EddiBgsService
                 return docs;
             }
             return null;
+        }
+
+        public static void SetGameVersion(System.Version version)
+        {
+            currentGameVersion = version;
         }
 
         private PageResponse PageRequest(IBgsRestClient restClient, RestRequest request, int page)

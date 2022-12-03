@@ -80,11 +80,6 @@ namespace EddiBgsService
             };
         }
 
-        public Faction GetFaction(string endpoint, List<KeyValuePair<string, object>> queryList)
-        {
-            return GetFactions(endpoint, queryList).FirstOrDefault();
-        }
-
         public List<Faction> GetFactions(string endpoint, List<KeyValuePair<string, object>> queryList)
         {
             if (queryList.Count > 0)
@@ -94,7 +89,7 @@ namespace EddiBgsService
                 if (responses?.Count > 0)
                 {
                     List<Faction> factions = ParseFactionsParallel(responses);
-                    return factions.OrderBy(x => x.name).ToList();
+                    return factions?.OrderBy(x => x.name).ToList();
                 }
             }
             return null;

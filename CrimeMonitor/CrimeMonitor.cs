@@ -64,7 +64,6 @@ namespace EddiCrimeMonitor
         public CrimeMonitor()
         {
             bgsService = new BgsService();
-
             criminalrecord = new ObservableCollection<FactionRecord>();
             homeSystems = new Dictionary<string, string>();
             BindingOperations.CollectionRegistering += Record_CollectionRegistering;

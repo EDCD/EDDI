@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiBgsService;
 using EddiCompanionAppService;
 using EddiConfigService;
 using EddiDataDefinitions;
@@ -78,7 +79,7 @@ namespace EddiCore
             }
         }
         private string _gameVersion;
-        public PropertyChangedEventHandler GameVersionEventHandler;
+        public EventHandler GameVersionEventHandler;
 
         public System.Version GameVersion { get; private set; }
 
@@ -97,6 +98,8 @@ namespace EddiCore
                 }
             }
             GameVersion = null;
+
+            BgsService.SetGameVersion(GameVersion);
         }
 
         public string gameBuild { get; private set; }
