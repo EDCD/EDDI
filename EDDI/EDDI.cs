@@ -1089,7 +1089,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierStatsEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierStatsEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierStatsEvent.carrierID);
             }
 
             FleetCarrier.name = carrierStatsEvent.name;
@@ -1111,7 +1111,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierNameChangeEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierNameChangeEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierNameChangeEvent.carrierID);
             }
             FleetCarrier.name = carrierNameChangeEvent.name;
             return true;
@@ -1121,7 +1121,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierFinanceEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierFinanceEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierFinanceEvent.carrierID);
             }
             FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
             FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
@@ -1135,7 +1135,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierDockingPermissionEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierDockingPermissionEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierDockingPermissionEvent.carrierID);
             }
             FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
             FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
@@ -1146,7 +1146,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierFuelDepositEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierFuelDepositEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierFuelDepositEvent.carrierID);
             }
             FleetCarrier.fuel = carrierFuelDepositEvent.total;
             return true;
@@ -1156,7 +1156,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionScheduledEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierDecommissionScheduledEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierDecommissionScheduledEvent.carrierID);
             }
             FleetCarrier.state = "pendingDecommission";
             return true;
@@ -1166,7 +1166,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionCancelledEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierDecommissionCancelledEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierDecommissionCancelledEvent.carrierID);
             }
             FleetCarrier.state = "normalOperation";
             return true;
@@ -1176,7 +1176,7 @@ namespace EddiCore
         {
             if (FleetCarrier is null || FleetCarrier.carrierID != carrierBankTransferEvent.carrierID)
             {
-                fleetCarrier = new FleetCarrier(carrierBankTransferEvent.carrierID);
+                FleetCarrier = new FleetCarrier(carrierBankTransferEvent.carrierID);
             }
             Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
             FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
