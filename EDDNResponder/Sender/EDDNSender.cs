@@ -36,6 +36,10 @@ namespace EddiEddnResponder.Sender
                 {
                     Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
                 }
+                else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
+                {
+                    Logging.Warn("Message could not be sent, game version has not been set.", data);
+                }
                 else
                 {
                     Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
