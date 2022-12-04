@@ -89,21 +89,23 @@ namespace EddiCore
         {
             try
             {
-                // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
-                // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
-                // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
-                var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
-                var version = versionRegex.Match(v).Value;
-                GameVersion = !string.IsNullOrEmpty(gameVersion) && 
-                              System.Version.TryParse(version, out System.Version versionResult)
-                    ? versionResult
-                    : null;
+                if (!string.IsNullOrEmpty(v))
+                {
+                    // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
+                    // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
+                    // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
+                    var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
+                    GameVersion = !string.IsNullOrEmpty(v) &&
+                                  System.Version.TryParse(versionRegex.Match(v).Value, out System.Version versionResult)
+                        ? versionResult
+                        : null;
 
-                // Set game version in applicable services
-                BgsService.SetGameVersion(GameVersion);
-                CompanionAppService.SetGameVersion(GameVersion);
-                InaraService.SetGameVersion(GameVersion);
-                StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
+                    // Set game version in applicable services
+                    BgsService.SetGameVersion(GameVersion);
+                    CompanionAppService.SetGameVersion(GameVersion);
+                    InaraService.SetGameVersion(GameVersion);
+                    StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
+                }
             }
             catch (Exception e)
             {
@@ -2437,7 +2439,7 @@ namespace EddiCore
                     )
                 );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
-            Logging.Info(gameIsBeta ? "Game version is beta" : "Game version is live");
+            Logging.Info(gameIsBeta ? "Game version is beta" : "Game version is not beta");
 
             gameBuild = @event.build;
             gameVersion = @event.version;
