@@ -1289,41 +1289,40 @@ namespace EddiCore
                     if (Cmdr != null) { Cmdr.combatrating = combatRating; }
                     return true;
                 }
-                else
-                {
-                    // False event
-                    return false;
-                }
+                // False event
+                return false;
             }
-            else if (commanderPromotionEvent.ratingObject is CQCRating cqcRating)
+            if (commanderPromotionEvent.ratingObject is CQCRating cqcRating)
             {
                 if (Cmdr != null) { Cmdr.cqcrating = cqcRating; }
                 return true;
             }
-            else if (commanderPromotionEvent.ratingObject is EmpireRating empireRating)
+            if (commanderPromotionEvent.ratingObject is EmpireRating empireRating)
             {
                 if (Cmdr != null) { Cmdr.empirerating = empireRating; }
                 return true;
             }
-            else if (commanderPromotionEvent.ratingObject is ExplorationRating explorationRating)
+            if (commanderPromotionEvent.ratingObject is ExplorationRating explorationRating)
             {
                 if (Cmdr != null) { Cmdr.explorationrating = explorationRating; }
                 return true;
             }
-            else if (commanderPromotionEvent.ratingObject is ExobiologistRating exobiologistRating)
-            { 
-            
+            if (commanderPromotionEvent.ratingObject is ExobiologistRating exobiologistRating)
+            {
+                if (Cmdr != null) { Cmdr.exobiologistrating = exobiologistRating; }
+                return true;
             }
-            else if (commanderPromotionEvent.ratingObject is FederationRating federationRating)
+            if (commanderPromotionEvent.ratingObject is FederationRating federationRating)
             {
                 if (Cmdr != null) { Cmdr.federationrating = federationRating; }
                 return true;
             }
-            else if (commanderPromotionEvent.ratingObject is MercenaryRating mercenaryRating)
-            { 
-            
+            if (commanderPromotionEvent.ratingObject is MercenaryRating mercenaryRating)
+            {
+                if (Cmdr != null) { Cmdr.mercenaryrating = mercenaryRating; }
+                return true;
             }
-            else if (commanderPromotionEvent.ratingObject is TradeRating tradeRating)
+            if (commanderPromotionEvent.ratingObject is TradeRating tradeRating)
             {
                 // Capture commander ratings and add them to the commander object
                 if (Cmdr != null) { Cmdr.traderating = tradeRating; }
