@@ -21,6 +21,9 @@ namespace EddiInaraResponder
     {
         private readonly IInaraService inaraService = new InaraService();
 
+        // This responder currently requires game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+
         public string ResponderName()
         {
             return Properties.InaraResources.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
@@ -86,6 +89,12 @@ namespace EddiInaraResponder
             if (EDDI.Instance.gameIsBeta)
             {
                 // We don't send data whilst in beta
+                return;
+            }
+
+            if (EDDI.Instance.GameVersion < minGameVersion)
+            {
+                // We don't sent data whilst running a lower game version than the minimum required by Inara.cz
                 return;
             }
 

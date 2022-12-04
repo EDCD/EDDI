@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;
@@ -16,6 +17,9 @@ namespace EddiEdsmResponder
         private List<string> ignoredEvents = new List<string>();
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
+
+        // This responder currently requires game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
 
         public string ResponderName()
         {
@@ -95,6 +99,12 @@ namespace EddiEdsmResponder
             if (EDDI.Instance.gameIsBeta)
             {
                 // We don't send data whilst in beta
+                return;
+            }
+
+            if (EDDI.Instance.GameVersion < minGameVersion)
+            {
+                // We don't sent data whilst running a lower game version than the minimum required by EDSM
                 return;
             }
 
