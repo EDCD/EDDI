@@ -3180,7 +3180,7 @@ namespace EddiCore
             }
 
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<EDDIMonitor> monitors = new List<EDDIMonitor>();
+            List<EDDIMonitor> foundMonitors = new List<EDDIMonitor>();
             Type pluginType = typeof(EDDIMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
@@ -3204,7 +3204,7 @@ namespace EddiCore
                                     EDDIMonitor monitor = type.InvokeMember(null,
                                                                BindingFlags.CreateInstance,
                                                                null, null, null) as EDDIMonitor;
-                                    monitors.Add(monitor);
+                                    foundMonitors.Add(monitor);
                                 }
                                 catch (TargetInvocationException)
                                 {
@@ -3249,7 +3249,7 @@ namespace EddiCore
                     SpeechService.Instance.Say(null, msg, 0);
                 }
             }
-            return monitors;
+            return foundMonitors;
         }
 
         /// <summary>
@@ -3264,7 +3264,7 @@ namespace EddiCore
                 return null;
             }
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<EDDIResponder> responders = new List<EDDIResponder>();
+            List<EDDIResponder> foundResponders = new List<EDDIResponder>();
             Type pluginType = typeof(EDDIResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
@@ -3286,7 +3286,7 @@ namespace EddiCore
                                 EDDIResponder responder = type.InvokeMember(null,
                                                            BindingFlags.CreateInstance,
                                                            null, null, null) as EDDIResponder;
-                                responders.Add(responder);
+                                foundResponders.Add(responder);
                             }
                         }
                     }
@@ -3314,7 +3314,7 @@ namespace EddiCore
                     Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
                 }
             }
-            return responders;
+            return foundResponders;
         }
 
         private Ship _currentShip;
