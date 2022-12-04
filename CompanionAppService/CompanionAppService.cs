@@ -168,6 +168,10 @@ namespace EddiCompanionAppService
         public static void SetGameVersion(System.Version version)
         {
             currentGameVersion = version;
+            if (currentGameVersion != null && currentGameVersion < minLiveGameVersion)
+            {
+                Logging.Warn($"Service operating in LEGACY mode. Game version is {currentGameVersion}, LIVE endpoints require version {minLiveGameVersion} or later.");
+            }
         }
 
         ///<summary>Log in. Throws an exception if it fails</summary>

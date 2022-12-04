@@ -331,9 +331,14 @@ namespace EddiInaraService
                 EnqueueAPIEvent(inaraAPIEvent);
             }
         }
+
         public static void SetGameVersion(System.Version version)
         {
             currentGameVersion = version;
+            if (currentGameVersion != null && currentGameVersion < minGameVersion)
+            {
+                Logging.Warn($"Service disabled. Game version is {currentGameVersion}, service may only send and receive data for version {minGameVersion} or later.");
+            }
         }
     }
 

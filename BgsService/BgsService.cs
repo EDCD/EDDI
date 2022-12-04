@@ -85,6 +85,10 @@ namespace EddiBgsService
         public static void SetGameVersion(System.Version version)
         {
             currentGameVersion = version;
+            if (currentGameVersion != null && currentGameVersion < minGameVersion)
+            {
+                Logging.Warn($"Service disabled. Game version is {currentGameVersion}, service returns data for version {minGameVersion} or later.");
+            }
         }
 
         private PageResponse PageRequest(IBgsRestClient restClient, RestRequest request, int page)
