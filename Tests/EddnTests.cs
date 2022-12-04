@@ -805,7 +805,7 @@ namespace UnitTests
             }
 
             // Apply our "Handle" method to transform the data
-            var handledData = commoditySchema.Handle(profileJson, marketJson, new JObject(), new JObject(), eddnState);
+            var handledData = commoditySchema.Handle(profileJson, marketJson, new JObject(), new JObject(), false, eddnState);
             Assert.IsNotNull(handledData);
 
             // Validate the final data
@@ -931,7 +931,7 @@ namespace UnitTests
             }
 
             // Apply our "Handle" method to transform the data
-            var handledData = fcmaterialsSchema?.Handle(null, fcMarketJson, null, null, eddnState);
+            var handledData = fcmaterialsSchema?.Handle(null, fcMarketJson, null, null, false, eddnState);
             Assert.IsNotNull(handledData);
 
             // Validate the final data
@@ -1051,7 +1051,7 @@ namespace UnitTests
 
             // Apply our "Handle" method to transform the data
             var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Kurigosages"",""faction"":""independent""}}");
-            var outfittingData = outfittingSchema?.Handle(profileJson, null, shipyardJson, null, eddnState);
+            var outfittingData = outfittingSchema?.Handle(profileJson, null, shipyardJson, null, false, eddnState);
             Assert.IsNotNull(outfittingData);
 
             // Validate the final data
@@ -1155,7 +1155,7 @@ namespace UnitTests
 
             // Apply our "Handle" method to transform the data
             var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Kurigosages"",""faction"":""independent""}}");
-            var shipyardData = shipyardSchema?.Handle(profileJson, null, shipyardJson, null, eddnState);
+            var shipyardData = shipyardSchema?.Handle(profileJson, null, shipyardJson, null, false, eddnState);
             Assert.IsNotNull(shipyardData);
 
             // Validate the final data

@@ -42,7 +42,7 @@ namespace EddiCompanionAppService.Endpoints
                     cachedFleetCarrierJson = result;
                     cachedFleetCarrierTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     Logging.Debug($"{FLEETCARRIER_URL} returned " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
-                    FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(null, null, null, cachedFleetCarrierJson));
+                    FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(CompanionAppService.Instance.ServerURL(), null, null, null, cachedFleetCarrierJson));
                 }
                 else
                 {

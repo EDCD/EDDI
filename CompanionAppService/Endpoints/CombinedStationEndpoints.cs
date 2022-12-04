@@ -68,7 +68,7 @@ namespace EddiCompanionAppService.Endpoints
                             marketJson["timestamp"]?.ToObject<DateTime?>(), 
                             shipyardJson["timestamp"]?.ToObject<DateTime?>()
                         }.OrderByDescending(d => d).FirstOrDefault() ?? DateTime.MinValue;
-                        StationUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(profileJson, marketJson, shipyardJson, null));
+                        StationUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(CompanionAppService.Instance.ServerURL(), profileJson, marketJson, shipyardJson, null));
                         return cachedStationJson;
                     }
                 }

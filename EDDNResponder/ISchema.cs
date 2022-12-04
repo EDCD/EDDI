@@ -15,6 +15,6 @@ namespace EddiEddnResponder
 
     public interface ICapiSchema
     {
-        IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, EDDNState eddnState);
+        IDictionary<string, object> Handle(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson, bool fromLegacyServer, EDDNState eddnState);
     }
 }

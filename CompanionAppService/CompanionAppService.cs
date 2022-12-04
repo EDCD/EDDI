@@ -20,7 +20,7 @@ namespace EddiCompanionAppService
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
-        private static readonly string LEGACY_SERVER = "https://legacy-companion.orerve.net";
+        internal static readonly string LEGACY_SERVER = "https://legacy-companion.orerve.net";
         private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
         private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
         private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
@@ -525,7 +525,7 @@ namespace EddiCompanionAppService
                 Logging.Warn(wex.Message);
                 response = (HttpWebResponse)wex.Response;
             }
-            Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
+            Logging.Debug($"Response from {request.Address} is " + JsonConvert.SerializeObject(response));
             return response;
         }
 

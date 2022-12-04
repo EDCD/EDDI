@@ -70,7 +70,7 @@ namespace EddiEddnResponder
             foreach (var schema in capiSchemas)
             {
                 // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
-                schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState);
+                schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, e.fromLegacyServer, eddnState);
             }
         }
 
