@@ -77,34 +77,38 @@ namespace EddiCore
             {
                 _gameVersion = value;
                 SetGameVersion(value);
-                GameVersionEventHandler?.Invoke(value, new PropertyChangedEventArgs(nameof(gameVersion)));
+                GameVersionUpdated?.Invoke(GameVersion, new PropertyChangedEventArgs(nameof(gameVersion)));
             }
         }
         private string _gameVersion;
-        public EventHandler GameVersionEventHandler;
+        public EventHandler GameVersionUpdated;
 
         public System.Version GameVersion { get; private set; }
 
         private void SetGameVersion(string v)
         {
-            // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
-            // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
-            // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
-            if (!string.IsNullOrEmpty(gameVersion))
+            try
             {
+                // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
+                // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
+                // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
                 var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
                 var version = versionRegex.Match(v).Value;
-                if (System.Version.TryParse(version, out System.Version versionResult))
-                {
-                    GameVersion = versionResult;
-                }
-            }
-            GameVersion = null;
+                GameVersion = !string.IsNullOrEmpty(gameVersion) && 
+                              System.Version.TryParse(version, out System.Version versionResult)
+                    ? versionResult
+                    : null;
 
-            BgsService.SetGameVersion(GameVersion);
-            CompanionAppService.SetGameVersion(GameVersion);
-            InaraService.SetGameVersion(GameVersion);
-            StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
+                // Set game version in applicable services
+                BgsService.SetGameVersion(GameVersion);
+                CompanionAppService.SetGameVersion(GameVersion);
+                InaraService.SetGameVersion(GameVersion);
+                StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Failed to set game version", e);
+            }
         }
 
         /// <summary>
