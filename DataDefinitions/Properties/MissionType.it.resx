@@ -236,13 +236,13 @@
     <value>Contratto per la Marina Imperiale</value>
   </data>
   <data name="DisableMegaship" xml:space="preserve">
-    <value>Disabilita Mega Vascello</value>
+    <value>Disabilita Mega nave</value>
   </data>
   <data name="Founder" xml:space="preserve">
     <value>Fondatore</value>
   </data>
   <data name="HackMegaship" xml:space="preserve">
-    <value>Viola Mega Vascello</value>
+    <value>Vìola Mega nave</value>
   </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Obiettivi Skimmer</value>

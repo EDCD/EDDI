@@ -222,7 +222,7 @@
     <comment>Notable Stellar Phenomena</comment>
   </data>
   <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
-    <value>Mega Bastimento</value>
+    <value>Nave ammiraglia</value>
     <comment>Capital Ship</comment>
   </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">

@@ -130,7 +130,7 @@
     <comment>A Coriolis Starport</comment>
   </data>
   <data name="Megaship" xml:space="preserve">
-    <value>Mega Bastimento</value>
+    <value>Mega nave</value>
     <comment>A Megaship</comment>
   </data>
   <data name="Orbis" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>A Surface Outpost</comment>
   </data>
   <data name="MegaShipCivilian" xml:space="preserve">
-    <value>Mega Vascello Civile</value>
+    <value>Mega nave civile</value>
     <comment>A Civilian Megaship</comment>
   </data>
   <data name="OutpostScientific" xml:space="preserve">

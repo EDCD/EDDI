@@ -1282,7 +1282,7 @@
     <comment>Commodity UnknownResin</comment>
   </data>
   <data name="UnknownTechnologySamples" xml:space="preserve">
-    <value>Campione Tecnologico Thargoid</value>
+    <value>Campioni di tecnologia Thargoid</value>
     <comment>Commodity UnknownTechnologySamples</comment>
   </data>
   <data name="UnstableDataCore" xml:space="preserve">
@@ -1614,7 +1614,7 @@
     <comment>Commodity Ancient Key</comment>
   </data>
   <data name="ThargoidTissueSampleType1" xml:space="preserve">
-    <value>Campione di Tessuto di Ciclope Thargoid</value>
+    <value>Campione di Tessuto di Ciclopide Thargoid</value>
     <comment>Commodity ThargoidTissueSampleType1</comment>
   </data>
   <data name="ThargoidTissueSampleType2" xml:space="preserve">
@@ -1780,5 +1780,17 @@
   <data name="AncientRelicTG" xml:space="preserve">
     <value>Reliquia non classificata</value>
     <comment>Commodity AncientRelicTG</comment>
+  </data>
+  <data name="ThargoidTissueSampleType5" xml:space="preserve">
+    <value>Campione di tessuto di Orthrus Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+  </data>
+  <data name="ThargoidGeneratorTissueSample" xml:space="preserve">
+    <value>Campione di tessuto caustico</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+  </data>
+  <data name="UnocuppiedEscapePod" xml:space="preserve">
+    <value>Capsula di Salvataggio vuota</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
   </data>
 </root>
