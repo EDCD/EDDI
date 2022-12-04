@@ -52,7 +52,7 @@ namespace EddiStarMapService
 
         public Traffic ParseStarMapTraffic(JObject response)
         {
-            if (response.IsNullOrEmpty()) { return null; }
+            if (response.IsNullOrEmpty()) { return new Traffic(); }
             Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>() ?? new Traffic();
             return traffic;
         }
@@ -86,7 +86,7 @@ namespace EddiStarMapService
 
         public Traffic ParseStarMapDeaths(JObject response)
         {
-            if (response.IsNullOrEmpty()) { return null; }
+            if (response.IsNullOrEmpty()) { return new Traffic(); }
             Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>() ?? new Traffic();
             return deaths;
         }
