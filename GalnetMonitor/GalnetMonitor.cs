@@ -34,6 +34,9 @@ namespace EddiGalnetMonitor
 
         public static bool altURL { get; private set; }
 
+        // This monitor currently requires game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+
         public GalnetMonitor()
         {
             configuration = ConfigService.Instance.galnetConfiguration;
@@ -75,9 +78,29 @@ namespace EddiGalnetMonitor
         /// </summary>
         public void Start()
         {
+            EDDI.Instance.GameVersionUpdated += OnGameVersionUpdated;
             running = true;
             locales = GetGalnetLocales();
             monitor();
+        }
+
+        private void OnGameVersionUpdated(object sender, EventArgs e)
+        {
+            if (sender is System.Version currentGameVersion)
+            {
+                if (currentGameVersion < minGameVersion)
+                {
+                    Logging.Warn($"Monitor disabled. Game version is {currentGameVersion}, monitor may only receive data for version {minGameVersion} or later.");
+                    Stop();
+                }
+                else
+                {
+                    if (!running)
+                    {
+                        Start();
+                    }
+                }
+            }
         }
 
         public void Stop()
