@@ -7,6 +7,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed bugs that would cause carrier events not to trigger if the commander hadn't already obtained fleet carriier data from the Frontier API.
     * Various services, monitors, and responders shall be disabled or send/receive data from different endpoints when running a legacy Elite game version (less than 4.0). Disabled services shall be noted by EDDI logs. 
   * Speech Responder
+    * Functions
+      * `CargoDetails()` shall now provide a generic commodity definition even when the commodity is not included in the current cargo manifest.
+      * `CommodityMarketDetails()` shall now provide a generic commodity definition even when the commodity is not found in the current station inventory.
     * Changes to existing scripts
       * `Carrier docking permission` corrected occasional grammar issue.
       * `Carrier service changed` corrected occasional grammar issue.

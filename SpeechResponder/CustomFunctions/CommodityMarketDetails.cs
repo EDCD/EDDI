@@ -20,7 +20,8 @@ namespace EddiSpeechResponder.CustomFunctions
             CommodityMarketQuote result = null;
             CommodityMarketQuote CommodityDetails(string commodityLocalizedName, Station station)
             {
-                return station?.commodities?.FirstOrDefault(c => c.localizedName == commodityLocalizedName);
+                return station?.commodities?.FirstOrDefault(c => c.localizedName == commodityLocalizedName) ??
+                       new CommodityMarketQuote(CommodityDefinition.FromNameOrEDName(values[0].AsString));
             }
 
             if (values.Count == 1)
