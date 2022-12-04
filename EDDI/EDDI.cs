@@ -2939,7 +2939,13 @@ namespace EddiCore
             updateCurrentSystem(theEvent.star?.systemname);
             if (CurrentStarSystem == null) { return false; }
 
-            Body star = CurrentStarSystem.bodies?.Find(s => s.bodyname == theEvent.bodyname);
+            // We use an un-named temporary star at distance 0M during the FSD Target event.
+            // Try to match and replace that temporary star if it exists. Otherwise, match by body name.
+            Body star = CurrentStarSystem.bodies?
+                .Where(s => s.bodyType == BodyType.FromEDName("Star")).ToList()
+                .Find(s => 
+                    (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
+                    s.bodyname == theEvent.bodyname);
             if (star?.scanned is null)
             {
                 CurrentStarSystem.AddOrUpdateBody(theEvent.star);
