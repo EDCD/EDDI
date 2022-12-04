@@ -14,6 +14,7 @@ namespace EddiStarMapService
         public List<Station> GetStarMapStations(string system, long? edsmId = null)
         {
             if (system == null) { return new List<Station>(); }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return new List<Station>(); }
 
             var request = new RestRequest("api-system-v1/stations", Method.POST);
             request.AddParameter("systemName", system);

@@ -22,12 +22,14 @@ namespace EddiStarMapService
                 );
                 return hostility;
             }
-            return new Traffic();
+            return null;
         }
 
         public Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
+
             var request = new RestRequest("api-system-v1/traffic", Method.POST);
             request.AddParameter("systemName", systemName);
             if (edsmId != null) { request.AddParameter("systemId", edsmId); }
@@ -41,19 +43,25 @@ namespace EddiStarMapService
                     return ParseStarMapTraffic(response);
                 }
             }
-            return new Traffic();
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
+            return null;
         }
 
         public Traffic ParseStarMapTraffic(JObject response)
         {
-            if (response.IsNullOrEmpty()) { return new Traffic(); }
-            Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>();
+            if (response.IsNullOrEmpty()) { return null; }
+            Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>() ?? new Traffic();
             return traffic;
         }
 
         public Traffic GetStarMapDeaths(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return null; }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
+
             var request = new RestRequest("api-system-v1/deaths", Method.POST);
             request.AddParameter("systemName", systemName);
             if (edsmId != null)
@@ -69,13 +77,17 @@ namespace EddiStarMapService
                     return ParseStarMapDeaths(response);
                 }
             }
-            return new Traffic();
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
+            return null;
         }
 
         public Traffic ParseStarMapDeaths(JObject response)
         {
-            if (response.IsNullOrEmpty()) { return new Traffic(); }
-            Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>();
+            if (response.IsNullOrEmpty()) { return null; }
+            Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>() ?? new Traffic();
             return deaths;
         }
     }

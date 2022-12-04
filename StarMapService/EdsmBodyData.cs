@@ -5,6 +5,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiStarMapService
@@ -14,6 +15,7 @@ namespace EddiStarMapService
         public List<Body> GetStarMapBodies(string system, long? edsmId = null)
         {
             if (system == null) { return new List<Body>(); }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return new List<Body>(); }
 
             var request = new RestRequest("api-system-v1/bodies", Method.POST);
             request.AddParameter("systemName", system);
@@ -56,6 +58,7 @@ namespace EddiStarMapService
             return Bodies;
         }
 
+        [UsedImplicitly]
         private Body ParseStarMapBody(JObject body, string systemName, ulong? systemAddress)
         {
             try

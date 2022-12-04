@@ -21,6 +21,7 @@ namespace EddiStarMapService
         public List<StarSystem> GetStarMapSystems(string[] systems, bool showCoordinates = true)
         {
             if (systems == null) { return new List<StarSystem>(); }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return new List<StarSystem>(); }
 
             var request = new RestRequest("api-v1/systems", Method.POST);
             foreach (string system in systems)

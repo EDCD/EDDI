@@ -14,6 +14,7 @@ namespace EddiStarMapService
         public List<Faction> GetStarMapFactions(string systemName, long? edsmId = null)
         {
             if (systemName == null) { return new List<Faction>(); }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return new List<Faction>(); }
 
             var request = new RestRequest("api-system-v1/factions", Method.POST);
             request.AddParameter("systemName", systemName);

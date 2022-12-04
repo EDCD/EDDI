@@ -48,6 +48,12 @@ namespace EddiStarMapService
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
 
+        // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
+        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static System.Version currentGameVersion { get; set; }
+        private static string gameVersion;
+        private static string gameBuild;
+
         private class EdsmRestClient : IEdsmRestClient
         {
             private readonly RestClient restClient;
@@ -211,6 +217,8 @@ namespace EddiStarMapService
         public void EnqueueEvent(IDictionary<string, object> eventObject)
         {
             if (eventObject is null) { return; }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return; }
+
             queuedEvents.Add(eventObject);
         }
 
@@ -231,6 +239,7 @@ namespace EddiStarMapService
 
         private void SendEvents(List<IDictionary<string, object>> queue)
         {
+            if (currentGameVersion is null) { return; } // Wait until we have a game version before sending events
             var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
             SendEventBatch(queue, starMapConfiguration);
         }
@@ -251,6 +260,8 @@ namespace EddiStarMapService
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("fromSoftware", Constants.EDDI_NAME);
             request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+            request.AddParameter("fromGameVersion", gameVersion);
+            request.AddParameter("fromGameBuild", gameBuild);
             request.AddParameter("message", JsonConvert.SerializeObject(eventData).Normalize());
             request.Timeout = JournalTimeoutMilliseconds;
 
@@ -265,12 +276,13 @@ namespace EddiStarMapService
                     Logging.Warn(clientResponse.ErrorMessage);
                     ReEnqueueEvents(eventData);
                 }
-                else if (response.msgnum >= 100 && response.msgnum <= 103)
+                else if (response.msgnum >= 100 && response.msgnum <= 104)
                 {
                     // 100 -  Everything went fine! 
                     // 101 -  The journal message was already processed in our database. 
                     // 102 -  The journal message was already in a newer version in our database. 
-                    // 103 -  Duplicate event request (already reported from another software client). 
+                    // 103 -  Duplicate event request (cached data already reported from another software client). 
+                    // 104 -  Commander is in a crew session without being the captain. As such we do not register any logs. 
                     starMapConfiguration.lastJournalSync = eventData
                         .Select(e => JsonParsing.getDateTime("timestamp", e))
                         .Max();
@@ -414,6 +426,18 @@ namespace EddiStarMapService
             Logging.Debug("No response received.");
             throw new EDSMException("No response received."); // not for localization
         }
+
+        public static void SetGameVersion(System.Version GameVersion, string gameversion, string gamebuild)
+        {
+            currentGameVersion = GameVersion;
+            gameVersion = gameversion;
+            gameBuild = gamebuild;
+
+            if (currentGameVersion != null && currentGameVersion < minGameVersion)
+            {
+                Logging.Warn($"Service disabled. Game version is {currentGameVersion}, service may only send and receive data for version {minGameVersion} or later.");
+            }
+        }
     }
 
     // response from the Star Map log API
@@ -497,7 +521,6 @@ namespace EddiStarMapService
 
         public string RootElement { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public string Serialize(object obj)
         {
             using (var stringWriter = new StringWriter())
@@ -508,7 +531,6 @@ namespace EddiStarMapService
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public T Deserialize<T>(IRestResponse response)
         {
             var content = response.Content;

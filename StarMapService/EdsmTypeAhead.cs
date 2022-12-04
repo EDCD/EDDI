@@ -12,6 +12,7 @@ namespace EddiStarMapService
         public List<string> GetTypeAheadStarSystems(string partialSystemName)
         {
             if (string.IsNullOrEmpty(partialSystemName)) { return new List<string>(); }
+            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
 
             var request = new RestRequest("typeahead/systems/query/" + partialSystemName, Method.POST);
             var clientResponse = restClient.Execute<List<JObject>>(request);

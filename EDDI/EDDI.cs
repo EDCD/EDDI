@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EddiStarMapService;
 using Utilities;
 
 namespace EddiCore
@@ -103,8 +104,12 @@ namespace EddiCore
             BgsService.SetGameVersion(GameVersion);
             CompanionAppService.SetGameVersion(GameVersion);
             InaraService.SetGameVersion(GameVersion);
+            StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
         }
 
+        /// <summary>
+        /// Set this prior to setting the game version so that services requiring both receive correct data.
+        /// </summary>
         public string gameBuild { get; private set; }
 
         static EDDI()
@@ -2430,8 +2435,8 @@ namespace EddiCore
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
             Logging.Info(gameIsBeta ? "Game version is beta" : "Game version is live");
 
-            gameVersion = @event.version;
             gameBuild = @event.build;
+            gameVersion = @event.version;
 
             return true;
         }
@@ -2677,8 +2682,8 @@ namespace EddiCore
             // Identify active game version
             inHorizons = theEvent.horizons;
             inOdyssey = theEvent.odyssey;
-            gameVersion = theEvent.gameversion;
             gameBuild = theEvent.gamebuild;
+            gameVersion = theEvent.gameversion;
 
             return true;
         }

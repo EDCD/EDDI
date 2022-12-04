@@ -105,19 +105,19 @@ namespace EddiDataProviderService
         public Traffic GetSystemTraffic(string systemName, long? edsmId = null)
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapTraffic(systemName, edsmId);
+            return edsmService.GetStarMapTraffic(systemName, edsmId) ?? new Traffic();
         }
 
         public Traffic GetSystemDeaths(string systemName, long? edsmId = null)
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapDeaths(systemName, edsmId);
+            return edsmService.GetStarMapDeaths(systemName, edsmId) ?? new Traffic();
         }
 
         public Traffic GetSystemHostility(string systemName, long? edsmId = null)
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapHostility(systemName, edsmId);
+            return edsmService.GetStarMapHostility(systemName, edsmId) ?? new Traffic();
         }
 
         // EDSM flight log synchronization
