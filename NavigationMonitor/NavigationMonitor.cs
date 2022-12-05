@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -32,21 +33,17 @@ namespace EddiNavigationMonitor
 
         // Observable collection for us to handle changes to Bookmarks
         public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
-        public static event EventHandler BookmarksUpdatedEvent;
 
         public ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
 
         // Navigation route data
         public NavWaypointCollection NavRoute = new NavWaypointCollection() { FillVisitedGaps = true };
-        public static event EventHandler NavRouteUpdatedEvent;
 
         // Plotted carrier route data
         public NavWaypointCollection CarrierPlottedRoute = new NavWaypointCollection() { FillVisitedGaps = true };
-        public static event EventHandler CarrierPlottedRouteUpdatedEvent;
 
         // Plotted ship route data
         public NavWaypointCollection PlottedRoute = new NavWaypointCollection();
-        public static event EventHandler PlottedRouteUpdatedEvent;
 
         #endregion
 
@@ -87,7 +84,11 @@ namespace EddiNavigationMonitor
         private void LoadMonitor()
         {
             ReadNavConfig();
+            GetGalacticPOIs();
+        }
 
+        private void GetGalacticPOIs()
+        {
             // Build a Galactic POI list
             GalacticPOIs = EDAstro.GetPOIs();
             GetBookmarkExtras(GalacticPOIs);
@@ -99,6 +100,7 @@ namespace EddiNavigationMonitor
             {
                 // Synchronize this collection between threads
                 BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock);
+                BindingOperations.EnableCollectionSynchronization(GalacticPOIs, navConfigLock);
                 BindingOperations.EnableCollectionSynchronization(NavRoute.Waypoints, navConfigLock);
                 BindingOperations.EnableCollectionSynchronization(PlottedRoute.Waypoints, navConfigLock);
                 BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock);
@@ -107,6 +109,7 @@ namespace EddiNavigationMonitor
             {
                 // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(Bookmarks, navConfigLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(GalacticPOIs, navConfigLock); });
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(NavRoute.Waypoints, navConfigLock); });
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(PlottedRoute.Waypoints, navConfigLock); });
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(CarrierPlottedRoute.Waypoints, navConfigLock); });
@@ -447,9 +450,6 @@ namespace EddiNavigationMonitor
                         NavRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
                     }
 
-                    // Raise on UI thread
-                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
-
                     // Update the navigation configuration 
                     updateDat = @event.timestamp;
                     WriteNavConfig();
@@ -469,10 +469,7 @@ namespace EddiNavigationMonitor
                         UpdateDestinationData(null, 0);
                         NavRoute.Waypoints.Clear();
                     }
-
-                    // Raise on UI thread
-                    RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
-
+                    
                     // Update the navigation configuration 
                     updateDat = @event.timestamp;
                     WriteNavConfig();
@@ -549,9 +546,6 @@ namespace EddiNavigationMonitor
                 {
                     CarrierPlottedRoute.Waypoints.Clear();
                 }
-
-                // Raise on UI thread
-                RaiseOnUIThread(CarrierPlottedRouteUpdatedEvent, CarrierPlottedRoute);
             }
             else
             {
@@ -584,9 +578,6 @@ namespace EddiNavigationMonitor
                 {
                     PlottedRoute.GuidanceEnabled = false;
                 }
-
-                // Raise on UI thread
-                RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRoute);
             }
 
             // Update the navigation configuration 
@@ -657,10 +648,6 @@ namespace EddiNavigationMonitor
 
                 ConfigService.Instance.navigationMonitorConfiguration = navConfig;
             }
-            // Make sure the UI is up to date
-            RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
-            RaiseOnUIThread(NavRouteUpdatedEvent, NavRoute);
-            RaiseOnUIThread(PlottedRouteUpdatedEvent, PlottedRoute);
         }
 
         private void ReadNavConfig()
@@ -690,8 +677,6 @@ namespace EddiNavigationMonitor
             lock (navConfigLock)
             {
                 Bookmarks.RemoveAt(index);
-                // Make sure the UI is up to date
-                RaiseOnUIThread(BookmarksUpdatedEvent, Bookmarks);
             }
         }
 
@@ -850,39 +835,31 @@ namespace EddiNavigationMonitor
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
-        static void RaiseOnUIThread(EventHandler handler, object sender)
-        {
-            //// Not required for observable collections
-            //if (handler != null)
-            //{
-            //    SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
-            //    if (uiSyncContext == null)
-            //    {
-            //        handler(sender, EventArgs.Empty);
-            //    }
-            //    else
-            //    {
-            //        uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
-            //    }
-            //}
-        }
-
-        private void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
+        private async void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
         {
             // Retrieve extra details to supplement our bookmarks
+
             var bookmarkSystems = bookmarks.Select(n => new StarSystem()
             {
                 systemname = n.systemname,
                 systemAddress = n.systemAddress
             }).ToList();
-            var dataProviderService = new DataProviderService(new StarMapService());
-            foreach (var system in dataProviderService.syncFromStarMapService(bookmarkSystems))
+            var visitedBookmarkSystems = await Task.Run(() =>
             {
-                var poi = bookmarks.FirstOrDefault(s => s.systemname == system.systemname);
+                return new DataProviderService(new StarMapService())
+                    .syncFromStarMapService(bookmarkSystems)
+                    .Where(s => s.visits > 0);
+            }).ConfigureAwait(false);
+            foreach (var system in visitedBookmarkSystems)
+            {
+                var poi = bookmarks.FirstOrDefault(s => s.systemAddress == system.systemAddress) ??
+                          bookmarks.FirstOrDefault(s => s.systemname == system.systemname);
                 if (poi != null)
                 {
                     poi.systemAddress = system.systemAddress;
                     poi.visitLog = system.visitLog;
+                    bookmarks.Remove(poi);
+                    bookmarks.Add(poi);
                 }
             }
         }
