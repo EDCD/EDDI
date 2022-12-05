@@ -192,7 +192,7 @@ namespace EddiSpeechResponder
 
                 // Make sure default values are set as required
                 // ReSharper disable once InlineOutVariableDeclaration - Continuous Integration seems to require this variable be declared separately rather than in-line
-                Script defaultScript;
+                Script defaultScript = null;
                 if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
                 {
                     script = Personality.UpgradeScript(script, defaultScript);
