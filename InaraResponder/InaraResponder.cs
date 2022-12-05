@@ -478,27 +478,33 @@ namespace EddiInaraResponder
 
         private void handleShipInterdictedEvent(ShipInterdictedEvent @event)
         {
-            // If the player was interdicted
-            if (@event.succeeded)
+            if (!string.IsNullOrEmpty(@event.interdictor ?? @event.faction ?? @event.power) &&
+                !string.IsNullOrEmpty(EDDI.Instance.CurrentStarSystem?.systemname))
             {
-                // The player did not escape
-                inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdicted", new Dictionary<string, object>()
+                // If the player was interdicted
+                if (@event.succeeded)
                 {
-                    { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
-                    { "opponentName", @event.interdictor },
-                    { "isPlayer", @event.iscommander },
-                    { "isSubmit", @event.submitted }
-                }));
-            }
-            else
-            {
-                // The player escaped
-                inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdictionEscape", new Dictionary<string, object>()
+                    // The player did not escape
+                    inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdicted",
+                        new Dictionary<string, object>()
+                        {
+                            { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                            { "opponentName", @event.interdictor ?? @event.faction ?? @event.power },
+                            { "isPlayer", @event.iscommander },
+                            { "isSubmit", @event.submitted }
+                        }));
+                }
+                else
                 {
-                    { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
-                    { "opponentName", @event.interdictor },
-                    { "isPlayer", @event.iscommander }
-                }));
+                    // The player escaped
+                    inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp,
+                        "addCommanderCombatInterdictionEscape", new Dictionary<string, object>()
+                        {
+                            { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                            { "opponentName", @event.interdictor ?? @event.faction ?? @event.power },
+                            { "isPlayer", @event.iscommander }
+                        }));
+                }
             }
         }
 
