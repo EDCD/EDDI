@@ -375,8 +375,11 @@ namespace EddiCore
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
 
                 EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-                configuration.fleetCarrier = value;
-                ConfigService.Instance.eddiConfiguration = configuration;
+                if (configuration.fleetCarrier != value)
+                {
+                    configuration.fleetCarrier = value;
+                    ConfigService.Instance.eddiConfiguration = configuration;
+                }
 
                 fleetCarrier = value;
                 OnPropertyChanged();
@@ -435,24 +438,30 @@ namespace EddiCore
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
-                // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
-                Cmdr = new Commander();
-
                 // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
                 // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
                 CompanionAppService.Instance.gameIsBeta = false;
 
-                // Retrieve commander data
                 var configuration = ConfigService.Instance.eddiConfiguration;
+                Logging.Verbose = configuration.Debug;
+
+                // Retrieve commander data
+                Cmdr = new Commander();
                 Cmdr.name = configuration.CommanderName;
                 Cmdr.phoneticName = configuration.PhoneticName;
                 Cmdr.gender = configuration.Gender;
+                Cmdr.squadronname = configuration.SquadronName;
+                Cmdr.squadronid = configuration.SquadronID;
+                Cmdr.squadronrank = configuration.SquadronRank;
+                Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                Cmdr.squadronpower = configuration.SquadronPower;
+                Cmdr.squadronfaction = configuration.SquadronFaction;
                 FleetCarrier = configuration.fleetCarrier;
 
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-                List<Task> essentialAsyncTasks = new List<Task>();
+                var essentialAsyncTasks = new List<Task>();
                 if (running)
                 {
                     // Tasks we can start asynchronously but need to complete before other dependent code is called
@@ -461,39 +470,6 @@ namespace EddiCore
                         Task.Run(() => responders = findResponders()), // Set up responders
                         Task.Run(() => monitors = findMonitors()), // Set up monitors 
                     });
-                    // If our home system and squadron system are the same, run those tasks in the same thread to prevent fetching from the star system database multiple times.
-                    // Otherwise, run them in seperate threads.
-                    void ActionUpdateHomeSystemStation()
-                    {
-                        updateHomeSystemStation(configuration);
-                    }
-                    void ActionUpdateSquadronSystem()
-                    {
-                        updateSquadronSystem(configuration);
-                        Cmdr.squadronname = configuration.SquadronName;
-                        Cmdr.squadronid = configuration.SquadronID;
-                        Cmdr.squadronrank = configuration.SquadronRank;
-                        Cmdr.squadronallegiance = configuration.SquadronAllegiance;
-                        Cmdr.squadronpower = configuration.SquadronPower;
-                        Cmdr.squadronfaction = configuration.SquadronFaction;
-                    }
-                    if (configuration.HomeSystem == configuration.SquadronSystem)
-                    {
-                        // Run both actions on the same thread
-                        essentialAsyncTasks.Add(Task.Run((Action)ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem));
-                    }
-                    else
-                    {
-                        // Run both actions on distinct threads
-                        essentialAsyncTasks.AddRange(new List<Task>()
-                        {
-                            // Method groups are considered by AppVeyor to be an ambiguous call.
-                            // ReSharper disable ConvertClosureToMethodGroup
-                            Task.Run(() => ActionUpdateHomeSystemStation()),
-                            Task.Run(() => ActionUpdateSquadronSystem())
-                            // ReSharper restore ConvertClosureToMethodGroup
-                        });
-                    }
                 }
                 else
                 {
@@ -504,7 +480,30 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray());
 
                 // Tasks we can start asynchronously and don't need to wait for
-                Task.Run(() => updateDestinationSystem(configuration.DestinationSystem));
+
+                // If our home system and squadron system are the same, run those tasks in the same thread to prevent fetching from the star system database multiple times.
+                // Otherwise, run them in separate threads.
+                void ActionUpdateHomeSystemStation()
+                {
+                    updateHomeSystemStation(configuration);
+                }
+                void ActionUpdateSquadronSystem()
+                {
+                    updateSquadronSystem(configuration);
+                }
+                if (configuration.HomeSystem == configuration.SquadronSystem)
+                {
+                    // Run both actions on the same thread
+                    Task.Run((Action)ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem).ConfigureAwait(false);
+                }
+                else
+                {
+                    // Run both actions on distinct threads
+                    Task.Run(() => ActionUpdateHomeSystemStation()).ConfigureAwait(false);
+                    Task.Run(() => ActionUpdateSquadronSystem()).ConfigureAwait(false);
+                }
+
+                Task.Run(() => updateDestinationSystem(configuration.DestinationSystem)).ConfigureAwait(false);
                 Task.Run(() =>
                 {
                     // Set up the Frontier API service
@@ -527,7 +526,7 @@ namespace EddiCore
                     {
                         Logging.Info("EDDI access to the Frontier API is not enabled.");
                     }
-                });
+                }).ConfigureAwait(false);
 
                 CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
 
@@ -3443,8 +3442,7 @@ namespace EddiCore
 
         public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
         {
-            Logging.Verbose = configuration.Debug;
-            if (configuration.HomeSystem != null)
+            if (!string.IsNullOrEmpty(configuration.HomeSystem))
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem);
 
@@ -3468,8 +3466,7 @@ namespace EddiCore
 
         public EDDIConfiguration updateHomeStation(EDDIConfiguration configuration)
         {
-            Logging.Verbose = configuration.Debug;
-            if (HomeStarSystem?.stations != null && configuration.HomeStation != null)
+            if (!string.IsNullOrEmpty(configuration.HomeStation) && HomeStarSystem?.stations != null)
             {
                 string homeStationName = configuration.HomeStation.Trim();
                 foreach (Station station in HomeStarSystem.stations)
@@ -3478,6 +3475,7 @@ namespace EddiCore
                     {
                         HomeStation = station;
                         Logging.Debug("Home station is " + HomeStation.name);
+                        configuration.HomeStation = station.name;
                         break;
                     }
                 }
@@ -3487,8 +3485,7 @@ namespace EddiCore
 
         public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
         {
-            Logging.Verbose = configuration.Debug;
-            if (configuration.SquadronSystem != null)
+            if (!string.IsNullOrEmpty(configuration.SquadronSystem))
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim());
 
