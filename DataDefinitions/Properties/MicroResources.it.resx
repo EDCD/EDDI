@@ -564,7 +564,7 @@
     <comment>A component from an electrical system.</comment>
   </data>
   <data name="MetalCoil" xml:space="preserve">
-    <value>Molla metallica</value>
+    <value>Bobina metallica</value>
     <comment>Commonplace metal for use in electrical circuits and hydraulic systems.</comment>
   </data>
   <data name="Motor" xml:space="preserve">
