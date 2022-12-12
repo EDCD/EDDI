@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ShipRoles {
@@ -70,6 +70,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anti-Xeno Combat.
+        /// </summary>
+        public static string AXcombat {
+            get {
+                return ResourceManager.GetString("AXcombat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anti-Xeno Combat Support.
+        /// </summary>
+        public static string AXcombatsupport {
+            get {
+                return ResourceManager.GetString("AXcombatsupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bounty hunting.
         /// </summary>
         public static string Bountyhunting {
@@ -93,6 +111,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Combatsupport {
             get {
                 return ResourceManager.GetString("Combatsupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evacuation.
+        /// </summary>
+        public static string Evacuation {
+            get {
+                return ResourceManager.GetString("Evacuation", resourceCulture);
             }
         }
         
@@ -205,11 +232,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stealth.
+        /// </summary>
+        public static string Stealth {
+            get {
+                return ResourceManager.GetString("Stealth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Taxi.
         /// </summary>
         public static string Taxi {
             get {
                 return ResourceManager.GetString("Taxi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tourism.
+        /// </summary>
+        public static string Tourism {
+            get {
+                return ResourceManager.GetString("Tourism", resourceCulture);
             }
         }
         
