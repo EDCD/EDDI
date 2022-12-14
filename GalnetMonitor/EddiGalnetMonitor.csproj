@@ -150,6 +150,12 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.116</Version>
     </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Extensions">
+      <Version>4.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
