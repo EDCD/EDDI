@@ -98,6 +98,7 @@
     <Compile Include="MarketInfo.cs" />
     <Compile Include="NavRouteInfo.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="NpcShip.cs" />
     <Compile Include="NpcAuthorityShip.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="PowerplayState.cs" />
@@ -135,6 +136,11 @@
       <DependentUpon>NpcAuthorityShip.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\NpcShip.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NpcShip.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
@@ -833,6 +839,10 @@
     <EmbeddedResource Include="Properties\Powers.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Rarities.zh-CN.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.zh-CN.resx" />
+    <EmbeddedResource Include="Properties\NpcShip.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.zh-CN.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Ship.zh-CN.resx" />

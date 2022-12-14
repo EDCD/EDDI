@@ -149,4 +149,7 @@
     <value>System Authority Vessel</value>
     
   </data>
+  <data name="UNKNOWN" xml:space="preserve">
+    <value>Thargoid Vessel</value>
+  </data>
 </root>

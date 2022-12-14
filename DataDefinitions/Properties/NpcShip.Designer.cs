@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NpcAuthorityShip {
+    public class NpcShip {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal NpcAuthorityShip() {
+        internal NpcShip() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.NpcAuthorityShip", typeof(NpcAuthorityShip).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.NpcShip", typeof(NpcShip).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,83 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alliance Defence Force.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Military_Alliance {
+        public static string scout {
             get {
-                return ResourceManager.GetString("Military_Alliance", resourceCulture);
+                return ResourceManager.GetString("scout", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Imperial Navy Vessel.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Military_Empire {
+        public static string scout_hq {
             get {
-                return ResourceManager.GetString("Military_Empire", resourceCulture);
+                return ResourceManager.GetString("scout_hq", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Federal Navy Ship.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Military_Federation {
+        public static string scout_nq {
             get {
-                return ResourceManager.GetString("Military_Federation", resourceCulture);
+                return ResourceManager.GetString("scout_nq", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System Defence Force.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Military_Independent {
+        public static string scout_q {
             get {
-                return ResourceManager.GetString("Military_Independent", resourceCulture);
+                return ResourceManager.GetString("scout_q", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allied Police Forces.
+        ///   Looks up a localized string similar to Thargoid Cyclops.
         /// </summary>
-        public static string Police_Alliance {
+        public static string unknownsaucer {
             get {
-                return ResourceManager.GetString("Police_Alliance", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal Security Service.
+        ///   Looks up a localized string similar to Thargoid Basilisk.
         /// </summary>
-        public static string Police_Empire {
+        public static string unknownsaucer_e {
             get {
-                return ResourceManager.GetString("Police_Empire", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_e", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Federal Security Service.
+        ///   Looks up a localized string similar to Thargoid Medusa.
         /// </summary>
-        public static string Police_Federation {
+        public static string unknownsaucer_f {
             get {
-                return ResourceManager.GetString("Police_Federation", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_f", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System Authority Vessel.
+        ///   Looks up a localized string similar to Thargoid Orthrus.
         /// </summary>
-        public static string Police_Independent {
+        public static string unknownsaucer_g {
             get {
-                return ResourceManager.GetString("Police_Independent", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_g", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Vessel.
+        ///   Looks up a localized string similar to Thargoid Hydra.
         /// </summary>
-        public static string UNKNOWN {
+        public static string unknownsaucer_h {
             get {
-                return ResourceManager.GetString("UNKNOWN", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_h", resourceCulture);
             }
         }
     }

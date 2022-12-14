@@ -21,6 +21,8 @@ namespace EddiDataDefinitions
         public static readonly NpcAuthorityShip PoliceFederation = new NpcAuthorityShip("Police_Federation");
         public static readonly NpcAuthorityShip PoliceIndependent = new NpcAuthorityShip("Police_Independent");
 
+        public static readonly NpcAuthorityShip UNKNOWN = new NpcAuthorityShip("UNKNOWN"); // Thargoid
+
         // dummy used to ensure that the static constructor has run
         public NpcAuthorityShip() : this("")
         { }
@@ -44,7 +46,10 @@ namespace EddiDataDefinitions
 
         private static string titiedEDName(string edName)
         {
-            var tidiedName = edName?.ToLowerInvariant().Replace("$shipname_", "").Replace(";", "");
+            var tidiedName = edName?.ToLowerInvariant()
+                .Replace("$", "")
+                .Replace("shipname_", "")
+                .Replace(";", "");
             return tidiedName;
         }
     }
