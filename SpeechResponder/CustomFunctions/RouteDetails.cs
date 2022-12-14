@@ -110,7 +110,7 @@ namespace EddiSpeechResponder.CustomFunctions
                     }
 
                     // Execute 
-                    var @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1 ?? EDDI.Instance.CurrentStarSystem.systemname, numericArg ?? EDDI.Instance.FleetCarrier.usedCapacity);
+                    var @event = NavigationService.Instance.NavQuery(queryType, stringArg0, stringArg1 ?? EDDI.Instance.CurrentStarSystem.systemname, numericArg ?? EDDI.Instance.FleetCarrier?.usedCapacity);
                     if (@event != null)
                     {
                         EDDI.Instance?.enqueueEvent(@event);
