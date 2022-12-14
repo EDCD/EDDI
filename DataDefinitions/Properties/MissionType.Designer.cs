@@ -592,6 +592,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Dead.
+        /// </summary>
+        internal static string TheDead {
+            get {
+                return ResourceManager.GetString("TheDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload.
         /// </summary>
         internal static string Upload {
