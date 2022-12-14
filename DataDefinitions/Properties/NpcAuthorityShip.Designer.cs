@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Vessel.
+        ///   Looks up a localized string similar to Unknown Vessel.
         /// </summary>
         public static string UNKNOWN {
             get {

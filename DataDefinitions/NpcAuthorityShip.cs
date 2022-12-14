@@ -21,7 +21,7 @@ namespace EddiDataDefinitions
         public static readonly NpcAuthorityShip PoliceFederation = new NpcAuthorityShip("Police_Federation");
         public static readonly NpcAuthorityShip PoliceIndependent = new NpcAuthorityShip("Police_Independent");
 
-        public static readonly NpcAuthorityShip UNKNOWN = new NpcAuthorityShip("UNKNOWN"); // Thargoid
+        public static readonly NpcAuthorityShip UNKNOWN = new NpcAuthorityShip("UNKNOWN"); // Thargoid?
 
         // dummy used to ensure that the static constructor has run
         public NpcAuthorityShip() : this("")
