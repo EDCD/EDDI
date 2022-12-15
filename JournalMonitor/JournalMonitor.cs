@@ -5063,7 +5063,7 @@ namespace EddiJournalMonitor
                     {
                         FactionTrendingState pTrendingState = new FactionTrendingState(
                             FactionState.FromEDName(JsonParsing.getString(pendingState, "State")) ?? FactionState.None,
-                            JsonParsing.getInt(pendingState, "Trend")
+                            JsonParsing.getOptionalInt(pendingState, "Trend")
                         );
                         factionPresense.PendingStates.Add(pTrendingState);
                     }
@@ -5078,7 +5078,7 @@ namespace EddiJournalMonitor
                     {
                         FactionTrendingState rTrendingState = new FactionTrendingState(
                             FactionState.FromEDName(JsonParsing.getString(recoveringState, "State")) ?? FactionState.None,
-                            JsonParsing.getInt(recoveringState, "Trend")
+                            JsonParsing.getOptionalInt(recoveringState, "Trend")
                         );
                         factionPresense.RecoveringStates.Add(rTrendingState);
                     }

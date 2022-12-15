@@ -61,9 +61,9 @@ namespace EddiDataDefinitions
         public FactionState factionState { get; private set; }
 
         [PublicAPI]
-        public int trend { get; private set; }
+        public int? trend { get; private set; }
 
-        public FactionTrendingState(FactionState factionState, int trend)
+        public FactionTrendingState(FactionState factionState, int? trend)
         {
             this.factionState = factionState;
             this.trend = trend;
