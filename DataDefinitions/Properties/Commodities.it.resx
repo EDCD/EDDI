@@ -806,7 +806,7 @@
     <comment>Commodity LyraeWeed</comment>
   </data>
   <data name="MagneticEmitterCoil" xml:space="preserve">
-    <value>Bobine per Emettitori Magnetici</value>
+    <value>Bobina per Emettitore Magnetico</value>
     <comment>Commodity MagneticEmitterCoil</comment>
   </data>
   <data name="MarineSupplies" xml:space="preserve">
