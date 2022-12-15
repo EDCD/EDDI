@@ -86,6 +86,9 @@
             // Sabotage types
             _ = new MissionType("Power", true);
             _ = new MissionType("Production", true);
+
+            // Special types
+            _ = new MissionType("TheDead"); // Ram-Tah special mission investigating Guardian ruins
         }
 
         public bool IncludeInMissionRouting { get; set; }

@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.2-b3
+  * Ship Monitor
+    * Add new ship roles: Anti-Xeno Combat, Anti-Xeno Combat Support, Evacuation, Repair, Stealth, Tourism
+
 ## 4.0.2-b2
   * Core
     * Fixed bugs that would cause carrier events not to trigger if the commander hadn't already obtained fleet carriier data from the Frontier API.

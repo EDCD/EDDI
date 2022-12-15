@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class LegalStatus {
+    public class NpcShip {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LegalStatus() {
+        internal NpcShip() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.LegalStatus", typeof(LegalStatus).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.NpcShip", typeof(NpcShip).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,128 +61,83 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clean.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Clean {
+        public static string scout {
             get {
-                return ResourceManager.GetString("Clean", resourceCulture);
+                return ResourceManager.GetString("scout", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enemy.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Enemy {
+        public static string scout_hq {
             get {
-                return ResourceManager.GetString("Enemy", resourceCulture);
+                return ResourceManager.GetString("scout_hq", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hostile.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Hostile {
+        public static string scout_nq {
             get {
-                return ResourceManager.GetString("Hostile", resourceCulture);
+                return ResourceManager.GetString("scout_nq", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hunter.
+        ///   Looks up a localized string similar to Thargoid Scout.
         /// </summary>
-        public static string Hunter {
+        public static string scout_q {
             get {
-                return ResourceManager.GetString("Hunter", resourceCulture);
+                return ResourceManager.GetString("scout_q", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Illegal cargo.
+        ///   Looks up a localized string similar to Thargoid Cyclops.
         /// </summary>
-        public static string IllegalCargo {
+        public static string unknownsaucer {
             get {
-                return ResourceManager.GetString("IllegalCargo", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lawless.
+        ///   Looks up a localized string similar to Thargoid Basilisk.
         /// </summary>
-        public static string Lawless {
+        public static string unknownsaucer_e {
             get {
-                return ResourceManager.GetString("Lawless", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_e", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Thargoid Medusa.
         /// </summary>
-        public static string None {
+        public static string unknownsaucer_f {
             get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_f", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passenger wanted.
+        ///   Looks up a localized string similar to Thargoid Orthrus.
         /// </summary>
-        public static string PassengerWanted {
+        public static string unknownsaucer_g {
             get {
-                return ResourceManager.GetString("PassengerWanted", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_g", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speeding.
+        ///   Looks up a localized string similar to Thargoid Hydra.
         /// </summary>
-        public static string Speeding {
+        public static string unknownsaucer_h {
             get {
-                return ResourceManager.GetString("Speeding", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Thargoid.
-        /// </summary>
-        public static string Thargoid {
-            get {
-                return ResourceManager.GetString("Thargoid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown.
-        /// </summary>
-        public static string Unknown {
-            get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wanted.
-        /// </summary>
-        public static string Wanted {
-            get {
-                return ResourceManager.GetString("Wanted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wanted Enemy.
-        /// </summary>
-        public static string WantedEnemy {
-            get {
-                return ResourceManager.GetString("WantedEnemy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warrant.
-        /// </summary>
-        public static string Warrant {
-            get {
-                return ResourceManager.GetString("Warrant", resourceCulture);
+                return ResourceManager.GetString("unknownsaucer_h", resourceCulture);
             }
         }
     }

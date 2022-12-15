@@ -1764,6 +1764,11 @@ namespace EddiJournalMonitor
                                             ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
                                             : JsonParsing.getString(data, "Interdictor_Localised");
                                     }
+                                    if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
+                                    {
+                                        // This matches the pattern for a Thargoid interdiction
+                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
+                                    }
 
                                     events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
@@ -1780,6 +1785,11 @@ namespace EddiJournalMonitor
                                         interdictor = NpcAuthorityShip.EDNameExists(interdictor)
                                             ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
                                             : JsonParsing.getString(data, "Interdictor_Localised");
+                                    }
+                                    if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
+                                    {
+                                        // This matches the pattern for a Thargoid interdiction attempt
+                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
                                     }
 
                                     events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });

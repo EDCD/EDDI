@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "4.0.2-b2"
+#define MyAppVersion "4.0.2-b3"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -20,7 +20,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppVersion={#MyAppVersion}
-DefaultDirName={reg:HKCU\Software\VoiceAttack.com\VoiceAttack\LastRun,AppsFolder|{commonpf32}\VoiceAttack\Apps}\{#MyAppName}
+DefaultDirName={reg:HKCU\Software\VoiceAttack.com\VoiceAttack\LastRun,AppsFolder|{autopf64}\VoiceAttack\Apps}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableDirPage=no
 DisableWelcomePage=no
@@ -81,6 +81,7 @@ Type: files; Name: "{app}\RestSharp.xml"
 Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
 Type: files; Name: "{app}\EntityFramework.xml"
 Type: files; Name: "{app}\System.Data.SQLite.dll.config"
+Type: files; Name: "{app}\*.pdb"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 Type: files; Name: "{userappdata}\EDDI\elite.json"
 Type: files; Name: "{userappdata}\EDDI\galnet"

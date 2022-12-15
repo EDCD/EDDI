@@ -312,4 +312,8 @@
   <data name="Conflict" xml:space="preserve">
     <value>Conflict Targets</value>
   </data>
+  <data name="TheDead" xml:space="preserve">
+    <value>The Dead</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
 </root>

@@ -97,96 +97,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Assassination" xml:space="preserve">
-    <value>Assassination</value>
-    <comment>Ship role Assassination</comment>
+  <data name="scout" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout</comment>
   </data>
-  <data name="Bountyhunting" xml:space="preserve">
-    <value>Bounty hunting</value>
-    <comment>Ship role Bounty hunting</comment>
+  <data name="scout_hq" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant HQ)</comment>
   </data>
-  <data name="Combat" xml:space="preserve">
-    <value>Combat</value>
-    <comment>Ship role Combat</comment>
+  <data name="scout_q" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant Q)</comment>
   </data>
-  <data name="Combatsupport" xml:space="preserve">
-    <value>Combat support</value>
-    <comment>Ship role Combat support</comment>
+  <data name="scout_nq" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant NQ)</comment>
   </data>
-  <data name="Exploration" xml:space="preserve">
-    <value>Exploration</value>
-    <comment>Ship role Exploration</comment>
+  <data name="unknownsaucer" xml:space="preserve">
+    <value>Thargoid Cyclops</value>
+    <comment>Thargoid Cyclops</comment>
   </data>
-  <data name="Journalism" xml:space="preserve">
-    <value>Journalism</value>
-    <comment>Ship role Journalism</comment>
+  <data name="unknownsaucer_e" xml:space="preserve">
+    <value>Thargoid Basilisk</value>
+    <comment>Thargoid Basilisk</comment>
   </data>
-  <data name="Mining" xml:space="preserve">
-    <value>Mining</value>
-    <comment>Ship role Mining</comment>
+  <data name="unknownsaucer_f" xml:space="preserve">
+    <value>Thargoid Medusa</value>
+    <comment>Thargoid Medusa</comment>
   </data>
-  <data name="MultiCrew" xml:space="preserve">
-    <value>MultiCrew</value>
-    <comment>Ship role MultiCrew</comment>
+  <data name="unknownsaucer_g" xml:space="preserve">
+    <value>Thargoid Orthrus</value>
+    <comment>Thargoid Orthrus (I think)</comment>
   </data>
-  <data name="Multipurpose" xml:space="preserve">
-    <value>Multipurpose</value>
-    <comment>Ship role Multipurpose</comment>
-  </data>
-  <data name="Piracy" xml:space="preserve">
-    <value>Piracy</value>
-    <comment>Ship role Piracy</comment>
-  </data>
-  <data name="Racing" xml:space="preserve">
-    <value>Racing</value>
-    <comment>Ship role Racing</comment>
-  </data>
-  <data name="Refueling" xml:space="preserve">
-    <value>Refueling</value>
-    <comment>Ship role Refueling</comment>
-  </data>
-  <data name="Repair" xml:space="preserve">
-    <value>Repair</value>
-    <comment>Ship role Repair</comment>
-  </data>
-  <data name="Science" xml:space="preserve">
-    <value>Science</value>
-    <comment>Ship role Science</comment>
-  </data>
-  <data name="Searchandrescue" xml:space="preserve">
-    <value>Search and Rescue</value>
-    <comment>Ship role Search and rescue</comment>
-  </data>
-  <data name="Smuggling" xml:space="preserve">
-    <value>Smuggling</value>
-    <comment>Ship role Smuggling</comment>
-  </data>
-  <data name="Taxi" xml:space="preserve">
-    <value>Taxi</value>
-    <comment>Ship role Taxi</comment>
-  </data>
-  <data name="Trading" xml:space="preserve">
-    <value>Trading</value>
-    <comment>Ship role Trading</comment>
-  </data>
-  <data name="Stealth" xml:space="preserve">
-    <value>Stealth</value>
-    <comment>Ship role Stealth</comment>
-  </data>
-  <data name="Tourism" xml:space="preserve">
-    <value>Tourism</value>
-    <comment>Ship role Tourism</comment>
-  </data>
-  <data name="Evacuation" xml:space="preserve">
-    <value>Evacuation</value>
-    <comment>Ship role Evacuation</comment>
-  </data>
-  <data name="AXcombat" xml:space="preserve">
-    <value>Anti-Xeno Combat</value>
-    <comment>Ship role Anti-Xeno Combat</comment>
-  </data>
-  <data name="AXcombatsupport" xml:space="preserve">
-    <value>Anti-Xeno Combat Support</value>
-    <comment>Ship role Anti-Xeno Combat Support</comment>
+  <data name="unknownsaucer_h" xml:space="preserve">
+    <value>Thargoid Hydra</value>
+    <comment>Thargoid Hydra</comment>
   </data>
 </root>
