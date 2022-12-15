@@ -443,11 +443,20 @@ namespace EddiNavigationMonitor
                 {
                     if (routeList.Count > 1 && routeList[0].systemName == EDDI.Instance?.CurrentStarSystem?.systemname)
                     {
+                        // Update the Nav Route
                         routeList[0].visited = true;
-                        UpdateDestinationData(routeList.Last().systemName, NavRoute.RouteDistance);
                         NavRoute.Waypoints.Clear();
                         NavRoute.AddRange(routeList);
                         NavRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions?.ToList());
+
+                        // Update destination data
+                        var start = routeList.FirstOrDefault();
+                        var end = routeList.LastOrDefault();
+                        if (start != null && end != null)
+                        {
+                            var distance = Functions.StellarDistanceLy(start.x, start.y, start.z, end.x, end.y, end.z) ?? 0;
+                            UpdateDestinationData(end.systemName, distance);
+                        }
                     }
 
                     // Update the navigation configuration 
