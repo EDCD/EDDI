@@ -154,7 +154,7 @@ namespace EddiBgsService
                         {
                             FactionTrendingState pTrendingState = new FactionTrendingState(
                                 FactionState.FromEDName(JsonParsing.getString(pendingState, "state")) ?? FactionState.None,
-                                JsonParsing.getInt(pendingState, "trend")
+                                JsonParsing.getOptionalInt(pendingState, "trend")
                             );
                             factionPresence.PendingStates.Add(pTrendingState);
                         }
@@ -169,7 +169,7 @@ namespace EddiBgsService
                         {
                             FactionTrendingState rTrendingState = new FactionTrendingState(
                                 FactionState.FromEDName(JsonParsing.getString(recoveringState, "state")) ?? FactionState.None,
-                                JsonParsing.getInt(recoveringState, "trend")
+                                JsonParsing.getOptionalInt(recoveringState, "trend")
                             );
                             factionPresence.RecoveringStates.Add(rTrendingState);
                         }

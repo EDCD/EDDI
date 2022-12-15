@@ -85,8 +85,8 @@ namespace EddiBgsService
 
                 if (responses?.Count > 0)
                 {
-                    List<StarSystem> systems = ParseSystemsParallel(responses);
-                    return systems.OrderBy(x => x.systemname).ToList();
+                    var systems = ParseSystemsParallel(responses);
+                    return systems?.OrderBy(x => x.systemname).ToList();
                 }
             }
             return null;
@@ -94,7 +94,7 @@ namespace EddiBgsService
 
         public StarSystem GetSystemPowerplay(StarSystem system)
         {
-            StarSystem bgsSystem = GetSystemBySystemAddress(system.systemAddress) ?? GetSystemByName(system.systemname);
+            var bgsSystem = GetSystemBySystemAddress(system.systemAddress) ?? GetSystemByName(system.systemname);
             if (bgsSystem is null) { return system; }
             system.Power = bgsSystem.Power;
             system.powerState = bgsSystem.powerState;
@@ -104,7 +104,7 @@ namespace EddiBgsService
         private List<StarSystem> ParseSystemsParallel(List<object> responses)
         {
             // it is OK to allow nulls into this list; they will be handled upstream
-            List<StarSystem> systems = responses.AsParallel().Select(ParseSystem).ToList();
+            var systems = responses?.AsParallel().Select(ParseSystem).ToList();
             return systems;
         }
 
