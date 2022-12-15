@@ -409,4 +409,8 @@
     <value>High Intensity AX Conflict Zone</value>
     <comment>High Intensity Thargoid Conflict Zone</comment>
   </data>
+  <data name="Warzone_TG_VeryHigh" xml:space="preserve">
+    <value>Very High Intensity AX Conflict Zone</value>
+    <comment>Very High Intensity AX Conflict Zone</comment>
+  </data>
 </root>

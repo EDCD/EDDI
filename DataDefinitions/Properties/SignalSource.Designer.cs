@@ -664,6 +664,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Very High Intensity AX Conflict Zone.
+        /// </summary>
+        public static string Warzone_TG_VeryHigh {
+            get {
+                return ResourceManager.GetString("Warzone_TG_VeryHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minor Wreckage.
         /// </summary>
         public static string Wreckage_Buggy {
