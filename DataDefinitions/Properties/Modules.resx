@@ -613,4 +613,12 @@
     <value>Universal Multi Limpet Controller</value>
     <comment>Module MultiDroneControl_Universal</comment>
   </data>
+  <data name="Enhanced_AXMissileRack" xml:space="preserve">
+    <value>Enhanced AX Missile Rack</value>
+    <comment>Module Enhanced AX Missile Rack</comment>
+  </data>
+  <data name="Enhanced_AXMulti_Cannon" xml:space="preserve">
+    <value>Enhanced AX Multi-Cannon</value>
+    <comment>Module Enhanced AX Multi-Cannon</comment>
+  </data>
 </root>
