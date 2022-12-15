@@ -52,7 +52,7 @@ namespace EddiCompanionAppService.Endpoints
             catch (EliteDangerousCompanionAppException ex)
             {
                 // not Logging.Error as telemetry is getting spammed when the server is down
-                Logging.Info(ex.Message);
+                Logging.Warn(ex.Message);
             }
             return cachedProfileJson;
         }

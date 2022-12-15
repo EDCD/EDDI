@@ -343,16 +343,17 @@ namespace EddiDataDefinitions
         {
             json = newJson;
             timestamp = newTimeStamp;
+            UpdateFrom(newJson, newTimeStamp);
         }
 
         // Methods
 
         public void UpdateFrom(JObject newJson, DateTime newTimeStamp)
         {
-            if (newJson is null) { return; }
-
             try
             {
+                if (newJson is null) { return; }
+
                 // Name must be converted from a hexadecimal to a string
                 string ConvertHexString(string hexString)
                 {
@@ -381,78 +382,77 @@ namespace EddiDataDefinitions
                 carrierID = newJson["market"]?["id"]?.ToObject<long?>();
 
                 // Information which might be newer, check timestamp prior to updating
-                if (newTimeStamp > timestamp)
+                if (newTimeStamp <= timestamp) { return; }
+
+                name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
+                currentStarSystem = newJson["currentStarSystem"]?.ToString();
+                fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
+                state = newJson["state"]?.ToString();
+                dockingAccess = newJson["dockingAccess"]?.ToString();
+                notoriousAccess = newJson["notoriousAccess"]?.ToObject<bool>() ?? false;
+
+                // Capacity
+                var shipPacks = newJson["capacity"]?["shipPacks"]?.ToObject<int>() ?? 0;
+                var modulePacks = newJson["capacity"]?["modulePacks"]?.ToObject<int>() ?? 0;
+                var cargoForSale = newJson["capacity"]?["cargoForSale"]?.ToObject<int>() ?? 0;
+                var cargoNotForSale = newJson["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
+                var reservedSpace = newJson["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
+                var crew = newJson["capacity"]?["crew"]?.ToObject<int>() ?? 0;
+                usedCapacity =
+                    shipPacks +
+                    modulePacks +
+                    cargoForSale +
+                    cargoNotForSale +
+                    reservedSpace +
+                    crew;
+                freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
+
+                // Itinerary
+                nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
+
+                // Finances
+                bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
+                bankReservedBalance =
+                    newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
+                bankPurchaseAllocationsBalance =
+                    newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                    + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
+                    + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
+
+                // Inventories
+                Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());
+                CarrierLockerAssets =
+                    JArray.FromObject(newJson["carrierLocker"]?["assets"] ?? new JArray());
+                CarrierLockerGoods =
+                    JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
+                CarrierLockerData =
+                    JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
+
+                // Market Buy/Sell Orders
+                commodityPurchaseOrders =
+                    JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
+                commoditySalesOrders =
+                    JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
+                microresourcePurchaseOrders = JArray.FromObject(
+                    newJson["orders"]?["onfootmicroresources"]?["purchases"]?.Values() ?? new JEnumerable<JToken>());
+                microresourceSalesOrders = JArray.FromObject(
+                    newJson["orders"]?["onfootmicroresources"]?["sales"]?.Values() ?? new JEnumerable<JToken>());
+
+                // Station properties
+                Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
+                Market.commoditiesupdatedat = newTimeStamp;
+                Market.outfittingupdatedat = newTimeStamp;
+                Market.shipyardupdatedat = newTimeStamp;
+
+                // Misc - Tritium stored in cargo
+                foreach (var cargo in Cargo)
                 {
-                    name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
-                    currentStarSystem = newJson["currentStarSystem"]?.ToString();
-                    fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
-                    state = newJson["state"]?.ToString();
-                    dockingAccess = newJson["dockingAccess"]?.ToString();
-                    notoriousAccess = newJson["notoriousAccess"]?.ToObject<bool>() ?? false;
-
-                    // Capacity
-                    var shipPacks = newJson["capacity"]?["shipPacks"]?.ToObject<int>() ?? 0;
-                    var modulePacks = newJson["capacity"]?["modulePacks"]?.ToObject<int>() ?? 0;
-                    var cargoForSale = newJson["capacity"]?["cargoForSale"]?.ToObject<int>() ?? 0;
-                    var cargoNotForSale = newJson["capacity"]?["cargoNotForSale"]?.ToObject<int>() ?? 0;
-                    var reservedSpace = newJson["capacity"]?["cargoSpaceReserved"]?.ToObject<int>() ?? 0;
-                    var crew = newJson["capacity"]?["crew"]?.ToObject<int>() ?? 0;
-                    usedCapacity =
-                        shipPacks +
-                        modulePacks +
-                        cargoForSale +
-                        cargoNotForSale +
-                        reservedSpace +
-                        crew;
-                    freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
-
-                    // Itinerary
-                    nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
-
-                    // Finances
-                    bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
-                    bankReservedBalance =
-                        newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
-                    bankPurchaseAllocationsBalance =
-                        newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                        + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                        + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
-
-                    // Inventories
-                    Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());
-                    CarrierLockerAssets =
-                        JArray.FromObject(newJson["carrierLocker"]?["assets"] ?? new JArray());
-                    CarrierLockerGoods =
-                        JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
-                    CarrierLockerData =
-                        JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
-
-                    // Market Buy/Sell Orders
-                    commodityPurchaseOrders =
-                        JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
-                    commoditySalesOrders =
-                        JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
-                    microresourcePurchaseOrders = JArray.FromObject(
-                        newJson["orders"]?["onfootmicroresources"]?["purchases"]?.Values() ?? new JEnumerable<JToken>());
-                    microresourceSalesOrders = JArray.FromObject(
-                        newJson["orders"]?["onfootmicroresources"]?["sales"]?.Values() ?? new JEnumerable<JToken>());
-
-                    // Station properties
-                    Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
-                    Market.commoditiesupdatedat = newTimeStamp;
-                    Market.outfittingupdatedat = newTimeStamp;
-                    Market.shipyardupdatedat = newTimeStamp;
-
-                    // Misc - Tritium stored in cargo
-                    foreach (var cargo in Cargo)
+                    if (cargo["commodity"]?.ToString() is "Tritium")
                     {
-                        if (cargo["commodity"]?.ToString() is "Tritium")
-                        {
-                            fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
-                        }
+                        fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
                     }
-                    timestamp = newTimeStamp;
                 }
+                timestamp = newTimeStamp;
             }
             catch (Exception e)
             {

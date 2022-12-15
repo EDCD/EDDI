@@ -2437,7 +2437,10 @@ namespace EddiCore
                     )
                 );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
-            Logging.Info(gameIsBeta ? "Game version is beta" : "Game version is not beta");
+            if (gameIsBeta)
+            {
+                Logging.Info("Beta game version detected");
+            }
 
             gameBuild = @event.build;
             gameVersion = @event.version;
@@ -3104,22 +3107,23 @@ namespace EddiCore
         {
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
             {
-                try
+                var frontierApiCarrierJson = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
+                if (frontierApiCarrierJson != null)
                 {
-                    var frontierApiCarrierJson = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
+                    var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
 
-                    if (frontierApiCarrierJson != null)
+                    // Update our Fleet Carrier object
+                    LockManager.GetLock(nameof(FleetCarrier), () =>
                     {
-                        var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
-
-                        // Update our Fleet Carrier object
-                        FleetCarrier = FleetCarrier ?? new FleetCarrier(frontierApiCarrierJson, timestamp);
-                        FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Exception obtaining fleet carrier Frontier API data", ex);
+                        if (FleetCarrier is null)
+                        {
+                            FleetCarrier = new FleetCarrier(frontierApiCarrierJson, timestamp);
+                        }
+                        else
+                        {
+                            FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
+                        }
+                    });
                 }
             }
         }
