@@ -227,10 +227,12 @@ namespace EddiNavigationService
         public RouteDetailsEvent NavQuery(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? prioritizeOrbitalStationArg = null)
         {
             IsWorking = true;
-            RouteDetailsEvent result = null;
+            RouteDetailsEvent result;
 
             try
             {
+                Logging.Debug($"Resolving navigation query. queryType: {queryType}, stringArg0: {stringArg0}, stringArg1: {stringArg1}, numericArg: {numericArg}, prioritizeOrbitalStationArg: {prioritizeOrbitalStationArg}.");
+
                 // Resolve the current search query
                 switch (queryType)
                 {
@@ -883,7 +885,7 @@ namespace EddiNavigationService
                     {
                         int startRadius = i * searchIncrement;
                         var endRadius = (i + 1) * searchIncrement;
-                        var sphereSystems = edsmService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
+                        var sphereSystems = edsmService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius) ?? new List<Dictionary<string, object>>();
                         sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem)?.scoopable ?? false).ToList();
                         searchCount = sphereSystems.Count;
                         if (searchCount > 0)
@@ -965,7 +967,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetCarrierRoute(string targetSystemName, string startingSystemName, long usedCarrierCapacity = 0, string[] refuel_destinations = null)
+        private RouteDetailsEvent GetCarrierRoute(string targetSystemName, string startingSystemName, long? usedCarrierCapacity = 0, string[] refuel_destinations = null)
         {
             if (string.IsNullOrEmpty(startingSystemName))
             {
@@ -979,7 +981,9 @@ namespace EddiNavigationService
             }
 
             var spanshService = new SpanshService();
-            var plottedRouteList = spanshService.GetCarrierRoute(startingSystemName, new[] { targetSystemName }, usedCarrierCapacity, false, refuel_destinations);
+            usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
+            if (usedCarrierCapacity is null) { return null; }
+            var plottedRouteList = spanshService.GetCarrierRoute(startingSystemName, new[] { targetSystemName }, Convert.ToInt64(usedCarrierCapacity), false, refuel_destinations);
 
             if (plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1) { return null; }
 
@@ -1290,7 +1294,7 @@ namespace EddiNavigationService
             {
                 var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList() ?? new List<Mission>();
                 if (missionsList
-                    .Where(m => m.statusDef == MissionStatus.FromEDName("Active"))
+                    .Where(m => m != null && m.statusDef == MissionStatus.FromEDName("Active"))
                     .Any(m => m.destinationsystem == EDDI.Instance.CurrentStarSystem?.systemname))
                 {
                     // We still have active missions at the current location
@@ -1299,14 +1303,14 @@ namespace EddiNavigationService
             }
 
             var currentPlottedRoute = ConfigService.Instance.navigationMonitorConfiguration?.plottedRouteList;
-            if (currentPlottedRoute?.Waypoints.All(w => w.visited) ?? false)
+            if (currentPlottedRoute?.Waypoints.All(w => w != null && w.visited) ?? false)
             {
                 // The current route has already been completed
                 return null;
             }
 
             var currentWaypoint = currentPlottedRoute?.Waypoints.FirstOrDefault(w => w.systemAddress == (EDDI.Instance.DestinationStarSystem ?? EDDI.Instance.CurrentStarSystem)?.systemAddress);
-            var nextWaypoint = currentWaypoint is null ? null : currentPlottedRoute.Waypoints.FirstOrDefault(w => !w.visited && w.index > currentWaypoint.index);
+            var nextWaypoint = currentWaypoint is null ? null : currentPlottedRoute.Waypoints.FirstOrDefault(w => w != null && !w.visited && w.index > currentWaypoint.index);
             if (nextWaypoint != null)
             {
                 // We're still following the plotted route

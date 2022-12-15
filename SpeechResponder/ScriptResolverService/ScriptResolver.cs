@@ -61,17 +61,17 @@ namespace EddiSpeechResponder.Service
         /// <summary> From a custom store </summary>
         public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript)
         {
-            Logging.Debug("Resolving script " + name);
-            scripts.TryGetValue(name, out Script script);
-            if (script == null || script.Value == null)
+            Logging.Debug($"Resolving script {name}");
+            if (!scripts.TryGetValue(name, out Script script) || 
+                script?.Value is null)
             {
-                Logging.Debug("No script");
+                Logging.Debug($"No {name} script found");
                 return null;
             }
-            Logging.Debug("Found script");
+            Logging.Debug($"Found script {name}");
             if (script.Enabled == false)
             {
-                Logging.Debug("Script disabled");
+                Logging.Debug($"{name} script disabled");
                 return null;
             }
 
@@ -135,7 +135,11 @@ namespace EddiSpeechResponder.Service
             }
             catch (Exception e)
             {
-                Logging.Warn(e.Message, e);
+                e.Data.Add("script", script);
+                e.Data.Add("store", store);
+                e.Data.Add("isTopLevelScript", isTopLevelScript);
+                e.Data.Add("scriptObject", scriptObject);
+                Logging.Error(e.Message, e);
                 return $"Error with {scriptObject?.Name ?? "this"} script: {e.Message}";
             }
         }
