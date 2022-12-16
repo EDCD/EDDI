@@ -1078,8 +1078,8 @@ namespace EddiDataDefinitions
                 new Module(129022083, "Hpt_ATDumbfireMissile_Turret_Medium_V2", -1, "Enhanced_AXMissileRack", 2, "E", 2666286, ModuleMount.Turreted),
                 new Module(129022085, "Hpt_ATMultiCannon_Turret_Large_V2", 1826, "Enhanced_AXMulti_Cannon", 3, "D", 4588710, ModuleMount.Turreted),
                 new Module(129022086, "Hpt_ATMultiCannon_Turret_Medium_V2", 1827, "Enhanced_AXMulti_Cannon", 2, "E", 2193197, ModuleMount.Turreted),
-                new Module(129022084, "Hpt_ATMultiCannon_Fixed_Large_V2", -1, "Enhanced_AXMulti_Cannon", 3, "B", 0, ModuleMount.Fixed),
-                new Module(129022080, "Hpt_ATMultiCannon_Fixed_Medium_V2", -1, "Enhanced_AXMulti_Cannon", 2, "D", 0, ModuleMount.Fixed),
+                new Module(129022084, "Hpt_ATMultiCannon_Fixed_Large_V2", -1, "Enhanced_AXMulti_Cannon", 3, "B", 1360322, ModuleMount.Fixed),
+                new Module(129022080, "Hpt_ATMultiCannon_Fixed_Medium_V2", -1, "Enhanced_AXMulti_Cannon", 2, "D", 455078, ModuleMount.Fixed),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128049673, "Hpt_PulseLaser_Fixed_SmallFree", -1, "PulseLaser", 1, "F", 0, ModuleMount.Fixed),
