@@ -24,7 +24,7 @@ namespace EddiEddnResponder.Schemas
                 if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
                 {
                     // This marks the end of a batch of signals.
-                    if (!edTypes.Contains(edType))
+                    if (!edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
                     {
                         LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
