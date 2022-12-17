@@ -262,7 +262,7 @@ namespace EddiSpeechResponder
 
         public UserControl ConfigurationTabItem()
         {
-            return new ConfigurationWindow();
+            return new ConfigurationWindow(this);
         }
 
         private static readonly object logLock = new object();

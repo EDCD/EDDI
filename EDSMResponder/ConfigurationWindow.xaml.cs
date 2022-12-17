@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiCore;
 using EddiDataProviderService;
 using EddiStarMapService;
 using System;
@@ -16,8 +15,11 @@ namespace EddiEdsmResponder
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        public ConfigurationWindow()
+        private readonly EDSMResponder edsmResponder;
+
+        public ConfigurationWindow(EDSMResponder edsmResponder)
         {
+            this.edsmResponder = edsmResponder;
             InitializeComponent();
 
             var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
@@ -52,7 +54,7 @@ namespace EddiEdsmResponder
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
             }
             ConfigService.Instance.edsmConfiguration = edsmConfiguration;
-            EDDI.Instance.Reload("EDSM responder");
+            edsmResponder.Reload();
         }
 
         /// <summary>

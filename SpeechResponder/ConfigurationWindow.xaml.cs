@@ -57,19 +57,21 @@ namespace EddiSpeechResponder
 
         public List<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
 
+        private readonly SpeechResponder speechResponder;
         private ObservableCollection<Personality> personalities;
         private Personality personality;
         private ICollectionView scriptsView;
+        private static string filterTxt;
 
-        public ConfigurationWindow()
+        public ConfigurationWindow(SpeechResponder speechResponder)
         {
+            this.speechResponder = speechResponder;
+
             InitializeComponent();
             DataContext = this;
 
             Personalities = GetPersonalities();
             Personality = GetPersonality();
-
-            InitializeView(Personality.Scripts);
 
             subtitlesCheckbox.IsChecked = configuration.Subtitles;
             subtitlesOnlyCheckbox.IsChecked = configuration.SubtitlesOnly;
@@ -96,7 +98,15 @@ namespace EddiSpeechResponder
         {
             ScriptsView = CollectionViewSource.GetDefaultView(source);
             ScriptsView.SortDescriptions.Add(new SortDescription("Value.Name", ListSortDirection.Ascending));
-            searchFilterText.Text = string.Empty; // Clear any active filters
+
+            // Re-apply text filter, as needed
+            if (!string.IsNullOrEmpty(filterTxt))
+            {
+                using (ScriptsView.DeferRefresh())
+                {
+                    ScriptsView.Filter = o => { return scriptsData_Filter(o); };
+                }
+            }
         }
 
         private ObservableCollection<Personality> GetPersonalities()
@@ -282,7 +292,7 @@ namespace EddiSpeechResponder
             if (Personality != null)
             {
                 Personality.ToFile();
-                EDDI.Instance.Reload("Speech responder");
+                speechResponder.Reload();
             }
         }
 
@@ -294,7 +304,7 @@ namespace EddiSpeechResponder
                 configuration = ConfigService.Instance.speechResponderConfiguration;
                 configuration.Personality = Personality.Name;
                 ConfigService.Instance.speechResponderConfiguration = configuration;
-                EDDI.Instance.Reload("Speech responder");
+                speechResponder.Reload();
             }
         }
 
@@ -364,7 +374,7 @@ namespace EddiSpeechResponder
                     configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.Subtitles = true;
                     ConfigService.Instance.speechResponderConfiguration = configuration;
-                    EDDI.Instance.Reload("Speech responder");
+                    speechResponder.Reload();
                 }
             }
         }
@@ -378,7 +388,7 @@ namespace EddiSpeechResponder
                     configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.Subtitles = false;
                     ConfigService.Instance.speechResponderConfiguration = configuration;
-                    EDDI.Instance.Reload("Speech responder");
+                    speechResponder.Reload();
                 }
             }
         }
@@ -392,7 +402,7 @@ namespace EddiSpeechResponder
                     configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.SubtitlesOnly = true;
                     ConfigService.Instance.speechResponderConfiguration = configuration;
-                    EDDI.Instance.Reload("Speech responder");
+                    speechResponder.Reload();
                 }
             }
         }
@@ -406,7 +416,7 @@ namespace EddiSpeechResponder
                     configuration = ConfigService.Instance.speechResponderConfiguration;
                     configuration.SubtitlesOnly = false;
                     ConfigService.Instance.speechResponderConfiguration = configuration;
-                    EDDI.Instance.Reload("Speech responder");
+                    speechResponder.Reload();
                 }
             }
         }
@@ -421,16 +431,16 @@ namespace EddiSpeechResponder
         {
             using (ScriptsView.DeferRefresh())
             {
+                filterTxt = searchFilterText.Text;
                 ScriptsView.Filter = o => { return scriptsData_Filter(o); };
             }
         }
 
         private bool scriptsData_Filter(object sender)
         {
-            if (string.IsNullOrEmpty(searchFilterText.Text)) { return true; }
+            if (string.IsNullOrEmpty(filterTxt)) { return true; }
             if (!(sender is KeyValuePair<string, Script> kvp)) { return true; }
             var script = kvp.Value;
-            var filterTxt = searchFilterText.Text;
 
             // If filter applies, filter items.
             if ((script.Name?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
