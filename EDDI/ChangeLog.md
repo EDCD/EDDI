@@ -3,8 +3,14 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.0.2-b3
+  * Core
+    * Fixed a crash that could occur when invoking the `RouteDetails()` function when the commander did not own a fleet carrier.
+  * Navigation Monitor
+    * Fixed having `destinationdistance` set to the wrong value after plotting an in-game route.
   * Ship Monitor
-    * Add new ship roles: Anti-Xeno Combat, Anti-Xeno Combat Support, Evacuation, Repair, Stealth, Tourism
+    * Add new ship roles: Anti-Xeno Combat, Anti-Xeno Support, Evacuation, Repair, Stealth, Tourism
+  * Speech Responder
+    * Stopped the text filter from resetting when switching personalities.
 
 ## 4.0.2-b2
   * Core
