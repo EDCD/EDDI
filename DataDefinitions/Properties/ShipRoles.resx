@@ -186,7 +186,7 @@
     <comment>Ship role Anti-Xeno Combat</comment>
   </data>
   <data name="AXcombatsupport" xml:space="preserve">
-    <value>Anti-Xeno Combat Support</value>
+    <value>Anti-Xeno Support</value>
     <comment>Ship role Anti-Xeno Combat Support</comment>
   </data>
 </root>

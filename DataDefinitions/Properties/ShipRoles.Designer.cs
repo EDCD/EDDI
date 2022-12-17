@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anti-Xeno Combat Support.
+        ///   Looks up a localized string similar to Anti-Xeno Support.
         /// </summary>
         public static string AXcombatsupport {
             get {
