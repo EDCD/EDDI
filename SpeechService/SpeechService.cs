@@ -356,7 +356,7 @@ namespace EddiSpeechService
                 }
 
                 var stream = speak(voice, speech);
-                if (stream.Length == 0)
+                if (stream is null || stream.Length == 0)
                 {
                     // Try again, with speech devoid of SSML
                     stream = speak(voice, Regex.Replace(speech, "<.*?>", string.Empty));

@@ -87,7 +87,7 @@ namespace EddiSpeechService.SpeechSynthesizers
         internal Stream Speak(VoiceDetails voiceDetails, string speech, SpeechServiceConfiguration Configuration)
         {
             Logging.Debug($"Selecting {nameof(Windows.Media)} synthesizer");
-            return WindowsMediaSpeechSynthesis(voiceDetails, speech, Configuration).AsStreamForRead();
+            return WindowsMediaSpeechSynthesis(voiceDetails, speech, Configuration)?.AsStreamForRead();
         }
 
         private SpeechSynthesisStream WindowsMediaSpeechSynthesis(VoiceDetails voice, string speech, SpeechServiceConfiguration Configuration)
