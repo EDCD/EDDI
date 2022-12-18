@@ -134,7 +134,7 @@
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
-    <value>Multi Cannone A X</value>
+    <value>Cannone a ripetizione AX</value>
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
