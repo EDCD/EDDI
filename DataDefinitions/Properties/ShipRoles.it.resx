@@ -169,9 +169,18 @@
     <value>Commercio</value>
     <comment>Ship role Trading</comment>
   </data>
-  
-  
-  
+  <data name="Stealth" xml:space="preserve">
+    <value>Furtività</value>
+    <comment>Ship role Stealth</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Turismo</value>
+    <comment>Ship role Tourism</comment>
+  </data>
+  <data name="Evacuation" xml:space="preserve">
+    <value>Evacuazione</value>
+    <comment>Ship role Evacuation</comment>
+  </data>
   
   
 </root>
