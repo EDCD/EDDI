@@ -312,5 +312,8 @@
   <data name="Conflict" xml:space="preserve">
     <value>Bersagli</value>
   </data>
-  
+  <data name="TheDead" xml:space="preserve">
+    <value>Il Morto</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
 </root>
