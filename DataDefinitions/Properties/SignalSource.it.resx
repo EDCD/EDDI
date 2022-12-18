@@ -210,7 +210,7 @@
     <comment>NumberStation</comment>
   </data>
   <data name="Warzone_TG" xml:space="preserve">
-    <value>Zona di combattimento Alieni</value>
+    <value>Zona di combattimento AX</value>
     <comment>Thargoid conflict zone</comment>
   </data>
   <data name="ListeningPost" xml:space="preserve">
@@ -398,16 +398,19 @@
     <comment>Minor Wreckage</comment>
   </data>
   <data name="Warzone_TG_Med" xml:space="preserve">
-    <value>Combattimento alieno moderato</value>
+    <value>Combattimento AX moderato</value>
     <comment>Medium Intensity Thargoid Conflict Zone</comment>
   </data>
   <data name="Warzone_TG_Low" xml:space="preserve">
-    <value>Combattimento alieno leggero</value>
+    <value>Combattimento AX leggero</value>
     <comment>Low Intensity Thargoind Conflict Zone</comment>
   </data>
   <data name="Warzone_TG_High" xml:space="preserve">
-    <value>Combattimento alieno intenso</value>
+    <value>Combattimento AX intenso</value>
     <comment>High Intensity Thargoid Conflict Zone</comment>
   </data>
-  
+  <data name="Warzone_TG_VeryHigh" xml:space="preserve">
+    <value>Combattimento AX molto intenso</value>
+    <comment>Very High Intensity AX Conflict Zone</comment>
+  </data>
 </root>
