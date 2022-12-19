@@ -232,10 +232,7 @@
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   
-  <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Az Cancri Formula 42</value>
-    <comment>Commodity AzCancriFormula42</comment>
-  </data>
+  
   
   <data name="BankiAmphibiousLeather" xml:space="preserve">
     <value>Banki kétéltűbőr</value>
@@ -1274,10 +1271,7 @@
     <value>Utópia hirdetmény</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  <data name="PersonalGifts" xml:space="preserve">
-    <value>Személyes ajándékok</value>
-    <comment>Commodity.PersonalGifts</comment>
-  </data>
+  
   
   <data name="ancientkey" xml:space="preserve">
     <value>Ősi kulcs</value>
