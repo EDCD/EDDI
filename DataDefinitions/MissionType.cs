@@ -77,6 +77,11 @@
             _ = new MissionType("Special");
             _ = new MissionType("StartZone");
             _ = new MissionType("Welcome");
+            _ = new MissionType("TheDead"); // Ram-Tah special mission investigating Guardian ruins
+            _ = new MissionType("TW"); // Thargoid War
+
+            // Station states
+            _ = new MissionType("Burning");
 
             // Odyssey settlement states
             _ = new MissionType("Offline", true);
@@ -86,9 +91,6 @@
             // Sabotage types
             _ = new MissionType("Power", true);
             _ = new MissionType("Production", true);
-
-            // Special types
-            _ = new MissionType("TheDead"); // Ram-Tah special mission investigating Guardian ruins
         }
 
         public bool IncludeInMissionRouting { get; set; }

@@ -106,6 +106,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Fire.
+        /// </summary>
+        internal static string Burning {
+            get {
+                return ResourceManager.GetString("Burning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chain.
         /// </summary>
         internal static string Chain {
@@ -520,7 +529,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rescue Cargo.
+        ///   Looks up a localized string similar to Rescue.
         /// </summary>
         internal static string Rescue {
             get {
@@ -597,6 +606,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string TheDead {
             get {
                 return ResourceManager.GetString("TheDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid War.
+        /// </summary>
+        internal static string TW {
+            get {
+                return ResourceManager.GetString("TW", resourceCulture);
             }
         }
         

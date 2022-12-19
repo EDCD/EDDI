@@ -187,7 +187,7 @@
     <value>Piracy</value>
   </data>
   <data name="Rescue" xml:space="preserve">
-    <value>Rescue Cargo</value>
+    <value>Rescue</value>
   </data>
   <data name="Salvage" xml:space="preserve">
     <value>Salvage</value>
@@ -315,5 +315,13 @@
   <data name="TheDead" xml:space="preserve">
     <value>The Dead</value>
     <comment>Guardian Ruins type mission</comment>
+  </data>
+  <data name="TW" xml:space="preserve">
+    <value>Thargoid War</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>On Fire</value>
+    <comment>e.g. rescue from a burning station</comment>
   </data>
 </root>

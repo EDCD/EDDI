@@ -414,6 +414,17 @@ namespace EddiDataDefinitions
                 t == "mb"
             );
 
+            // Some elements should not be removed but should be moved to the end of the list.
+            // Do that here.
+            foreach (var elementToMove in new[] { "tw" })
+            {
+                if (elements.FirstOrDefault() == elementToMove)
+                {
+                    elements.Remove(elementToMove);
+                    elements.Add(elementToMove);
+                }
+            }
+
             // Skip passenger elements (we'll fill these using the `Passengers` event)
             elements.RemoveAll(t => PassengerType
                 .AllOfThem
