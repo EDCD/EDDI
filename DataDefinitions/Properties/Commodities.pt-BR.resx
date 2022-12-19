@@ -241,10 +241,7 @@
     <value>Auto Fabricantes</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
-  <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Fórmula 42 de Az Cancri</value>
-    <comment>Commodity AzCancriFormula42</comment>
-  </data>
+  
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Krill do vácuo de Baltah'sine</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
@@ -1601,10 +1598,7 @@
     <value>Publicidade da Utopia</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  <data name="PersonalGifts" xml:space="preserve">
-    <value>Presentes Pessoais</value>
-    <comment>Commodity.PersonalGifts</comment>
-  </data>
+  
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Orquídea de Shans Charis</value>
     <comment>Commodity ShansCharisOrchid</comment>
