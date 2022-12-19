@@ -241,10 +241,7 @@
     <value>Dispositifs d'auto-fabrication</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
-  <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Formule 42 d'AZ Cancri</value>
-    <comment>Commodity AzCancriFormula42</comment>
-  </data>
+  
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Crevettes stellaires de Baltah'sine</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
@@ -1601,10 +1598,7 @@
     <value>Pamphlets d'Utopia</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  <data name="PersonalGifts" xml:space="preserve">
-    <value>Cadeaux personnels</value>
-    <comment>Commodity.PersonalGifts</comment>
-  </data>
+  
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Orchidée Shan Charis</value>
     <comment>Commodity ShansCharisOrchid</comment>
