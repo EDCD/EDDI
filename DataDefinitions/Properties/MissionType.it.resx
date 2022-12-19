@@ -186,9 +186,7 @@
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Recupero di Carico</value>
-  </data>
+  
   <data name="Salvage" xml:space="preserve">
     <value>Recupero</value>
   </data>
@@ -316,4 +314,6 @@
     <value>Il Morto</value>
     <comment>Guardian Ruins type mission</comment>
   </data>
+  
+  
 </root>
