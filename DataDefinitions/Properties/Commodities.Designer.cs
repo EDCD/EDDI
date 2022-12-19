@@ -457,7 +457,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Az Cancri Formula 42.
+        ///   Looks up a localized string similar to AZ Cancri Formula 42.
         /// </summary>
         public static string AzCancriFormula42 {
             get {
@@ -2509,7 +2509,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Personal Gifts.
+        ///   Looks up a localized string similar to Festive Gifts.
         /// </summary>
         public static string PersonalGifts {
             get {
