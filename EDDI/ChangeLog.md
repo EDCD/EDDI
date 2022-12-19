@@ -11,6 +11,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add new ship roles: Anti-Xeno Combat, Anti-Xeno Support, Evacuation, Repair, Stealth, Tourism
   * Speech Responder
     * Stopped the text filter from resetting when switching personalities.
+    * Functions
+      * `VoiceDetails()` function revised. Zero arguments now returns details of the current voice, rather than a list of voice details. One numeric argument now provides the list of available voices, using the provided number as a seed to sort the list. One string arument now returns details about the named voice.
+    * Changes to existing scripts
+      * `Message received` updated to use the updated `VoiceDetails()` function and a new `seed` property to select NPC voices. 
 
 ## 4.0.2-b2
   * Core

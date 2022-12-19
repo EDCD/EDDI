@@ -2041,7 +2041,6 @@
       "enabled": true,
       "priority": 3,
       "script": "{if event.succeeded:\r\n    Alert! Interdiction by\r\n    {if event.rating:\r\n        {event.rating} ranked\r\n    }\r\n    {if event.iscommander:\r\n        commander {event.interdictor}.        \r\n    |else:\r\n        {event.interdictor}.        \r\n    }\r\n|else:\r\n    Interdiction evaded.\r\n}",
-      "script": null,
       "name": "Ship interdicted",
       "description": "Se activa cuando su nave es interdictada por otra"
     },

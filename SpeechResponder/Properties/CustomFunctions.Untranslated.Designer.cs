@@ -924,13 +924,11 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///VoiceDetails takes either zero or one arguments.
         ///
-        ///With zero arguments, the function returns a list of `VoiceDetail` objects. For example:
+        ///With zero arguments, the function returns a `VoiceDetail` object for the currently selected voice. For example:
         ///
-        ///{for voice in VoiceDetails(): \{voice.name\} speaks \{voice.culturename\},}
+        ///    The current voice is {VoiceDetail().name}.
         ///
-        ///With one argument, the function returns a single `VoiceDetail` object. For example:
-        ///
-        ///    {VoiceDetails(&quot;Microsoft Zi [rest of string was truncated]&quot;;.
+        ///With one argument, if the argument is a whole number then the function returns a list of `VoiceDetail` objects randomized u [rest of string was truncated]&quot;;.
         /// </summary>
         public static string VoiceDetails {
             get {
