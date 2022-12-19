@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Salvataggio</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Recupero</value>
   </data>
@@ -314,6 +316,12 @@
     <value>Il Morto</value>
     <comment>Guardian Ruins type mission</comment>
   </data>
-  
-  
+  <data name="TW" xml:space="preserve">
+    <value>Conflitto Thargoid</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>A fuoco</value>
+    <comment>e.g. rescue from a burning station</comment>
+  </data>
 </root>
