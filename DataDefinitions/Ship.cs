@@ -521,7 +521,9 @@ namespace EddiDataDefinitions
         {
             get => _maxjumprange;
             set { _maxjumprange = value;
-                if (frameshiftdrive != null && optimalmass > 0) { maxfuelperjump = MaxFuelPerJump(); }
+                if (frameshiftdrive?.grade != null && 
+                    frameshiftdrive?.@class != null &&
+                    optimalmass > 0) { maxfuelperjump = MaxFuelPerJump(); }
                 OnPropertyChanged();}
         }
         private decimal _maxjumprange;
@@ -809,7 +811,7 @@ namespace EddiDataDefinitions
             // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
             decimal boostConstant = 0;
             Module module = compartments.FirstOrDefault(c => c?.module?.edname != null && c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
-            if (module != null)
+            if (module?.@class != null)
             {
                 Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
             }
