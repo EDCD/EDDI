@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Pirataria</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Resgate</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Recuperação</value>
   </data>
@@ -310,7 +312,16 @@
   <data name="Conflict" xml:space="preserve">
     <value>Alvos do Conflito</value>
   </data>
-  
-  
-  
+  <data name="TheDead" xml:space="preserve">
+    <value>Os Mortos</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
+  <data name="TW" xml:space="preserve">
+    <value>Guerra Thargoid</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>Em Chamas</value>
+    <comment>e.g. rescue from a burning station</comment>
+  </data>
 </root>
