@@ -10,7 +10,8 @@ namespace EddiSpeechService
             { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
             { "Federation Unite!", "Federation Unite"}, // Stop pausing at the end of Unite!
             { "Minutemen", "Minute men" }, // Prevent pronunciation like "Minnuh-tea-men"
-            { "The Fatherhood", "The Father hood" } // Prevent garbling of "Fatherhood"
+            { "The Fatherhood", "The Father hood" }, // Prevent garbling of "Fatherhood"
+            { "C.O.N.T.R.A.I.L", "CON TRAIL" }, // Pronounce "C.O.N.T.R.A.I.L" phonetically rather than spelling it out
         };
 
         /// <summary>Fix up faction names</summary>
