@@ -314,15 +314,18 @@ namespace EddiSpeechResponder
             {
                 Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
             }
-            // Also add any secondary scripts present the default personality that aren't present in the events list
+            // Also add any secondary scripts present in the default personality but which aren't present in the events list
             if (defaultPersonality?.Scripts != null)
             {
                 foreach (var kv in defaultPersonality.Scripts)
                 {
                     if (!fixedScripts.ContainsKey(kv.Key) && !obsoleteScriptKeys.Contains(kv.Key))
                     {
-                        kv.Value.PersonalityIsCustom = personality.IsCustom;
-                        fixedScripts.Add(kv.Key, kv.Value);
+                        Script defaultScript = null;
+                        defaultPersonality.Scripts?.TryGetValue(kv.Key, out defaultScript);
+                        var script = UpgradeScript(kv.Value, defaultScript);
+                        script.PersonalityIsCustom = personality.IsCustom;
+                        fixedScripts.Add(kv.Key, script);
                     }
                 }
             }
@@ -330,12 +333,10 @@ namespace EddiSpeechResponder
             // Next, iterate through the personality's scripts and add any secondary scripts from the personality.
             foreach (var kv in personality.Scripts)
             {
-                // Add non-event scripts from the personality
+                // Add non-event scripts from the personality for which we do not have a default
                 if (!fixedScripts.ContainsKey(kv.Key) && !obsoleteScriptKeys.Contains(kv.Key))
                 {
-                    Script defaultScript = null;
-                    defaultPersonality?.Scripts?.TryGetValue(kv.Key, out defaultScript);
-                    Script script = UpgradeScript(kv.Value, defaultScript);
+                    var script = kv.Value;
                     script.PersonalityIsCustom = personality.IsCustom;
                     fixedScripts.Add(kv.Key, script);
                 }
