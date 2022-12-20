@@ -72,41 +72,54 @@ namespace EddiEddnResponder.Schemas
             foreach (var retrievedSignal in retrievedSignals)
             {
                 var handledSignal = new Dictionary<string, object>();
-                if (retrievedSignal.ContainsKey("timestamp"))
+                try
                 {
-                    handledSignal["timestamp"] = retrievedSignal["timestamp"];
+                    if (retrievedSignal.ContainsKey("timestamp"))
+                    {
+                        handledSignal["timestamp"] = retrievedSignal["timestamp"];
+                    }
+                    if (retrievedSignal.ContainsKey("SignalName"))
+                    {
+                        handledSignal["SignalName"] = retrievedSignal["SignalName"];
+                    }
+                    if (retrievedSignal.ContainsKey("IsStation"))
+                    {
+                        handledSignal["IsStation"] = retrievedSignal["IsStation"];
+                    }
+                    if (retrievedSignal.ContainsKey("USSType"))
+                    {
+                        handledSignal["USSType"] = retrievedSignal["USSType"];
+                    }
+                    if (retrievedSignal.ContainsKey("SpawningState"))
+                    {
+                        handledSignal["SpawningState"] = retrievedSignal["SpawningState"];
+                    }
+                    if (retrievedSignal.ContainsKey("SpawningFaction"))
+                    {
+                        handledSignal["SpawningFaction"] = retrievedSignal["SpawningFaction"];
+                    }
+                    if (retrievedSignal.ContainsKey("ThreatLevel"))
+                    {
+                        handledSignal["ThreatLevel"] = retrievedSignal["ThreatLevel"];
+                    }
                 }
-                if (retrievedSignal.ContainsKey("SignalName"))
+                catch (Exception e)
                 {
-                    handledSignal["SignalName"] = retrievedSignal["SignalName"];
+                    e.Data.Add("Signal", retrievedSignal);
+                    Logging.Warn("Failed to prepare signal to send to EDDN", e);
                 }
-                if (retrievedSignal.ContainsKey("IsStation"))
+
+                // The signal must at minimum contain a timestamp and SignalName.
+                if (handledSignal.ContainsKey("timestamp") && handledSignal.ContainsKey("SignalName"))
                 {
-                    handledSignal["IsStation"] = retrievedSignal["IsStation"];
+                    handledSignals.Add(handledSignal);
                 }
-                if (retrievedSignal.ContainsKey("USSType"))
-                {
-                    handledSignal["USSType"] = retrievedSignal["USSType"];
-                }
-                if (retrievedSignal.ContainsKey("SpawningState"))
-                {
-                    handledSignal["SpawningState"] = retrievedSignal["SpawningState"];
-                }
-                if (retrievedSignal.ContainsKey("SpawningFaction"))
-                {
-                    handledSignal["SpawningFaction"] = retrievedSignal["SpawningFaction"];
-                }
-                if (retrievedSignal.ContainsKey("ThreatLevel"))
-                {
-                    handledSignal["ThreatLevel"] = retrievedSignal["ThreatLevel"];
-                }
-                handledSignals.Add(handledSignal);
             }
 
             // Create our top level data structure
             var data = new Dictionary<string, object>
             {
-                { "timestamp", handledSignals?[0]?["timestamp"] },
+                { "timestamp", handledSignals[0]?["timestamp"] },
                 { "event", "FSSSignalDiscovered" },
                 { "signals", handledSignals }
             } as IDictionary<string, object>;
