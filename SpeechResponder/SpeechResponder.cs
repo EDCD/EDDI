@@ -8,9 +8,11 @@ using EddiSpeechService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Controls;
 using Utilities;
 
@@ -22,13 +24,54 @@ namespace EddiSpeechResponder
     public class SpeechResponder : EDDIResponder
     {
         // The file to log speech
-        public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
+        private static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
-        private Service.ScriptResolver scriptResolver;
+        public ObservableCollection<Personality> Personalities { get; private set; }
 
-        private bool subtitles;
+        public Personality CurrentPersonality
+        {
+            get => _personality 
+                   ?? Personalities.FirstOrDefault(p => p.Name == Configuration.Personality) 
+                   ?? Personalities.FirstOrDefault()
+                   ?? Personality.Default();
+            set
+            {
+                // Set the updated personality
+                if (_personality != value)
+                {
+                    _personality = value ?? Personalities.FirstOrDefault() ?? Personality.Default();
+                    ScriptResolver = new ScriptResolver(_personality.Scripts);
 
-        private bool subtitlesOnly;
+                    // Update our configuration also
+                    Configuration.Personality = _personality?.Name;
+                    ConfigService.Instance.speechResponderConfiguration = Configuration;
+
+                    RaiseOnUIThread(PersonalityChanged, _personality);
+                }
+            }
+        }
+
+        public static EventHandler PersonalityChanged;
+
+        public SpeechResponderConfiguration Configuration
+        {
+            get => _configuration;
+            private set
+            {
+                _configuration = value;
+                ConfigService.Instance.speechResponderConfiguration = value;
+            }
+        }
+
+        public ScriptResolver ScriptResolver
+        {
+            get => _scriptResolver ?? new ScriptResolver(CurrentPersonality.Scripts); 
+            set => _scriptResolver = value;
+        }
+
+        private Personality _personality;
+        private SpeechResponderConfiguration _configuration;
+        private ScriptResolver _scriptResolver;
 
         public string ResponderName()
         {
@@ -47,51 +90,96 @@ namespace EddiSpeechResponder
 
         public SpeechResponder()
         {
-            var configuration = ConfigService.Instance.speechResponderConfiguration;
-            Personality personality = null;
-            if (configuration != null && configuration.Personality != null)
-            {
-                personality = Personality.FromName(configuration.Personality);
-            }
-            if (personality == null)
-            {
-                personality = Personality.Default();
-            }
-            scriptResolver = new Service.ScriptResolver(personality?.Scripts);
-            subtitles = configuration?.Subtitles ?? false;
-            subtitlesOnly = configuration?.SubtitlesOnly ?? false;
+            Configuration = ConfigService.Instance.speechResponderConfiguration;
+            Personalities = GetPersonalities();
+            SetPersonality(Configuration.Personality);
             Logging.Info($"Initialized {ResponderName()}");
+        }
+
+        #region Personalities
+
+        private ObservableCollection<Personality> GetPersonalities()
+        {
+            if (!(Personalities is null)) { return Personalities; }
+
+            // Initialize our collection and add our default personality
+            Personalities = new ObservableCollection<Personality> { Personality.Default() };
+
+            // Add our custom personalities
+            foreach (var customPersonality in Personality.AllFromDirectory())
+            {
+                if (customPersonality != null)
+                {
+                    Personalities.Add(customPersonality);
+                }
+            }
+            return Personalities;
         }
 
         /// <summary>
         /// Change the personality for the speech responder
         /// </summary>
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
-        public bool SetPersonality(string newPersonality)
+        public bool SetPersonality(string newPersonalityName)
         {
-            var configuration = ConfigService.Instance.speechResponderConfiguration;
-            if (newPersonality == configuration.Personality)
+            if (newPersonalityName == Configuration?.Personality)
             {
                 // Already set to this personality
                 return true;
             }
 
             // Ensure that this personality exists
-            Personality personality = Personality.FromName(newPersonality);
-            if (personality != null)
+            var newPersonality = Personalities.FirstOrDefault(p =>
+                p.Name.Equals(newPersonalityName, StringComparison.InvariantCultureIgnoreCase));
+            if (newPersonality != null)
             {
                 // Yes it does; use it
-                configuration.Personality = newPersonality;
-                ConfigService.Instance.speechResponderConfiguration = configuration;
-                scriptResolver = new Service.ScriptResolver(personality.Scripts);
-                Logging.Debug("Changed personality to " + newPersonality);
+                CurrentPersonality = newPersonality;
+                Logging.Debug($"Personality set to \"{newPersonality.Name}\"");
                 return true;
             }
-            else
+
+            // No it does not; ignore it
+            Logging.Warn($"Personality \"{newPersonalityName}\" not found.");
+            return false;
+        }
+
+        internal void CopyCurrentPersonality(string personalityName, string personalityDescription, bool disableScripts)
+        {
+            var newPersonality = CurrentPersonality.Copy(personalityName?.Trim(), personalityDescription?.Trim());
+            if (disableScripts) { EnableOrDisableAllScripts(newPersonality, false); }
+            Personalities.Add(newPersonality);
+        }
+
+        internal void RemoveCurrentPersonality()
+        {
+            // Remove the personality from the list and the local filesystem
+            var oldPersonality = CurrentPersonality;
+            Personalities.Remove(oldPersonality);
+            oldPersonality.RemoveFile();
+        }
+
+        internal void SavePersonality()
+        {
+            if (CurrentPersonality is null) { return; }
+            CurrentPersonality.ToFile();
+        }
+
+        #endregion
+
+        #region Scripts
+
+        internal void EnableOrDisableAllScripts(Personality targetPersonality, bool desiredState)
+        {
+            foreach (var kvScript in targetPersonality.Scripts)
             {
-                // No it does not; ignore it
-                return false;
+                var script = kvScript.Value;
+                if (script.Responder)
+                {
+                    script.Enabled = desiredState;
+                }
             }
+            SavePersonality();
         }
 
         public void TestScript(string scriptName, Dictionary<string, Script> scripts)
@@ -130,6 +218,8 @@ namespace EddiSpeechResponder
             }
         }
 
+        #endregion
+
         public bool Start()
         {
             EDDI.Instance.State["speechresponder_quiet"] = false;
@@ -145,18 +235,9 @@ namespace EddiSpeechResponder
 
         public void Reload()
         {
-            var configuration = ConfigService.Instance.speechResponderConfiguration;
-            var personality = Personality.FromName(configuration.Personality);
-            if (personality == null)
-            {
-                Logging.Warn("Failed to find named personality; falling back to default");
-                personality = Personality.Default();
-                configuration.Personality = personality.Name;
-                ConfigService.Instance.speechResponderConfiguration = configuration;
-            }
-            scriptResolver = new Service.ScriptResolver(personality.Scripts);
-            subtitles = configuration.Subtitles;
-            subtitlesOnly = configuration.SubtitlesOnly;
+            Configuration = ConfigService.Instance.speechResponderConfiguration;
+            Personalities = GetPersonalities();
+            SetPersonality(Configuration.Personality);
             Logging.Debug($"Reloaded {ResponderName()}");
         }
 
@@ -214,7 +295,7 @@ namespace EddiSpeechResponder
             {
                 ship = EDDI.Instance.CurrentShip;
             }
-            Say(scriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
+            Say(ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
         }
 
         public bool SayOutLoud()
@@ -234,17 +315,17 @@ namespace EddiSpeechResponder
         // Say something with the default resolver
         public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
-            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud, invokedFromVA);
+            Say(ScriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud, invokedFromVA);
         }
 
         // Say something with a custom resolver
-        public void Say(Service.ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             Dictionary<string, Cottle.Value> dict = resolver.createVariables(theEvent);
             string speech = resolver.resolveFromName(scriptName, dict, true);
-            if (speech != null)
+            if (speech != null && Configuration != null)
             {
-                if (subtitles)
+                if (Configuration.Subtitles)
                 {
                     // Log a tidied version of the speech
                     string tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
@@ -253,9 +334,9 @@ namespace EddiSpeechResponder
                         log(tidiedSpeech);
                     }
                 }
-                if (sayOutLoud && !(subtitles && subtitlesOnly))
+                if (sayOutLoud && !(Configuration.Subtitles && Configuration.SubtitlesOnly))
                 {
-                    SpeechService.Instance.Say(ship, speech, (priority == null ? resolver.priority(scriptName) : (int)priority), voice, false, theEvent?.type, invokedFromVA);
+                    SpeechService.Instance.Say(ship, speech, priority == null ? resolver.priority(scriptName) : (int)priority, voice, false, theEvent?.type, invokedFromVA);
                 }
             }
         }
@@ -266,6 +347,7 @@ namespace EddiSpeechResponder
         }
 
         private static readonly object logLock = new object();
+
         private static void log(string speech)
         {
             lock (logLock)
@@ -280,6 +362,22 @@ namespace EddiSpeechResponder
                 catch (Exception ex)
                 {
                     Logging.Warn("Failed to write speech", ex);
+                }
+            }
+        }
+
+        static void RaiseOnUIThread(EventHandler handler, object sender)
+        {
+            if (handler != null)
+            {
+                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                if (uiSyncContext == null)
+                {
+                    handler(sender, EventArgs.Empty);
+                }
+                else
+                {
+                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
                 }
             }
         }
