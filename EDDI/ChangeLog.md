@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.2-b3
   * Core
     * Fixed a crash that could occur when invoking the `RouteDetails()` function when the commander did not own a fleet carrier.
+    * Various other bug fixes
   * Navigation Monitor
     * Fixed having `destinationdistance` set to the wrong value after plotting an in-game route.
   * Ship Monitor
