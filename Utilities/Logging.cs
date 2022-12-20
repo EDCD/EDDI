@@ -4,11 +4,13 @@ using Rollbar;
 using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Exception = System.Exception;
 
 namespace Utilities
@@ -44,34 +46,54 @@ namespace Utilities
         {
             System.Threading.Tasks.Task.Run(() =>
             {
-                string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
-                var shortPath = Redaction.RedactEnvironmentVariables(Path.GetFileNameWithoutExtension(filePath));
-                var method = Redaction.RedactEnvironmentVariables(memberName);
-                message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables(message)}";
-                var preppedData = FilterAndRedactData(data);
-
-                switch (errorlevel)
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+                try
                 {
-                    case ErrorLevel.Debug:
+                    string timestamp = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture);
+                    var shortPath = Redaction.RedactEnvironmentVariables(Path.GetFileNameWithoutExtension(filePath));
+                    var method = Redaction.RedactEnvironmentVariables(memberName);
+                    message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables(message)}";
+                    var preppedData = FilterAndRedactData(data);
+
+                    switch (errorlevel)
+                    {
+                        case ErrorLevel.Debug:
                         {
-                            if (Verbose) { log(timestamp, errorlevel, message, preppedData); }
-                            if (TelemetryEnabled) { RecordTelemetryInfo(errorlevel, message, preppedData); }
+                            if (Verbose)
+                            {
+                                log(timestamp, errorlevel, message, preppedData);
+                            }
+                            if (TelemetryEnabled)
+                            {
+                                RecordTelemetryInfo(errorlevel, message, preppedData);
+                            }
+                            break;
                         }
-                        break;
-                    case ErrorLevel.Info:
-                    case ErrorLevel.Warning:
+                        case ErrorLevel.Info:
+                        case ErrorLevel.Warning:
                         {
                             log(timestamp, errorlevel, message, preppedData);
-                            if (TelemetryEnabled) { RecordTelemetryInfo(errorlevel, message, preppedData); }
+                            if (TelemetryEnabled)
+                            {
+                                RecordTelemetryInfo(errorlevel, message, preppedData);
+                            }
+                            break;
                         }
-                        break;
-                    case ErrorLevel.Error:
-                    case ErrorLevel.Critical:
+                        case ErrorLevel.Error:
+                        case ErrorLevel.Critical:
                         {
                             log(timestamp, errorlevel, message, preppedData);
-                            if (TelemetryEnabled) { ReportTelemetryEvent(timestamp, errorlevel, message, preppedData); }
+                            if (TelemetryEnabled)
+                            {
+                                ReportTelemetryEvent(timestamp, errorlevel, message, preppedData);
+                            }
+                            break;
                         }
-                        break;
+                    }
+                }
+                catch
+                {
+                    // Nothing to do here
                 }
             }).ConfigureAwait(false);
         }
