@@ -242,7 +242,7 @@
     <comment>Commodity AutoFabricators</comment>
   </data>
   <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Formula 42 di A z Cancri</value>
+    <value>Formula 42 di AZ Cancri</value>
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
@@ -1602,7 +1602,7 @@
     <comment>Commodity UtopianPublicity</comment>
   </data>
   <data name="PersonalGifts" xml:space="preserve">
-    <value>Doni Personali</value>
+    <value>Regali delle Feste</value>
     <comment>Commodity.PersonalGifts</comment>
   </data>
   <data name="ShansCharisOrchid" xml:space="preserve">

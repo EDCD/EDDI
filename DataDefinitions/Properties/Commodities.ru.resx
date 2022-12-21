@@ -241,10 +241,7 @@
     <value>Автосинтезаторы</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
-  <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Формула 42 AZ Cancri</value>
-    <comment>Commodity AzCancriFormula42</comment>
-  </data>
+  
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Вакуумный криль с Балтах'сине</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
@@ -1601,10 +1598,7 @@
     <value>Публикации Утопии</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  <data name="PersonalGifts" xml:space="preserve">
-    <value>Персональные подарки</value>
-    <comment>Commodity.PersonalGifts</comment>
-  </data>
+  
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Орхидея Shan Charis</value>
     <comment>Commodity ShansCharisOrchid</comment>

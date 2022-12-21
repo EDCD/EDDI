@@ -604,7 +604,7 @@
     <value>Registri audio</value>
   </data>
   <data name="AXCombatLogs" xml:space="preserve">
-    <value>Registri di combattimenti AntiXeno</value>
+    <value>Registri di combattimenti AX</value>
     <comment>Data related to anti-xeno operations and encounters with hostile Thargoid forces.</comment>
   </data>
   <data name="BallisticsData" xml:space="preserve">
@@ -784,7 +784,7 @@
     <comment>Analysis of the performance and effectiveness of newly designed weaponry or related enhancements.</comment>
   </data>
   <data name="XenoDefenceProtocols" xml:space="preserve">
-    <value>Protocolli di difesa AntiXeno</value>
+    <value>Protocolli di difesa AX</value>
     <comment>Combatant tactics and settlement instructions in the event of a non-human attack.</comment>
   </data>
   <data name="ChemicalCatalyst" xml:space="preserve">

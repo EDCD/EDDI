@@ -157,7 +157,7 @@
     <value>cannone gauss focalizzato</value>
   </data>
   <data name="IndependentAT" xml:space="preserve">
-    <value>cannone a ripetizione AX a sospensione fissa</value>
+    <value>cannone a ripetizione AX fisso</value>
   </data>
   <data name="IndependentFour" xml:space="preserve">
     <value>raggi laser cardanici e dissipatori termici</value>

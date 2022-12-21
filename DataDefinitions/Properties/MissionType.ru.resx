@@ -186,9 +186,7 @@
   <data name="Piracy" xml:space="preserve">
     <value>Пиратские</value>
   </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Спасательный груз</value>
-  </data>
+  
   <data name="Salvage" xml:space="preserve">
     <value>Разборка</value>
   </data>
@@ -309,5 +307,8 @@
   <data name="POI" xml:space="preserve">
     <value>Точка интереса</value>
   </data>
+  
+  
+  
   
 </root>

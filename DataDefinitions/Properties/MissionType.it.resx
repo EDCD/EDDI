@@ -187,7 +187,7 @@
     <value>Pirateria</value>
   </data>
   <data name="Rescue" xml:space="preserve">
-    <value>Recupero di Carico</value>
+    <value>Salvataggio</value>
   </data>
   <data name="Salvage" xml:space="preserve">
     <value>Recupero</value>
@@ -311,5 +311,17 @@
   </data>
   <data name="Conflict" xml:space="preserve">
     <value>Bersagli</value>
+  </data>
+  <data name="TheDead" xml:space="preserve">
+    <value>Il Morto</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
+  <data name="TW" xml:space="preserve">
+    <value>Conflitto Thargoid</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>A fuoco</value>
+    <comment>e.g. rescue from a burning station</comment>
   </data>
 </root>

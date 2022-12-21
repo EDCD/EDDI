@@ -241,10 +241,7 @@
     <value>Fabrikatoren</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
-  <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Az Krebs Formel 42</value>
-    <comment>Commodity AzCancriFormula42</comment>
-  </data>
+  
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Baltah Sine Weltraumkrill</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
@@ -1601,10 +1598,7 @@
     <value>Utopia-PR-Dokumente</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  <data name="PersonalGifts" xml:space="preserve">
-    <value>Persönliche Geschenke</value>
-    <comment>Commodity.PersonalGifts</comment>
-  </data>
+  
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Shans Charis-Orchidee</value>
     <comment>Commodity ShansCharisOrchid</comment>

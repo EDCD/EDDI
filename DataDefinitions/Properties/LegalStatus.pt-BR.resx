@@ -169,4 +169,8 @@
     <value>Passageiro procurado</value>
     <comment>LegalStatus - PassengerWanted</comment>
   </data>
+  <data name="Thargoid" xml:space="preserve">
+    <value>Thargoid</value>
+    <comment>LegalState Thargoid</comment>
+  </data>
 </root>

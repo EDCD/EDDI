@@ -455,7 +455,7 @@
     <value>Cannone a Frammentazione Efficiente</value>
   </data>
   <data name="MulticannonEfficient" xml:space="preserve">
-    <value>Cannone a ripetizione Efficiente</value>
+    <value>Cannone rotante efficiente</value>
   </data>
   <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
     <value>Acceleratore al Plasma Efficiente</value>
@@ -485,7 +485,7 @@
     <value>Lancia Missili ad Alta Capacità</value>
   </data>
   <data name="MulticannonHighCapacity" xml:space="preserve">
-    <value>Cannone a Ripetizione ad Alta Capacità</value>
+    <value>Cannone rotante ad alta capacità</value>
   </data>
   <data name="RailGunHighCapacity" xml:space="preserve">
     <value>Cannone Elettromagnetico ad Alta Capacità</value>
@@ -509,7 +509,7 @@
     <value>Lancia Missili Alleggerito</value>
   </data>
   <data name="MulticannonLightWeight" xml:space="preserve">
-    <value>Cannone a Ripetizione Alleggerito</value>
+    <value>Cannone rotante alleggerito</value>
   </data>
   <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
     <value>Acceleratore al Plasma Alleggerito</value>
@@ -533,7 +533,7 @@
     <value>Cannone a Lungo Raggio</value>
   </data>
   <data name="MulticannonLongRange" xml:space="preserve">
-    <value>Cannone a Ripetizione a Lungo Raggio</value>
+    <value>Cannone rotante a lungo raggio</value>
   </data>
   <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
     <value>Acceleratore al Plasma a Lungo Raggio</value>
@@ -557,7 +557,7 @@
     <value>Cannone a Frammentazione Sovraccaricato</value>
   </data>
   <data name="MulticannonOvercharged" xml:space="preserve">
-    <value>Cannone a Ripetizione Sovraccaricato</value>
+    <value>Cannone rotante sovraccaricato</value>
   </data>
   <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
     <value>Acceleratore al Plasma Sovraccaricato</value>
@@ -581,7 +581,7 @@
     <value>Lancia Missili a Fuoco Rapido</value>
   </data>
   <data name="MulticannonRapidFire" xml:space="preserve">
-    <value>Cannone a Ripetizione a Fuoco Rapido</value>
+    <value>Cannone rotante a fuoco rapido</value>
   </data>
   <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
     <value>Acceleratore al Plasma a Fuoco Rapido</value>
@@ -599,7 +599,7 @@
     <value>Cannone a Corto Raggio</value>
   </data>
   <data name="MulticannonShortRange" xml:space="preserve">
-    <value>Cannone a Ripetizione a Corto Raggio</value>
+    <value>Cannone rotante a corto raggio</value>
   </data>
   <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
     <value>Acceleratore al Plasma a Corto Raggio</value>
@@ -629,7 +629,7 @@
     <value>Lancia Missili Irrobustito</value>
   </data>
   <data name="MulticannonSturdy" xml:space="preserve">
-    <value>Cannone a Ripetizione Irrobustito</value>
+    <value>Cannone rotante irrobustito</value>
   </data>
   <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
     <value>Acceleratore al Plasma Irrobustito</value>
