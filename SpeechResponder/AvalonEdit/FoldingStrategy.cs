@@ -12,8 +12,8 @@ namespace EddiSpeechResponder.AvalonEdit
 
         public FoldingStrategy(char openingBrace, char closingBrace)
         {
-            this.OpeningBrace = openingBrace;
-            this.ClosingBrace = closingBrace;
+            OpeningBrace = openingBrace;
+            ClosingBrace = closingBrace;
         }
 
         public void UpdateFoldings(FoldingManager manager, TextDocument document)
