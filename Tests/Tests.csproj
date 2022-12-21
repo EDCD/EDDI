@@ -76,6 +76,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SpanshServiceTests.cs" />
+    <Compile Include="CottleHighlightingTests.cs" />
     <Compile Include="UtilityTests.cs" />
     <Compile Include="InaraTests.cs" />
     <Compile Include="CrimeMonitorTests.cs" />

@@ -1,15 +1,16 @@
 ﻿using ICSharpCode.AvalonEdit.Highlighting;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 using System.Xml;
 
 namespace EddiSpeechResponder.AvalonEdit
 {
-    internal class CottleHighlighting
+    public class CottleHighlighting
     {
         public IHighlightingDefinition Definition;
 
-        internal CottleHighlighting()
+        public CottleHighlighting()
         {
             Register();
         }
@@ -23,7 +24,7 @@ namespace EddiSpeechResponder.AvalonEdit
                     using (XmlReader reader = new XmlTextReader(s))
                     {
                         Definition = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                    }                    
+                    }
                 }
             }
 
@@ -31,11 +32,14 @@ namespace EddiSpeechResponder.AvalonEdit
             HighlightingManager.Instance.RegisterHighlighting("Cottle", new string[] { ".cottle" }, Definition);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members -- this will be used later
-        private void SetBackgroundColor(string colorName, Color newColor)
-#pragma warning restore IDE0051 // Remove unused private members
+        // Keep this: it will be used when we come to implement custom user color schemes
+        public void SetBackgroundColor(string colorKey, Color newColor)
         {
-            HighlightingColor color = Definition.GetNamedColor(colorName);
+            HighlightingColor color = Definition.GetNamedColor(colorKey);
+            if (color == null)
+            {
+                throw new KeyNotFoundException($"Color key \"{colorKey}\" not found.");
+            }
             color.Background = new SimpleHighlightingBrush(newColor);
         }
     }
