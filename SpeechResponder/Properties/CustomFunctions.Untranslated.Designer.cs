@@ -928,7 +928,7 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///    The current voice is {VoiceDetail().name}.
         ///
-        ///With one argument, if the argument is a whole number then the function returns a list of `VoiceDetail` objects randomized u [rest of string was truncated]&quot;;.
+        ///With one argument, if the argument is a whole number then the function returns a list of `VoiceDetail` objects randomized a [rest of string was truncated]&quot;;.
         /// </summary>
         public static string VoiceDetails {
             get {
