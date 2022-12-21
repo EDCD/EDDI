@@ -380,7 +380,8 @@ namespace EddiSpeechResponder
             {
                 foreach (var personalityScriptKV in personality.Scripts.Where(s => !fixedScripts.Keys.Contains(s.Key)))
                 {
-                    if (defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out var defaultScript) ?? false && 
+                    Script defaultScript = null;
+                    if (defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out defaultScript) ?? false && 
                         !obsoleteScriptKeys.Contains(personalityScriptKV.Key))
                     {
                         var script = UpgradeScript(personalityScriptKV.Value, defaultScript);
