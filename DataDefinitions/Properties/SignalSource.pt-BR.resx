@@ -130,15 +130,15 @@
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zona de Conflito de Alta Intensidade</value>
+    <value>Zona de Conflito de Intensidade Alta</value>
     <comment>Conflict Zone (High Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zona de Conflito de Média Intensidade</value>
+    <value>Zona de Conflito de Intensidade Média</value>
     <comment>Conflict Zone (Medium Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zona de Conflito de Baixa Intensidade</value>
+    <value>Zona de Conflito de Intensidade Baixa</value>
     <comment>Conflict Zone (Low Intensity)</comment>
   </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
@@ -190,11 +190,11 @@
     <comment>TradingBeacon signal</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
-    <value>Local de Extração de Recurso de Alta Intensidade</value>
+    <value>Local de Extração de Recurso de Intensidade Alta</value>
     <comment>ResourceExtraction Site (High Intensity)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
-    <value>Local de Extração de Recurso de Baixa Intensidade</value>
+    <value>Local de Extração de Recurso de Intensidade Baixa</value>
     <comment>Resource Extraction site (Low)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
@@ -409,5 +409,8 @@
     <value>Zona de Conflito AX de Alta Intensidade</value>
     <comment>High Intensity Thargoid Conflict Zone</comment>
   </data>
-  
+  <data name="Warzone_TG_VeryHigh" xml:space="preserve">
+    <value>Zona de Conflito AX de Intensidade Muito Alta</value>
+    <comment>Very High Intensity AX Conflict Zone</comment>
+  </data>
 </root>
