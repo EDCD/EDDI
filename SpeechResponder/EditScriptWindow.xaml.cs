@@ -3,6 +3,7 @@ using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Search;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -26,14 +27,12 @@ namespace EddiSpeechResponder
 #pragma warning disable IDE0052 // Remove unused private members -- this may be used later
         private readonly DocumentHighlighter documentHighlighter;
 #pragma warning restore IDE0052 // Remove unused private members
+
         private readonly AvalonEdit.FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        public EditScriptWindow(Script script, Dictionary<string, Script> scripts)
+        public EditScriptWindow(Script script, Dictionary<string, Script> scripts, [NotNull]AvalonEdit.CottleHighlighting cottleHighlighting)
         {
-            // Register our highlighting definition before we initialize the window
-            var highlightingDefinition = new AvalonEdit.CottleHighlighting().Definition;
-
             InitializeComponent();
             DataContext = this;
 
@@ -77,7 +76,7 @@ namespace EddiSpeechResponder
             SearchPanel.Install(scriptView);
 
             // Set up our Cottle highlighter
-            documentHighlighter = new DocumentHighlighter(scriptView.Document, highlightingDefinition);
+            documentHighlighter = new DocumentHighlighter(scriptView.Document, cottleHighlighting.Definition);
 
             // Monitor window size and position
             WindowStartupLocation = WindowStartupLocation.Manual;
