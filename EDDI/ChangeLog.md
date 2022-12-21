@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.2-b4
+
+
 ## 4.0.2-b3
   * Core
     * Fixed a crash that could occur when invoking the `RouteDetails()` function when the commander did not own a fleet carrier.
