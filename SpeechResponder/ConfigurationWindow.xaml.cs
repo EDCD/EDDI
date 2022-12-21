@@ -186,7 +186,7 @@ namespace EddiSpeechResponder
         private void viewScript(object sender, RoutedEventArgs e)
         {
             var script = getScriptFromContext(sender);
-            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script);
+            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script, cottleHighlighting);
             viewScriptWindow.Show();
         }
 
