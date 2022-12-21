@@ -186,7 +186,9 @@
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Rettung</value>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>Bergungsmission</value>
   </data>
