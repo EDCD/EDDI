@@ -1598,7 +1598,10 @@
     <value>Utopia-PR-Dokumente</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Festliche Geschenke</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Shans Charis-Orchidee</value>
     <comment>Commodity ShansCharisOrchid</comment>
@@ -1775,7 +1778,16 @@
     <value>Uraltes Tharg-Relikt</value>
     <comment>Commodity AncientRelicTG</comment>
   </data>
-  
-  
-  
+  <data name="ThargoidTissueSampleType5" xml:space="preserve">
+    <value>Thargoid Orthrus Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+  </data>
+  <data name="ThargoidGeneratorTissueSample" xml:space="preserve">
+    <value>Ätzende Gewebeprobe</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+  </data>
+  <data name="UnocuppiedEscapePod" xml:space="preserve">
+    <value>Unbesetzte Rettungskapsel</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
+  </data>
 </root>
