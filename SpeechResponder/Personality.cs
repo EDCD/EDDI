@@ -118,6 +118,8 @@ namespace EddiSpeechResponder
         private static readonly string DEFAULT_PATH = new DirectoryInfo(DIRECTORYPATH).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
         private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
+        private static List<string> upgradedPersonalities = new List<string>();
+
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
             // Ensure that the name doesn't have any illegal characters
@@ -246,6 +248,59 @@ namespace EddiSpeechResponder
             }
         }
 
+        public static void incrementPersonalityBackups(Personality personality)
+        {
+            if (!personality.IsCustom) { return; }
+
+            var filesToMove = new Dictionary<string, string>(); // Key = FROM, Value = TO
+            var filesToDelete = new List<string>();
+
+            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
+            foreach (FileInfo file in new FileInfo(personality.dataPath).Directory.GetFiles()
+                .Where(f =>
+                    f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                    f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(f => f.LastWriteTimeUtc)
+                .ToList())
+            {
+                bool parsed = int.TryParse(file.FullName
+                    .Replace($@"{personality.dataPath}", "")
+                    .Replace(".bak", "")
+                    .Replace(".", ""), out int i);
+                ++i; // Increment our index number
+
+                if (i >= 10)
+                {
+                    filesToDelete.Add(file.FullName);
+                }
+                else
+                {
+                    filesToMove.Add(file.FullName, $@"{personality.dataPath}.{i}.bak");
+                }
+            }
+            try
+            {
+                LockManager.GetLock(nameof(personality.Name), () =>
+                {
+                    foreach (var deleteFilePath in filesToDelete)
+                    {
+                        File.Delete(deleteFilePath);
+                    }
+                    foreach (var moveFilePath in filesToMove)
+                    {
+                        File.Move(moveFilePath.Key, moveFilePath.Value);
+                    }
+                });
+            }
+            catch (Exception)
+            {
+                // Someone may have had the file open when this code executed? Nothing to do, we'll try again on the next run
+            }
+
+            // Save the most recent backup
+            personality.ToFile($"{personality.dataPath}.bak");
+        }
+
         /// <summary>
         /// Create a copy of this file, altering the datapath appropriately
         /// </summary>
@@ -284,12 +339,17 @@ namespace EddiSpeechResponder
         /// </summary>
         private static void fixPersonalityInfo(Personality personality)
         {
+            if (upgradedPersonalities.Contains(personality.dataPath)) { return; }
+
+            // Create or update a simple backup before we begin
+            incrementPersonalityBackups(personality);
+
             // Default personality for reference scripts
             var defaultPersonality = !personality.IsCustom ? null : Default();
 
             var fixedScripts = new Dictionary<string, Script>();
 
-            // First, iterate through our default scripts. Ensure that every required event script is present.
+            // First, iterate through our default event scripts. Ensure that every required event script is present.
             List<string> missingScripts = new List<string>();
             foreach (var defaultEvent in Events.DESCRIPTIONS)
             {
@@ -310,7 +370,7 @@ namespace EddiSpeechResponder
                     }
                 }
             }
-            // Report missing scripts for events from the events list, except those we have specifically named
+            // Report missing scripts which ought to be present for events, except those we have specifically named
             if (missingScripts.Count > 0)
             {
                 Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
@@ -318,15 +378,14 @@ namespace EddiSpeechResponder
             // Also add any secondary scripts present in the default personality but which aren't present in the events list
             if (defaultPersonality?.Scripts != null)
             {
-                foreach (var kv in defaultPersonality.Scripts)
+                foreach (var personalityScriptKV in personality.Scripts.Where(s => !fixedScripts.Keys.Contains(s.Key)))
                 {
-                    if (!fixedScripts.ContainsKey(kv.Key) && !obsoleteScriptKeys.Contains(kv.Key))
+                    if (defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out var defaultScript) ?? false && 
+                        !obsoleteScriptKeys.Contains(personalityScriptKV.Key))
                     {
-                        Script defaultScript = null;
-                        defaultPersonality.Scripts?.TryGetValue(kv.Key, out defaultScript);
-                        var script = UpgradeScript(kv.Value, defaultScript);
+                        var script = UpgradeScript(personalityScriptKV.Value, defaultScript);
                         script.PersonalityIsCustom = personality.IsCustom;
-                        fixedScripts.Add(kv.Key, script);
+                        fixedScripts.Add(personalityScriptKV.Key, script);
                     }
                 }
             }
@@ -346,6 +405,7 @@ namespace EddiSpeechResponder
             // Sort scripts and save to file
             personality.Scripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
             personality.ToFile();
+            upgradedPersonalities.Add(personality.dataPath);
         }
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)

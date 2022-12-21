@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.0.2-b4
-
+  * Core
+    * Fixed a nasty bug that would reset customized versions of non-event Speech Responder scripts to default values.
+    * EDDI now backs up personality files on each run prior to upgrading scripts, keeping the most recent 10 backups available in case you need to roll back scripts (similar to how EDDI logs are cycled).
 
 ## 4.0.2-b3
   * Core
