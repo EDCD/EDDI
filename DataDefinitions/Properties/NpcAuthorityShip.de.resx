@@ -149,5 +149,7 @@
     <value>Systempolizei</value>
     
   </data>
-  
+  <data name="UNKNOWN" xml:space="preserve">
+    <value>Unbekanntes Schiff</value>
+  </data>
 </root>

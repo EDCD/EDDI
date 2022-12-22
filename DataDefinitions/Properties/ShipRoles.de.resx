@@ -169,9 +169,24 @@
     <value>Handel</value>
     <comment>Ship role Trading</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Stealth" xml:space="preserve">
+    <value>Tarnung</value>
+    <comment>Ship role Stealth</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Tourismus</value>
+    <comment>Ship role Tourism</comment>
+  </data>
+  <data name="Evacuation" xml:space="preserve">
+    <value>Evakuierung</value>
+    <comment>Ship role Evacuation</comment>
+  </data>
+  <data name="AXcombat" xml:space="preserve">
+    <value>Anti-Xeno Kampf</value>
+    <comment>Ship role Anti-Xeno Combat</comment>
+  </data>
+  <data name="AXcombatsupport" xml:space="preserve">
+    <value>Anti-Xeno Unterstützung</value>
+    <comment>Ship role Anti-Xeno Combat Support</comment>
+  </data>
 </root>

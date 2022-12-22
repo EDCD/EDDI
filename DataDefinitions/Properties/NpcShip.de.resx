@@ -97,4 +97,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="scout" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout</comment>
+  </data>
+  <data name="scout_hq" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant HQ)</comment>
+  </data>
+  <data name="scout_q" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant Q)</comment>
+  </data>
+  <data name="scout_nq" xml:space="preserve">
+    <value>Thargoid Scout</value>
+    <comment>Thargoid Scout (variant NQ)</comment>
+  </data>
+  <data name="unknownsaucer" xml:space="preserve">
+    <value>Thargoid Cyclops</value>
+    <comment>Thargoid Cyclops</comment>
+  </data>
+  <data name="unknownsaucer_e" xml:space="preserve">
+    <value>Thargoid Basilisk</value>
+    <comment>Thargoid Basilisk</comment>
+  </data>
+  <data name="unknownsaucer_f" xml:space="preserve">
+    <value>Thargoid Medusa</value>
+    <comment>Thargoid Medusa</comment>
+  </data>
+  <data name="unknownsaucer_g" xml:space="preserve">
+    <value>Thargoid Orthrus</value>
+    <comment>Thargoid Orthrus (I think)</comment>
+  </data>
+  <data name="unknownsaucer_h" xml:space="preserve">
+    <value>Thargoid Hydra</value>
+    <comment>Thargoid Hydra</comment>
+  </data>
 </root>
