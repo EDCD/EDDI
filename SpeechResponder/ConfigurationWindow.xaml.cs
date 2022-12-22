@@ -2,9 +2,9 @@
 using EddiCore;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -37,6 +37,9 @@ namespace EddiSpeechResponder
 
         private ICollectionView scriptsView;
         private static string filterTxt;
+
+        // we will use this in future to support custom user color schemes
+        [NotNull] private AvalonEdit.CottleHighlighting cottleHighlighting = new AvalonEdit.CottleHighlighting();
 
         public ConfigurationWindow(SpeechResponder speechResponder)
         {
@@ -151,7 +154,7 @@ namespace EddiSpeechResponder
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
-            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts);
+            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, cottleHighlighting);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -183,7 +186,7 @@ namespace EddiSpeechResponder
         private void viewScript(object sender, RoutedEventArgs e)
         {
             var script = getScriptFromContext(sender);
-            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script);
+            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script, cottleHighlighting);
             viewScriptWindow.Show();
         }
 
@@ -275,7 +278,7 @@ namespace EddiSpeechResponder
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, cottleHighlighting);
             if (editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;
