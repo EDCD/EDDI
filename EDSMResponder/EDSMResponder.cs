@@ -101,7 +101,7 @@ namespace EddiEdsmResponder
                 return;
             }
 
-            if (EDDI.Instance.GameVersion < minGameVersion)
+            if (EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion)
             {
                 // We don't sent data whilst running a lower game version than the minimum required by EDSM
                 return;
