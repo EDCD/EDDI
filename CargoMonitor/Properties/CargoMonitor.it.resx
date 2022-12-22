@@ -124,7 +124,7 @@
     <value>Monitoraggio Cargo</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
-    <value>Trasporto per Conto Terzi</value>
+    <value>Conto Terzi</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
   </data>
   <data name="header_name" xml:space="preserve">
