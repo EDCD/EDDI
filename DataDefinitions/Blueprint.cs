@@ -819,6 +819,7 @@ namespace EddiDataDefinitions
             _ = new Blueprint(128682088, "TorpedoSturdy3", "WeaponSturdy", 3);
             _ = new Blueprint(128682089, "TorpedoSturdy4", "WeaponSturdy", 4);
             _ = new Blueprint(128682090, "TorpedoSturdy5", "WeaponSturdy", 5);
+            _ = new Blueprint(128731666, "MiscHeatSinkCapacity", "MiscHeatSinkCapacity", 1); // High capacity heat sink launcher
             _ = new Blueprint(128740152, "SensorSurfaceScannerFastScan1", "SensorFastScan", 1);
             _ = new Blueprint(128740153, "SensorSurfaceScannerFastScan2", "SensorFastScan", 2);
             _ = new Blueprint(128740154, "SensorSurfaceScannerFastScan3", "SensorFastScan", 3);
