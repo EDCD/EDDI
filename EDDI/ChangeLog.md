@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.0.2-b5
+  * Core
+    * Fixed some translations into Spanish reverting to English.
   * Speech Responder
     * UI
       * Fixed a bug whereby syntax coloring was not initiated until an Edit window was opened. #2447

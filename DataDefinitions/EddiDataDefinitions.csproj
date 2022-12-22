@@ -1286,6 +1286,7 @@
     <EmbeddedResource Include="Properties\TargetType.zh-CN.resx" />
     <EmbeddedResource Include="Properties\TerraformState.cs.resx" />
     <EmbeddedResource Include="Properties\TerraformState.de.resx" />
+    <EmbeddedResource Include="Properties\TerraformState.es.resx" />
     <EmbeddedResource Include="Properties\TerraformState.fr.resx" />
     <EmbeddedResource Include="Properties\TerraformState.hu.resx" />
     <EmbeddedResource Include="Properties\TerraformState.it.resx" />
@@ -1299,6 +1300,7 @@
     <EmbeddedResource Include="Properties\TerraformState.zh-CN.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.cs.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
+    <EmbeddedResource Include="Properties\TradeRatings.es.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.fr.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.hu.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.it.resx" />
