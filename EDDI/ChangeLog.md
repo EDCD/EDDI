@@ -4,7 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.2-b5
   * Speech Responder
-    * Fixed a bug whereby syntax coloring was not initiated until an Edit window was opened. #2447
+    * UI
+      * Fixed a bug whereby syntax coloring was not initiated until an Edit window was opened. #2447
+    * Changes to existing scripts
+      * `Star report` fixed mispelling of "luminosity". #2445
 
 ## 4.0.2-b4
   * Core
