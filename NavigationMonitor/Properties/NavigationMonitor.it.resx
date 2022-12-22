@@ -157,7 +157,7 @@
     <value>Sistema</value>
   </data>
   <data name="navigation_monitor_desc" xml:space="preserve">
-    <value>Eseguire procedure di navigazione, creare e utilizzare segnaposti</value>
+    <value>Esegue procedure di navigazione, crea e utilizza segnaposti</value>
   </data>
   <data name="navigation_monitor_name" xml:space="preserve">
     <value>Controllore di Navigazione</value>
