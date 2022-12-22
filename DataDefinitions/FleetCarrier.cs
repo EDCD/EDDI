@@ -456,7 +456,7 @@ namespace EddiDataDefinitions
             }
             catch (Exception e)
             {
-                e.Data.Add("fleetCarrierJson", newJson);
+                e.Data.Add("fleetCarrierJson", JsonConvert.SerializeObject(newJson));
                 Logging.Error("Fleet carrier parsing error", e);
             }
         }
