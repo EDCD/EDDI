@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.2-b5
   * Core
-    * Fixed some translations into Spanish reverting to English.
+    * Fixed some translations into Spanish reverting to English. #2452
   * Speech Responder
     * UI
       * Fixed a bug whereby syntax coloring was not initiated until an Edit window was opened. #2447
