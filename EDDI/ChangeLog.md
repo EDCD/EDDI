@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.2-b5
+
 ## 4.0.2-b4
   * Core
     * Fixed a nasty bug that would reset customized versions of non-event Speech Responder scripts to default values.
