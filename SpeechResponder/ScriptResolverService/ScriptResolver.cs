@@ -136,7 +136,7 @@ namespace EddiSpeechResponder.Service
             catch (Exception e)
             {
                 e.Data.Add("script", script);
-                e.Data.Add("store", store);
+                e.Data.Add("store", JsonConvert.SerializeObject(store));
                 e.Data.Add("isTopLevelScript", isTopLevelScript);
                 e.Data.Add("scriptObject", scriptObject);
                 Logging.Error(e.Message, e);
