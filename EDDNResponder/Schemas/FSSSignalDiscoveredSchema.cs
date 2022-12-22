@@ -55,7 +55,9 @@ namespace EddiEddnResponder.Schemas
                     try
                     {
                         // Remove redundant, personal, or time sensitive data
-                        var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
+                        var ussSignalType = data?.ContainsKey("USSType") ?? false 
+                            ? data["USSType"]?.ToString() 
+                            : string.Empty;
                         if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
                         {
                             // This is a signal that we need to add to our signal batch
