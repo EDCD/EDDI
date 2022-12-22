@@ -19,13 +19,13 @@ namespace EddiEddnResponder.Schemas
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {
-            try
+            if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
             {
-                if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
+                if (!edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
                 {
-                    // This marks the end of a batch of signals.
-                    if (!edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
+                    try
                     {
+                        // This marks the end of a batch of signals.
                         LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
                             var retrievedSignals = signals?
@@ -40,10 +40,19 @@ namespace EddiEddnResponder.Schemas
                                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, eddnState);
                             }
                         });
-                        return true;
                     }
+                    catch (Exception e)
+                    {
+                        e.Data.Add("edType", edType);
+                        e.Data.Add("Signals", signals);
+                        e.Data.Add("EDDN State", eddnState);
+                        Logging.Error($"{GetType().Name} failed to compile and send journal signals data.");
+                    }
+                }
 
-                    if (edTypes.Contains(edType))
+                if (edTypes.Contains(edType))
+                {
+                    try
                     {
                         // Remove redundant, personal, or time sensitive data
                         var ussSignalType = data.ContainsKey("USSType") ? data["USSType"]?.ToString() : string.Empty;
@@ -54,14 +63,15 @@ namespace EddiEddnResponder.Schemas
                             latestSignalState = eddnState;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        e.Data.Add("edType", edType);
+                        e.Data.Add("Data", data);
+                        e.Data.Add("EDDN State", eddnState);
+                        Logging.Error($"{GetType().Name} failed to handle journal data.");
+                    }
+                    return true;
                 }
-            }
-            catch (Exception e)
-            {
-                e.Data.Add("edType", edType);
-                e.Data.Add("Data", data);
-                e.Data.Add("EDDN State", eddnState);
-                Logging.Error($"{GetType().Name} failed to handle journal data.");
             }
             return false;
         }
