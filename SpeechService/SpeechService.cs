@@ -289,7 +289,7 @@ namespace EddiSpeechService
         // Play a source
         private void play(IWaveSource source, int priority)
         {
-            if (source == null)
+            if (source == null || source.Length == 0)
             {
                 Logging.Debug("Source is null; skipping");
                 return;
