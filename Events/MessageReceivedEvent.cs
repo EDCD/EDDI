@@ -56,8 +56,8 @@ namespace EddiEvents
         {
             // If the message is sent by a player, we won't consider
             // the location or channel when selecting a seed value
-            if (string.IsNullOrEmpty(from) && Source is null) { return 0; }
-            return new { from, Source }.GetHashCode();
+            if (string.IsNullOrEmpty(from)) { return 0; }
+            return new { from }.GetHashCode();
         }
 
         private int getNPCSeed(StarSystem starSystem, Body body, Station station)
