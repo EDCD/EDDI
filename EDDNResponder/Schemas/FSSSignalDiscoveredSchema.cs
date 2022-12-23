@@ -44,9 +44,9 @@ namespace EddiEddnResponder.Schemas
                     catch (Exception e)
                     {
                         e.Data.Add("edType", edType);
-                        e.Data.Add("Signals", signals);
+                        if (signals?.Any() ?? false) { e.Data.Add("Signals", signals); }
                         e.Data.Add("EDDN State", eddnState);
-                        Logging.Error($"{GetType().Name} failed to compile and send journal signals data.");
+                        Logging.Error($"{GetType().Name} failed to compile and send journal signals data.", e);
                     }
                 }
 
@@ -68,9 +68,9 @@ namespace EddiEddnResponder.Schemas
                     catch (Exception e)
                     {
                         e.Data.Add("edType", edType);
-                        e.Data.Add("Data", data);
+                        if (data?.Any() ?? false) { e.Data.Add("Data", data); }
                         e.Data.Add("EDDN State", eddnState);
-                        Logging.Error($"{GetType().Name} failed to handle journal data.");
+                        Logging.Error($"{GetType().Name} failed to handle journal data.", e);
                     }
                     return true;
                 }

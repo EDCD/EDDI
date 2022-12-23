@@ -138,7 +138,7 @@ namespace EddiSpeechResponder.Service
                 e.Data.Add("script", script);
                 e.Data.Add("store", JsonConvert.SerializeObject(store));
                 e.Data.Add("isTopLevelScript", isTopLevelScript);
-                e.Data.Add("scriptObject", scriptObject);
+                e.Data.Add("scriptObject", JsonConvert.SerializeObject(scriptObject));
                 Logging.Error(e.Message, e);
                 return $"Error with {scriptObject?.Name ?? "this"} script: {e.Message}";
             }
