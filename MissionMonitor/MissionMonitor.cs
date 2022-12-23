@@ -32,8 +32,6 @@ namespace EddiMissionMonitor
         private List<Mission> communityGoalHolder = new List<Mission>();
 
         private DateTime updateDat;
-        public int goalsCount;
-        public int missionsCount;
         public int? missionWarning;
 
         private static readonly object missionsLock = new object();
@@ -868,19 +866,21 @@ namespace EddiMissionMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            IDictionary<string, object> variables = new Dictionary<string, object>
+            lock (missionsLock)
             {
-                ["goalsCount"] = goalsCount,
-                ["missions"] = new List<Mission>(missions),
-                ["missionsCount"] = missionsCount,
-                ["missionWarning"] = missionWarning
-            };
-            return variables;
+                IDictionary<string, object> variables = new Dictionary<string, object>
+                {
+                    ["goalsCount"] = missions.Count(m => m.communal),
+                    ["missions"] = new List<Mission>(missions),
+                    ["missionsCount"] = missions.Count(m => !m.shared && !m.communal),
+                    ["missionWarning"] = missionWarning
+                };
+                return variables;
+            }
         }
 
         public void writeMissions()
         {
-            missionsCount = missions.Count(m => !m.shared && !m.communal);
             lock (missionsLock)
             {
                 // Write bookmarks configuration with current list
@@ -902,7 +902,6 @@ namespace EddiMissionMonitor
             {
                 // Obtain current missions log from configuration
                 var missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
-                missionsCount = missionsConfig.missionsCount;
                 missionWarning = missionsConfig.missionWarning;
                 updateDat = missionsConfig.updatedat;
 
