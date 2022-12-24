@@ -48,12 +48,11 @@ namespace EddiSpanshService
             // Max fuel per jump
             max_fuel_per_jump = ship.maxfuelperjump;
 
-            // FSD Rating constant
-            Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
-            fuel_multiplier = ratingConstant / 1000;
+            // FSD Rating constant / 1000
+            fuel_multiplier = ship.fsdRatingConstant / 1000;
 
             // FSD Power Constant
-            Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out fuel_power);
+            fuel_power = ship.fsdPowerConstant;
 
             // Guardian module range boost
             range_boost = 0;

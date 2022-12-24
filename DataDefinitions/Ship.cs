@@ -71,7 +71,7 @@ namespace EddiDataDefinitions
         private long _value;
 
         /// <summary>the value of the ship's hull, in credits</summary>
-        
+
         [PublicAPI]
         public long? hullvalue
         {
@@ -92,7 +92,7 @@ namespace EddiDataDefinitions
         private long? _hullvalue;
 
         /// <summary>the value of the ship's hull, in credits</summary>
-        
+
         [PublicAPI]
         public long? modulesvalue
         {
@@ -117,7 +117,7 @@ namespace EddiDataDefinitions
         public long rebuy
         {
             get => _rebuy;
-            set { _rebuy = value; OnPropertyChanged();}
+            set { _rebuy = value; OnPropertyChanged(); }
         }
 
         private long _rebuy;
@@ -183,7 +183,7 @@ namespace EddiDataDefinitions
         private string _ident;
 
         /// <summary>the phonetic name of this ship</summary>
-        
+
         [JsonProperty("phoneticname")]
         public string phoneticName
         {
@@ -202,7 +202,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        
+
         /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
 
         [PublicAPI, JsonIgnore]
@@ -347,7 +347,7 @@ namespace EddiDataDefinitions
         public string station
         {
             get => _station;
-            set { _station = value; OnPropertyChanged();}
+            set { _station = value; OnPropertyChanged(); }
         }
         private string _station;
 
@@ -355,14 +355,14 @@ namespace EddiDataDefinitions
         public long? marketid
         {
             get => _marketid;
-            set { _marketid = value; OnPropertyChanged();}
+            set { _marketid = value; OnPropertyChanged(); }
         }
         private long? _marketid;
 
         public decimal? x { get; set; }
-        
+
         public decimal? y { get; set; }
-        
+
         public decimal? z { get; set; }
 
         public bool intransit { get; set; }
@@ -375,7 +375,7 @@ namespace EddiDataDefinitions
         public decimal? distance
         {
             get => _distance;
-            set { _distance = value; OnPropertyChanged();}
+            set { _distance = value; OnPropertyChanged(); }
         }
 
         private decimal? _distance;
@@ -384,7 +384,7 @@ namespace EddiDataDefinitions
         public decimal health
         {
             get => _health;
-            set { _health = value; OnPropertyChanged();}
+            set { _health = value; OnPropertyChanged(); }
         }
 
         private decimal _health;
@@ -393,7 +393,7 @@ namespace EddiDataDefinitions
         public Module cargohatch
         {
             get => _cargohatch;
-            set { _cargohatch = value; OnPropertyChanged();}
+            set { _cargohatch = value; OnPropertyChanged(); }
         }
         private Module _cargohatch;
 
@@ -401,7 +401,7 @@ namespace EddiDataDefinitions
         public Module bulkheads
         {
             get => _bulkheads;
-            set { _bulkheads = value; OnPropertyChanged();}
+            set { _bulkheads = value; OnPropertyChanged(); }
         }
         private Module _bulkheads;
 
@@ -409,7 +409,7 @@ namespace EddiDataDefinitions
         public Module canopy
         {
             get => _canopy;
-            set { _canopy = value; OnPropertyChanged();}
+            set { _canopy = value; OnPropertyChanged(); }
         }
         private Module _canopy;
 
@@ -417,7 +417,7 @@ namespace EddiDataDefinitions
         public Module powerplant
         {
             get => _powerplant;
-            set { _powerplant = value; OnPropertyChanged();}
+            set { _powerplant = value; OnPropertyChanged(); }
         }
 
         private Module _powerplant;
@@ -426,7 +426,7 @@ namespace EddiDataDefinitions
         public Module thrusters
         {
             get => _thrusters;
-            set { _thrusters = value; OnPropertyChanged();}
+            set { _thrusters = value; OnPropertyChanged(); }
         }
         private Module _thrusters;
 
@@ -434,7 +434,14 @@ namespace EddiDataDefinitions
         public Module frameshiftdrive
         {
             get => _frameshiftdrive;
-            set { _frameshiftdrive = value; OnPropertyChanged();}
+            set
+            {
+                _frameshiftdrive = value;
+                maxjumprange = maxjumprange > 0 ? maxjumprange : JumpRange(fuelInTanks ?? 0, 0);
+                maxfuelperjump = maxfuelperjump > 0 ? maxfuelperjump : GetFsdMaxFuelPerJump();
+                optimalmass = optimalmass > 0 ? optimalmass : GetFsdOptimalMass();
+                OnPropertyChanged();
+            }
         }
         private Module _frameshiftdrive;
 
@@ -442,7 +449,7 @@ namespace EddiDataDefinitions
         public Module lifesupport
         {
             get => _lifesupport;
-            set { _lifesupport = value; OnPropertyChanged();}
+            set { _lifesupport = value; OnPropertyChanged(); }
         }
         private Module _lifesupport;
 
@@ -450,7 +457,7 @@ namespace EddiDataDefinitions
         public Module powerdistributor
         {
             get => _powerdistributor;
-            set { _powerdistributor = value; OnPropertyChanged();}
+            set { _powerdistributor = value; OnPropertyChanged(); }
         }
         private Module _powerdistributor;
 
@@ -458,7 +465,7 @@ namespace EddiDataDefinitions
         public Module sensors
         {
             get => _sensors;
-            set { _sensors = value; OnPropertyChanged();}
+            set { _sensors = value; OnPropertyChanged(); }
         }
         private Module _sensors;
 
@@ -466,7 +473,7 @@ namespace EddiDataDefinitions
         public Module fueltank
         {
             get => _fueltank;
-            set { _fueltank = value; OnPropertyChanged();}
+            set { _fueltank = value; OnPropertyChanged(); }
         }
         private Module _fueltank;
 
@@ -474,7 +481,7 @@ namespace EddiDataDefinitions
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
-            set { _hardpoints = value; OnPropertyChanged();}
+            set { _hardpoints = value; OnPropertyChanged(); }
         }
         private List<Hardpoint> _hardpoints;
 
@@ -482,7 +489,7 @@ namespace EddiDataDefinitions
         public List<Compartment> compartments
         {
             get => _compartments;
-            set { _compartments = value; OnPropertyChanged();}
+            set { _compartments = value; OnPropertyChanged(); }
         }
         private List<Compartment> _compartments;
 
@@ -490,7 +497,7 @@ namespace EddiDataDefinitions
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
-            set { _launchbays = value; OnPropertyChanged();}
+            set { _launchbays = value; OnPropertyChanged(); }
         }
         private List<LaunchBay> _launchbays;
 
@@ -500,7 +507,7 @@ namespace EddiDataDefinitions
         public decimal? fueltankcapacity // Core capacity
         {
             get => _fueltankcapacity;
-            set { _fueltankcapacity = value; OnPropertyChanged();}
+            set { _fueltankcapacity = value; OnPropertyChanged(); }
         }
         private decimal? _fueltankcapacity;
 
@@ -508,7 +515,7 @@ namespace EddiDataDefinitions
         public decimal? fueltanktotalcapacity // Capacity including additional tanks
         {
             get => _fueltanktotalcapacity;
-            set { _fueltanktotalcapacity = value; OnPropertyChanged();}
+            set { _fueltanktotalcapacity = value; OnPropertyChanged(); }
         }
         private decimal? _fueltanktotalcapacity;
 
@@ -517,14 +524,22 @@ namespace EddiDataDefinitions
         // Ship jump and mass properties
 
         [PublicAPI]
-        public decimal maxjumprange
+        public decimal maxjumprange 
         {
             get => _maxjumprange;
-            set { _maxjumprange = value;
-                if (frameshiftdrive?.grade != null && 
-                    frameshiftdrive?.@class != null &&
-                    optimalmass > 0) { maxfuelperjump = MaxFuelPerJump(); }
-                OnPropertyChanged();}
+            set
+            {
+                if (value > 0)
+                {
+                    _maxjumprange = value;
+                }
+                else
+                {
+                    _maxjumprange = JumpRange(fuelInTanks ?? 0, 0);
+                }
+
+                OnPropertyChanged(nameof(maxjumprange));
+            }
         }
         private decimal _maxjumprange;
 
@@ -535,20 +550,53 @@ namespace EddiDataDefinitions
         public decimal maxfuelperjump
         {
             get => _maxfuelperjump;
-            set { _maxfuelperjump = value; OnPropertyChanged(); }
+            set
+            {
+                if (value > 0)
+                {
+                    _maxfuelperjump = value;
+                }
+                else
+                {
+                    _maxfuelperjump = GetFsdMaxFuelPerJump();
+                }
+                OnPropertyChanged(nameof(maxfuelperjump));
+            }
         }
         private decimal _maxfuelperjump;
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
         public decimal maxfuel => maxfuelperjump;
 
-        public decimal optimalmass { get; set; }
+        public decimal optimalmass 
+        {
+            get => _optimalmass;
+            set
+            {
+                if (value > 0)
+                {
+                    _optimalmass = value;
+                }
+                else
+                {
+                    _optimalmass = GetFsdOptimalMass();
+                }
+                OnPropertyChanged(nameof(optimalmass));
+            }
+        }
+        private decimal _optimalmass;
 
         public decimal unladenmass { get; set; }
 
         public decimal? fuelInTanks { get; set; }
 
         public int cargoCarried { get; set; }
+
+        [JsonIgnore]
+        public decimal fsdRatingConstant => GetFsdRatingConstant();
+
+        [JsonIgnore]
+        public decimal fsdPowerConstant => GetFsdPowerConstant();
 
         // Admin
 
@@ -732,7 +780,7 @@ namespace EddiDataDefinitions
                 activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
                 if (Role == null)
                 {
-                    Role = EddiDataDefinitions.Role.MultiPurpose;
+                    Role = Role.MultiPurpose;
                 }
             }
         }
@@ -789,8 +837,67 @@ namespace EddiDataDefinitions
             return null;
         }
 
+        private decimal GetFsdRatingConstant()
+        {
+            if (frameshiftdrive != null && 
+                Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out var fsdRatingConst))
+            {
+                return fsdRatingConst;
+            }
+            return 0;
+        }
+
+        private decimal GetFsdPowerConstant()
+        {
+            if (frameshiftdrive != null && 
+                Constants.powerConstantFSD.TryGetValue(frameshiftdrive.@class, out var fsdPowerConst))
+            {
+                return fsdPowerConst;
+            }
+            return 0;
+        }
+
+        private decimal GetFsdOptimalMass()
+        {
+            if (!string.IsNullOrEmpty(frameshiftdrive?.grade) && optimalmass == 0)
+            {
+                var optimalMass = frameshiftdrive.modifiers?.FirstOrDefault(m => m.EDName.Equals("FSDOptimalMass", StringComparison.InvariantCultureIgnoreCase))?.currentValue ?? 0;
+                if (optimalMass == 0)
+                {
+                    Constants.baseOptimalMass.TryGetValue(frameshiftdrive.@class + frameshiftdrive.grade, out optimalMass);
+                }
+                return optimalMass;
+            }
+            return 0;
+        }
+
+        private decimal GetFsdMaxFuelPerJump()
+        {
+            if (frameshiftdrive?.@class > 0 && maxfuelperjump == 0)
+            {
+                var maxFuelPerJump = frameshiftdrive.modifiers?.FirstOrDefault(m => m.EDName.Equals("FSDFuelUseIncrease", StringComparison.InvariantCultureIgnoreCase))?.currentValue ?? 0;
+                if (maxFuelPerJump == 0)
+                {
+                    Constants.baseMaxFuelPerJump.TryGetValue(frameshiftdrive.@class + frameshiftdrive.grade, out maxFuelPerJump);
+                }
+                return maxFuelPerJump;
+            }
+            return 0;
+        }
+
         private decimal JumpRange(decimal currentFuel, int cargoCarried)
         {
+            if (frameshiftdrive is null) 
+            {
+                Logging.Warn("Frame shift drive not set, unable to calculate jump range.");
+                return 0; 
+            }
+            else if (unladenmass == 0)
+            {
+                Logging.Warn("Unladen ship mass not set, unable to calculate jump range.");
+                return 0;
+            }
+
             decimal boostConstant = 0;
             Module module = compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
             if (module != null)
@@ -798,29 +905,10 @@ namespace EddiDataDefinitions
                 Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
             }
 
-            Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out decimal ratingConstant);
-            Constants.powerConstantFSD.TryGetValue(frameshiftdrive.@class, out decimal powerConstant);
             decimal massRatio = optimalmass / (unladenmass + currentFuel + cargoCarried);
             decimal fuel = Math.Min(currentFuel, maxfuelperjump);
 
-            return ((decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio) + boostConstant;
-        }
-
-        private decimal MaxFuelPerJump()
-        {
-            // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
-            decimal boostConstant = 0;
-            Module module = compartments.FirstOrDefault(c => c?.module?.edname != null && c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
-            if (module?.@class != null)
-            {
-                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
-            }
-            Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out decimal ratingConstant);
-            Constants.powerConstantFSD.TryGetValue(frameshiftdrive.@class, out decimal powerConstant);
-            decimal maxJumpRange = Math.Max(maxjumprange - boostConstant, 0);
-            decimal massRatio = (unladenmass + maxfuelperjump) / optimalmass;
-
-            return ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * massRatio), (double)powerConstant) / 1000;
+            return ((decimal)Math.Pow((double)(1000 * fuel / fsdRatingConstant), (double)(1 / fsdPowerConstant)) * massRatio) + boostConstant;
         }
 
         public static Ship FromShipyardInfo(ShipyardInfoItem item)
