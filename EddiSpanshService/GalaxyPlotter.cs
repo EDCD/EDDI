@@ -61,7 +61,7 @@ namespace EddiSpanshService
             {
                 Constants.guardianBoostFSD.TryGetValue(module.@class, out range_boost);
             }
-
+            
             // Fuel tank capacity
             tank_size = ship.fueltanktotalcapacity ?? 16;
 
@@ -79,19 +79,20 @@ namespace EddiSpanshService
                 .AddParameter("use_supercharge", use_supercharge ? 1 : 0)
                 .AddParameter("use_injections", use_injections ? 1 : 0)
                 .AddParameter("exclude_secondary", exclude_secondary ? 1 : 0)
-                .AddParameter("fuel_power", fuel_power)
-                .AddParameter("fuel_multiplier", fuel_multiplier)
-                .AddParameter("optimal_mass", optimal_mass)
-                .AddParameter("base_mass", base_mass)
-                .AddParameter("tank_size", tank_size)
-                .AddParameter("internal_tank_size", internal_tank_size)
-                .AddParameter("max_fuel_per_jump", max_fuel_per_jump)
-                .AddParameter("range_boost", range_boost)
+                .AddParameter("fuel_power", fuel_power.ToInvariantString())
+                .AddParameter("fuel_multiplier", fuel_multiplier.ToInvariantString())
+                .AddParameter("optimal_mass", optimal_mass.ToInvariantString())
+                .AddParameter("base_mass", base_mass.ToInvariantString())
+                .AddParameter("tank_size", tank_size.ToInvariantString())
+                .AddParameter("internal_tank_size", internal_tank_size.ToInvariantString())
+                .AddParameter("max_fuel_per_jump", max_fuel_per_jump.ToInvariantString())
+                .AddParameter("range_boost", range_boost.ToInvariantString())
                 ;
             if (cargoCarriedTons != null)
             {
                 request.AddParameter("cargo", cargoCarriedTons);
             }
+
             return request;
         }
         

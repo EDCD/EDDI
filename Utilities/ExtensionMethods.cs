@@ -39,5 +39,15 @@ namespace Utilities
             }
             return str.Substring(0, ep + 1);
         }
+
+        public static string ToInvariantString(this decimal? dec)
+        {
+            return dec?.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        public static string ToInvariantString(this decimal dec)
+        {
+            return dec.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
     }
 }
