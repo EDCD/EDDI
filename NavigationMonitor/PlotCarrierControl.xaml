@@ -40,14 +40,14 @@
                 <Grid DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -62,8 +62,8 @@
                                              TextBoxBase.TextChanged="OriginSystemText_TextChanged"
                                              Grid.Row="1"
                                              Grid.Column="1"
-                                             MinWidth="175"
-                                             Margin="10, 7"
+                                             MinWidth="100"
+                                             Margin="0, 7"
                                              VerticalContentAlignment="Center"
                                              LostFocus="OriginSystemText_LostFocus"
                                              SelectionChanged="OriginSystemText_SelectionChanged"/>
@@ -75,8 +75,8 @@
                                       TextBoxBase.TextChanged="DestinationSystemText_TextChanged"
                                       Grid.Row="1"
                                       Grid.Column="4"
-                                      MinWidth="175"
-                                      Margin="10, 7"
+                                      MinWidth="100"
+                                      Margin="0, 7"
                                       VerticalContentAlignment="Center"
                                       LostFocus="DestinationSystemText_LostFocus"
                                       SelectionChanged="DestinationSystemText_SelectionChanged"/>
@@ -87,11 +87,11 @@
                              LostFocus="carrierCurrentLoad_LostFocus"
                              TextAlignment="Center"
                              VerticalContentAlignment="Center" 
-                             MinWidth="60"
-                             Margin="10, 5" />
+                             MinWidth="50"
+                             Margin="0, 5" />
                 </Grid>
             </DockPanel>
-            <Button x:Name="SearchButton" HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="10" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
+            <Button x:Name="SearchButton" HorizontalAlignment="Center" Grid.Column="1" Height="Auto" MinWidth="60" Margin="15" VerticalContentAlignment="Center" Click="executeSearch" ToolTip="{x:Static resx:NavigationMonitor.search_button_tooltip}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="{x:Static resx:NavigationMonitor.search}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
