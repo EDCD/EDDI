@@ -21,23 +21,36 @@ namespace EddiEddnResponder.Schemas
         {
             if (!(eddnState?.Location is null) && !(eddnState.GameVersion is null))
             {
-                if (!edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
+                if (!edTypes.Contains(edType))
                 {
+                    // This marks the end of a batch of signals.
+                    if (eddnState.GameVersion.inOdyssey ?? false)
+                    {
+                        // In Odyssey, Location/FSDJump/CarrierJump events are written prior to `FSSSignalDiscovered` events
+                        latestSignalState = eddnState;
+                    }
+                    else
+                    {
+                        // In Horizons, Location/FSDJump/CarrierJump events are written after `FSSSignalDiscovered` events
+                        // so we use the prior signal state
+                    }
                     try
                     {
-                        // This marks the end of a batch of signals.
                         LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
-                            var retrievedSignals = signals?
-                                .Where(s => JsonParsing.getULong(s, "SystemAddress") == eddnState.Location.systemAddress)
-                                .ToList();
-                            if (retrievedSignals?.Any() ?? false)
+                            if (latestSignalState.Location.StarSystemLocationIsSet())
                             {
-                                var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
-                                handledData = eddnState.GameVersion.AugmentVersion(handledData);
-                                latestSignalState = null;
-                                signals.RemoveAll(s => retrievedSignals.Contains(s));
-                                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, eddnState);
+                                var retrievedSignals = signals?
+                                    .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
+                                    .ToList();
+                                if (retrievedSignals?.Any() ?? false)
+                                {
+                                    var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
+                                    handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
+                                    latestSignalState = null;
+                                    signals.RemoveAll(s => retrievedSignals.Contains(s));
+                                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
+                                }
                             }
                         });
                     }
@@ -45,12 +58,12 @@ namespace EddiEddnResponder.Schemas
                     {
                         e.Data.Add("edType", edType);
                         if (signals?.Any() ?? false) { e.Data.Add("Signals", signals); }
-                        e.Data.Add("EDDN State", eddnState);
+                        e.Data.Add("EDDN State", latestSignalState);
                         Logging.Error($"{GetType().Name} failed to compile and send journal signals data.", e);
                     }
                 }
 
-                if (edTypes.Contains(edType))
+                if (edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
                 {
                     try
                     {
