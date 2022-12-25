@@ -252,11 +252,34 @@ namespace EddiSpeechResponder
         {
             if (!personality.IsCustom) { return; }
 
+            var personalityDir = new FileInfo(personality.dataPath).Directory;
+
+            // Set up a backup folder for personalities. Create it if it does not exist.
+            var backupDir = new DirectoryInfo($@"{personalityDir.FullName}\backups");
+            backupDir.Create();
+
             var filesToMove = new Dictionary<string, string>(); // Key = FROM, Value = TO
             var filesToDelete = new List<string>();
 
-            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
-            foreach (FileInfo file in new FileInfo(personality.dataPath).Directory.GetFiles()
+            // Move any .bak files found in the main 'personalities' folder to the 'backup' folder.
+            foreach (FileInfo file in personalityDir.GetFiles()
+                .Where(f =>
+                    f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                    f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
+                .ToList())
+            {
+                try
+                {
+                    File.Move(file.FullName, file.FullName.Replace(file.DirectoryName, backupDir.FullName));
+                }
+                catch (Exception)
+                {
+                    // Nothing to do here. Try again on next run.
+                }
+            }
+
+            // Obtain .bak files in the backup folder, sorting by last write time to ensure that older files are incremented prior to newer files
+            foreach (FileInfo file in backupDir.GetFiles()
                 .Where(f =>
                     f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
                     f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
@@ -264,11 +287,10 @@ namespace EddiSpeechResponder
                 .ToList())
             {
                 bool parsed = int.TryParse(file.FullName
-                    .Replace($@"{personality.dataPath}", "")
+                    .Replace($@"{backupDir}", "")
                     .Replace(".bak", "")
                     .Replace(".", ""), out int i);
                 ++i; // Increment our index number
-
                 if (i >= 10)
                 {
                     filesToDelete.Add(file.FullName);
@@ -278,6 +300,7 @@ namespace EddiSpeechResponder
                     filesToMove.Add(file.FullName, $@"{personality.dataPath}.{i}.bak");
                 }
             }
+
             try
             {
                 LockManager.GetLock(nameof(personality.Name), () =>
@@ -298,7 +321,7 @@ namespace EddiSpeechResponder
             }
 
             // Save the most recent backup
-            personality.ToFile($"{personality.dataPath}.bak");
+            personality.ToFile($"{personality.dataPath.Replace(personalityDir.FullName, backupDir.FullName)}.bak");
         }
 
         /// <summary>
