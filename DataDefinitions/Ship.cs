@@ -839,7 +839,7 @@ namespace EddiDataDefinitions
 
         private decimal GetFsdRatingConstant()
         {
-            if (frameshiftdrive != null && 
+            if (!string.IsNullOrEmpty(frameshiftdrive?.grade) && 
                 Constants.ratingConstantFSD.TryGetValue(frameshiftdrive.grade, out var fsdRatingConst))
             {
                 return fsdRatingConst;
