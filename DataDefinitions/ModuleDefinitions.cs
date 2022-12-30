@@ -1074,12 +1074,16 @@ namespace EddiDataDefinitions
                 new Module(129001928, "Int_MultiDroneControl_Xeno_Size3_Class4", 1823, "MultiDroneControl_Xeno", 3, "B", 80000),
                 new Module(129001929, "Int_MultiDroneControl_Universal_Size7_Class3", 1824, "MultiDroneControl_Universal", 7, "C", 4000000),
                 new Module(129001930, "Int_MultiDroneControl_Universal_Size7_Class5", 1825, "MultiDroneControl_Universal", 7, "A", 8000000),
+                new Module(129022079, "Hpt_ATDumbfireMissile_Fixed_Large_V2", 1832, "Enhanced_AXMissileRack", 3, "B", 1703836, ModuleMount.Fixed),
                 new Module(129022080, "Hpt_ATMultiCannon_Fixed_Medium_V2", 1828, "Enhanced_AXMulti_Cannon", 2, "D", 455078, ModuleMount.Fixed),
+                new Module(129022081, "Hpt_ATDumbfireMissile_Fixed_Medium_V2", 1833, "Enhanced_AXMissileRack", 2, "D", 681534, ModuleMount.Fixed),
                 new Module(129022082, "Hpt_ATDumbfireMissile_Turret_Large_V2", 1829, "Enhanced_AXMissileRack", 3, "D", 5347534, ModuleMount.Turreted),
                 new Module(129022083, "Hpt_ATDumbfireMissile_Turret_Medium_V2", 1830, "Enhanced_AXMissileRack", 2, "E", 2666286, ModuleMount.Turreted),
                 new Module(129022084, "Hpt_ATMultiCannon_Fixed_Large_V2", 1831, "Enhanced_AXMulti_Cannon", 3, "B", 1360322, ModuleMount.Fixed),
                 new Module(129022085, "Hpt_ATMultiCannon_Turret_Large_V2", 1826, "Enhanced_AXMulti_Cannon", 3, "D", 4588710, ModuleMount.Turreted),
                 new Module(129022086, "Hpt_ATMultiCannon_Turret_Medium_V2", 1827, "Enhanced_AXMulti_Cannon", 2, "E", 2193197, ModuleMount.Turreted),
+                new Module(129022088, "Hpt_ATMultiCannon_Gimbal_Large", 1834, "Enhanced_AXMulti_Cannon", 3, "C", 2390461, ModuleMount.Gimballed),
+                new Module(129022089, "Hpt_ATMultiCannon_Gimbal_Medium", 1835, "Enhanced_AXMulti_Cannon", 2, "E", 1197344, ModuleMount.Gimballed),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128049673, "Hpt_PulseLaser_Fixed_SmallFree", -1, "PulseLaser", 1, "F", 0, ModuleMount.Fixed),
