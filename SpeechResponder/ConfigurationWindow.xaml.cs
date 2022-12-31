@@ -70,8 +70,7 @@ namespace EddiSpeechResponder
                         MessageBoxOptions.DefaultDesktopOnly);
                     if (messageBoxResult == MessageBoxResult.Yes && speechResponder?.CurrentPersonality?.Scripts != null)
                     {
-                        speechResponder.CurrentPersonality.Scripts[recoveredScript.Name] = recoveredScript;
-                        OpenEditScriptWindow(recoveredScript);
+                        OpenEditScriptWindow(recoveredScript, true);
                     }
                 }
             }), DispatcherPriority.ApplicationIdle);
@@ -150,11 +149,11 @@ namespace EddiSpeechResponder
             OpenEditScriptWindow(script);
         }
 
-        private void OpenEditScriptWindow(Script script)
+        private void OpenEditScriptWindow(Script script, bool isRecoveredScript = false)
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
-            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, cottleHighlighting);
+            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, cottleHighlighting, isRecoveredScript);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -163,8 +162,9 @@ namespace EddiSpeechResponder
                 // Non-responder scripts can be renamed, handle that here.
                 if (script.Name == editScriptWindow.script.Name)
                 {
-                    // The script name is unchanged. Update in place.
-                    speechResponder.CurrentPersonality.Scripts[script.Name] = editScriptWindow.script;
+                    var updatedScript = speechResponder.CurrentPersonality.Scripts[script.Name];
+                    updatedScript.Value = editScriptWindow.script.Value;
+                    updatedScript.Description = editScriptWindow.script.Description;
                 }
                 else
                 {
@@ -278,7 +278,7 @@ namespace EddiSpeechResponder
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, cottleHighlighting);
+            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, cottleHighlighting, true);
             if (editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;

@@ -21,6 +21,7 @@ namespace EddiSpeechResponder
         public Script editorScript { get; private set; }
 
         private readonly Dictionary<string, Script> _scripts;
+        private readonly bool isNewOrRecoveredScript;
 
         public ScriptRecoveryService ScriptRecoveryService { get; set; }
 
@@ -31,11 +32,12 @@ namespace EddiSpeechResponder
         private readonly AvalonEdit.FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        public EditScriptWindow(Script script, Dictionary<string, Script> scripts, [NotNull]AvalonEdit.CottleHighlighting cottleHighlighting)
+        public EditScriptWindow(Script script, Dictionary<string, Script> scripts, [NotNull]AvalonEdit.CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript)
         {
             InitializeComponent();
             DataContext = this;
 
+            this.isNewOrRecoveredScript = isNewOrRecoveredScript;
             this._scripts = scripts;
             this.script = script;
 
@@ -182,7 +184,8 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script?.Name != editorScript.Name 
+            if (isNewOrRecoveredScript 
+                || script?.Name != editorScript.Name 
                 || script?.Description != editorScript.Description 
                 || script?.Value != editorScript.Value)
             {
