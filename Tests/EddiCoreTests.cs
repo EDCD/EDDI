@@ -157,7 +157,7 @@ namespace UnitTests
             var body = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
             if (body != null) { body.scanned = null; }
             var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4")?.scanned);
             long event1EstimatedValue = EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
 
             // Map the body
