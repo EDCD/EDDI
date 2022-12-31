@@ -889,12 +889,10 @@ namespace EddiDataDefinitions
         {
             if (frameshiftdrive is null) 
             {
-                Logging.Warn("Frame shift drive not set, unable to calculate jump range.");
                 return 0; 
             }
             else if (unladenmass == 0)
             {
-                Logging.Warn("Unladen ship mass not set, unable to calculate jump range.");
                 return 0;
             }
 
