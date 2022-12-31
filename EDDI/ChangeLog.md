@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * UI
       * Fixed a bug whereby syntax coloring was not initiated until an Edit window was opened. #2447
     * Changes to existing scripts
+      * `Nav route` updated with minor gramatical touch-ups.
       * `Star report` fixed mispelling of "luminosity". #2445
       * `System scan complete` updated to use the contextual system rather than a mixture of the current system and contextual system. #2458
 
