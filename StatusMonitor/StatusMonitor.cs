@@ -211,7 +211,10 @@ namespace EddiStatusMonitor
                         // Might be a non-station signal source
                         else if (signalSource != null)
                         {
-                            signalSource.fallbackLocalizedName = thisStatus.destination_localized_name;
+                            if (!thisStatus.destination_localized_name.StartsWith("$"))
+                            {
+                                signalSource.fallbackLocalizedName = thisStatus.destination_localized_name;
+                            }
                             EDDI.Instance.enqueueEvent(new NextDestinationEvent(
                                 thisStatus.timestamp,
                                 thisStatus.destinationSystemAddress,

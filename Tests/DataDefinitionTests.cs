@@ -776,8 +776,11 @@ namespace UnitTests
         [DataRow("$USS_Type_ValuableSalvage;", "Encoded Emissions", 0, 0)]
         [DataRow("$USS_Type_VeryValuableSalvage;", "High Grade Emissions", 0, 0)]
         [DataRow("$USS_Type_WeaponsFire;", "Weapons Fire", 0, 0)]
+        // From `Status` destinations
+        [DataRow("$POIScene_Wreckage_Cargo_03_Skimmers;", "Minor Wreckage", 0, 0)]
         // Misc
         [DataRow("Rogue Signal Source", "Rogue Signal Source", 0, 0)]
+        [DataRow("$SomeUnknownSignalSource;", "Signal Source", 0, 0)]
         public void SignalSourceParsingTest(string edName, string expectedInvariantName, int? expectedIndex, int? expectedThreatLevel)
         {
             var source = SignalSource.FromEDName(edName);

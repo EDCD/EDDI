@@ -675,6 +675,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Minor Wreckage.
         /// </summary>
+        public static string Wreckage_AncientProbe {
+            get {
+                return ResourceManager.GetString("Wreckage_AncientProbe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minor Wreckage.
+        /// </summary>
         public static string Wreckage_Buggy {
             get {
                 return ResourceManager.GetString("Wreckage_Buggy", resourceCulture);

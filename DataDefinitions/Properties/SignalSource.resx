@@ -413,4 +413,8 @@
     <value>Very High Intensity AX Conflict Zone</value>
     <comment>Very High Intensity AX Conflict Zone</comment>
   </data>
+  <data name="Wreckage_AncientProbe" xml:space="preserve">
+    <value>Minor Wreckage</value>
+    <comment>Minor Wreckage</comment>
+  </data>
 </root>

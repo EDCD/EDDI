@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -90,6 +91,7 @@ namespace EddiDataDefinitions
             var Cargo = new SignalSource("Cargo");
             var TrapCargo = new SignalSource("Trap_Cargo");
             var TrapData = new SignalSource("Trap_Data");
+            var WreckageAncientProbe = new SignalSource("Wreckage_AncientProbe");
             var WreckageBuggy = new SignalSource("Wreckage_Buggy");
             var WreckageCargo = new SignalSource("Wreckage_Cargo");
             var WreckageProbe = new SignalSource("Wreckage_Probe");
@@ -132,108 +134,121 @@ namespace EddiDataDefinitions
                 // Appears to be a simple proper name
                 return new SignalSource(from) { fallbackInvariantName = from, fallbackLocalizedName = from };
             }
-            
+
+            SignalSource result = null;
+            int? threatLvl = null;
+            int indexResult = 0;
+
             // Signal names can mix symbolic and proper names, e.g. "INV Audacious Dream $Warzone_TG_Med;",
             // so use regex to separate any symbolic names from proper names.
             var regex = new Regex("\\$.*;");
             var match = regex.Match(from);
-            var symbolicFrom = match.Value;
 
-            string tidiedFrom = symbolicFrom
-                .Replace("$", "")
-                .Replace(";", "");
-
-            // Remove various prefix and suffix tags from non-USS sources
-            if (!tidiedFrom.StartsWith("USS_"))
+            if (match.Success && from.Length > match.Value.Length)
             {
-                tidiedFrom = tidiedFrom
-                    .Replace("POI_", "")
-                    .Replace("POIScenario_", "")
-                    .Replace("POIScene_", "")
-                    .Replace("Watson_", "")
-                    .Replace("_Heist", "")
-                    .Replace("_Salvage", "");
-            }
-
-            // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
-            if (tidiedFrom.Contains(":#type="))
-            {
-                string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
-                tidiedFrom = fromArray[1];
-            }
-
-            // Extract any threat value which might be present and then strip the index value
-            int? threatLvl = null;
-            if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
-            {
-                string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
-                if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
-                tidiedFrom = fromArray[0]
-                    .Replace("_Easy", "")
-                    .Replace("_Medium", "")
-                    .Replace("_Hard", "");
+                // This appears to be a mixed name, look for the symbolic portion only then
+                // prepend and append any proper names that were previously set aside
+                var symbolicFrom = match.Value;
+                var symbolicResult = FromEDName(symbolicFrom.Trim());
+                result = new SignalSource(from.Replace(symbolicFrom, symbolicResult.invariantName).Trim())
+                {
+                    fallbackInvariantName = from.Replace(symbolicFrom, symbolicResult.invariantName).Trim(),
+                    fallbackLocalizedName = from.Replace(symbolicFrom, symbolicResult.localizedName).Trim()
+                };
             }
             else
             {
-                // Derive threat levels for Odyssey content from "Easy", "Medium", and "Hard" suffix tags
-                if (tidiedFrom.Contains("_Easy"))
+                string tidiedFrom = from
+                    .Replace("$", "")
+                    .Replace(";", "");
+
+                // Remove various prefix and suffix tags from non-USS sources
+                if (!tidiedFrom.StartsWith("USS_"))
                 {
-                    threatLvl = 1;
-                    tidiedFrom = tidiedFrom.Replace("_Easy", "");
+                    tidiedFrom = tidiedFrom
+                        .Replace("POI_", "")
+                        .Replace("POIScenario_", "")
+                        .Replace("POIScene_", "")
+                        .Replace("Watson_", "")
+                        .Replace("_Heist", "")
+                        .Replace("_Salvage", "")
+                        .Replace("_Skimmers", "");
                 }
-                else if (tidiedFrom.Contains("_Medium") && !tidiedFrom.StartsWith("Ancient_"))
+
+                // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
+                if (tidiedFrom.Contains(":#type="))
                 {
-                    // We need to use size to distinguish between guardian structures so preserve the "Medium" tag
-                    // when it represents the size of an ancient guardian structures. Remove it when it describes the difficulty of the encounter.
-                    threatLvl = 2;
-                    tidiedFrom = tidiedFrom.Replace("_Medium", "");
+                    string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
+                    tidiedFrom = fromArray[1];
                 }
-                else if (tidiedFrom.Contains("_Hard"))
+
+                // Extract any threat value which might be present and then strip the index value
+                if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
                 {
-                    threatLvl = 3;
-                    tidiedFrom = tidiedFrom.Replace("_Hard", "");
+                    string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
+                    if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
+                    tidiedFrom = fromArray[0]
+                        .Replace("_Easy", "")
+                        .Replace("_Medium", "")
+                        .Replace("_Hard", "");
                 }
-            }
+                else
+                {
+                    // Derive threat levels for Odyssey content from "Easy", "Medium", and "Hard" suffix tags
+                    if (tidiedFrom.Contains("_Easy"))
+                    {
+                        threatLvl = 1;
+                        tidiedFrom = tidiedFrom.Replace("_Easy", "");
+                    }
+                    else if (tidiedFrom.Contains("_Medium") && !tidiedFrom.StartsWith("Ancient_"))
+                    {
+                        // We need to use size to distinguish between guardian structures so preserve the "Medium" tag
+                        // when it represents the size of an ancient guardian structures. Remove it when it describes the difficulty of the encounter.
+                        threatLvl = 2;
+                        tidiedFrom = tidiedFrom.Replace("_Medium", "");
+                    }
+                    else if (tidiedFrom.Contains("_Hard"))
+                    {
+                        threatLvl = 3;
+                        tidiedFrom = tidiedFrom.Replace("_Hard", "");
+                    }
+                }
 
-            // Extract any index value which might be present and then strip the index value
-            int indexResult = 0;
-            if (tidiedFrom.Contains(":#index="))
-            {
-                string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
-                if (int.TryParse(fromArray[1], out indexResult)) { }
-                tidiedFrom = fromArray[0];
-            }
+                // Extract any index value which might be present and then strip the index value
+                if (tidiedFrom.Contains(":#index="))
+                {
+                    string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
+                    if (int.TryParse(fromArray[1], out indexResult)) { }
+                    tidiedFrom = fromArray[0];
+                }
 
-            // Extract any pure number parts (e.g. '_01_')
-            var parts = new List<string>();
-            foreach (var part in tidiedFrom.Split(new[] { "_" }, StringSplitOptions.None))
-            {
-                if (int.TryParse(part, out _)) { }
-                else { parts.Add(part); }
-            }
-            tidiedFrom = string.Join("_", parts);
+                // Extract any pure number parts (e.g. '_01_')
+                var parts = new List<string>();
+                foreach (var part in tidiedFrom.Split(new[] { "_" }, StringSplitOptions.None))
+                {
+                    if (int.TryParse(part, out _)) { }
+                    else { parts.Add(part); }
+                }
+                tidiedFrom = string.Join("_", parts);
 
-            // Use the USS Type for USS signals (since those are always unique)
-            // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` symbol.
-            if (tidiedFrom.StartsWith("USS_") && !tidiedFrom.Contains("Type_"))
-            {
-                tidiedFrom = AllOfThem.FirstOrDefault(s => s.altEdName == tidiedFrom)?.edname ?? tidiedFrom;
-            }
+                // Use the USS Type for USS signals (since those are always unique)
+                // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` symbol.
+                if (tidiedFrom.StartsWith("USS_") && !tidiedFrom.Contains("Type_"))
+                {
+                    tidiedFrom = AllOfThem.FirstOrDefault(s => s.altEdName == tidiedFrom)?.edname ?? tidiedFrom;
+                }
 
-            // Find our signal source
-            SignalSource result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom.Trim());
-
-            // Prepend and append any proper names that were previously set aside
-            // (though these will only apply if a signal definition was not found for the symbolic name)
-            if (from.Length > symbolicFrom.Length)
-            {
-                var localizedName = result.localizedName;
-                var invariantName = result.invariantName;
-                result = new SignalSource(from.Replace(symbolicFrom, invariantName).Trim())
-                 {
-                     fallbackInvariantName = from.Replace(symbolicFrom, invariantName).Trim(),
-                     fallbackLocalizedName = from.Replace(symbolicFrom, localizedName).Trim()
-                 };
+                // Find our signal source
+                if (AllOfThem.Any(s => s.edname.Equals(tidiedFrom.Trim(), StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom.Trim());
+                }
+                else
+                {
+                    // There is no match, return a generic result
+                    result = GenericSignalSource;
+                    Logging.Warn($"Unknown ED name {from} in resource {resourceManager.BaseName}.");
+                }
             }
 
             // Include our index value with our result
