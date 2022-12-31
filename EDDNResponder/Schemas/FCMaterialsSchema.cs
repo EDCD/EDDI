@@ -40,9 +40,6 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                e.Data.Add("edType", edType);
-                e.Data.Add("Data", data);
-                e.Data.Add("EDDN State", eddnState);
                 Logging.Error($"{GetType().Name} failed to handle journal data.");
                 return false;
             }
@@ -95,8 +92,6 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                e.Data.Add(@"\market", marketJson);
-                e.Data.Add("EDDN State", eddnState);
                 Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
             }
 

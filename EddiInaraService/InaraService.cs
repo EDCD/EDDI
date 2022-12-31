@@ -144,6 +144,8 @@ namespace EddiInaraService
                     var clientResponse = client.Execute<InaraResponses>(request);
                     if (clientResponse.IsSuccessful)
                     {
+                        Logging.Debug("Inara responded with:", JsonConvert.SerializeObject(clientResponse.Data));
+
                         InaraResponses response = clientResponse.Data;
                         if (validateResponse(response.header, indexedEvents, true))
                         {
@@ -224,14 +226,14 @@ namespace EddiInaraService
                 // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
                 if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
                 {
-                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+                    Logging.Warn("Inara warning or soft error reported: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
                 }
                 // Other errors
                 else if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
                 {
                     if (header)
                     {
-                        Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
+                        Logging.Warn("Inara sending error: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
                         if (inaraResponse.eventStatusText.Contains("Invalid API key"))
                         {
                             ReEnqueueAPIEvents(indexedEvents);
@@ -253,20 +255,14 @@ namespace EddiInaraService
                     {
                         // There may be an issue with a specific API event.
                         // We'll add that API event to a list and omit sending that event again in this instance.
-                        Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, data);
+                        Logging.Error("Inara event error: " + inaraResponse.eventStatusText, data);
                         invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
                     }
-                }
-                else
-                {
-                    // Inara responded, but no status text description was given.
-                    Logging.Error("Inara responded with: ", data);
                 }
                 return false;
             }
             catch (Exception e)
             {
-                e.Data.Add("Data", data);
                 Logging.Error("Failed to handle Inara server response", e);
                 return false;
             }

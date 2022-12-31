@@ -1,5 +1,6 @@
 ﻿using EddiEddnResponder.Sender;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -58,9 +59,6 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                e.Data.Add("edType", edType);
-                e.Data.Add("Data", data);
-                e.Data.Add("EDDN State", eddnState);
                 Logging.Error($"{GetType().Name} failed to handle journal data.");
             }
             return false;
@@ -132,9 +130,6 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                e.Data.Add(@"\profile", profileJson);
-                e.Data.Add(@"\market", marketJson);
-                e.Data.Add("EDDN State", eddnState);
                 Logging.Error($"{GetType().Name} failed to handle Frontier API data.");
             }
             return null;
@@ -159,8 +154,7 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                e.Data.Add("commodity", c);
-                Logging.Error("Failed to filter Frontier API commodity", e);
+                Logging.Error($"Failed to filter Frontier API commodity {JsonConvert.SerializeObject(c)}", e);
                 return false;
             }
         }

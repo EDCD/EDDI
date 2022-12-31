@@ -148,7 +148,6 @@ namespace EddiBgsService
             }
             catch (Exception ex)
             {
-                ex.Data.Add("response", response);
                 Logging.Error("Failed to parse BGS EDDB data.", ex);
                 return null;
             }

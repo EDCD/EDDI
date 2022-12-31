@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace Utilities
                     type = Nullable.GetUnderlyingType(type);
                 }
 
-                Logging.Debug("Handling key " + string.Join("/", keysPath));
+                Logging.Debug($"Handling {type.Name} key {key} in path {string.Join("/", keysPath)}", value);
 
                 if (type == typeof(bool))
                 {
@@ -226,10 +227,6 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                ex.Data.Add("keysPath", string.Join("/", keysPath));
-                ex.Data.Add("key", key);
-                ex.Data.Add("type", type);
-                ex.Data.Add("value", value);
                 Logging.Error("Failed to obtain variable metadata by reflection.", ex);
             }
             return;
@@ -432,8 +429,7 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                ex.Data.Add("Value", this);
-                Logging.Error($"Failed to write VoiceAttack value for key '{key}'", ex);
+                Logging.Error($"Failed to write VoiceAttack value for key '{key}' with value {JsonConvert.SerializeObject(value)}", ex);
             }
         }
     }

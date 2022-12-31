@@ -209,6 +209,7 @@ namespace EddiVoiceAttackResponder
                 {
                     try
                     {
+                        Logging.Debug($"Passing event {@event.type} to VoiceAttack", @event);
                         if (@event?.type != null)
                         {
                             lock (vaProxyLock)
@@ -236,8 +237,7 @@ namespace EddiVoiceAttackResponder
                     }
                     catch (Exception ex)
                     {
-                        ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                        Logging.Error("VoiceAttack failed to handle event.", ex);
+                        Logging.Error($"VoiceAttack failed to handle {@event.type} event.", ex);
                     }
                 }
             }

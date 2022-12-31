@@ -77,6 +77,8 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
+                Logging.Debug($"Extracting star system location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+
                 // Ignore any events that we've blacklisted for contaminating our location data
                 if (!starSystemIgnoredEvents.Contains(edType))
                 {
@@ -99,7 +101,6 @@ namespace EddiEddnResponder.Toolkit
             }
             catch (Exception ex)
             {
-                data.ToList().ForEach(kv => ex.Data.Add(kv.Key, kv.Value));
                 Logging.Error("Failed to parse star system location data for EDDN", ex);
             }
         }
@@ -108,6 +109,8 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
+                Logging.Debug($"Extracting market location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+
                 switch (edType)
                 {
                     case "Docked":
@@ -129,7 +132,6 @@ namespace EddiEddnResponder.Toolkit
             }
             catch (Exception ex)
             {
-                data.ToList().ForEach(kv => ex.Data.Add(kv.Key, kv.Value));
                 Logging.Error("Failed to parse market location data for EDDN", ex);
             }
         }
@@ -138,6 +140,8 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
+                Logging.Debug($"Extracting body location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+
                 switch (edType)
                 {
                     case "ApproachBody":
@@ -158,7 +162,6 @@ namespace EddiEddnResponder.Toolkit
             }
             catch (Exception ex)
             {
-                data.ToList().ForEach(kv => ex.Data.Add(kv.Key, kv.Value));
                 Logging.Error("Failed to parse body location data for EDDN", ex);
             }
         }

@@ -913,6 +913,7 @@ namespace EddiDataDefinitions
         {
             try
             {
+                Logging.Debug($"Converting ShipyardInfoItem to Ship: {JsonConvert.SerializeObject(item)}");
                 var ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel, false);
                 if (ship == null)
                 {
@@ -930,8 +931,7 @@ namespace EddiDataDefinitions
             }
             catch (Exception ex)
             {
-                ex.Data.Add("Ship", item);
-                Logging.Error("Failed to parse shipyard.json ship", ex);
+                Logging.Error($"Failed to parse ShipyardInfoItem.", ex);
                 return null;
             }
         }

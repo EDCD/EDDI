@@ -4,6 +4,7 @@ using EddiCore;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using Utilities;
@@ -20,6 +21,8 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             try
             {
+                Logging.Debug($"RouteDetails() invoked, arguments: {JsonConvert.SerializeObject(values)}");
+
                 string query = values?.FirstOrDefault()?.AsString;
                 string result = null;
                 if (string.IsNullOrEmpty(query))
@@ -126,7 +129,6 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             catch (Exception e)
             {
-                e.Data.Add("Arguments", values);
                 Logging.Error("Unable to resolve RouteDetails() request", e);
                 return new ReflectionValue(new object());
             }

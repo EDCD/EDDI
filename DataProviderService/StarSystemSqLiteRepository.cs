@@ -337,13 +337,17 @@ namespace EddiDataProviderService
             oldStarSystem.TryGetValue("bodies", out object bodiesVal);
             try
             {
-                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
-                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+                if (bodiesVal != null)
+                {
+                    var oldBodiesString = JsonConvert.SerializeObject(bodiesVal);
+                    Logging.Debug($"Reading old body properties from {updatedSystem.systemname} from database", oldBodiesString);
+                    List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(oldBodiesString);
+                    updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+                }
             }
             catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
             {
-                e.Data.Add("value", bodiesVal);
-                Logging.Error("Failed to read exploration data for bodies in " + updatedSystem.systemname + " from database.", e);
+                Logging.Error($"Failed to read exploration data for bodies in {updatedSystem.systemname} from database.", e);
             }
         }
 
@@ -355,7 +359,9 @@ namespace EddiDataProviderService
             {
                 if (factionsVal != null)
                 {
-                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
+                    var oldFactionsString = JsonConvert.SerializeObject(factionsVal);
+                    Logging.Debug($"Reading old faction properties from {updatedSystem.systemname} from database", oldFactionsString);
+                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(oldFactionsString);
                     if (oldFactions?.Count > 0)
                     {
                         foreach (var updatedFaction in updatedSystem.factions)
@@ -373,7 +379,6 @@ namespace EddiDataProviderService
             }
             catch (Exception e) when (e is JsonReaderException || e is JsonWriterException || e is JsonException)
             {
-                e.Data.Add("value", factionsVal);
                 Logging.Error("Failed to read commander faction reputation data for " + updatedSystem.systemname + " from database.", e);
             }
         }

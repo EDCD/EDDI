@@ -200,84 +200,80 @@ namespace EddiDataDefinitions
             return lastStation;
         }
 
-        public Station UpdateStation(DateTime profileTimeStamp, Station station)
+        public Station UpdateStation(DateTime profileTimeStamp, Station stationToUpdate)
         {
-            if (station is null)
+            Logging.Debug($"Updating station from Frontier API.", new Dictionary<string, object>()
+            {
+                { "Station To Update", JsonConvert.SerializeObject(stationToUpdate) },
+                { "Frontier API Data", JsonConvert.SerializeObject(this) }
+            });
+
+            if (stationToUpdate is null)
             {
                 return null;
             }
-            if (station.updatedat > Dates.fromDateTimeToSeconds(profileTimeStamp))
+            if (stationToUpdate.updatedat > Dates.fromDateTimeToSeconds(profileTimeStamp))
             {
                 // The current station is already more up to date
-                return station;
+                return stationToUpdate;
             }
-            if (station.marketId != marketId)
+            if (stationToUpdate.marketId != marketId)
             {
                 // The market IDs do not match, the stations are not the same
-                return station;
+                return stationToUpdate;
             }
 
             try
             {
-                station.economyShares = economyShares.Select(e => e.ToEconomyShare()).ToList();
-                station.stationServices = stationServices.Select(s => StationService.FromEDName(s.Key)).ToList();
+                stationToUpdate.economyShares = economyShares.Select(e => e.ToEconomyShare()).ToList();
+                stationToUpdate.stationServices = stationServices.Select(s => StationService.FromEDName(s.Key)).ToList();
             }
             catch (Exception e)
             {
-                e.Data.Add("Profile economy shares", economyShares);
-                e.Data.Add("Profile station services", stationServices);
-                e.Data.Add("Station", station);
                 Logging.Error("Failed to update station economy and services from profile.", e);
             }
 
             if (commoditiesupdatedat != DateTime.MinValue &&
-                (station.commoditiesupdatedat ?? 0) < Dates.fromDateTimeToSeconds(commoditiesupdatedat))
+                (stationToUpdate.commoditiesupdatedat ?? 0) < Dates.fromDateTimeToSeconds(commoditiesupdatedat))
             {
                 try
                 {
-                    station.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).Where(c => c != null).ToList();
-                    station.prohibited = prohibitedCommodities.Select(p => CommodityDefinition.CommodityDefinitionFromEliteID(p.Key) ?? CommodityDefinition.FromEDName(p.Value)).ToList();
-                    station.commoditiesupdatedat = Dates.fromDateTimeToSeconds(commoditiesupdatedat);
+                    stationToUpdate.commodities = eddnCommodityMarketQuotes.Select(c => c.ToCommodityMarketQuote()).Where(c => c != null).ToList();
+                    stationToUpdate.prohibited = prohibitedCommodities.Select(p => CommodityDefinition.CommodityDefinitionFromEliteID(p.Key) ?? CommodityDefinition.FromEDName(p.Value)).ToList();
+                    stationToUpdate.commoditiesupdatedat = Dates.fromDateTimeToSeconds(commoditiesupdatedat);
                 }
                 catch (Exception e)
                 {
-                    e.Data.Add("Profile commodity quotes", eddnCommodityMarketQuotes);
-                    e.Data.Add("Profile prohibited commodities", prohibitedCommodities);
-                    e.Data.Add("Station", station);
                     Logging.Error("Failed to update station market from profile.", e);
                 }
             }
-            if (outfittingupdatedat != DateTime.MinValue && (station.outfittingupdatedat ?? 0) < Dates.fromDateTimeToSeconds(outfittingupdatedat))
+            if (outfittingupdatedat != DateTime.MinValue && (stationToUpdate.outfittingupdatedat ?? 0) < Dates.fromDateTimeToSeconds(outfittingupdatedat))
             {
                 try
                 {
-                    station.outfitting = outfitting.Select(m => m.ToModule()).Where(m => m != null).ToList();
-                    station.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingupdatedat);
+                    stationToUpdate.outfitting = outfitting.Select(m => m.ToModule()).Where(m => m != null).ToList();
+                    stationToUpdate.outfittingupdatedat = Dates.fromDateTimeToSeconds(outfittingupdatedat);
                 }
                 catch (Exception e)
                 {
-                    e.Data.Add("Profile outfitting", outfitting);
-                    e.Data.Add("Station", station);
                     Logging.Error("Failed to update station outfitting from profile.", e);
                 }
 
             }
-            if (shipyardupdatedat != DateTime.MinValue && (station.shipyardupdatedat ?? 0) < Dates.fromDateTimeToSeconds(shipyardupdatedat))
+            if (shipyardupdatedat != DateTime.MinValue && (stationToUpdate.shipyardupdatedat ?? 0) < Dates.fromDateTimeToSeconds(shipyardupdatedat))
             {
                 try
                 {
-                    station.shipyard = ships.Select(s => s.ToShip()).Where(s => s != null).ToList();
-                    station.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardupdatedat);
+                    stationToUpdate.shipyard = ships.Select(s => s.ToShip()).Where(s => s != null).ToList();
+                    stationToUpdate.shipyardupdatedat = Dates.fromDateTimeToSeconds(shipyardupdatedat);
                 }
                 catch (Exception e)
                 {
-                    e.Data.Add("Profile ships", ships);
-                    e.Data.Add("Station", station);
                     Logging.Error("Failed to update station shipyard from profile.", e);
                 }
             }
-            station.updatedat = Dates.fromDateTimeToSeconds(profileTimeStamp);
-            return station;
+            stationToUpdate.updatedat = Dates.fromDateTimeToSeconds(profileTimeStamp);
+            return stationToUpdate;
         }
     }
 }

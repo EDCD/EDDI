@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using EddiStarMapService;
 using Utilities;
+using MathNet.Numerics.RootFinding;
 
 namespace EddiCore
 {
@@ -1126,8 +1127,7 @@ namespace EddiCore
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                    Logging.Error("EDDI core failed to handle event " + @event.type, ex);
+                    Logging.Error($"EDDI core failed to handle {@event.type} event {@event.raw}.", ex);
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity.
@@ -1786,8 +1786,7 @@ namespace EddiCore
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                    Logging.Error(monitor.MonitorName() + " failed to handle event " + @event.type, ex);
+                    Logging.Error($"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}", ex);
                 }
             }
         }
@@ -1797,27 +1796,18 @@ namespace EddiCore
             List<Task> responderTasks = new List<Task>();
             foreach (EDDIResponder responder in activeResponders)
             {
-                try
+                var responderTask = Task.Run(() =>
                 {
-                    var responderTask = Task.Run(() =>
+                    try
                     {
-                        try
-                        {
-                            responder.Handle(@event);
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                            Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, ex);
-                        }
-                    });
-                    responderTasks.Add(responderTask);
-                }
-                catch (Exception ex)
-                {
-                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                    Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, ex);
-                }
+                        responder.Handle(@event);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error($"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}", ex);
+                    }
+                });
+                responderTasks.Add(responderTask);
             }
             await Task.WhenAll(responderTasks.ToArray());
         }
@@ -1827,33 +1817,20 @@ namespace EddiCore
             List<Task> monitorTasks = new List<Task>();
             foreach (EDDIMonitor monitor in activeMonitors)
             {
-                try
+                var monitorTask = Task.Run(() =>
                 {
-                    var monitorTask = Task.Run(() =>
+                    try
                     {
-                        try
-                        {
-                            monitor.PostHandle(@event);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error(monitor.MonitorName() + " failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
-                        }
-                    });
-                    monitorTasks.Add(monitorTask);
-                }
-                catch (ThreadAbortException tax)
-                {
-                    Thread.ResetAbort();
-                    Logging.Debug("Thread aborted", tax);
-                }
-                catch (Exception ex)
-                {
-                    ex.Data.Add("event", JsonConvert.SerializeObject(@event));
-                    Logging.Error(monitor.MonitorName() + " failed to post-handle event " + @event.type, ex);
-                }
-                await Task.WhenAll(monitorTasks.ToArray());
+                        monitor.PostHandle(@event);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error($"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}", ex);
+                    }
+                });
+                monitorTasks.Add(monitorTask);
             }
+            await Task.WhenAll(monitorTasks.ToArray());
         }
 
         private bool eventLocation(LocationEvent theEvent)
@@ -3086,7 +3063,6 @@ namespace EddiCore
                             }
                             catch (Exception ex)
                             {
-                                ex.Data.Add("profile", JsonConvert.SerializeObject(profile));
                                 Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", ex);
                                 success = false;
                             }

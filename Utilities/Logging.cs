@@ -101,21 +101,26 @@ namespace Utilities
         private static readonly object logLock = new object();
         private static void log(string timestamp, ErrorLevel errorlevel, string message, object data = null)
         {
+            var str = $"{timestamp} [{errorlevel}] {message}" + (data != null
+                            ? $": {Redaction.RedactEnvironmentVariables(JsonConvert.SerializeObject(data))}"
+                            : null);
             lock (logLock)
             {
                 try
                 {
                     using (StreamWriter file = new StreamWriter(LogFile, true))
                     {
-                        file.WriteLine($"{timestamp} [{errorlevel}] {message}" + (data != null 
-                            ? $": {Redaction.RedactEnvironmentVariables(JsonConvert.SerializeObject(data))}" 
-                            : null));
+                        file.WriteLine(str);
                     }
                 }
                 catch (Exception)
                 {
                     // Failed; can't do anything about it as we're in the logging code anyway
                 }
+            }
+            if (errorlevel == ErrorLevel.Error || errorlevel == ErrorLevel.Critical)
+            {
+                Console.WriteLine($"{str}");
             }
         }
 

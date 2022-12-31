@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using Utilities;
 
@@ -1278,6 +1279,7 @@ namespace EddiDataDefinitions
         {
             try
             {
+                Logging.Debug($"Converting OutfittingInfoItem to Module: {JsonConvert.SerializeObject(item)}");
                 Module module = new Module(FromEliteID(item.EliteID, item) 
                                            ?? FromEDName(item.edName, item) 
                                            ?? new Module());
@@ -1292,8 +1294,7 @@ namespace EddiDataDefinitions
             }
             catch (System.Exception ex)
             {
-                ex.Data.Add("Item", item);
-                Logging.Error("Failed to parse outfitting.json item", ex);
+                Logging.Error($"Failed to parse OutfittingInfoItem.", ex);
             }
             return null;
         }

@@ -59,13 +59,15 @@ namespace EddiStarMapService
             return Stations;
         }
 
-        private Station ParseStarMapStation(JObject station, string system, ulong? systemAddress)
+        private Station ParseStarMapStation(JObject station, string systemName, ulong? systemAddress)
         {
             try
             {
+                Logging.Debug($"Parsing EDSM system {systemName} body", JsonConvert.SerializeObject(station));
+
                 Station Station = new Station
                 {
-                    systemname = system,
+                    systemname = systemName,
                     systemAddress = systemAddress,
                     name = (string)station["name"],
                     marketId = (long?)station["marketId"],
@@ -139,8 +141,7 @@ namespace EddiStarMapService
             }
             catch (Exception ex)
             {
-                ex.Data.Add("station", JsonConvert.SerializeObject(station));
-                Logging.Error("Error parsing EDSM station result.", ex);
+                Logging.Error($"Error parsing EDSM system {systemName} station result.", ex);
             }
             return null;
         }

@@ -679,9 +679,7 @@ namespace EddiJournalMonitor
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        e.Data.Add("Module", item);
-                                                        e.Data.Add("Engineering", engineeringData);
-                                                        Logging.Error("Failed to parse engineering modification", e);
+                                                        Logging.Error($"Failed to parse engineering modification for item {JsonConvert.SerializeObject(item)}", e);
                                                     }
                                                 }
                                             }
@@ -4885,7 +4883,6 @@ namespace EddiJournalMonitor
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
                         Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}", ex);
-                        Console.WriteLine($"{ex.Message}/r/nRaw event:/r/n{line}/r/n Exception:/r/n{JsonConvert.SerializeObject(ex)}");
                     }
 
                     if (!handled)
@@ -4900,9 +4897,7 @@ namespace EddiJournalMonitor
             }
             catch (Exception ex)
             {
-                Logging.Warn("Failed to parse line: " + ex.ToString());
-                ex.Data.Add("event", line);
-                Logging.Error("Exception whilst parsing journal line", ex);
+                Logging.Error($"Exception whilst parsing journal line {line}", ex);
             }
             return events;
         }

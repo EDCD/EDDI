@@ -156,6 +156,7 @@ namespace EddiDataDefinitions
         {
             try
             {
+                Logging.Debug($"Converting MarketInfoItem to CommodityMarketQuote: {JsonConvert.SerializeObject(this)}");
                 var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
                 if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
                 {
@@ -181,8 +182,7 @@ namespace EddiDataDefinitions
             }
             catch (Exception ex)
             {
-                ex.Data.Add("Item", this);
-                Logging.Error("Failed to parse Market.json item", ex);
+                Logging.Error($"Failed to parse OutfittingInfoItem.", ex);
             }
             return null;
         }

@@ -91,6 +91,8 @@ namespace EddiSpeechResponder.Service
         {
             try
             {
+                Logging.Debug($"Resolving {(isTopLevelScript ? "top level " : "")}script {scriptObject?.Name}: {script}", JsonConvert.SerializeObject(store));
+
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
                 // Tidy up the output script
@@ -135,10 +137,6 @@ namespace EddiSpeechResponder.Service
             }
             catch (Exception e)
             {
-                e.Data.Add("script", script);
-                e.Data.Add("store", JsonConvert.SerializeObject(store));
-                e.Data.Add("isTopLevelScript", isTopLevelScript);
-                e.Data.Add("scriptObject", JsonConvert.SerializeObject(scriptObject));
                 Logging.Error(e.Message, e);
                 return $"Error with {scriptObject?.Name ?? "this"} script: {e.Message}";
             }

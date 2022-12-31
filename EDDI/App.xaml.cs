@@ -150,7 +150,6 @@ namespace Eddi
 
             void HandleException(Exception ex, string telemetryID)
             {
-                ex.Data.Add("Anonymous ID", telemetryID);
                 Logging.Error($"Unhandled exception: {ex.Message}.", ex);
             }
         }

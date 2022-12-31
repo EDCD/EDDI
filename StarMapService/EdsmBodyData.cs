@@ -63,6 +63,8 @@ namespace EddiStarMapService
         {
             try
             {
+                Logging.Debug($"Parsing EDSM system {systemName} body", JsonConvert.SerializeObject(body));
+
                 // General items 
                 long? bodyId = (long?)body["bodyId"];
                 long? EDSMID = (long?)body["id"];
@@ -238,8 +240,7 @@ namespace EddiStarMapService
             }
             catch (Exception ex)
             {
-                ex.Data.Add("body", JsonConvert.SerializeObject(body));
-                Logging.Error("Error parsing EDSM body result.", ex);
+                Logging.Error($"Error parsing EDSM system {systemName} body result.", ex);
                 throw;
             }
 

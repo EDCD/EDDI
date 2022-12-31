@@ -56,6 +56,8 @@ namespace EddiStarMapService
         {
             try
             {
+                Logging.Debug($"Parsing EDSM system {systemName} faction", JsonConvert.SerializeObject(faction));
+
                 if (faction is null) { return null; }
                 Faction Faction = new Faction
                 {
@@ -127,8 +129,7 @@ namespace EddiStarMapService
             }
             catch (Exception ex)
             {
-                ex.Data.Add("faction", JsonConvert.SerializeObject(faction));
-                Logging.Error("Error parsing EDSM faction result.", ex);
+                Logging.Error($"Error parsing EDSM system {systemName} faction result.", ex);
             }
             return null;
         }

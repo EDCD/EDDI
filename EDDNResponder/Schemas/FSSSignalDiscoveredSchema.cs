@@ -34,33 +34,24 @@ namespace EddiEddnResponder.Schemas
                         // In Horizons, Location/FSDJump/CarrierJump events are written after `FSSSignalDiscovered` events
                         // so we use the prior signal state
                     }
-                    try
+
+                    LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                     {
-                        LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
+                        if (latestSignalState.Location.StarSystemLocationIsSet())
                         {
-                            if (latestSignalState.Location.StarSystemLocationIsSet())
+                            var retrievedSignals = signals?
+                                .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
+                                .ToList();
+                            if (retrievedSignals?.Any() ?? false)
                             {
-                                var retrievedSignals = signals?
-                                    .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
-                                    .ToList();
-                                if (retrievedSignals?.Any() ?? false)
-                                {
-                                    var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
-                                    handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
-                                    latestSignalState = null;
-                                    signals.RemoveAll(s => retrievedSignals.Contains(s));
-                                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
-                                }
+                                var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
+                                handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
+                                latestSignalState = null;
+                                signals.RemoveAll(s => retrievedSignals.Contains(s));
+                                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
                             }
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        e.Data.Add("edType", edType);
-                        if (signals?.Any() ?? false) { e.Data.Add("Signals", signals); }
-                        e.Data.Add("EDDN State", latestSignalState);
-                        Logging.Error($"{GetType().Name} failed to compile and send journal signals data.", e);
-                    }
+                        }
+                    });
                 }
 
                 if (edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
@@ -80,10 +71,7 @@ namespace EddiEddnResponder.Schemas
                     }
                     catch (Exception e)
                     {
-                        e.Data.Add("edType", edType);
-                        if (data?.Any() ?? false) { e.Data.Add("Data", data); }
-                        e.Data.Add("EDDN State", eddnState);
-                        Logging.Error($"{GetType().Name} failed to handle journal data.", e);
+                        Logging.Error($"{GetType().Name} failed to handle {edType} journal data.", e);
                     }
                     return true;
                 }
@@ -93,7 +81,8 @@ namespace EddiEddnResponder.Schemas
 
         private IDictionary<string, object> PrepareSignalsData(List<IDictionary<string, object>> retrievedSignals, EDDNState eddnState)
         {
-            List<IDictionary<string, object>> handledSignals = new List<IDictionary<string, object>>();
+            var handledSignals = new List<IDictionary<string, object>>();
+
             foreach (var retrievedSignal in retrievedSignals)
             {
                 var handledSignal = new Dictionary<string, object>();
@@ -130,8 +119,7 @@ namespace EddiEddnResponder.Schemas
                 }
                 catch (Exception e)
                 {
-                    e.Data.Add("Signal", retrievedSignal);
-                    Logging.Warn("Failed to prepare signal to send to EDDN", e);
+                    Logging.Warn($"Failed to prepare signal to send to EDDN: {retrievedSignal}", e);
                 }
 
                 // The signal must at minimum contain a timestamp and SignalName.

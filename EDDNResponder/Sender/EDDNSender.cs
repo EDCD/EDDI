@@ -24,32 +24,24 @@ namespace EddiEddnResponder.Sender
 
         public static void SendToEDDN(string schema, IDictionary<string, object> data, EDDNState eddnState, string gameVersionOverride = null)
         {
-            try
+            var body = new EDDNBody
             {
-                var body = new EDDNBody
-                {
-                    header = generateHeader(eddnState.GameVersion, gameVersionOverride),
-                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                    message = data
-                };
-                if (invalidSchemas.Contains(body.schemaRef))
-                {
-                    Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
-                }
-                else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
-                {
-                    Logging.Warn("Message could not be sent, game version has not been set.", data);
-                }
-                else
-                {
-                    Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
-                    sendMessage(body);
-                }
+                header = generateHeader(eddnState.GameVersion, gameVersionOverride),
+                schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                message = data
+            };
+            if (invalidSchemas.Contains(body.schemaRef))
+            {
+                Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
             }
-            catch (Exception ex)
+            else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
             {
-                ex.Data.Add("Data", data);
-                Logging.Error("Unable to send message to EDDN, schema " + schema, ex);
+                Logging.Warn("Message could not be sent, game version has not been set.", data);
+            }
+            else
+            {
+                Logging.Debug($"EDDN schema {schema} message is:", JsonConvert.SerializeObject(body));
+                sendMessage(body);
             }
         }
 
@@ -177,8 +169,6 @@ namespace EddiEddnResponder.Sender
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("eddnMessage", JsonConvert.SerializeObject(body?.message));
-                    ex.Data.Add("Response", response?.Content);
                     Logging.Error("EDDN could not accept data", ex);
                 }
             })

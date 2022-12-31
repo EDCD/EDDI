@@ -2,6 +2,7 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SimpleFeedReader;
 using System;
@@ -206,33 +207,32 @@ namespace EddiGalnetMonitor
                             {
                                 try
                                 {
-
-                                    if (firstUid == null)
+                                    if (string.IsNullOrEmpty(firstUid))
                                     {
                                         // Obtain the ID of the first item that we read as a marker
-                                        firstUid = item.Id;
+                                        firstUid = item?.Id;
                                     }
 
-                                    if (item.Id == configuration.lastuuid)
+                                    if (item?.Id == configuration.lastuuid)
                                     {
                                         // Reached the first item we have already seen - go no further
                                         break;
                                     }
 
-                                    if (item.Title is null || item.GetContent() is null)
+                                    if (item?.Title is null || item?.GetContent() is null)
                                     {
                                         // Skip items which do not contain useful content.
                                         continue;
                                     }
 
+                                    Logging.Debug("Handling Galnet feed item", JsonConvert.SerializeObject(item));
                                     News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
                                     newsItems.Add(newsItem);
                                     GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                                 }
                                 catch (Exception ex)
                                 {
-                                    ex.Data.Add("item", item);
-                                    Logging.Error("Exception handling Galnet news item.", ex);
+                                    Logging.Error($"Exception handling Galnet feed item: {item?.Title}", ex);
                                 }
                             }
 
@@ -325,9 +325,7 @@ namespace EddiGalnetMonitor
             }
             catch (Exception ex)
             {
-                ex.Data.Add("title", title);
-                ex.Data.Add("content", content);
-                Logging.Error("Exception categorizing Galnet article.", ex);
+                Logging.Error($"Exception categorizing Galnet article {title}.", ex);
             }
 
             return GetGalnetResource("categoryArticle");

@@ -7,6 +7,8 @@ using EddiEddnResponder.Sender;
 using EddiEvents;
 using EddiStatusService;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +69,11 @@ namespace EddiEddnResponder
 
         private void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
         {
+            Logging.Debug($"Handling Frontier API data", JsonConvert.SerializeObject(new Dictionary<string, object>()
+                {
+                    { "Frontier API Data", e },
+                    { "EDDN State", eddnState }
+                }));
             foreach (var schema in capiSchemas)
             {
                 // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
@@ -90,11 +97,11 @@ namespace EddiEddnResponder
                 return;
             }
 
-            if (string.IsNullOrEmpty(theEvent.raw)) 
+            if (string.IsNullOrEmpty(theEvent.raw))
             {
                 // A null value may indicate a synthetic event used to pass data within EDDI
                 // (which should always be ignored)
-                return; 
+                return;
             }
 
             Logging.Debug("Received event " + theEvent.raw);
@@ -118,6 +125,11 @@ namespace EddiEddnResponder
             }
 
             // Handle events
+            Logging.Debug($"Handling {edType} journal event", JsonConvert.SerializeObject(new Dictionary<string, object>()
+                {
+                    { "Event", data },
+                    { "EDDN State", eddnState }
+                }));
             foreach (var schema in schemas)
             {
                 if (schema.Handle(edType, ref data, eddnState))

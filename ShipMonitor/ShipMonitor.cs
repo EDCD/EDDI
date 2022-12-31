@@ -1463,10 +1463,11 @@ namespace EddiShipMonitor
 
         private void AddModule(Ship ship, string slot, Module module)
         {
-            if (ship != null && slot != null)
+            if (ship != null && slot != null && module != null)
             {
                 try
                 {
+                    Logging.Debug($"Adding module {module?.edname} to ship {ship?.LocalId} in slot {slot}", JsonConvert.SerializeObject(module));
                     switch (slot)
                     {
                         case "Armour":
@@ -1534,9 +1535,7 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("slot", slot);
-                    ex.Data.Add("module", module);
-                    Logging.Error("Failed to add module to ship.", ex);
+                    Logging.Error($"Failed to add module {module?.edname} to ship {ship?.LocalId} in slot {slot}.", ex);
                     throw;
                 }
             }
@@ -1550,6 +1549,8 @@ namespace EddiShipMonitor
         {
             try
             {
+                Logging.Debug($"Sorting ship {ship.LocalId} compartments", JsonConvert.SerializeObject(ship.compartments));
+
                 // Build new dictionary of ship compartments, excepting sold/stored compartment
                 Dictionary<string, Compartment> compartments = new Dictionary<string, Compartment>();
                 foreach (Compartment cpt in ship.compartments)
@@ -1580,8 +1581,7 @@ namespace EddiShipMonitor
             }
             catch (ArgumentException ex)
             {
-                ex.Data.Add("Ship compartments", ship.compartments);
-                Logging.Error("Failed to sort ship compartments", ex);
+                Logging.Error($"Failed to sort ship {ship?.LocalId} compartments", ex);
             }
         }
 
@@ -1612,6 +1612,8 @@ namespace EddiShipMonitor
         {
             try
             {
+                Logging.Debug($"Sorting ship {ship.LocalId} hardpoints", JsonConvert.SerializeObject(ship.hardpoints));
+
                 // Build new dictionary of ship hardpoints, excepting sold/stored hardpoint
                 Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
                 foreach (Hardpoint hp in ship.hardpoints)
@@ -1634,8 +1636,7 @@ namespace EddiShipMonitor
             }
             catch (ArgumentException ex)
             {
-                ex.Data.Add("Ship", ship);
-                Logging.Error("Failed to sort ship hardpoints", ex);
+                Logging.Error($"Failed to sort ship {ship?.LocalId} hardpoints", ex);
             }
         }
 
@@ -1676,6 +1677,8 @@ namespace EddiShipMonitor
             {
                 try
                 {
+                    Logging.Debug($"Removing module from slot {slot} in ship {ship.LocalId} in slot {slot}. Replacement module is: " + replacement is null ? "<None>" : JsonConvert.SerializeObject(replacement));
+
                     if (replacement != null)
                     {
                         switch (slot)
@@ -1749,9 +1752,7 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("slot", slot);
-                    ex.Data.Add("replacement", replacement);
-                    Logging.Error("Failed to remove module from ship.", ex);
+                    Logging.Error($"Failed to remove module from slot {slot} on ship {ship?.LocalId}.", ex);
                     throw;
                 }
             }
