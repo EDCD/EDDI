@@ -71,7 +71,7 @@ namespace EddiDataDefinitions
                     }
                 }
                 economyShares = economyShares.OrderByDescending(x => x.proportion).ToList();
-                Logging.Debug("Economies are " + JsonConvert.SerializeObject(economyShares));
+                Logging.Debug("Economies are: ", economyShares);
                 return economyShares;
             }
 
@@ -100,7 +100,7 @@ namespace EddiDataDefinitions
                         edProhibitedCommodities.Add(prohibitedCommodity);
                     }
                 }
-                Logging.Debug("Prohibited Commodities are " + JsonConvert.SerializeObject(edProhibitedCommodities.Select(c => c.Value).ToList()));
+                Logging.Debug("Prohibited Commodities are: ", edProhibitedCommodities.Select(c => c.Value).ToList());
                 return edProhibitedCommodities;
             }
 
@@ -196,7 +196,7 @@ namespace EddiDataDefinitions
             {
                 Logging.Error("Failed to parse companion station data", ex);
             }
-            Logging.Debug("Station is " + JsonConvert.SerializeObject(lastStation));
+            Logging.Debug("Station is: ", lastStation);
             return lastStation;
         }
 
@@ -204,8 +204,8 @@ namespace EddiDataDefinitions
         {
             Logging.Debug($"Updating station from Frontier API.", new Dictionary<string, object>()
             {
-                { "Station To Update", JsonConvert.SerializeObject(stationToUpdate) },
-                { "Frontier API Data", JsonConvert.SerializeObject(this) }
+                { "Station To Update", stationToUpdate },
+                { "Frontier API Data", this }
             });
 
             if (stationToUpdate is null)

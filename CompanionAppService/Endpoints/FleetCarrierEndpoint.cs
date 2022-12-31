@@ -28,7 +28,7 @@ namespace EddiCompanionAppService.Endpoints
             if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
             {
                 // return the cached version
-                Logging.Debug($"{FLEETCARRIER_URL} endpoint queried too often. Returning cached data " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
+                Logging.Debug($"{FLEETCARRIER_URL} endpoint queried too often. Returning cached data: ", cachedFleetCarrierJson);
                 return cachedFleetCarrierJson;
             }
 
@@ -41,7 +41,7 @@ namespace EddiCompanionAppService.Endpoints
                 {
                     cachedFleetCarrierJson = result;
                     cachedFleetCarrierTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
-                    Logging.Debug($"{FLEETCARRIER_URL} returned " + JsonConvert.SerializeObject(cachedFleetCarrierJson));
+                    Logging.Debug($"{FLEETCARRIER_URL} returned: ", cachedFleetCarrierJson);
                     FleetCarrierUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs(CompanionAppService.Instance.ServerURL(), null, null, null, cachedFleetCarrierJson));
                 }
                 else

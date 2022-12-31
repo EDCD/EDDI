@@ -199,8 +199,6 @@ namespace EddiMissionMonitor
 
         public void PreHandle(Event @event)
         {
-            Logging.Debug("Received pre-event " + JsonConvert.SerializeObject(@event));
-
             // Handle the events that we care about
             if (@event is DataScannedEvent dataScannedEvent)
             {

@@ -248,8 +248,6 @@ namespace EddiSpeechResponder
                 return;
             }
 
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-
             if (@event is BodyScannedEvent bodyScannedEvent)
             {
                 if (bodyScannedEvent.scantype?.Contains("NavBeacon") ?? false)

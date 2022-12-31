@@ -156,7 +156,7 @@ namespace EddiDataDefinitions
         {
             try
             {
-                Logging.Debug($"Converting MarketInfoItem to CommodityMarketQuote: {JsonConvert.SerializeObject(this)}");
+                Logging.Debug($"Converting MarketInfoItem to CommodityMarketQuote: ", this);
                 var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID);
                 if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
                 {

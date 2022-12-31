@@ -91,7 +91,7 @@ namespace EddiSpeechResponder.Service
         {
             try
             {
-                Logging.Debug($"Resolving {(isTopLevelScript ? "top level " : "")}script {scriptObject?.Name}: {script}", JsonConvert.SerializeObject(store));
+                Logging.Debug($"Resolving {(isTopLevelScript ? "top level " : "")}script {scriptObject?.Name}: {script}", store);
 
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
@@ -247,7 +247,7 @@ namespace EddiSpeechResponder.Service
             if (EDDI.Instance.State != null)
             {
                 dict["state"] = ScriptResolver.buildState();
-                Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
+                Logging.Debug("State is: ", EDDI.Instance.State);
             }
 
             // Obtain additional variables from each monitor

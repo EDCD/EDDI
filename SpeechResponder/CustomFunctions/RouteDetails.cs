@@ -21,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             try
             {
-                Logging.Debug($"RouteDetails() invoked, arguments: {JsonConvert.SerializeObject(values)}");
+                Logging.Debug($"RouteDetails() invoked, arguments: ", values);
 
                 string query = values?.FirstOrDefault()?.AsString;
                 string result = null;

@@ -144,8 +144,6 @@ namespace EddiCrimeMonitor
 
         public void PreHandle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-
             // Handle the events that we care about
             if (@event is LocationEvent locationEvent)
             {

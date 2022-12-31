@@ -225,7 +225,7 @@ namespace EddiGalnetMonitor
                                         continue;
                                     }
 
-                                    Logging.Debug("Handling Galnet feed item", JsonConvert.SerializeObject(item));
+                                    Logging.Debug("Handling Galnet feed item", item);
                                     News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
                                     newsItems.Add(newsItem);
                                     GalnetSqLiteRepository.Instance.SaveNews(newsItem);

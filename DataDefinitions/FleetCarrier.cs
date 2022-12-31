@@ -354,7 +354,7 @@ namespace EddiDataDefinitions
             {
                 if (newJson is null) { return; }
 
-                Logging.Debug("Updating fleet carrier from json", JsonConvert.SerializeObject(newJson));
+                Logging.Debug("Updating fleet carrier from json: ", newJson);
 
                 // Name must be converted from a hexadecimal to a string
                 string ConvertHexString(string hexString)

@@ -69,11 +69,11 @@ namespace EddiEddnResponder
 
         private void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
         {
-            Logging.Debug($"Handling Frontier API data", JsonConvert.SerializeObject(new Dictionary<string, object>()
+            Logging.Debug($"Handling Frontier API data", new Dictionary<string, object>()
                 {
                     { "Frontier API Data", e },
                     { "EDDN State", eddnState }
-                }));
+                });
             foreach (var schema in capiSchemas)
             {
                 // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
@@ -125,11 +125,11 @@ namespace EddiEddnResponder
             }
 
             // Handle events
-            Logging.Debug($"Handling {edType} journal event", JsonConvert.SerializeObject(new Dictionary<string, object>()
+            Logging.Debug($"Handling {edType} journal event", new Dictionary<string, object>()
                 {
                     { "Event", data },
                     { "EDDN State", eddnState }
-                }));
+                });
             foreach (var schema in schemas)
             {
                 if (schema.Handle(edType, ref data, eddnState))

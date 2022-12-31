@@ -47,7 +47,6 @@ namespace EddiVoiceAttackResponder
                 return;
             }
 
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
             OnEvent(EventArgs.Empty, @event);
         }
 

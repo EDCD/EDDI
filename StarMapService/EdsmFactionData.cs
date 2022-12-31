@@ -56,7 +56,7 @@ namespace EddiStarMapService
         {
             try
             {
-                Logging.Debug($"Parsing EDSM system {systemName} faction", JsonConvert.SerializeObject(faction));
+                Logging.Debug($"Parsing EDSM system {systemName} faction", faction);
 
                 if (faction is null) { return null; }
                 Faction Faction = new Faction

@@ -63,7 +63,7 @@ namespace EddiStarMapService
         {
             try
             {
-                Logging.Debug($"Parsing EDSM system {systemName} body", JsonConvert.SerializeObject(body));
+                Logging.Debug($"Parsing EDSM system {systemName} body", body);
 
                 // General items 
                 long? bodyId = (long?)body["bodyId"];

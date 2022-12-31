@@ -1279,7 +1279,7 @@ namespace EddiDataDefinitions
         {
             try
             {
-                Logging.Debug($"Converting OutfittingInfoItem to Module: {JsonConvert.SerializeObject(item)}");
+                Logging.Debug($"Converting OutfittingInfoItem to Module: ", item);
                 Module module = new Module(FromEliteID(item.EliteID, item) 
                                            ?? FromEDName(item.edName, item) 
                                            ?? new Module());

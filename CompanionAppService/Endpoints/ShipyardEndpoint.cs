@@ -16,7 +16,7 @@ namespace EddiCompanionAppService.Endpoints
             {
                 Logging.Debug($"Getting {SHIPYARD_URL} data");
                 result = GetEndpoint(SHIPYARD_URL);
-                Logging.Debug($"{SHIPYARD_URL} returned " + JsonConvert.SerializeObject(result));
+                Logging.Debug($"{SHIPYARD_URL} returned: ", result);
             }
             catch (EliteDangerousCompanionAppException ex)
             {

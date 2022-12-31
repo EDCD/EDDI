@@ -132,8 +132,6 @@ namespace EddiShipMonitor
         /// </summary>
         public void PreHandle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-
             // Handle the events that we care about
             if (@event is CommanderContinuedEvent commanderContinuedEvent)
             {
@@ -1193,7 +1191,7 @@ namespace EddiShipMonitor
                             }
                         }
                     }
-                    Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
+                    Logging.Debug("Ship is: ", ship);
                 }
                 else
                 {
@@ -1437,7 +1435,7 @@ namespace EddiShipMonitor
                         ship.Role = Role.MultiPurpose;
                         AddShip(ship);
                         currentShipId = ship.LocalId;
-                        Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));
+                        Logging.Debug("Created ship ID " + localId + ";  ", ship);
                     }
                     else
                     {
@@ -1467,7 +1465,7 @@ namespace EddiShipMonitor
             {
                 try
                 {
-                    Logging.Debug($"Adding module {module?.edname} to ship {ship?.LocalId} in slot {slot}", JsonConvert.SerializeObject(module));
+                    Logging.Debug($"Adding module {module?.edname} to ship {ship?.LocalId} in slot {slot}", module);
                     switch (slot)
                     {
                         case "Armour":
@@ -1549,7 +1547,7 @@ namespace EddiShipMonitor
         {
             try
             {
-                Logging.Debug($"Sorting ship {ship.LocalId} compartments", JsonConvert.SerializeObject(ship.compartments));
+                Logging.Debug($"Sorting ship {ship.LocalId} compartments", ship.compartments);
 
                 // Build new dictionary of ship compartments, excepting sold/stored compartment
                 Dictionary<string, Compartment> compartments = new Dictionary<string, Compartment>();
@@ -1612,7 +1610,7 @@ namespace EddiShipMonitor
         {
             try
             {
-                Logging.Debug($"Sorting ship {ship.LocalId} hardpoints", JsonConvert.SerializeObject(ship.hardpoints));
+                Logging.Debug($"Sorting ship {ship.LocalId} hardpoints", ship.hardpoints);
 
                 // Build new dictionary of ship hardpoints, excepting sold/stored hardpoint
                 Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();

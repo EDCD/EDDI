@@ -77,7 +77,7 @@ namespace EddiBgsService
                     }
                 }
 
-                Logging.Debug($"{endpoint} returned response. Query: {JsonConvert.SerializeObject(request.Parameters)}", JsonConvert.SerializeObject(docs));
+                Logging.Debug($"Query: {JsonConvert.SerializeObject(request.Parameters)}. {endpoint} returned response: ", docs);
                 return docs;
             }
             return null;
@@ -96,7 +96,7 @@ namespace EddiBgsService
         {
             request.AddOrUpdateParameter("page", page);
 
-            Logging.Debug($"Sending request to {request.Resource}. Query: {JsonConvert.SerializeObject(request.Parameters)}");
+            Logging.Debug($"Query: {JsonConvert.SerializeObject(request.Parameters)}. Sending request to {request.Resource}");
             RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
             if (clientResponse.IsSuccessful)
             {
@@ -110,7 +110,7 @@ namespace EddiBgsService
             }
             else
             {
-                Logging.Debug($"EliteBGS data error: Error obtaining data from {request.Resource}.", JsonConvert.SerializeObject(clientResponse));
+                Logging.Debug($"EliteBGS data error: Error obtaining data from {request.Resource}.", clientResponse);
             }
             return null; // No results
         }

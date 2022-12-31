@@ -16,7 +16,7 @@ namespace EddiCompanionAppService.Endpoints
             {
                 Logging.Debug($"Getting {MARKET_URL} data");
                 result = GetEndpoint(MARKET_URL);
-                Logging.Debug($"{MARKET_URL} returned " + JsonConvert.SerializeObject(result));
+                Logging.Debug($"{MARKET_URL} returned: ", result);
 
             }
             catch (EliteDangerousCompanionAppException ex)

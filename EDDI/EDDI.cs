@@ -883,7 +883,7 @@ namespace EddiCore
             {
                 try
                 {
-                    Logging.Debug("Handling event " + JsonConvert.SerializeObject(@event));
+                    Logging.Debug("Handling event: ", @event);
                     // We have some additional processing to do for a number of events
                     bool passEvent = true;
                     if (@event is FileHeaderEvent fileHeaderEvent)
@@ -3353,8 +3353,7 @@ namespace EddiCore
                             profileStation.commoditiesupdatedat, station);
 
                         // Update the current station information in our backend DB
-                        Logging.Debug(
-                            "Star system information updated from Frontier API server; updating local copy");
+                        Logging.Debug("Star system information updated from Frontier API server; updating local copy");
                         CurrentStation = station;
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     }

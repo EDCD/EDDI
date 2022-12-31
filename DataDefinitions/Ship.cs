@@ -913,7 +913,7 @@ namespace EddiDataDefinitions
         {
             try
             {
-                Logging.Debug($"Converting ShipyardInfoItem to Ship: {JsonConvert.SerializeObject(item)}");
+                Logging.Debug($"Converting ShipyardInfoItem to Ship: ", item);
                 var ship = ShipDefinitions.FromEliteID(item.EliteID) ?? ShipDefinitions.FromEDModel(item.edModel, false);
                 if (ship == null)
                 {

@@ -77,7 +77,7 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
-                Logging.Debug($"Extracting star system location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+                Logging.Debug($"Extracting star system location data from {edType} event for EDDN", data);
 
                 // Ignore any events that we've blacklisted for contaminating our location data
                 if (!starSystemIgnoredEvents.Contains(edType))
@@ -109,7 +109,7 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
-                Logging.Debug($"Extracting market location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+                Logging.Debug($"Extracting market location data from {edType} event for EDDN", data);
 
                 switch (edType)
                 {
@@ -140,7 +140,7 @@ namespace EddiEddnResponder.Toolkit
         {
             try
             {
-                Logging.Debug($"Extracting body location data from {edType} event for EDDN", JsonConvert.SerializeObject(data));
+                Logging.Debug($"Extracting body location data from {edType} event for EDDN", data);
 
                 switch (edType)
                 {

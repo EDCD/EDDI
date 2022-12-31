@@ -149,7 +149,7 @@ namespace Utilities
                     throw;
                 }
             }
-            Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
+            Logging.Debug("Response is: ", response);
             return response;
         }
 

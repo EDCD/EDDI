@@ -62,7 +62,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 {
                     try
                     {
-                        Logging.Debug($"Found voice: {JsonConvert.SerializeObject(voice)}");
+                        Logging.Debug($"Found voice: ", voice);
 
                         var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
                             CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
@@ -74,7 +74,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                         }
 
                         voiceStore.Add(voiceDetails);
-                        Logging.Debug($"Loaded voice: {JsonConvert.SerializeObject(voiceDetails)}");
+                        Logging.Debug($"Loaded voice: ", voiceDetails);
                     }
                     catch (Exception e)
                     {
@@ -128,7 +128,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
                         synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
                         synth.Options.AudioVolume = (double)Configuration.Volume / 100;
-                        Logging.Debug(JsonConvert.SerializeObject(Configuration));
+                        Logging.Debug("Configuration is: ", Configuration);
 
                         SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
                         if (useSSML)

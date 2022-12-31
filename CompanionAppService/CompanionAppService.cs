@@ -525,7 +525,7 @@ namespace EddiCompanionAppService
                 Logging.Warn(wex.Message);
                 response = (HttpWebResponse)wex.Response;
             }
-            Logging.Debug($"Response from {request.Address} is " + JsonConvert.SerializeObject(response));
+            Logging.Debug($"Response from {request.Address} is: ", response);
             return response;
         }
 

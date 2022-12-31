@@ -166,7 +166,7 @@ namespace EddiStarMapService
                         var holdingQueue = new List<IDictionary<string, object>>();
                         try
                         {
-                            Logging.Debug("Sending queued events to EDSM", JsonConvert.SerializeObject(queuedEvents));
+                            Logging.Debug("Sending queued events to EDSM: ", queuedEvents);
                             foreach (var pendingEvent in queuedEvents.GetConsumingEnumerable(syncCancellationTS.Token))
                             {
                                 holdingQueue.Add(pendingEvent);
@@ -408,7 +408,7 @@ namespace EddiStarMapService
 
             if (response != null)
             {
-                Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
+                Logging.Debug("Response for star map logs is: " + response);
 
                 if (response.msgnum != 100)
                 {

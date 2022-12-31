@@ -40,7 +40,7 @@ namespace EddiEddnResponder.Sender
             }
             else
             {
-                Logging.Debug($"EDDN schema {schema} message is:", JsonConvert.SerializeObject(body));
+                Logging.Debug($"EDDN schema {schema} message is: ", body);
                 sendMessage(body);
             }
         }

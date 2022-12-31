@@ -146,8 +146,6 @@ namespace EddiNavigationMonitor
         {
             if (@event.timestamp >= updateDat)
             {
-                Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-
                 // Handle the events that we care about
 
                 if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)

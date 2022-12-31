@@ -144,7 +144,7 @@ namespace EddiInaraService
                     var clientResponse = client.Execute<InaraResponses>(request);
                     if (clientResponse.IsSuccessful)
                     {
-                        Logging.Debug("Inara responded with:", JsonConvert.SerializeObject(clientResponse.Data));
+                        Logging.Debug("Inara responded with: ", clientResponse.Data);
 
                         InaraResponses response = clientResponse.Data;
                         if (validateResponse(response.header, indexedEvents, true))
