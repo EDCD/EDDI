@@ -33,7 +33,7 @@ namespace EddiEddnResponder.Schemas
             }
             catch (Exception e)
             {
-                Logging.Error($"{GetType().Name} failed to handle journal data.");
+                Logging.Error($"{GetType().Name} failed to handle journal data.", e);
                 return false;
             }
         }
