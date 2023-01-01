@@ -529,10 +529,7 @@
     <value>从战斗和系统权威船只的残骸中获得，具有车队分散模式的信号源或作为任务奖励。</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>在联邦控制的高级信号源中获得或在选举期间作为联邦系统中的任务奖励获得。</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>在经济蓬勃发展的系统中的高级信号源中获得或作为任务奖励。</value>
     <comment>Material location Proto Light Alloys</comment>
