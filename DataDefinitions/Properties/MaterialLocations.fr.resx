@@ -529,10 +529,7 @@
     <value>Obtenu à partir d'épaves de vaisseaux des autorités et de combat, de sources de signaux avec dispersion de convoi, ou en tant que récompense de mission.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Obtenu dans des sources de signaux de haute qualité dans les systèmes sous contrôle Fédéral ou en tant que récompense de mission dans les systèmes Fédéraux pendant des élections.</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>Obtenu dans des sources de signaux de haute qualité dans les systèmes aux économies en plein essor ou en tant que récompense de mission.</value>
     <comment>Material location Proto Light Alloys</comment>
