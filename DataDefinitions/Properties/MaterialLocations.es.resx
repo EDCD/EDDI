@@ -529,10 +529,7 @@
     <value>de los restos de naves de combate y de la autoridad local, de transmisiones de patrones de convoy, o como recompensa de misión.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>en transmisiones de alta calidad de sistemas controlados por La Federación, o también como recompensa de misiones en sistemas federales durante periodo electoral.</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>en transmisiones de alta calidad en sistemas con un auge económico, o como recompensa de misión.</value>
     <comment>Material location Proto Light Alloys</comment>
