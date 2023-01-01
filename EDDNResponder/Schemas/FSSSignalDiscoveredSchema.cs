@@ -34,24 +34,26 @@ namespace EddiEddnResponder.Schemas
                         // In Horizons, Location/FSDJump/CarrierJump events are written after `FSSSignalDiscovered` events
                         // so we use the prior signal state
                     }
-
-                    LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
+                    if (signals?.Any() ?? false)
                     {
-                        if (latestSignalState.Location.StarSystemLocationIsSet())
+                        LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
-                            var retrievedSignals = signals?
-                                .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
-                                .ToList();
-                            if (retrievedSignals?.Any() ?? false)
+                            if (latestSignalState.Location.StarSystemLocationIsSet())
                             {
-                                var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
-                                handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
-                                latestSignalState = null;
-                                signals.RemoveAll(s => retrievedSignals.Contains(s));
-                                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
+                                var retrievedSignals = signals?
+                                    .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
+                                    .ToList();
+                                if (retrievedSignals?.Any() ?? false)
+                                {
+                                    var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
+                                    handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
+                                    latestSignalState = null;
+                                    signals.RemoveAll(s => retrievedSignals.Contains(s));
+                                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
 
                 if (edTypes.Contains(edType) && eddnState.Location.StarSystemLocationIsSet())
