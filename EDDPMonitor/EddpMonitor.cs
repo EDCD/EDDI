@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using JetBrains.Annotations;
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json.Linq;
@@ -11,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiEddpMonitor

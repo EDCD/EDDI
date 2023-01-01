@@ -4,7 +4,6 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStarMapService;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

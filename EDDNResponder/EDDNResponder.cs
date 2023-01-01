@@ -7,8 +7,6 @@ using EddiEddnResponder.Sender;
 using EddiEvents;
 using EddiStatusService;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
-using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

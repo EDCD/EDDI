@@ -4,7 +4,6 @@ using EddiCore;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using Utilities;

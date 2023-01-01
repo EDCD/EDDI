@@ -7,9 +7,9 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiInaraService;
 using EddiSpeechService;
+using EddiStarMapService;
 using EddiStatusService;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
@@ -26,9 +26,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using EddiStarMapService;
 using Utilities;
-using MathNet.Numerics.RootFinding;
 
 namespace EddiCore
 {

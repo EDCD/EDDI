@@ -1,5 +1,4 @@
 ﻿using EddiCompanionAppService.Exceptions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using Utilities;

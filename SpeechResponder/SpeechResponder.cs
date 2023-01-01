@@ -5,7 +5,6 @@ using EddiEvents;
 using EddiJournalMonitor;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

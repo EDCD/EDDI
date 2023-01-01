@@ -3,7 +3,6 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
