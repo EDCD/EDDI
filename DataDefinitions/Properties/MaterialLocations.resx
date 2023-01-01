@@ -530,7 +530,7 @@
     <comment>Material location Polymer Capacitors</comment>
   </data>
   <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Obtained in high-grade signal sources Federal control or as a mission reward in Federal systems during elections.</value>
+    <value>Obtained in high-grade signal sources under Federal control or as a mission reward in Federal systems during elections.</value>
     <comment>Material location Proprietary Composites</comment>
   </data>
   <data name="protolightalloys" xml:space="preserve">

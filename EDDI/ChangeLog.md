@@ -13,6 +13,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Changes to existing scripts
       * `Nav route` updated with minor gramatical touch-ups.
       * `Star report` fixed mispelling of "luminosity". #2445
+      * `System materials report` updated to correct incorrect variable invocations and enhance in accordance with player feedback. #2454
       * `System scan complete` updated to use the contextual system rather than a mixture of the current system and contextual system. #2458
 
 ## 4.0.2-b4

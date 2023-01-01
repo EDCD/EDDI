@@ -439,7 +439,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtained in high-grade signal sources Federal control or as a mission reward in Federal systems during elections..
+        ///   Looks up a localized string similar to Obtained in high-grade signal sources under Federal control or as a mission reward in Federal systems during elections..
         /// </summary>
         public static string fedproprietarycomposites {
             get {
