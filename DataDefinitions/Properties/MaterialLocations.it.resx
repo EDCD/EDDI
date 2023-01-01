@@ -529,10 +529,7 @@
     <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia o da sorgenti di segnale con tracce di allontanamento di convogli o come ricompensa per missioni.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi sotto controllo Federale, o come ricompensa per missioni in sistemi Federali sotto elezioni.</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi con economia rampante o come ricompensa per missioni.</value>
     <comment>Material location Proto Light Alloys</comment>

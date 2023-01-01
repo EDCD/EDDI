@@ -529,10 +529,7 @@
     <value>戦闘艦や星系警察の残骸、Convoy dispersalシグナルソース、またミッション報酬として得られる。</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>連邦星系のHigh-gradeシグナルソースから、また連邦で選挙中の星系でミッション報酬として得られる。</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>Boom状態の星系のHigh-gradeシグナルソースから、またはミッション報酬として得られる。</value>
     <comment>Material location Proto Light Alloys</comment>

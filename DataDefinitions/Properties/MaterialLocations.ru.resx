@@ -529,10 +529,7 @@
     <value>Уничтожение (военные и корабли властей), Источники сигналов в космосе (рассредоточение конвоя), Награды за миссии.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Источники сигналов в космосе (кодированный сигнал), Источники сигналов в космосе (высокоуровневые излучения), Награды за миссии, чаще в Федерации во время выборов.</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>Источники сигналов в космосе (высокоуровневые излучения), Награды за миссии, чаще в системах с уровнем БУМ.</value>
     <comment>Material location Proto Light Alloys</comment>
