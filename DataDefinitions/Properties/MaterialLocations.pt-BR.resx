@@ -529,10 +529,7 @@
     <value>Encontrado em destroços de naves de combate e de segurança do sistema, fontes de sinais com padrões de dispersão de comboio ou como recompensas de missões.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  <data name="fedproprietarycomposites" xml:space="preserve">
-    <value>Encontrado em fontes de sinais de alto grau de sistemas controlados pela Federação ou como recompensas de missões de sistemas Federais durante eleições.</value>
-    <comment>Material location Proprietary Composites</comment>
-  </data>
+  
   <data name="protolightalloys" xml:space="preserve">
     <value>Encontrado em fontes de sinais de alto grau de sistemas com economia em auge ou como recompensas de missões.</value>
     <comment>Material location Proto Light Alloys</comment>
