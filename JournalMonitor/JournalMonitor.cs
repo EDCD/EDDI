@@ -5027,7 +5027,7 @@ namespace EddiJournalMonitor
                 string fName = JsonParsing.getString(factionDetail, "Name");
                 FactionState fState = FactionState.FromEDName(JsonParsing.getString(factionDetail, "FactionState")) ?? FactionState.None;
                 Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment")) ?? Government.None;
-                decimal influence = JsonParsing.getDecimal(factionDetail, "Influence");
+                decimal influence = JsonParsing.getDecimal(factionDetail, "Influence") * 100; // Convert from a 0-1 scale to 0-100
                 Superpower fAllegiance = getAllegiance(factionDetail, "Allegiance");
                 Happiness happiness = Happiness.FromEDName(JsonParsing.getString(factionDetail, "Happiness") ?? string.Empty);
                 decimal myReputation = JsonParsing.getOptionalDecimal(factionDetail, "MyReputation") ?? 0;

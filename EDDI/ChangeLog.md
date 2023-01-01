@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.2-b5
   * Core
     * Fixed some translations into Spanish reverting to English. #2452
+    * Fixed the `influence` property in `FactionPresence` objects sometimes being reported on a scale from 0-1 and sometimes being reported on a scale from 0-100. Should be 0-100 only moving forwards.
     * Various minor bug fixes
   * Speech Responder
     * UI
