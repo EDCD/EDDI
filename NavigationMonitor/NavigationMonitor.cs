@@ -853,7 +853,7 @@ namespace EddiNavigationMonitor
             }).ToList();
             var visitedBookmarkSystems = await Task.Run(() =>
             {
-                return new DataProviderService(new StarMapService())
+                return new DataProviderService(new StarMapService(null, true))
                     .syncFromStarMapService(bookmarkSystems)
                     .Where(s => s.visits > 0);
             }).ConfigureAwait(false);

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace EddiEdsmResponder
 {
@@ -75,7 +76,7 @@ namespace EddiEdsmResponder
             edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
 
             var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
-            IEdsmService edsmService = new StarMapService();
+            IEdsmService edsmService = new StarMapService(null, true);
             await Task.Factory.StartNew(() => obtainEdsmLogs(edsmService, progress), TaskCreationOptions.LongRunning);
 
             starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
@@ -107,6 +108,7 @@ namespace EddiEdsmResponder
                 catch (EDSMException edsme)
                 {
                     progress.Report(Properties.EDSMResources.log_button_error_received + edsme.Message);
+                    Logging.Warn(Properties.EDSMResources.log_button_error_received + edsme.Message, edsme);
                 }
             }
         }

@@ -1012,7 +1012,7 @@ namespace EddiVoiceAttackResponder
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(currentSystem);
 
                     // Store in EDSM
-                    IEdsmService edsmService = new StarMapService();
+                    IEdsmService edsmService = new StarMapService(null, true);
                     edsmService.sendStarMapComment(currentSystemName, comment);
                 }
             }

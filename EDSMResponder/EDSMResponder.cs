@@ -35,7 +35,7 @@ namespace EddiEdsmResponder
             return Properties.EDSMResources.desc;
         }
 
-        public EDSMResponder() : this(new StarMapService())
+        public EDSMResponder() : this(new StarMapService(null, true))
         { }
 
         public EDSMResponder(IEdsmService edsmService)

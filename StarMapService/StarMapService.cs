@@ -93,12 +93,15 @@ namespace EddiStarMapService
             }
         }
 
-        public StarMapService(IEdsmRestClient restClient = null)
+        public StarMapService(IEdsmRestClient restClient = null, bool needsCredentials = false)
         {
             this.restClient = restClient ?? new EdsmRestClient(baseUrl);
 
-            // Set up EDSM API credentials
-            SetEdsmCredentials();
+            if (needsCredentials)
+            {
+                // Set up EDSM API credentials
+                SetEdsmCredentials();
+            }
         }
 
         public void SetEdsmCredentials()
