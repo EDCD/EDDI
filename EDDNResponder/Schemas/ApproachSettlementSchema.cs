@@ -19,7 +19,8 @@ namespace EddiEddnResponder.Schemas
                 if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
                 if (!eddnState.Location.CheckLocationData(edType, data)) { return false; }
 
-                // No personal data to remove
+                // Strip any localized properties
+                data = eddnState.PersonalData.Strip(data);
 
                 // Apply data augments
                 data = eddnState.Location.AugmentStarSystemName(data);
