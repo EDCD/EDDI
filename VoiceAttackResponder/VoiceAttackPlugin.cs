@@ -125,7 +125,7 @@ namespace EddiVoiceAttackResponder
                             lock (vaProxyLock)
                             {
                                 setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref vaProxy);
-                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.Copy().ToList(), ref vaProxy));
+                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref vaProxy));
                             }
                         };
                     }

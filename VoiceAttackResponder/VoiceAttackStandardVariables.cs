@@ -4,9 +4,7 @@ using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
-using EddiShipMonitor;
 using EddiSpeechService;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -403,29 +401,31 @@ namespace EddiVoiceAttackResponder
 
         protected static void setShipyardValues(List<Ship> shipyard, ref dynamic vaProxy)
         {
-            if (shipyard != null && !shipyard.DeepEquals(vaShipyard))
+            lock (nameof(vaShipyard))
             {
-                int currentStoredShip = 1;
-                foreach (Ship StoredShip in shipyard)
+                if (shipyard != null && !shipyard.DeepEquals(vaShipyard))
                 {
-                    Ship vaShip = vaShipyard.FirstOrDefault(s => s.LocalId == StoredShip.LocalId);
-                    string vaShipString = vaShip == null ? null : JsonConvert.SerializeObject(vaShip);
-                    string storedShipString = JsonConvert.SerializeObject(StoredShip);
-                    if (vaShipString != storedShipString)
+                    int currentStoredShip = 1;
+                    foreach (Ship StoredShip in shipyard)
                     {
-                        setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
-                        currentStoredShip++;
-                        if (vaShipString is null)
+                        var vaShip = vaShipyard.FirstOrDefault(s => s.LocalId == StoredShip.LocalId);
+                        if (!StoredShip.DeepEquals(vaShip))
                         {
-                            vaShipyard.Add(JsonConvert.DeserializeObject<Ship>(storedShipString));
-                        }
-                        else
-                        {
-                            vaShip = JsonConvert.DeserializeObject<Ship>(storedShipString);
+                            setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
+                            currentStoredShip++;
+                            if (vaShip is null)
+                            {
+                                vaShipyard.Add(StoredShip);
+                            }
+                            else
+                            {
+                                vaShipyard[StoredShip.LocalId] = StoredShip;
+                            }
                         }
                     }
+
+                    vaProxy.SetInt("Stored ship entries", vaShipyard.Count);
                 }
-                vaProxy.SetInt("Stored ship entries", ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.shipyard.Count);
             }
         }
 
