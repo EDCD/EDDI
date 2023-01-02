@@ -38,7 +38,7 @@ namespace EddiEddnResponder.Schemas
                     {
                         try
                         {
-                            LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
+                            LockManager.GetLock(nameof(latestSignalState), () =>
                             {
                                 if (latestSignalState?.Location.StarSystemLocationIsSet() ?? false)
                                 {
@@ -49,9 +49,9 @@ namespace EddiEddnResponder.Schemas
                                     {
                                         var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
                                         handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
+                                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
                                         latestSignalState = null;
                                         signals.RemoveAll(s => retrievedSignals.Contains(s));
-                                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
                                     }
                                 }
                             });
@@ -74,8 +74,8 @@ namespace EddiEddnResponder.Schemas
                         if (string.IsNullOrEmpty(ussSignalType) || ussSignalType != "$USS_Type_MissionTarget;")
                         {
                             // This is a signal that we need to add to our signal batch
-                            signals.Add(data);
                             latestSignalState = eddnState;
+                            signals.Add(data);
                         }
                     }
                     catch (Exception e)
