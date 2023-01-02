@@ -4,10 +4,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.2-rc1
   * Core
-    * Promote 4.0.2-b5 to 4.0.2-rc1
+    * Various minor bug fixes
   * Speech Responder
     * Changes to existing scripts
       * `Body report summary` revised to add optional temperature scale selection. #2235
+      * `Module retrieved`, `Module sold`, `Module sold from storage`, `Module stored`, `Module swapped`, and `Module transfer` revised to identify loaned modules (with zero value). #2441
       * `Touchdown` revised to make reporting coordinates an opt-in feature and add optional temperature reporting for Odyssey on-foot expeditions. #2463
 
 ## 4.0.2-b5
