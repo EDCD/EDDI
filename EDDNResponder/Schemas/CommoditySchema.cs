@@ -39,7 +39,7 @@ namespace EddiEddnResponder.Schemas
                     var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                     handledData["timestamp"] = data["timestamp"];
                     handledData["systemName"] = data["StarSystem"];
-                    handledData["systemName"] = data["StationName"];
+                    handledData["stationName"] = data["StationName"];
                     handledData["marketId"] = data["MarketID"];
                     handledData["commodities"] = JArray.FromObject(data["Items"])
                         .Where(c => ApplyJournalMarketFilter(c))
