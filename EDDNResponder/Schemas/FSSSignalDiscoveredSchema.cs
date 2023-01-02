@@ -36,23 +36,30 @@ namespace EddiEddnResponder.Schemas
                     }
                     if (signals.Any())
                     {
-                        LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
+                        try
                         {
-                            if (latestSignalState?.Location.StarSystemLocationIsSet() ?? false)
+                            LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                             {
-                                var retrievedSignals = signals
-                                    .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
-                                    .ToList();
-                                if (retrievedSignals.Any())
+                                if (latestSignalState?.Location.StarSystemLocationIsSet() ?? false)
                                 {
-                                    var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
-                                    handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
-                                    latestSignalState = null;
-                                    signals.RemoveAll(s => retrievedSignals.Contains(s));
-                                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
+                                    var retrievedSignals = signals
+                                        .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
+                                        .ToList();
+                                    if (retrievedSignals.Any())
+                                    {
+                                        var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
+                                        handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
+                                        latestSignalState = null;
+                                        signals.RemoveAll(s => retrievedSignals.Contains(s));
+                                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, latestSignalState);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                        catch (NullReferenceException nre)
+                        {
+                            Logging.Error("Failed to prepare signals for sending to EDDN", nre);
+                        }
                     }
                 }
 
