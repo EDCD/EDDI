@@ -34,16 +34,16 @@ namespace EddiEddnResponder.Schemas
                         // In Horizons, Location/FSDJump/CarrierJump events are written after `FSSSignalDiscovered` events
                         // so we use the prior signal state
                     }
-                    if (signals?.Any() ?? false)
+                    if (signals.Any())
                     {
                         LockManager.GetLock(nameof(FSSSignalDiscoveredSchema), () =>
                         {
-                            if (latestSignalState.Location.StarSystemLocationIsSet())
+                            if (latestSignalState?.Location.StarSystemLocationIsSet() ?? false)
                             {
-                                var retrievedSignals = signals?
+                                var retrievedSignals = signals
                                     .Where(s => JsonParsing.getULong(s, "SystemAddress") == latestSignalState.Location.systemAddress)
                                     .ToList();
-                                if (retrievedSignals?.Any() ?? false)
+                                if (retrievedSignals.Any())
                                 {
                                     var handledData = PrepareSignalsData(retrievedSignals, latestSignalState);
                                     handledData = latestSignalState.GameVersion.AugmentVersion(handledData);
