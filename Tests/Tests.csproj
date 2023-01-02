@@ -160,14 +160,6 @@
       <Project>{9aba5418-95bb-40db-b4bc-71698a37066d}</Project>
       <Name>EddiEddnResponder</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDPMonitor\EddiEddpMonitor.csproj">
-      <Project>{c9a4f3e1-5152-4648-a409-368576975ace}</Project>
-      <Name>EddiEddpMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDSMResponder\EddiEdsmResponder.csproj">
-      <Project>{2c2f3380-781d-45de-b387-aef26b834f29}</Project>
-      <Name>EddiEdsmResponder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
@@ -175,10 +167,6 @@
     <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj">
       <Project>{93b946c8-3f78-465a-8cc4-c0fc4127b762}</Project>
       <Name>EddiGalnetMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InaraResponder\EddiInaraResponder.csproj">
-      <Project>{11bef9d3-91a4-4522-9581-bcc2a1f5eec7}</Project>
-      <Name>EddiInaraResponder</Name>
     </ProjectReference>
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
@@ -191,10 +179,6 @@
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NavigationMonitor\EddiNavigationMonitor.csproj">
-      <Project>{99f79039-803b-4709-a24f-4d8104d1e5d2}</Project>
-      <Name>EddiNavigationMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
       <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
@@ -215,10 +199,6 @@
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj">
-      <Project>{fec7ba2b-23c3-4f4f-96ef-bf1f1909eb03}</Project>
-      <Name>EddiStatusMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
