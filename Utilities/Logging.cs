@@ -120,7 +120,7 @@ namespace Utilities
             }
             if (errorlevel == ErrorLevel.Error || errorlevel == ErrorLevel.Critical)
             {
-                Console.WriteLine($"{str}");
+                Console.WriteLine(str);
             }
         }
 
@@ -133,7 +133,10 @@ namespace Utilities
                     var telemetry = preppedData is null 
                         ? new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
                         : new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
-                    RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
+                    LockManager.GetLock(nameof(_Rollbar), () =>
+                    {
+                        RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
+                    });
                 }
                 catch (RollbarException rex)
                 {
@@ -154,7 +157,10 @@ namespace Utilities
         {
             try
             {
-                RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                LockManager.GetLock(nameof(_Rollbar), () =>
+                {
+                    RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
+                });
                 string personID = RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
                 if (!string.IsNullOrEmpty(personID))
                 {
