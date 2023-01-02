@@ -151,7 +151,7 @@
       <Version>1.2.1.2</Version>
     </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
-      <Version>2021.3.0</Version>
+      <Version>2022.3.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.22621.2</Version>
