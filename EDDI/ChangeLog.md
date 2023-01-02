@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.2-rc1
+  * Core
+    * Promote 4.0.2-b5 to 4.0.2-rc1
+  * Speech Responder
+    * Changes to existing scripts
+
 ## 4.0.2-b5
   * Core
     * Fixed some translations into Spanish reverting to English. #2452
