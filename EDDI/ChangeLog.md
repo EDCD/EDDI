@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Promote 4.0.2-b5 to 4.0.2-rc1
   * Speech Responder
     * Changes to existing scripts
+      * `Body report summary` revised to add optional temperature scale selection. #2235
       * `Touchdown` revised to make reporting coordinates an opt-in feature and add optional temperature reporting for Odyssey on-foot expeditions. #2463
 
 ## 4.0.2-b5
