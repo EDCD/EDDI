@@ -130,11 +130,11 @@
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>AX Missile Rack</value>
+    <value>Anti-Xeno Missile Rack</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
-    <value>AX Multi-Cannon</value>
+    <value>Anti-Xeno Multi-Cannon</value>
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
@@ -614,11 +614,11 @@
     <comment>Module MultiDroneControl_Universal</comment>
   </data>
   <data name="Enhanced_AXMissileRack" xml:space="preserve">
-    <value>Enhanced AX Missile Rack</value>
+    <value>Enhanced Anti-Xeno Missile Rack</value>
     <comment>Module Enhanced AX Missile Rack</comment>
   </data>
   <data name="Enhanced_AXMulti_Cannon" xml:space="preserve">
-    <value>Enhanced AX Multi-Cannon</value>
+    <value>Enhanced Anti-Xeno Multi-Cannon</value>
     <comment>Module Enhanced AX Multi-Cannon</comment>
   </data>
 </root>

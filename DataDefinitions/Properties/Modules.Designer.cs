@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AX Missile Rack.
+        ///   Looks up a localized string similar to Anti-Xeno Missile Rack.
         /// </summary>
         public static string AXMissileRack {
             get {
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AX Multi-Cannon.
+        ///   Looks up a localized string similar to Anti-Xeno Multi-Cannon.
         /// </summary>
         public static string AXMulti_Cannon {
             get {
@@ -367,7 +367,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enhanced AX Missile Rack.
+        ///   Looks up a localized string similar to Enhanced Anti-Xeno Missile Rack.
         /// </summary>
         public static string Enhanced_AXMissileRack {
             get {
@@ -376,7 +376,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enhanced AX Multi-Cannon.
+        ///   Looks up a localized string similar to Enhanced Anti-Xeno Multi-Cannon.
         /// </summary>
         public static string Enhanced_AXMulti_Cannon {
             get {
