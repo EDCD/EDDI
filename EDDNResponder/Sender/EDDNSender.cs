@@ -22,26 +22,38 @@ namespace EddiEddnResponder.Sender
         // Schemas identified as invalid by the server
         private static readonly List<string> invalidSchemas = new List<string>();
 
-        public static void SendToEDDN(string schema, IDictionary<string, object> data, EDDNState eddnState, string gameVersionOverride = null)
+        public static void SendToEDDN(string schema, IDictionary<string, object> data, EDDNState eddnState,
+            string gameVersionOverride = null)
         {
-            var body = new EDDNBody
+            try
             {
-                header = generateHeader(eddnState.GameVersion, gameVersionOverride),
-                schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                message = data
-            };
-            if (invalidSchemas.Contains(body.schemaRef))
-            {
-                Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
+                var body = new EDDNBody
+                {
+                    header = generateHeader(eddnState.GameVersion, gameVersionOverride),
+                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                    message = data
+                };
+                if (invalidSchemas.Contains(body.schemaRef))
+                {
+                    Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
+                }
+                else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
+                {
+                    Logging.Warn("Message could not be sent, game version has not been set.", data);
+                }
+                else
+                {
+                    Logging.Debug($"EDDN schema {schema} message is: ", body);
+                    sendMessage(body);
+                }
             }
-            else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
+            catch (ArgumentException ae)
             {
-                Logging.Warn("Message could not be sent, game version has not been set.", data);
+                Logging.Error("Failed to send data to EDDN", ae);
             }
-            else
+            catch (NullReferenceException nre)
             {
-                Logging.Debug($"EDDN schema {schema} message is: ", body);
-                sendMessage(body);
+                Logging.Error("Failed to send data to EDDN", nre);
             }
         }
 
