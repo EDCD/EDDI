@@ -7,7 +7,7 @@ namespace EddiDataDefinitions
         static LoadoutDescription()
         {
             resourceManager = Properties.LoadoutDescription.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
 
             var EmpireZero = new LoadoutDescription("EmpireZero");
             var EmpireOne = new LoadoutDescription("EmpireOne");
@@ -28,7 +28,8 @@ namespace EddiDataDefinitions
             var IndependentThree = new LoadoutDescription("IndependentThree");
             var IndependentFour = new LoadoutDescription("IndependentFour");
             var IndependentAT = new LoadoutDescription("IndependentAT");
-            var Starter = new LoadoutDescription("Starter");
+            var Starter = new LoadoutDescription("Starter"); // Default loadout for Scarab SRV
+            var Default = new LoadoutDescription("Default"); // Default loadout for Scorpion Combat SRV
         }
 
         // dummy used to ensure that the static constructor has run
