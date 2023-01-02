@@ -352,7 +352,10 @@ namespace EddiDataDefinitions
         {
             try
             {
-                if (newJson is null) { return; }
+                if (newJson is null)
+                {
+                    return;
+                }
 
                 Logging.Debug("Updating fleet carrier from json: ", newJson);
 
@@ -376,15 +379,20 @@ namespace EddiDataDefinitions
                 if (callsign != null && newCallsign != callsign)
                 {
                     Logging.Warn("Frontier API incorrectly configured: Returning information for Fleet Carrier " +
-                                 newCallsign + " rather than for " + callsign + ". Disregarding incorrect information.");
+                                 newCallsign + " rather than for " + callsign +
+                                 ". Disregarding incorrect information.");
                     return;
                 }
+
                 callsign = newCallsign;
                 json = newJson;
                 carrierID = newJson["market"]?["id"]?.ToObject<long?>();
 
                 // Information which might be newer, check timestamp prior to updating
-                if (newTimeStamp <= timestamp) { return; }
+                if (newTimeStamp <= timestamp)
+                {
+                    return;
+                }
 
                 name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
                 currentStarSystem = newJson["currentStarSystem"]?.ToString();
@@ -454,7 +462,12 @@ namespace EddiDataDefinitions
                         fuelInCargo += cargo["qty"]?.ToObject<int>() ?? 0;
                     }
                 }
+
                 timestamp = newTimeStamp;
+            }
+            catch (ArgumentException ae)
+            {
+                Logging.Error("Fleet carrier argument parsing error", ae);
             }
             catch (Exception e)
             {
