@@ -529,7 +529,10 @@
     <value>Findet man in den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder in Signalquellen von Konvoiauflösungen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Findet man in hochwertigen Signalquellen, die unter Kontrolle der Förderation stehen, oder als Missions-Belohnung für einen Einsatz in förderalen Systemen während einer Wahl.</value>
+    <comment>Material location Proprietary Composites</comment>
+  </data>
   <data name="protolightalloys" xml:space="preserve">
     <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Proto Light Alloys</comment>
