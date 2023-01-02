@@ -11,6 +11,7 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => new List<string>
         {
+            "CarrierJump",
             "Docked", 
             "FSDJump", 
             "Scan", 
@@ -33,7 +34,6 @@ namespace EddiEddnResponder.Schemas
                 // Apply data augments
                 data = eddnState.Location.AugmentStarPos(data);
                 data = eddnState.Location.AugmentStarSystemName(data);
-                data = eddnState.Location.AugmentBody(data);
                 data = eddnState.GameVersion.AugmentVersion(data);
 
                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data, eddnState);

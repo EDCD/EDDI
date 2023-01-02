@@ -24,6 +24,7 @@ namespace EddiEddnResponder.Schemas
 
                 // Apply data augments
                 data = eddnState.Location.AugmentStarPos(data);
+                data = eddnState.Location.AugmentBody(data);
                 data = eddnState.GameVersion.AugmentVersion(data);
 
                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/codexentry/1", data, eddnState);
