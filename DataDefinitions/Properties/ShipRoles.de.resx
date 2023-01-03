@@ -182,11 +182,11 @@
     <comment>Ship role Evacuation</comment>
   </data>
   <data name="AXcombat" xml:space="preserve">
-    <value>Anti-Xeno Kampf</value>
+    <value>AX Kampf</value>
     <comment>Ship role Anti-Xeno Combat</comment>
   </data>
   <data name="AXcombatsupport" xml:space="preserve">
-    <value>Anti-Xeno Unterstützung</value>
+    <value>AX Unterstützung</value>
     <comment>Ship role Anti-Xeno Combat Support</comment>
   </data>
 </root>
