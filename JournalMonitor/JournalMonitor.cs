@@ -4843,7 +4843,8 @@ namespace EddiJournalMonitor
                             case "CarrierTradeOrder": // Implement when we are ready to handle fleet carrier cargo.
                             case "CargoTransfer": // Could use for cargo transfers between ship and fleet carrier; the `Cargo` event already keeps ship and SRV cargo up to date.
                             case "CarrierModulePack": 
-                            case "CarrierShipPack": 
+                            case "CarrierShipPack":
+                            case "ClearImpound":
                             case "CreateSuitLoadout": 
                             case "DeleteSuitLoadout": 
                             case "LoadoutEquipModule":
@@ -4867,6 +4868,7 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
                             case "DropItems": // The `BackpackChange` event keeps us up to date.
                             case "EngineerLegacyConvert": // Unnecessary.
+                            case "Resupply": // Seems to be related to resupplying Odyssey backpack items
                             case "ScanBaryCentre": // We do not do anything with scanned barycentres at this time (though the raw event is still passed to the EDDN responder)
                             case "Scanned": // Written at the end of a successful scan, too late to react to this.
                             case "SharedBookmarkToSquadron": // Unnecessary.
