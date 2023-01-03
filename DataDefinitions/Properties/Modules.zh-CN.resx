@@ -129,14 +129,8 @@
     <value>战地修理单元</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
-  <data name="AXMissileRack" xml:space="preserve">
-    <value>AX 导弹荚</value>
-    <comment>Module AXMissileRack</comment>
-  </data>
-  <data name="AXMulti_Cannon" xml:space="preserve">
-    <value>AX 多管炮</value>
-    <comment>Module AXMulti_Cannon</comment>
-  </data>
+  
+  
   <data name="BasicDiscoveryScanner" xml:space="preserve">
     <value>基础探索扫描仪</value>
     <comment>Module BasicDiscoveryScanner</comment>
@@ -584,6 +578,8 @@
     <value>Retributor光束激光炮</value>
     <comment>Module RetributorBeamLaser</comment>
   </data>
+  
+  
   
   
   

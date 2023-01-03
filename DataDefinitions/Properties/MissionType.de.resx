@@ -312,7 +312,16 @@
   <data name="Conflict" xml:space="preserve">
     <value>Problemziel</value>
   </data>
-  
-  
-  
+  <data name="TheDead" xml:space="preserve">
+    <value>Der Tod</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
+  <data name="TW" xml:space="preserve">
+    <value>Thargoiden Krieg</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>In Flammen</value>
+    <comment>e.g. rescue from a burning station</comment>
+  </data>
 </root>

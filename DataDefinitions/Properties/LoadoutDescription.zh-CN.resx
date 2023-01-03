@@ -176,5 +176,7 @@
   </data>
   <data name="Starter" xml:space="preserve">
     <value>双等离子机炮</value>
+    <comment>Default loadout for a Scarab SRV</comment>
   </data>
+  
 </root>

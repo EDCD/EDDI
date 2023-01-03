@@ -281,5 +281,8 @@
     <value>Frontline Solutions</value>
     <comment>Station Service FrontlineSolutions</comment>
   </data>
-  
+  <data name="Captain" xml:space="preserve">
+    <value>Kapitän</value>
+    <comment>Station Service "Captain" - the service representing the captain of a fleet carrier</comment>
+  </data>
 </root>
