@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Body report summary` revised to add optional temperature scale selection. #2235
       * `Module arrived`, `Module purchased`, `Module retrieved`, `Module sold`, `Module sold from storage`, `Module stored`, `Module swapped`, and `Module transfer` revised to identify pluralized module names (e.g. "sensors") as a "package".
       * `Module retrieved`, `Module sold`, `Module sold from storage`, `Module stored`, `Module swapped`, and `Module transfer` revised to identify loaned modules (with zero value). #2441
+      * `System materials report` revised again per player feedback. #2466
       * `Touchdown` revised to make reporting coordinates an opt-in feature and add optional temperature reporting for Odyssey on-foot expeditions. #2463
 
 ## 4.0.2-b5
