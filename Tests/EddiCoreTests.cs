@@ -29,6 +29,7 @@ namespace IntegrationTests
                 .GetFieldOrProperty("monitors"))
                 .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
 
+            Assert.IsNotNull(monitor);
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
             Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
@@ -130,12 +131,12 @@ namespace UnitTests
             // Set up conditions to test the first scan of the body
             var body = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
             if (body != null) { body.scanned = null; }
-            var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
+            privateObject.Invoke("eventBodyScanned", new object[] { @event });
             Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
 
             // Re-scanning the same body shouldn't replace the first scan's data
             BodyScannedEvent @event2 = new BodyScannedEvent(@event.timestamp.AddSeconds(60), @event.scantype, @event.body);
-            result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event2 });
+            privateObject.Invoke("eventBodyScanned", new object[] { @event2 });
             Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
         }
 
@@ -156,20 +157,20 @@ namespace UnitTests
             // Set up conditions to test the first scan of the body
             var body = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
             if (body != null) { body.scanned = null; }
-            var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
+            privateObject.Invoke("eventBodyScanned", new object[] { @event });
             Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4")?.scanned);
-            long event1EstimatedValue = EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
+            long? event1EstimatedValue = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
 
             // Map the body
             string line2 = @"{ ""timestamp"":""2016 - 11 - 01T18: 59:07Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
             events = JournalMonitor.ParseJournalEntry(line2);
             Assert.AreEqual(1, events.Count);
             BodyMappedEvent @event2 = (BodyMappedEvent)events[0];
-            result = (bool)privateObject.Invoke("eventBodyMapped", new object[] { @event2 });
+            privateObject.Invoke("eventBodyMapped", new object[] { @event2 });
 
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
-            Assert.AreEqual(@event2.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").mapped);
-            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue > event1EstimatedValue);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            Assert.AreEqual(@event2.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").mapped);
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue > event1EstimatedValue);
         }
 
         [TestMethod]

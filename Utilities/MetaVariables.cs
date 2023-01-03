@@ -112,7 +112,7 @@ namespace Utilities
                     type = Nullable.GetUnderlyingType(type);
                 }
 
-                Logging.Debug($"Handling {type.Name} key {key} in path {string.Join("/", keysPath)}", value);
+                Logging.Debug($"Handling {type?.Name ?? "<null>"} key {key} in path {string.Join("/", keysPath)}", value);
 
                 if (type == typeof(bool))
                 {

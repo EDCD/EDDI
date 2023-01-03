@@ -53,7 +53,7 @@ namespace UnitTests
             Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.bodyname);
             Assert.AreEqual((decimal)703.763611, ev.distance);
             Assert.IsNotNull(ev.tidallylocked);
-            Assert.IsFalse((bool)ev.tidallylocked);
+            Assert.IsFalse(ev.tidallylocked);
             Assert.AreEqual("Candidate for terraforming", ev.terraformState.invariantName);
             Assert.AreEqual("High metal content world", ev.planetClass.invariantName);
             Assert.IsNotNull(ev.volcanism);
@@ -61,18 +61,18 @@ namespace UnitTests
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
             Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
             Assert.AreEqual((decimal)2.171783, ev.earthmass);
-            Assert.AreEqual((double)7622.170500000M, (double)ev.radius, 0.01);
+            Assert.AreEqual((double)7622.170500000M, (double?)ev.radius ?? 0, 0.01);
             Assert.AreEqual(Utilities.ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
             Assert.AreEqual((decimal)836.165466, ev.temperature);
-            Assert.AreEqual(325.986, (double)ev.pressure, 0.01);
+            Assert.AreEqual(325.986, (double?)ev.pressure ?? 0, 0.01);
             Assert.IsNotNull(ev.landable);
-            Assert.IsFalse((bool)ev.landable);
-            Assert.AreEqual(703.679898444943, (double)ev.semimajoraxis, 0.01);
+            Assert.IsFalse(ev.landable);
+            Assert.AreEqual(703.679898444943, (double?)ev.semimajoraxis ?? 0, 0.01);
             Assert.AreEqual((decimal)0.000248, ev.eccentricity);
             Assert.AreEqual((decimal)0.015659, ev.inclination);
             Assert.AreEqual((decimal)104.416656, ev.periapsis);
-            Assert.AreEqual(564.827, (double)ev.orbitalperiod, 0.01);
-            Assert.AreEqual(0.91947, (double)ev.rotationalperiod, 0.01);
+            Assert.AreEqual(564.827, (double?)ev.orbitalperiod ?? 0, 0.01);
+            Assert.AreEqual(0.91947, (double?)ev.rotationalperiod ?? 0, 0.01);
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace UnitTests
             Assert.IsNull(theEvent.orbitalperiod);
             Assert.AreEqual(692146.368000000M, theEvent.radius);
             Assert.IsNull(theEvent.semimajoraxis);
-            Assert.AreEqual(0.960938, (double)theEvent.solarmass, 0.001);
+            Assert.AreEqual(0.960938, (double?)theEvent.solarmass ?? 0, 0.001);
             Assert.AreEqual("K", theEvent.stellarclass);
             Assert.AreEqual(5108, theEvent.temperature);
             Assert.AreEqual(5.375961M, theEvent.absolutemagnitude);
@@ -181,8 +181,8 @@ namespace UnitTests
             Assert.AreEqual(65, theEvent.radiusprobability);
             Assert.AreEqual(95, theEvent.tempprobability);
             Assert.AreEqual(7, theEvent.ageprobability);
-            Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
-            Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
+            Assert.AreEqual(303.548, (double?)theEvent.estimatedhabzoneinner ?? 0, .01);
+            Assert.AreEqual(604.861, (double?)theEvent.estimatedhabzoneouter ?? 0, .01);
             // Ring
             Assert.AreEqual("Metallic", theEvent.rings[0].Composition.invariantName);
         }
@@ -197,7 +197,7 @@ namespace UnitTests
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual((decimal)659162.816, theEvent.radius);
             Assert.AreEqual(StarClass.solarradius((decimal)659162.816000000), theEvent.solarradius);
-            Assert.AreEqual(0.94775, (double)theEvent.solarradius, 0.01);
+            Assert.AreEqual(0.94775, (double?)theEvent.solarradius ?? 0, 0.01);
             Assert.IsTrue(theEvent.mainstar ?? false);
         }
 

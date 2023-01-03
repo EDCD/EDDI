@@ -48,7 +48,7 @@ namespace EddiBgsService
         /// <summary> Specify the endpoint (e.g. EddiBgsService.Endpoint.factions) and a list of queries as KeyValuePairs </summary>
         public List<object> GetData(IBgsRestClient restClient, string endpoint, List<KeyValuePair<string, object>> queries)
         {
-            if (!queries?.Any() ?? false) { return null; }
+            if (!(queries?.Any() ?? false)) { return null; }
             if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
 
             var docs = new List<object>();

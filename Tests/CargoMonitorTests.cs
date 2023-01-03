@@ -86,6 +86,7 @@ namespace UnitTests
 
             Assert.AreEqual(3, config.cargo.Count);
             cargo = config.cargo.ToList().FirstOrDefault(c => c.edname == "DamagedEscapePod");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual("Damaged Escape Pod", cargo.commodityDef.invariantName);
             Assert.AreEqual(4, cargo.total);
             Assert.AreEqual(4, cargo.owned);
@@ -122,6 +123,7 @@ namespace UnitTests
             Assert.AreEqual(52, cargoMonitor.cargoCarried);
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual("Limpet", cargo.localizedName);
             Assert.AreEqual(20, cargo.total);
             Assert.AreEqual(20, cargo.owned);
@@ -134,6 +136,7 @@ namespace UnitTests
             Assert.AreEqual(4, cargoMonitor.inventory.Count);
             Assert.AreEqual(42, cargoMonitor.cargoCarried);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual(10, cargo.total);
 
             // Drones removed from inventory with subsequent startup CargoEvent
@@ -146,12 +149,14 @@ namespace UnitTests
             Assert.IsNull(cargo);
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "HydrogenFuel");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual("Hydrogen Fuel", cargo.localizedName);
             Assert.AreEqual(1, cargo.total);
             Assert.AreEqual(1, cargo.owned);
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual(30, cargo.total);
             Assert.AreEqual(30, cargo.haulage);
             haulage = cargo.haulageData.FirstOrDefault();
@@ -168,7 +173,9 @@ namespace UnitTests
             privateObject.Invoke("_handleCommodityEjectedEvent", new object[] { events[0] });
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
+            Assert.IsNotNull(cargo);
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 426282789);
+            Assert.IsNotNull(haulage);
             Assert.AreEqual("Failed", haulage.status);
         }
 
@@ -193,6 +200,7 @@ namespace UnitTests
 
             // Verify cargo populated properly
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual("Structural Regulators", cargo.invariantName);
             Assert.AreEqual(0, cargo.total);
             Assert.AreEqual(0, cargo.haulage + cargo.stolen + cargo.owned);
@@ -201,6 +209,7 @@ namespace UnitTests
 
             // Verify haulage populated properly
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 375682327);
+            Assert.IsNotNull(haulage);
             Assert.AreEqual(3, haulage.amount);
             Assert.AreEqual("Mission_Salvage_Planet", haulage.name);
             Assert.AreEqual(DateTime.Parse("2018-05-12T15:20:27Z").ToUniversalTime(), haulage.expiry);
@@ -209,6 +218,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleMissionAcceptedEvent", new object[] { events[0] });
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual(7, cargo.need);
             Assert.AreEqual(2, cargo.haulageData.Count);
 
@@ -218,6 +228,7 @@ namespace UnitTests
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual(2, cargo.total);
             Assert.AreEqual(2, cargo.haulage);
             Assert.AreEqual(7, cargo.need);
@@ -235,6 +246,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
+            Assert.IsNotNull(cargo);
             Assert.AreEqual(2, cargo.total);
             Assert.AreEqual(2, cargo.stolen);
             Assert.AreEqual(4, cargo.need);

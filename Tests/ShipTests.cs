@@ -485,14 +485,14 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(ModulePurchasedEvent));
 
             Assert.IsNotNull(@event.shipid);
-            Assert.AreEqual(119, (int)@event.shipid);
+            Assert.AreEqual(119, @event.shipid);
             Assert.IsNotNull(@event.slot);
             Assert.IsNotNull(@event.buymodule);
 
             PrivateObject privateObject = new PrivateObject(new ShipMonitor());
 
             Ship ship = ShipDefinitions.FromModel(@event.ship);
-            ship.LocalId = (int)@event.shipid;
+            ship.LocalId = @event.shipid;
             object[] moduleArgs = new object[] { ship, @event.slot, @event.buymodule };
             privateObject.Invoke("AddModule", moduleArgs);
 
@@ -516,7 +516,7 @@ namespace UnitTests
 
             Ship ship = ShipDefinitions.FromModel(@event.ship);
             Assert.IsNotNull(@event.shipid);
-            ship.LocalId = (int)@event.shipid;
+            ship.LocalId = @event.shipid;
             string slot = @event.slot;
             Module module = @event.buymodule;
             object[] moduleArgs = new object[] { ship, slot, module };

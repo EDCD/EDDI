@@ -46,7 +46,7 @@ namespace UnitTests
                         : JsonSerializer.Create(settings);
                     if (typeof(T) == typeof(string))
                     {
-                        return jsonSerializer.Deserialize(reader, typeof(JObject)).ToString() as T;
+                        return jsonSerializer.Deserialize(reader, typeof(JObject))?.ToString() as T;
                     }
                     else
                     {

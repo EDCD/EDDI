@@ -161,6 +161,7 @@ namespace UnitTests
             Assert.AreEqual(400, config.criminalrecord.Sum(r => r.fines));
 
             record = config.criminalrecord.ToList().FirstOrDefault(r => r.faction == "Calennero State Industries");
+            Assert.IsNotNull(record);
             Assert.AreEqual(Superpower.Empire, record.Allegiance);
             Assert.AreEqual("Empire", record.allegiance);
             Assert.AreEqual(105168, record.bountiesAmount);
@@ -199,6 +200,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBondAwardedEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
+            Assert.IsNotNull(record);
             Assert.AreEqual(3, record.factionReports.Count);
             Assert.AreEqual(94492, record.bondsAmount);
 
@@ -239,6 +241,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBondRedeemedEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
+            Assert.IsNotNull(record);
             Assert.AreEqual(0, record.factionReports.Count(r => !r.bounty && r.crimeDef == Crime.None));
 
             // Redeem Bounty Event - Multiple
@@ -278,6 +281,7 @@ namespace UnitTests
             Assert.IsNotNull(crimeMonitor.shipTargets);
             Assert.AreEqual(1, crimeMonitor.shipTargets.Count);
             Target target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");
+            Assert.IsNotNull(target);
             Assert.AreEqual(CombatRating.FromEDName("Deadly"), target.CombatRank);
             Assert.AreEqual("Calennero Crew", target.faction);
             Assert.AreEqual(Superpower.Independent, target.Allegiance);

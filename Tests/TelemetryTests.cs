@@ -53,6 +53,7 @@ namespace UnitTests
         {
             string str = "This is a Dictionary payload";
             Event @event = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
+            Assert.IsNotNull(@event);
             Exception exception = new InvalidCastException();
 
             Dictionary<string, object> data = new Dictionary<string, object>
@@ -68,6 +69,7 @@ namespace UnitTests
             Assert.AreEqual(str, message?.ToString());
 
             result.TryGetValue("event", out object theEvent);
+            Assert.IsNotNull(theEvent);
             ((JObject)theEvent).TryGetValue("frontierID", out JToken frontierID);
             Assert.IsNull(frontierID?.ToString());
             ((JObject)theEvent).TryGetValue("type", out JToken type);
@@ -75,6 +77,7 @@ namespace UnitTests
             Assert.AreEqual(@event.type, type?.ToString());
 
             result.TryGetValue("exception", out object theException);
+            Assert.IsNotNull(theException);
             ((JObject)theException).TryGetValue("Message", out JToken theExceptionMessage);
             Assert.AreEqual(exception.Message, theExceptionMessage?.ToString());
         }

@@ -27,6 +27,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.capi_shipyard_Abasheli_Barracks)?.ToObject<JObject>();
+            Assert.IsNotNull(json);
             json["timestamp"] = DateTime.UtcNow; // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualModules = station.outfitting;
@@ -61,6 +62,7 @@ namespace UnitTests
             };
 
             JObject json = DeserializeJsonResource<JObject>(Resources.capi_shipyard_Abasheli_Barracks)?.ToObject<JObject>();
+            Assert.IsNotNull(json);
             json["timestamp"] = DateTime.UtcNow; // We add a timestamp to the json returned from the Frontier API, do the same here.
             var station = FrontierApiStation.FromJson(null, json);
             var actualShips = station.ships;
@@ -82,7 +84,7 @@ namespace UnitTests
         public void TestProfileStation()
         {
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>();
-
+            Assert.IsNotNull(marketJson);
             var expectedStation = new FrontierApiStation()
             {
                 name = "Libby Horizons",
@@ -131,7 +133,7 @@ namespace UnitTests
                     new KeyValuePair<long, string>(128667728, "ImperialSlaves"),
                     new KeyValuePair<long, string>(128049243, "Slaves")
                 },
-                commoditiesupdatedat = marketJson["timestamp"].ToObject<DateTime>(),
+                commoditiesupdatedat = marketJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue,
                 marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>(),
                 stationServices = new List<KeyValuePair<string, string>>()
                 {
@@ -153,7 +155,8 @@ namespace UnitTests
                     new KeyValuePair<string, string>("engineer", "ok")
                 }
             };
-            expectedStation.marketJson["timestamp"] = marketJson["timestamp"].ToObject<DateTime>(); // We add a timestamp to the json returned from the Frontier API, do the same here.
+            Assert.IsNotNull(expectedStation.marketJson);
+            expectedStation.marketJson["timestamp"] = marketJson["timestamp"]?.ToObject<DateTime>(); // We add a timestamp to the json returned from the Frontier API, do the same here.
 
             var actualStation = FrontierApiStation.FromJson(marketJson, null);
 
@@ -192,6 +195,7 @@ namespace UnitTests
             // Set up our profile station
             var marketTimestamp = DateTime.UtcNow;
             JObject marketJson = DeserializeJsonResource<JObject>(Resources.capi_market_Libby_Horizons)?.ToObject<JObject>();
+            Assert.IsNotNull(marketJson);
             marketJson["timestamp"] = marketTimestamp; // We add a timestamp to the json returned from the Frontier API, do the same here.
             var lastStation = FrontierApiStation.FromJson(marketJson, null);
 

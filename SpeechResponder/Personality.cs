@@ -256,7 +256,9 @@ namespace EddiSpeechResponder
             var filesToDelete = new List<string>();
 
             // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
-            foreach (FileInfo file in new FileInfo(personality.dataPath).Directory.GetFiles()
+            var personalityDirInfo = new FileInfo(personality.dataPath).Directory;
+            if (personalityDirInfo is null) { return; }
+            foreach (FileInfo file in personalityDirInfo.GetFiles()
                 .Where(f =>
                     f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
                     f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
@@ -381,7 +383,7 @@ namespace EddiSpeechResponder
                 foreach (var personalityScriptKV in personality.Scripts.Where(s => !fixedScripts.Keys.Contains(s.Key)))
                 {
                     Script defaultScript = null;
-                    if (defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out defaultScript) ?? false && 
+                    if ((defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out defaultScript) ?? false) && 
                         !obsoleteScriptKeys.Contains(personalityScriptKV.Key))
                     {
                         var script = UpgradeScript(personalityScriptKV.Value, defaultScript);

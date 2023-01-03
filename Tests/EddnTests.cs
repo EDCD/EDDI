@@ -580,6 +580,7 @@ namespace UnitTests
                     if (value is IList<object>)
                     {
                         IList<object> list = value as List<object>;
+                        Assert.IsNotNull(list);
                         foreach (object item in list)
                         {
                             testDictionary((IDictionary<string, object>)item);
@@ -805,7 +806,7 @@ namespace UnitTests
             }
 
             // Apply our "Handle" method to transform the data
-            var handledData = commoditySchema.Handle(profileJson, marketJson, new JObject(), new JObject(), false, eddnState);
+            var handledData = commoditySchema?.Handle(profileJson, marketJson, new JObject(), new JObject(), false, eddnState);
             Assert.IsNotNull(handledData);
 
             // Validate the final data
@@ -873,7 +874,7 @@ namespace UnitTests
             }
 
             // Apply our "Handle" method to transform the data
-            Assert.IsTrue(fcmaterialsSchema.Handle("FCMaterials", ref fcmaterialsData, eddnState));
+            Assert.IsTrue(fcmaterialsSchema?.Handle("FCMaterials", ref fcmaterialsData, eddnState));
 
             // Validate the final data
             Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcmaterialsData["timestamp"] as DateTime?));
