@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
         xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         xmlns:local="clr-namespace:Eddi"
         xmlns:resx="clr-namespace:Eddi.Properties"
@@ -104,14 +103,14 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_checkbox}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiVerboseLogging" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_desc}"/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="2" Content="{x:Static resx:MainWindow.report_issue}" Margin="5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="1" Content="{x:Static resx:MainWindow.report_issue}" Margin="5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
                         <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.access_beta}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:EddiResources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="{x:Static resx:MainWindow.tab_commander_details_header}">
+            <TabItem Header="{x:Static resx:MainWindow.tab_commander_details_header}" GotFocus="CommanderDetailsTab_GotFocus">
                 <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
@@ -217,13 +216,9 @@
                                      Margin="0, 5"
                                      Grid.Column="2"/>
                         <Label x:Name ="eddiSquadronNameLabel" Grid.Row="10" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_squadron_name}" />
-                        <TextBox x:Name ="eddiSquadronNameText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="squadronNameChanged" Margin="0,5" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronNameText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronName" />
-                        </TextBox>
+                        <TextBox x:Name ="eddiSquadronNameText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="squadronNameChanged" Margin="0,5" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronNameText_LostFocus"/>
                         <Label x:Name ="eddiSquadronIDLabel" Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_squadron_id}" />
-                        <TextBox x:Name ="eddiSquadronIDText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="squadronIDChanged" Margin="0,5" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan ="1" Height="25" LostFocus="eddiSquadronIDText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronID" />
-                        </TextBox>
+                        <TextBox x:Name ="eddiSquadronIDText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="squadronIDChanged" Margin="0,5" Grid.Row="11" Grid.Column="1" Height="25" LostFocus="eddiSquadronIDText_LostFocus"/>
                         <Label x:Name ="eddiSquadronRankLabel" Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_rank}" />
                         <ComboBox x:Name="squadronRankDropDown" Grid.Row="12" Grid.Column="1" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="squadronRankDropDownUpdated" />
                         <Label x:Name ="eddiSquadronSystemLabel" Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_system}" />
@@ -329,7 +324,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
                         <Label x:Name="disableIpaLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
                         <DockPanel Grid.Column="1" Grid.Row="9" Margin="0, 5">
-                            <CheckBox Grid.Column="1" x:Name="DisableIpaCheckbox" Margin="5" VerticalAlignment="Top" Checked="disableIpaUpdated" Unchecked="disableIpaUpdated"/>
+                            <CheckBox x:Name="DisableIpaCheckbox" Margin="5" VerticalAlignment="Top" Checked="disableIpaUpdated" Unchecked="disableIpaUpdated"/>
                         </DockPanel>
                         <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_icao_desc}" />
                         <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />

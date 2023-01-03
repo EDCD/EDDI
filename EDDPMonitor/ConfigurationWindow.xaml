@@ -22,13 +22,13 @@
                 <DataGridComboBoxColumn Header="{x:Static resx:EddpResources.state_header}" SelectedValueBinding="{Binding Path=State, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="Key" SelectedValuePath="Value">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.StatesPlusNone, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            <Setter Property="ItemsSource" Value="{Binding Path=StatesPlusNone, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <EventSetter Event="SelectionChanged" Handler="eddpStateChanged" />
-                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.StatesPlusNone, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                            <Setter Property="ItemsSource" Value="{Binding Path=StatesPlusNone, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>

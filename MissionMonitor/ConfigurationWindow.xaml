@@ -4,13 +4,14 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:defs="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiMissionMonitor"
              xmlns:resx="clr-namespace:EddiMissionMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <UserControl.Resources>
-        <DataTemplate x:Key="missionDataTemplate">
+        <DataTemplate x:Key="missionDataTemplate" DataType="{x:Type defs:Mission}">
             <Grid Background="Azure">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -32,7 +33,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originstation}" Margin="5, 0" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="communityGoalDataTemplate">
+        <DataTemplate x:Key="communityGoalDataTemplate" DataType="{x:Type defs:Mission}">
             <Grid Background="Azure">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -62,8 +63,8 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,0" Text="{x:Static resx:MissionMonitor.para1}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,0" Text="{x:Static resx:MissionMonitor.para2}" />
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5" >
-            <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
-            <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
+            <Label x:Name ="missionWarningLabel" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
+            <TextBox x:Name="missionWarningInt" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
         <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
@@ -141,7 +142,7 @@
                 </utility:DataGridNumericColumn>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type defs:Mission}">
                     <ContentControl Content="{Binding}">
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">

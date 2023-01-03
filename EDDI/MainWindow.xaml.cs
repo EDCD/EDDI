@@ -645,6 +645,19 @@ namespace Eddi
             }
         }
 
+        private void CommanderDetailsTab_GotFocus(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            if (eddiConfiguration.SquadronName != eddiSquadronNameText.Text)
+            {
+                eddiSquadronNameText.Text = eddiConfiguration.SquadronName;
+            }
+            if (eddiConfiguration.SquadronID != eddiSquadronIDText.Text)
+            {
+                eddiSquadronIDText.Text = eddiConfiguration.SquadronID;
+            }
+        }
+
         private void eddiSquadronNameText_LostFocus(object sender, RoutedEventArgs e)
         {
             // Discard invalid results
