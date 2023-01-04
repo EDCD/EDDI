@@ -1,4 +1,5 @@
-﻿using EddiConfigService;
+﻿using System;
+using EddiConfigService;
 using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
@@ -213,57 +214,51 @@ namespace EddiEdsmResponder
             }
 
             // Supplement with metadata from the tracked game state, as applicable
-            LockManager.GetLock(nameof(EDDI.Instance.CurrentStarSystem), () =>
+            var currentStarSystem = EDDI.Instance.CurrentStarSystem?.Copy();
+            if (currentStarSystem != null)
             {
-                if (EDDI.Instance.CurrentStarSystem != null)
+                if (!eventObject.ContainsKey("_systemAddress"))
                 {
-                    if (!eventObject.ContainsKey("_systemAddress"))
-                    {
-                        eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
-                    }
-
-                    if (!eventObject.ContainsKey("_systemName"))
-                    {
-                        eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.systemname);
-                    }
-
-                    if (!eventObject.ContainsKey("_systemCoordinates"))
-                    {
-                        List<decimal?> _coordinates = new List<decimal?>
-                        {
-                            EDDI.Instance.CurrentStarSystem.x,
-                            EDDI.Instance.CurrentStarSystem.y,
-                            EDDI.Instance.CurrentStarSystem.z
-                        };
-                        eventObject.Add("_systemCoordinates", _coordinates);
-                    }
+                    eventObject.Add("_systemAddress", currentStarSystem.systemAddress);
                 }
-            });
 
-            LockManager.GetLock(nameof(EDDI.Instance.CurrentStation), () =>
+                if (!eventObject.ContainsKey("_systemName"))
+                {
+                    eventObject.Add("_systemName", currentStarSystem.systemname);
+                }
+
+                if (!eventObject.ContainsKey("_systemCoordinates"))
+                {
+                    List<decimal?> _coordinates = new List<decimal?>
+                    {
+                        currentStarSystem.x,
+                        currentStarSystem.y,
+                        currentStarSystem.z
+                    };
+                    eventObject.Add("_systemCoordinates", _coordinates);
+                }
+            }
+
+            var currentStation = EDDI.Instance.CurrentStation?.Copy();
+            if (currentStation != null)
             {
-                if (EDDI.Instance.CurrentStation != null)
+                if (!eventObject.ContainsKey("_marketId"))
                 {
-                    if (!eventObject.ContainsKey("_marketId"))
-                    {
-                        eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
-                    }
-
-                    if (!eventObject.ContainsKey("_stationName"))
-                    {
-                        eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
-                    }
+                    eventObject.Add("_marketId", currentStation.marketId);
                 }
-            });
 
-            LockManager.GetLock(nameof(EDDI.Instance.CurrentShip), () => 
+                if (!eventObject.ContainsKey("_stationName"))
+                {
+                    eventObject.Add("_stationName", currentStation.name);
+                }
+            }
+
+            var currentShip = EDDI.Instance.CurrentShip?.Copy();
+            if (currentShip != null && !eventObject.ContainsKey("_shipId"))
             {
-                if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("_shipId"))
-                {
-                    eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
-                }
-            });
-            
+                eventObject.Add("_shipId", currentShip.LocalId);
+            }
+
             return eventObject;
         }
 
