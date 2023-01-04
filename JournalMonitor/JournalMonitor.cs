@@ -4897,6 +4897,23 @@ namespace EddiJournalMonitor
                     }
                 }
             }
+            catch (JsonReaderException jre)
+            {
+                try
+                {
+                    if (line.Contains("\"event\":\"BackpackChange\"") && line.Contains("] \"Removed\""))
+                    {
+                        // We've observed a missing comma in the `BackpackChange` event, fix that here.
+                        line = line.Replace("] \"Removed\"", "], \"Removed\"");
+                        return ParseJournalEntry(line, fromLogLoad);
+                    }
+                }
+                catch
+                {
+                    // Unable to recover so re-throw.
+                    throw;
+                }
+            }
             catch (Exception ex)
             {
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
