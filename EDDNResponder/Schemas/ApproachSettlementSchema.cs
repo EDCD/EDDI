@@ -18,6 +18,12 @@ namespace EddiEddnResponder.Schemas
                 if (!edTypes.Contains(edType)) { return false; }
                 if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
                 if (!eddnState.Location.CheckLocationData(edType, data)) { return false; }
+                if (!data.ContainsKey("Latitude") || !data.ContainsKey("Longitude"))
+                {
+                    // When re-logging at a Planetary Port, the ApproachSettlement event written may be missing the Latitude and Longitude properties.
+                    // Silently ignore this FDev issue.
+                    return false;
+                }
 
                 // Strip any localized properties
                 data = eddnState.PersonalData.Strip(data);
