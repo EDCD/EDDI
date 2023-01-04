@@ -262,21 +262,26 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetBoolean(prefix + " hot", ship.hot);
 
                     setShipModuleValues(ship.bulkheads, prefix + " bulkheads", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
                     setShipModuleValues(ship.powerplant, prefix + " power plant", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.powerplant, EDDI.Instance.CurrentStation?.outfitting, prefix + " power plant", ref vaProxy);
                     setShipModuleValues(ship.thrusters, prefix + " thrusters", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.thrusters, EDDI.Instance.CurrentStation?.outfitting, prefix + " thrusters", ref vaProxy);
                     setShipModuleValues(ship.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.frameshiftdrive, EDDI.Instance.CurrentStation?.outfitting, prefix + " frame shift drive", ref vaProxy);
-                    setShipModuleValues(ship.lifesupport, prefix + " life support", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.lifesupport, EDDI.Instance.CurrentStation?.outfitting, prefix + " life support", ref vaProxy);
                     setShipModuleValues(ship.powerdistributor, prefix + " power distributor", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.powerdistributor, EDDI.Instance.CurrentStation?.outfitting, prefix + " power distributor", ref vaProxy);
                     setShipModuleValues(ship.sensors, prefix + " sensors", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.sensors, EDDI.Instance.CurrentStation?.outfitting, prefix + " sensors", ref vaProxy);
                     setShipModuleValues(ship.fueltank, prefix + " fuel tank", ref vaProxy);
-                    setShipModuleOutfittingValues(ship.fueltank, EDDI.Instance.CurrentStation?.outfitting, prefix + " fuel tank", ref vaProxy);
+
+                    if (EDDI.Instance.CurrentStation?.outfitting.Any() ?? false)
+                    {
+                        var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.Copy();
+                        setShipModuleOutfittingValues(ship.lifesupport, stationOutfitting, prefix + " life support", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.bulkheads, stationOutfitting, prefix + " bulkheads", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.powerplant, stationOutfitting, prefix + " power plant", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.thrusters, stationOutfitting, prefix + " thrusters", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.frameshiftdrive, stationOutfitting, prefix + " frame shift drive", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.lifesupport, stationOutfitting, prefix + " life support", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.powerdistributor, stationOutfitting, prefix + " power distributor", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.sensors, stationOutfitting, prefix + " sensors", ref vaProxy);
+                        setShipModuleOutfittingValues(ship.fueltank, stationOutfitting, prefix + " fuel tank", ref vaProxy);
+                    }
 
                     // Special for fuel tank - capacity and total capacity
                     vaProxy.SetDecimal(prefix + " fuel tank capacity", ship.fueltankcapacity);
@@ -377,13 +382,13 @@ namespace EddiVoiceAttackResponder
         {
             if (existing != null && outfittingModules != null)
             {
-                foreach (Module Module in outfittingModules)
+                foreach (var Module in outfittingModules)
                 {
-                    if (existing.EDDBID == Module.EDDBID)
+                    if (existing.edname == Module?.edname)
                     {
                         // Found it
-                        vaProxy.SetDecimal(name + " station cost", (decimal?)Module.price);
-                        if (Module.price < existing.price)
+                        vaProxy.SetDecimal(name + " station cost", (decimal?)Module?.price);
+                        if (Module?.price < existing.price)
                         {
                             // And it's cheaper
                             vaProxy.SetDecimal(name + " station discount", existing.price - Module.price);

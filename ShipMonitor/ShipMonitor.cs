@@ -1502,7 +1502,7 @@ namespace EddiShipMonitor
 
                     if (slot.Contains("PaintJob"))
                     {
-                        ship.paintjob = module.EDName;
+                        ship.paintjob = module.edname;
                     }
                     else if (slot.Contains("Hardpoint"))
                     {

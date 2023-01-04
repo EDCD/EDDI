@@ -182,7 +182,7 @@ namespace UnitTests
             Assert.AreEqual(courier, shipMonitor.GetCurrentShip());
             Assert.AreEqual(courier.model, "Imperial Courier");
             Assert.AreEqual(courier.name, "Scunthorpe Bound");
-            Assert.AreEqual("Int_CargoRack_Size2_Class1", courier.compartments[0].module.EDName);
+            Assert.AreEqual("Int_CargoRack_Size2_Class1", courier.compartments[0].module.edname);
             Assert.AreEqual("cargo rack", courier.compartments[0].module.invariantName.ToLowerInvariant());
 
             // Sell the Sidewinder
@@ -199,7 +199,7 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ModulePurchasedEvent @event = (ModulePurchasedEvent)events[0];
 
-            Assert.AreEqual("hpt_crimescanner_size0_class3", @event.buymodule.EDName.ToLowerInvariant());
+            Assert.AreEqual("hpt_crimescanner_size0_class3", @event.buymodule.edname.ToLowerInvariant());
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(101025, @event.buyprice);
             Assert.IsNull(@event.sellmodule);
@@ -304,7 +304,7 @@ namespace UnitTests
             Assert.AreEqual("Omega Sector OD-S b4-0", @event.system);
             Assert.AreEqual("Rock of Isolation", @event.station);
             Assert.AreEqual(128928173, @event.marketId);
-            StoredModule storedModule = @event.storedmodules.FirstOrDefault(m => m.module.EDName.ToLowerInvariant() == "int_hyperdrive_size6_class5");
+            StoredModule storedModule = @event.storedmodules.FirstOrDefault(m => m.module.edname.ToLowerInvariant() == "int_hyperdrive_size6_class5");
             Assert.IsNotNull(storedModule);
             Assert.AreEqual("Shinrarta Dezhra", storedModule.system);
             Assert.AreEqual(128666762, storedModule.marketid);
@@ -384,7 +384,7 @@ namespace UnitTests
             Assert.AreEqual("Slot01_Size6", ship2.compartments[0].name);
             Assert.AreEqual(6, ship2.compartments[0].size);
             Assert.IsNotNull(ship2.compartments[0].module);
-            Assert.AreEqual("Int_ShieldGenerator_Size6_Class3_Fast", ship2.compartments[0].module.EDName);
+            Assert.AreEqual("Int_ShieldGenerator_Size6_Class3_Fast", ship2.compartments[0].module.edname);
             Assert.AreEqual("Bi-Weave Shield Generator", ship2.compartments[0].module.invariantName);
             Assert.AreEqual("SRV", ship2.launchbays[0].type);
             Assert.AreEqual(2, ship2.launchbays[0].vehicles.Count);

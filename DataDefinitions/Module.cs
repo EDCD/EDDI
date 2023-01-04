@@ -84,9 +84,6 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public long EDDBID { get; set; } // The ID in eddb.io
 
-        [JsonIgnore]
-        public string EDName { get => edname; }
-
         [JsonProperty("mount")]
         public ModuleMount Mount { get; set; } // Only for weapons
 
