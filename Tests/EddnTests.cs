@@ -920,7 +920,7 @@ namespace UnitTests
             Assert.AreEqual("fleetcarrier", fcMarketJson["outpostType"]?.ToString());
             var onFootMicroResources = fcMarketJson["orders"]?["onfootmicroresources"];
             Assert.AreEqual(1, onFootMicroResources?["sales"]?.Children().Count());
-            Assert.AreEqual(0, onFootMicroResources?["purchases"]?.Children().Count());
+            Assert.AreEqual(16, onFootMicroResources?["purchases"]?.Children().Count());
             if (onFootMicroResources?["sales"]?.Children().Values().FirstOrDefault() is JObject item)
             {
                 Assert.AreEqual(5, item.Count);
