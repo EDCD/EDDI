@@ -97,7 +97,8 @@ namespace EddiBgsService
             request.AddOrUpdateParameter("page", page);
 
             Logging.Debug($"Query: {JsonConvert.SerializeObject(request.Parameters)}. Sending request to {request.Resource}");
-            RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
+            var clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
+            Logging.Debug("Response received: ", clientResponse);
             if (clientResponse.IsSuccessful)
             {
                 string json = clientResponse.Content;
