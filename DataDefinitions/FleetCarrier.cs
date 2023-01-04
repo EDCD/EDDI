@@ -265,53 +265,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-
-        // Market Buy/Sell Orders
-
-        public JArray commoditySalesOrders
-        {
-            get => _commoditySalesOrders;
-            set
-            {
-                if (Equals(value, _commoditySalesOrders)) return;
-                _commoditySalesOrders = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public JArray commodityPurchaseOrders
-        {
-            get => _commodityPurchaseOrders;
-            set
-            {
-                if (Equals(value, _commodityPurchaseOrders)) return;
-                _commodityPurchaseOrders = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public JArray microresourceSalesOrders
-        {
-            get => _microresourceSalesOrders;
-            set
-            {
-                if (Equals(value, _microresourceSalesOrders)) return;
-                _microresourceSalesOrders = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public JArray microresourcePurchaseOrders
-        {
-            get => _microresourcePurchaseOrders;
-            set
-            {
-                if (Equals(value, _microresourcePurchaseOrders)) return;
-                _microresourcePurchaseOrders = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         // Station properties
 
         public FrontierApiStation Market
@@ -437,16 +391,6 @@ namespace EddiDataDefinitions
                     JArray.FromObject(newJson["carrierLocker"]?["goods"] ?? new JArray());
                 CarrierLockerData =
                     JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
-
-                // Market Buy/Sell Orders
-                commodityPurchaseOrders =
-                    JArray.FromObject(newJson["orders"]?["commodities"]?["purchases"] ?? new JArray());
-                commoditySalesOrders =
-                    JArray.FromObject(newJson["orders"]?["commodities"]?["sales"] ?? new JArray());
-                microresourcePurchaseOrders = JArray.FromObject(
-                    newJson["orders"]?["onfootmicroresources"]?["purchases"]?.Values() ?? new JEnumerable<JToken>());
-                microresourceSalesOrders = JArray.FromObject(
-                    newJson["orders"]?["onfootmicroresources"]?["sales"]?.Values() ?? new JEnumerable<JToken>());
 
                 // Station properties
                 Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);

@@ -81,18 +81,131 @@
                 }
             ]
         },
-        "onfootmicroresources": {
-            "sales": {
-                "128064021": {
-                    "id": 128064021,
-                    "name": "graphene",
-                    "locName": "Graphene",
-                    "price": 1300,
-                    "stock": 112
-                }
-            },
-            "purchases": []
-        }
+      "onfootmicroresources": {
+        "sales": {
+          "128064021": {
+            "id": 128064021,
+            "name": "graphene",
+            "locName": "Graphene",
+            "price": 1300,
+            "stock": 112
+          }
+        },
+        "purchases": [
+          {
+            "name": "factionassociates",
+            "locName": "Faction Associates",
+            "total": 10,
+            "outstanding": 10,
+            "price": 20000
+          },
+          {
+            "name": "digitaldesigns",
+            "locName": "Digital Designs",
+            "total": 10,
+            "outstanding": 10,
+            "price": 15000
+          },
+          {
+            "name": "settlementdefenceplans",
+            "locName": "Settlement Defence Plans",
+            "total": 15,
+            "outstanding": 15,
+            "price": 25000
+          },
+          {
+            "name": "manufacturinginstructions",
+            "locName": "Manufacturing Instructions",
+            "total": 10,
+            "outstanding": 8,
+            "price": 15000
+          },
+          {
+            "name": "financialprojections",
+            "locName": "Financial Projections",
+            "total": 15,
+            "outstanding": 15,
+            "price": 10000
+          },
+          {
+            "name": "push",
+            "locName": "Push",
+            "total": 5,
+            "outstanding": 5,
+            "price": 30000
+          },
+          {
+            "name": "geneticrepairmeds",
+            "locName": "Genetic Repair Meds",
+            "total": 5,
+            "outstanding": 5,
+            "price": 130000
+          },
+          {
+            "name": "surveillanceequipment",
+            "locName": "Surveillance Equipment",
+            "total": 5,
+            "outstanding": 5,
+            "price": 15000
+          },
+          {
+            "name": "insightentertainmentsuite",
+            "locName": "Insight Entertainment Suite",
+            "total": 5,
+            "outstanding": 5,
+            "price": 25000
+          },
+          {
+            "name": "multimediaentertainment",
+            "locName": "Multimedia Entertainment",
+            "total": 10,
+            "outstanding": 10,
+            "price": 4000
+          },
+          {
+            "name": "classicentertainment",
+            "locName": "Classic Entertainment",
+            "total": 10,
+            "outstanding": 10,
+            "price": 10000
+          },
+          {
+            "name": "catmedia",
+            "locName": "Cat Media",
+            "total": 10,
+            "outstanding": 10,
+            "price": 2000
+          },
+          {
+            "name": "smearcampaignplans",
+            "locName": "Smear Campaign Plans",
+            "total": 10,
+            "outstanding": 10,
+            "price": 30000
+          },
+          {
+            "name": "employeegeneticdata",
+            "locName": "Employee Genetic Data",
+            "total": 10,
+            "outstanding": 10,
+            "price": 25000
+          },
+          {
+            "name": "geneticresearch",
+            "locName": "Genetic Research",
+            "total": 10,
+            "outstanding": 10,
+            "price": 25000
+          },
+          {
+            "name": "geneticsample",
+            "locName": "Biological Sample",
+            "total": 10,
+            "outstanding": 10,
+            "price": 40000
+          }
+        ]
+      }
     },
     "commodities": [{
             "id": 128924334,
