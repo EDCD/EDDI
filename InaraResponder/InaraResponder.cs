@@ -606,15 +606,20 @@ namespace EddiInaraResponder
 
         private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
         {
-            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipTransfer", new Dictionary<string, object>()
+            var systemName = EDDI.Instance.CurrentStarSystem?.systemname?.Copy();
+            var stationName = EDDI.Instance.CurrentStation?.name?.Copy();
+            var marketId = EDDI.Instance.CurrentStation?.marketId?.Copy();
+            if (string.IsNullOrEmpty(systemName) || string.IsNullOrEmpty(stationName)) { return; }
+            var data = new Dictionary<string, object>()
             {
                 { "shipType", @event.Ship.EDName },
                 { "shipGameID", @event.shipid },
-                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
-                { "stationName", EDDI.Instance.CurrentStation?.name },
-                { "marketID", EDDI.Instance.CurrentStation?.marketId },
+                { "starsystemName", systemName },
+                { "stationName", stationName },
                 { "transferTime", @event.time }
-            }));
+            };
+            if (marketId != null) { data.Add("marketID", marketId); }
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipTransfer", data));
         }
 
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
