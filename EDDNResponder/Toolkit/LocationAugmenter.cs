@@ -224,7 +224,7 @@ namespace EddiEddnResponder.Toolkit
             if (!data.ContainsKey("BodyName") && !string.IsNullOrEmpty(statusBodyName))
             {
                 data.Add("BodyName", statusBodyName);
-                if (statusBodyName == journalBodyName)
+                if (!data.ContainsKey("BodyID") && statusBodyName == journalBodyName)
                 {
                     data.Add("BodyID", journalBodyId);
                 }
