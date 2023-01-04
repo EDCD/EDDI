@@ -40,7 +40,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 : shipyard?.FirstOrDefault(s => s.LocalId == localId)
                   ?? ShipDefinitions.FromModel(model)
                   ?? ShipDefinitions.FromEDModel(model);
-            return ship.SpokenName();
+            return ship?.SpokenName();
         }, 0, 2);
     }
 }
