@@ -130,6 +130,10 @@ namespace Utilities
             {
                 try
                 {
+                    // Strip any null fields from the data package
+                    preppedData = preppedData?
+                        .Where(d => d.Value != null)
+                        .ToDictionary(d => d.Key, d => d.Value);
                     var telemetry = preppedData is null 
                         ? new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
                         : new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
