@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
+    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+  </PropertyGroup>
+</Project>

@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docs\Contributing.md = docs\Contributing.md
 		Contributors.md = Contributors.md
 		crowdin.yml = crowdin.yml
+		Directory.Build.props = Directory.Build.props
 		images\Directory.jpg = images\Directory.jpg
 		EDDI\EDDI.ico = EDDI\EDDI.ico
 		Installer.iss = Installer.iss
@@ -295,9 +296,9 @@ Global
 		{7D25AF37-6EF2-4210-B079-14672BECDBB0} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal
