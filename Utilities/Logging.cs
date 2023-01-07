@@ -130,10 +130,6 @@ namespace Utilities
             {
                 try
                 {
-                    // Strip any null fields from the data package
-                    preppedData = preppedData?
-                        .Where(d => d.Value != null)
-                        .ToDictionary(d => d.Key, d => d.Value);
                     var telemetry = preppedData is null 
                         ? new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
                         : new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
