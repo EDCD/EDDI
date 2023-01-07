@@ -293,7 +293,7 @@ namespace EddiStatusService
                             status.destinationSystemAddress = JsonParsing.getOptionalULong(destinationInfo, "System");
                             status.destinationBodyId = JsonParsing.getOptionalInt(destinationInfo, "Body");
                             status.destination_name = JsonParsing.getString(destinationInfo, "Name");
-                            status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised");
+                            status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised") ?? string.Empty;
 
                             // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
                             var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");

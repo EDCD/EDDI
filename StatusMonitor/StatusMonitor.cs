@@ -211,7 +211,7 @@ namespace EddiStatusMonitor
                         // Might be a non-station signal source
                         else if (signalSource != null)
                         {
-                            if (!thisStatus.destination_localized_name.StartsWith("$"))
+                            if (!thisStatus.destination_localized_name?.StartsWith("$") ?? false)
                             {
                                 signalSource.fallbackLocalizedName = thisStatus.destination_localized_name;
                             }
