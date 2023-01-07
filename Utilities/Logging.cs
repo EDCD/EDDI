@@ -42,13 +42,14 @@ namespace Utilities
             handleLogging(ErrorLevel.Debug, message, data, memberName, filePath);
         }
 
-        private static void handleLogging(ErrorLevel errorlevel, string message, object data, string memberName, string filePath)
+        private static void handleLogging(ErrorLevel errorlevel, string message, object data, string memberName,
+            string filePath)
         {
-            System.Threading.Tasks.Task.Run(() =>
+            try
             {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-                try
+                System.Threading.Tasks.Task.Run(() =>
                 {
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                     string timestamp = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture);
                     var shortPath = Redaction.RedactEnvironmentVariables(Path.GetFileNameWithoutExtension(filePath));
                     var method = Redaction.RedactEnvironmentVariables(memberName);
@@ -90,12 +91,12 @@ namespace Utilities
                             break;
                         }
                     }
-                }
-                catch
-                {
-                    // Nothing to do here
-                }
-            }).ConfigureAwait(false);
+                }).ConfigureAwait(false);
+            }
+            catch
+            {
+                // Nothing to do here
+            }
         }
 
         private static readonly object logLock = new object();
