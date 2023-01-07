@@ -33,7 +33,10 @@ namespace Eddi
             // Prepare to start the application
             Logging.incrementLogs(); // Increment to a new log file.
             EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            StartRollbar(configuration.DisableTelemetry); // do immediately to initialize error reporting
+            if (configuration != null && !configuration.DisableTelemetry)
+            {
+                StartTelemetryService(); // do immediately to initialize error reporting
+            }
             ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately
@@ -112,46 +115,42 @@ namespace Eddi
             return false;
         }
 
-        public static void StartRollbar(bool disableTelemetry)
+        private static void StartTelemetryService()
         {
-            // Configure Rollbar error reporting
-            _Rollbar.TelemetryEnabled = !disableTelemetry;
-            if (_Rollbar.TelemetryEnabled)
-            {
-                // Generate an id unique to this app run for bug tracking
-                var telemetryID = Guid.NewGuid().ToString();
-                _Rollbar.configureRollbar(telemetryID, FromVA);
+            // Generate an id unique to this app run for bug tracking
+            // and start the telemetry service
+            var telemetryID = Guid.NewGuid().ToString();
+            Telemetry.Start(telemetryID, FromVA);
 
-                // Catch and send unhandled exceptions from the UI
-                System.Windows.Forms.Application.ThreadException += (sender, args) =>
-                {
-                    HandleException(args.Exception, telemetryID);
-                };
-                Current.DispatcherUnhandledException += (sender, args) =>
-                {
-                    HandleException(args.Exception, telemetryID);
-                };
-                // Catch and send unhandled exceptions from non-UI threads
-                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                {
-                    HandleException(args.ExceptionObject as Exception, telemetryID);
-                };
-                // Catch and send unhandled exceptions from the task scheduler
-                TaskScheduler.UnobservedTaskException += (sender, args) =>
-                {
-                    HandleException(args.Exception, telemetryID);
-                };
-                // Catch and write managed exceptions to the local debug console (but do not send)
-                AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
-                {
-                    Debug.WriteLine(args.Exception.ToString());
-                };
-            }
-
-            void HandleException(Exception ex, string telemetryID)
+            // Catch and send unhandled exceptions
+            System.Windows.Forms.Application.ThreadException += (sender, args) =>
             {
-                Logging.Error($"Unhandled exception: {ex.Message}.", ex);
-            }
+                CrashLogger(args.Exception);
+            };
+            App.Current.DispatcherUnhandledException += (sender, args) =>
+            {
+                CrashLogger(args.Exception);
+            };
+            // Catch and send unhandled exceptions from non-UI threads
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                CrashLogger(args.ExceptionObject as Exception);
+            };
+            // Catch and send unhandled exceptions from the task scheduler
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            {
+                CrashLogger(args.Exception);
+            };
+            // Catch and write managed exceptions to the local debug console (but do not send)
+            AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
+            {
+                Debug.WriteLine(args.Exception.ToString());
+            };
+        }
+
+        private static void CrashLogger(Exception ex)
+        {
+            Logging.Error($"Unhandled exception: {ex.Message}.", ex);
         }
 
         public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration)

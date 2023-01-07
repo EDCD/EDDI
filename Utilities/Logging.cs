@@ -15,7 +15,7 @@ using Exception = System.Exception;
 
 namespace Utilities
 {
-    public class Logging : _Rollbar
+    public class Logging : Telemetry
     {
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
@@ -135,9 +135,9 @@ namespace Utilities
                         .Where(d => d.Value != null)
                         .ToDictionary(d => d.Key, d => d.Value);
                     var telemetry = preppedData is null 
-                        ? new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
-                        : new Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
-                    LockManager.GetLock(nameof(_Rollbar), () =>
+                        ? new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
+                        : new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
+                    LockManager.GetLock(nameof(Telemetry), () =>
                     {
                         RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
                     });
@@ -161,7 +161,7 @@ namespace Utilities
         {
             try
             {
-                LockManager.GetLock(nameof(_Rollbar), () =>
+                LockManager.GetLock(nameof(Telemetry), () =>
                 {
                     RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
                 });
@@ -339,7 +339,7 @@ namespace Utilities
         }
     }
 
-    public class _Rollbar
+    public class Telemetry
     {
         // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
@@ -357,10 +357,11 @@ namespace Utilities
 #endif
         }
 
-        public static void configureRollbar(string uniqueId, bool fromVA = false)
+        public static void Start(string uniqueId, bool fromVA = false)
         {
             try
             {
+                TelemetryEnabled = true;
                 var config = new RollbarInfrastructureConfig(rollbarWriteToken, Constants.EDDI_VERSION.ToString());
                 config.RollbarTelemetryOptions.Reconfigure(new RollbarTelemetryOptions(true, 250));
                 config.RollbarInfrastructureOptions.Reconfigure(new RollbarInfrastructureOptions(1, TimeSpan.FromSeconds(10)));
