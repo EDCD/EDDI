@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Changes to existing scripts
       * `Module swapped` revised to identify pluralized module names (e.g. "sensors") as a "package" (for real this time).
+      * `System materials report` touched up again to improve grammar for systems containing only one reportable body.
 
 ## 4.0.2-rc1
   * Core
