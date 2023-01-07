@@ -224,6 +224,7 @@ namespace EddiNavigationService
         /// <param name="numericArg">The query distance argument</param>
         /// <param name="prioritizeOrbitalStationArg">The query prioritizeOrbitalStation argument</param>
         /// <returns>The query result</returns>
+        [CanBeNull]
         public RouteDetailsEvent NavQuery(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? prioritizeOrbitalStationArg = null)
         {
             IsWorking = true;
@@ -407,6 +408,8 @@ namespace EddiNavigationService
 
             // Set a course to a named system (and optionally station)
             var neutronRoute = NavQuery(QueryType.neutron, system);
+            if (neutronRoute == null || neutronRoute.Route.Waypoints.Count <= 1) { return null; }
+
             navRouteList = neutronRoute.Route;
             foreach (var wp in navRouteList.Waypoints)
             {
@@ -1320,6 +1323,7 @@ namespace EddiNavigationService
             // Recalculate the route
             Enum.TryParse(config?.searchQuery, out QueryType lastQuery);
             var @event = NavQuery(lastQuery, config?.searchQuerySystemArg, config?.searchQuerySystemArg, config?.maxSearchDistanceFromStarLs, config?.prioritizeOrbitalStations);
+            if (@event is null) { return null; }
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.UtcNow, QueryType.recalculating.ToString(), @event.system, @event.station, @event.Route, @event.count, @event.missionids));
             return new RouteDetailsEvent(DateTime.UtcNow, config?.searchQuery, @event.system, @event.station, @event.Route, @event.count, @event.missionids);
         }

@@ -4,6 +4,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpanshService
@@ -11,6 +12,7 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Carrier Plotter.
+        [CanBeNull]
         public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
         {
             if (string.IsNullOrEmpty(currentSystem) || targetSystems.Any(s => string.IsNullOrEmpty(s)))
@@ -30,6 +32,13 @@ namespace EddiSpanshService
 
             var routeTask = GetRouteResponseTask(initialResponse.Content);
             Task.WhenAll(routeTask);
+
+            if (routeTask.Result is null)
+            {
+                Logging.Warn($"Spansh API returned no route to system {targetSystems.LastOrDefault()}.");
+                return null;
+            }
+
             return ParseCarrierRoute(routeTask.Result);
         }
 

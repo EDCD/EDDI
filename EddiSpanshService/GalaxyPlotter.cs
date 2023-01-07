@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Galaxy Plotter.
+        [CanBeNull]
         public NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
         {
             if (ship is null)
@@ -34,6 +36,13 @@ namespace EddiSpanshService
 
             var routeTask = GetRouteResponseTask(initialResponse.Content);
             Task.WaitAll(routeTask);
+
+            if (routeTask.Result is null)
+            {
+                Logging.Warn($"Spansh API returned no route to system {targetSystem}.");
+                return null;
+            }
+
             return ParseGalaxyRoute(routeTask.Result);
         }
 
