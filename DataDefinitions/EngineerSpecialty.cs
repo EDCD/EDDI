@@ -17,7 +17,7 @@
         public static readonly EngineerSpecialty FrameShiftDrives = new EngineerSpecialty("FrameShiftDrives");
         public static readonly EngineerSpecialty FrameShiftDriveInterdictors = new EngineerSpecialty("FrameShiftDriveInterdictors");
         public static readonly EngineerSpecialty FuelScoops = new EngineerSpecialty("FuelScoops");
-        public static readonly EngineerSpecialty HullReinforcement = new EngineerSpecialty("HullReinforcement");
+        public static readonly EngineerSpecialty HullReinforcement = new EngineerSpecialty("HullReinforcements");
         public static readonly EngineerSpecialty Lasers = new EngineerSpecialty("Lasers");
         public static readonly EngineerSpecialty LifeSupportSystems = new EngineerSpecialty("LifeSupportSystems");
         public static readonly EngineerSpecialty LimpetControllers = new EngineerSpecialty("LimpetControllers");
