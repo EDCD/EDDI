@@ -178,5 +178,8 @@
     <value>doppio ripetitore al plasma</value>
     <comment>Default loadout for a Scarab SRV</comment>
   </data>
-  
+  <data name="Default" xml:space="preserve">
+    <value>cannone pesante e lanciamissili</value>
+    <comment>Default loadout for a Scorpion Combat SRV</comment>
+  </data>
 </root>
