@@ -555,25 +555,22 @@ namespace EddiNavigationMonitor
             }
             else
             {
-                if (!PlottedRoute.GuidanceEnabled)
+                if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRoute.Waypoints.GetHashCode())
                 {
-                    if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == PlottedRoute.Waypoints.GetHashCode())
-                    {
-                        // Displayed route is correct, nothing to do here
-                    }
-                    else if (routeDetailsEvent.Route != null)
-                    {
-                        PlottedRoute.Waypoints.Clear();
-                        Thread.Sleep(5); // A small delay helps ensure that any straggling entries are removed from the UI DataGrid
-                        PlottedRoute.AddRange(routeDetailsEvent.Route.Waypoints);
-                        PlottedRoute.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
-                        PlottedRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions
-                            ?.ToList());
-                    }
-                    else
-                    {
-                        PlottedRoute.Waypoints.Clear();
-                    }
+                    // Displayed route is correct, nothing to do here
+                }
+                else if (routeDetailsEvent.Route != null)
+                {
+                    PlottedRoute.Waypoints.Clear();
+                    Thread.Sleep(5); // A small delay helps ensure that any straggling entries are removed from the UI DataGrid
+                    PlottedRoute.AddRange(routeDetailsEvent.Route.Waypoints);
+                    PlottedRoute.FillVisitedGaps = routeDetailsEvent.Route.FillVisitedGaps;
+                    PlottedRoute.PopulateMissionIds(ConfigService.Instance.missionMonitorConfiguration.missions
+                        ?.ToList());
+                }
+                else
+                {
+                    PlottedRoute.Waypoints.Clear();
                 }
 
                 if (routeDetailsEvent.routetype == QueryType.set.ToString())
@@ -593,6 +590,7 @@ namespace EddiNavigationMonitor
                 WriteNavConfig();
             }
         }
+
         private void handleFSDTargetEvent(FSDTargetEvent @event)
         {
             // Update our plotted route star class data if this event provides new details about the targeted star class.
