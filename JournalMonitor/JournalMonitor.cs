@@ -4906,6 +4906,7 @@ namespace EddiJournalMonitor
             }
             catch (JsonReaderException jre)
             {
+                Logging.Debug(jre.Message, jre);
                 try
                 {
                     if (line.Contains("\"event\":\"BackpackChange\"") && line.Contains("] \"Removed\""))
