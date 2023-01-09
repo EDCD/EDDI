@@ -125,15 +125,16 @@ namespace Utilities
             }
         }
 
-        private static void RecordTelemetryInfo(ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
+        private static void RecordTelemetryInfo(ErrorLevel errorLevel, string message, IDictionary<string, object> preppedData = null)
         {
             if (Enum.TryParse(errorLevel.ToString(), out TelemetryLevel telemetryLevel))
             {
                 try
                 {
-                    var telemetry = preppedData is null 
-                        ? new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message)) 
-                        : new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, new LogTelemetry(message, preppedData));
+                    var telemetryBody = preppedData is null
+                        ? new LogTelemetry(message)
+                        : new LogTelemetry(message, preppedData);
+                    var telemetry = new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, telemetryBody);
                     LockManager.GetLock(nameof(Telemetry), () =>
                     {
                         RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
@@ -149,7 +150,10 @@ namespace Utilities
                 }
                 catch (Exception ex)
                 {
-                    Warn(ex.Message, ex);
+                    if (ex.Source != "Rollbar")
+                    {
+                        Warn(ex.Message, ex);
+                    }
                 }
             }
         }
@@ -375,8 +379,8 @@ namespace Utilities
                         { CodeVersion = ThisAssembly.Git.Sha }
                 );
                 RollbarInfrastructure.Instance.Init(config);
-                RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
-                RollbarInfrastructure.Instance.Start();
+                //RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
+                //RollbarInfrastructure.Instance.Start();
             }
             catch (Exception e)
             {
