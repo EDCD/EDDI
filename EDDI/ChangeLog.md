@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.2-rc2
   * Core
     * Fix on-foot missions not redirecting appropriately to origin.
+    * Fix a crash that could occur when selecting a destination without a localized name.
     * Various other minor bug fixes
   * Speech Responder
     * Changes to existing scripts
