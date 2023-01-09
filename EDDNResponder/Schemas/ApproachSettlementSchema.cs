@@ -26,7 +26,7 @@ namespace EddiEddnResponder.Schemas
                 }
 
                 // Strip any localized properties
-                data = eddnState.PersonalData.Strip(data);
+                data = eddnState.PersonalData.Strip(data, edType);
 
                 // Apply data augments
                 data = eddnState.Location.AugmentStarSystemName(data);

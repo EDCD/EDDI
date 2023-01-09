@@ -47,7 +47,7 @@ namespace EddiEddnResponder.Schemas
                         .ToList();
 
                     // Remove localized names
-                    handledData = eddnState.PersonalData.Strip(handledData);
+                    handledData = eddnState.PersonalData.Strip(handledData, edType);
 
                     // Apply data augments
                     handledData = eddnState.GameVersion.AugmentVersion(handledData);

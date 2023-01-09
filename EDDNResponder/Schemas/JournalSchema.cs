@@ -29,7 +29,7 @@ namespace EddiEddnResponder.Schemas
                 if (!eddnState.Location.CheckLocationData(edType, data) || !CheckSanity(edType, data)) return false;
 
                 // Remove personal data
-                data = eddnState.PersonalData.Strip(data);
+                data = eddnState.PersonalData.Strip(data, edType);
 
                 // Apply data augments
                 data = eddnState.Location.AugmentStarPos(data);

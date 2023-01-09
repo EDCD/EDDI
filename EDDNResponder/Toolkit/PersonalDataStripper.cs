@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,29 +8,37 @@ namespace EddiEddnResponder.Toolkit
     public class PersonalDataStripper
     {
         // We will strip these personal keys (plus any localized properties) before sending data to EDDN
-        private static readonly string[] personalKeys =
+
+        // Personal keys disallowed in events are as follows:
+        private static readonly Dictionary<string, string[]> disallowedKeysDictionary = new Dictionary<string, string[]>
         {
-            "ActiveFine",
-            "BoostUsed",
-            "CockpitBreach",
-            "HappiestSystem",
-            "HomeSystem",
-            "FuelLevel",
-            "FuelUsed",
-            "IsNewEntry",
-            "JumpDist",
-            "Latitude",
-            "Longitude",
-            "MyReputation",
-            "NewTraitsDiscovered",
-            "SquadronFaction",
-            "Wanted"
+            { "ActiveFine", new []{ "Docked" }},
+            { "BoostUsed", new []{ "FSDJump" }},
+            { "CockpitBreach", new []{ "Docked" }},
+            { "HappiestSystem", new []{ "CarrierJump", "FSDJump", "Location" }},
+            { "HomeSystem", new []{ "CarrierJump", "FSDJump", "Location" }},
+            { "FuelLevel", new []{ "CarrierJump", "FSDJump" }},
+            { "FuelUsed", new []{ "CarrierJump", "FSDJump" }},
+            { "IsNewEntry", new []{ "CodexEntry" }},
+            { "JumpDist", new []{ "CarrierJump", "FSDJump" }},
+            { "Latitude", new []{ "Location" } },
+            { "Longitude", new []{ "Location" } },
+            { "MyReputation", new []{ "CarrierJump", "FSDJump", "Location" }},
+            { "NewTraitsDiscovered", new []{ "CodexEntry" }},
+            { "SquadronFaction", new []{ "CarrierJump", "FSDJump", "Location" }}, 
+            { "Wanted", new []{ "CarrierJump", "Docked", "FSDJump", "Location" }}
         };
 
-        protected internal IDictionary<string, object> Strip(IDictionary<string, object> data)
+        protected internal IDictionary<string, object> Strip(IDictionary<string, object> data, string edType = null)
         {
             // Need to strip a number of personal entries
-            foreach (var personalKey in personalKeys) { data.Remove(personalKey); }
+            foreach (var kv in disallowedKeysDictionary)
+            {
+                if (string.IsNullOrEmpty(edType) || kv.Value.Contains(edType, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    data.Remove(kv.Key);
+                }
+            }
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised") && !x.Key.Equals("locName"))
@@ -41,12 +50,12 @@ namespace EddiEddnResponder.Toolkit
             {
                 if (item.Value is Dictionary<string, object> dict)
                 {
-                    fixedData.Add(item.Key, Strip(dict));
+                    fixedData.Add(item.Key, Strip(dict, edType));
                     continue;
                 }
                 if (item.Value is JObject jObject)
                 {
-                    fixedData.Add(item.Key, Strip(jObject.ToObject<Dictionary<string, object>>()));
+                    fixedData.Add(item.Key, Strip(jObject.ToObject<Dictionary<string, object>>(), edType));
                     continue;
                 }
                 if (item.Value is List<object> list)
@@ -56,7 +65,7 @@ namespace EddiEddnResponder.Toolkit
                     {
                         if (list[i] is Dictionary<string, object> listDict)
                         {
-                            newList.Add(Strip(listDict));
+                            newList.Add(Strip(listDict, edType));
                             continue;
                         }
                         newList.Add(list[i]);
@@ -71,7 +80,7 @@ namespace EddiEddnResponder.Toolkit
                     {
                         if (jArray[i] is JObject listJObject)
                         {
-                            newArray.Add(Strip(listJObject.ToObject<Dictionary<string, object>>()));
+                            newArray.Add(Strip(listJObject.ToObject<Dictionary<string, object>>(), edType));
                             continue;
                         }
                         newArray.Add(jArray[i]);
