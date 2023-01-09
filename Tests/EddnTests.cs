@@ -507,7 +507,7 @@ namespace UnitTests
 
             EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder.eddnState.PersonalData);
-            data = (IDictionary<string, object>)privateObject.Invoke("Strip", new object[] { data });
+            data = (IDictionary<string, object>)privateObject.Invoke("Strip", new object[] { data, "Location" });
 
             data.TryGetValue("Factions", out object factionsVal);
             if (factionsVal != null)
@@ -558,7 +558,7 @@ namespace UnitTests
 
             EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder.eddnState.PersonalData);
-            data = (IDictionary<string, object>)privateObject.Invoke("Strip", new object[] { data });
+            data = (IDictionary<string, object>)privateObject.Invoke("Strip", new object[] { data, null });
 
             void testKeyValuePair(KeyValuePair<string, object> kvp)
             {
