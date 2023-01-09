@@ -3064,7 +3064,7 @@ namespace EddiJournalMonitor
                                     string name = JsonParsing.getString(data, "Name");
                                     string system = JsonParsing.getString(data, "System");
 
-                                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.FromEDName("Active"))
+                                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
                                     {
                                         localisedname = name,
                                         destinationsystem = system,
@@ -3119,11 +3119,16 @@ namespace EddiJournalMonitor
                                 break;
                             case "Missions":
                                 {
-                                    List<Mission> missions = new List<Mission>();
-
-                                    for (int i = 0; i < 3; i++)
+                                    var possibleStatuses = new [] 
                                     {
-                                        MissionStatus status = MissionStatus.FromStatus(i);
+                                        MissionStatus.Active, 
+                                        MissionStatus.Failed, 
+                                        MissionStatus.Complete
+                                    };
+
+                                    List<Mission> missions = new List<Mission>();
+                                    foreach (var status in possibleStatuses)
+                                    {
                                         data.TryGetValue(status.invariantName, out object val);
                                         List<object> missionLog = (List<object>)val;
 
@@ -3136,7 +3141,9 @@ namespace EddiJournalMonitor
                                             DateTime expiry = DateTime.UtcNow.AddSeconds((double)expires);
 
                                             // If mission is 'Active' and expires = 0, then set status to 'Claim'
-                                            MissionStatus missionStatus = i == 0 && expires == 0 ? MissionStatus.FromStatus(3) : status;
+                                            MissionStatus missionStatus = status == MissionStatus.Active && expires == 0 
+                                                ? MissionStatus.Claim: 
+                                                status;
                                             Mission newMission = new Mission(missionId, name, expiry, missionStatus);
                                             if (newMission == null)
                                             {
@@ -3261,7 +3268,7 @@ namespace EddiJournalMonitor
                                         var influence = JsonParsing.getString(data, "Influence");
                                         var reputation = JsonParsing.getString(data, "Reputation");
 
-                                        var mission = new Mission(missionid, name, expiry, MissionStatus.FromEDName("Active"))
+                                        var mission = new Mission(missionid, name, expiry, MissionStatus.Active)
                                         {
                                             // Common parameters
                                             localisedname = localisedname,
@@ -3332,7 +3339,7 @@ namespace EddiJournalMonitor
                                                     default:
                                                         {
                                                             mission.destinationsystem = destinationsystem;
-                                                            mission.destinationstation = destinationstation;
+                                                            mission.destinationstation = destinationstation ?? destinationsettlement;
                                                             exitLoop = true;
                                                             break;
                                                         }

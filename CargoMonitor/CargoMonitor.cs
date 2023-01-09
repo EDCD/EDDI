@@ -386,7 +386,7 @@ namespace EddiCargoMonitor
                                     ?.FirstOrDefault(m => m.missionid == @event.missionid);
                                 if (mission != null)
                                 {
-                                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                                    mission.statusDef = MissionStatus.Failed;
                                 }
                                 update = true;
                             }
@@ -1126,7 +1126,7 @@ namespace EddiCargoMonitor
                                     cargoHaulage.status = "Failed";
                                     if (mission != null)
                                     {
-                                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                                        mission.statusDef = MissionStatus.Failed;
                                     }
                                 }
                                 break;

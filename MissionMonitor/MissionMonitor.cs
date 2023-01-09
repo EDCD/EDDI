@@ -120,7 +120,7 @@ namespace EddiMissionMonitor
 
                 foreach (Mission mission in missionsList)
                 {
-                    if (mission.expiry != null && mission.statusEDName == "Active")
+                    if (mission.expiry != null && mission.statusDef == MissionStatus.Active)
                     {
                         // Generate 'Expired' and 'Warning' events when conditions met
                         if (mission.expiry < DateTime.UtcNow)
@@ -133,7 +133,7 @@ namespace EddiMissionMonitor
                                 }
                                 else
                                 {
-                                    mission.statusDef = MissionStatus.FromEDName("Claim");
+                                    mission.statusDef = MissionStatus.Claim;
                                 }
                             }
                             else
@@ -330,17 +330,17 @@ namespace EddiMissionMonitor
                     {
                         case "Active":
                             {
-                                if (missionEntry.statusEDName == "Failed")
+                                if (missionEntry.statusDef == MissionStatus.Failed)
                                 {
                                     if (mission.expiry > missionEntry.expiry)
                                     {
                                         // Fix status if erroneously reported as failed
                                         missionEntry.expiry = mission.expiry;
-                                        missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                        missionEntry.statusDef = MissionStatus.Active;
                                         update = true;
                                     }
                                 }
-                                else if (missionEntry.statusEDName == "Claim")
+                                else if (missionEntry.statusDef == MissionStatus.Claim)
                                 {
                                     if (mission.expiry > missionEntry.expiry)
                                     {
@@ -349,7 +349,7 @@ namespace EddiMissionMonitor
                                         update = true;
                                     }
                                 }
-                                else if (missionEntry.statusEDName == "Active")
+                                else if (missionEntry.statusDef == MissionStatus.Active)
                                 {
                                     // Update status on a missed 'redirect'
                                     update = UpdateRedirectStatus(missionEntry);
@@ -450,7 +450,7 @@ namespace EddiMissionMonitor
                 {
                     // Dummy mission to populate 'Passengers' parameters
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
-                    MissionStatus status = MissionStatus.FromEDName("Active");
+                    MissionStatus status = MissionStatus.Active;
                     mission = new Mission(passenger.missionid, "Mission_None", DateTime.UtcNow.AddDays(1), status)
                     {
                         passengertypeEDName = passenger.type,
@@ -500,7 +500,7 @@ namespace EddiMissionMonitor
                 }
                 if (mission == null && (!goal.iscomplete || goal.iscomplete && goal.contribution > 0))
                 {
-                    mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.FromEDName("Active"));
+                    mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.Active);
                     AddMission(mission);
                 }
 
@@ -547,7 +547,7 @@ namespace EddiMissionMonitor
                     {
                         if (goal.contribution > 0)
                         {
-                            mission.statusDef = MissionStatus.FromEDName("Claim");
+                            mission.statusDef = MissionStatus.Claim;
                         }
                         else
                         {
@@ -579,7 +579,7 @@ namespace EddiMissionMonitor
                     if (mission == null)
                     {
                         // Add shared mission not previously instantiated
-                        MissionStatus status = MissionStatus.FromEDName("Active");
+                        MissionStatus status = MissionStatus.Active;
                         mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", null, status, true)
                         {
                             amount = @event.totaltodeliver,
@@ -604,7 +604,7 @@ namespace EddiMissionMonitor
                         if (amountRemaining > 0)
                         {
                             // If requirements not yet satisfied, add shared mission not previously instantiated
-                            MissionStatus status = MissionStatus.FromEDName("Active");
+                            MissionStatus status = MissionStatus.Active;
                             string type = @event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
                             mission = new Mission(@event.missionid ?? 0, type, null, status, true)
                             {
@@ -637,7 +637,7 @@ namespace EddiMissionMonitor
                     else if (amountRemaining == 0)
                     {
                         // Update 'owned' mission status to 'Claim'
-                        MissionStatus status = MissionStatus.FromEDName("Claim");
+                        MissionStatus status = MissionStatus.Claim;
                         mission.statusDef = status;
                     }
                 }
@@ -654,7 +654,7 @@ namespace EddiMissionMonitor
                     Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                     if (mission != null)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                        mission.statusDef = MissionStatus.Failed;
                     }
                 }
             }
@@ -720,7 +720,7 @@ namespace EddiMissionMonitor
                     Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                     if (mission != null)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Complete");
+                        mission.statusDef = MissionStatus.Complete;
                     }
                 }
             }
@@ -781,12 +781,12 @@ namespace EddiMissionMonitor
                 {
                     if (mission.communal && mission.communalPercentileBand != 100)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Claim");
+                        mission.statusDef = MissionStatus.Claim;
                         update = true;
                     }
-                    else if (mission.statusDef != MissionStatus.FromEDName("Claim"))
+                    else if (mission.statusDef != MissionStatus.Claim)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                        mission.statusDef = MissionStatus.Failed;
                         update = true;
                     }
                 }
@@ -804,7 +804,7 @@ namespace EddiMissionMonitor
                     Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                     if (mission != null)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                        mission.statusDef = MissionStatus.Failed;
                     }
                 }
             }
@@ -961,38 +961,13 @@ namespace EddiMissionMonitor
             if (mission.originreturn && mission.originsystem == mission.destinationsystem
                 && mission.originstation == mission.destinationstation)
             {
-                foreach (var type in mission.edTags)
+                if (mission.edTags.Any(t => Mission.ORGRETURN.Contains(t, StringComparer.InvariantCultureIgnoreCase)))
                 {
-                    var exitLoop = false;
-                    switch (type.ToLowerInvariant())
+                    if (mission.statusDef != MissionStatus.Claim)
                     {
-                        case "assassinate":
-                        case "assassinatewing":
-                        case "disable":
-                        case "disablewing":
-                        case "hack":
-                        case "massacre":
-                        case "massacrethargoid":
-                        case "massacrewing":
-                        case "longdistanceexpedition":
-                        case "onfoot":
-                        case "passengervip":
-                        case "piracy":
-                        case "rescue":
-                        case "salvage":
-                        case "scan":
-                        case "sightseeing":
-                        {
-                            if (mission.statusEDName != "Claim")
-                            {
-                                mission.statusDef = MissionStatus.FromEDName("Claim");
-                                return true;
-                            }
-                            exitLoop = true;
-                            break;
-                        }
+                        mission.statusDef = MissionStatus.Claim;
+                        return true;
                     }
-                    if (exitLoop) { break; }
                 }
             }
             return false;

@@ -477,7 +477,7 @@ namespace EddiNavigationService
             {
                 var curr = EDDI.Instance?.CurrentStarSystem;
                 var farthestList = new SortedList<decimal, NavWaypoint>();
-                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusDef == MissionStatus.Active).ToList())
                 {
                     if (mission.destinationsystems != null && mission.destinationsystems.Any())
                     {
@@ -546,7 +546,7 @@ namespace EddiNavigationService
                 systems.Add(curr?.systemname);
 
                 // Add origin systems for 'return to origin' missions to the 'systems' list
-                foreach (Mission mission in missions.Where(m => m.statusEDName != "Failed").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusDef != MissionStatus.Failed).ToList())
                 {
                     if (mission.originreturn && !systems.Contains(mission.originsystem))
                     {
@@ -555,7 +555,7 @@ namespace EddiNavigationService
                 }
 
                 // Add destination systems for applicable mission types to the 'systems' list
-                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusDef == MissionStatus.Active).ToList())
                 {
                     if (mission.tagsList.Any(t => t.IncludeInMissionRouting))
                     {
@@ -737,7 +737,7 @@ namespace EddiNavigationService
                 // Determine the number of missions per individual system
                 List<string> systems = new List<string>();  // Mission systems
                 List<int> systemsCount = new List<int>();   // Count of missions per system
-                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusDef == MissionStatus.Active).ToList())
                 {
                     if (mission.destinationsystems?.Any() ?? false)
                     {
@@ -817,7 +817,7 @@ namespace EddiNavigationService
             if (missions.Count > 0)
             {
                 var nearestList = new SortedList<decimal, StarSystem>();
-                foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                foreach (Mission mission in missions.Where(m => m.statusDef == MissionStatus.Active).ToList())
                 {
                     if (mission.destinationsystems != null && mission.destinationsystems.Any())
                     {
@@ -1297,7 +1297,7 @@ namespace EddiNavigationService
             {
                 var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList() ?? new List<Mission>();
                 if (missionsList
-                    .Where(m => m != null && m.statusDef == MissionStatus.FromEDName("Active"))
+                    .Where(m => m != null && m.statusDef == MissionStatus.Active)
                     .Any(m => m.destinationsystem == EDDI.Instance.CurrentStarSystem?.systemname))
                 {
                     // We still have active missions at the current location

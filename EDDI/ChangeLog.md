@@ -2,9 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-## 4.0.2
+## 4.0.2-rc2
   * Core
-    * Various minor bug fixes
+    * Fix on-foot missions not redirecting appropriately to origin.
+    * Various other minor bug fixes
   * Speech Responder
     * Changes to existing scripts
       * `Module swapped` revised to identify pluralized module names (e.g. "sensors") as a "package" (for real this time).

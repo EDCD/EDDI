@@ -5,7 +5,6 @@ using EddiEvents;
 using EddiJournalMonitor;
 using EddiMissionMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTests
@@ -14,9 +13,6 @@ namespace UnitTests
     public class MissionMonitorTests : TestBase
     {
         private readonly MissionMonitor missionMonitor = new MissionMonitor();
-        private Mission mission;
-        private string line;
-        private List<Event> events;
 
         [TestInitialize]
         public void StartTestMissionMonitor()
@@ -130,7 +126,7 @@ namespace UnitTests
             var config = ConfigService.FromJson<MissionMonitorConfiguration>(missionConfigJson);
             Assert.AreEqual(config.missionsCount, config.missions.Count);
 
-            mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
+            var mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
             Assert.IsNotNull(mission);
             Assert.IsTrue(mission.edTags.Contains("Courier"));
             Assert.IsTrue(mission.edTags.Contains("Election"));
@@ -167,8 +163,8 @@ namespace UnitTests
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
             //MissionsEvent
-            line = @"{""timestamp"":""2018-08-25T23:27:21Z"", ""event"":""Missions"", ""Active"":[ { ""MissionID"":413563499, ""Name"":""Mission_Courier_Elections_name"", ""PassengerMission"":false, ""Expires"":48916 }, { ""MissionID"":413563678, ""Name"":""Mission_Delivery_name"", ""PassengerMission"":false, ""Expires"":48917 }, { ""MissionID"":413563829, ""Name"":""Mission_Salvage_Planet_name"", ""PassengerMission"":false, ""Expires"":264552 } ], ""Failed"":[  ], ""Complete"":[  ] }";
-            events = JournalMonitor.ParseJournalEntry(line);
+            var line = @"{""timestamp"":""2018-08-25T23:27:21Z"", ""event"":""Missions"", ""Active"":[ { ""MissionID"":413563499, ""Name"":""Mission_Courier_Elections_name"", ""PassengerMission"":false, ""Expires"":48916 }, { ""MissionID"":413563678, ""Name"":""Mission_Delivery_name"", ""PassengerMission"":false, ""Expires"":48917 }, { ""MissionID"":413563829, ""Name"":""Mission_Salvage_Planet_name"", ""PassengerMission"":false, ""Expires"":264552 } ], ""Failed"":[  ], ""Complete"":[  ] }";
+            var events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
             Assert.AreEqual(3, missionMonitor.missions.Count);
@@ -179,7 +175,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
-            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
+            var mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.AreEqual(4, missionMonitor.missions.Count);
             Assert.IsNotNull(mission);
             Assert.IsTrue(mission.edTags.Contains("CollectWing"));
@@ -270,7 +266,7 @@ namespace UnitTests
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             long fine = ((MissionFailedEvent)events[0]).fine;
             crimeMonitor._handleMissionFine(events[0].timestamp, mission, fine);
-            FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission.faction);
+            FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission?.faction);
             Assert.IsNotNull(record);
             Assert.AreEqual(50000, record.fines);
             FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.FromEDName("missionFine"));
@@ -298,7 +294,7 @@ namespace UnitTests
         public void TestCommunityGoalRewardEvent()
         {
             string line = @"{ ""timestamp"":""2019-01-27T06:14:02Z"", ""event"":""CommunityGoalReward"", ""CGID"":568, ""Name"":""Distant Worlds Mining Initiative"", ""System"":""Omega Sector VE-Q b5-15"", ""Reward"":23000000 }";
-            events = JournalMonitor.ParseJournalEntry(line);
+            var events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             MissionCompletedEvent mcEvent = (MissionCompletedEvent)events[0];
             Assert.IsInstanceOfType(mcEvent, typeof(MissionCompletedEvent));
@@ -313,8 +309,8 @@ namespace UnitTests
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
             // MissionsEvent
-            line = @"{ ""timestamp"":""2020-10-24T01:39:13Z"", ""event"":""Missions"", ""Active"":[  ], ""Failed"":[  ], ""Complete"":[  ] }";
-            events = JournalMonitor.ParseJournalEntry(line);
+            var line = @"{ ""timestamp"":""2020-10-24T01:39:13Z"", ""event"":""Missions"", ""Active"":[  ], ""Failed"":[  ], ""Complete"":[  ] }";
+            var events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
             Assert.AreEqual(0, missionMonitor.missions.Count);
@@ -362,6 +358,17 @@ namespace UnitTests
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;
+        }
+
+        [TestMethod]
+        public void TestMissionAcceptedToSettlement()
+        {
+            string line = @"{ ""timestamp"":""2023-01-03T22:14:24Z"", ""event"":""MissionAccepted"", ""Faction"":""Gabjaujavas Dominion"", ""Name"":""Mission_OnFoot_Collect_Contact_MB"", ""LocalisedName"":""Secure a package from Nariah Nieves"", ""Commodity"":""$PersonalDocuments_Name;"", ""Commodity_Localised"":""Personal Documents"", ""Count"":1, ""DestinationSystem"":""Iah Bulu"", ""DestinationSettlement"":""Clothier's Respite"", ""Target"":""Nariah Nieves"", ""Expiry"":""2023-01-04T04:17:30Z"", ""Wing"":false, ""Influence"":""+"", ""Reputation"":""+"", ""Reward"":54212, ""MissionID"":909166596 }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            var @event = (MissionAcceptedEvent)events[0];
+            Assert.IsInstanceOfType(@event, typeof(MissionAcceptedEvent));
+            Assert.AreEqual("Clothier's Respite", @event.destinationstation);
         }
     }
 }

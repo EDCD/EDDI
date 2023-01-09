@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
             {"wrongtarget", "assassinate"},
         };
 
-        private static readonly List<string> ORGRETURN = new List<string>()
+        public static readonly List<string> ORGRETURN = new List<string>()
         {
             "altruism",
             "altruismcredits",
@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
         // The type of mission
 
         [JsonIgnore]
-        public List<MissionType> tagsList { get; set; }
+        public List<MissionType> tagsList { get; set; } = new List<MissionType>();
 
         [Utilities.PublicAPI, JsonIgnore]
         public List<string> invariantTags => tagsList.Select(t => t.invariantName ?? "Unknown").ToList();
@@ -451,13 +451,12 @@ namespace EddiDataDefinitions
                 if (CHAINED.ContainsKey(e)) { e = CHAINED[e]; }
             });
 
-            this.tagsList = new List<MissionType>();
             foreach (var element in elements)
             {
                 var typeDef = MissionType.FromEDName(element);
                 if (typeDef != null)
                 {
-                    this.tagsList.Add(typeDef);
+                    tagsList.Add(typeDef);
                 }
             }
         }
@@ -568,7 +567,7 @@ namespace EddiDataDefinitions
 
         private void UpdateExpiry()
         {
-            if (statusEDName != "Active" && !onfoot)
+            if (statusDef != MissionStatus.Active && !onfoot)
             {
                 expiry = null;
             }

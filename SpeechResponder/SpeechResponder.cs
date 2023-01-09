@@ -270,17 +270,6 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (@event is MissionRedirectedEvent missionRedirectedEvent)
-            {
-                if (ConfigService.Instance.missionMonitorConfiguration.updatedat == missionRedirectedEvent.timestamp &&
-                    ConfigService.Instance.missionMonitorConfiguration.missions.Any(m => 
-                    m.destinationsystem == missionRedirectedEvent.newdestinationsystem && 
-                    m.destinationstation == missionRedirectedEvent.newdestinationstation))
-                {
-                    // Suppress repetitious mission redirects with the same timestamp and to the same star system and station
-                    return;
-                }
-            }
 
             Say(@event);
         }
